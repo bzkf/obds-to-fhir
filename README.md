@@ -15,7 +15,7 @@ TODO
 * Kafka Rest Proxy: `$DOCKER_HOST_IP:8082`
 * Kafka Connect: `$DOCKER_HOST_IP:8083`
 * AKHQ: `$DOCKER_HOST_IP:8080`
-* Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/KDBP` (Use credentials from init script)
+* Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/COGN12` (Use credentials from init script)
 
 ### Prerequisites
 
