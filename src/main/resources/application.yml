@@ -1,0 +1,7 @@
+fhir:
+  systems:
+    TODO: "TODO"
+
+spring:
+  application:
+    name: onkoadt-to-fhir

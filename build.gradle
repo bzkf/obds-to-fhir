@@ -1,0 +1,71 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'jacoco'
+	id 'java'
+	id 'com.diffplug.spotless' version '6.7.2'
+	id "io.freefair.lombok" version "6.4.3"
+}
+
+group = 'org.miracum.streams.ume'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2021.0.3")
+	set('hapiVersion', "6.0.2")
+}
+
+dependencies {
+	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.cloud:spring-cloud-stream'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+	implementation "ca.uhn.hapi.fhir:hapi-fhir-base:${hapiVersion}"
+	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.9.1'
+	implementation 'io.micrometer:micrometer-core:1.9.1'
+	implementation "org.miracum:kafka-fhir-serializer:1.0.2"
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+spotless {
+	java {
+		importOrder()
+		removeUnusedImports()
+		googleJavaFormat()
+	}
+}
+
+jacocoTestReport {
+	reports {
+		html.required = true
+		xml.required = false
+		csv.required = true
+	}
+}
+
+jar {
+	enabled = false
+}
