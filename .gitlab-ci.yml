@@ -1,0 +1,15 @@
+variables:
+  CONTAINER_PROJECT_PATH: /streams-ume/gics-to-fhir
+
+.registry_login:
+  before_script:
+    - echo $STREAMS_UME_IMAGE_REPO_PASSWORD | docker login -u $STREAMS_UME_IMAGE_REPO_USER $CONTAINER_REGISTRY_HOST --password-stdin
+  after_script:
+    - docker logout $CONTAINER_REGISTRY_HOST
+
+include:
+  - project: "devops/ci-templates"
+    file: "/standard/.container-build.yml"
+
+build:
+  coverage: '/\d+.\d+ \% covered/'
