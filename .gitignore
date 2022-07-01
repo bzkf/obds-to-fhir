@@ -49,7 +49,7 @@ ume*.sh
 .cache/
 
 ### Confluent Connectors
-connectors/*
-!connectors/README.md
+deploy/connectors/*
+!deploy/connectors/README.md
 
 bin
