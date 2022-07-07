@@ -37,9 +37,11 @@ dependencies {
 	implementation 'io.micrometer:micrometer-core:1.9.1'
 	implementation "org.miracum:kafka-fhir-serializer:1.0.2"
 
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
-	implementation 'javax.xml.bind:jaxb-api:2.3.1'
-	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+	// implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+	// implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	// implementation 'org.glassfish.jaxb:jaxb-runtime'
+
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

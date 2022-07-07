@@ -1,11 +1,10 @@
 package org.miracum.streams.ume.onkoadttofhir.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import java.io.Serializable;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import lombok.*;
 
 @Data
@@ -13,52 +12,39 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-@XmlRootElement(name = "ADT_GEKID", namespace = "http://www.gekid.de/namespace")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ADT_GEKID {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ADT_GEKID implements Serializable {
 
-  @XmlAttribute(name = "Schema_Version")
-  String schema_version;
+  @JsonProperty private String Schema_Version;
 
-  @XmlElement(name = "Absender", namespace = "http://www.gekid.de/namespace")
-  Absender absender;
+  @JsonProperty private Absender Absender;
 
-  @XmlElement(name = "Menge_Patient", namespace = "http://www.gekid.de/namespace")
-  List<Menge_Patient> menge_patientList;
+  @JacksonXmlElementWrapper(useWrapping = false)
+  private List<Menge_Patient> Menge_Patient;
 
   @Data
-  @XmlAccessorType(XmlAccessType.FIELD)
   public static class Absender {
-    @XmlElement(name = "Absender_Bezeichnung", namespace = "http://www.gekid.de/namespace")
-    String absender_bezeichnung;
+    @JsonProperty private String Absender_Bezeichnung;
 
-    @XmlElement(name = "Absender_Ansprechpartner", namespace = "http://www.gekid.de/namespace")
-    String absender_ansprechpartner;
+    @JsonProperty private String Absender_Ansprechpartner;
 
-    @XmlElement(name = "Absender_Anschrift", namespace = "http://www.gekid.de/namespace")
-    String absender_anschrift;
+    @JsonProperty private String Absender_Anschrift;
   }
 
   @Data
-  @XmlAccessorType(XmlAccessType.FIELD)
   public static class Menge_Patient {
 
-    @XmlElement(name = "Patient", namespace = "http://www.gekid.de/namespace")
-    Patient patient;
+    @JsonProperty private Patient Patient;
 
     @Data
-    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Patient {
 
-      @XmlElement(name = "Patienten_Stammdaten", namespace = "http://www.gekid.de/namespace")
-      Patienten_Stammdaten patienten_stammdaten;
+      @JsonProperty private Patienten_Stammdaten Patienten_Stammdaten;
 
       @Data
-      @XmlAccessorType(XmlAccessType.FIELD)
       public static class Patienten_Stammdaten {
 
-        @XmlElement(name = "KrankenversichertenNr", namespace = "http://www.gekid.de/namespace")
-        String krankenversichertenNr;
+        @JsonProperty private String KrankenversichertenNr;
       }
     }
   }
