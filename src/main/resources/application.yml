@@ -1,3 +1,6 @@
+app:
+  version: 0.0.1-SNAPSHOT
+
 fhir:
   systems:
     TODO: "TODO"
@@ -5,3 +8,31 @@ fhir:
 spring:
   application:
     name: onkoadt-to-fhir
+  cloud:
+    stream:
+      bindings:
+        getMeldungExportProcessor-in-0:
+          destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportProcessor-out-0:
+          destination: fhir.onkoadt.Condition
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+      function:
+        definition: getMeldungExportProcessor
+      kafka:
+        streams:
+          binder:
+            configuration:
+              cache.max.bytes.buffering: 0
+              max.request.size: ${MAX_REQUEST_SIZE:20971520}
+              num.stream.threads: ${NUM_STREAM_THREADS:1}
+              default:
+                key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+          bindings:
+            getMeldungExportProcessor-in-0:
+              consumer:
+                application-id: onko-meldung-exp-processor
+            getMeldungExportProcessor-out-0:
+              producer:
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
