@@ -40,11 +40,43 @@ public class ADT_GEKID implements Serializable {
     public static class Patient {
 
       @JsonProperty private Patienten_Stammdaten Patienten_Stammdaten;
+      @JsonProperty private Menge_Meldung Menge_Meldung; // TODO Liste an Meldungen möglich?
 
       @Data
       public static class Patienten_Stammdaten {
 
         @JsonProperty private String KrankenversichertenNr;
+      }
+
+      @Data
+      public static class Menge_Meldung {
+
+        @JsonProperty private Meldung Meldung;
+
+        @Data
+        public static class Meldung {
+          @JsonProperty private String Meldung_ID;
+
+          @JsonProperty private Diagnose Diagnose;
+
+          @Data
+          public static class Diagnose {
+
+            @JsonProperty private Menge_Histologie Menge_Histologie;
+
+            @Data
+            public static class Menge_Histologie {
+
+              @JsonProperty private Histologie Histologie;
+
+              @Data
+              public static class Histologie {
+
+                @JsonProperty private String Histologie_ID;
+              }
+            }
+          }
+        }
       }
     }
   }

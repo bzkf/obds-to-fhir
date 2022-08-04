@@ -9,9 +9,20 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class FhirProperties {
   private FhirSystems systems;
+  private FhirDisplay display;
 
   @Data
   public static class FhirSystems {
-    private String TODO; // TODO
+    private String patientId;
+    private String identifierType;
+    private String conditionId;
+    private String ObservationId;
+    private String observationCategorySystem;
+    private String loinc;
+  }
+
+  @Data
+  public static class FhirDisplay {
+    private String histologyLoinc;
   }
 }
