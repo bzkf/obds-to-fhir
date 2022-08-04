@@ -1,4 +1,4 @@
-FROM gradle:7.4.1-jdk17 AS build
+FROM gradle:7.5.0-jdk17-alpine AS build
 WORKDIR /home/gradle/src
 ENV GRADLE_USER_HOME /gradle
 
@@ -11,7 +11,7 @@ RUN gradle clean build --info && \
     awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv && \
     java -Djarmode=layertools -jar build/libs/onkoadt-to-fhir-0.0.1-SNAPSHOT.jar extract
 
-FROM gcr.io/distroless/java17-debian11@sha256:02ff0b360e537aa4d6ec4492cbb04b306caef764fdd6fdb22d5de98a104e28f4
+FROM gcr.io/distroless/java17-debian11@sha256:80b21bccb947050e0a944848340cf2cc229ec0f174490d263b57a66a60d290a2
 WORKDIR /opt/onkoadt-to-fhir
 
 COPY --from=build /home/gradle/src/dependencies/ ./
