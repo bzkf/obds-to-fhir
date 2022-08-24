@@ -14,7 +14,7 @@ create table DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT
 
 INSERT INTO DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT (ID, LKR_MELDUNG, LKR_EXPORT, TYP, XML_DATEN, VERSIONSNUMMER,
                                                          REFERENZ_NUMMER)
-VALUES (1, 80, 1, -1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
+VALUES (1, 80, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
 <ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
     <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
         <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
@@ -75,12 +75,12 @@ VALUES (1, 80, 1, -1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
         </Melder>
     </Menge_Melder>
 </ADT_GEKID>
-'), null, '1087655521');
+'), 1, '1087655521');
 
 
 INSERT INTO DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT (ID, LKR_MELDUNG, LKR_EXPORT, TYP, XML_DATEN, VERSIONSNUMMER,
                                                          REFERENZ_NUMMER)
-VALUES (2, 22, 1, -1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
+VALUES (2, 22, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
 <ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
     <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
         <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
@@ -156,7 +156,7 @@ VALUES (2, 22, 1, -1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
         </Melder>
     </Menge_Melder>
 </ADT_GEKID>
-'), null, '1077554421');
+'), 1, '1077554421');
 
 INSERT INTO DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT (ID, LKR_MELDUNG, LKR_EXPORT, TYP, XML_DATEN, VERSIONSNUMMER,
                                                          REFERENZ_NUMMER)
