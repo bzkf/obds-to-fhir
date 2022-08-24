@@ -9,22 +9,28 @@ fhir:
     observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id" #TODO nachfragen
     observationCategorySystem: "http://terminology.hl7.org/CodeSystem/observation-category"
     loinc: "http://loinc.org"
+    idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
+    gradingDktk: "https://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
+  profiles:
+    histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
+    grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
+    gradingLoinc: "Grade pathology value Cancer"
 spring:
   application:
     name: onkoadt-to-fhir
   cloud:
     stream:
       bindings:
-        getMeldungExportProcessor-in-0:
+        getMeldungExportObservationProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT
-        getMeldungExportProcessor-out-0:
-          destination: fhir.onkoadt.Condition
+        getMeldungExportObservationProcessor-out-0:
+          destination: fhir.onkoadt.Observation
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
       function:
-        definition: getMeldungExportProcessor
+        definition: getMeldungExportObservationProcessor
       kafka:
         streams:
           binder:
@@ -35,10 +41,24 @@ spring:
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           bindings:
-            getMeldungExportProcessor-in-0:
+            getMeldungExportObservationProcessor-in-0:
               consumer:
-                application-id: onko-meldung-exp-processor
-            getMeldungExportProcessor-out-0:
+                application-id: onko-meldung-exp-observ-processor
+            getMeldungExportObservationProcessor-out-0:
               producer:
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
+
+  kafka:
+    bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9092}
+    security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      trust-store-type: PKCS12
+      trust-store-location: file://${SSL_TRUST_STORE:/opt/kafka-certs/ca.p12}
+      trust-store-password: ${SSL_TRUST_STORE_PASSWORD}
+      key-store-type: PKCS12
+      key-store-location: file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}
+      key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    producer:
+      compression-type: gzip
+      value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
