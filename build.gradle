@@ -1,9 +1,9 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.2'
-	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '6.9.0'
+	id 'com.diffplug.spotless' version '6.9.1'
 	id "io.freefair.lombok" version "6.5.0.3"
 }
 
@@ -23,8 +23,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.3")
-	set('hapiVersion', "6.0.4")
+	set('springCloudVersion', "2021.0.2") // 2021.0.3 causes bundle serializing error
+	set('hapiVersion', "6.1.0")
 }
 
 dependencies {
