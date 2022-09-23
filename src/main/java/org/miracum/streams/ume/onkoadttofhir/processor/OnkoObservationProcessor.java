@@ -2,10 +2,12 @@ package org.miracum.streams.ume.onkoadttofhir.processor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.ValueMapper;
@@ -13,6 +15,8 @@ import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.GradingLookup;
+import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
+import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -44,11 +48,23 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // https://simplifier.net/oncology/histologie
       var gradingObs = new Observation();
 
-      var histologie =
+      // histologie from operation
+      var opHistologie =
           meldungExport
               .getXml_daten()
               .getMenge_Patient()
-              .get(0)
+              .getPatient()
+              .getMenge_Meldung()
+              .getMeldung()
+              .getMenge_OP()
+              .getOP()
+              .getHistologie();
+
+      // histologie list from diagnosis
+      var diaHistologieList =
+          meldungExport
+              .getXml_daten()
+              .getMenge_Patient()
               .getPatient()
               .getMenge_Meldung()
               .getMeldung()
@@ -56,11 +72,18 @@ public class OnkoObservationProcessor extends OnkoProcessor {
               .getMenge_Histologie()
               .getHistologie();
 
+      var diaHistologie = getValidHistologie(diaHistologieList);
+
+      // check if histologie is defined in operation or diagnosis
+      ADT_GEKID.HistologieAbs histologie = opHistologie;
+      if (opHistologie == null) {
+        histologie = diaHistologie;
+      }
+
+      var grading = histologie.getGrading();
+      var histId = histologie.getHistologie_ID();
       // TODO anpassen
-      var gradingObsIdentifier =
-          meldungExport.getReferenz_nummer()
-              + histologie.getHistologie_ID()
-              + histologie.getGrading();
+      var gradingObsIdentifier = meldungExport.getReferenz_nummer() + histId + grading;
 
       gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
 
@@ -120,8 +143,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         gradingObs.setEffective(new DateTimeType(histDate));
       }
 
-      var grading = histologie.getGrading();
-
       var gradingValueCodeableCon =
           new CodeableConcept(
               new Coding()
@@ -138,8 +159,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // TODO reicht das und bleibt Histologie_ID wirklich immer identisch
       // Generate an identifier based on MeldungExport Referenz_nummer (Pat. Id) and Histologie_ID
       // from ADT XML
-      var observationIdentifier =
-          meldungExport.getReferenz_nummer() + histologie.getHistologie_ID();
+      var observationIdentifier = meldungExport.getReferenz_nummer() + histId;
 
       histObs.setId(this.getHash("Observation", observationIdentifier));
 
@@ -228,5 +248,15 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
       return bundle;
     };
+  }
+
+  public Meldung.Diagnose.Menge_Histologie.Histologie getValidHistologie(
+      List<Meldung.Diagnose.Menge_Histologie.Histologie> mengeHist) {
+
+    return mengeHist.stream()
+        .max(
+            Comparator.comparing(
+                v -> Integer.parseInt(StringUtils.left(v.getMorphologie_Code(), 4))))
+        .get();
   }
 }

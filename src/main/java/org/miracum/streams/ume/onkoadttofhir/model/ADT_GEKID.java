@@ -19,8 +19,7 @@ public class ADT_GEKID implements Serializable {
 
   @JsonProperty private Absender Absender;
 
-  @JacksonXmlElementWrapper(useWrapping = false)
-  private List<Menge_Patient> Menge_Patient;
+  @JsonProperty private Menge_Patient Menge_Patient;
 
   @Data
   public static class Absender {
@@ -40,7 +39,8 @@ public class ADT_GEKID implements Serializable {
     public static class Patient {
 
       @JsonProperty private Patienten_Stammdaten Patienten_Stammdaten;
-      @JsonProperty private Menge_Meldung Menge_Meldung; // TODO Liste an Meldungen?
+
+      @JsonProperty private Menge_Meldung Menge_Meldung;
 
       @Data
       public static class Patienten_Stammdaten {
@@ -85,10 +85,12 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class Menge_Histologie {
-              @JsonProperty private Histologie Histologie;
+              @JacksonXmlElementWrapper(useWrapping = false)
+              private List<Histologie> Histologie;
 
               @Data
-              public static class Histologie {
+              @EqualsAndHashCode(callSuper = true)
+              public static class Histologie extends ADT_GEKID.HistologieAbs {
 
                 @JsonProperty private String Histologie_ID;
                 @JsonProperty private String Tumor_Histologiedatum;
@@ -134,38 +136,49 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class OP {
-              @JsonProperty
-              private OP_Histologie OP_Histologie; // TODO müssen genau so heißen wie XML TAGS
+              @JsonProperty private Histologie Histologie;
 
-              @JsonProperty private OP_TNM OP_TNM;
+              @JsonProperty private TNM TNM;
 
               @Data
-              public static class OP_Histologie {
-                @JsonProperty private String OP_Histologie_ID;
-                @JsonProperty private String OP_Histologie_Datum;
-                @JsonProperty private String OP_Morphologie_ICD_O_3_Code;
-                @JsonProperty private String OP_ICD_O_3_Version;
-                @JsonProperty private String OP_Grading;
+              @EqualsAndHashCode(callSuper = true)
+              public static class Histologie extends ADT_GEKID.HistologieAbs {
+                @JsonProperty private String Histologie_ID;
+                @JsonProperty private String Tumor_Histologiedatum;
+                @JsonProperty private String Morphologie_Code; // Morphologie_ICD_O_3_Code
+                @JsonProperty private String Morphologie_ICD_O_Version; //
+                @JsonProperty private String Grading;
+                @JsonProperty private String Morphologie_Freitext;
               }
 
               @Data
-              public static class OP_TNM {
-                @JsonProperty private String OP_TNM_Datum;
-                @JsonProperty private String OP_TNM_Version;
+              public static class TNM {
+                @JsonProperty private String TNM_Datum;
+                @JsonProperty private String TNM_Version;
 
                 @JsonProperty
                 private String OP_TNM_T_praefix; // hier ist c oder p möglich (Abfrage im Mapper)
 
-                @JsonProperty private String OP_TNM_T;
-                @JsonProperty private String OP_TNM_N_praefix;
-                @JsonProperty private String OP_TNM_N;
-                @JsonProperty private String OP_TNM_M_praefix;
-                @JsonProperty private String OP_TNM_M;
+                @JsonProperty private String TNM_T;
+                @JsonProperty private String TNM_N_praefix;
+                @JsonProperty private String TNM_N;
+                @JsonProperty private String TNM_M_praefix;
+                @JsonProperty private String TNM_M;
               }
             }
           }
         }
       }
     }
+  }
+
+  @Data
+  public abstract static class HistologieAbs {
+    public String Histologie_ID;
+    public String Tumor_Histologiedatum;
+    public String Morphologie_Code; // Morphologie_ICD_O_3_Code
+    public String Morphologie_ICD_O_Version; //
+    public String Grading;
+    public String Morphologie_Freitext;
   }
 }

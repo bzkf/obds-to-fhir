@@ -11,7 +11,7 @@ RUN gradle clean build --info && \
     awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv && \
     java -Djarmode=layertools -jar build/libs/onkoadt-to-fhir-0.0.1-SNAPSHOT.jar extract
 
-FROM gcr.io/distroless/java17-debian11@sha256:80b21bccb947050e0a944848340cf2cc229ec0f174490d263b57a66a60d290a2
+FROM gcr.io/distroless/java17-debian11@sha256:8f60cfe552149900a890696f7c082fbe397fe4891b67b0fbca1bf4adea2e854d
 WORKDIR /opt/onkoadt-to-fhir
 
 COPY --from=build /home/gradle/src/dependencies/ ./
@@ -22,7 +22,7 @@ COPY --from=build /home/gradle/src/application/ ./
 USER 65532
 ARG VERSION=0.0.0
 ENV APP_VERSION=${VERSION}
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=90", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=50", "org.springframework.boot.loader.JarLauncher"]
 
 ARG GIT_REF=""
 ARG BUILD_TIME=""
