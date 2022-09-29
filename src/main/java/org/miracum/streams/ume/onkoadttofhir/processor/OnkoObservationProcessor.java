@@ -38,7 +38,20 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportObservationProcessor() {
     return stringOnkoMeldungExpTable ->
-        stringOnkoMeldungExpTable.mapValues(getOnkoToObservationBundleMapper()).toStream();
+        stringOnkoMeldungExpTable
+            .filter(
+                (key, value) ->
+                    !value
+                        .getXml_daten()
+                        .getMenge_Patient()
+                        .getPatient()
+                        .getMenge_Meldung()
+                        .getMeldung()
+                        .getMeldung_ID()
+                        .startsWith("9999")) // ignore tumor conferences
+            .mapValues(getOnkoToObservationBundleMapper())
+                //TODO group by patId ind LKR MeldungsID und dann die max Versionsummer
+            .toStream();
   }
 
   public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
@@ -49,35 +62,32 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       var gradingObs = new Observation();
 
       // histologie from operation
-      var opHistologie =
+      var mengeOp =
           meldungExport
               .getXml_daten()
               .getMenge_Patient()
               .getPatient()
               .getMenge_Meldung()
               .getMeldung()
-              .getMenge_OP()
-              .getOP()
-              .getHistologie();
+              .getMenge_OP();
 
       // histologie list from diagnosis
-      var diaHistologieList =
+      var diagnosis =
           meldungExport
               .getXml_daten()
               .getMenge_Patient()
               .getPatient()
               .getMenge_Meldung()
               .getMeldung()
-              .getDiagnose()
-              .getMenge_Histologie()
-              .getHistologie();
-
-      var diaHistologie = getValidHistologie(diaHistologieList);
+              .getDiagnose();
 
       // check if histologie is defined in operation or diagnosis
-      ADT_GEKID.HistologieAbs histologie = opHistologie;
-      if (opHistologie == null) {
-        histologie = diaHistologie;
+      ADT_GEKID.HistologieAbs histologie;
+      if (mengeOp == null) {
+        //TODO Meldegrund Statusaenderung hat weder OP noch Diagnose
+        histologie = getValidHistologie(diagnosis.getMenge_Histologie().getHistologie());
+      } else {
+        histologie = mengeOp.getOP().getHistologie();
       }
 
       var grading = histologie.getGrading();
