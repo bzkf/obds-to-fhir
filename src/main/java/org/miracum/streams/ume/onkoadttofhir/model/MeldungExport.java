@@ -18,12 +18,18 @@ public class MeldungExport extends OnkoResource {
 
   @EqualsAndHashCode.Include String referenz_nummer;
 
+  @EqualsAndHashCode.Include Integer lkr_meldung;
+
+  @EqualsAndHashCode.Include Integer versionsnummer;
+
   ADT_GEKID xml_daten;
 
   @JsonProperty("payload")
   public void getPayload(Map<String, Object> payload) {
     this.id = getInt(payload, "ID");
     this.referenz_nummer = getString(payload, "REFERENZ_NUMMER");
+    this.lkr_meldung = getInt(payload, "LKR_MELDUNG");
+    this.versionsnummer = getInt(payload, "VERSIONSNUMMER");
 
     XmlMapper xmlMapper = new XmlMapper();
     xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
