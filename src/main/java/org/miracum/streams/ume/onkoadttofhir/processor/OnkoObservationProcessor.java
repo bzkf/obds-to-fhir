@@ -78,6 +78,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   // return meldungExport -> {
   public Bundle mapOnkoToObservationBundle(MeldungExport meldungExport) {
 
+    var bundle = new Bundle();
+
     // Create a Grading Observation as in
     // https://simplifier.net/oncology/histologie
     var gradingObs = new Observation();
@@ -103,190 +105,217 @@ public class OnkoObservationProcessor extends OnkoProcessor {
             .getDiagnose();
 
     // check if histologie is defined in operation or diagnosis
-    ADT_GEKID.HistologieAbs histologie;
+    List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
     if (mengeOp == null) {
       // TODO Meldegrund Statusaenderung hat weder OP noch Diagnose
-      histologie = getValidHistologie(diagnosis.getMenge_Histologie().getHistologie());
+      histologies.addAll(getValidHistologies(diagnosis.getMenge_Histologie().getHistologie()));
     } else {
-      histologie = mengeOp.getOP().getHistologie();
+      // TODO Menge OP berueksichtigen
+      histologies.add(mengeOp.getOP().getHistologie());
     }
 
-    var grading = histologie.getGrading();
-    var histId = histologie.getHistologie_ID();
-    // TODO anpassen
-    var gradingObsIdentifier = meldungExport.getReferenz_nummer() + histId + grading;
+    for (var histologie : histologies) {
 
-    gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
+      var histId = histologie.getHistologie_ID();
 
-    gradingObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+      var patId = meldungExport.getReferenz_nummer();
+      var pid = convertId(patId);
 
-    gradingObs
-        .getMeta()
-        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
+      // Histologiedatum
+      var histDateString = histologie.getTumor_Histologiedatum();
+      Date histDate = null;
 
-    gradingObs.setStatus(ObservationStatus.FINAL); // bei Korrektur "amended"
+      if (histDateString != null) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+        try {
+          histDate = formatter.parse(histDateString);
+        } catch (ParseException e) {
+          throw new RuntimeException(e);
+        }
+      }
 
-    gradingObs.addCategory(
-        new CodeableConcept()
-            .addCoding(
-                new Coding(
-                    fhirProperties.getSystems().getObservationCategorySystem(),
-                    "laboratory",
-                    "Laboratory")));
+      var grading = histologie.getGrading();
 
-    gradingObs.setCode(
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getLoinc())
-                .setCode("59542-1")
-                .setDisplay(fhirProperties.getDisplay().getGradingLoinc())));
+      // TODO anpassen
+      var gradingObsIdentifier = meldungExport.getReferenz_nummer() + histId + grading;
+      // grading may be undefined / null
+      if (grading != null) {
 
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
-    gradingObs.setSubject(
-        new Reference()
-            .setReference("Patient/" + this.getHash("Patient", patId))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(patId)));
+        gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
 
-    // Histologiedatum
-    var histDateString = histologie.getTumor_Histologiedatum();
-    Date histDate = null;
+        gradingObs
+            .getMeta()
+            .setSource(
+                "DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
 
-    if (histDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        histDate = formatter.parse(histDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
+        gradingObs
+            .getMeta()
+            .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
+
+        gradingObs.setStatus(ObservationStatus.FINAL); // bei Korrektur "amended"
+
+        gradingObs.addCategory(
+            new CodeableConcept()
+                .addCoding(
+                    new Coding(
+                        fhirProperties.getSystems().getObservationCategorySystem(),
+                        "laboratory",
+                        "Laboratory")));
+
+        gradingObs.setCode(
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getLoinc())
+                    .setCode("59542-1")
+                    .setDisplay(fhirProperties.getDisplay().getGradingLoinc())));
+
+        gradingObs.setSubject(
+            new Reference()
+                .setReference("Patient/" + this.getHash("Patient", patId))
+                .setIdentifier(
+                    new Identifier()
+                        .setSystem(fhirProperties.getSystems().getPatientId())
+                        .setType(
+                            new CodeableConcept(
+                                new Coding(
+                                    fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                        .setValue(patId)));
+
+        if (histDate != null) {
+          gradingObs.setEffective(new DateTimeType(histDate));
+        }
+
+        var gradingValueCodeableCon =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getGradingDktk())
+                    .setCode(grading)
+                    .setVersion(gradingLookup.lookupGradingDisplay(grading)));
+
+        gradingObs.setValue(gradingValueCodeableCon);
+      }
+
+      // Create an Histologie Observation as in
+      // https://simplifier.net/oncology/histologie
+      var histObs = new Observation();
+
+      // TODO reicht das und bleibt Histologie_ID wirklich immer identisch
+      // Generate an identifier based on MeldungExport Referenz_nummer (Pat. Id) and Histologie_ID
+      // from ADT XML
+      var observationIdentifier = meldungExport.getReferenz_nummer() + histId;
+
+      histObs.setId(this.getHash("Observation", observationIdentifier));
+
+      histObs
+          .getMeta()
+          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+
+      histObs
+          .getMeta()
+          .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
+
+      histObs.setStatus(ObservationStatus.FINAL); // (bei Korrektur "amended" )
+
+      histObs.addCategory(
+          new CodeableConcept()
+              .addCoding(
+                  new Coding(
+                      fhirProperties.getSystems().getObservationCategorySystem(),
+                      "laboratory",
+                      "Laboratory")));
+
+      histObs.setCode(
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getLoinc())
+                  .setCode("59847-4")
+                  .setDisplay(fhirProperties.getDisplay().getHistologyLoinc())));
+
+      histObs.setSubject(
+          new Reference()
+              .setReference("Patient/" + this.getHash("Patient", patId))
+              .setIdentifier(
+                  new Identifier()
+                      .setSystem(fhirProperties.getSystems().getPatientId())
+                      .setType(
+                          new CodeableConcept(
+                              new Coding(
+                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                      .setValue(patId)));
+
+      // Histologiedatum
+      if (histDate != null) {
+        histObs.setEffective(new DateTimeType(histDate));
+      }
+
+      var valueCodeableCon =
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getIdco3Morphologie())
+                  .setCode(histologie.getMorphologie_Code())
+                  .setVersion(histologie.getMorphologie_ICD_O_Version()));
+
+      var morphFreitext = histologie.getMorphologie_Freitext();
+
+      if (morphFreitext != null) {
+        valueCodeableCon.setText(morphFreitext);
+      }
+
+      histObs.setValue(valueCodeableCon);
+
+      if (grading != null) {
+        histObs.addHasMember(
+            new Reference()
+                .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
+      }
+
+      bundle
+          .setType(Bundle.BundleType.TRANSACTION)
+          .addEntry()
+          .setFullUrl(new Reference("Observation/" + histObs.getId()).getReference())
+          .setResource(histObs)
+          .setRequest(
+              new Bundle.BundleEntryRequestComponent()
+                  .setMethod(Bundle.HTTPVerb.PUT)
+                  .setUrl(
+                      String.format("%s/%s", histObs.getResourceType().name(), histObs.getId())));
+
+      if (grading != null) {
+        bundle
+            .addEntry()
+            .setFullUrl(new Reference("Observation/" + gradingObs.getId()).getReference())
+            .setResource(gradingObs)
+            .setRequest(
+                new Bundle.BundleEntryRequestComponent()
+                    .setMethod(Bundle.HTTPVerb.PUT)
+                    .setUrl(
+                        String.format(
+                            "%s/%s", gradingObs.getResourceType().name(), gradingObs.getId())));
       }
     }
-
-    if (histDate != null) {
-      gradingObs.setEffective(new DateTimeType(histDate));
-    }
-
-    var gradingValueCodeableCon =
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getGradingDktk())
-                .setCode(grading)
-                .setVersion(gradingLookup.lookupGradingDisplay(grading)));
-
-    gradingObs.setValue(gradingValueCodeableCon);
-
-    // Create an Histologie Observation as in
-    // https://simplifier.net/oncology/histologie
-    var histObs = new Observation();
-
-    // TODO reicht das und bleibt Histologie_ID wirklich immer identisch
-    // Generate an identifier based on MeldungExport Referenz_nummer (Pat. Id) and Histologie_ID
-    // from ADT XML
-    var observationIdentifier = meldungExport.getReferenz_nummer() + histId;
-
-    histObs.setId(this.getHash("Observation", observationIdentifier));
-
-    histObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
-
-    histObs
-        .getMeta()
-        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
-
-    histObs.setStatus(ObservationStatus.FINAL); // (bei Korrektur "amended" )
-
-    histObs.addCategory(
-        new CodeableConcept()
-            .addCoding(
-                new Coding(
-                    fhirProperties.getSystems().getObservationCategorySystem(),
-                    "laboratory",
-                    "Laboratory")));
-
-    histObs.setCode(
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getLoinc())
-                .setCode("59847-4")
-                .setDisplay(fhirProperties.getDisplay().getHistologyLoinc())));
-
-    histObs.setSubject(
-        new Reference()
-            .setReference("Patient/" + this.getHash("Patient", patId))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(patId)));
-
-    // Histologiedatum
-    if (histDate != null) {
-      histObs.setEffective(new DateTimeType(histDate));
-    }
-
-    var valueCodeableCon =
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getIdco3Morphologie())
-                .setCode(histologie.getMorphologie_Code())
-                .setVersion(histologie.getMorphologie_ICD_O_Version()));
-
-    var morphFreitext = histologie.getMorphologie_Freitext();
-
-    if (morphFreitext != null) {
-      valueCodeableCon.setText(morphFreitext);
-    }
-
-    histObs.setValue(valueCodeableCon);
-
-    histObs.addHasMember(
-        new Reference()
-            .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
-
-    var bundle = new Bundle();
-    bundle
-        .setType(Bundle.BundleType.TRANSACTION)
-        .addEntry()
-        .setFullUrl(new Reference("Observation/" + gradingObs.getId()).getReference())
-        .setResource(gradingObs)
-        .setRequest(
-            new Bundle.BundleEntryRequestComponent()
-                .setMethod(Bundle.HTTPVerb.PUT)
-                .setUrl(
-                    String.format(
-                        "%s/%s", gradingObs.getResourceType().name(), gradingObs.getId())));
-    bundle
-        .addEntry()
-        .setFullUrl(new Reference("Observation/" + histObs.getId()).getReference())
-        .setResource(histObs)
-        .setRequest(
-            new Bundle.BundleEntryRequestComponent()
-                .setMethod(Bundle.HTTPVerb.PUT)
-                .setUrl(String.format("%s/%s", histObs.getResourceType().name(), histObs.getId())));
-
     return bundle;
     // };
   }
 
-  public Meldung.Diagnose.Menge_Histologie.Histologie getValidHistologie(
+  public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(
       List<Meldung.Diagnose.Menge_Histologie.Histologie> mengeHist) {
+    // returns a list of unique histIds having the maximum defined morphology code
 
-    return mengeHist.stream()
-        .max(
-            Comparator.comparing(
-                v -> Integer.parseInt(StringUtils.left(v.getMorphologie_Code(), 4))))
-        .get();
+    Map<String, Meldung.Diagnose.Menge_Histologie.Histologie> histologieMap = new HashMap<>();
+
+    for (var hist : mengeHist) {
+      var histId = hist.getHistologie_ID();
+      if (histologieMap.get(histId) == null) {
+        histologieMap.put(histId, hist);
+      } else {
+        var current =
+            Integer.parseInt(StringUtils.left(histologieMap.get(histId).getMorphologie_Code(), 4));
+        var update = Integer.parseInt(StringUtils.left(hist.getMorphologie_Code(), 4));
+        if (update > current) {
+          histologieMap.put(histId, hist);
+        }
+      }
+    }
+    return new ArrayList<>(histologieMap.values());
   }
 }
