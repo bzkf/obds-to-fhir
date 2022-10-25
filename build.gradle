@@ -36,6 +36,8 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus:1.9.4'
 	implementation 'io.micrometer:micrometer-core:1.9.4'
 	implementation "org.miracum:kafka-fhir-serializer:1.0.2"
+	implementation "org.apache.commons:commons-text:1.10.0"
+	implementation "org.scala-lang:scala-library:2.13.10"
 
 	// implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
 	// implementation 'javax.xml.bind:jaxb-api:2.3.1'
