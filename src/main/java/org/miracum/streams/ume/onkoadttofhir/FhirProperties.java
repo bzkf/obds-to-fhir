@@ -11,6 +11,7 @@ public class FhirProperties {
   private FhirSystems systems;
   private FhirDisplay display;
   private FhirProfiles profiles;
+  private FhirUrl url;
 
   @Data
   public static class FhirSystems {
@@ -22,17 +23,28 @@ public class FhirProperties {
     private String loinc;
     private String idco3Morphologie;
     private String gradingDktk;
+    private String uicc;
+    private String tnmPraefix;
+    private String tnmTCs;
   }
 
   @Data
   public static class FhirProfiles {
     private String histologie;
     private String grading;
+    private String tnmC;
+    private String tnmP;
   }
 
   @Data
   public static class FhirDisplay {
     private String histologyLoinc;
     private String gradingLoinc;
+    private String tnmcLoinc;
+  }
+
+  @Data
+  public static class FhirUrl {
+    private String tnmPraefix;
   }
 }

@@ -11,12 +11,20 @@ fhir:
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
     gradingDktk: "https://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
+    uicc: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"
+    tnmPraefix: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS"
+    tnmTCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
+    tnmC: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
+    tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
+    tnmcLoinc: "Stage group.pathology Cancer"
+  url:
+    tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:
   application:
     name: onkoadt-to-fhir

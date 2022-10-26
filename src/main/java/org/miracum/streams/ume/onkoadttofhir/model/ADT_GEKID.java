@@ -58,6 +58,8 @@ public class ADT_GEKID implements Serializable {
           @JsonProperty private String Meldung_ID;
 
           @JsonProperty private String Meldedatum;
+          @JsonProperty private String Meldeanlass;
+
           @JsonProperty private Diagnose Diagnose;
           // TODO - brauchen wir vll auch die Tumorzuordnung? z.B. bei Behandlungsende für die
           // Dokumentation einer OP können wir nur so zuordnen, falls mehrere Tumore
@@ -83,6 +85,8 @@ public class ADT_GEKID implements Serializable {
             @JsonProperty private cTNM cTNM;
             @JsonProperty private pTNM pTNM;
 
+            @JsonProperty private Menge_Weitere_Klassifikation Menge_Weitere_Klassifikation;
+
             @Data
             public static class Menge_Histologie {
               @JacksonXmlElementWrapper(useWrapping = false)
@@ -103,30 +107,47 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class cTNM {
-              @JsonProperty private String cTNM_Datum;
-              @JsonProperty private String cTNM_Version;
-              // @JsonProperty private String cTNM_T_praefix;    // TODO ich glaube die Praefixe
+              @JsonProperty private String TNM_ID;
+              @JsonProperty private String TNM_Datum;
+              @JsonProperty private String TNM_Version;
+              @JsonProperty private String TNM_c_p_u_Praefix_T;
               // brauchen wir nur bei OP
-              @JsonProperty private String cTNM_T;
-              // @JsonProperty private String cTNM_N_praefix;
-              @JsonProperty private String cTNM_N;
-              // @JsonProperty private String cTNM_M_praefix;
-              @JsonProperty private String cTNM_M;
+              @JsonProperty private String TNM_T;
+              @JsonProperty private String TNM_c_p_u_Praefix_N;
+              @JsonProperty private String TNM_N;
+              @JsonProperty private String TNM_c_p_u_Praefix_M;
+              @JsonProperty private String TNM_M;
             }
 
             @Data
             public static class pTNM {
-              @JsonProperty private String pTNM_Datum;
-              @JsonProperty private String pTNM_Version;
-              // @JsonProperty private String pTNM_T_praefix;
-              @JsonProperty private String pTNM_T;
-              // @JsonProperty private String pTNM_N_praefix;
-              @JsonProperty
-              private String
-                  pTNM_N; // TODO kommt auch vor, dass zb nur dieser Wert gefüllt wird nach
-              // patholog. Befund (ohne T, M)
-              // @JsonProperty private String pTNM_M_praefix;
-              @JsonProperty private String pTNM_M;
+              @JsonProperty private String TNM_ID;
+              @JsonProperty private String TNM_Datum;
+              @JsonProperty private String TNM_Version;
+
+              @JsonProperty private String TNM_L;
+              @JsonProperty private String TNM_V;
+              @JsonProperty private String TNM_Pn;
+
+              @JsonProperty private String TNM_c_p_u_Praefix_T;
+              @JsonProperty private String TNM_T;
+              @JsonProperty private String TNM_c_p_u_Praefix_N;
+              @JsonProperty private String TNM_N;
+              @JsonProperty private String TNM_c_p_u_Praefix_M;
+              @JsonProperty private String TNM_M;
+            }
+
+            @Data
+            public static class Menge_Weitere_Klassifikation {
+
+              @JsonProperty private Weitere_Klassifikation Weitere_Klassifikation;
+
+              @Data
+              public static class Weitere_Klassifikation {
+                @JsonProperty private String Name;
+                @JsonProperty private String Datum;
+                @JsonProperty private String Stadium;
+              }
             }
           } // Diagnose Ende
 
@@ -153,16 +174,19 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               public static class TNM {
+                @JsonProperty private String TNM_ID;
                 @JsonProperty private String TNM_Datum;
                 @JsonProperty private String TNM_Version;
 
-                @JsonProperty
-                private String OP_TNM_T_praefix; // hier ist c oder p möglich (Abfrage im Mapper)
+                @JsonProperty private String TNM_L;
+                @JsonProperty private String TNM_V;
+                @JsonProperty private String TNM_Pn;
 
+                @JsonProperty private String TNM_c_p_u_Praefix_T;
                 @JsonProperty private String TNM_T;
-                @JsonProperty private String TNM_N_praefix;
+                @JsonProperty private String TNM_c_p_u_Praefix_N;
                 @JsonProperty private String TNM_N;
-                @JsonProperty private String TNM_M_praefix;
+                @JsonProperty private String TNM_c_p_u_Praefix_M;
                 @JsonProperty private String TNM_M;
               }
             }

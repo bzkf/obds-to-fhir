@@ -12,6 +12,7 @@ import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.GradingLookup;
+import org.miracum.streams.ume.onkoadttofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
@@ -26,6 +27,8 @@ import org.springframework.context.annotation.Configuration;
 public class OnkoObservationProcessor extends OnkoProcessor {
 
   private final GradingLookup gradingLookup = new GradingLookup();
+
+  private final TnmCpuPraefixTvsLookup tnmPraefixLookup = new TnmCpuPraefixTvsLookup();
 
   @Value("${app.version}")
   private String appVersion;
@@ -60,6 +63,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                 (key, value, aggregate) -> aggregate.removeElement(value),
                 Materialized.with(Serdes.String(), new MeldungExportListSerde()))
             .mapValues(this.getOnkoToObservationBundleMapper())
+            .filter((key, value) -> value != null)
             .toStream();
   }
 
@@ -69,7 +73,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       meldungen.sort(Comparator.comparingInt(MeldungExport::getVersionsnummer));
 
       var latestMeldung = meldungen.get(meldungen.size() - 1);
-
       return mapOnkoToObservationBundle(latestMeldung);
     };
   }
@@ -84,25 +87,37 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // https://simplifier.net/oncology/histologie
     var gradingObs = new Observation();
 
-    // histologie from operation
-    var mengeOp =
+    var meldung =
         meldungExport
             .getXml_daten()
             .getMenge_Patient()
             .getPatient()
             .getMenge_Meldung()
-            .getMeldung()
-            .getMenge_OP();
+            .getMeldung();
+
+    // reporting reason
+    var meldeanlass = meldung.getMeldeanlass();
+
+    // histologie from operation
+    var mengeOp = meldung.getMenge_OP();
 
     // histologie list from diagnosis
-    var diagnosis =
-        meldungExport
-            .getXml_daten()
-            .getMenge_Patient()
-            .getPatient()
-            .getMenge_Meldung()
-            .getMeldung()
-            .getDiagnose();
+    var diagnosis = meldung.getDiagnose();
+
+    // meldeanlass bleibt in LKR Meldung immer gleich
+    // if (Objects.equals(meldeanlass, "diagnose")) {
+    // c-tnm
+    // return createObervationFromDiagnosis(meldungExport);
+    // } else if (Objects.equals(meldeanlass, "behandlungsende")) {
+    // aus Op histologie, grading, p-tnm
+    // return createObervationFromEndOfTreatment(meldungExport);
+    // } else if (Objects.equals(meldeanlass, "statusaenderung")) {
+    // aus Verlauf p-tnm, ...
+    // return createObervationFromStatusChange(meldungExport);
+    // } else {
+    // Meldeanlaesse: behandlungsbeginn, tod
+    // return null;
+    // }
 
     // check if histologie is defined in operation or diagnosis
     List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
@@ -114,12 +129,12 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       histologies.add(mengeOp.getOP().getHistologie());
     }
 
+    var patId = meldungExport.getReferenz_nummer();
+    var pid = convertId(patId);
+
     for (var histologie : histologies) {
 
       var histId = histologie.getHistologie_ID();
-
-      var patId = meldungExport.getReferenz_nummer();
-      var pid = convertId(patId);
 
       // Histologiedatum
       var histDateString = histologie.getTumor_Histologiedatum();
@@ -171,7 +186,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
         gradingObs.setSubject(
             new Reference()
-                .setReference("Patient/" + this.getHash("Patient", patId))
+                .setReference("Patient/" + this.getHash("Patient", pid))
                 .setIdentifier(
                     new Identifier()
                         .setSystem(fhirProperties.getSystems().getPatientId())
@@ -179,7 +194,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                             new CodeableConcept(
                                 new Coding(
                                     fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                        .setValue(patId)));
+                        .setValue(pid)));
 
         if (histDate != null) {
           gradingObs.setEffective(new DateTimeType(histDate));
@@ -233,7 +248,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
       histObs.setSubject(
           new Reference()
-              .setReference("Patient/" + this.getHash("Patient", patId))
+              .setReference("Patient/" + this.getHash("Patient", pid))
               .setIdentifier(
                   new Identifier()
                       .setSystem(fhirProperties.getSystems().getPatientId())
@@ -241,7 +256,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                           new CodeableConcept(
                               new Coding(
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(patId)));
+                      .setValue(pid)));
 
       // Histologiedatum
       if (histDate != null) {
@@ -293,8 +308,159 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                             "%s/%s", gradingObs.getResourceType().name(), gradingObs.getId())));
       }
     }
+
+    // TNM Observation
+    // Create a TNM-c Observation as in
+    // https://simplifier.net/oncology/tnmc
+    var tnmcObs = new Observation();
+
+    // TODO checken
+    var tnmcObsIdentifier = meldungExport.getReferenz_nummer() + diagnosis.getCTNM().getTNM_ID();
+
+    tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
+
+    tnmcObs
+        .getMeta()
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+
+    tnmcObs
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmC())));
+
+    tnmcObs.setStatus(ObservationStatus.FINAL);
+
+    tnmcObs.addCategory(
+        new CodeableConcept()
+            .addCoding(
+                new Coding(
+                    fhirProperties.getSystems().getObservationCategorySystem(),
+                    "laboratory",
+                    "Laboratory")));
+
+    tnmcObs.setCode(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLoinc())
+                .setCode("21908-9")
+                .setDisplay(fhirProperties.getDisplay().getTnmcLoinc())));
+
+    tnmcObs.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
+
+    // TODO setFocus, add later after diagnosis processor is implemented
+
+    // tnm c Date
+    var tnmcDateString = diagnosis.getCTNM().getTNM_Datum();
+    Date tnmcDate = null;
+
+    if (tnmcDateString != null) {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+      try {
+        tnmcDate = formatter.parse(tnmcDateString);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    if (tnmcDate != null) {
+      tnmcObs.setEffective(new DateTimeType(tnmcDate));
+    }
+
+    if (diagnosis.getMenge_Weitere_Klassifikation().getWeitere_Klassifikation().equals("UICC")) {
+      var valueCodeableCon =
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getUicc())
+                  .setCode(
+                      diagnosis
+                          .getMenge_Weitere_Klassifikation()
+                          .getWeitere_Klassifikation()
+                          .getStadium())
+                  .setVersion(diagnosis.getCTNM().getTNM_Version()));
+
+      tnmcObs.setValue(valueCodeableCon);
+    }
+
+    var backBoneComponentList = new ArrayList<Observation.ObservationComponentComponent>();
+
+    var tnmCpuPraefixT = diagnosis.getCTNM().getTNM_c_p_u_Praefix_T();
+    var tnmT = diagnosis.getCTNM().getTNM_T();
+
+    // TNM-T
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            fhirProperties.getSystems().getTnmPraefix(),
+            tnmCpuPraefixT,
+            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(tnmCpuPraefixT),
+            fhirProperties.getSystems().getLoinc(),
+            "21905-5",
+            "Primary tumor.clinical Cancer",
+            fhirProperties.getSystems().getTnmTCs(),
+            tnmT,
+            tnmT));
+
+    // TODO for Jasmin
+    // backBoneComponentList.add(...) for TNM-N, TNM-M, ...
+
+    tnmcObs.setComponent(backBoneComponentList);
+
+    // Create a TNM-p Observation as in
+    // https://simplifier.net/oncology/tnmp
+    var tnmpObs = new Observation();
+
     return bundle;
     // };
+  }
+
+  public Observation.ObservationComponentComponent createTNMComponentElement(
+      String tnmPraefixSystem,
+      String tnmPraefixCode,
+      String tnmPraefixDisplay,
+      String tnmCodeSystem,
+      String tnmCodeCode,
+      String tnmCodeDisplay,
+      String tnmValueSystem,
+      String tnmValueCode,
+      String tnmValueDisplay) {
+    var tnmBackBone = new Observation.ObservationComponentComponent();
+
+    var tnmPraefixExtens =
+        new Extension()
+            .setUrl(fhirProperties.getUrl().getTnmPraefix())
+            .setValue(
+                new CodeableConcept()
+                    .addCoding(new Coding(tnmPraefixSystem, tnmPraefixCode, tnmPraefixDisplay)));
+
+    tnmBackBone.addExtension(tnmPraefixExtens);
+
+    tnmBackBone.setCode(
+        new CodeableConcept(new Coding(tnmCodeSystem, tnmCodeCode, tnmCodeDisplay)));
+
+    tnmBackBone.setValue(
+        new CodeableConcept(new Coding(tnmValueSystem, tnmValueCode, tnmValueDisplay)));
+
+    return tnmBackBone;
+  }
+
+  public Bundle createObervationFromDiagnosis(MeldungExport meldungExport) {
+    return null;
+  }
+
+  public Bundle createObervationFromEndOfTreatment(MeldungExport meldungExport) {
+    return null;
+  }
+
+  public Bundle createObervationFromStatusChange(MeldungExport meldungExport) {
+    return null;
   }
 
   public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(
