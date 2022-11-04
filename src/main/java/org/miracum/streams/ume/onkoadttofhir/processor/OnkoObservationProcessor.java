@@ -105,19 +105,20 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var diagnosis = meldung.getDiagnose();
 
     // meldeanlass bleibt in LKR Meldung immer gleich
-    // if (Objects.equals(meldeanlass, "diagnose")) {
-    // c-tnm
-    // return createObervationFromDiagnosis(meldungExport);
-    // } else if (Objects.equals(meldeanlass, "behandlungsende")) {
-    // aus Op histologie, grading, p-tnm
-    // return createObervationFromEndOfTreatment(meldungExport);
-    // } else if (Objects.equals(meldeanlass, "statusaenderung")) {
-    // aus Verlauf p-tnm, ...
-    // return createObervationFromStatusChange(meldungExport);
-    // } else {
-    // Meldeanlaesse: behandlungsbeginn, tod
-    // return null;
-    // }
+    if (Objects.equals(meldeanlass, "diagnose")) {
+      // histologie + grading
+      // c-tnm
+      // return createObervationFromDiagnosis(meldungExport);
+    } else if (Objects.equals(meldeanlass, "behandlungsende")) {
+      // aus Op histologie, grading, p-tnm
+      // return createObervationFromEndOfTreatment(meldungExport);
+    } else if (Objects.equals(meldeanlass, "statusaenderung")) {
+      // aus Verlauf p-tnm, histologie, grading
+      // return createObervationFromStatusChange(meldungExport);
+    } else {
+      // Meldeanlaesse: behandlungsbeginn, tod
+      // return null;
+    }
 
     // check if histologie is defined in operation or diagnosis
     List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
@@ -392,27 +393,86 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     var backBoneComponentList = new ArrayList<Observation.ObservationComponentComponent>();
 
+    // TODO add NULL checks
     var tnmCpuPraefixT = diagnosis.getCTNM().getTNM_c_p_u_Praefix_T();
+    var tnmCpuPraefixN = diagnosis.getCTNM().getTNM_c_p_u_Praefix_N();
+    var tnmCpuPraefixM = diagnosis.getCTNM().getTNM_c_p_u_Praefix_M();
     var tnmT = diagnosis.getCTNM().getTNM_T();
+    var tnmN = diagnosis.getCTNM().getTNM_N();
+    var tnmM = diagnosis.getCTNM().getTNM_M();
+    var tnmYSymbol = diagnosis.getCTNM().getTNM_y_Symbol();
+    var tnmRSymbol = diagnosis.getCTNM().getTNM_r_Symbol();
+    var tnmMSymbol = diagnosis.getCTNM().getTNM_m_Symbol();
 
     // TNM-T
     backBoneComponentList.add(
         createTNMComponentElement(
-            fhirProperties.getSystems().getTnmPraefix(),
             tnmCpuPraefixT,
             tnmPraefixLookup.lookupTnmCpuPraefixDisplay(tnmCpuPraefixT),
-            fhirProperties.getSystems().getLoinc(),
             "21905-5",
             "Primary tumor.clinical Cancer",
             fhirProperties.getSystems().getTnmTCs(),
             tnmT,
             tnmT));
 
-    // TODO for Jasmin
-    // backBoneComponentList.add(...) for TNM-N, TNM-M, ...
+    // TNM-N
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            tnmCpuPraefixN,
+            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(tnmCpuPraefixN),
+            "21900-6",
+            "Regional lymph nodes.pathology",
+            fhirProperties.getSystems().getTnmNCs(),
+            tnmN,
+            tnmN));
+
+    // TNM-M
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            tnmCpuPraefixM,
+            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(tnmCpuPraefixM),
+            "21907-1",
+            "Distant metastases.clinical [Class] Cancer",
+            fhirProperties.getSystems().getTnmMCs(),
+            tnmM,
+            tnmM));
+
+    // TNM-y Symbol
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            null,
+            null,
+            "59479-6",
+            "Collaborative staging post treatment extension Cancer",
+            fhirProperties.getSystems().getTnmYSymbolCs(),
+            tnmYSymbol,
+            tnmYSymbol));
+
+    // TNM-r Symbol
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            null,
+            null,
+            "21983-2",
+            "Recurrence type first episode Cancer",
+            fhirProperties.getSystems().getTnmRSymbolCs(),
+            tnmRSymbol,
+            tnmRSymbol));
+
+    // TNM-m Symbol
+    backBoneComponentList.add(
+        createTNMComponentElement(
+            null,
+            null,
+            "42030-7",
+            "Multiple tumors reported as single primary Cancer",
+            fhirProperties.getSystems().getTnmMSymbolCs(),
+            tnmMSymbol,
+            tnmMSymbol));
 
     tnmcObs.setComponent(backBoneComponentList);
 
+    // TODO for Jasmin
     // Create a TNM-p Observation as in
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
@@ -422,10 +482,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   }
 
   public Observation.ObservationComponentComponent createTNMComponentElement(
-      String tnmPraefixSystem,
       String tnmPraefixCode,
       String tnmPraefixDisplay,
-      String tnmCodeSystem,
       String tnmCodeCode,
       String tnmCodeDisplay,
       String tnmValueSystem,
@@ -433,17 +491,24 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       String tnmValueDisplay) {
     var tnmBackBone = new Observation.ObservationComponentComponent();
 
-    var tnmPraefixExtens =
-        new Extension()
-            .setUrl(fhirProperties.getUrl().getTnmPraefix())
-            .setValue(
-                new CodeableConcept()
-                    .addCoding(new Coding(tnmPraefixSystem, tnmPraefixCode, tnmPraefixDisplay)));
+    if (tnmPraefixCode == null || tnmPraefixDisplay == null) {
+      var tnmPraefixExtens =
+          new Extension()
+              .setUrl(fhirProperties.getUrl().getTnmPraefix())
+              .setValue(
+                  new CodeableConcept()
+                      .addCoding(
+                          new Coding(
+                              fhirProperties.getSystems().getTnmPraefix(),
+                              tnmPraefixCode,
+                              tnmPraefixDisplay)));
 
-    tnmBackBone.addExtension(tnmPraefixExtens);
+      tnmBackBone.addExtension(tnmPraefixExtens);
+    }
 
     tnmBackBone.setCode(
-        new CodeableConcept(new Coding(tnmCodeSystem, tnmCodeCode, tnmCodeDisplay)));
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getLoinc(), tnmCodeCode, tnmCodeDisplay)));
 
     tnmBackBone.setValue(
         new CodeableConcept(new Coding(tnmValueSystem, tnmValueCode, tnmValueDisplay)));

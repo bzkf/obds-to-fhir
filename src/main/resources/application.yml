@@ -14,6 +14,11 @@ fhir:
     uicc: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"
     tnmPraefix: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS"
     tnmTCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"
+    tnmNCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS"
+    tnmMCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS"
+    tnmYSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"
+    tnmRSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"
+    tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"

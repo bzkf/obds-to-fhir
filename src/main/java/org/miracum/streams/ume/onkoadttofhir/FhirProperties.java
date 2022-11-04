@@ -26,6 +26,11 @@ public class FhirProperties {
     private String uicc;
     private String tnmPraefix;
     private String tnmTCs;
+    private String tnmNCs;
+    private String tnmMCs;
+    private String tnmYSymbolCs;
+    private String tnmRSymbolCs;
+    private String tnmMSymbolCs;
   }
 
   @Data

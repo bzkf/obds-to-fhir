@@ -83,7 +83,6 @@ public class ADT_GEKID implements Serializable {
             // könnte mehrere Histologien geben bei mehrere Tumoren
 
             @JsonProperty private cTNM cTNM;
-            @JsonProperty private pTNM pTNM;
 
             @JsonProperty private Menge_Weitere_Klassifikation Menge_Weitere_Klassifikation;
 
@@ -117,24 +116,9 @@ public class ADT_GEKID implements Serializable {
               @JsonProperty private String TNM_N;
               @JsonProperty private String TNM_c_p_u_Praefix_M;
               @JsonProperty private String TNM_M;
-            }
-
-            @Data
-            public static class pTNM {
-              @JsonProperty private String TNM_ID;
-              @JsonProperty private String TNM_Datum;
-              @JsonProperty private String TNM_Version;
-
-              @JsonProperty private String TNM_L;
-              @JsonProperty private String TNM_V;
-              @JsonProperty private String TNM_Pn;
-
-              @JsonProperty private String TNM_c_p_u_Praefix_T;
-              @JsonProperty private String TNM_T;
-              @JsonProperty private String TNM_c_p_u_Praefix_N;
-              @JsonProperty private String TNM_N;
-              @JsonProperty private String TNM_c_p_u_Praefix_M;
-              @JsonProperty private String TNM_M;
+              @JsonProperty private String TNM_y_Symbol;
+              @JsonProperty private String TNM_r_Symbol;
+              @JsonProperty private String TNM_m_Symbol;
             }
 
             @Data
@@ -188,6 +172,9 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String TNM_N;
                 @JsonProperty private String TNM_c_p_u_Praefix_M;
                 @JsonProperty private String TNM_M;
+                @JsonProperty private String TNM_y_Symbol;
+                @JsonProperty private String TNM_r_Symbol;
+                @JsonProperty private String TNM_m_Symbol;
               }
             }
           }
