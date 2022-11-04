@@ -27,7 +27,8 @@ fhir:
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
-    tnmcLoinc: "Stage group.pathology Cancer"
+    tnmcLoinc: "Stage group.clinical Cancer"
+    tnmpLoinc: "Stage group.pathology Cancer"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:

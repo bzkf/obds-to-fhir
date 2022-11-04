@@ -46,6 +46,7 @@ public class FhirProperties {
     private String histologyLoinc;
     private String gradingLoinc;
     private String tnmcLoinc;
+    private String tnmpLoinc;
   }
 
   @Data
