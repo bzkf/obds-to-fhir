@@ -83,9 +83,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     var bundle = new Bundle();
 
-    // Create a Grading Observation as in
-    // https://simplifier.net/oncology/histologie
-    var gradingObs = new Observation();
+    var patId = meldungExport.getReferenz_nummer();
+    var pid = convertId(patId);
 
     var meldung =
         meldungExport
@@ -98,6 +97,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // reporting reason
     var meldeanlass = meldung.getMeldeanlass();
 
+    var refNum = meldungExport.getReferenz_nummer();
+
     // histologie from operation
     var mengeOp = meldung.getMenge_OP();
 
@@ -105,20 +106,38 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var diagnosis = meldung.getDiagnose();
 
     // meldeanlass bleibt in LKR Meldung immer gleich
+    // kein Überschreiben von FHIR-Resourcen über verschiedene Meldeanlässe hinweg
     if (Objects.equals(meldeanlass, "diagnose")) {
-      // histologie + grading
-      // c-tnm
-      // return createObervationFromDiagnosis(meldungExport);
+      // aus Diagnose: histologie, grading and c-tnm
+      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createCTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else if (Objects.equals(meldeanlass, "behandlungsende")) {
-      // aus Op histologie, grading, p-tnm
-      // return createObervationFromEndOfTreatment(meldungExport);
+      // aus Operation: histologie, grading und p-tnm
+      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else if (Objects.equals(meldeanlass, "statusaenderung")) {
-      // aus Verlauf p-tnm, histologie, grading
-      // return createObervationFromStatusChange(meldungExport);
+      // aus Verlauf: histologie, grading und p-tnm
+      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else {
       // Meldeanlaesse: behandlungsbeginn, tod
-      // return null;
+      return null;
     }
+
+    bundle.setType(Bundle.BundleType.TRANSACTION);
+    return bundle;
+  }
+
+  public Bundle createHistologieAndGradingObservation(
+      Bundle bundle,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
+      String pid,
+      String refNum) {
+
+    // Create a Grading Observation as in
+    // https://simplifier.net/oncology/histologie
+    var gradingObs = new Observation();
 
     // check if histologie is defined in operation or diagnosis
     List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
@@ -129,9 +148,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // TODO Menge OP berueksichtigen
       histologies.add(mengeOp.getOP().getHistologie());
     }
-
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
 
     for (var histologie : histologies) {
 
@@ -153,7 +169,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       var grading = histologie.getGrading();
 
       // TODO anpassen
-      var gradingObsIdentifier = meldungExport.getReferenz_nummer() + histId + grading;
+      var gradingObsIdentifier = refNum + histId + grading;
+
       // grading may be undefined / null
       if (grading != null) {
 
@@ -218,7 +235,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // TODO reicht das und bleibt Histologie_ID wirklich immer identisch
       // Generate an identifier based on MeldungExport Referenz_nummer (Pat. Id) and Histologie_ID
       // from ADT XML
-      var observationIdentifier = meldungExport.getReferenz_nummer() + histId;
+      var observationIdentifier = refNum + histId;
 
       histObs.setId(this.getHash("Observation", observationIdentifier));
 
@@ -285,38 +302,28 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                 .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
       }
 
-      bundle
-          .setType(Bundle.BundleType.TRANSACTION)
-          .addEntry()
-          .setFullUrl(new Reference("Observation/" + histObs.getId()).getReference())
-          .setResource(histObs)
-          .setRequest(
-              new Bundle.BundleEntryRequestComponent()
-                  .setMethod(Bundle.HTTPVerb.PUT)
-                  .setUrl(
-                      String.format("%s/%s", histObs.getResourceType().name(), histObs.getId())));
+      bundle = addResourceAsEntryInBundle(bundle, histObs);
 
       if (grading != null) {
-        bundle
-            .addEntry()
-            .setFullUrl(new Reference("Observation/" + gradingObs.getId()).getReference())
-            .setResource(gradingObs)
-            .setRequest(
-                new Bundle.BundleEntryRequestComponent()
-                    .setMethod(Bundle.HTTPVerb.PUT)
-                    .setUrl(
-                        String.format(
-                            "%s/%s", gradingObs.getResourceType().name(), gradingObs.getId())));
+        bundle = addResourceAsEntryInBundle(bundle, gradingObs);
       }
     }
+    return bundle;
+  }
 
+  public Bundle createCTnmObservation(
+      Bundle bundle,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
+      String pid,
+      String refNum) {
     // TNM Observation
     // Create a TNM-c Observation as in
     // https://simplifier.net/oncology/tnmc
     var tnmcObs = new Observation();
 
     // TODO checken
-    var tnmcObsIdentifier = meldungExport.getReferenz_nummer() + diagnosis.getCTNM().getTNM_ID();
+    var tnmcObsIdentifier = refNum + diagnosis.getCTNM().getTNM_ID();
 
     tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
 
@@ -472,13 +479,22 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmcObs.setComponent(backBoneComponentListC);
 
-    // TODO for Jasmin
+    bundle = addResourceAsEntryInBundle(bundle, tnmcObs);
+
+    return bundle;
+  }
+
+  public Bundle createPTnmObservation(
+      Bundle bundle,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
+      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
+      String pid,
+      String refNum) {
     // Create a TNM-p Observation as in
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
     // TODO checken
-    var tnmpObsIdentifier =
-        meldungExport.getReferenz_nummer() + mengeOp.getOP().getTNM().getTNM_ID();
+    var tnmpObsIdentifier = refNum + mengeOp.getOP().getTNM().getTNM_ID();
 
     tnmpObs.setId(this.getHash("Observation", tnmpObsIdentifier));
 
@@ -634,8 +650,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmpObs.setComponent(backBoneComponentListP);
 
+    bundle = addResourceAsEntryInBundle(bundle, tnmpObs);
+
     return bundle;
-    // };
   }
 
   public Observation.ObservationComponentComponent createTNMComponentElement(
@@ -671,18 +688,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         new CodeableConcept(new Coding(tnmValueSystem, tnmValueCode, tnmValueDisplay)));
 
     return tnmBackBone;
-  }
-
-  public Bundle createObervationFromDiagnosis(MeldungExport meldungExport) {
-    return null;
-  }
-
-  public Bundle createObervationFromEndOfTreatment(MeldungExport meldungExport) {
-    return null;
-  }
-
-  public Bundle createObervationFromStatusChange(MeldungExport meldungExport) {
-    return null;
   }
 
   public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(

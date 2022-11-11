@@ -4,6 +4,9 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.DomainResource;
+import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,5 +50,22 @@ public abstract class OnkoProcessor {
       log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
     }
     return convertedId;
+  }
+
+  protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {
+    bundle
+        .addEntry()
+        .setFullUrl(
+            new Reference(
+                    String.format("%s/%s", resource.getResourceType().name(), resource.getId()))
+                .getReference())
+        .setResource(resource)
+        .setRequest(
+            new Bundle.BundleEntryRequestComponent()
+                .setMethod(Bundle.HTTPVerb.PUT)
+                .setUrl(
+                    String.format("%s/%s", resource.getResourceType().name(), resource.getId())));
+
+    return bundle;
   }
 }
