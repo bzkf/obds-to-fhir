@@ -52,8 +52,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                         .getMeldung()
                         .getMeldung_ID()
                         .startsWith("9999")) // ignore tumor conferences
-            // TODO group by LKR MeldungsID
-            // .groupBy(this::selectPatientIdAsKey)
             .groupBy(
                 (key, value) -> KeyValue.pair(String.valueOf(value.getLkr_meldung()), value),
                 Grouped.with(Serdes.String(), new MeldungExportSerde()))
@@ -99,25 +97,28 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     var refNum = meldungExport.getReferenz_nummer();
 
+    // histologie list from diagnosis
+    var diagnosis = meldung.getDiagnose();
+
     // histologie from operation
     var mengeOp = meldung.getMenge_OP();
 
-    // histologie list from diagnosis
-    var diagnosis = meldung.getDiagnose();
+    // histologie from verlauf
+    var verlauf = meldung.getMenge_Verlauf();
 
     // meldeanlass bleibt in LKR Meldung immer gleich
     // kein Überschreiben von FHIR-Resourcen über verschiedene Meldeanlässe hinweg
     if (Objects.equals(meldeanlass, "diagnose")) {
       // aus Diagnose: histologie, grading and c-tnm
-      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createHistologieAndGradingObservation(bundle, diagnosis, null, null, pid, refNum);
       bundle = createCTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else if (Objects.equals(meldeanlass, "behandlungsende")) {
       // aus Operation: histologie, grading und p-tnm
-      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createHistologieAndGradingObservation(bundle, null, mengeOp, null, pid, refNum);
       bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else if (Objects.equals(meldeanlass, "statusaenderung")) {
       // aus Verlauf: histologie, grading und p-tnm
-      bundle = createHistologieAndGradingObservation(bundle, mengeOp, diagnosis, pid, refNum);
+      bundle = createHistologieAndGradingObservation(bundle, null, null, verlauf, pid, refNum);
       bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
     } else {
       // Meldeanlaesse: behandlungsbeginn, tod
@@ -130,8 +131,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
   public Bundle createHistologieAndGradingObservation(
       Bundle bundle,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
+      Meldung.Diagnose diagnosis,
+      Meldung.Menge_OP mengeOp,
+      Meldung.Menge_Verlauf mengeVerl,
       String pid,
       String refNum) {
 
@@ -141,13 +143,21 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // check if histologie is defined in operation or diagnosis
     List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
-    if (mengeOp == null) {
-      // TODO Meldegrund Statusaenderung hat weder OP noch Diagnose
+    if (diagnosis != null) {
       histologies.addAll(getValidHistologies(diagnosis.getMenge_Histologie().getHistologie()));
-    } else {
+      // TODO diagnose ohne Histologie
+    } else if (mengeOp != null) {
       // TODO Menge OP berueksichtigen
+      // ggf. abfangen (in Erlangen immer nur eine OP in Menge_OP), Jasmin klaert das noch
       histologies.add(mengeOp.getOP().getHistologie());
+      // TODO op ohne Histologie
+    } else if (mengeVerl != null) {
+      // TODO Menge Verlauf berueksichtigen
+      //  ggf. abfangen (in Erlangen immer nur ein Verlauf in Menge_Verlauf), Jasmin klaert das noch
+      histologies.add(mengeVerl.getVerlauf().getHistologie());
+      // TODO Verlauf ohne Histologie
     }
+    // TODO else, zb. Verlauf ohne FehlerFehlerbehandlung
 
     for (var histologie : histologies) {
 
@@ -167,6 +177,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       }
 
       var grading = histologie.getGrading();
+      // TODO histologie ohne grading
 
       // TODO anpassen
       var gradingObsIdentifier = refNum + histId + grading;

@@ -65,6 +65,8 @@ public class ADT_GEKID implements Serializable {
           // Dokumentation einer OP können wir nur so zuordnen, falls mehrere Tumore
           @JsonProperty private Menge_OP Menge_OP;
 
+          @JsonProperty private Menge_Verlauf Menge_Verlauf;
+
           @Data
           public static class Diagnose {
 
@@ -141,6 +143,54 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class OP {
+              @JsonProperty private Histologie Histologie;
+
+              @JsonProperty private TNM TNM;
+
+              @Data
+              @EqualsAndHashCode(callSuper = true)
+              public static class Histologie extends ADT_GEKID.HistologieAbs {
+                @JsonProperty private String Histologie_ID;
+                @JsonProperty private String Tumor_Histologiedatum;
+                @JsonProperty private String Morphologie_Code; // Morphologie_ICD_O_3_Code
+                @JsonProperty private String Morphologie_ICD_O_Version; //
+                @JsonProperty private String Grading;
+                @JsonProperty private String Morphologie_Freitext;
+              }
+
+              @Data
+              public static class TNM {
+                @JsonProperty private String TNM_ID;
+                @JsonProperty private String TNM_Datum;
+                @JsonProperty private String TNM_Version;
+
+                @JsonProperty private String TNM_L;
+                @JsonProperty private String TNM_V;
+                @JsonProperty private String TNM_Pn;
+
+                @JsonProperty private String TNM_c_p_u_Praefix_T;
+                @JsonProperty private String TNM_T;
+                @JsonProperty private String TNM_c_p_u_Praefix_N;
+                @JsonProperty private String TNM_N;
+                @JsonProperty private String TNM_c_p_u_Praefix_M;
+                @JsonProperty private String TNM_M;
+                @JsonProperty private String TNM_y_Symbol;
+                @JsonProperty private String TNM_r_Symbol;
+                @JsonProperty private String TNM_m_Symbol;
+              }
+            }
+          }
+
+          @Data
+          public static class Menge_Verlauf {
+
+            @JsonProperty private Verlauf Verlauf;
+
+            @Data
+            public static class Verlauf {
+
+              @JsonProperty private String Verlauf_ID;
+
               @JsonProperty private Histologie Histologie;
 
               @JsonProperty private TNM TNM;
