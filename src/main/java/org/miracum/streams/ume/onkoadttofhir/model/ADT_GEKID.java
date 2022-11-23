@@ -60,12 +60,19 @@ public class ADT_GEKID implements Serializable {
           @JsonProperty private String Meldedatum;
           @JsonProperty private String Meldeanlass;
 
+          @JsonProperty private Tumorzuordnung Tumorzuordnung;
+
           @JsonProperty private Diagnose Diagnose;
-          // TODO - brauchen wir vll auch die Tumorzuordnung? z.B. bei Behandlungsende für die
-          // Dokumentation einer OP können wir nur so zuordnen, falls mehrere Tumore
           @JsonProperty private Menge_OP Menge_OP;
 
           @JsonProperty private Menge_Verlauf Menge_Verlauf;
+
+          @JsonProperty private Menge_Tumorkonferenz Menge_Tumorkonferenz;
+
+          @Data
+          public static class Tumorzuordnung {
+            @JsonProperty private String Tumor_ID;
+          }
 
           @Data
           public static class Diagnose {
@@ -81,10 +88,10 @@ public class ADT_GEKID implements Serializable {
 
             @JsonProperty
             private Menge_Histologie
-                Menge_Histologie; // TODO Achtung! Manchmal ist Histologie + pTNM in Menge_OP; es
-            // könnte mehrere Histologien geben bei mehrere Tumoren
+                Menge_Histologie;
 
             @JsonProperty private cTNM cTNM;
+            @JsonProperty private pTNM pTNM;
 
             @JsonProperty private Menge_Weitere_Klassifikation Menge_Weitere_Klassifikation;
 
@@ -107,12 +114,30 @@ public class ADT_GEKID implements Serializable {
             }
 
             @Data
-            public static class cTNM {
+            @EqualsAndHashCode(callSuper = true)
+            public static class cTNM extends ADT_GEKID.CTnmAbs {
               @JsonProperty private String TNM_ID;
               @JsonProperty private String TNM_Datum;
               @JsonProperty private String TNM_Version;
               @JsonProperty private String TNM_c_p_u_Praefix_T;
               // brauchen wir nur bei OP
+              @JsonProperty private String TNM_T;
+              @JsonProperty private String TNM_c_p_u_Praefix_N;
+              @JsonProperty private String TNM_N;
+              @JsonProperty private String TNM_c_p_u_Praefix_M;
+              @JsonProperty private String TNM_M;
+              @JsonProperty private String TNM_y_Symbol;
+              @JsonProperty private String TNM_r_Symbol;
+              @JsonProperty private String TNM_m_Symbol;
+            }
+
+            @Data
+            @EqualsAndHashCode(callSuper = true)
+            public static class pTNM extends ADT_GEKID.PTnmAbs {
+              @JsonProperty private String TNM_ID;
+              @JsonProperty private String TNM_Datum;
+              @JsonProperty private String TNM_Version;
+              @JsonProperty private String TNM_c_p_u_Praefix_T;
               @JsonProperty private String TNM_T;
               @JsonProperty private String TNM_c_p_u_Praefix_N;
               @JsonProperty private String TNM_N;
@@ -159,7 +184,8 @@ public class ADT_GEKID implements Serializable {
               }
 
               @Data
-              public static class TNM {
+              @EqualsAndHashCode(callSuper = true)
+              public static class TNM extends ADT_GEKID.PTnmAbs {
                 @JsonProperty private String TNM_ID;
                 @JsonProperty private String TNM_Datum;
                 @JsonProperty private String TNM_Version;
@@ -207,7 +233,8 @@ public class ADT_GEKID implements Serializable {
               }
 
               @Data
-              public static class TNM {
+              @EqualsAndHashCode(callSuper = true)
+              public static class TNM extends ADT_GEKID.PTnmAbs {
                 @JsonProperty private String TNM_ID;
                 @JsonProperty private String TNM_Datum;
                 @JsonProperty private String TNM_Version;
@@ -228,6 +255,9 @@ public class ADT_GEKID implements Serializable {
               }
             }
           }
+
+          @Data
+          public static class Menge_Tumorkonferenz {}
         }
       }
     }
@@ -241,5 +271,37 @@ public class ADT_GEKID implements Serializable {
     public String Morphologie_ICD_O_Version; //
     public String Grading;
     public String Morphologie_Freitext;
+  }
+
+  @Data
+  public abstract static class CTnmAbs {
+    public String TNM_ID;
+    public String TNM_Datum;
+    public String TNM_Version;
+    public String TNM_c_p_u_Praefix_T;
+    public String TNM_T;
+    public String TNM_c_p_u_Praefix_N;
+    public String TNM_N;
+    public String TNM_c_p_u_Praefix_M;
+    public String TNM_M;
+    public String TNM_y_Symbol;
+    public String TNM_r_Symbol;
+    public String TNM_m_Symbol;
+  }
+
+  @Data
+  public abstract static class PTnmAbs {
+    public String TNM_ID;
+    public String TNM_Datum;
+    public String TNM_Version;
+    public String TNM_c_p_u_Praefix_T;
+    public String TNM_T;
+    public String TNM_c_p_u_Praefix_N;
+    public String TNM_N;
+    public String TNM_c_p_u_Praefix_M;
+    public String TNM_M;
+    public String TNM_y_Symbol;
+    public String TNM_r_Symbol;
+    public String TNM_m_Symbol;
   }
 }

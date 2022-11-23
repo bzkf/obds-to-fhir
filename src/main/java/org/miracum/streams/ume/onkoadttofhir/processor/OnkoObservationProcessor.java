@@ -17,6 +17,7 @@ import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
+import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,16 +45,24 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         stringOnkoMeldungExpTable
             .filter(
                 (key, value) ->
-                    !value
-                        .getXml_daten()
-                        .getMenge_Patient()
-                        .getPatient()
-                        .getMenge_Meldung()
-                        .getMeldung()
-                        .getMeldung_ID()
-                        .startsWith("9999")) // ignore tumor conferences
+                    value
+                            .getXml_daten()
+                            .getMenge_Patient()
+                            .getPatient()
+                            .getMenge_Meldung()
+                            .getMeldung()
+                            .getMenge_Tumorkonferenz()
+                        == null) // ignore tumor conferences
+            /*!value
+            .getXml_daten()
+            .getMenge_Patient()
+            .getPatient()
+            .getMenge_Meldung()
+            .getMeldung()
+            .getMeldung_ID()
+            .startsWith("9999"))*/
             .groupBy(
-                (key, value) -> KeyValue.pair(String.valueOf(value.getLkr_meldung()), value),
+                (key, value) -> KeyValue.pair(String.valueOf(value.getReferenz_nummer()), value),
                 Grouped.with(Serdes.String(), new MeldungExportSerde()))
             .aggregate(
                 MeldungExportList::new,
@@ -68,199 +77,206 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   public ValueMapper<MeldungExportList, Bundle> getOnkoToObservationBundleMapper() {
     return meldungExporte -> {
       var meldungen = meldungExporte.getElements();
-      meldungen.sort(Comparator.comparingInt(MeldungExport::getVersionsnummer));
 
-      var latestMeldung = meldungen.get(meldungen.size() - 1);
-      return mapOnkoToObservationBundle(latestMeldung);
+      var meldungExportMap = new HashMap<Integer, MeldungExport>();
+      // meldeanlass bleibt in LKR Meldung immer gleich
+      for (var meldung : meldungen) {
+        var lkrId = meldung.getLkr_meldung();
+        var currentMeldung = meldungExportMap.get(lkrId);
+        if (currentMeldung != null
+            && meldung.getVersionsnummer() > currentMeldung.getVersionsnummer()) {
+          meldungExportMap.put(lkrId, meldung);
+        }
+      }
+
+      List<String> definedOrder = Arrays.asList("diagnose", "statusaenderung", "behandlungsende");
+
+      Comparator<MeldungExport> meldungComparator =
+          Comparator.comparing(
+              m ->
+                  definedOrder.indexOf(
+                      m.getXml_daten()
+                          .getMenge_Patient()
+                          .getPatient()
+                          .getMenge_Meldung()
+                          .getMeldung()
+                          .getMeldeanlass()));
+
+      List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
+      meldungExportList.sort(meldungComparator);
+
+      return extractOnkoResourcesFromReportingReason(meldungExportList);
     };
+  }
+
+  public Bundle extractOnkoResourcesFromReportingReason(List<MeldungExport> meldungExportList) {
+
+    if (meldungExportList.isEmpty()) {
+      return null;
+    }
+
+    HashMap<String, ADT_GEKID.HistologieAbs> histMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>>
+        cTnmMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>>
+        pTnmMap = new HashMap<>();
+
+    var patId = "";
+
+    for (var meldungExport : meldungExportList) {
+      var meldung =
+          meldungExport
+              .getXml_daten()
+              .getMenge_Patient()
+              .getPatient()
+              .getMenge_Meldung()
+              .getMeldung();
+
+      // reporting reason
+      var meldeanlass = meldung.getMeldeanlass();
+
+      patId = meldungExport.getReferenz_nummer();
+
+      // var tumorId = meldung.getTumorzuordnung();
+
+      List<ADT_GEKID.HistologieAbs> histList = new ArrayList<>();
+      Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation> cTnm = null;
+      Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation> pTnm = null;
+
+      if (Objects.equals(meldeanlass, "diagnose")) {
+        // aus Diagnose: histologie, grading, c-tnm und p-tnm
+        histList =
+            new ArrayList<>(
+                getValidHistologies(meldung.getDiagnose().getMenge_Histologie().getHistologie()));
+        cTnm =
+            new Tupel<>(
+                meldung.getDiagnose().getCTNM(),
+                meldung.getDiagnose().getMenge_Weitere_Klassifikation());
+        pTnm =
+            new Tupel<>(
+                meldung.getDiagnose().getPTNM(),
+                meldung.getDiagnose().getMenge_Weitere_Klassifikation());
+      } else if (Objects.equals(meldeanlass, "statusaenderung")) {
+        // aus Verlauf: histologie, grading und p-tnm
+        // TODO Menge Verlauf berueksichtigen
+        //  ggf. abfangen (in Erlangen immer nur ein Verlauf in Menge_Verlauf), Jasmin klaert das
+        // noch
+        var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
+        if (hist != null) {
+          histList = Arrays.asList(hist);
+        }
+        pTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
+      } else if (Objects.equals(meldeanlass, "behandlungsende")) {
+        // aus Operation: histologie, grading und p-tnm
+        // TODO Menge OP berueksichtigen
+        var hist = meldung.getMenge_OP().getOP().getHistologie();
+        if (hist != null) {
+          histList = Arrays.asList(hist);
+        }
+        pTnm = new Tupel<>(meldung.getMenge_OP().getOP().getTNM(), null);
+      }
+
+      if (!histList.isEmpty()) {
+        for (var hist : histList) {
+          histMap.put(hist.getHistologie_ID(), hist);
+        }
+      }
+
+      if (cTnm != null) {
+        cTnmMap.put(cTnm.getFirst().getTNM_ID(), cTnm);
+      }
+
+      if (pTnm != null) {
+        pTnmMap.put(pTnm.getFirst().getTNM_ID(), pTnm);
+      }
+    }
+
+    return mapOnkoResourcesToObservationsBundle(
+        new ArrayList<>(histMap.values()),
+        new ArrayList<>(cTnmMap.values()),
+        new ArrayList<>(pTnmMap.values()),
+        patId);
   }
 
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
   // return meldungExport -> {
-  public Bundle mapOnkoToObservationBundle(MeldungExport meldungExport) {
+  public Bundle mapOnkoResourcesToObservationsBundle(
+      List<ADT_GEKID.HistologieAbs> histologieList,
+      List<Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>> cTnmList,
+      List<Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>> pTnmList,
+      String patId) {
 
     var bundle = new Bundle();
 
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
-
-    var meldung =
-        meldungExport
-            .getXml_daten()
-            .getMenge_Patient()
-            .getPatient()
-            .getMenge_Meldung()
-            .getMeldung();
-
-    // reporting reason
-    var meldeanlass = meldung.getMeldeanlass();
-
-    var refNum = meldungExport.getReferenz_nummer();
-
-    // histologie list from diagnosis
-    var diagnosis = meldung.getDiagnose();
-
-    // histologie from operation
-    var mengeOp = meldung.getMenge_OP();
-
-    // histologie from verlauf
-    var verlauf = meldung.getMenge_Verlauf();
-
-    // meldeanlass bleibt in LKR Meldung immer gleich
-    // kein Überschreiben von FHIR-Resourcen über verschiedene Meldeanlässe hinweg
-    if (Objects.equals(meldeanlass, "diagnose")) {
-      // aus Diagnose: histologie, grading and c-tnm
-      bundle = createHistologieAndGradingObservation(bundle, diagnosis, null, null, pid, refNum);
-      bundle = createCTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
-    } else if (Objects.equals(meldeanlass, "behandlungsende")) {
-      // aus Operation: histologie, grading und p-tnm
-      bundle = createHistologieAndGradingObservation(bundle, null, mengeOp, null, pid, refNum);
-      bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
-    } else if (Objects.equals(meldeanlass, "statusaenderung")) {
-      // aus Verlauf: histologie, grading und p-tnm
-      bundle = createHistologieAndGradingObservation(bundle, null, null, verlauf, pid, refNum);
-      bundle = createPTnmObservation(bundle, mengeOp, diagnosis, pid, refNum);
-    } else {
+    if (histologieList.isEmpty() && cTnmList.isEmpty() && pTnmList.isEmpty()) {
       // Meldeanlaesse: behandlungsbeginn, tod
       return null;
     }
 
+    for (var hist : histologieList) {
+      bundle = createHistologieAndGradingObservation(bundle, patId, hist);
+    }
+
+    for (var cTnm : cTnmList) {
+      bundle = createCTnmObservation(bundle, patId, cTnm.getFirst(), cTnm.getSecond());
+    }
+
+    for (var pTnm : pTnmList) {
+      bundle = createPTnmObservation(bundle, patId, pTnm.getFirst(), pTnm.getSecond());
+    }
+
+    if (bundle.getEntry().isEmpty()) {
+      return null;
+    }
     bundle.setType(Bundle.BundleType.TRANSACTION);
     return bundle;
   }
 
   public Bundle createHistologieAndGradingObservation(
-      Bundle bundle,
-      Meldung.Diagnose diagnosis,
-      Meldung.Menge_OP mengeOp,
-      Meldung.Menge_Verlauf mengeVerl,
-      String pid,
-      String refNum) {
+      Bundle bundle, String patId, ADT_GEKID.HistologieAbs histologie) {
+
+    var pid = convertId(patId);
 
     // Create a Grading Observation as in
     // https://simplifier.net/oncology/histologie
     var gradingObs = new Observation();
 
-    // check if histologie is defined in operation or diagnosis
-    List<ADT_GEKID.HistologieAbs> histologies = new ArrayList<>();
-    if (diagnosis != null) {
-      histologies.addAll(getValidHistologies(diagnosis.getMenge_Histologie().getHistologie()));
-      // TODO diagnose ohne Histologie
-    } else if (mengeOp != null) {
-      // TODO Menge OP berueksichtigen
-      // ggf. abfangen (in Erlangen immer nur eine OP in Menge_OP), Jasmin klaert das noch
-      histologies.add(mengeOp.getOP().getHistologie());
-      // TODO op ohne Histologie
-    } else if (mengeVerl != null) {
-      // TODO Menge Verlauf berueksichtigen
-      //  ggf. abfangen (in Erlangen immer nur ein Verlauf in Menge_Verlauf), Jasmin klaert das noch
-      histologies.add(mengeVerl.getVerlauf().getHistologie());
-      // TODO Verlauf ohne Histologie
+    var histId = histologie.getHistologie_ID();
+
+    // Histologiedatum
+    var histDateString = histologie.getTumor_Histologiedatum();
+    Date histDate = null;
+
+    if (histDateString != null) {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+      try {
+        histDate = formatter.parse(histDateString);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
     }
-    // TODO else, zb. Verlauf ohne FehlerFehlerbehandlung
 
-    for (var histologie : histologies) {
+    var grading = histologie.getGrading();
 
-      var histId = histologie.getHistologie_ID();
+    // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
+    var gradingObsIdentifier = patId + "grading" + histId;
 
-      // Histologiedatum
-      var histDateString = histologie.getTumor_Histologiedatum();
-      Date histDate = null;
+    // grading may be undefined / null
+    if (grading != null) {
 
-      if (histDateString != null) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        try {
-          histDate = formatter.parse(histDateString);
-        } catch (ParseException e) {
-          throw new RuntimeException(e);
-        }
-      }
+      gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
 
-      var grading = histologie.getGrading();
-      // TODO histologie ohne grading
-
-      // TODO anpassen
-      var gradingObsIdentifier = refNum + histId + grading;
-
-      // grading may be undefined / null
-      if (grading != null) {
-
-        gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
-
-        gradingObs
-            .getMeta()
-            .setSource(
-                "DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
-
-        gradingObs
-            .getMeta()
-            .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
-
-        gradingObs.setStatus(ObservationStatus.FINAL); // bei Korrektur "amended"
-
-        gradingObs.addCategory(
-            new CodeableConcept()
-                .addCoding(
-                    new Coding(
-                        fhirProperties.getSystems().getObservationCategorySystem(),
-                        "laboratory",
-                        "Laboratory")));
-
-        gradingObs.setCode(
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getLoinc())
-                    .setCode("59542-1")
-                    .setDisplay(fhirProperties.getDisplay().getGradingLoinc())));
-
-        gradingObs.setSubject(
-            new Reference()
-                .setReference("Patient/" + this.getHash("Patient", pid))
-                .setIdentifier(
-                    new Identifier()
-                        .setSystem(fhirProperties.getSystems().getPatientId())
-                        .setType(
-                            new CodeableConcept(
-                                new Coding(
-                                    fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                        .setValue(pid)));
-
-        if (histDate != null) {
-          gradingObs.setEffective(new DateTimeType(histDate));
-        }
-
-        var gradingValueCodeableCon =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getGradingDktk())
-                    .setCode(grading)
-                    .setVersion(gradingLookup.lookupGradingDisplay(grading)));
-
-        gradingObs.setValue(gradingValueCodeableCon);
-      }
-
-      // Create an Histologie Observation as in
-      // https://simplifier.net/oncology/histologie
-      var histObs = new Observation();
-
-      // TODO reicht das und bleibt Histologie_ID wirklich immer identisch
-      // Generate an identifier based on MeldungExport Referenz_nummer (Pat. Id) and Histologie_ID
-      // from ADT XML
-      var observationIdentifier = refNum + histId;
-
-      histObs.setId(this.getHash("Observation", observationIdentifier));
-
-      histObs
+      gradingObs
           .getMeta()
           .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
 
-      histObs
+      gradingObs
           .getMeta()
-          .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
+          .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
 
-      histObs.setStatus(ObservationStatus.FINAL); // (bei Korrektur "amended" )
+      gradingObs.setStatus(ObservationStatus.FINAL); // bei Korrektur "amended"
 
-      histObs.addCategory(
+      gradingObs.addCategory(
           new CodeableConcept()
               .addCoding(
                   new Coding(
@@ -268,14 +284,14 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                       "laboratory",
                       "Laboratory")));
 
-      histObs.setCode(
+      gradingObs.setCode(
           new CodeableConcept(
               new Coding()
                   .setSystem(fhirProperties.getSystems().getLoinc())
-                  .setCode("59847-4")
-                  .setDisplay(fhirProperties.getDisplay().getHistologyLoinc())));
+                  .setCode("59542-1")
+                  .setDisplay(fhirProperties.getDisplay().getGradingLoinc())));
 
-      histObs.setSubject(
+      gradingObs.setSubject(
           new Reference()
               .setReference("Patient/" + this.getHash("Patient", pid))
               .setIdentifier(
@@ -287,54 +303,115 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                       .setValue(pid)));
 
-      // Histologiedatum
       if (histDate != null) {
-        histObs.setEffective(new DateTimeType(histDate));
+        gradingObs.setEffective(new DateTimeType(histDate));
       }
 
-      var valueCodeableCon =
+      var gradingValueCodeableCon =
           new CodeableConcept(
               new Coding()
-                  .setSystem(fhirProperties.getSystems().getIdco3Morphologie())
-                  .setCode(histologie.getMorphologie_Code())
-                  .setVersion(histologie.getMorphologie_ICD_O_Version()));
+                  .setSystem(fhirProperties.getSystems().getGradingDktk())
+                  .setCode(grading)
+                  .setVersion(gradingLookup.lookupGradingDisplay(grading)));
 
-      var morphFreitext = histologie.getMorphologie_Freitext();
-
-      if (morphFreitext != null) {
-        valueCodeableCon.setText(morphFreitext);
-      }
-
-      histObs.setValue(valueCodeableCon);
-
-      if (grading != null) {
-        histObs.addHasMember(
-            new Reference()
-                .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
-      }
-
-      bundle = addResourceAsEntryInBundle(bundle, histObs);
-
-      if (grading != null) {
-        bundle = addResourceAsEntryInBundle(bundle, gradingObs);
-      }
+      gradingObs.setValue(gradingValueCodeableCon);
     }
+
+    // Create an Histologie Observation as in
+    // https://simplifier.net/oncology/histologie
+    var histObs = new Observation();
+
+    // TODO ID muss vorhanden sein ist aber ggf. kein Pflichtfeld, im Batch Job ggf. konfigurierbar machen
+    // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
+    var observationIdentifier = patId + "histologie" + histId;
+
+    histObs.setId(this.getHash("Observation", observationIdentifier));
+
+    histObs
+        .getMeta()
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+
+    histObs
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
+
+    histObs.setStatus(ObservationStatus.FINAL); // (bei Korrektur "amended" )
+
+    histObs.addCategory(
+        new CodeableConcept()
+            .addCoding(
+                new Coding(
+                    fhirProperties.getSystems().getObservationCategorySystem(),
+                    "laboratory",
+                    "Laboratory")));
+
+    histObs.setCode(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLoinc())
+                .setCode("59847-4")
+                .setDisplay(fhirProperties.getDisplay().getHistologyLoinc())));
+
+    histObs.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
+
+    // Histologiedatum
+    if (histDate != null) {
+      histObs.setEffective(new DateTimeType(histDate));
+    }
+
+    var valueCodeableCon =
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getIdco3Morphologie())
+                .setCode(histologie.getMorphologie_Code())
+                .setVersion(histologie.getMorphologie_ICD_O_Version()));
+
+    var morphFreitext = histologie.getMorphologie_Freitext();
+
+    if (morphFreitext != null) {
+      valueCodeableCon.setText(morphFreitext);
+    }
+
+    histObs.setValue(valueCodeableCon);
+
+    if (grading != null) {
+      histObs.addHasMember(
+          new Reference()
+              .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
+    }
+
+    bundle = addResourceAsEntryInBundle(bundle, histObs);
+
+    if (grading != null) {
+      bundle = addResourceAsEntryInBundle(bundle, gradingObs);
+    }
+
     return bundle;
   }
 
   public Bundle createCTnmObservation(
       Bundle bundle,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
-      String pid,
-      String refNum) {
+      String patId,
+      ADT_GEKID.CTnmAbs cTnm,
+      Meldung.Diagnose.Menge_Weitere_Klassifikation classification) {
+
+    var pid = convertId(patId);
     // TNM Observation
     // Create a TNM-c Observation as in
     // https://simplifier.net/oncology/tnmc
     var tnmcObs = new Observation();
-
-    // TODO checken
-    var tnmcObsIdentifier = refNum + diagnosis.getCTNM().getTNM_ID();
+    // Generate an identifier based on Referenz_nummer (Pat. Id) and c-tnm Id
+    var tnmcObsIdentifier = patId + "ctnm" + cTnm.getTNM_ID();
 
     tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
 
@@ -378,7 +455,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // TODO setFocus, add later after diagnosis processor is implemented
 
     // tnm c Date
-    var tnmcDateString = diagnosis.getCTNM().getTNM_Datum();
+    var tnmcDateString = cTnm.getTNM_Datum();
     Date tnmcDate = null;
 
     if (tnmcDateString != null) {
@@ -394,33 +471,31 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       tnmcObs.setEffective(new DateTimeType(tnmcDate));
     }
 
-    if (diagnosis.getMenge_Weitere_Klassifikation().getWeitere_Klassifikation().equals("UICC")) {
-      var valueCodeableCon =
-          new CodeableConcept(
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getUicc())
-                  .setCode(
-                      diagnosis
-                          .getMenge_Weitere_Klassifikation()
-                          .getWeitere_Klassifikation()
-                          .getStadium())
-                  .setVersion(diagnosis.getCTNM().getTNM_Version()));
+    if (classification != null) {
+      if (classification.getWeitere_Klassifikation().getName().equals("UICC")) {
+        var valueCodeableCon =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getUicc())
+                    .setCode(classification.getWeitere_Klassifikation().getStadium())
+                    .setVersion(cTnm.getTNM_Version()));
 
-      tnmcObs.setValue(valueCodeableCon);
+        tnmcObs.setValue(valueCodeableCon);
+      }
     }
 
     var backBoneComponentListC = new ArrayList<Observation.ObservationComponentComponent>();
 
     // TODO add NULL checks
-    var cTnmCpuPraefixT = diagnosis.getCTNM().getTNM_c_p_u_Praefix_T();
-    var cTnmCpuPraefixN = diagnosis.getCTNM().getTNM_c_p_u_Praefix_N();
-    var cTnmCpuPraefixM = diagnosis.getCTNM().getTNM_c_p_u_Praefix_M();
-    var cTnmT = diagnosis.getCTNM().getTNM_T();
-    var cTnmN = diagnosis.getCTNM().getTNM_N();
-    var cTnmM = diagnosis.getCTNM().getTNM_M();
-    var cTnmYSymbol = diagnosis.getCTNM().getTNM_y_Symbol();
-    var cTnmRSymbol = diagnosis.getCTNM().getTNM_r_Symbol();
-    var cTnmMSymbol = diagnosis.getCTNM().getTNM_m_Symbol();
+    var cTnmCpuPraefixT = cTnm.getTNM_c_p_u_Praefix_T();
+    var cTnmCpuPraefixN = cTnm.getTNM_c_p_u_Praefix_N();
+    var cTnmCpuPraefixM = cTnm.getTNM_c_p_u_Praefix_M();
+    var cTnmT = cTnm.getTNM_T();
+    var cTnmN = cTnm.getTNM_N();
+    var cTnmM = cTnm.getTNM_M();
+    var cTnmYSymbol = cTnm.getTNM_y_Symbol();
+    var cTnmRSymbol = cTnm.getTNM_r_Symbol();
+    var cTnmMSymbol = cTnm.getTNM_m_Symbol();
 
     // cTNM-T
     backBoneComponentListC.add(
@@ -497,15 +572,17 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
   public Bundle createPTnmObservation(
       Bundle bundle,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP mengeOp,
-      ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose diagnosis,
-      String pid,
-      String refNum) {
+      String patId,
+      ADT_GEKID.PTnmAbs pTnm,
+      Meldung.Diagnose.Menge_Weitere_Klassifikation classification) {
     // Create a TNM-p Observation as in
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
-    // TODO checken
-    var tnmpObsIdentifier = refNum + mengeOp.getOP().getTNM().getTNM_ID();
+
+    var pid = convertId(patId);
+
+    // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
+    var tnmpObsIdentifier = patId + "ptnm" + pTnm.getTNM_ID();
 
     tnmpObs.setId(this.getHash("Observation", tnmpObsIdentifier));
 
@@ -548,7 +625,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // TODO setFocus, add later after diagnosis processor is implemented
 
     // tnm p Date
-    var tnmpDateString = mengeOp.getOP().getTNM().getTNM_Datum();
+    var tnmpDateString = pTnm.getTNM_Datum();
     Date tnmpDate = null;
 
     if (tnmpDateString != null) {
@@ -564,34 +641,32 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       tnmpObs.setEffective(new DateTimeType(tnmpDate));
     }
 
-    // TODO UICC gibt es scheinbar nur in Diagnose :( mit Noemi beim adt2fhir Logik Termin klären
-    /*if (diagnosis.getMenge_Weitere_Klassifikation().getWeitere_Klassifikation().equals("UICC")) {
-      var valueCodeableCon =
-              new CodeableConcept(
-                      new Coding()
-                              .setSystem(fhirProperties.getSystems().getUicc())
-                              .setCode(
-                                      diagnosis
-                                              .getMenge_Weitere_Klassifikation()
-                                              .getWeitere_Klassifikation()
-                                              .getStadium())
-                              .setVersion(diagnosis.getCTNM().getTNM_Version()));
+    // only defined in diagnosis
+    if (classification != null) {
+      if (classification.getWeitere_Klassifikation().getName().equals("UICC")) {
+        var valueCodeableCon =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getUicc())
+                    .setCode(classification.getWeitere_Klassifikation().getStadium())
+                    .setVersion(pTnm.getTNM_Version()));
 
-      tnmcObs.setValue(valueCodeableCon);
-    } */
+        tnmpObs.setValue(valueCodeableCon);
+      }
+    }
 
     var backBoneComponentListP = new ArrayList<Observation.ObservationComponentComponent>();
 
     // TODO add NULL checks
-    var pTnmCpuPraefixT = mengeOp.getOP().getTNM().getTNM_c_p_u_Praefix_T();
-    var pTnmCpuPraefixN = mengeOp.getOP().getTNM().getTNM_c_p_u_Praefix_N();
-    var pTnmCpuPraefixM = mengeOp.getOP().getTNM().getTNM_c_p_u_Praefix_M();
-    var pTnmT = mengeOp.getOP().getTNM().getTNM_T();
-    var pTnmN = mengeOp.getOP().getTNM().getTNM_N();
-    var pTnmM = mengeOp.getOP().getTNM().getTNM_M();
-    var pTnmYSymbol = mengeOp.getOP().getTNM().getTNM_y_Symbol();
-    var pTnmRSymbol = mengeOp.getOP().getTNM().getTNM_r_Symbol();
-    var pTnmMSymbol = mengeOp.getOP().getTNM().getTNM_m_Symbol();
+    var pTnmCpuPraefixT = pTnm.getTNM_c_p_u_Praefix_T();
+    var pTnmCpuPraefixN = pTnm.getTNM_c_p_u_Praefix_N();
+    var pTnmCpuPraefixM = pTnm.getTNM_c_p_u_Praefix_M();
+    var pTnmT = pTnm.getTNM_T();
+    var pTnmN = pTnm.getTNM_N();
+    var pTnmM = pTnm.getTNM_M();
+    var pTnmYSymbol = pTnm.getTNM_y_Symbol();
+    var pTnmRSymbol = pTnm.getTNM_r_Symbol();
+    var pTnmMSymbol = pTnm.getTNM_m_Symbol();
 
     // pTNM-T
     backBoneComponentListP.add(
@@ -701,6 +776,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     return tnmBackBone;
   }
 
+  // TODO k-Regel checken ob das gebraucht wird, da laut Jasmin keine doppelten HistIds in einer
+  // Diagnose
   public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(
       List<Meldung.Diagnose.Menge_Histologie.Histologie> mengeHist) {
     // returns a list of unique histIds having the maximum defined morphology code
