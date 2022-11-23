@@ -321,7 +321,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // https://simplifier.net/oncology/histologie
     var histObs = new Observation();
 
-    // TODO ID muss vorhanden sein ist aber ggf. kein Pflichtfeld, im Batch Job ggf. konfigurierbar machen
+    // TODO ID muss vorhanden sein ist aber ggf. kein Pflichtfeld, im Batch Job ggf. konfigurierbar
+    // machen
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
     var observationIdentifier = patId + "histologie" + histId;
 

@@ -86,9 +86,7 @@ public class ADT_GEKID implements Serializable {
             @JsonProperty private String Diagnosedatum;
             @JsonProperty private String Seitenlokalisation;
 
-            @JsonProperty
-            private Menge_Histologie
-                Menge_Histologie;
+            @JsonProperty private Menge_Histologie Menge_Histologie;
 
             @JsonProperty private cTNM cTNM;
             @JsonProperty private pTNM pTNM;
