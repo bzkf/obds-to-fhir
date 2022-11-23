@@ -238,7 +238,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var pid = convertId(patId);
 
     // Create a Grading Observation as in
-    // https://simplifier.net/oncology/histologie
+    // https://simplifier.net/oncology/grading
     var gradingObs = new Observation();
 
     var histId = histologie.getHistologie_ID();
@@ -487,7 +487,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     var backBoneComponentListC = new ArrayList<Observation.ObservationComponentComponent>();
 
-    // TODO add NULL checks
     var cTnmCpuPraefixT = cTnm.getTNM_c_p_u_Praefix_T();
     var cTnmCpuPraefixN = cTnm.getTNM_c_p_u_Praefix_N();
     var cTnmCpuPraefixM = cTnm.getTNM_c_p_u_Praefix_M();
@@ -499,75 +498,85 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var cTnmMSymbol = cTnm.getTNM_m_Symbol();
 
     // cTNM-T
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            cTnmCpuPraefixT,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixT),
-            "21905-5",
-            "Primary tumor.clinical Cancer",
-            fhirProperties.getSystems().getTnmTCs(),
-            cTnmT,
-            cTnmT));
+    if (cTnmT != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              cTnmCpuPraefixT,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixT),
+              "21905-5",
+              "Primary tumor.clinical Cancer",
+              fhirProperties.getSystems().getTnmTCs(),
+              cTnmT,
+              cTnmT));
+    }
 
     // cTNM-N
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            cTnmCpuPraefixN,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixN),
-            "21906-3",
-            "Regional lymph nodes.clinical",
-            fhirProperties.getSystems().getTnmNCs(),
-            cTnmN,
-            cTnmN));
+    if (cTnmN != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              cTnmCpuPraefixN,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixN),
+              "21906-3",
+              "Regional lymph nodes.clinical",
+              fhirProperties.getSystems().getTnmNCs(),
+              cTnmN,
+              cTnmN));
+    }
 
     // cTNM-M
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            cTnmCpuPraefixM,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixM),
-            "21907-1",
-            "Distant metastases.clinical [Class] Cancer",
-            fhirProperties.getSystems().getTnmMCs(),
-            cTnmM,
-            cTnmM));
-
+    if (cTnmM != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              cTnmCpuPraefixM,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixM),
+              "21907-1",
+              "Distant metastases.clinical [Class] Cancer",
+              fhirProperties.getSystems().getTnmMCs(),
+              cTnmM,
+              cTnmM));
+    }
     // TNM-y Symbol
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "59479-6",
-            "Collaborative staging post treatment extension Cancer",
-            fhirProperties.getSystems().getTnmYSymbolCs(),
-            cTnmYSymbol,
-            cTnmYSymbol));
+    if (cTnmYSymbol != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "59479-6",
+              "Collaborative staging post treatment extension Cancer",
+              fhirProperties.getSystems().getTnmYSymbolCs(),
+              cTnmYSymbol,
+              cTnmYSymbol));
+    }
 
     // TNM-r Symbol
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "21983-2",
-            "Recurrence type first episode Cancer",
-            fhirProperties.getSystems().getTnmRSymbolCs(),
-            cTnmRSymbol,
-            cTnmRSymbol));
+    if (cTnmRSymbol != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "21983-2",
+              "Recurrence type first episode Cancer",
+              fhirProperties.getSystems().getTnmRSymbolCs(),
+              cTnmRSymbol,
+              cTnmRSymbol));
+    }
 
     // TNM-m Symbol
-    backBoneComponentListC.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "42030-7",
-            "Multiple tumors reported as single primary Cancer",
-            fhirProperties.getSystems().getTnmMSymbolCs(),
-            cTnmMSymbol,
-            cTnmMSymbol));
+    if (cTnmMSymbol != null) {
+      backBoneComponentListC.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "42030-7",
+              "Multiple tumors reported as single primary Cancer",
+              fhirProperties.getSystems().getTnmMSymbolCs(),
+              cTnmMSymbol,
+              cTnmMSymbol));
+    }
 
     tnmcObs.setComponent(backBoneComponentListC);
 
     bundle = addResourceAsEntryInBundle(bundle, tnmcObs);
-
     return bundle;
   }
 
@@ -658,7 +667,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     var backBoneComponentListP = new ArrayList<Observation.ObservationComponentComponent>();
 
-    // TODO add NULL checks
     var pTnmCpuPraefixT = pTnm.getTNM_c_p_u_Praefix_T();
     var pTnmCpuPraefixN = pTnm.getTNM_c_p_u_Praefix_N();
     var pTnmCpuPraefixM = pTnm.getTNM_c_p_u_Praefix_M();
@@ -670,75 +678,86 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var pTnmMSymbol = pTnm.getTNM_m_Symbol();
 
     // pTNM-T
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            pTnmCpuPraefixT,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixT),
-            "21899-0",
-            "Primary tumor.pathology Cancer",
-            fhirProperties.getSystems().getTnmTCs(),
-            pTnmT,
-            pTnmT));
+    if (pTnmT != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              pTnmCpuPraefixT,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixT),
+              "21899-0",
+              "Primary tumor.pathology Cancer",
+              fhirProperties.getSystems().getTnmTCs(),
+              pTnmT,
+              pTnmT));
+    }
 
     // pTNM-N
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            pTnmCpuPraefixN,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixN),
-            "21900-6",
-            "Regional lymph nodes.pathology",
-            fhirProperties.getSystems().getTnmNCs(),
-            pTnmN,
-            pTnmN));
+    if (pTnmN != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              pTnmCpuPraefixN,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixN),
+              "21900-6",
+              "Regional lymph nodes.pathology",
+              fhirProperties.getSystems().getTnmNCs(),
+              pTnmN,
+              pTnmN));
+    }
 
     // pTNM-M
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            pTnmCpuPraefixM,
-            tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixM),
-            "21901-4",
-            "Distant metastases.pathology [Class] Cancer",
-            fhirProperties.getSystems().getTnmMCs(),
-            pTnmM,
-            pTnmM));
+    if (pTnmM != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              pTnmCpuPraefixM,
+              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixM),
+              "21901-4",
+              "Distant metastases.pathology [Class] Cancer",
+              fhirProperties.getSystems().getTnmMCs(),
+              pTnmM,
+              pTnmM));
+    }
 
     // pTNM-y Symbol
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "59479-6",
-            "Collaborative staging post treatment extension Cancer",
-            fhirProperties.getSystems().getTnmYSymbolCs(),
-            pTnmYSymbol,
-            pTnmYSymbol));
+    if (pTnmYSymbol != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "59479-6",
+              "Collaborative staging post treatment extension Cancer",
+              fhirProperties.getSystems().getTnmYSymbolCs(),
+              pTnmYSymbol,
+              pTnmYSymbol));
+    }
 
     // TNM-r Symbol
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "21983-2",
-            "Recurrence type first episode Cancer",
-            fhirProperties.getSystems().getTnmRSymbolCs(),
-            pTnmRSymbol,
-            pTnmRSymbol));
+    if (pTnmRSymbol != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "21983-2",
+              "Recurrence type first episode Cancer",
+              fhirProperties.getSystems().getTnmRSymbolCs(),
+              pTnmRSymbol,
+              pTnmRSymbol));
+    }
 
     // TNM-m Symbol
-    backBoneComponentListP.add(
-        createTNMComponentElement(
-            null,
-            null,
-            "42030-7",
-            "Multiple tumors reported as single primary Cancer",
-            fhirProperties.getSystems().getTnmMSymbolCs(),
-            pTnmMSymbol,
-            pTnmMSymbol));
+    if (pTnmMSymbol != null) {
+      backBoneComponentListP.add(
+          createTNMComponentElement(
+              null,
+              null,
+              "42030-7",
+              "Multiple tumors reported as single primary Cancer",
+              fhirProperties.getSystems().getTnmMSymbolCs(),
+              pTnmMSymbol,
+              pTnmMSymbol));
+    }
 
     tnmpObs.setComponent(backBoneComponentListP);
 
     bundle = addResourceAsEntryInBundle(bundle, tnmpObs);
-
     return bundle;
   }
 
