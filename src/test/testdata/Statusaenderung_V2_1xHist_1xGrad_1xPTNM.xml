@@ -23,46 +23,46 @@
                     </Adresse>
                 </Menge_Adresse>
             </Patienten_Stammdaten>
-<Menge_Meldung> 
-<Meldung Meldung_ID="FK0000232" Melder_ID="FK"> 
-    <Meldedatum>06.05.2021</Meldedatum>  
-    <Meldebegruendung>I</Meldebegruendung>  
-    <Meldeanlass>statusaenderung</Meldeanlass>  
-    <Tumorzuordnung Tumor_ID="1"> 
-      <Primaertumor_ICD_Code>D06.9</Primaertumor_ICD_Code>  
-      <Primaertumor_ICD_Version>10 2017 GM</Primaertumor_ICD_Version>  
-      <Diagnosedatum>00.12.2017</Diagnosedatum>  
-      <Seitenlokalisation>T</Seitenlokalisation> 
-    </Tumorzuordnung>  
-    <Menge_Verlauf> 
-      <Verlauf Verlauf_ID="3003"> 
-        <Histologie Histologie_ID="3011"> 
-          <Tumor_Histologiedatum>29.03.2021</Tumor_Histologiedatum>  
-          <Histologie_EinsendeNr>12108607</Histologie_EinsendeNr>  
-          <Morphologie_Code>8077/2</Morphologie_Code>  
-          <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>  
-          <Morphologie_Freitext>CIN III</Morphologie_Freitext>  
-          <Grading>H</Grading> 
-        </Histologie>  
-        <TNM TNM_ID="3004"> 
-          <TNM_Datum>19.02.2021</TNM_Datum>  
-          <TNM_Version>8</TNM_Version>  
-          <TNM_r_Symbol>r</TNM_r_Symbol>  
-          <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>  
-          <TNM_T>is(is)</TNM_T>  
-          <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>  
-          <TNM_N>0</TNM_N>  
-          <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>  
-          <TNM_M>0</TNM_M> 
-        </TNM>  
-        <Untersuchungsdatum_Verlauf>19.02.2021</Untersuchungsdatum_Verlauf>  
-        <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>  
-        <Verlauf_Lokaler_Tumorstatus>R</Verlauf_Lokaler_Tumorstatus>  
-        <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>  
-        <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen> 
-      </Verlauf> 
-    </Menge_Verlauf> 
-  </Meldung>  
+<Menge_Meldung>
+<Meldung Meldung_ID="FK0000232" Melder_ID="FK">
+    <Meldedatum>06.05.2021</Meldedatum>
+    <Meldebegruendung>I</Meldebegruendung>
+    <Meldeanlass>statusaenderung</Meldeanlass>
+    <Tumorzuordnung Tumor_ID="1">
+      <Primaertumor_ICD_Code>D06.9</Primaertumor_ICD_Code>
+      <Primaertumor_ICD_Version>10 2017 GM</Primaertumor_ICD_Version>
+      <Diagnosedatum>00.12.2017</Diagnosedatum>
+      <Seitenlokalisation>T</Seitenlokalisation>
+    </Tumorzuordnung>
+    <Menge_Verlauf>
+      <Verlauf Verlauf_ID="3003">
+        <Histologie Histologie_ID="3011">
+          <Tumor_Histologiedatum>29.03.2021</Tumor_Histologiedatum>
+          <Histologie_EinsendeNr>12108607</Histologie_EinsendeNr>
+          <Morphologie_Code>8077/2</Morphologie_Code>
+          <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
+          <Morphologie_Freitext>CIN III</Morphologie_Freitext>
+          <Grading>H</Grading>
+        </Histologie>
+        <TNM TNM_ID="3004">
+          <TNM_Datum>19.02.2021</TNM_Datum>
+          <TNM_Version>8</TNM_Version>
+          <TNM_r_Symbol>r</TNM_r_Symbol>
+          <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>
+          <TNM_T>is(is)</TNM_T>
+          <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
+          <TNM_N>0</TNM_N>
+          <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
+          <TNM_M>0</TNM_M>
+        </TNM>
+        <Untersuchungsdatum_Verlauf>19.02.2021</Untersuchungsdatum_Verlauf>
+        <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>
+        <Verlauf_Lokaler_Tumorstatus>R</Verlauf_Lokaler_Tumorstatus>
+        <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+        <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+      </Verlauf>
+    </Menge_Verlauf>
+  </Meldung>
 </Menge_Meldung>
 </Patient>
 </Menge_Patient>
