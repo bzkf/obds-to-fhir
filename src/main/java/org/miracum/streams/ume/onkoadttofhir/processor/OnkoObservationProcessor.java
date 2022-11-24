@@ -82,9 +82,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // meldeanlass bleibt in LKR Meldung immer gleich
       for (var meldung : meldungen) {
         var lkrId = meldung.getLkr_meldung();
-        var currentMeldung = meldungExportMap.get(lkrId);
-        if (currentMeldung != null
-            && meldung.getVersionsnummer() > currentMeldung.getVersionsnummer()) {
+        var currentMeldungVersion = meldungExportMap.get(lkrId);
+        if (currentMeldungVersion == null
+            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
           meldungExportMap.put(lkrId, meldung);
         }
       }
@@ -160,12 +160,20 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         // aus Verlauf: histologie, grading und p-tnm
         // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
-        // TODO tnm Präfixe ob ptnm oder ctnm
         var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
         if (hist != null) {
           histList = Arrays.asList(hist);
         }
-        pTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
+        // TODO tnm Präfixe ob ptnm oder ctnm
+        var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
+        if (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
+            || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
+            || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p")) {
+          pTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
+        }
+        // else {
+        //  cTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
+        // }
       } else if (Objects.equals(meldeanlass, "behandlungsende")) {
         // aus Operation: histologie, grading und p-tnm
         // TODO Menge OP berueksichtigen
@@ -182,11 +190,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         }
       }
 
-      if (cTnm != null) {
+      if (cTnm != null && cTnm.getFirst() != null) {
         cTnmMap.put(cTnm.getFirst().getTNM_ID(), cTnm);
       }
 
-      if (pTnm != null) {
+      if (pTnm != null && pTnm.getFirst() != null) {
         pTnmMap.put(pTnm.getFirst().getTNM_ID(), pTnm);
       }
     }
