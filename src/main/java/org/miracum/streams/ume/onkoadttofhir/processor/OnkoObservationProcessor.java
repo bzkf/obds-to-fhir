@@ -158,9 +158,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                 meldung.getDiagnose().getMenge_Weitere_Klassifikation());
       } else if (Objects.equals(meldeanlass, "statusaenderung")) {
         // aus Verlauf: histologie, grading und p-tnm
-        // TODO Menge Verlauf berueksichtigen
-        //  ggf. abfangen (in Erlangen immer nur ein Verlauf in Menge_Verlauf), Jasmin klaert das
-        // noch
+        // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
+        // Menge_Verlauf), Jasmin klaert das noch
+        // TODO tnm Präfixe ob ptnm oder ctnm
         var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
         if (hist != null) {
           histList = Arrays.asList(hist);
