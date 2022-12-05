@@ -146,13 +146,13 @@ VALUES (2, 225, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
       <Meldebegruendung>I</Meldebegruendung>
       <Meldeanlass>diagnose</Meldeanlass>
       <Tumorzuordnung Tumor_ID="1">
-        <Primaertumor_ICD_Code>D06.1</Primaertumor_ICD_Code>
+        <Primaertumor_ICD_Code>D33.3</Primaertumor_ICD_Code>
         <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
         <Diagnosedatum>12.02.2021</Diagnosedatum>
         <Seitenlokalisation>T</Seitenlokalisation>
       </Tumorzuordnung>
       <Diagnose Tumor_ID="1">
-        <Primaertumor_ICD_Code>D06.1</Primaertumor_ICD_Code>
+        <Primaertumor_ICD_Code>D33.3</Primaertumor_ICD_Code>
         <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
         <Primaertumor_Topographie_ICD_O>C53.1</Primaertumor_Topographie_ICD_O>
         <Primaertumor_Topographie_ICD_O_Version>32</Primaertumor_Topographie_ICD_O_Version>
@@ -163,7 +163,7 @@ VALUES (2, 225, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
     to_clob('<Histologie Histologie_ID="2963">
             <Tumor_Histologiedatum>12.02.2021</Tumor_Histologiedatum>
             <Histologie_EinsendeNr>12103806</Histologie_EinsendeNr>
-            <Morphologie_Code>8077/2</Morphologie_Code>
+            <Morphologie_Code>3333/3</Morphologie_Code>
             <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
             <Morphologie_Freitext>CIN II</Morphologie_Freitext>
             <Grading>H</Grading>
@@ -171,10 +171,10 @@ VALUES (2, 225, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
           <Histologie Histologie_ID="2968">
             <Tumor_Histologiedatum>17.03.2021</Tumor_Histologiedatum>
             <Histologie_EinsendeNr>12107294</Histologie_EinsendeNr>
-            <Morphologie_Code>8077/2</Morphologie_Code>
+            <Morphologie_Code>3333/1</Morphologie_Code>
             <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
             <Morphologie_Freitext>CIN III</Morphologie_Freitext>
-            <Grading>H</Grading>
+            <Grading>T</Grading>
           </Histologie>
         </Menge_Histologie>
         <cTNM TNM_ID="2969">
@@ -191,13 +191,13 @@ VALUES (2, 225, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
           <TNM_Datum>17.03.2021</TNM_Datum>
           <TNM_Version>8</TNM_Version>
           <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>
-          <TNM_T>is</TNM_T>
+          <TNM_T>isABC</TNM_T>
         </pTNM>
         <Menge_Weitere_Klassifikation>
           <Weitere_Klassifikation>
             <Datum>25.01.2021</Datum>
             <Name>UICC</Name>
-            <Stadium>IIA</Stadium>
+            <Stadium>IIAIIA</Stadium>
           </Weitere_Klassifikation>
         </Menge_Weitere_Klassifikation>
       </Diagnose>
@@ -246,7 +246,7 @@ VALUES (3, 226, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
     <Meldebegruendung>I</Meldebegruendung>
     <Meldeanlass>behandlungsende</Meldeanlass>
     <Tumorzuordnung Tumor_ID="1">
-      <Primaertumor_ICD_Code>D06.1</Primaertumor_ICD_Code>
+      <Primaertumor_ICD_Code>D0006.0</Primaertumor_ICD_Code>
       <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
       <Diagnosedatum>12.02.2021</Diagnosedatum>
       <Seitenlokalisation>T</Seitenlokalisation>
@@ -256,14 +256,14 @@ VALUES (3, 226, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
         <OP_Intention>K</OP_Intention>
         <OP_Datum>17.03.2021</OP_Datum>
         <Menge_OPS>
-          <OP_OPS>1-472.0</OP_OPS>
-          <OP_OPS>5-671.01</OP_OPS>
+          <OP_OPS>1-000.0</OP_OPS>
+          <OP_OPS>1-000.01</OP_OPS>
         </Menge_OPS>
         <OP_OPS_Version>2021</OP_OPS_Version> ') ||
           to_clob(' <Histologie Histologie_ID="2968">
           <Tumor_Histologiedatum>17.03.2021</Tumor_Histologiedatum>
           <Histologie_EinsendeNr>12107294</Histologie_EinsendeNr>
-          <Morphologie_Code>9999/9</Morphologie_Code>
+          <Morphologie_Code>1111/1</Morphologie_Code>
           <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
           <Morphologie_Freitext>CIN III</Morphologie_Freitext>
           <Grading>H</Grading>
@@ -272,11 +272,11 @@ VALUES (3, 226, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
           <TNM_Datum>17.03.2021</TNM_Datum>
           <TNM_Version>8</TNM_Version>
           <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>
-          <TNM_T>is</TNM_T>
+          <TNM_T>11</TNM_T>
           <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
-          <TNM_N>0</TNM_N>
+          <TNM_N>11</TNM_N>
           <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
-          <TNM_M>0</TNM_M>
+          <TNM_M>11</TNM_M>
         </TNM>
         <Residualstatus>
           <Lokale_Beurteilung_Residualstatus>R1</Lokale_Beurteilung_Residualstatus>
@@ -336,41 +336,41 @@ VALUES (4, 226, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
     <Meldebegruendung>I</Meldebegruendung>
     <Meldeanlass>behandlungsende</Meldeanlass>
     <Tumorzuordnung Tumor_ID="1">
-      <Primaertumor_ICD_Code>D06.1</Primaertumor_ICD_Code>
+      <Primaertumor_ICD_Code>D06.9</Primaertumor_ICD_Code>
       <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
       <Diagnosedatum>12.02.2021</Diagnosedatum>
-      <Seitenlokalisation>T</Seitenlokalisation>
+      <Seitenlokalisation>J</Seitenlokalisation>
     </Tumorzuordnung>
     <Menge_OP>
       <OP OP_ID="2965">
-        <OP_Intention>K</OP_Intention>
+        <OP_Intention>J</OP_Intention>
         <OP_Datum>17.03.2021</OP_Datum>
         <Menge_OPS>
-          <OP_OPS>1-472.0</OP_OPS>
-          <OP_OPS>5-671.01</OP_OPS>
+          <OP_OPS>2-999.2</OP_OPS>
+          <OP_OPS>2-888.3</OP_OPS>
         </Menge_OPS>
         <OP_OPS_Version>2021</OP_OPS_Version> ') ||
           to_clob('<Histologie Histologie_ID="2968">
           <Tumor_Histologiedatum>17.03.2021</Tumor_Histologiedatum>
           <Histologie_EinsendeNr>12107294</Histologie_EinsendeNr>
-          <Morphologie_Code>8077/2</Morphologie_Code>
+          <Morphologie_Code>2323/2</Morphologie_Code>
           <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
           <Morphologie_Freitext>CIN III</Morphologie_Freitext>
-          <Grading>H</Grading>
+          <Grading>J</Grading>
         </Histologie>
         <TNM TNM_ID="2968">
           <TNM_Datum>17.03.2021</TNM_Datum>
           <TNM_Version>8</TNM_Version>
           <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>
-          <TNM_T>is</TNM_T>
+          <TNM_T>22</TNM_T>
           <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
-          <TNM_N>0</TNM_N>
+          <TNM_N>21</TNM_N>
           <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
-          <TNM_M>0</TNM_M>
+          <TNM_M>23</TNM_M>
         </TNM>
         <Residualstatus>
-          <Lokale_Beurteilung_Residualstatus>R1</Lokale_Beurteilung_Residualstatus>
-          <Gesamtbeurteilung_Residualstatus>R1</Gesamtbeurteilung_Residualstatus>
+          <Lokale_Beurteilung_Residualstatus>R8</Lokale_Beurteilung_Residualstatus>
+          <Gesamtbeurteilung_Residualstatus>R7</Gesamtbeurteilung_Residualstatus>
         </Residualstatus>
         <Menge_Komplikation>
           <OP_Komplikation>N</OP_Komplikation>

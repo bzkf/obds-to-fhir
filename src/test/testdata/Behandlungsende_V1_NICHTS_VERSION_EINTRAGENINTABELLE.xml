@@ -29,7 +29,7 @@
     <Meldebegruendung>I</Meldebegruendung>
     <Meldeanlass>behandlungsende</Meldeanlass>
     <Tumorzuordnung Tumor_ID="1">
-      <Primaertumor_ICD_Code>D06.1</Primaertumor_ICD_Code>
+      <Primaertumor_ICD_Code>D0006.1</Primaertumor_ICD_Code>
       <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
       <Diagnosedatum>12.02.2021</Diagnosedatum>
       <Seitenlokalisation>T</Seitenlokalisation>
@@ -39,14 +39,14 @@
         <OP_Intention>K</OP_Intention>
         <OP_Datum>17.03.2021</OP_Datum>
         <Menge_OPS>
-          <OP_OPS>1-472.0</OP_OPS>
-          <OP_OPS>5-671.01</OP_OPS>
+            <OP_OPS>1-000.0</OP_OPS>
+            <OP_OPS>1-000.01</OP_OPS>
         </Menge_OPS>
         <OP_OPS_Version>2021</OP_OPS_Version>
         <Histologie Histologie_ID="2968">
           <Tumor_Histologiedatum>17.03.2021</Tumor_Histologiedatum>
           <Histologie_EinsendeNr>12107294</Histologie_EinsendeNr>
-          <Morphologie_Code>9999/9</Morphologie_Code>
+          <Morphologie_Code>1111/1</Morphologie_Code>
           <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
           <Morphologie_Freitext>CIN III</Morphologie_Freitext>
           <Grading>H</Grading>
@@ -55,11 +55,11 @@
           <TNM_Datum>17.03.2021</TNM_Datum>
           <TNM_Version>8</TNM_Version>
           <TNM_c_p_u_Praefix_T>p</TNM_c_p_u_Praefix_T>
-          <TNM_T>is</TNM_T>
+          <TNM_T>11</TNM_T>
           <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
-          <TNM_N>0</TNM_N>
+          <TNM_N>11</TNM_N>
           <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
-          <TNM_M>0</TNM_M>
+          <TNM_M>11</TNM_M>
         </TNM>
         <Residualstatus>
           <Lokale_Beurteilung_Residualstatus>R1</Lokale_Beurteilung_Residualstatus>
