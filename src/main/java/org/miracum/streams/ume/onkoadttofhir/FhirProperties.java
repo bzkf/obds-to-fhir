@@ -31,6 +31,8 @@ public class FhirProperties {
     private String tnmYSymbolCs;
     private String tnmRSymbolCs;
     private String tnmMSymbolCs;
+    private String fMLokalisationCS;
+    private String jnuCs;
   }
 
   @Data
@@ -39,6 +41,7 @@ public class FhirProperties {
     private String grading;
     private String tnmC;
     private String tnmP;
+    private String fernMeta;
   }
 
   @Data
@@ -47,6 +50,7 @@ public class FhirProperties {
     private String gradingLoinc;
     private String tnmcLoinc;
     private String tnmpLoinc;
+    private String fernMetaLoinc;
   }
 
   @Data

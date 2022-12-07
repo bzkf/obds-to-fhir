@@ -93,6 +93,8 @@ public class ADT_GEKID implements Serializable {
 
             @JsonProperty private Menge_Weitere_Klassifikation Menge_Weitere_Klassifikation;
 
+            @JsonProperty private Menge_FM Menge_FM;
+
             @Data
             public static class Menge_Histologie {
               @JacksonXmlElementWrapper(useWrapping = false)
@@ -108,6 +110,21 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String Morphologie_ICD_O_Version; //
                 @JsonProperty private String Grading;
                 @JsonProperty private String Morphologie_Freitext;
+              }
+            }
+
+            @Data
+            public static class Menge_FM {
+
+              @JacksonXmlElementWrapper(useWrapping = false)
+              private List<Fernmetastase> Fernmetastase;
+
+              @Data
+              @EqualsAndHashCode(callSuper = true)
+              public static class Fernmetastase extends FernMetastaseAbs {
+
+                @JsonProperty private String FM_Diagnosedatum;
+                @JsonProperty private String FM_Lokalisation;
               }
             }
 
@@ -219,6 +236,8 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private TNM TNM;
 
+              @JsonProperty private Menge_FM Menge_FM;
+
               @Data
               @EqualsAndHashCode(callSuper = true)
               public static class Histologie extends ADT_GEKID.HistologieAbs {
@@ -250,6 +269,21 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String TNM_y_Symbol;
                 @JsonProperty private String TNM_r_Symbol;
                 @JsonProperty private String TNM_m_Symbol;
+              }
+
+              @Data
+              public static class Menge_FM {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<Fernmetastase> Fernmetastase;
+
+                @Data
+                @EqualsAndHashCode(callSuper = true)
+                public static class Fernmetastase extends FernMetastaseAbs {
+
+                  @JsonProperty private String FM_Diagnosedatum;
+                  @JsonProperty private String FM_Lokalisation;
+                }
               }
             }
           }
@@ -301,5 +335,11 @@ public class ADT_GEKID implements Serializable {
     public String TNM_y_Symbol;
     public String TNM_r_Symbol;
     public String TNM_m_Symbol;
+  }
+
+  @Data
+  public abstract static class FernMetastaseAbs {
+    public String FM_Diagnosedatum;
+    public String FM_Lokalisation;
   }
 }

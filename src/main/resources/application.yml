@@ -19,16 +19,20 @@ fhir:
     tnmYSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"
     tnmRSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"
     tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
+    fMLokalisationCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"
+    jnuCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
     tnmC: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
     tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
+    fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
     tnmcLoinc: "Stage group.clinical Cancer"
     tnmpLoinc: "Stage group.pathology Cancer"
+    fernMetaLoinc: "Distant metastases.clinical"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:

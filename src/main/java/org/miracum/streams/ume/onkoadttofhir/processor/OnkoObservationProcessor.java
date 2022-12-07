@@ -4,20 +4,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.function.Function;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
+import org.miracum.streams.ume.onkoadttofhir.lookup.FMLokalisationVSLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.GradingLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.TnmCpuPraefixTvsLookup;
-import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
+import org.miracum.streams.ume.onkoadttofhir.model.*;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
-import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
-import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
-import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +27,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   private final GradingLookup gradingLookup = new GradingLookup();
 
   private final TnmCpuPraefixTvsLookup tnmPraefixLookup = new TnmCpuPraefixTvsLookup();
+
+  private final FMLokalisationVSLookup fmLokalisationVSLookup = new FMLokalisationVSLookup();
 
   @Value("${app.version}")
   private String appVersion;
@@ -53,14 +52,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                             .getMeldung()
                             .getMenge_Tumorkonferenz()
                         == null) // ignore tumor conferences
-            /*!value
-            .getXml_daten()
-            .getMenge_Patient()
-            .getPatient()
-            .getMenge_Meldung()
-            .getMeldung()
-            .getMeldung_ID()
-            .startsWith("9999"))*/
             .groupBy(
                 (key, value) -> KeyValue.pair(String.valueOf(value.getReferenz_nummer()), value),
                 Grouped.with(Serdes.String(), new MeldungExportSerde()))
@@ -115,11 +106,16 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       return null;
     }
 
-    HashMap<String, ADT_GEKID.HistologieAbs> histMap = new HashMap<>();
-    HashMap<String, Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>>
+    HashMap<String, Tupel<ADT_GEKID.HistologieAbs, String>> histMap = new HashMap<>();
+    HashMap<
+            String,
+            Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
         cTnmMap = new HashMap<>();
-    HashMap<String, Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>>
+    HashMap<
+            String,
+            Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
         pTnmMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
 
     var patId = "";
 
@@ -139,54 +135,67 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
       // var tumorId = meldung.getTumorzuordnung();
 
-      List<ADT_GEKID.HistologieAbs> histList = new ArrayList<>();
-      Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation> cTnm = null;
-      Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation> pTnm = null;
+      List<Tupel<ADT_GEKID.HistologieAbs, String>> histList = new ArrayList<>();
+      Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> cTnm = null;
+      Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> pTnm = null;
+      List<Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaList = new ArrayList<>();
 
       if (Objects.equals(meldeanlass, "diagnose")) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
-        histList =
-            new ArrayList<>(
-                getValidHistologies(meldung.getDiagnose().getMenge_Histologie().getHistologie()));
+        histList = new ArrayList<>();
+        for (var hist : meldung.getDiagnose().getMenge_Histologie().getHistologie()) {
+          histList.add(new Tupel<>(hist, meldeanlass));
+        }
         cTnm =
-            new Tupel<>(
+            new Triple<>(
                 meldung.getDiagnose().getCTNM(),
-                meldung.getDiagnose().getMenge_Weitere_Klassifikation());
+                meldung.getDiagnose().getMenge_Weitere_Klassifikation(),
+                meldeanlass);
         pTnm =
-            new Tupel<>(
+            new Triple<>(
                 meldung.getDiagnose().getPTNM(),
-                meldung.getDiagnose().getMenge_Weitere_Klassifikation());
+                meldung.getDiagnose().getMenge_Weitere_Klassifikation(),
+                meldeanlass);
+
+        fernMetaList = new ArrayList<>();
+        for (var fernMeta : meldung.getDiagnose().getMenge_FM().getFernmetastase()) {
+          fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+        }
+
       } else if (Objects.equals(meldeanlass, "statusaenderung")) {
         // aus Verlauf: histologie, grading und p-tnm
         // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
         var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
         if (hist != null) {
-          histList = Arrays.asList(hist);
+          histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
         }
-        // TODO tnm Präfixe ob ptnm oder ctnm
+
         var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
         if (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
             || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
             || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p")) {
-          pTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
+          pTnm = new Triple<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null, meldeanlass);
         }
-        // else {
-        //  cTnm = new Tupel<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null);
-        // }
+
+        fernMetaList = new ArrayList<>();
+        for (var fernMeta :
+            meldung.getMenge_Verlauf().getVerlauf().getMenge_FM().getFernmetastase()) {
+          fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+        }
       } else if (Objects.equals(meldeanlass, "behandlungsende")) {
         // aus Operation: histologie, grading und p-tnm
-        // TODO Menge OP berueksichtigen
+        // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
         var hist = meldung.getMenge_OP().getOP().getHistologie();
         if (hist != null) {
-          histList = Arrays.asList(hist);
+          histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
         }
-        pTnm = new Tupel<>(meldung.getMenge_OP().getOP().getTNM(), null);
+        pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
       }
 
       if (!histList.isEmpty()) {
         for (var hist : histList) {
-          histMap.put(hist.getHistologie_ID(), hist);
+          histMap.put(hist.getFirst().getHistologie_ID(), hist);
         }
       }
 
@@ -197,40 +206,76 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       if (pTnm != null && pTnm.getFirst() != null) {
         pTnmMap.put(pTnm.getFirst().getTNM_ID(), pTnm);
       }
+
+      if (!fernMetaList.isEmpty()) {
+        var index = 0;
+        for (var fernMetaTupel : fernMetaList) {
+          var fernMetaId =
+              fernMetaTupel.getFirst().getFM_Diagnosedatum()
+                  + fernMetaTupel.getFirst().getFM_Lokalisation();
+          // Sonderfall OTH, hier brauchen wir alle (Datum und Lokalisation kann mehrfach relevant
+          // vorhanden sein)
+          if (Objects.equals(fernMetaTupel.getFirst().getFM_Lokalisation(), "OTH")) {
+            fernMetaId += index;
+            index++;
+          }
+          fernMetaMap.put(fernMetaId, fernMetaTupel);
+        }
+      }
     }
 
     return mapOnkoResourcesToObservationsBundle(
         new ArrayList<>(histMap.values()),
         new ArrayList<>(cTnmMap.values()),
         new ArrayList<>(pTnmMap.values()),
+        fernMetaMap,
         patId);
   }
 
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
   // return meldungExport -> {
   public Bundle mapOnkoResourcesToObservationsBundle(
-      List<ADT_GEKID.HistologieAbs> histologieList,
-      List<Tupel<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>> cTnmList,
-      List<Tupel<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation>> pTnmList,
+      List<Tupel<ADT_GEKID.HistologieAbs, String>> histologieList,
+      List<Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+          cTnmList,
+      List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+          pTnmList,
+      HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap,
       String patId) {
 
     var bundle = new Bundle();
 
-    if (histologieList.isEmpty() && cTnmList.isEmpty() && pTnmList.isEmpty()) {
+    if (histologieList.isEmpty()
+        && cTnmList.isEmpty()
+        && pTnmList.isEmpty()
+        && fernMetaMap.isEmpty()) {
       // Meldeanlaesse: behandlungsbeginn, tod
       return null;
     }
 
     for (var hist : histologieList) {
-      bundle = createHistologieAndGradingObservation(bundle, patId, hist);
+      bundle =
+          createHistologieAndGradingObservation(bundle, patId, hist.getFirst(), hist.getSecond());
     }
 
     for (var cTnm : cTnmList) {
-      bundle = createCTnmObservation(bundle, patId, cTnm.getFirst(), cTnm.getSecond());
+      bundle =
+          createCTnmObservation(bundle, patId, cTnm.getFirst(), cTnm.getSecond(), cTnm.getThird());
     }
 
     for (var pTnm : pTnmList) {
-      bundle = createPTnmObservation(bundle, patId, pTnm.getFirst(), pTnm.getSecond());
+      bundle =
+          createPTnmObservation(bundle, patId, pTnm.getFirst(), pTnm.getSecond(), pTnm.getThird());
+    }
+
+    for (var fernMetaTupel : fernMetaMap.entrySet()) {
+      bundle =
+          createFernMetaObservation(
+              bundle,
+              patId,
+              fernMetaTupel.getKey(),
+              fernMetaTupel.getValue().getFirst(),
+              fernMetaTupel.getValue().getSecond());
     }
 
     if (bundle.getEntry().isEmpty()) {
@@ -241,7 +286,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   }
 
   public Bundle createHistologieAndGradingObservation(
-      Bundle bundle, String patId, ADT_GEKID.HistologieAbs histologie) {
+      Bundle bundle, String patId, ADT_GEKID.HistologieAbs histologie, String meldeanlass) {
 
     var pid = convertId(patId);
 
@@ -408,11 +453,105 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     return bundle;
   }
 
+  public Bundle createFernMetaObservation(
+      Bundle bundle,
+      String patId,
+      String fernMetaId,
+      ADT_GEKID.FernMetastaseAbs fernMeta,
+      String meldeanlass) {
+
+    var pid = convertId(patId);
+
+    // Create a Fernmetastasen Observation as in
+    // https://simplifier.net/oncology/fernmetastasen-duplicate-2
+    var fernMetaObs = new Observation();
+
+    var fernMetaDateString = fernMeta.getFM_Diagnosedatum();
+    var fernMetaLokal = fernMeta.getFM_Lokalisation();
+
+    fernMetaObs.setId(this.getHash("Observation", fernMetaId));
+
+    fernMetaObs
+        .getMeta()
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+
+    fernMetaObs
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getFernMeta())));
+
+    if (Objects.equals(meldeanlass, "statusaenderung")) {
+      fernMetaObs.setStatus(ObservationStatus.AMENDED);
+    } else {
+      fernMetaObs.setStatus(ObservationStatus.FINAL);
+    }
+
+    fernMetaObs.addCategory(
+        new CodeableConcept()
+            .addCoding(
+                new Coding(
+                    fhirProperties.getSystems().getObservationCategorySystem(),
+                    "laboratory",
+                    "Laboratory")));
+
+    fernMetaObs.setCode(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLoinc())
+                .setCode("21907-1")
+                .setDisplay(fhirProperties.getDisplay().getFernMetaLoinc())));
+
+    fernMetaObs.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
+
+    // Fernmetastasendatum
+    Date fernMetaDate = null;
+
+    if (fernMetaDateString != null) {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+      try {
+        fernMetaDate = formatter.parse(fernMetaDateString);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    if (fernMetaDate != null) {
+      fernMetaObs.setEffective(new DateTimeType(fernMetaDate));
+    }
+
+    fernMetaObs.setValue(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getJnuCs())
+                .setCode("J")
+                .setDisplay("Ja")));
+
+    fernMetaObs.setBodySite(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getFMLokalisationCS())
+                .setCode(fernMetaLokal)
+                .setDisplay(fmLokalisationVSLookup.lookupFMLokalisationVSDisplay(fernMetaLokal))));
+
+    bundle = addResourceAsEntryInBundle(bundle, fernMetaObs);
+
+    return bundle;
+  }
+
   public Bundle createCTnmObservation(
       Bundle bundle,
       String patId,
       ADT_GEKID.CTnmAbs cTnm,
-      Meldung.Diagnose.Menge_Weitere_Klassifikation classification) {
+      Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
+      String meldeanlass) {
 
     var pid = convertId(patId);
     // TNM Observation
@@ -432,7 +571,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmC())));
 
-    tnmcObs.setStatus(ObservationStatus.FINAL);
+    if (Objects.equals(meldeanlass, "statusaenderung")) {
+      tnmcObs.setStatus(ObservationStatus.AMENDED);
+    } else {
+      tnmcObs.setStatus(ObservationStatus.FINAL);
+    }
 
     tnmcObs.addCategory(
         new CodeableConcept()
@@ -592,7 +735,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       Bundle bundle,
       String patId,
       ADT_GEKID.PTnmAbs pTnm,
-      Meldung.Diagnose.Menge_Weitere_Klassifikation classification) {
+      Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
+      String meldeanlass) {
     // Create a TNM-p Observation as in
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
@@ -612,7 +756,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmP())));
 
-    tnmpObs.setStatus(ObservationStatus.FINAL);
+    if (Objects.equals(meldeanlass, "statusaenderung")) {
+      tnmpObs.setStatus(ObservationStatus.AMENDED);
+    } else {
+      tnmpObs.setStatus(ObservationStatus.FINAL);
+    }
 
     tnmpObs.addCategory(
         new CodeableConcept()
@@ -779,7 +927,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       String tnmValueDisplay) {
     var tnmBackBone = new Observation.ObservationComponentComponent();
 
-    if (tnmPraefixCode == null || tnmPraefixDisplay == null) {
+    if (tnmPraefixCode != null) {
       var tnmPraefixExtens =
           new Extension()
               .setUrl(fhirProperties.getUrl().getTnmPraefix())
@@ -804,8 +952,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     return tnmBackBone;
   }
 
-  // TODO k-Regel checken ob das gebraucht wird, da laut Jasmin keine doppelten HistIds in einer
-  // Diagnose
+  /*
+  // k-Regel
   public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(
       List<Meldung.Diagnose.Menge_Histologie.Histologie> mengeHist) {
     // returns a list of unique histIds having the maximum defined morphology code
@@ -827,4 +975,5 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     }
     return new ArrayList<>(histologieMap.values());
   }
+  */
 }
