@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
+    <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
+        <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
+        <Absender_Ansprechpartner/>
+        <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
+    </Absender>
+    <Menge_Patient>
+        <Patient>
+            <Patienten_Stammdaten Patient_ID="1055555999">
+                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
+                <KrankenkassenNr>10000000</KrankenkassenNr>
+                <Patienten_Nachname>Doe</Patienten_Nachname>
+                <Patienten_Vornamen>John</Patienten_Vornamen>
+                <Patienten_Geschlecht>M</Patienten_Geschlecht>
+                <Patienten_Geburtsdatum>11.09.1900</Patienten_Geburtsdatum>
+                <Menge_Adresse>
+                    <Adresse>
+                        <Patienten_Strasse>Johnstr. 7</Patienten_Strasse>
+                        <Patienten_Land>DE</Patienten_Land>
+                        <Patienten_PLZ>91000</Patienten_PLZ>
+                        <Patienten_Ort>Johncity</Patienten_Ort>
+                    </Adresse>
+                </Menge_Adresse>
+            </Patienten_Stammdaten>
+    <Menge_Meldung>
+      <Meldung Meldung_ID="NU0000420" Melder_ID="NU">
+        <Meldedatum>10.05.2021</Meldedatum>
+        <Meldebegruendung>I</Meldebegruendung>
+        <Meldeanlass>diagnose</Meldeanlass>
+        <Tumorzuordnung Tumor_ID="1">
+          <Primaertumor_ICD_Code>C50.9</Primaertumor_ICD_Code>
+          <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+          <Diagnosedatum>12.02.2021</Diagnosedatum>
+          <Seitenlokalisation>L</Seitenlokalisation>
+        </Tumorzuordnung>
+        <Diagnose Tumor_ID="1">
+          <Primaertumor_ICD_Code>C50.9</Primaertumor_ICD_Code>
+          <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+          <Primaertumor_Topographie_ICD_O>C50.9</Primaertumor_Topographie_ICD_O>
+          <Primaertumor_Topographie_ICD_O_Version>32</Primaertumor_Topographie_ICD_O_Version>
+          <Diagnosedatum>12.02.2021</Diagnosedatum>
+          <Diagnosesicherung>2</Diagnosesicherung>
+          <Seitenlokalisation>L</Seitenlokalisation>
+          <Menge_Histologie>
+            <Histologie/>
+          </Menge_Histologie>
+          <Menge_FM>
+            <Fernmetastase>
+              <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
+              <FM_Lokalisation>OSS</FM_Lokalisation>
+            </Fernmetastase>
+            <Fernmetastase>
+              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+              <FM_Lokalisation>HEP</FM_Lokalisation>
+            </Fernmetastase>
+            <Fernmetastase>
+              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+              <FM_Lokalisation>LYM</FM_Lokalisation>
+            </Fernmetastase>
+            <Fernmetastase>
+                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                <FM_Lokalisation>OTH</FM_Lokalisation>
+            </Fernmetastase>
+            <Fernmetastase>
+                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                <FM_Lokalisation>OTH</FM_Lokalisation>
+            </Fernmetastase>
+          </Menge_FM>
+          <cTNM TNM_ID="5368">
+            <TNM_Datum>12.02.2021</TNM_Datum>
+            <TNM_Version>8</TNM_Version>
+            <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
+            <TNM_M>1</TNM_M>
+          </cTNM>
+          <Menge_Weitere_Klassifikation>
+            <Weitere_Klassifikation>
+              <Datum>12.02.2021</Datum>
+              <Name>UICC</Name>
+              <Stadium>IV</Stadium>
+            </Weitere_Klassifikation>
+          </Menge_Weitere_Klassifikation>
+        </Diagnose>
+      </Meldung>
+    </Menge_Meldung>
+</Patient>
+</Menge_Patient>
+<Menge_Melder>
+<Melder Melder_ID="NU">
+    <Meldende_Stelle>NU</Meldende_Stelle>
+</Melder>
+</Menge_Melder>
+</ADT_GEKID>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
+    <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
+        <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
+        <Absender_Ansprechpartner/>
+        <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
+    </Absender>
+    <Menge_Patient>
+        <Patient>
+            <Patienten_Stammdaten Patient_ID="1055555999">
+                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
+                <KrankenkassenNr>10000000</KrankenkassenNr>
+                <Patienten_Nachname>Doe</Patienten_Nachname>
+                <Patienten_Vornamen>John</Patienten_Vornamen>
+                <Patienten_Geschlecht>M</Patienten_Geschlecht>
+                <Patienten_Geburtsdatum>11.09.1900</Patienten_Geburtsdatum>
+                <Menge_Adresse>
+                    <Adresse>
+                        <Patienten_Strasse>Johnstr. 7</Patienten_Strasse>
+                        <Patienten_Land>DE</Patienten_Land>
+                        <Patienten_PLZ>91000</Patienten_PLZ>
+                        <Patienten_Ort>Johncity</Patienten_Ort>
+                    </Adresse>
+                </Menge_Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung Meldung_ID="NU0008318" Melder_ID="NU">
+                    <Meldedatum>28.07.2022</Meldedatum>
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Meldeanlass>statusaenderung</Meldeanlass>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD_Code>C61</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Version>10 2020 GM</Primaertumor_ICD_Version>
+                        <Diagnosedatum>00.12.2020</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                    </Tumorzuordnung>
+                    <Menge_Verlauf>
+                        <Verlauf Verlauf_ID="77728">
+                            <Untersuchungsdatum_Verlauf>26.08.2021</Untersuchungsdatum_Verlauf>
+                            <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>
+                            <Verlauf_Lokaler_Tumorstatus>K</Verlauf_Lokaler_Tumorstatus>
+                            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+                            <Verlauf_Tumorstatus_Fernmetastasen>R</Verlauf_Tumorstatus_Fernmetastasen>
+                            <Menge_FM>
+                                <Fernmetastase>
+                                    <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
+                                    <FM_Lokalisation>OSS</FM_Lokalisation>
+                                </Fernmetastase>
+                                <Fernmetastase>
+                                    <FM_Diagnosedatum>23.02.2021</FM_Diagnosedatum>
+                                    <FM_Lokalisation>LYM</FM_Lokalisation>
+                                  </Fernmetastase>
+                                  <Fernmetastase>
+                                      <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                      <FM_Lokalisation>OTH</FM_Lokalisation>
+                                  </Fernmetastase>
+                            </Menge_FM>
+                            <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>
+                            <Modul_Prostata>
+                                <PSA>0.160</PSA>
+                                <DatumPSA>2021-08-26+02:00</DatumPSA>
+                            </Modul_Prostata>
+                            <Modul_Allgemein>
+                                <DatumStudienrekrutierung>
+                                    <NU>N</NU>
+                                </DatumStudienrekrutierung>
+                            </Modul_Allgemein>
+                        </Verlauf>
+                    </Menge_Verlauf>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+    <Menge_Melder>
+        <Melder Melder_ID="NU">
+            <Meldende_Stelle>NU</Meldende_Stelle>
+        </Melder>
+    </Menge_Melder>
+</ADT_GEKID>

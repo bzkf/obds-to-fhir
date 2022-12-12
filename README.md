@@ -4,7 +4,19 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Used FHIR profiles
 
-TODO
+## Observations
+
+* Histologie (<https://simplifier.net/oncology/histologie>)
+* Grading (<https://simplifier.net/oncology/grading>)
+* TNMc (<https://simplifier.net/oncology/tnmc>)
+* TNMp (<https://simplifier.net/oncology/tnmp>)
+* Fernmetastasen (<https://simplifier.net/oncology/fernmetastasen-duplicate-2>)
+
+## Condition
+
+## Procedure
+
+## MedicationStatement
 
 ## Dev
 
