@@ -72,6 +72,10 @@ public class ADT_GEKID implements Serializable {
           @Data
           public static class Tumorzuordnung {
             @JsonProperty private String Tumor_ID;
+            @JsonProperty private String Primaertumor_ICD_Code;
+            @JsonProperty private String Primaertumor_ICD_Version;
+            @JsonProperty private String Diagnosedatum;
+            @JsonProperty private String Seitenlokalisation;
           }
 
           @Data

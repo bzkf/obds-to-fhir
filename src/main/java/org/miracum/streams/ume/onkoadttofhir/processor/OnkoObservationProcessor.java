@@ -327,7 +327,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
           .getMeta()
           .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
 
-      gradingObs.setStatus(ObservationStatus.FINAL); // bei Korrektur "amended"
+      if (Objects.equals(meldeanlass, "statusaenderung")) {
+        gradingObs.setStatus(ObservationStatus.AMENDED);
+      } else {
+        gradingObs.setStatus(ObservationStatus.FINAL);
+      }
 
       gradingObs.addCategory(
           new CodeableConcept()
@@ -365,7 +369,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getGradingDktk())
                   .setCode(grading)
-                  .setVersion(gradingLookup.lookupGradingDisplay(grading)));
+                  .setDisplay(gradingLookup.lookupGradingDisplay(grading)));
 
       gradingObs.setValue(gradingValueCodeableCon);
     }
@@ -389,7 +393,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
 
-    histObs.setStatus(ObservationStatus.FINAL); // (bei Korrektur "amended" )
+    if (Objects.equals(meldeanlass, "statusaenderung")) {
+      histObs.setStatus(ObservationStatus.AMENDED);
+    } else {
+      histObs.setStatus(ObservationStatus.FINAL);
+    }
 
     histObs.addCategory(
         new CodeableConcept()

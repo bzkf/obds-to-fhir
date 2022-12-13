@@ -33,6 +33,9 @@ public class FhirProperties {
     private String tnmMSymbolCs;
     private String fMLokalisationCS;
     private String jnuCs;
+    private String icd10gm;
+    private String adtSeitenlokalisation;
+    private String snomed;
   }
 
   @Data
@@ -42,6 +45,7 @@ public class FhirProperties {
     private String tnmC;
     private String tnmP;
     private String fernMeta;
+    private String condition;
   }
 
   @Data
