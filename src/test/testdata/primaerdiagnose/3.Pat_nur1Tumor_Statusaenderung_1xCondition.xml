@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.2.1">
+    <Absender Absender_ID="UKER_ONKOSTAR" Software_ID="ONKOSTAR" Installations_ID="2.11.1.3">
+        <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
+        <Absender_Ansprechpartner/>
+        <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
+    </Absender>
+    <Menge_Patient>
+        <Patient>
+            <Patienten_Stammdaten Patient_ID="1055555222">
+                <KrankenversichertenNr>Q00000333</KrankenversichertenNr>
+                <KrankenkassenNr>10000333</KrankenkassenNr>
+                <Patienten_Nachname>Kadabra</Patienten_Nachname>
+                <Patienten_Vornamen>Abra</Patienten_Vornamen>
+                <Patienten_Geschlecht>M</Patienten_Geschlecht>
+                <Patienten_Geburtsdatum>26.02.1955</Patienten_Geburtsdatum>
+                <Menge_Adresse>
+                    <Adresse>
+                        <Patienten_Strasse>Abrastr. 7</Patienten_Strasse>
+                        <Patienten_Land>DE</Patienten_Land>
+                        <Patienten_PLZ>91005</Patienten_PLZ>
+                        <Patienten_Ort>Kadabracity</Patienten_Ort>
+                    </Adresse>
+                </Menge_Adresse>
+            </Patienten_Stammdaten> 
+            <Menge_Meldung>
+                <Meldung Meldung_ID="NC0007357" Melder_ID="NC">
+                    <Meldedatum>04.08.2022</Meldedatum>
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Meldeanlass>statusaenderung</Meldeanlass>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD_Code>D42.0</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+                        <Diagnosedatum>04.01.2021</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                    </Tumorzuordnung>
+                    <Menge_Verlauf>
+                        <Verlauf Verlauf_ID="71057">
+                            <Untersuchungsdatum_Verlauf>23.04.2021</Untersuchungsdatum_Verlauf>
+                            <Gesamtbeurteilung_Tumorstatus>V</Gesamtbeurteilung_Tumorstatus>
+                            <Verlauf_Lokaler_Tumorstatus>K</Verlauf_Lokaler_Tumorstatus>
+                            <Modul_Allgemein>
+                                <DatumStudienrekrutierung>
+                                    <NU>N</NU>
+                                </DatumStudienrekrutierung>
+                            </Modul_Allgemein>
+                        </Verlauf>
+                    </Menge_Verlauf>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+    <Menge_Melder>
+        <Melder Melder_ID="NC">
+            <Meldende_Stelle>NC</Meldende_Stelle>
+        </Melder>
+    </Menge_Melder>
+</ADT_GEKID>
