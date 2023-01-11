@@ -70,7 +70,8 @@ public class ADT_GEKID implements Serializable {
           @JsonProperty private Menge_Tumorkonferenz Menge_Tumorkonferenz;
 
           @Data
-          public static class Tumorzuordnung {
+          @EqualsAndHashCode(callSuper = true)
+          public static class Tumorzuordnung extends PrimaryConditionAbs {
             @JsonProperty private String Tumor_ID;
             @JsonProperty private String Primaertumor_ICD_Code;
             @JsonProperty private String Primaertumor_ICD_Version;
@@ -79,7 +80,8 @@ public class ADT_GEKID implements Serializable {
           }
 
           @Data
-          public static class Diagnose {
+          @EqualsAndHashCode(callSuper = true)
+          public static class Diagnose extends PrimaryConditionAbs {
 
             @JsonProperty private String Tumor_ID;
             @JsonProperty private String Primaertumor_ICD_Code;
@@ -345,5 +347,14 @@ public class ADT_GEKID implements Serializable {
   public abstract static class FernMetastaseAbs {
     public String FM_Diagnosedatum;
     public String FM_Lokalisation;
+  }
+
+  @Data
+  public abstract static class PrimaryConditionAbs {
+    public String Tumor_ID;
+    public String Primaertumor_ICD_Code;
+    public String Primaertumor_ICD_Version;
+    public String Diagnosedatum;
+    public String Seitenlokalisation;
   }
 }

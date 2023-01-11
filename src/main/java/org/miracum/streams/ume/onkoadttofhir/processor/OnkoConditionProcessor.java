@@ -2,19 +2,20 @@ package org.miracum.streams.ume.onkoadttofhir.processor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.ValueMapper;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.DisplayAdtSeitenlokalisationLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.SnomedCtSeitenlokalisationLookup;
+import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
+import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
+import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
+import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,70 +43,128 @@ public class OnkoConditionProcessor extends OnkoProcessor {
         stringOnkoMeldungExpTable
             .filter(
                 (key, value) ->
-                    Objects.equals(
-                        value
+                    value
                             .getXml_daten()
                             .getMenge_Patient()
                             .getPatient()
                             .getMenge_Meldung()
                             .getMeldung()
-                            .getMeldeanlass(),
-                        "diagnose"))
-            .mapValues(getOnkoToConditionBundleMapper())
-            .toStream()
-            .filter((key, value) -> value != null);
+                            .getMenge_Tumorkonferenz()
+                        == null) // ignore tumor conferences
+            .groupBy(
+                (key, value) -> KeyValue.pair(String.valueOf(value.getReferenz_nummer()), value),
+                Grouped.with(Serdes.String(), new MeldungExportSerde()))
+            .aggregate(
+                MeldungExportList::new,
+                (key, value, aggregate) -> aggregate.addElement(value),
+                (key, value, aggregate) -> aggregate.removeElement(value),
+                Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+            .mapValues(this.getOnkoToConditionBundleMapper())
+            .filter((key, value) -> value != null)
+            .toStream();
   }
 
-  public ValueMapper<MeldungExport, Bundle> getOnkoToConditionBundleMapper() {
-    return meldungExport -> {
-      var onkoCondition = new Condition();
+  public ValueMapper<MeldungExportList, Bundle> getOnkoToConditionBundleMapper() {
+    return meldungExporte -> {
+      var meldungen = meldungExporte.getElements();
 
-      // TODO mehrere Tumor Ids berueksichtigen
+      var meldungExportMap = new HashMap<Integer, MeldungExport>();
+      // meldeanlass bleibt in LKR Meldung immer gleich
+      for (var meldung : meldungen) {
+        var lkrId = meldung.getLkr_meldung();
+        var currentMeldungVersion = meldungExportMap.get(lkrId);
+        if (currentMeldungVersion == null
+            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
+          meldungExportMap.put(lkrId, meldung);
+        }
+      }
 
-      var meldung =
-          meldungExport
-              .getXml_daten()
-              .getMenge_Patient()
-              .getPatient()
-              .getMenge_Meldung()
-              .getMeldung();
+      List<String> definedOrder = Arrays.asList("statusaenderung", "behandlungsende", "diagnose");
 
-      var diagnose = meldung.getDiagnose();
+      Comparator<MeldungExport> meldungComparator =
+          Comparator.comparing(
+              m ->
+                  definedOrder.indexOf(
+                      m.getXml_daten()
+                          .getMenge_Patient()
+                          .getPatient()
+                          .getMenge_Meldung()
+                          .getMeldung()
+                          .getMeldeanlass()));
 
-      var patId = meldungExport.getReferenz_nummer();
+      List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
+      meldungExportList.sort(meldungComparator);
 
-      var conIdentifier = patId + meldung.getMeldung_ID() + meldung.getMeldeanlass();
+      return mapOnkoResourcesToCondition(meldungExportList);
+    };
+  }
 
-      onkoCondition.setId(this.getHash("Condition", conIdentifier));
+  public Bundle mapOnkoResourcesToCondition(List<MeldungExport> meldungExportList) {
 
-      onkoCondition
-          .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
-      onkoCondition
-          .getMeta()
-          .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));
+    if (meldungExportList.isEmpty()) {
+      return null;
+    }
 
-      var coding = new Coding();
-      var icd10Version = diagnose.getPrimaertumor_ICD_Version();
-      // Aufbau: "10 2021 GM"
-      String[] icdVersionArray = icd10Version.split(" ");
+    // get last element of meldungExportList
+    var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
-      if (icdVersionArray.length == 3 && icdVersionArray[1].matches("^20\\d{2}$")) {
-        coding.setVersion(icdVersionArray[1]);
-      } // FIXME: else throw exception?
+    var onkoCondition = new Condition();
 
-      coding
-          .setCode(diagnose.getPrimaertumor_ICD_Code())
-          .setSystem(fhirProperties.getSystems().getIcd10gm());
+    var meldung =
+        meldungExport
+            .getXml_daten()
+            .getMenge_Patient()
+            .getPatient()
+            .getMenge_Meldung()
+            .getMeldung();
 
-      var conditionCode = new CodeableConcept().addCoding(coding);
-      onkoCondition.setCode(conditionCode);
+    ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
-      var bodySiteADTCoding = new Coding();
-      var bodySiteSNOMEDCoding = new Coding();
+    // diagnose Tag ist only specified in meldeanlass 'diagnose', otherwise use tag 'Tumorzuordung'
+    if (primDia == null) {
+      primDia = meldung.getTumorzuordnung();
 
-      var adtBodySite = diagnose.getSeitenlokalisation();
+      if (primDia == null) {
+        return null;
+      }
+    }
 
+    var patId = meldungExport.getReferenz_nummer();
+    var pid = convertId(patId);
+
+    var conIdentifier = pid + "condition" + primDia.getTumor_ID();
+
+    onkoCondition.setId(this.getHash("Condition", conIdentifier));
+
+    onkoCondition
+        .getMeta()
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+    onkoCondition
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));
+
+    var coding = new Coding();
+    var icd10Version = primDia.getPrimaertumor_ICD_Version();
+    // Aufbau: "10 2021 GM"
+    String[] icdVersionArray = icd10Version.split(" ");
+
+    if (icdVersionArray.length == 3 && icdVersionArray[1].matches("^20\\d{2}$")) {
+      coding.setVersion(icdVersionArray[1]);
+    } // FIXME: else throw exception?
+
+    coding
+        .setCode(primDia.getPrimaertumor_ICD_Code())
+        .setSystem(fhirProperties.getSystems().getIcd10gm());
+
+    var conditionCode = new CodeableConcept().addCoding(coding);
+    onkoCondition.setCode(conditionCode);
+
+    var bodySiteADTCoding = new Coding();
+    var bodySiteSNOMEDCoding = new Coding();
+
+    var adtBodySite = primDia.getSeitenlokalisation();
+
+    if (adtBodySite != null) {
       bodySiteADTCoding
           .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
           .setCode(adtBodySite)
@@ -117,54 +176,42 @@ public class OnkoConditionProcessor extends OnkoProcessor {
           .setDisplay(snomedCtSeitenlokalisationLookup.lookupSnomedDisplay(adtBodySite));
 
       var bodySiteConcept = new CodeableConcept();
-
       bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
-
       onkoCondition.addBodySite(bodySiteConcept);
+    }
 
-      var pid = convertId(patId);
-      onkoCondition.setSubject(
-          new Reference()
-              .setReference("Patient/" + this.getHash("Patient", pid))
-              .setIdentifier(
-                  new Identifier()
-                      .setSystem(fhirProperties.getSystems().getPatientId())
-                      .setType(
-                          new CodeableConcept(
-                              new Coding(
-                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(pid)));
+    onkoCondition.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
 
-      Date conditionDate = null;
-      var conditionDateString = diagnose.getDiagnosedatum();
+    Date conditionDate = null;
+    var conditionDateString = primDia.getDiagnosedatum();
 
-      if (conditionDateString != null) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        try {
-          conditionDate = formatter.parse(conditionDateString);
-        } catch (ParseException e) {
-          throw new RuntimeException(e);
-        }
+    if (conditionDateString != null) {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
+      try {
+        conditionDate = formatter.parse(conditionDateString);
+      } catch (ParseException e) {
+        throw new RuntimeException(e);
       }
+    }
 
-      if (conditionDate != null) {
-        onkoCondition.setOnset(new DateTimeType(conditionDate));
-      }
+    if (conditionDate != null) {
+      onkoCondition.setOnset(new DateTimeType(conditionDate));
+    }
 
-      var bundle = new Bundle();
-      bundle
-          .setType(Bundle.BundleType.TRANSACTION)
-          .addEntry()
-          .setFullUrl(new Reference("Condition/" + onkoCondition.getId()).getReference())
-          .setResource(onkoCondition)
-          .setRequest(
-              new Bundle.BundleEntryRequestComponent()
-                  .setMethod(Bundle.HTTPVerb.PUT)
-                  .setUrl(
-                      String.format(
-                          "%s/%s", onkoCondition.getResourceType().name(), onkoCondition.getId())));
+    var bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.TRANSACTION);
+    bundle = addResourceAsEntryInBundle(bundle, onkoCondition);
 
-      return bundle;
-    };
+    return bundle;
   }
 }

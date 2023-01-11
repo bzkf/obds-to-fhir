@@ -312,7 +312,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var grading = histologie.getGrading();
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var gradingObsIdentifier = patId + "grading" + histId;
+    var gradingObsIdentifier = pid + "grading" + histId;
 
     // grading may be undefined / null
     if (grading != null) {
@@ -381,7 +381,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // TODO ID muss vorhanden sein ist aber ggf. kein Pflichtfeld, im Batch Job ggf. konfigurierbar
     // machen
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var observationIdentifier = patId + "histologie" + histId;
+    var observationIdentifier = pid + "histologie" + histId;
 
     histObs.setId(this.getHash("Observation", observationIdentifier));
 
@@ -567,7 +567,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // https://simplifier.net/oncology/tnmc
     var tnmcObs = new Observation();
     // Generate an identifier based on Referenz_nummer (Pat. Id) and c-tnm Id
-    var tnmcObsIdentifier = patId + "ctnm" + cTnm.getTNM_ID();
+    var tnmcObsIdentifier = pid + "ctnm" + cTnm.getTNM_ID();
 
     tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
 
@@ -752,7 +752,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var pid = convertId(patId);
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
-    var tnmpObsIdentifier = patId + "ptnm" + pTnm.getTNM_ID();
+    var tnmpObsIdentifier = pid + "ptnm" + pTnm.getTNM_ID();
 
     tnmpObs.setId(this.getHash("Observation", tnmpObsIdentifier));
 
