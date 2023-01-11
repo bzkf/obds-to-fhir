@@ -22,7 +22,7 @@
                         <Patienten_Ort>Johncity</Patienten_Ort>
                     </Adresse>
                 </Menge_Adresse>
-            </Patienten_Stammdaten> 
+            </Patienten_Stammdaten>
             <Menge_Meldung>
                 <Meldung Meldung_ID="NC0000720" Melder_ID="NC">
                     <Meldedatum>20.05.2021</Meldedatum>
