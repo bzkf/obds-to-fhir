@@ -22,7 +22,7 @@
                         <Patienten_Ort>Kadabracity</Patienten_Ort>
                     </Adresse>
                 </Menge_Adresse>
-            </Patienten_Stammdaten> 
+            </Patienten_Stammdaten>
             <Menge_Meldung>
                 <Meldung Meldung_ID="NC0007357" Melder_ID="NC">
                     <Meldedatum>04.08.2022</Meldedatum>

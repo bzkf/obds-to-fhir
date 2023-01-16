@@ -14,6 +14,8 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Condition
 
+* Primärdiagnose (<https://simplifier.net/oncology/primaerdiagnose>)
+
 ## Procedure
 
 ## MedicationStatement
