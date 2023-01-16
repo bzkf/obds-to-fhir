@@ -721,15 +721,11 @@ VALUES (10, 8318, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
     </Menge_Melder>
 </ADT_GEKID>'), 1, '1055555999');
 
-
-
-
-
 INSERT INTO DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT (ID, LKR_MELDUNG, LKR_EXPORT, TYP, XML_DATEN, VERSIONSNUMMER,
                                                          REFERENZ_NUMMER)
-VALUES (11, 420, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
-<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
-    <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
+VALUES (11, 720, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.2.1">
+    <Absender Absender_ID="UKER_ONKOSTAR" Software_ID="ONKOSTAR" Installations_ID="2.9.6">
         <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
         <Absender_Ansprechpartner/>
         <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
@@ -752,18 +748,18 @@ VALUES (11, 420, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
                     </Adresse>
                 </Menge_Adresse>
             </Patienten_Stammdaten>
-    <Menge_Meldung>
-      <Meldung Meldung_ID="NU0000420" Melder_ID="NU">
-        <Meldedatum>10.05.2021</Meldedatum>
-        <Meldebegruendung>I</Meldebegruendung>
-        <Meldeanlass>diagnose</Meldeanlass>
-        <Tumorzuordnung Tumor_ID="1">
-          <Primaertumor_ICD_Code>C50.9</Primaertumor_ICD_Code>
-          <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
-          <Diagnosedatum>12.02.2021</Diagnosedatum>
-          <Seitenlokalisation>L</Seitenlokalisation>
-        </Tumorzuordnung>   ') ||
-                        to_clob('<Diagnose Tumor_ID="1">
+            <Menge_Meldung>
+                <Meldung Meldung_ID="NC0000720" Melder_ID="NC">
+                    <Meldedatum>20.05.2021</Meldedatum>
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Meldeanlass>diagnose</Meldeanlass>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+                        <Diagnosedatum>18.03.2021</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                    </Tumorzuordnung>   ') ||
+                       to_clob('<Diagnose Tumor_ID="1">
           <Primaertumor_ICD_Code>C50.9</Primaertumor_ICD_Code>
           <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
           <Primaertumor_Topographie_ICD_O>C50.9</Primaertumor_Topographie_ICD_O>
@@ -819,90 +815,8 @@ VALUES (11, 420, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
     <Meldende_Stelle>NU</Meldende_Stelle>
 </Melder>
 </Menge_Melder>
-</ADT_GEKID>'), 1, '1055555999');
-
-
-
-INSERT INTO DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT (ID, LKR_MELDUNG, LKR_EXPORT, TYP, XML_DATEN, VERSIONSNUMMER,
-                                                         REFERENZ_NUMMER)
-VALUES (11, 720, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
-<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.2.1">
-    <Absender Absender_ID="UKER_ONKOSTAR" Software_ID="ONKOSTAR" Installations_ID="2.9.6">
-        <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
-        <Absender_Ansprechpartner/>
-        <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
-    </Absender>
-    <Menge_Patient>
-        <Patient>
-            <Patienten_Stammdaten Patient_ID="1055555999">
-                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
-                <KrankenkassenNr>10000000</KrankenkassenNr>
-                <Patienten_Nachname>Doe</Patienten_Nachname>
-                <Patienten_Vornamen>John</Patienten_Vornamen>
-                <Patienten_Geschlecht>M</Patienten_Geschlecht>
-                <Patienten_Geburtsdatum>11.09.1900</Patienten_Geburtsdatum>
-                <Menge_Adresse>
-                    <Adresse>
-                        <Patienten_Strasse>Johnstr. 7</Patienten_Strasse>
-                        <Patienten_Land>DE</Patienten_Land>
-                        <Patienten_PLZ>91000</Patienten_PLZ>
-                        <Patienten_Ort>Johncity</Patienten_Ort>
-                    </Adresse>
-                </Menge_Adresse>
-            </Patienten_Stammdaten>
-            <Menge_Meldung>
-                <Meldung Meldung_ID="NC0000720" Melder_ID="NC">
-                    <Meldedatum>20.05.2021</Meldedatum>
-                    <Meldebegruendung>I</Meldebegruendung>
-                    <Meldeanlass>diagnose</Meldeanlass>
-                    <Tumorzuordnung Tumor_ID="1">
-                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
-                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
-                        <Diagnosedatum>18.03.2021</Diagnosedatum>
-                        <Seitenlokalisation>T</Seitenlokalisation>
-                    </Tumorzuordnung>   ') ||
-                       to_clob('<Diagnose Tumor_ID="1">
-                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
-                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
-                        <Primaertumor_Topographie_ICD_O>C72.0</Primaertumor_Topographie_ICD_O>
-                        <Primaertumor_Topographie_ICD_O_Version>32</Primaertumor_Topographie_ICD_O_Version>
-                        <Diagnosedatum>18.03.2021</Diagnosedatum>
-                        <Diagnosesicherung>7</Diagnosesicherung>
-                        <Seitenlokalisation>T</Seitenlokalisation>
-                        <Menge_Fruehere_Tumorerkrankung>
-                            <Fruehere_Tumorerkrankung>
-                                <ICD_Code>C41.01</ICD_Code>
-                                <ICD_Version>10 2021 GM</ICD_Version>
-                                <Diagnosedatum>08.02.2021</Diagnosedatum>
-                            </Fruehere_Tumorerkrankung>
-                        </Menge_Fruehere_Tumorerkrankung>
-                        <Menge_Histologie>
-                            <Histologie Histologie_ID="8594">
-                                <Tumor_Histologiedatum>18.03.2021</Tumor_Histologiedatum>
-                                <Histologie_EinsendeNr>N 9391/3</Histologie_EinsendeNr>
-                                <Morphologie_Code>9391/3</Morphologie_Code>
-                                <Morphologie_ICD_O_Version>32</Morphologie_ICD_O_Version>
-                                <Grading>T</Grading>
-                            </Histologie>
-                        </Menge_Histologie>
-                        <Menge_Weitere_Klassifikation>
-                            <Weitere_Klassifikation>
-                                <Datum>18.03.2021</Datum>
-                                <Name>WHO-2016</Name>
-                                <Stadium>II</Stadium>
-                            </Weitere_Klassifikation>
-                        </Menge_Weitere_Klassifikation>
-                    </Diagnose>
-                </Meldung>
-            </Menge_Meldung>
-        </Patient>
-    </Menge_Patient>
-    <Menge_Melder>
-        <Melder Melder_ID="NC">
-            <Meldende_Stelle>NC</Meldende_Stelle>
-        </Melder>
-    </Menge_Melder>
-</ADT_GEKID>'), 1, '1055555999');
+</ADT_GEKID>
+'), 1, '1055555999');
 
 
 
