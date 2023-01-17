@@ -2,6 +2,8 @@ app:
   version: 0.0.1-SNAPSHOT
 
 fhir:
+  extensions:
+    fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -31,6 +33,7 @@ fhir:
     tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
     fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
     condition: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
+    genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -53,6 +56,8 @@ spring:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportConditionProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportConditionProcessor-in-1:
+          destination: fhir.onkoadt.Observation
         getMeldungExportConditionProcessor-out-0:
           destination: fhir.onkoadt.Condition
           producer:
@@ -79,7 +84,10 @@ spring:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportConditionProcessor-in-0:
               consumer:
-                application-id: onko-meldung-exp-observ-processor
+                application-id: onko-meldung-exp-cond-processor
+            getMeldungExportConditionProcessor-in-1:
+              consumer:
+                application-id: onko-meldung-exp-cond-processor
             getMeldungExportConditionProcessor-out-0:
               producer:
                 configuration:

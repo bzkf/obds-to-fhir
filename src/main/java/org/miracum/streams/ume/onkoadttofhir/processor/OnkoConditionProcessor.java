@@ -3,7 +3,8 @@ package org.miracum.streams.ume.onkoadttofhir.processor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.BiFunction;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -37,9 +38,11 @@ public class OnkoConditionProcessor extends OnkoProcessor {
   }
 
   @Bean
-  public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
+  public BiFunction<KTable<String, MeldungExport>, KTable<String, Bundle>, KStream<String, Bundle>>
+      // public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportConditionProcessor() {
-    return stringOnkoMeldungExpTable ->
+    return (stringOnkoMeldungExpTable, stringOnkoObsBundles) ->
+        // return (stringOnkoMeldungExpTable) ->
         stringOnkoMeldungExpTable
             .filter(
                 (key, value) ->
@@ -52,60 +55,46 @@ public class OnkoConditionProcessor extends OnkoProcessor {
                             .getMenge_Tumorkonferenz()
                         == null) // ignore tumor conferences
             .groupBy(
-                (key, value) -> KeyValue.pair(String.valueOf(value.getReferenz_nummer()), value),
+                (key, value) ->
+                    KeyValue.pair(
+                        "Struct{REFERENZ_NUMMER="
+                            + value.getReferenz_nummer()
+                            + ",TUMOR_ID="
+                            + getTumorIdFromAdt(value)
+                            + "}",
+                        value),
                 Grouped.with(Serdes.String(), new MeldungExportSerde()))
             .aggregate(
                 MeldungExportList::new,
                 (key, value, aggregate) -> aggregate.addElement(value),
                 (key, value, aggregate) -> aggregate.removeElement(value),
                 Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+            .leftJoin(stringOnkoObsBundles, Pair::of)
             .mapValues(this.getOnkoToConditionBundleMapper())
             .filter((key, value) -> value != null)
             .toStream();
   }
 
-  public ValueMapper<MeldungExportList, Bundle> getOnkoToConditionBundleMapper() {
-    return meldungExporte -> {
-      var meldungen = meldungExporte.getElements();
+  public ValueMapper<Pair<MeldungExportList, Bundle>, Bundle> getOnkoToConditionBundleMapper() {
+    return meldungPair -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungPair.getLeft(),
+              Arrays.asList("diagnose", "behandlungsende", "statusaenderung"));
 
-      var meldungExportMap = new HashMap<Integer, MeldungExport>();
-      // meldeanlass bleibt in LKR Meldung immer gleich
-      for (var meldung : meldungen) {
-        var lkrId = meldung.getLkr_meldung();
-        var currentMeldungVersion = meldungExportMap.get(lkrId);
-        if (currentMeldungVersion == null
-            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
-          meldungExportMap.put(lkrId, meldung);
-        }
-      }
-
-      List<String> definedOrder = Arrays.asList("statusaenderung", "behandlungsende", "diagnose");
-
-      Comparator<MeldungExport> meldungComparator =
-          Comparator.comparing(
-              m ->
-                  definedOrder.indexOf(
-                      m.getXml_daten()
-                          .getMenge_Patient()
-                          .getPatient()
-                          .getMenge_Meldung()
-                          .getMeldung()
-                          .getMeldeanlass()));
-
-      List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
-      meldungExportList.sort(meldungComparator);
-
-      return mapOnkoResourcesToCondition(meldungExportList);
+      return mapOnkoResourcesToCondition(meldungExportList, meldungPair.getRight());
     };
   }
 
-  public Bundle mapOnkoResourcesToCondition(List<MeldungExport> meldungExportList) {
+  public Bundle mapOnkoResourcesToCondition(
+      List<MeldungExport> meldungExportList, Bundle observationBundle) {
 
     if (meldungExportList.isEmpty()) {
       return null;
     }
 
     // get last element of meldungExportList
+    // TODO ueberpruefen ob letze Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
     var onkoCondition = new Condition();
@@ -206,6 +195,39 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
     if (conditionDate != null) {
       onkoCondition.setOnset(new DateTimeType(conditionDate));
+    }
+
+    var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
+    var evidenceBackBoneComponentList = new ArrayList<Condition.ConditionEvidenceComponent>();
+
+    if (observationBundle != null && observationBundle.getEntry() != null) {
+      for (var obsEntry : observationBundle.getEntry()) {
+        var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
+        if (profile.equals(fhirProperties.getProfiles().getHistologie())
+            || profile.equals(fhirProperties.getProfiles().getGenVariante())) {
+          var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
+          conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
+          evidenceBackBoneComponentList.add(conditionEvidenceComponent);
+        } else if (profile.equals(fhirProperties.getProfiles().getTnmC())
+            || profile.equals(fhirProperties.getProfiles().getTnmP())) {
+          var conditionStageComponent = new Condition.ConditionStageComponent();
+          conditionStageComponent.addAssessment(new Reference(obsEntry.getFullUrl()));
+          stageBackBoneComponentList.add(conditionStageComponent);
+        } else if (profile.equals(fhirProperties.getProfiles().getFernMeta())) {
+          onkoCondition
+              .addExtension()
+              .setUrl(fhirProperties.getExtensions().getFernMetaExt())
+              .setValue(new Reference(obsEntry.getFullUrl()));
+        }
+      }
+    }
+
+    if (!stageBackBoneComponentList.isEmpty()) {
+      onkoCondition.setStage(stageBackBoneComponentList);
+    }
+
+    if (!evidenceBackBoneComponentList.isEmpty()) {
+      onkoCondition.setEvidence(evidenceBackBoneComponentList);
     }
 
     var bundle = new Bundle();

@@ -50,6 +50,8 @@ curl -X POST \
   }
 }'
 
+# Typ -1 entspricht Arbeitsversion und kann daher im Connector herausgefiltert werden
+
 #curl -X POST \
 #  http://localhost:8083/connectors \
 #  -H 'Content-Type: application/json' \

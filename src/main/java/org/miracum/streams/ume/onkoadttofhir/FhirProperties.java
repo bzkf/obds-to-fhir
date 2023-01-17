@@ -8,10 +8,16 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "fhir")
 @Data
 public class FhirProperties {
+  private FhirExtensions extensions;
   private FhirSystems systems;
   private FhirDisplay display;
   private FhirProfiles profiles;
   private FhirUrl url;
+
+  @Data
+  public static class FhirExtensions {
+    private String fernMetaExt;
+  }
 
   @Data
   public static class FhirSystems {
@@ -46,6 +52,7 @@ public class FhirProperties {
     private String tnmP;
     private String fernMeta;
     private String condition;
+    private String genVariante;
   }
 
   @Data

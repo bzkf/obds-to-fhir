@@ -53,7 +53,14 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                             .getMenge_Tumorkonferenz()
                         == null) // ignore tumor conferences
             .groupBy(
-                (key, value) -> KeyValue.pair(String.valueOf(value.getReferenz_nummer()), value),
+                (key, value) ->
+                    KeyValue.pair(
+                        "Struct{REFERENZ_NUMMER="
+                            + value.getReferenz_nummer()
+                            + ",TUMOR_ID="
+                            + getTumorIdFromAdt(value)
+                            + "}",
+                        value),
                 Grouped.with(Serdes.String(), new MeldungExportSerde()))
             .aggregate(
                 MeldungExportList::new,
@@ -67,34 +74,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
   public ValueMapper<MeldungExportList, Bundle> getOnkoToObservationBundleMapper() {
     return meldungExporte -> {
-      var meldungen = meldungExporte.getElements();
-
-      var meldungExportMap = new HashMap<Integer, MeldungExport>();
-      // meldeanlass bleibt in LKR Meldung immer gleich
-      for (var meldung : meldungen) {
-        var lkrId = meldung.getLkr_meldung();
-        var currentMeldungVersion = meldungExportMap.get(lkrId);
-        if (currentMeldungVersion == null
-            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
-          meldungExportMap.put(lkrId, meldung);
-        }
-      }
-
-      List<String> definedOrder = Arrays.asList("diagnose", "statusaenderung", "behandlungsende");
-
-      Comparator<MeldungExport> meldungComparator =
-          Comparator.comparing(
-              m ->
-                  definedOrder.indexOf(
-                      m.getXml_daten()
-                          .getMenge_Patient()
-                          .getPatient()
-                          .getMenge_Meldung()
-                          .getMeldung()
-                          .getMeldeanlass()));
-
-      List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
-      meldungExportList.sort(meldungComparator);
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungExporte, Arrays.asList("behandlungsende", "statusaenderung", "diagnose"));
 
       return extractOnkoResourcesFromReportingReason(meldungExportList);
     };
@@ -158,8 +140,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                 meldeanlass);
 
         fernMetaList = new ArrayList<>();
-        for (var fernMeta : meldung.getDiagnose().getMenge_FM().getFernmetastase()) {
-          fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+        if (meldung.getDiagnose().getMenge_FM() != null) {
+          for (var fernMeta : meldung.getDiagnose().getMenge_FM().getFernmetastase()) {
+            fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+          }
         }
 
       } else if (Objects.equals(meldeanlass, "statusaenderung")) {
@@ -172,16 +156,20 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         }
 
         var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
-        if (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
-            || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
-            || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p")) {
-          pTnm = new Triple<>(meldung.getMenge_Verlauf().getVerlauf().getTNM(), null, meldeanlass);
+        if (statusTnm != null) {
+          if (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
+              || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
+              || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p")) {
+            pTnm = new Triple<>(statusTnm, null, meldeanlass);
+          }
         }
 
         fernMetaList = new ArrayList<>();
-        for (var fernMeta :
-            meldung.getMenge_Verlauf().getVerlauf().getMenge_FM().getFernmetastase()) {
-          fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+        if (meldung.getMenge_Verlauf().getVerlauf().getMenge_FM() != null) {
+          for (var fernMeta :
+              meldung.getMenge_Verlauf().getVerlauf().getMenge_FM().getFernmetastase()) {
+            fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+          }
         }
       } else if (Objects.equals(meldeanlass, "behandlungsende")) {
         // aus Operation: histologie, grading und p-tnm
