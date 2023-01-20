@@ -2,12 +2,15 @@ package org.miracum.streams.ume.onkoadttofhir.processor;
 
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
+import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
+import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +53,51 @@ public abstract class OnkoProcessor {
       log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
     }
     return convertedId;
+  }
+
+  public List<MeldungExport> prioritiseLatestMeldungExports(
+      MeldungExportList meldungExports, List<String> priorityOrder) {
+    var meldungen = meldungExports.getElements();
+
+    var meldungExportMap = new HashMap<Integer, MeldungExport>();
+    // meldeanlass bleibt in LKR Meldung immer gleich
+    for (var meldung : meldungen) {
+      var lkrId = meldung.getLkr_meldung();
+      var currentMeldungVersion = meldungExportMap.get(lkrId);
+      if (currentMeldungVersion == null
+          || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
+        meldungExportMap.put(lkrId, meldung);
+      }
+    }
+
+    Collections.reverse(priorityOrder);
+
+    Comparator<MeldungExport> meldungComparator =
+        Comparator.comparing(
+            m ->
+                priorityOrder.indexOf(
+                    m.getXml_daten()
+                        .getMenge_Patient()
+                        .getPatient()
+                        .getMenge_Meldung()
+                        .getMeldung()
+                        .getMeldeanlass()));
+
+    List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
+    meldungExportList.sort(meldungComparator);
+
+    return meldungExportList;
+  }
+
+  public String getTumorIdFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        .getTumorzuordnung()
+        .getTumor_ID();
   }
 
   protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {

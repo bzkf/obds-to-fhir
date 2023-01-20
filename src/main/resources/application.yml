@@ -2,11 +2,13 @@ app:
   version: 0.0.1-SNAPSHOT
 
 fhir:
+  extensions:
+    fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
-    conditionId: "https://fhir.diz.uk-erlangen.de/identifiers/kdb-surrogate-condition-id" #TODO anpassen
-    observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id" #TODO nachfragen
+    conditionId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-condition-id"
+    observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id"
     observationCategorySystem: "http://terminology.hl7.org/CodeSystem/observation-category"
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -21,12 +23,17 @@ fhir:
     tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
     fMLokalisationCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"
     jnuCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"
+    icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+    adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
+    snomed: "http://snomed.info/sct"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
     tnmC: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
     tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
     fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
+    condition: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
+    genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -47,8 +54,17 @@ spring:
           destination: fhir.onkoadt.Observation
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportConditionProcessor-in-0:
+          destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportConditionProcessor-in-1:
+          destination: fhir.onkoadt.Observation
+        getMeldungExportConditionProcessor-out-0:
+          destination: fhir.onkoadt.Condition
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+
       function:
-        definition: getMeldungExportObservationProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportConditionProcessor
       kafka:
         streams:
           binder:
@@ -63,6 +79,16 @@ spring:
               consumer:
                 application-id: onko-meldung-exp-observ-processor
             getMeldungExportObservationProcessor-out-0:
+              producer:
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getMeldungExportConditionProcessor-in-0:
+              consumer:
+                application-id: onko-meldung-exp-cond-processor
+            getMeldungExportConditionProcessor-in-1:
+              consumer:
+                application-id: onko-meldung-exp-cond-processor
+            getMeldungExportConditionProcessor-out-0:
               producer:
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
