@@ -4,6 +4,9 @@ app:
 fhir:
   extensions:
     fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
+    opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
+    stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
+    systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -26,6 +29,13 @@ fhir:
     icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
     adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
     snomed: "http://snomed.info/sct"
+    opIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS"
+    systTherapieart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"
+    ops: "http://fhir.de/CodeSystem/bfarm/ops"
+    lokalBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"
+    gesamtBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
+    systIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS"
+    systStellungOP: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -34,6 +44,8 @@ fhir:
     fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
     condition: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
     genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
+    opProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation"
+    stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -54,6 +66,12 @@ spring:
           destination: fhir.onkoadt.Observation
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportProcedureProcessor-in-0:
+          destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportProcedureProcessor-out-0:
+          destination: fhir.onkoadt.Procedure
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportConditionProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT
         getMeldungExportConditionProcessor-in-1:
@@ -64,7 +82,7 @@ spring:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
       function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportConditionProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor
       kafka:
         streams:
           binder:
@@ -79,6 +97,13 @@ spring:
               consumer:
                 application-id: onko-meldung-exp-observ-processor
             getMeldungExportObservationProcessor-out-0:
+              producer:
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getMeldungExportProcedureProcessor-in-0:
+              consumer:
+                application-id: onko-meldung-exp-proced-processor
+            getMeldungExportProcedureProcessor-out-0:
               producer:
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}

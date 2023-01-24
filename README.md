@@ -18,6 +18,9 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Procedure
 
+* Operation (<https://simplifier.net/oncology/operation>)
+* Strahlentherapie (<https://simplifier.net/oncology/strahlentherapie>)
+
 ## MedicationStatement
 
 ## Dev
