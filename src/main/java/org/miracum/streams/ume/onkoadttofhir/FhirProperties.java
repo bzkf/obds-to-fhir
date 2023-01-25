@@ -52,6 +52,8 @@ public class FhirProperties {
     private String gesamtBeurtResidualCS;
     private String systIntention;
     private String systStellungOP;
+    private String ctcaeGrading;
+    private String sideEffectTypeOid;
   }
 
   @Data

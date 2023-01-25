@@ -335,6 +335,8 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private Menge_Bestrahlung Menge_Bestrahlung;
 
+              @JsonProperty private Menge_Nebenwirkung Menge_Nebenwirkung;
+
               @Data
               public static class Menge_Bestrahlung {
 
@@ -345,6 +347,21 @@ public class ADT_GEKID implements Serializable {
                 public static class Bestrahlung {
                   @JsonProperty private String ST_Beginn_Datum;
                   @JsonProperty private String ST_Ende_Datum;
+                  @JsonProperty private String ST_Applikationsart;
+                }
+              }
+
+              @Data
+              public static class Menge_Nebenwirkung {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<ST_Nebenwirkung> ST_Nebenwirkung;
+
+                @Data
+                public static class ST_Nebenwirkung {
+                  @JsonProperty private String Nebenwirkung_Grad;
+                  @JsonProperty private String Nebenwirkung_Art;
+                  @JsonProperty private String Nebenwirkung_Version;
                 }
               }
             }

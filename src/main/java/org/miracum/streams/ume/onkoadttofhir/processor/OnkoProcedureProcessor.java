@@ -11,10 +11,7 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
-import org.miracum.streams.ume.onkoadttofhir.lookup.BeurteilungResidualstatusVsLookup;
-import org.miracum.streams.ume.onkoadttofhir.lookup.OPIntentionVsLookup;
-import org.miracum.streams.ume.onkoadttofhir.lookup.StellungOpVsLookup;
-import org.miracum.streams.ume.onkoadttofhir.lookup.SystIntentionVsLookup;
+import org.miracum.streams.ume.onkoadttofhir.lookup.*;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
@@ -42,6 +39,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
   private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
 
   private final SystIntentionVsLookup displaySystIntentionLookup = new SystIntentionVsLookup();
+
+  private final SideEffectTherapyGradingLookup displaySideEffectGradingLookup =
+      new SideEffectTherapyGradingLookup();
 
   @Bean
   public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
@@ -145,8 +145,6 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     } else {
       return null;
     }
-    // TODO ist ST immer im behandlungsende anegeben oder kann es sein, dass nur im beginn aber
-    // nicht im ende
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
 
@@ -286,9 +284,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
           pid
               + "ST-Procedure"
               + radioTherapy.getST_ID()
-              + stBeginnDateString; // TODO anschauen, bzw klären wie wir das machen
+              + stBeginnDateString
+              + radio.getST_Applikationsart(); // multiple radiation with same start date possible
 
-      // TODO weder Start noch Enddatum
 
       stProcedure.setId(this.getHash("Condition", stProcedureIdentifier));
 
@@ -389,6 +387,41 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       // .setIdentifier(); TODO überhaupt nötig?, ggf. problematisch da patId dann im Klartext
       // (Noemi
       // rückmelden)
+
+      if (radioTherapy.getMenge_Nebenwirkung() != null) {
+
+        for (var complication : radioTherapy.getMenge_Nebenwirkung().getST_Nebenwirkung()) {
+
+          var sideEffectsCodeConcept = new CodeableConcept();
+          var sideEffectGrading = complication.getNebenwirkung_Grad();
+          var siedeEffectType = complication.getNebenwirkung_Art();
+
+          if (sideEffectGrading != null
+              && !sideEffectGrading.equals(
+                  "U")) { // TODO U wirklich rausfiltern oder bspw. data absent reason
+            sideEffectsCodeConcept.addCoding(
+                new Coding()
+                    .setCode(
+                        displaySideEffectGradingLookup.lookupSideEffectTherapyGradingCode(
+                            sideEffectGrading))
+                    .setDisplay(
+                        displaySideEffectGradingLookup.lookupSideEffectTherapyGradingDisplay(
+                            sideEffectGrading))
+                    .setSystem(fhirProperties.getSystems().getCtcaeGrading()));
+          }
+
+          if (siedeEffectType != null) {
+            sideEffectsCodeConcept.addCoding(
+                new Coding()
+                    .setCode(siedeEffectType)
+                    .setSystem(fhirProperties.getSystems().getSideEffectTypeOid()));
+          }
+
+          if (sideEffectsCodeConcept.hasCoding()) {
+            stProcedure.addComplication(sideEffectsCodeConcept);
+          }
+        }
+      }
 
       bundle = addResourceAsEntryInBundle(bundle, stProcedure);
     }
