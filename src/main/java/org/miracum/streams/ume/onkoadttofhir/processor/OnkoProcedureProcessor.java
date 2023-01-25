@@ -287,7 +287,6 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
               + stBeginnDateString
               + radio.getST_Applikationsart(); // multiple radiation with same start date possible
 
-
       stProcedure.setId(this.getHash("Condition", stProcedureIdentifier));
 
       stProcedure
