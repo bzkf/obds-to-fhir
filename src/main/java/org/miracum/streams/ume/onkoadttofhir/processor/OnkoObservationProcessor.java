@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import org.apache.kafka.common.serialization.Serdes;
@@ -10,7 +12,7 @@ import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
-import org.miracum.streams.ume.onkoadttofhir.lookup.FMLokalisationVSLookup;
+import org.miracum.streams.ume.onkoadttofhir.lookup.FMLokalisationVsLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.GradingLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.onkoadttofhir.model.*;
@@ -28,7 +30,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
   private final TnmCpuPraefixTvsLookup tnmPraefixLookup = new TnmCpuPraefixTvsLookup();
 
-  private final FMLokalisationVSLookup fmLokalisationVSLookup = new FMLokalisationVSLookup();
+  private final FMLokalisationVsLookup fmLokalisationVSLookup = new FMLokalisationVsLookup();
 
   @Value("${app.version}")
   private String appVersion;
@@ -204,6 +206,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
           // Sonderfall OTH, hier brauchen wir alle (Datum und Lokalisation kann mehrfach relevant
           // vorhanden sein)
           if (Objects.equals(fernMetaTupel.getFirst().getFM_Lokalisation(), "OTH")) {
+            // TODO was wenn neues Datum mit OTH dann kann Reihenfolge nicht mehr stimmen und führt
+            // hier zum Bug
             fernMetaId += index;
             index++;
           }
@@ -286,15 +290,13 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // Histologiedatum
     var histDateString = histologie.getTumor_Histologiedatum();
-    Date histDate = null;
 
     if (histDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        histDate = formatter.parse(histDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
-      }
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate histDate = LocalDate.parse(histDateString, formatter);
+      LocalDateTime histDateTime = histDate.atStartOfDay();
+      gradingObs.setEffective(
+          new DateTimeType(Date.from(histDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     var grading = histologie.getGrading();
@@ -347,10 +349,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                               new Coding(
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                       .setValue(pid)));
-
-      if (histDate != null) {
-        gradingObs.setEffective(new DateTimeType(histDate));
-      }
 
       var gradingValueCodeableCon =
           new CodeableConcept(
@@ -415,8 +413,12 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                     .setValue(pid)));
 
     // Histologiedatum
-    if (histDate != null) {
-      histObs.setEffective(new DateTimeType(histDate));
+    if (histDateString != null) {
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate histDate = LocalDate.parse(histDateString, formatter);
+      LocalDateTime histDateTime = histDate.atStartOfDay();
+      histObs.setEffective(
+          new DateTimeType(Date.from(histDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     var valueCodeableCon =
@@ -509,18 +511,13 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                     .setValue(pid)));
 
     // Fernmetastasendatum
-    Date fernMetaDate = null;
-
     if (fernMetaDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        fernMetaDate = formatter.parse(fernMetaDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    if (fernMetaDate != null) {
-      fernMetaObs.setEffective(new DateTimeType(fernMetaDate));
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate fernMetaDate = LocalDate.parse(fernMetaDateString, formatter);
+      LocalDateTime fernMetaDateTime = fernMetaDate.atStartOfDay();
+      fernMetaObs.setEffective(
+          new DateTimeType(
+              Date.from(fernMetaDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     fernMetaObs.setValue(
@@ -604,19 +601,13 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // tnm c Date
     var tnmcDateString = cTnm.getTNM_Datum();
-    Date tnmcDate = null;
 
     if (tnmcDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        tnmcDate = formatter.parse(tnmcDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
-    if (tnmcDate != null) {
-      tnmcObs.setEffective(new DateTimeType(tnmcDate));
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate tnmcDate = LocalDate.parse(tnmcDateString, formatter);
+      LocalDateTime tnmcDateTime = tnmcDate.atStartOfDay();
+      tnmcObs.setEffective(
+          new DateTimeType(Date.from(tnmcDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     if (classification != null) {
@@ -788,19 +779,13 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // tnm p Date
     var tnmpDateString = pTnm.getTNM_Datum();
-    Date tnmpDate = null;
 
     if (tnmpDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        tnmpDate = formatter.parse(tnmpDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
-    if (tnmpDate != null) {
-      tnmpObs.setEffective(new DateTimeType(tnmpDate));
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate tnmpDate = LocalDate.parse(tnmpDateString, formatter);
+      LocalDateTime tnmpDateTime = tnmpDate.atStartOfDay();
+      tnmpObs.setEffective(
+          new DateTimeType(Date.from(tnmpDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     // only defined in diagnosis

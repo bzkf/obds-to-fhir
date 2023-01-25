@@ -69,11 +69,12 @@ public class ADT_GEKID implements Serializable {
 
           @JsonProperty private Menge_Tumorkonferenz Menge_Tumorkonferenz;
 
+          @JsonProperty private Menge_ST Menge_ST;
+
           @Data
           @EqualsAndHashCode(callSuper = true)
           public static class Tumorzuordnung extends PrimaryConditionAbs {
             @JsonProperty private String Tumor_ID;
-            @JsonProperty private String Primaertumor_ICD_Code;
             @JsonProperty private String Primaertumor_ICD_Version;
             @JsonProperty private String Diagnosedatum;
             @JsonProperty private String Seitenlokalisation;
@@ -189,9 +190,19 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class OP {
+
+              @JsonProperty private String OP_ID;
+              @JsonProperty private String OP_Intention;
+              @JsonProperty private String OP_Datum;
+              @JsonProperty private String OP_OPS_Version;
+
               @JsonProperty private Histologie Histologie;
 
               @JsonProperty private TNM TNM;
+
+              @JsonProperty private Menge_OPS Menge_OPS;
+
+              @JsonProperty private Residualstatus Residualstatus;
 
               @Data
               @EqualsAndHashCode(callSuper = true)
@@ -224,6 +235,19 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String TNM_y_Symbol;
                 @JsonProperty private String TNM_r_Symbol;
                 @JsonProperty private String TNM_m_Symbol;
+              }
+
+              @Data
+              public static class Menge_OPS {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<String> OP_OPS;
+              }
+
+              @Data
+              public static class Residualstatus {
+                @JsonProperty private String Lokale_Beurteilung_Residualstatus;
+                @JsonProperty private String Gesamtbeurteilung_Residualstatus;
               }
             }
           }
@@ -296,6 +320,52 @@ public class ADT_GEKID implements Serializable {
 
           @Data
           public static class Menge_Tumorkonferenz {}
+
+          @Data
+          public static class Menge_ST {
+
+            @JsonProperty private ST ST;
+
+            @Data
+            public static class ST {
+
+              @JsonProperty private String ST_ID;
+              @JsonProperty private String ST_Intention;
+              @JsonProperty private String ST_Stellung_OP;
+
+              @JsonProperty private Menge_Bestrahlung Menge_Bestrahlung;
+
+              @JsonProperty private Menge_Nebenwirkung Menge_Nebenwirkung;
+
+              @Data
+              public static class Menge_Bestrahlung {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<Bestrahlung> Bestrahlung;
+
+                @Data
+                public static class Bestrahlung {
+                  @JsonProperty private String ST_Beginn_Datum;
+                  @JsonProperty private String ST_Ende_Datum;
+                  @JsonProperty private String ST_Applikationsart;
+                }
+              }
+
+              @Data
+              public static class Menge_Nebenwirkung {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<ST_Nebenwirkung> ST_Nebenwirkung;
+
+                @Data
+                public static class ST_Nebenwirkung {
+                  @JsonProperty private String Nebenwirkung_Grad;
+                  @JsonProperty private String Nebenwirkung_Art;
+                  @JsonProperty private String Nebenwirkung_Version;
+                }
+              }
+            }
+          }
         }
       }
     }

@@ -17,6 +17,9 @@ public class FhirProperties {
   @Data
   public static class FhirExtensions {
     private String fernMetaExt;
+    private String opIntention;
+    private String stellungOP;
+    private String systIntention;
   }
 
   @Data
@@ -42,6 +45,15 @@ public class FhirProperties {
     private String icd10gm;
     private String adtSeitenlokalisation;
     private String snomed;
+    private String opIntention;
+    private String systTherapieart;
+    private String ops;
+    private String lokalBeurtResidualCS;
+    private String gesamtBeurtResidualCS;
+    private String systIntention;
+    private String systStellungOP;
+    private String ctcaeGrading;
+    private String sideEffectTypeOid;
   }
 
   @Data
@@ -53,6 +65,8 @@ public class FhirProperties {
     private String fernMeta;
     private String condition;
     private String genVariante;
+    private String opProcedure;
+    private String stProcedure;
   }
 
   @Data

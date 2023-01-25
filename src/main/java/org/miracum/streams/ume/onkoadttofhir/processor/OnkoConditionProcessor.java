@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
@@ -94,7 +96,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     }
 
     // get last element of meldungExportList
-    // TODO ueberpruefen ob letze Meldung reicht
+    // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
     var onkoCondition = new Condition();
@@ -181,20 +183,14 @@ public class OnkoConditionProcessor extends OnkoProcessor {
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
-    Date conditionDate = null;
     var conditionDateString = primDia.getDiagnosedatum();
 
     if (conditionDateString != null) {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-      try {
-        conditionDate = formatter.parse(conditionDateString);
-      } catch (ParseException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
-    if (conditionDate != null) {
-      onkoCondition.setOnset(new DateTimeType(conditionDate));
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+      LocalDate condDate = LocalDate.parse(conditionDateString, formatter);
+      LocalDateTime condDateTime = condDate.atStartOfDay();
+      onkoCondition.setOnset(
+          new DateTimeType(Date.from(condDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
     }
 
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();

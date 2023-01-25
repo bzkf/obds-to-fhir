@@ -2,10 +2,10 @@ package org.miracum.streams.ume.onkoadttofhir.lookup;
 
 import java.util.HashMap;
 
-public class FMLokalisationVSLookup {
+public class FMLokalisationVsLookup {
   private final HashMap<String, String> lookup;
 
-  public FMLokalisationVSLookup() {
+  public FMLokalisationVsLookup() {
     lookup =
         new HashMap<>() {
           {

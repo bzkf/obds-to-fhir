@@ -100,6 +100,16 @@ public abstract class OnkoProcessor {
         .getTumor_ID();
   }
 
+  public String getReportingReasonFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        .getMeldeanlass();
+  }
+
   protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {
     bundle
         .addEntry()
