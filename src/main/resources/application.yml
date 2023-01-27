@@ -7,11 +7,13 @@ fhir:
     opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
     stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
     systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
+    sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
     conditionId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-condition-id"
     observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id"
+    medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
     observationCategorySystem: "http://terminology.hl7.org/CodeSystem/observation-category"
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -48,6 +50,7 @@ fhir:
     genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
     opProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation"
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
+    systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -74,6 +77,12 @@ spring:
           destination: fhir.onkoadt.Procedure
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportMedicationStProcessor-in-0:
+          destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportMedicationStProcessor-out-0:
+          destination: fhir.onkoadt.MedicationStatement
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportConditionProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT
         getMeldungExportConditionProcessor-in-1:
@@ -84,7 +93,7 @@ spring:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
       function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
       kafka:
         streams:
           binder:
@@ -106,6 +115,13 @@ spring:
               consumer:
                 application-id: onko-meldung-exp-proced-processor
             getMeldungExportProcedureProcessor-out-0:
+              producer:
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getMeldungExportMedicationStProcessor-in-0:
+              consumer:
+                application-id: onko-meldung-exp-medst-processor
+            getMeldungExportMedicationStProcessor-out-0:
               producer:
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
