@@ -43,6 +43,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
   private final SideEffectTherapyGradingLookup displaySideEffectGradingLookup =
       new SideEffectTherapyGradingLookup();
 
+  private final SYSTTherapieartCSLookup displaySystTherapieLookup = new SYSTTherapieartCSLookup();
+
   @Bean
   public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportProcedureProcessor() {
@@ -171,7 +173,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
     opProcedure
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
     opProcedure
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getOpProcedure())));
@@ -197,7 +199,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("OP")
-                    .setDisplay("Operation")));
+                    .setDisplay(
+                        displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay("OP"))));
 
     var opsCodeConcept = new CodeableConcept();
     for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
@@ -291,7 +294,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
       stProcedure
           .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
       stProcedure
           .getMeta()
           .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getStProcedure())));
@@ -334,7 +337,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                   new Coding()
                       .setSystem(fhirProperties.getSystems().getSystTherapieart())
                       .setCode("ST")
-                      .setDisplay("Strahlentherapie")));
+                      .setDisplay(
+                          displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay("ST"))));
 
       stProcedure.setSubject(
           new Reference()
@@ -372,7 +376,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       if (stBeginnDateType != null && stEndDateType != null) {
         stProcedure.setPerformed(
             new Period().setStartElement(stBeginnDateType).setEndElement(stEndDateType));
-      } else if (stEndDateType != null) {
+      } else if (stBeginnDateType != null) {
         stProcedure.setPerformed(new Period().setStartElement(stBeginnDateType));
       }
 

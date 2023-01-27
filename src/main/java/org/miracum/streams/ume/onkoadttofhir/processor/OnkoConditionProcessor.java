@@ -129,7 +129,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
     onkoCondition
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
     onkoCondition
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));

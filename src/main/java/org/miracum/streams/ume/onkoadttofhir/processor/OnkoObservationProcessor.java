@@ -311,7 +311,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
       gradingObs
           .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
 
       gradingObs
           .getMeta()
@@ -373,7 +373,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     histObs
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
 
     histObs
         .getMeta()
@@ -471,7 +471,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     fernMetaObs
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
 
     fernMetaObs
         .getMeta()
@@ -558,7 +558,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmcObs
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
 
     tnmcObs
         .getMeta()
@@ -737,7 +737,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmpObs
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
 
     tnmpObs
         .getMeta()

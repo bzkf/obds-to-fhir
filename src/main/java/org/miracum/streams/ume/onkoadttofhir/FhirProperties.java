@@ -20,6 +20,7 @@ public class FhirProperties {
     private String opIntention;
     private String stellungOP;
     private String systIntention;
+    private String sysTheraProto;
   }
 
   @Data
@@ -27,7 +28,8 @@ public class FhirProperties {
     private String patientId;
     private String identifierType;
     private String conditionId;
-    private String ObservationId;
+    private String observationId;
+    private String medicationStatementId;
     private String observationCategorySystem;
     private String loinc;
     private String idco3Morphologie;
@@ -67,6 +69,7 @@ public class FhirProperties {
     private String genVariante;
     private String opProcedure;
     private String stProcedure;
+    private String systMedStatement;
   }
 
   @Data
