@@ -167,7 +167,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
     var opProcedure = new Procedure();
 
-    var opProcedureIdentifier = pid + "OP-Procedure" + op.getOP_ID();
+    var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID();
 
     opProcedure.setId(this.getHash("Condition", opProcedureIdentifier));
 
@@ -285,7 +285,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
       var stProcedureIdentifier =
           pid
-              + "ST-Procedure"
+              + "st-procedure"
               + radioTherapy.getST_ID()
               + stBeginnDateString
               + radio.getST_Applikationsart(); // multiple radiation with same start date possible
