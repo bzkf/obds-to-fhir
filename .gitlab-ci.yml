@@ -1,5 +1,5 @@
 variables:
-  CONTAINER_PROJECT_PATH: /streams-ume/gics-to-fhir
+  CONTAINER_PROJECT_PATH: /streams-ume/onkoadt-to-fhir
 
 .registry_login:
   before_script:
