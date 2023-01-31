@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.2.1">
+	<Absender Absender_ID="UKER_ONKOSTAR" Software_ID="ONKOSTAR" Installations_ID="2.9.8">
+		<Absender_Bezeichnung>UKER</Absender_Bezeichnung>
+		<Absender_Ansprechpartner/>
+		<Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
+	</Absender>
+	<Menge_Patient>
+		<Patient>
+            <Patienten_Stammdaten Patient_ID="1055555777">
+                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
+                <KrankenkassenNr>10000000</KrankenkassenNr>
+                <Patienten_Nachname>Doe</Patienten_Nachname>
+                <Patienten_Vornamen>John</Patienten_Vornamen>
+                <Patienten_Geschlecht>M</Patienten_Geschlecht>
+                <Patienten_Geburtsdatum>11.09.1900</Patienten_Geburtsdatum>
+                <Menge_Adresse>
+                    <Adresse>
+                        <Patienten_Strasse>Johnstr. 7</Patienten_Strasse>
+                        <Patienten_Land>DE</Patienten_Land>
+                        <Patienten_PLZ>91000</Patienten_PLZ>
+                        <Patienten_Ort>Johncity</Patienten_Ort>
+                    </Adresse>
+                </Menge_Adresse>
+            </Patienten_Stammdaten>
+			<Menge_Meldung>
+				<Meldung Meldung_ID="M50004073" Melder_ID="M5">
+					<Meldedatum>23.11.2021</Meldedatum>
+					<Meldebegruendung>I</Meldebegruendung>
+					<Meldeanlass>behandlungsende</Meldeanlass>
+					<Tumorzuordnung Tumor_ID="1">
+						<Primaertumor_ICD_Code>C91.00</Primaertumor_ICD_Code>
+						<Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+						<Diagnosedatum>21.05.2021</Diagnosedatum>
+						<Seitenlokalisation>T</Seitenlokalisation>
+					</Tumorzuordnung>
+					<Menge_SYST>
+						<SYST SYST_ID="39458">
+							<SYST_Intention>K</SYST_Intention>
+							<SYST_Stellung_OP>O</SYST_Stellung_OP>
+							<Menge_Therapieart>
+								<SYST_Therapieart>CH</SYST_Therapieart>
+								<SYST_Therapieart>IM</SYST_Therapieart>
+							</Menge_Therapieart>
+							<SYST_Beginn_Datum>22.05.2021</SYST_Beginn_Datum>
+							<Menge_Substanz>
+								<SYST_Substanz>Methotrexat (MTX)</SYST_Substanz>
+								<SYST_Substanz>Cyclophosphamid</SYST_Substanz>
+								<SYST_Substanz>Cytarabin (AraC)</SYST_Substanz>
+								<SYST_Substanz>Mercaptopurin (6-MP, Purinethol)</SYST_Substanz>
+							</Menge_Substanz>
+							<SYST_Ende_Grund>P</SYST_Ende_Grund>
+							<SYST_Ende_Datum>20.07.2021</SYST_Ende_Datum>
+							<Menge_Nebenwirkung>
+								<SYST_Nebenwirkung>
+									<Nebenwirkung_Grad>U</Nebenwirkung_Grad>
+									<Nebenwirkung_Art>10055599</Nebenwirkung_Art>
+									<Nebenwirkung_Version>4.03</Nebenwirkung_Version>
+								</SYST_Nebenwirkung>
+							</Menge_Nebenwirkung>
+						</SYST>
+					</Menge_SYST>
+				</Meldung>
+			</Menge_Meldung>
+		</Patient>
+	</Menge_Patient>
+	<Menge_Melder>
+		<Melder Melder_ID="M5">
+			<Meldende_Stelle>M5</Meldende_Stelle>
+		</Melder>
+	</Menge_Melder>
+</ADT_GEKID>  
