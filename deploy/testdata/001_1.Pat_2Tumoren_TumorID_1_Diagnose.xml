@@ -22,7 +22,7 @@
                         <Patienten_Ort>Johncity</Patienten_Ort>
                     </Adresse>
                 </Menge_Adresse>
-            </Patienten_Stammdaten>
+            </Patienten_Stammdaten> 
             <Menge_Meldung>
                 <Meldung Meldung_ID="NC0000720" Melder_ID="NC">
                     <Meldedatum>20.05.2021</Meldedatum>
@@ -58,6 +58,47 @@
                                 <Grading>T</Grading>
                             </Histologie>
                         </Menge_Histologie>
+                        <cTNM TNM_ID="65571">
+                            <TNM_Datum>21.10.2021</TNM_Datum>
+                            <TNM_Version>8</TNM_Version>
+                            <TNM_c_p_u_Praefix_T>c</TNM_c_p_u_Praefix_T>
+                            <TNM_T>0</TNM_T>
+                            <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
+                            <TNM_N>1</TNM_N>
+                            <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
+                            <TNM_M>0</TNM_M>
+                        </cTNM>
+                        <pTNM TNM_ID="75685">
+                            <TNM_Datum>05.11.2021</TNM_Datum>
+                            <TNM_Version>8</TNM_Version>
+                            <TNM_c_p_u_Praefix_N>p</TNM_c_p_u_Praefix_N>
+                            <TNM_N>2a</TNM_N>
+                            <TNM_L>L0</TNM_L>
+                            <TNM_V>V0</TNM_V>
+                            <TNM_Pn>Pn0</TNM_Pn>
+                        </pTNM>
+                        <Menge_FM> 
+                            <Fernmetastase> 
+                              <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>  
+                              <FM_Lokalisation>OSS</FM_Lokalisation> 
+                            </Fernmetastase>  
+                            <Fernmetastase> 
+                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>  
+                              <FM_Lokalisation>HEP</FM_Lokalisation> 
+                            </Fernmetastase>  
+                            <Fernmetastase> 
+                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>  
+                              <FM_Lokalisation>LYM</FM_Lokalisation> 
+                            </Fernmetastase> 
+                            <Fernmetastase> 
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>  
+                                <FM_Lokalisation>OTH</FM_Lokalisation> 
+                            </Fernmetastase>
+                            <Fernmetastase> 
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>  
+                                <FM_Lokalisation>OTH</FM_Lokalisation> 
+                            </Fernmetastase> 
+                          </Menge_FM>  
                         <Menge_Weitere_Klassifikation>
                             <Weitere_Klassifikation>
                                 <Datum>18.03.2021</Datum>
@@ -65,28 +106,6 @@
                                 <Stadium>II</Stadium>
                             </Weitere_Klassifikation>
                         </Menge_Weitere_Klassifikation>
-                        <Menge_FM>
-                            <Fernmetastase>
-                                <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
-                                <FM_Lokalisation>OSS</FM_Lokalisation>
-                            </Fernmetastase>
-                            <Fernmetastase>
-                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                                <FM_Lokalisation>HEP</FM_Lokalisation>
-                            </Fernmetastase>
-                            <Fernmetastase>
-                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                                <FM_Lokalisation>LYM</FM_Lokalisation>
-                            </Fernmetastase>
-                            <Fernmetastase>
-                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                                <FM_Lokalisation>OTH</FM_Lokalisation>
-                            </Fernmetastase>
-                            <Fernmetastase>
-                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                                <FM_Lokalisation>OTH</FM_Lokalisation>
-                            </Fernmetastase>
-                        </Menge_FM>
                     </Diagnose>
                 </Meldung>
             </Menge_Meldung>
