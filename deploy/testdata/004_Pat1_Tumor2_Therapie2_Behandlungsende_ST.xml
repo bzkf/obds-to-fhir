@@ -22,7 +22,7 @@
                         <Patienten_Ort>Johncity</Patienten_Ort>
                     </Adresse>
                 </Menge_Adresse>
-            </Patienten_Stammdaten> 
+            </Patienten_Stammdaten>
 			<Menge_Meldung>
 				<Meldung Meldung_ID="ST0004776" Melder_ID="ST">
 					<Meldedatum>10.11.2021</Meldedatum>
@@ -69,4 +69,4 @@
 			<Meldende_Stelle>ST</Meldende_Stelle>
 		</Melder>
 	</Menge_Melder>
-</ADT_GEKID>  
+</ADT_GEKID>

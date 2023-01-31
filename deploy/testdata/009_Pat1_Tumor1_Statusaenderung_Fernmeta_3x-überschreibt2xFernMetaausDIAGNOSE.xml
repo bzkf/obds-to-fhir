@@ -46,13 +46,13 @@
                                     <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
                                     <FM_Lokalisation>OSS</FM_Lokalisation>
                                 </Fernmetastase>
-                                <Fernmetastase> 
-                                    <FM_Diagnosedatum>23.02.2021</FM_Diagnosedatum>  
-                                    <FM_Lokalisation>LYM</FM_Lokalisation> 
-                                  </Fernmetastase> 
-                                  <Fernmetastase> 
-                                      <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>  
-                                      <FM_Lokalisation>OTH</FM_Lokalisation> 
+                                <Fernmetastase>
+                                    <FM_Diagnosedatum>23.02.2021</FM_Diagnosedatum>
+                                    <FM_Lokalisation>LYM</FM_Lokalisation>
+                                  </Fernmetastase>
+                                  <Fernmetastase>
+                                      <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                      <FM_Lokalisation>OTH</FM_Lokalisation>
                                   </Fernmetastase>
                             </Menge_FM>
                             <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>

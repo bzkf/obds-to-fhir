@@ -22,7 +22,7 @@
                         <Patienten_Ort>Johncity</Patienten_Ort>
                     </Adresse>
                 </Menge_Adresse>
-            </Patienten_Stammdaten> 
+            </Patienten_Stammdaten>
             <Menge_Meldung>
                 <Meldung Meldung_ID="NC0000720" Melder_ID="NC">
                     <Meldedatum>20.05.2021</Meldedatum>
@@ -77,11 +77,15 @@
                             <TNM_V>V0</TNM_V>
                             <TNM_Pn>Pn0</TNM_Pn>
                         </pTNM>
+<<<<<<< HEAD
 <<<<<<<< HEAD:src/test/resources/001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml
+=======
+>>>>>>> f541e5d (chore: fixes file tidiness issues in testdata)
                         <Menge_FM>
                             <Fernmetastase>
                               <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
                               <FM_Lokalisation>OSS</FM_Lokalisation>
+<<<<<<< HEAD
                             </Fernmetastase>
                             <Fernmetastase>
                               <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
@@ -124,6 +128,26 @@
                             </Fernmetastase> 
                           </Menge_FM>  
 >>>>>>>> e559a76 (chore: adds new testdata):deploy/testdata/001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml
+=======
+                            </Fernmetastase>
+                            <Fernmetastase>
+                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                              <FM_Lokalisation>HEP</FM_Lokalisation>
+                            </Fernmetastase>
+                            <Fernmetastase>
+                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                              <FM_Lokalisation>LYM</FM_Lokalisation>
+                            </Fernmetastase>
+                            <Fernmetastase>
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                <FM_Lokalisation>OTH</FM_Lokalisation>
+                            </Fernmetastase>
+                            <Fernmetastase>
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                <FM_Lokalisation>OTH</FM_Lokalisation>
+                            </Fernmetastase>
+                          </Menge_FM>
+>>>>>>> f541e5d (chore: fixes file tidiness issues in testdata)
                         <Menge_Weitere_Klassifikation>
                             <Weitere_Klassifikation>
                                 <Datum>18.03.2021</Datum>
