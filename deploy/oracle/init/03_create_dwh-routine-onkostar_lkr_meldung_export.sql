@@ -57,8 +57,7 @@ VALUES (1, 720, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
                         <Primaertumor_Topographie_ICD_O_Version>32</Primaertumor_Topographie_ICD_O_Version>
                         <Diagnosedatum>18.03.2021</Diagnosedatum>
                         <Diagnosesicherung>7</Diagnosesicherung>
-                        <Seitenlokalisation>T</Seitenlokalisation>
-                        <Menge_Fruehere_Tumorerkrankung>
+                        <Seitenlokalisation>T</Seitenlokalisation>') || to_clob(' <Menge_Fruehere_Tumorerkrankung>
                             <Fruehere_Tumorerkrankung>
                                 <ICD_Code>C41.01</ICD_Code>
                                 <ICD_Version>10 2021 GM</ICD_Version>
@@ -82,7 +81,8 @@ VALUES (1, 720, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
                             <TNM_c_p_u_Praefix_N>c</TNM_c_p_u_Praefix_N>
                             <TNM_N>1</TNM_N>
                             <TNM_c_p_u_Praefix_M>c</TNM_c_p_u_Praefix_M>
-                            <TNM_M>0</TNM_M>') || to_clob(' </cTNM>
+                            <TNM_M>0</TNM_M>
+                        </cTNM>
                         <pTNM TNM_ID="75685">
                             <TNM_Datum>05.11.2021</TNM_Datum>
                             <TNM_Version>8</TNM_Version>
@@ -92,8 +92,7 @@ VALUES (1, 720, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
                             <TNM_V>V0</TNM_V>
                             <TNM_Pn>Pn0</TNM_Pn>
                         </pTNM>
-                        <Menge_FM>
-                            <Fernmetastase>
+                        <Menge_FM>') || to_clob(' <Fernmetastase>
                               <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
                               <FM_Lokalisation>OSS</FM_Lokalisation>
                             </Fernmetastase>
