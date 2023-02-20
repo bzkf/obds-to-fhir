@@ -42,13 +42,10 @@
 								<Bestrahlung>
 									<ST_Zielgebiet>5.4.-</ST_Zielgebiet>
 									<ST_Seite_Zielgebiet>T</ST_Seite_Zielgebiet>
-									<ST_Beginn_Datum></ST_Beginn_Datum>
-									<ST_Ende_Datum></ST_Ende_Datum>
 								</Bestrahlung>
 								<Bestrahlung>
 									<ST_Zielgebiet>1.2</ST_Zielgebiet>
 									<ST_Seite_Zielgebiet>R</ST_Seite_Zielgebiet>
-									<ST_Beginn_Datum></ST_Beginn_Datum>
 									<ST_Ende_Datum>02.12.2021</ST_Ende_Datum>
 								</Bestrahlung>
 							</Menge_Bestrahlung>
