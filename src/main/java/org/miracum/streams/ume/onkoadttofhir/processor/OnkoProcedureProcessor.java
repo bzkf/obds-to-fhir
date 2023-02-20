@@ -45,6 +45,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
   private final SYSTTherapieartCSLookup displaySystTherapieLookup = new SYSTTherapieartCSLookup();
 
+  private final OPKomplikationVsLookup displayOPKomplicationLookup = new OPKomplikationVsLookup();
+
   @Bean
   public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportProcedureProcessor() {
@@ -62,9 +64,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                             .getMenge_Tumorkonferenz()
                         == null) // ignore tumor conferences
             .filter(
-                ((key, value) ->
+                (key, value) ->
                     Objects.equals(getReportingReasonFromAdt(value), "behandlungsende")
-                        || Objects.equals(getReportingReasonFromAdt(value), "behandlungsbeginn")))
+                        || Objects.equals(getReportingReasonFromAdt(value), "behandlungsbeginn"))
             .groupBy(
                 (key, value) ->
                     KeyValue.pair(
@@ -81,8 +83,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                 (key, value, aggregate) -> aggregate.removeElement(value),
                 Materialized.with(Serdes.String(), new MeldungExportListSerde()))
             .mapValues(this.getOnkoToProcedureBundleMapper())
-            .filter((key, value) -> value != null)
-            .toStream();
+            .toStream()
+            .filter((key, value) -> value != null);
   }
 
   public ValueMapper<MeldungExportList, Bundle> getOnkoToProcedureBundleMapper() {
@@ -97,7 +99,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
   public Bundle mapOnkoResourcesToProcedure(List<MeldungExport> meldungExportList) {
 
-    if (meldungExportList.size() > 2) {
+    if (meldungExportList.size() > 2
+        || meldungExportList.isEmpty()) { // TODO warum lehre Liste überhaupt möglich
       return null;
     }
 
@@ -122,7 +125,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       var patId = meldungExport.getReferenz_nummer();
       var pid = convertId(patId);
 
-      if (meldung != null && meldung.getMenge_OP().getOP() != null) {
+      if (meldung != null
+          && meldung.getMenge_OP() != null
+          && meldung.getMenge_OP().getOP() != null) {
         bundle = createOpProcedure(bundle, meldung, pid);
       }
 
@@ -200,7 +205,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("OP")
                     .setDisplay(
-                        displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay("OP"))));
+                        displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
+                            List.of("OP")))));
 
     var opsCodeConcept = new CodeableConcept();
     for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
@@ -264,6 +270,20 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                         displayBeurteilungResidualstatusLookup
                             .lookupBeurteilungResidualstatusDisplay(gesamtResidualstatus))));
 
+    if (op.getMenge_Komplikation() != null
+        && op.getMenge_Komplikation().getOP_Komplikation() != null
+        && op.getMenge_Komplikation().getOP_Komplikation().size() > 1) {
+      var complicationConcept = new CodeableConcept();
+      for (var complication : op.getMenge_Komplikation().getOP_Komplikation()) {
+        complicationConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getOpComplication())
+                .setCode(complication)
+                .setDisplay(displayOPKomplicationLookup.lookupOPIntentionVSDisplay(complication)));
+      }
+      opProcedure.setComplication(List.of(complicationConcept));
+    }
+
     bundle = addResourceAsEntryInBundle(bundle, opProcedure);
 
     return bundle;
@@ -273,6 +293,179 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       Bundle bundle, Meldung meldung, String pid, String meldeanlass) {
 
     var radioTherapy = meldung.getMenge_ST().getST();
+
+    var partOfProcedureId = "";
+
+    if (radioTherapy.getMenge_Bestrahlung() != null
+        && radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
+      // Klammer-Procedure
+
+      // Create a ST Procedure as in
+      // https://simplifier.net/oncology/strahlentherapie
+      var stPartOfProcedure = new Procedure();
+
+      partOfProcedureId = pid + "st-partOf-procedure" + radioTherapy.getST_ID();
+
+      // Id
+      stPartOfProcedure.setId(this.getHash("Procedure", partOfProcedureId));
+
+      // Meta
+      stPartOfProcedure
+          .getMeta()
+          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+      stPartOfProcedure
+          .getMeta()
+          .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getStProcedure())));
+
+      // Extensions
+      stPartOfProcedure
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getStellungOP())
+          .setValue(
+              new CodeableConcept()
+                  .addCoding(
+                      new Coding()
+                          .setCode(radioTherapy.getST_Stellung_OP())
+                          .setSystem(fhirProperties.getSystems().getSystStellungOP())
+                          .setDisplay(
+                              displayStellungOpLookup.lookupStellungOpDisplay(
+                                  radioTherapy.getST_Stellung_OP()))));
+
+      stPartOfProcedure
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getSystIntention())
+          .setValue(
+              new CodeableConcept()
+                  .addCoding(
+                      new Coding()
+                          .setCode(radioTherapy.getST_Intention())
+                          .setSystem(fhirProperties.getSystems().getSystIntention())
+                          .setDisplay(
+                              displaySystIntentionLookup.lookupSystIntentionDisplay(
+                                  radioTherapy.getST_Intention()))));
+
+      // Status
+      if (Objects.equals(meldeanlass, "behandlungsende")) {
+        stPartOfProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+      } else {
+        stPartOfProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
+      }
+
+      // Category
+      stPartOfProcedure.setCategory(
+          new CodeableConcept()
+              .addCoding(
+                  new Coding()
+                      .setSystem(fhirProperties.getSystems().getSystTherapieart())
+                      .setCode("ST")
+                      .setDisplay(
+                          displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
+                              List.of("ST")))));
+
+      // Subject
+      stPartOfProcedure.setSubject(
+          new Reference()
+              .setReference("Patient/" + this.getHash("Patient", pid))
+              .setIdentifier(
+                  new Identifier()
+                      .setSystem(fhirProperties.getSystems().getPatientId())
+                      .setType(
+                          new CodeableConcept(
+                              new Coding(
+                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                      .setValue(pid)));
+
+      // Performed
+      // min Beginndatum
+      List<Date> minDates = new ArrayList<>();
+      // maxBeginndatum
+      List<Date> maxDates = new ArrayList<>();
+
+      for (var radio : radioTherapy.getMenge_Bestrahlung().getBestrahlung()) {
+
+        var stBeginnDateString = radio.getST_Beginn_Datum();
+        var stEndDateString = radio.getST_Ende_Datum();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        LocalDate stBeginnDate = LocalDate.parse(stBeginnDateString, formatter);
+        LocalDate stEndDate = LocalDate.parse(stEndDateString, formatter);
+        LocalDateTime stEndDateTime = stEndDate.atStartOfDay();
+        LocalDateTime stBeginnDateTime = stBeginnDate.atStartOfDay();
+
+        minDates.add(Date.from(stBeginnDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+        maxDates.add(Date.from(stEndDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+      }
+
+      Date minDate = null;
+      Date maxDate = null;
+
+      if (!minDates.isEmpty()) {
+        minDate = Collections.min(minDates);
+      }
+      if (!maxDates.isEmpty()) {
+        maxDate = Collections.min(maxDates);
+      }
+
+      if (minDate != null && maxDate != null) {
+        stPartOfProcedure.setPerformed(
+            new Period()
+                .setStartElement(new DateTimeType(minDate))
+                .setEndElement(new DateTimeType(maxDate)));
+      } else if (minDate != null) {
+        stPartOfProcedure.setPerformed(new Period().setStartElement(new DateTimeType(minDate)));
+      }
+
+      // ReasonReference
+      stPartOfProcedure.addReasonReference(
+          new Reference()
+              .setReference(
+                  "Condition/"
+                      + this.getHash(
+                          "Condition",
+                          pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
+      // .setIdentifier(); TODO überhaupt nötig?, ggf. problematisch da patId dann im Klartext
+      // (Noemi
+      // rückmelden)
+
+      // Complication
+      if (radioTherapy.getMenge_Nebenwirkung() != null) {
+
+        for (var complication : radioTherapy.getMenge_Nebenwirkung().getST_Nebenwirkung()) {
+
+          var sideEffectsCodeConcept = new CodeableConcept();
+          var sideEffectGrading = complication.getNebenwirkung_Grad();
+          var siedeEffectType = complication.getNebenwirkung_Art();
+
+          if (sideEffectGrading != null
+              && !sideEffectGrading.equals(
+                  "U")) { // TODO U wirklich rausfiltern oder bspw. data absent reason
+            sideEffectsCodeConcept.addCoding(
+                new Coding()
+                    .setCode(
+                        displaySideEffectGradingLookup.lookupSideEffectTherapyGradingCode(
+                            sideEffectGrading))
+                    .setDisplay(
+                        displaySideEffectGradingLookup.lookupSideEffectTherapyGradingDisplay(
+                            sideEffectGrading))
+                    .setSystem(fhirProperties.getSystems().getCtcaeGrading()));
+          }
+
+          if (siedeEffectType != null) {
+            sideEffectsCodeConcept.addCoding(
+                new Coding()
+                    .setCode(siedeEffectType)
+                    .setSystem(fhirProperties.getSystems().getSideEffectTypeOid()));
+          }
+
+          if (sideEffectsCodeConcept.hasCoding()) {
+            stPartOfProcedure.addComplication(sideEffectsCodeConcept);
+          }
+        }
+      }
+
+      bundle = addResourceAsEntryInBundle(bundle, stPartOfProcedure);
+    }
 
     for (var radio : radioTherapy.getMenge_Bestrahlung().getBestrahlung()) {
 
@@ -288,10 +481,13 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
               + "st-procedure"
               + radioTherapy.getST_ID()
               + stBeginnDateString
+              + radio.getST_Zielgebiet()
               + radio.getST_Applikationsart(); // multiple radiation with same start date possible
 
-      stProcedure.setId(this.getHash("Condition", stProcedureIdentifier));
+      // Id
+      stProcedure.setId(this.getHash("Procedure", stProcedureIdentifier));
 
+      // Meta
       stProcedure
           .getMeta()
           .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
@@ -299,6 +495,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
           .getMeta()
           .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getStProcedure())));
 
+      // Extensions
       stProcedure
           .addExtension()
           .setUrl(fhirProperties.getExtensions().getStellungOP())
@@ -325,12 +522,23 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                               displaySystIntentionLookup.lookupSystIntentionDisplay(
                                   radioTherapy.getST_Intention()))));
 
+      // PartOf
+      if (radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
+        stProcedure.setPartOf(
+            List.of(
+                new Reference()
+                    .setReference("Procedure/" + this.getHash("Procedure", partOfProcedureId))));
+        // .setIdentifier(); TODO setIdentifier
+      }
+
+      // Status
       if (Objects.equals(meldeanlass, "behandlungsende")) {
         stProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
       } else {
         stProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
       }
 
+      // Category
       stProcedure.setCategory(
           new CodeableConcept()
               .addCoding(
@@ -338,8 +546,10 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                       .setSystem(fhirProperties.getSystems().getSystTherapieart())
                       .setCode("ST")
                       .setDisplay(
-                          displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay("ST"))));
+                          displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
+                              List.of("ST")))));
 
+      // Subject
       stProcedure.setSubject(
           new Reference()
               .setReference("Patient/" + this.getHash("Patient", pid))
@@ -352,6 +562,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                       .setValue(pid)));
 
+      // Performed
       DateTimeType stBeginnDateType = null;
       DateTimeType stEndDateType = null;
 
@@ -380,6 +591,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
         stProcedure.setPerformed(new Period().setStartElement(stBeginnDateType));
       }
 
+      // ReasonReference
       stProcedure.addReasonReference(
           new Reference()
               .setReference(
@@ -391,6 +603,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       // (Noemi
       // rückmelden)
 
+      // Complication
       if (radioTherapy.getMenge_Nebenwirkung() != null) {
 
         for (var complication : radioTherapy.getMenge_Nebenwirkung().getST_Nebenwirkung()) {

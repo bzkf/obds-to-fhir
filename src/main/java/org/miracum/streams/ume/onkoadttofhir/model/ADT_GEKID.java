@@ -203,6 +203,7 @@ public class ADT_GEKID implements Serializable {
               @JsonProperty private TNM TNM;
 
               @JsonProperty private Menge_OPS Menge_OPS;
+              @JsonProperty private Menge_Komplikation Menge_Komplikation;
 
               @JsonProperty private Residualstatus Residualstatus;
 
@@ -241,9 +242,14 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               public static class Menge_OPS {
-
                 @JacksonXmlElementWrapper(useWrapping = false)
                 private List<String> OP_OPS;
+              }
+
+              @Data
+              public static class Menge_Komplikation {
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<String> OP_Komplikation;
               }
 
               @Data
@@ -349,6 +355,7 @@ public class ADT_GEKID implements Serializable {
                 public static class Bestrahlung {
                   @JsonProperty private String ST_Beginn_Datum;
                   @JsonProperty private String ST_Ende_Datum;
+                  @JsonProperty private String ST_Zielgebiet;
                   @JsonProperty private String ST_Applikationsart;
                 }
               }
