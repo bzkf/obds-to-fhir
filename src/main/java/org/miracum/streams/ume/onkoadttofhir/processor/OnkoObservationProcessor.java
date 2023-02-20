@@ -176,11 +176,13 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       } else if (Objects.equals(meldeanlass, "behandlungsende")) {
         // aus Operation: histologie, grading und p-tnm
         // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
-        var hist = meldung.getMenge_OP().getOP().getHistologie();
-        if (hist != null) {
-          histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
+        if (meldung.getMenge_OP() != null) {
+          var hist = meldung.getMenge_OP().getOP().getHistologie();
+          if (hist != null) {
+            histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
+          }
+          pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
         }
-        pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
       }
 
       if (!histList.isEmpty()) {

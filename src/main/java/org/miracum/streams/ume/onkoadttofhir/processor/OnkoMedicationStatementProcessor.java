@@ -1,11 +1,6 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -94,7 +89,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
 
   public Bundle mapOnkoResourcesToMedicationStatement(List<MeldungExport> meldungExportList) {
 
-    if (meldungExportList.size() > 2) {
+    if (meldungExportList.size() > 2 || meldungExportList.isEmpty()) {
       return null;
     }
 
@@ -140,29 +135,163 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
-    // Create a MedicationStatement Resource for every syst therapy type
-    for (var category : systemTherapy.getMenge_Therapieart().getSYST_Therapieart()) {
+    var stPartOfMedicationStatementIdentifier = "";
 
-      // Create a Medication Statement as in
-      // https://simplifier.net/oncology/systemtherapie
-      var stMedicationStatement = new MedicationStatement();
+    if (systemTherapy.getMenge_Substanz() != null
+        && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
 
+      // Either creates a Part-of-MedicationStatement or a default MedicationStatement (if no
+      // Substances are documented) in ADT
+      // as in https://simplifier.net/oncology/systemtherapie
+      var stPartOfMedicationStatement = new MedicationStatement();
+
+      stPartOfMedicationStatementIdentifier =
+          pid + "st-partOf-medicationStatement" + systemTherapy.getSYST_ID();
+
+      // Id
+      stPartOfMedicationStatement.setId(
+          this.getHash("MedicationStatement", stPartOfMedicationStatementIdentifier));
+
+      /// Meta
+      stPartOfMedicationStatement
+          .getMeta()
+          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+      stPartOfMedicationStatement
+          .getMeta()
+          .setProfile(
+              List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
+
+      // Status
+      if (Objects.equals(meldeanlass, "behandlungsende")) {
+        stPartOfMedicationStatement.setStatus(
+            MedicationStatement.MedicationStatementStatus.COMPLETED);
+      } else {
+        stPartOfMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
+      }
+
+      // Category
+      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
       var therapyCategory = new CodeableConcept();
       therapyCategory.addCoding(
           new Coding()
               .setSystem(fhirProperties.getSystems().getSystTherapieart())
-              .setCode(category)
+              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
               .setDisplay(
                   displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
 
-      stMedicationStatement.setCategory(therapyCategory);
+      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
+        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      }
+      stPartOfMedicationStatement.setCategory(therapyCategory);
+
+      // Extension
+      stPartOfMedicationStatement
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getStellungOP())
+          .setValue(
+              new CodeableConcept()
+                  .addCoding(
+                      new Coding()
+                          .setCode(systemTherapy.getSYST_Stellung_OP())
+                          .setSystem(fhirProperties.getSystems().getSystStellungOP())
+                          .setDisplay(
+                              displayStellungOpLookup.lookupStellungOpDisplay(
+                                  systemTherapy.getSYST_Stellung_OP()))));
+
+      stPartOfMedicationStatement
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getSystIntention())
+          .setValue(
+              new CodeableConcept()
+                  .addCoding(
+                      new Coding()
+                          .setCode(systemTherapy.getSYST_Intention())
+                          .setSystem(fhirProperties.getSystems().getSystIntention())
+                          .setDisplay(
+                              displaySystIntentionLookup.lookupSystIntentionDisplay(
+                                  systemTherapy.getSYST_Intention()))));
+
+      stPartOfMedicationStatement
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getSysTheraProto())
+          .setValue(new CodeableConcept().setText(systemTherapy.getSYST_Protokoll()));
+
+      // Subject
+      stPartOfMedicationStatement.setSubject(
+          new Reference()
+              .setReference("Patient/" + this.getHash("Patient", pid))
+              .setIdentifier(
+                  new Identifier()
+                      .setSystem(fhirProperties.getSystems().getPatientId())
+                      .setType(
+                          new CodeableConcept(
+                              new Coding(
+                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                      .setValue(pid)));
+
+      // Effective
+      var systBeginnDateString = systemTherapy.getSYST_Beginn_Datum();
+      var systEndDateString = systemTherapy.getSYST_Ende_Datum();
+
+      DateTimeType systBeginnDateType = null;
+      DateTimeType systEndDateType = null;
+
+      if (systBeginnDateString != null) {
+        systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
+      }
+
+      if (systEndDateString != null) {
+        systEndDateType = extractDateTimeFromADTDate(systEndDateString);
+      }
+
+      if (systBeginnDateType != null && systEndDateType != null) {
+        stPartOfMedicationStatement.setEffective(
+            new Period().setStartElement(systBeginnDateType).setEndElement(systEndDateType));
+      } else if (systBeginnDateType != null) {
+        stPartOfMedicationStatement.setEffective(new Period().setStartElement(systBeginnDateType));
+      }
+
+      // ReasonReference
+      stPartOfMedicationStatement.addReasonReference(
+          new Reference()
+              .setReference(
+                  "Condition/"
+                      + this.getHash(
+                          "Condition",
+                          pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
+      // .setIdentifier(); TODO überhaupt nötig?, ggf. problematisch da patId dann im Klartext
+      // (Noemi
+      // rückmelden)
+
+      bundle = addResourceAsEntryInBundle(bundle, stPartOfMedicationStatement);
+    }
+
+    for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
+      // Create a Medication Statement as in
+      // https://simplifier.net/oncology/systemtherapie
+      var stMedicationStatement = new MedicationStatement();
 
       var stMedicationStatementIdentifier =
-          pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + category;
+          pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + substance;
 
+      // Id
       stMedicationStatement.setId(
           this.getHash("MedicationStatement", stMedicationStatementIdentifier));
 
+      // PartOf
+      if (systemTherapy.getMenge_Substanz() != null
+          && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
+        stMedicationStatement.setPartOf(
+            List.of(
+                new Reference()
+                    .setReference(
+                        "MedicationStatement/"
+                            + this.getHash(
+                                "MedicationStatement", stPartOfMedicationStatementIdentifier))));
+        // .setIdentifier(); TODO setIdentifier
+      }
+
+      // Meta
       stMedicationStatement
           .getMeta()
           .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
@@ -171,6 +300,29 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
           .setProfile(
               List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
 
+      // Status
+      if (Objects.equals(meldeanlass, "behandlungsende")) {
+        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
+      } else {
+        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
+      }
+
+      // Category
+      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
+      var therapyCategory = new CodeableConcept();
+      therapyCategory.addCoding(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSystTherapieart())
+              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
+              .setDisplay(
+                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
+
+      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
+        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      }
+      stMedicationStatement.setCategory(therapyCategory);
+
+      // Extension
       stMedicationStatement
           .addExtension()
           .setUrl(fhirProperties.getExtensions().getStellungOP())
@@ -202,19 +354,10 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
           .setUrl(fhirProperties.getExtensions().getSysTheraProto())
           .setValue(new CodeableConcept().setText(systemTherapy.getSYST_Protokoll()));
 
-      if (Objects.equals(meldeanlass, "behandlungsende")) {
-        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
-      } else {
-        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
-      }
+      // Medication
+      stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
 
-      if (systemTherapy.getMenge_Substanz() != null
-          && !systemTherapy.getMenge_Substanz().getSYST_Substanz().isEmpty()) {
-        // TODO mehrere Substanzen aber nur eine Medicationreferenz bzw. CodeableConcept erlaubt
-        //  stMedicationStatement.setMedication(new
-        // CodeableConcept().setText(systemTherapy.getSys));
-      }
-
+      // Subject
       stMedicationStatement.setSubject(
           new Reference()
               .setReference("Patient/" + this.getHash("Patient", pid))
@@ -227,6 +370,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                       .setValue(pid)));
 
+      // Effective
       var systBeginnDateString = systemTherapy.getSYST_Beginn_Datum();
       var systEndDateString = systemTherapy.getSYST_Ende_Datum();
 
@@ -234,21 +378,11 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
       DateTimeType systEndDateType = null;
 
       if (systBeginnDateString != null) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate systBeginnDate = LocalDate.parse(systBeginnDateString, formatter);
-        LocalDateTime systBeginnDateTime = systBeginnDate.atStartOfDay();
-        systBeginnDateType =
-            new DateTimeType(
-                Date.from(systBeginnDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+        systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
       }
 
       if (systEndDateString != null) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDate systEndDate = LocalDate.parse(systEndDateString, formatter);
-        LocalDateTime systEndDateTime = systEndDate.atStartOfDay();
-        systEndDateType =
-            new DateTimeType(
-                Date.from(systEndDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+        systEndDateType = extractDateTimeFromADTDate(systEndDateString);
       }
 
       if (systBeginnDateType != null && systEndDateType != null) {
@@ -258,6 +392,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
         stMedicationStatement.setEffective(new Period().setStartElement(systBeginnDateType));
       }
 
+      // ReasonReference
       stMedicationStatement.addReasonReference(
           new Reference()
               .setReference(

@@ -56,6 +56,7 @@ public class FhirProperties {
     private String systStellungOP;
     private String ctcaeGrading;
     private String sideEffectTypeOid;
+    private String opComplication;
   }
 
   @Data

@@ -10,6 +10,8 @@ public class OPKomplikationVsLookup {
     lookup =
         new HashMap<>() {
           {
+            put("N", "Nein");
+            put("U", "Unbekannt");
             put("ABD", "Abszeß in einem Drainagekanal");
             put("ABS", "Abszeß, intraabdominaler oder intrathorakaler");
             put("ASF", "Abszeß, subfaszialer");
@@ -46,7 +48,9 @@ public class OPKomplikationVsLookup {
             put("IFV", "Ileofemorale Venenthrombose");
             put("KAS", "Kardiogener Schock");
             put("KES", "Komplikationen einer Stomaanlage");
-            put("KIM", "Komplikation eines Implantates (Gefäßprothese, Totalendoprothese, Katheter), z.B. Dislokation");
+            put(
+                "KIM",
+                "Komplikation eines Implantates (Gefäßprothese, Totalendoprothese, Katheter), z.B. Dislokation");
             put("KRA", "Krampfanfall");
             put("KDS", "Kurzdarmsyndrom");
             put("LEV", "Leberversagen");
@@ -84,7 +88,9 @@ public class OPKomplikationVsLookup {
             put("SON", "Sonstige Komplikation");
             put("STK", "Stomakomplikation (z.B. Blutung, Nekrose, Stenose)");
             put("TZP", "Thrombozytopenie");
-            put("TIA", "TIA (transitorische ischämische Attacke) oder RIND (reversibles ischämisches neurologisches Defizit)");
+            put(
+                "TIA",
+                "TIA (transitorische ischämische Attacke) oder RIND (reversibles ischämisches neurologisches Defizit)");
             put("TRZ", "Transfusionszwischenfall");
             put("WUH", "Wundhämatom (konservativ therapiert)");
             put("WSS", "Wundheilungsstörung, subkutane");
