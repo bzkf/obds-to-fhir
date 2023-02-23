@@ -1,9 +1,5 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Function;
 import org.apache.kafka.common.serialization.Serdes;
@@ -294,11 +290,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var histDateString = histologie.getTumor_Histologiedatum();
 
     if (histDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate histDate = LocalDate.parse(histDateString, formatter);
-      LocalDateTime histDateTime = histDate.atStartOfDay();
-      gradingObs.setEffective(
-          new DateTimeType(Date.from(histDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      gradingObs.setEffective(extractDateTimeFromADTDate(histDateString));
     }
 
     var grading = histologie.getGrading();
@@ -366,8 +358,6 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // https://simplifier.net/oncology/histologie
     var histObs = new Observation();
 
-    // TODO ID muss vorhanden sein ist aber ggf. kein Pflichtfeld, im Batch Job ggf. konfigurierbar
-    // machen
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
     var observationIdentifier = pid + "histologie" + histId;
 
@@ -416,11 +406,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // Histologiedatum
     if (histDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate histDate = LocalDate.parse(histDateString, formatter);
-      LocalDateTime histDateTime = histDate.atStartOfDay();
-      histObs.setEffective(
-          new DateTimeType(Date.from(histDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      histObs.setEffective(extractDateTimeFromADTDate(histDateString));
     }
 
     var valueCodeableCon =
@@ -514,12 +500,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     // Fernmetastasendatum
     if (fernMetaDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate fernMetaDate = LocalDate.parse(fernMetaDateString, formatter);
-      LocalDateTime fernMetaDateTime = fernMetaDate.atStartOfDay();
-      fernMetaObs.setEffective(
-          new DateTimeType(
-              Date.from(fernMetaDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      fernMetaObs.setEffective(extractDateTimeFromADTDate(fernMetaDateString));
     }
 
     fernMetaObs.setValue(
@@ -599,17 +580,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
-    // TODO setFocus, add later after diagnosis processor is implemented
-
     // tnm c Date
     var tnmcDateString = cTnm.getTNM_Datum();
 
     if (tnmcDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate tnmcDate = LocalDate.parse(tnmcDateString, formatter);
-      LocalDateTime tnmcDateTime = tnmcDate.atStartOfDay();
-      tnmcObs.setEffective(
-          new DateTimeType(Date.from(tnmcDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      tnmcObs.setEffective(extractDateTimeFromADTDate(tnmcDateString));
     }
 
     if (classification != null) {
@@ -777,17 +752,11 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
-    // TODO setFocus, add later after diagnosis processor is implemented
-
     // tnm p Date
     var tnmpDateString = pTnm.getTNM_Datum();
 
     if (tnmpDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate tnmpDate = LocalDate.parse(tnmpDateString, formatter);
-      LocalDateTime tnmpDateTime = tnmpDate.atStartOfDay();
-      tnmpObs.setEffective(
-          new DateTimeType(Date.from(tnmpDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      tnmpObs.setEffective(extractDateTimeFromADTDate(tnmpDateString));
     }
 
     // only defined in diagnosis
@@ -934,29 +903,4 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     return tnmBackBone;
   }
-
-  /*
-  // k-Regel
-  public List<Meldung.Diagnose.Menge_Histologie.Histologie> getValidHistologies(
-      List<Meldung.Diagnose.Menge_Histologie.Histologie> mengeHist) {
-    // returns a list of unique histIds having the maximum defined morphology code
-
-    Map<String, Meldung.Diagnose.Menge_Histologie.Histologie> histologieMap = new HashMap<>();
-
-    for (var hist : mengeHist) {
-      var histId = hist.getHistologie_ID();
-      if (histologieMap.get(histId) == null) {
-        histologieMap.put(histId, hist);
-      } else {
-        var current =
-            Integer.parseInt(StringUtils.left(histologieMap.get(histId).getMorphologie_Code(), 4));
-        var update = Integer.parseInt(StringUtils.left(hist.getMorphologie_Code(), 4));
-        if (update > current) {
-          histologieMap.put(histId, hist);
-        }
-      }
-    }
-    return new ArrayList<>(histologieMap.values());
-  }
-  */
 }
