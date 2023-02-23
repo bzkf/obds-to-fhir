@@ -113,9 +113,27 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     if (meldung != null
         && meldung.getMenge_SYST() != null
         && meldung.getMenge_SYST().getSYST() != null) {
-      bundle =
-          createSystemtherapyMedicationSt(
-              bundle, meldung, pid, getReportingReasonFromAdt(meldungExport));
+
+      var systemTherapy = meldung.getMenge_SYST().getSYST();
+
+      if (systemTherapy.getMenge_Substanz() != null
+          && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
+
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle,
+                createSystemtherapyMedicationStatement(
+                    meldung, pid, getReportingReasonFromAdt(meldungExport), null));
+      }
+
+      for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle,
+                createSystemtherapyMedicationStatement(
+                    meldung, pid, getReportingReasonFromAdt(meldungExport), substance));
+      }
+
     } else {
       return null;
     }
@@ -130,153 +148,22 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     }
   }
 
-  public Bundle createSystemtherapyMedicationSt(
-      Bundle bundle, Meldung meldung, String pid, String meldeanlass) {
+  // Either creates a Part-of-MedicationStatement or a default MedicationStatement (if no
+  // Substances are documented) in ADT
+  // as in https://simplifier.net/oncology/systemtherapie
+  public MedicationStatement createSystemtherapyMedicationStatement(
+      Meldung meldung, String pid, String meldeanlass, String substance) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
-    var stPartOfMedicationStatementIdentifier = "";
+    var stMedicationStatement = new MedicationStatement();
 
-    if (systemTherapy.getMenge_Substanz() != null
-        && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
+    var partOfId = pid + "st-partOf-medicationStatement" + systemTherapy.getSYST_ID();
 
-      // Either creates a Part-of-MedicationStatement or a default MedicationStatement (if no
-      // Substances are documented) in ADT
-      // as in https://simplifier.net/oncology/systemtherapie
-      var stPartOfMedicationStatement = new MedicationStatement();
-
-      stPartOfMedicationStatementIdentifier =
-          pid + "st-partOf-medicationStatement" + systemTherapy.getSYST_ID();
-
+    if (substance != null) {
       // Id
-      stPartOfMedicationStatement.setId(
-          this.getHash("MedicationStatement", stPartOfMedicationStatementIdentifier));
-
-      /// Meta
-      stPartOfMedicationStatement
-          .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
-      stPartOfMedicationStatement
-          .getMeta()
-          .setProfile(
-              List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
-
-      // Status
-      if (Objects.equals(meldeanlass, "behandlungsende")) {
-        stPartOfMedicationStatement.setStatus(
-            MedicationStatement.MedicationStatementStatus.COMPLETED);
-      } else {
-        stPartOfMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
-      }
-
-      // Category
-      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
-      var therapyCategory = new CodeableConcept();
-      therapyCategory.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSystTherapieart())
-              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
-              .setDisplay(
-                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
-
-      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
-        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
-      }
-      stPartOfMedicationStatement.setCategory(therapyCategory);
-
-      // Extension
-      stPartOfMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getStellungOP())
-          .setValue(
-              new CodeableConcept()
-                  .addCoding(
-                      new Coding()
-                          .setCode(systemTherapy.getSYST_Stellung_OP())
-                          .setSystem(fhirProperties.getSystems().getSystStellungOP())
-                          .setDisplay(
-                              displayStellungOpLookup.lookupStellungOpDisplay(
-                                  systemTherapy.getSYST_Stellung_OP()))));
-
-      stPartOfMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getSystIntention())
-          .setValue(
-              new CodeableConcept()
-                  .addCoding(
-                      new Coding()
-                          .setCode(systemTherapy.getSYST_Intention())
-                          .setSystem(fhirProperties.getSystems().getSystIntention())
-                          .setDisplay(
-                              displaySystIntentionLookup.lookupSystIntentionDisplay(
-                                  systemTherapy.getSYST_Intention()))));
-
-      stPartOfMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getSysTheraProto())
-          .setValue(new CodeableConcept().setText(systemTherapy.getSYST_Protokoll()));
-
-      // Subject
-      stPartOfMedicationStatement.setSubject(
-          new Reference()
-              .setReference("Patient/" + this.getHash("Patient", pid))
-              .setIdentifier(
-                  new Identifier()
-                      .setSystem(fhirProperties.getSystems().getPatientId())
-                      .setType(
-                          new CodeableConcept(
-                              new Coding(
-                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(pid)));
-
-      // Effective
-      var systBeginnDateString = systemTherapy.getSYST_Beginn_Datum();
-      var systEndDateString = systemTherapy.getSYST_Ende_Datum();
-
-      DateTimeType systBeginnDateType = null;
-      DateTimeType systEndDateType = null;
-
-      if (systBeginnDateString != null) {
-        systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
-      }
-
-      if (systEndDateString != null) {
-        systEndDateType = extractDateTimeFromADTDate(systEndDateString);
-      }
-
-      if (systBeginnDateType != null && systEndDateType != null) {
-        stPartOfMedicationStatement.setEffective(
-            new Period().setStartElement(systBeginnDateType).setEndElement(systEndDateType));
-      } else if (systBeginnDateType != null) {
-        stPartOfMedicationStatement.setEffective(new Period().setStartElement(systBeginnDateType));
-      }
-
-      // ReasonReference
-      stPartOfMedicationStatement.addReasonReference(
-          new Reference()
-              .setReference(
-                  "Condition/"
-                      + this.getHash(
-                          "Condition",
-                          pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
-      // .setIdentifier(); TODO überhaupt nötig?, ggf. problematisch da patId dann im Klartext
-      // (Noemi
-      // rückmelden)
-
-      bundle = addResourceAsEntryInBundle(bundle, stPartOfMedicationStatement);
-    }
-
-    for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
-      // Create a Medication Statement as in
-      // https://simplifier.net/oncology/systemtherapie
-      var stMedicationStatement = new MedicationStatement();
-
-      var stMedicationStatementIdentifier =
-          pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + substance;
-
-      // Id
-      stMedicationStatement.setId(
-          this.getHash("MedicationStatement", stMedicationStatementIdentifier));
+      var id = pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + substance;
+      stMedicationStatement.setId(this.getHash("MedicationStatement", id));
 
       // PartOf
       if (systemTherapy.getMenge_Substanz() != null
@@ -285,128 +172,121 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             List.of(
                 new Reference()
                     .setReference(
-                        "MedicationStatement/"
-                            + this.getHash(
-                                "MedicationStatement", stPartOfMedicationStatementIdentifier))));
-        // .setIdentifier(); TODO setIdentifier
+                        "MedicationStatement/" + this.getHash("MedicationStatement", partOfId))));
+        // Medication
+        stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
       }
 
-      // Meta
-      stMedicationStatement
-          .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
-      stMedicationStatement
-          .getMeta()
-          .setProfile(
-              List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
-
-      // Status
-      if (Objects.equals(meldeanlass, "behandlungsende")) {
-        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
-      } else {
-        stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
-      }
-
-      // Category
-      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
-      var therapyCategory = new CodeableConcept();
-      therapyCategory.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSystTherapieart())
-              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
-              .setDisplay(
-                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
-
-      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
-        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
-      }
-      stMedicationStatement.setCategory(therapyCategory);
-
-      // Extension
-      stMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getStellungOP())
-          .setValue(
-              new CodeableConcept()
-                  .addCoding(
-                      new Coding()
-                          .setCode(systemTherapy.getSYST_Stellung_OP())
-                          .setSystem(fhirProperties.getSystems().getSystStellungOP())
-                          .setDisplay(
-                              displayStellungOpLookup.lookupStellungOpDisplay(
-                                  systemTherapy.getSYST_Stellung_OP()))));
-
-      stMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getSystIntention())
-          .setValue(
-              new CodeableConcept()
-                  .addCoding(
-                      new Coding()
-                          .setCode(systemTherapy.getSYST_Intention())
-                          .setSystem(fhirProperties.getSystems().getSystIntention())
-                          .setDisplay(
-                              displaySystIntentionLookup.lookupSystIntentionDisplay(
-                                  systemTherapy.getSYST_Intention()))));
-
-      stMedicationStatement
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getSysTheraProto())
-          .setValue(new CodeableConcept().setText(systemTherapy.getSYST_Protokoll()));
-
-      // Medication
-      stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
-
-      // Subject
-      stMedicationStatement.setSubject(
-          new Reference()
-              .setReference("Patient/" + this.getHash("Patient", pid))
-              .setIdentifier(
-                  new Identifier()
-                      .setSystem(fhirProperties.getSystems().getPatientId())
-                      .setType(
-                          new CodeableConcept(
-                              new Coding(
-                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(pid)));
-
-      // Effective
-      var systBeginnDateString = systemTherapy.getSYST_Beginn_Datum();
-      var systEndDateString = systemTherapy.getSYST_Ende_Datum();
-
-      DateTimeType systBeginnDateType = null;
-      DateTimeType systEndDateType = null;
-
-      if (systBeginnDateString != null) {
-        systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
-      }
-
-      if (systEndDateString != null) {
-        systEndDateType = extractDateTimeFromADTDate(systEndDateString);
-      }
-
-      if (systBeginnDateType != null && systEndDateType != null) {
-        stMedicationStatement.setEffective(
-            new Period().setStartElement(systBeginnDateType).setEndElement(systEndDateType));
-      } else if (systBeginnDateType != null) {
-        stMedicationStatement.setEffective(new Period().setStartElement(systBeginnDateType));
-      }
-
-      // ReasonReference
-      stMedicationStatement.addReasonReference(
-          new Reference()
-              .setReference(
-                  "Condition/"
-                      + this.getHash(
-                          "Condition",
-                          pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
-      // .setIdentifier(); TODO überhaupt nötig?, ggf. problematisch da patId dann im Klartext
-      // (Noemi
-      // rückmelden)
-
-      bundle = addResourceAsEntryInBundle(bundle, stMedicationStatement);
+    } else {
+      // Id
+      stMedicationStatement.setId(this.getHash("MedicationStatement", partOfId));
     }
 
-    return bundle;
+    /// Meta
+    stMedicationStatement
+        .getMeta()
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    stMedicationStatement
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
+
+    // Status
+    if (Objects.equals(meldeanlass, "behandlungsende")) {
+      stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
+    } else {
+      stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
+    }
+
+    // Category
+    var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
+    var therapyCategory = new CodeableConcept();
+    therapyCategory.addCoding(
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getSystTherapieart())
+            .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
+            .setDisplay(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
+
+    if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
+      therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+    }
+    stMedicationStatement.setCategory(therapyCategory);
+
+    // Extension
+    stMedicationStatement
+        .addExtension()
+        .setUrl(fhirProperties.getExtensions().getStellungOP())
+        .setValue(
+            new CodeableConcept()
+                .addCoding(
+                    new Coding()
+                        .setCode(systemTherapy.getSYST_Stellung_OP())
+                        .setSystem(fhirProperties.getSystems().getSystStellungOP())
+                        .setDisplay(
+                            displayStellungOpLookup.lookupStellungOpDisplay(
+                                systemTherapy.getSYST_Stellung_OP()))));
+
+    stMedicationStatement
+        .addExtension()
+        .setUrl(fhirProperties.getExtensions().getSystIntention())
+        .setValue(
+            new CodeableConcept()
+                .addCoding(
+                    new Coding()
+                        .setCode(systemTherapy.getSYST_Intention())
+                        .setSystem(fhirProperties.getSystems().getSystIntention())
+                        .setDisplay(
+                            displaySystIntentionLookup.lookupSystIntentionDisplay(
+                                systemTherapy.getSYST_Intention()))));
+
+    stMedicationStatement
+        .addExtension()
+        .setUrl(fhirProperties.getExtensions().getSysTheraProto())
+        .setValue(new CodeableConcept().setText(systemTherapy.getSYST_Protokoll()));
+
+    // Subject
+    stMedicationStatement.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
+
+    // Effective
+    var systBeginnDateString = systemTherapy.getSYST_Beginn_Datum();
+    var systEndDateString = systemTherapy.getSYST_Ende_Datum();
+
+    DateTimeType systBeginnDateType = null;
+    DateTimeType systEndDateType = null;
+
+    if (systBeginnDateString != null) {
+      systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
+    }
+
+    if (systEndDateString != null) {
+      systEndDateType = extractDateTimeFromADTDate(systEndDateString);
+    }
+
+    if (systBeginnDateType != null && systEndDateType != null) {
+      stMedicationStatement.setEffective(
+          new Period().setStartElement(systBeginnDateType).setEndElement(systEndDateType));
+    } else if (systBeginnDateType != null) {
+      stMedicationStatement.setEffective(new Period().setStartElement(systBeginnDateType));
+    }
+
+    // ReasonReference
+    stMedicationStatement.addReasonReference(
+        new Reference()
+            .setReference(
+                "Condition/"
+                    + this.getHash(
+                        "Condition",
+                        pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
+
+    return stMedicationStatement;
   }
 }

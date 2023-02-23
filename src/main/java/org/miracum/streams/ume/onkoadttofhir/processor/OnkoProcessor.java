@@ -135,7 +135,6 @@ public abstract class OnkoProcessor {
     return bundle;
   }
 
-  // TODO use in all Date related fields
   protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
 
     if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
