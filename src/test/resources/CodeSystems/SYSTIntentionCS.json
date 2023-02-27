@@ -1,0 +1,45 @@
+{
+  "resourceType": "CodeSystem",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>SYST-Intention CodeSystem</b></p><p>Intention</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS",
+  "version": "0.9.0",
+  "name": "SYSTIntentionCS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Intention",
+  "caseSensitive": true,
+  "compositional": false,
+  "content": "complete",
+  "count": 4,
+  "concept": [
+    {
+      "code": "K",
+      "display": "kurativ"
+    },
+    {
+      "code": "P",
+      "display": "palliativ"
+    },
+    {
+      "code": "S",
+      "display": "sonstiges"
+    },
+    {
+      "code": "X",
+      "display": "keine Angabe"
+    }
+  ]
+}

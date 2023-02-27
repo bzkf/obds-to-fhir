@@ -1,0 +1,49 @@
+{
+  "resourceType": "CodeSystem",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>ST-Stellung-OP CodeSystem</b></p><p>Stellung operative Therapie</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS",
+  "version": "0.9.0",
+  "name": "SYSTStellungOPCS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Stellung operative Therapie",
+  "caseSensitive": true,
+  "compositional": false,
+  "content": "complete",
+  "count": 5,
+  "concept": [
+    {
+      "code": "O",
+      "display": "ohne Bezug zu einer operativen Therapie"
+    },
+    {
+      "code": "A",
+      "display": "adjuvant"
+    },
+    {
+      "code": "N",
+      "display": "neoadjuvant"
+    },
+    {
+      "code": "I",
+      "display": "intraoperativ"
+    },
+    {
+      "code": "S",
+      "display": "sonstiges"
+    }
+  ]
+}

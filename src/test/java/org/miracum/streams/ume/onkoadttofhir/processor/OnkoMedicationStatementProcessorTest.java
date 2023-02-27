@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
 import ca.uhn.fhir.util.BundleUtil;
+import ca.uhn.fhir.validation.FhirValidator;
+import ca.uhn.fhir.validation.SingleValidationMessage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,9 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Stream;
-
-import ca.uhn.fhir.validation.FhirValidator;
-import ca.uhn.fhir.validation.SingleValidationMessage;
 import org.hl7.fhir.common.hapi.validation.support.*;
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import org.hl7.fhir.r4.model.Bundle;
@@ -40,7 +39,8 @@ import org.springframework.util.ResourceUtils;
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class OnkoMedicationStatementProcessorTest {
 
-  private static final Logger log = LoggerFactory.getLogger(OnkoMedicationStatementProcessorTest.class);
+  private static final Logger log =
+      LoggerFactory.getLogger(OnkoMedicationStatementProcessorTest.class);
 
   private final FhirProperties fhirProps;
   private final FhirContext ctx = FhirContext.forR4();
@@ -52,26 +52,25 @@ public class OnkoMedicationStatementProcessorTest {
     this.fhirProps = fhirProperties;
   }
 
-
   @BeforeAll
   static void setUp() throws FileNotFoundException {
     var ctx = FhirContext.forR4();
     validator = ctx.newValidator();
 
     var validationSupportChain =
-            new ValidationSupportChain(
-                    new DefaultProfileValidationSupport(ctx),
-                    getProfiles(ctx),
-                    new SnapshotGeneratingValidationSupport(ctx),
-                    new InMemoryTerminologyServerValidationSupport(ctx),
-                    new CommonCodeSystemsTerminologyService(ctx));
+        new ValidationSupportChain(
+            new DefaultProfileValidationSupport(ctx),
+            getProfiles(ctx),
+            new SnapshotGeneratingValidationSupport(ctx),
+            new InMemoryTerminologyServerValidationSupport(ctx),
+            new CommonCodeSystemsTerminologyService(ctx));
 
     var instanceValidator = new FhirInstanceValidator(validationSupportChain);
     validator.registerValidatorModule(instanceValidator);
   }
 
   private static PrePopulatedValidationSupport getProfiles(FhirContext ctx)
-          throws FileNotFoundException {
+      throws FileNotFoundException {
     var currentRelativePath = Paths.get("");
     var basePath = currentRelativePath.toAbsolutePath().toString();
     var parser = ctx.newJsonParser();
@@ -83,8 +82,8 @@ public class OnkoMedicationStatementProcessorTest {
 
     for (final var fileEntry : Objects.requireNonNull(folder.listFiles())) {
       var struct =
-              parser.parseResource(
-                      StructureDefinition.class, new FileReader(fileEntry.getAbsolutePath()));
+          parser.parseResource(
+              StructureDefinition.class, new FileReader(fileEntry.getAbsolutePath()));
       prepop.addStructureDefinition(struct);
     }
 
@@ -93,7 +92,7 @@ public class OnkoMedicationStatementProcessorTest {
     // Validation against ValueSet
     for (final var fileEntry : Objects.requireNonNull(folderVS.listFiles())) {
       var valueSet =
-              parser.parseResource(ValueSet.class, new FileReader(fileEntry.getAbsolutePath()));
+          parser.parseResource(ValueSet.class, new FileReader(fileEntry.getAbsolutePath()));
       prepop.addValueSet(valueSet);
     }
 
@@ -106,18 +105,16 @@ public class OnkoMedicationStatementProcessorTest {
 
     for (SingleValidationMessage message : valResultMessages) {
       log.error(
-              "issue: "
-                      + message.getSeverity()
-                      + " - "
-                      + message.getLocationString()
-                      + " - "
-                      + message.getMessage());
+          "issue: "
+              + message.getSeverity()
+              + " - "
+              + message.getLocationString()
+              + " - "
+              + message.getMessage());
     }
 
     return result.isSuccessful();
   }
-
-
 
   static Stream<Arguments> generateTestData() {
     return Stream.of(
@@ -174,8 +171,8 @@ public class OnkoMedicationStatementProcessorTest {
       assertThat(medicationStatementList.get(0).getCategory().getCoding().get(0).getCode())
           .isEqualTo(expectedCategory);
 
-      //TODO add missing structure definitions
-      //assertThat(isValid(resultBundle)).isTrue();
+      // TODO add missing structure definitions
+      assertThat(isValid(resultBundle)).isTrue();
     }
   }
 }
