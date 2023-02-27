@@ -2,11 +2,11 @@
   "resourceType": "CodeSystem",
   "text": {
     "status": "generated",
-    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>SYST-Intention CodeSystem</b></p><p>Intention</p></div>"
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>OP-Intention CodeSystem</b></p><p>OP Intention</p></div>"
   },
-  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS",
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
   "version": "0.9.0",
-  "name": "SYSTIntentionCS",
+  "name": "OPIntentionCS",
   "status": "active",
   "publisher": "DKTK",
   "contact": [
@@ -19,11 +19,11 @@
       ]
     }
   ],
-  "description": "Intention",
+  "description": "OP Intention",
   "caseSensitive": true,
   "compositional": false,
   "content": "complete",
-  "count": 4,
+  "count": 6,
   "concept": [
     {
       "code": "K",
@@ -34,12 +34,20 @@
       "display": "palliativ"
     },
     {
+      "code": "D",
+      "display": "diagnostisch"
+    },
+    {
+      "code": "R",
+      "display": "Revision/Komplikation"
+    },
+    {
       "code": "S",
       "display": "sonstiges"
     },
     {
       "code": "X",
-      "display": "keine Angabe"
+      "display": "Fehlende Angabe"
     }
   ]
 }

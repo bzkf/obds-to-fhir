@@ -1,0 +1,65 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Specimen",
+  "version": "0.9.0",
+  "name": "Specimen",
+  "status": "active",
+  "date": "2019-07-01",
+  "publisher": "DKTK",
+  "description": "Extension: eine Referenz zum Biomaterial",
+  "fhirVersion": "4.0.0",
+  "kind": "complex-type",
+  "abstract": false,
+  "context": [
+    {
+      "type": "element",
+      "expression": "Condition"
+    }
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "short": "Referenz zur Probe",
+        "definition": "Referenz zur Probe/Specimen (GBA-Profil)",
+        "min": 0,
+        "max": "*"
+      },
+      {
+        "id": "Extension.extension",
+        "path": "Extension.extension",
+        "min": 0,
+        "max": "0"
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Specimen"
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "https://fhir.bbmri.de/StructureDefinition/Specimen"
+            ],
+            "aggregation": [
+              "referenced"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

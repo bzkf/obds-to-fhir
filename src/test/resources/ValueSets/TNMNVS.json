@@ -1,0 +1,108 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>TNM-N ValueSet</b></p><p>TNM N-Kategorie</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/TNMNVS",
+  "version": "0.9.0",
+  "name": "TNMNVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "TNM N-Kategorie",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS",
+        "concept": [
+          {
+            "code": "0",
+            "display": "0"
+          },
+          {
+            "code": "0(i+)",
+            "display": "0(i+)"
+          },
+          {
+            "code": "0(i-)",
+            "display": "0(i-)"
+          },
+          {
+            "code": "0(mol+)",
+            "display": "0(mol+)"
+          },
+          {
+            "code": "0(mol-)",
+            "display": "0(mol-)"
+          },
+          {
+            "code": "1",
+            "display": "1"
+          },
+          {
+            "code": "1a",
+            "display": "1a"
+          },
+          {
+            "code": "1b",
+            "display": "1b"
+          },
+          {
+            "code": "1c",
+            "display": "1c"
+          },
+          {
+            "code": "1mi",
+            "display": "1mi"
+          },
+          {
+            "code": "2",
+            "display": "2"
+          },
+          {
+            "code": "2a",
+            "display": "2a"
+          },
+          {
+            "code": "2b",
+            "display": "2b"
+          },
+          {
+            "code": "2c",
+            "display": "2c"
+          },
+          {
+            "code": "3",
+            "display": "3"
+          },
+          {
+            "code": "3a",
+            "display": "3a"
+          },
+          {
+            "code": "3b",
+            "display": "3b"
+          },
+          {
+            "code": "3c",
+            "display": "3c"
+          },
+          {
+            "code": "X",
+            "display": "X"
+          }
+        ]
+      }
+    ]
+  }
+}

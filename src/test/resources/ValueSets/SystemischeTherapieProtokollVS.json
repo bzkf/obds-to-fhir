@@ -1,0 +1,30 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Systemische Therapie Protokoll ValueSet</b></p><p>Systemische Therapie Protokoll</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/SystemischeTherapieProtokollVS",
+  "version": "0.9.0",
+  "name": "SystemischeTherapieProtokollVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Systemische Therapie Protokoll",
+  "compose": {
+    "include": [
+      {
+        "system": "https://standards.digital.health.nz/ns/sact-regimen-code"
+      }
+    ]
+  }
+}

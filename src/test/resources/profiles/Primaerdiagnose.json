@@ -1,0 +1,527 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose",
+  "version": "0.9.0",
+  "name": "Primaerdiagnose",
+  "status": "active",
+  "description": "Entspricht der Primärdiagnose. Dabei werden Parameter zur Klassifikation der Primärerkrankung erfasst. Diese umfassen ICD-10, ICD-O-3 (Topographie) und die Seitenlokalisation. Verknüpfungen mit der Histologie (Topographie) und die TNM-Klassifikationen (pathologisch/klinisch)",
+  "fhirVersion": "4.0.0",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Condition",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Condition",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Condition.extension",
+        "path": "Condition.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Condition.extension:ReferenzPrimaerdiagnose",
+        "path": "Condition.extension",
+        "sliceName": "ReferenzPrimaerdiagnose",
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://hl7.org/fhir/StructureDefinition/condition-related"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.extension:Fernmetastasen",
+        "path": "Condition.extension",
+        "sliceName": "Fernmetastasen",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.extension:specimen",
+        "path": "Condition.extension",
+        "sliceName": "specimen",
+        "alias": [
+          "Bioprobe"
+        ],
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Specimen"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code",
+        "path": "Condition.code",
+        "short": "Code der Primärdiagnose",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding",
+        "path": "Condition.code.coding",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Condition.code.coding:icd10-gm",
+        "path": "Condition.code.coding",
+        "sliceName": "icd10-gm",
+        "short": "Code defined by ICD- system",
+        "max": "1",
+        "type": [
+          {
+            "code": "Coding",
+            "profile": [
+              "http://fhir.de/StructureDefinition/CodingICD10GM"
+            ]
+          }
+        ],
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://fhir.de/ValueSet/bfarm/icd-10-gm"
+        }
+      },
+      {
+        "id": "Condition.code.coding:icd10-gm.system",
+        "path": "Condition.code.coding.system",
+        "short": "ICD-10-GM",
+        "min": 1,
+        "fixedUri": "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+      },
+      {
+        "id": "Condition.code.coding:icd10-gm.version",
+        "path": "Condition.code.coding.version",
+        "short": "Version des ICD-10-Katalogs",
+        "definition": "Katalogversion der ICD",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "extensible",
+          "description": "ICD-10-Katalog (Version)",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/ICDVersionVS"
+        },
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Primaertumor_ICD_Version",
+            "comment": "Diagnose:Primaertumor_ICD_Version"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:3:2",
+            "comment": "urn:dktk:dataelement:3:2"
+          }
+        ]
+      },
+      {
+        "id": "Condition.code.coding:icd10-gm.code",
+        "path": "Condition.code.coding.code",
+        "short": "Primärdiagnose",
+        "definition": "Kodierung der Erkrankung (Diagnose) des Patienten anhand der aktuellen ICD-Klassifizierung",
+        "min": 1,
+        "mustSupport": true,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Primaertumor_ICD_Code",
+            "comment": "Diagnose:Primaertumor_ICD_Code"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:29:2",
+            "comment": "urn:dktk:dataelement:29:2"
+          }
+        ]
+      },
+      {
+        "id": "Condition.code.coding:alpha-id",
+        "path": "Condition.code.coding",
+        "sliceName": "alpha-id",
+        "max": "1",
+        "type": [
+          {
+            "code": "Coding",
+            "profile": [
+              "http://fhir.de/StructureDefinition/CodingAlphaID"
+            ]
+          }
+        ],
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://fhir.de/ValueSet/bfarm/alpha-id"
+        }
+      },
+      {
+        "id": "Condition.code.coding:alpha-id.system",
+        "path": "Condition.code.coding.system",
+        "min": 1,
+        "fixedUri": "http://fhir.de/CodeSystem/bfarm/alpha-id",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding:alpha-id.code",
+        "path": "Condition.code.coding.code",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding:sct",
+        "path": "Condition.code.coding",
+        "sliceName": "sct",
+        "max": "1",
+        "mustSupport": false,
+        "binding": {
+          "strength": "required",
+          "valueSet": "https://www.medizininformatik-initiative.de/fhir/core/modul-diagnose/ValueSet/diagnoses-sct"
+        }
+      },
+      {
+        "id": "Condition.code.coding:sct.system",
+        "path": "Condition.code.coding.system",
+        "min": 1,
+        "fixedUri": "http://snomed.info/sct",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding:sct.code",
+        "path": "Condition.code.coding.code",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding:orphanet",
+        "path": "Condition.code.coding",
+        "sliceName": "orphanet",
+        "max": "1",
+        "mustSupport": false
+      },
+      {
+        "id": "Condition.code.coding:orphanet.system",
+        "path": "Condition.code.coding.system",
+        "min": 1,
+        "fixedUri": "http://www.orpha.net",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.code.coding:orphanet.code",
+        "path": "Condition.code.coding.code",
+        "min": 1
+      },
+      {
+        "id": "Condition.code.text",
+        "path": "Condition.code.text",
+        "short": "Primaertumor Diagnosetext",
+        "definition": "Bezeichnung einer Erkrankung als Freitext",
+        "mustSupport": true,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Primaertumor_Diagnosetext",
+            "comment": "Diagnose:Primaertumor_Diagnosetext"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:adt:dataelement:28:1"
+          }
+        ]
+      },
+      {
+        "id": "Condition.bodySite",
+        "path": "Condition.bodySite",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.bodySite.coding",
+        "path": "Condition.bodySite.coding",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        },
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.bodySite.coding:ICD-O-3-T",
+        "path": "Condition.bodySite.coding",
+        "sliceName": "ICD-O-3-T",
+        "short": "ICD O-3 Topographie",
+        "max": "1",
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "description": "ICD-O-3 Topographie",
+          "valueSet": "urn:oid:2.16.840.1.113883.6.43.1"
+        }
+      },
+      {
+        "id": "Condition.bodySite.coding:ICD-O-3-T.system",
+        "path": "Condition.bodySite.coding.system",
+        "short": "ICD-O-3",
+        "min": 1,
+        "fixedUri": "urn:oid:2.16.840.1.113883.6.43.1"
+      },
+      {
+        "id": "Condition.bodySite.coding:ICD-O-3-T.version",
+        "path": "Condition.bodySite.coding.version",
+        "short": "ICD-O Katalog Topographie (Version)",
+        "definition": "Katalogversion der ICD-O",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "extensible",
+          "description": "ICD-O-3 Version",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/ICDOVersionVS"
+        },
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Primaertumor_Topographie_ICD_O_Version",
+            "comment": "Diagnose:Primaertumor_Topographie_ICD_O_Version"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:5:2",
+            "comment": "urn:dktk:dataelement:5:2"
+          }
+        ]
+      },
+      {
+        "id": "Condition.bodySite.coding:ICD-O-3-T.code",
+        "path": "Condition.bodySite.coding.code",
+        "short": "Lokalisation",
+        "definition": "Bezeichnung der Topographie einer Erkrankung basierend auf der aktuellen ICD-O-3 Klassifizierung",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "description": "ICD-O-3 Topographie",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/MorphologieICDO3VS"
+        },
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Primaertumor_Topographie_ICD_O",
+            "comment": "Diagnose:Primaertumor_Topographie_ICD_O"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:4:2",
+            "comment": "urn:dktk:dataelement:4:2"
+          }
+        ]
+      },
+      {
+        "id": "Condition.bodySite.coding:ADT-Seitenlokalisation",
+        "path": "Condition.bodySite.coding",
+        "sliceName": "ADT-Seitenlokalisation",
+        "max": "1",
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/SeitenlokalisationVS"
+        }
+      },
+      {
+        "id": "Condition.bodySite.coding:ADT-Seitenlokalisation.system",
+        "path": "Condition.bodySite.coding.system",
+        "min": 1,
+        "fixedUri": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
+      },
+      {
+        "id": "Condition.bodySite.coding:ADT-Seitenlokalisation.code",
+        "path": "Condition.bodySite.coding.code",
+        "short": "Seitenlokalisation nach ADT-GEKID",
+        "definition": "Organspezifische Angabe der betroffenen Seite",
+        "min": 1,
+        "mustSupport": true,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Seitenlokalisation",
+            "comment": "Diagnose:Seitenlokalisation"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:6:2",
+            "comment": "urn:dktk:dataelement:6:2"
+          }
+        ]
+      },
+      {
+        "id": "Condition.bodySite.coding:snomed-ct",
+        "path": "Condition.bodySite.coding",
+        "sliceName": "snomed-ct",
+        "min": 1,
+        "max": "1",
+        "mustSupport": false
+      },
+      {
+        "id": "Condition.bodySite.coding:snomed-ct.system",
+        "path": "Condition.bodySite.coding.system",
+        "min": 1,
+        "fixedUri": "http://snomed.info/sct",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.bodySite.coding:snomed-ct.code",
+        "path": "Condition.bodySite.coding.code",
+        "min": 1
+      },
+      {
+        "id": "Condition.subject",
+        "path": "Condition.subject",
+        "short": "Patient who has the condition",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Patient",
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Pseudonym"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.subject.reference",
+        "path": "Condition.subject.reference",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.encounter",
+        "path": "Condition.encounter",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Encounter-Fall"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Condition.onset[x]",
+        "path": "Condition.onset[x]",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "type",
+              "path": "$this"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Condition.onset[x]:onsetDateTime",
+        "path": "Condition.onset[x]",
+        "sliceName": "onsetDateTime",
+        "short": "Tumor Diagnosedatum",
+        "definition": "Das Datum an dem die meldepflichtige Diagnose erstmals durch einen Arzt klinisch oder mikroskopisch diagnostiziert wurde",
+        "type": [
+          {
+            "code": "dateTime"
+          }
+        ],
+        "mustSupport": true,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Diagnose:Diagnosedatum",
+            "comment": "Diagnose:Diagnosedatum"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:83:3",
+            "comment": "urn:dktk:dataelement:83:3"
+          }
+        ]
+      },
+      {
+        "id": "Condition.stage",
+        "path": "Condition.stage",
+        "mustSupport": false
+      },
+      {
+        "id": "Condition.stage.assessment",
+        "path": "Condition.stage.assessment",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp",
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.stage.assessment.reference",
+        "path": "Condition.stage.assessment.reference",
+        "min": 1
+      },
+      {
+        "id": "Condition.evidence",
+        "path": "Condition.evidence",
+        "mustSupport": true
+      },
+      {
+        "id": "Condition.evidence.detail",
+        "path": "Condition.evidence.detail",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie",
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
+            ]
+          }
+        ],
+        "mustSupport": false
+      },
+      {
+        "id": "Condition.evidence.detail.reference",
+        "path": "Condition.evidence.detail.reference",
+        "min": 1
+      }
+    ]
+  }
+}

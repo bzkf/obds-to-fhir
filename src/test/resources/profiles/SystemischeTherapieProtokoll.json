@@ -1,0 +1,62 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll",
+  "version": "0.9.0",
+  "name": "SystemischeTherapieProtokoll",
+  "status": "active",
+  "description": "Gibt an, nach welchem Protokoll die Systemtherapie durchgeführt wurde",
+  "fhirVersion": "4.0.0",
+  "kind": "complex-type",
+  "abstract": false,
+  "context": [
+    {
+      "type": "element",
+      "expression": "MedicationStatement"
+    }
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "fixedUri": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "min": 1,
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/SystemischeTherapieProtokollVS"
+        }
+      },
+      {
+        "id": "Extension.value[x].coding.code",
+        "path": "Extension.value[x].coding.code",
+        "short": "Systemische Therapie Protokoll",
+        "definition": "Protokoll, nach welchem die Systemtherapie durchgeführt wurde",
+        "min": 1,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "SYST:SYST_Protokoll",
+            "comment": "SYST:SYST_Protokoll"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:89:1",
+            "comment": "urn:dktk:dataelement:89:1"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "resourceType": "CodeSystem",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>TNM-y-Symbol CodeSystem</b></p><p>TNM y-Symbol</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS",
+  "version": "0.9.0",
+  "name": "TNMySymbolCS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "TNM y-Symbol",
+  "caseSensitive": true,
+  "compositional": false,
+  "content": "complete",
+  "count": 2,
+  "concept": [
+    {
+      "code": "y",
+      "display": "Klassifikation erfolgte während oder nach initialer multimodaler Therapie"
+    },
+    {
+      "code": "9",
+      "display": "native Klassifikation"
+    }
+  ]
+}

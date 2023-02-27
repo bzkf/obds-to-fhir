@@ -1,0 +1,142 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading",
+  "version": "0.9.0",
+  "name": "Grading",
+  "status": "active",
+  "description": "Gibt den Differenzierungsgrad des Tumors an",
+  "fhirVersion": "4.0.0",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Observation",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Observation",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Observation.status",
+        "path": "Observation.status",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.category.coding.system",
+        "path": "Observation.category.coding.system",
+        "min": 1,
+        "fixedUri": "http://hl7.org/fhir/observation-category"
+      },
+      {
+        "id": "Observation.category.coding.code",
+        "path": "Observation.category.coding.code",
+        "min": 1,
+        "fixedCode": "laboratory"
+      },
+      {
+        "id": "Observation.code",
+        "path": "Observation.code",
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.code.coding.system",
+        "path": "Observation.code.coding.system",
+        "fixedUri": "http://loinc.org"
+      },
+      {
+        "id": "Observation.code.coding.code",
+        "path": "Observation.code.coding.code",
+        "min": 1,
+        "fixedCode": "59542-1"
+      },
+      {
+        "id": "Observation.subject",
+        "path": "Observation.subject",
+        "min": 1,
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Patient",
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Pseudonym"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Observation.encounter",
+        "path": "Observation.encounter",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Encounter-Fall"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Observation.effective[x]",
+        "path": "Observation.effective[x]",
+        "short": "effectiveDateTime",
+        "type": [
+          {
+            "code": "dateTime"
+          }
+        ]
+      },
+      {
+        "id": "Observation.value[x]",
+        "path": "Observation.value[x]",
+        "short": "Grading",
+        "definition": "Gibt den Differenzierungsgrad des Tumors an",
+        "min": 1,
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "mustSupport": true,
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/GradingVS"
+        }
+      },
+      {
+        "id": "Observation.value[x].coding.code",
+        "path": "Observation.value[x].coding.code",
+        "short": "Grading",
+        "definition": "Gibt den Differenzierungsgrad des Tumors an",
+        "min": 1,
+        "mustSupport": false,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "Histologie:Grading",
+            "comment": "Histologie:Grading"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:9:2",
+            "comment": "urn:dktk:dataelement:9:2"
+          }
+        ]
+      },
+      {
+        "id": "Observation.specimen",
+        "path": "Observation.specimen",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "https://fhir.bbmri.de/StructureDefinition/Specimen"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Observation.specimen.reference",
+        "path": "Observation.specimen.reference",
+        "min": 1
+      }
+    ]
+  }
+}
