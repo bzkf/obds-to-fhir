@@ -2,10 +2,15 @@ package org.miracum.streams.ume.onkoadttofhir.processor;
 
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DomainResource;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
@@ -34,6 +39,9 @@ public abstract class OnkoProcessor {
         break;
       case "Observation":
         idToHash = fhirProperties.getSystems().getObservationId();
+        break;
+      case "MedicationStatement":
+        idToHash = fhirProperties.getSystems().getMedicationStatementId();
         break;
       case "Surrogate":
         return Hashing.sha256().hashString(id, StandardCharsets.UTF_8).toString();
@@ -125,5 +133,26 @@ public abstract class OnkoProcessor {
                     String.format("%s/%s", resource.getResourceType().name(), resource.getId())));
 
     return bundle;
+  }
+
+  protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
+
+    if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
+      return null;
+    }
+
+    // 00.00.2022 -> 01.07.2022
+    // 00.04.2022 -> 15.04.2022
+    if (adtDate.matches("^00.00.\\d{4}$")) {
+      adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
+    } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
+      adtDate = "15." + adtDate.substring(adtDate.length() - 2);
+    }
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
+    LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
+    return new DateTimeType(
+        Date.from(adtLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
   }
 }

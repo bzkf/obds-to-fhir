@@ -71,6 +71,8 @@ public class ADT_GEKID implements Serializable {
 
           @JsonProperty private Menge_ST Menge_ST;
 
+          @JsonProperty private Menge_SYST Menge_SYST;
+
           @Data
           @EqualsAndHashCode(callSuper = true)
           public static class Tumorzuordnung extends PrimaryConditionAbs {
@@ -201,6 +203,7 @@ public class ADT_GEKID implements Serializable {
               @JsonProperty private TNM TNM;
 
               @JsonProperty private Menge_OPS Menge_OPS;
+              @JsonProperty private Menge_Komplikation Menge_Komplikation;
 
               @JsonProperty private Residualstatus Residualstatus;
 
@@ -239,9 +242,14 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               public static class Menge_OPS {
-
                 @JacksonXmlElementWrapper(useWrapping = false)
                 private List<String> OP_OPS;
+              }
+
+              @Data
+              public static class Menge_Komplikation {
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<String> OP_Komplikation;
               }
 
               @Data
@@ -347,6 +355,7 @@ public class ADT_GEKID implements Serializable {
                 public static class Bestrahlung {
                   @JsonProperty private String ST_Beginn_Datum;
                   @JsonProperty private String ST_Ende_Datum;
+                  @JsonProperty private String ST_Zielgebiet;
                   @JsonProperty private String ST_Applikationsart;
                 }
               }
@@ -359,6 +368,60 @@ public class ADT_GEKID implements Serializable {
 
                 @Data
                 public static class ST_Nebenwirkung {
+                  @JsonProperty private String Nebenwirkung_Grad;
+                  @JsonProperty private String Nebenwirkung_Art;
+                  @JsonProperty private String Nebenwirkung_Version;
+                }
+              }
+            }
+          }
+
+          @Data
+          public static class Menge_SYST {
+
+            @JsonProperty private SYST SYST;
+
+            @Data
+            public static class SYST {
+
+              @JsonProperty private String SYST_ID;
+              @JsonProperty private String SYST_Intention;
+              @JsonProperty private String SYST_Stellung_OP;
+
+              @JsonProperty private String SYST_Beginn_Datum;
+              @JsonProperty private String SYST_Ende_Datum;
+              @JsonProperty private String SYST_Ende_Grund;
+
+              @JsonProperty private String SYST_Therapieart_Anmerkung;
+              @JsonProperty private String SYST_Protokoll;
+
+              @JsonProperty private Menge_Therapieart Menge_Therapieart;
+
+              @JsonProperty private Menge_Nebenwirkung Menge_Nebenwirkung;
+              @JsonProperty private Menge_Substanz Menge_Substanz;
+
+              @Data
+              public static class Menge_Therapieart {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<String> SYST_Therapieart;
+              }
+
+              @Data
+              public static class Menge_Substanz {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<String> SYST_Substanz;
+              }
+
+              @Data
+              public static class Menge_Nebenwirkung {
+
+                @JacksonXmlElementWrapper(useWrapping = false)
+                private List<SYST_Nebenwirkung> SYST_Nebenwirkung;
+
+                @Data
+                public static class SYST_Nebenwirkung {
                   @JsonProperty private String Nebenwirkung_Grad;
                   @JsonProperty private String Nebenwirkung_Art;
                   @JsonProperty private String Nebenwirkung_Version;

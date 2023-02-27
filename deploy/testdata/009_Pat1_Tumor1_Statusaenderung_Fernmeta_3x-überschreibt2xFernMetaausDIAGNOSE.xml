@@ -29,9 +29,9 @@
                     <Meldebegruendung>I</Meldebegruendung>
                     <Meldeanlass>statusaenderung</Meldeanlass>
                     <Tumorzuordnung Tumor_ID="1">
-                        <Primaertumor_ICD_Code>C61</Primaertumor_ICD_Code>
-                        <Primaertumor_ICD_Version>10 2020 GM</Primaertumor_ICD_Version>
-                        <Diagnosedatum>00.12.2020</Diagnosedatum>
+                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+                        <Diagnosedatum>18.03.2021</Diagnosedatum>
                         <Seitenlokalisation>T</Seitenlokalisation>
                     </Tumorzuordnung>
                     <Menge_Verlauf>

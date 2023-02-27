@@ -1,9 +1,5 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
@@ -41,10 +37,8 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
   @Bean
   public BiFunction<KTable<String, MeldungExport>, KTable<String, Bundle>, KStream<String, Bundle>>
-      // public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportConditionProcessor() {
     return (stringOnkoMeldungExpTable, stringOnkoObsBundles) ->
-        // return (stringOnkoMeldungExpTable) ->
         stringOnkoMeldungExpTable
             .filter(
                 (key, value) ->
@@ -129,7 +123,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
     onkoCondition
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkostar-to-fhir:" + appVersion);
+        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
     onkoCondition
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));
@@ -186,11 +180,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     var conditionDateString = primDia.getDiagnosedatum();
 
     if (conditionDateString != null) {
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-      LocalDate condDate = LocalDate.parse(conditionDateString, formatter);
-      LocalDateTime condDateTime = condDate.atStartOfDay();
-      onkoCondition.setOnset(
-          new DateTimeType(Date.from(condDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant())));
+      onkoCondition.setOnset(extractDateTimeFromADTDate(conditionDateString));
     }
 
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
@@ -199,8 +189,9 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     if (observationBundle != null && observationBundle.getEntry() != null) {
       for (var obsEntry : observationBundle.getEntry()) {
         var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
-        if (profile.equals(fhirProperties.getProfiles().getHistologie())
-            || profile.equals(fhirProperties.getProfiles().getGenVariante())) {
+        if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
+          // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische Variante
+          // erst ab ADTv3
           var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
           conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
           evidenceBackBoneComponentList.add(conditionEvidenceComponent);
