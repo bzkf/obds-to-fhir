@@ -29,6 +29,7 @@ public class FhirProperties {
     private String identifierType;
     private String conditionId;
     private String observationId;
+    private String procedureId;
     private String medicationStatementId;
     private String observationCategorySystem;
     private String loinc;

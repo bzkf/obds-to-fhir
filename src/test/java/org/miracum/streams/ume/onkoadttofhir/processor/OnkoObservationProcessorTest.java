@@ -50,7 +50,7 @@ public class OnkoObservationProcessorTest extends OnkoProcessorTest {
 
   @ParameterizedTest
   @MethodSource("generateTestData")
-  void mapMedicationStatement_withGivenAdtXml(
+  void mapObservation_withGivenAdtXml(
       List<Tupel<String, Integer>> xmlFileNames, int expectedObsvCount) throws IOException {
 
     MeldungExportList meldungExportList = new MeldungExportList();

@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.hl7.fhir.common.hapi.validation.support.*;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,19 +45,35 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            Arrays.asList(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)), 5, "CI"),
+            Arrays.asList(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)),
+            5,
+            "CI",
+            "COMPLETED",
+            new Tupel<>("2021-05-22", "2021-07-20"),
+            "O",
+            "K"),
         Arguments.of(
             Arrays.asList(
                 new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
                 new Tupel<>("002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml", 1)),
             0,
-            null));
+            null,
+            "",
+            new Tupel<>("", ""),
+            "",
+            ""));
   }
 
   @ParameterizedTest
   @MethodSource("generateTestData")
   void mapMedicationStatement_withGivenAdtXml(
-      List<Tupel<String, Integer>> xmlFileNames, int expectedMedStCount, String expectedCategory)
+      List<Tupel<String, Integer>> xmlFileNames,
+      int expectedMedStCount,
+      String expectedCategory,
+      String expectedStatus,
+      Tupel<String, String> expectedPeriod,
+      String expectedStellungOP,
+      String expectedIntention)
       throws IOException {
 
     MeldungExportList meldungExportList = new MeldungExportList();
@@ -98,8 +115,43 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
           BundleUtil.toListOfResourcesOfType(ctx, resultBundle, MedicationStatement.class);
 
       assertThat(medicationStatementList).hasSize(expectedMedStCount);
-      assertThat(medicationStatementList.get(0).getCategory().getCoding().get(0).getCode())
-          .isEqualTo(expectedCategory);
+
+      int partOfCount = 0;
+      String partOfId = "";
+      List<String> partOfReferences = new ArrayList<>();
+      for (var medSt : medicationStatementList) {
+
+        assertThat(medSt.getCategory().getCoding().get(0).getCode()).isEqualTo(expectedCategory);
+
+        assertThat(medSt.getStatus().toString()).isEqualTo(expectedStatus);
+
+        assertThat(medSt.getEffectivePeriod().getStartElement().getValue())
+            .isEqualTo(expectedPeriod.getFirst());
+        assertThat(medSt.getEffectivePeriod().getEndElement().getValue())
+            .isEqualTo(expectedPeriod.getSecond());
+
+        var stellungOPCc =
+            (CodeableConcept)
+                medSt.getExtensionByUrl(fhirProps.getExtensions().getStellungOP()).getValue();
+        var intentionCC =
+            (CodeableConcept)
+                medSt.getExtensionByUrl(fhirProps.getExtensions().getSystIntention()).getValue();
+
+        assertThat(stellungOPCc.getCoding().get(0).getCode()).isEqualTo(expectedStellungOP);
+        assertThat(intentionCC.getCoding().get(0).getCode()).isEqualTo(expectedIntention);
+
+        if (medSt.getPartOf().isEmpty()) {
+          partOfId = medSt.getId();
+          partOfCount++;
+        } else {
+          assertThat(medSt.getPartOf()).hasSize(1);
+          partOfReferences.add(medSt.getPartOf().get(0).getReference());
+        }
+      }
+
+      assertThat(partOfCount).isEqualTo(1);
+      String finalPartOfId = partOfId;
+      assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
 
       // TODO add missing structure definitions
       // assertThat(isValid(resultBundle)).isTrue();

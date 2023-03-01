@@ -273,7 +273,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     // Complication
     if (op.getMenge_Komplikation() != null
         && op.getMenge_Komplikation().getOP_Komplikation() != null
-        && op.getMenge_Komplikation().getOP_Komplikation().size() > 1) {
+        && op.getMenge_Komplikation().getOP_Komplikation().size() > 0) {
       var complicationConcept = new CodeableConcept();
       for (var complication : op.getMenge_Komplikation().getOP_Komplikation()) {
         complicationConcept.addCoding(

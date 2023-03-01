@@ -7,12 +7,10 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Procedure;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -44,15 +42,47 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
 
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
-        Arguments.of(Arrays.asList(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)), 0),
-        Arguments.of(Arrays.asList(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)), 0),
-        Arguments.of(Arrays.asList(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)), 3));
+        Arguments.of(
+            Arrays.asList(new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
+            1,
+            1,
+            0,
+            8,
+            "COMPLETED",
+            "2021-01-04",
+            "K",
+            "",
+            "N",
+            "Nein"),
+        Arguments.of(
+            Arrays.asList(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)),
+            3,
+            0,
+            3,
+            0,
+            "COMPLETED",
+            "",
+            "D",
+            "N",
+            "4",
+            "lebensbedrohlich"));
   }
 
   @ParameterizedTest
   @MethodSource("generateTestData")
-  void mapMedicationStatement_withGivenAdtXml(
-      List<Tupel<String, Integer>> xmlFileNames, int expectedProcCount) throws IOException {
+  void mapProcedure_withGivenAdtXml(
+      List<Tupel<String, Integer>> xmlFileNames,
+      int expectedProcCount,
+      int expectedProcCountOp,
+      int expectedProcCountSt,
+      int expectedOpsCount,
+      String expectedStatus,
+      String expectedOpDate,
+      String expectedIntention,
+      String expectedStellungOP,
+      String expectedcomplicationCode,
+      String expectedcomplicationDisplay)
+      throws IOException {
 
     MeldungExportList meldungExportList = new MeldungExportList();
 
@@ -90,6 +120,84 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
       var procedureList = BundleUtil.toListOfResourcesOfType(ctx, resultBundle, Procedure.class);
 
       assertThat(procedureList).hasSize(expectedProcCount);
+
+      var opProcedureList = new ArrayList<Procedure>();
+      var stProcedureList = new ArrayList<Procedure>();
+
+      for (Procedure proc : procedureList) {
+        if (Objects.equals(
+            proc.getMeta().getProfile().get(0).getValue(),
+            fhirProps.getProfiles().getOpProcedure())) {
+          opProcedureList.add(proc);
+        } else if (Objects.equals(
+            proc.getMeta().getProfile().get(0).getValue(),
+            fhirProps.getProfiles().getStProcedure())) {
+          stProcedureList.add(proc);
+        }
+      }
+
+      assertThat(opProcedureList).hasSize(expectedProcCountOp);
+      if (opProcedureList.size() == 1) {
+        var opIntention =
+            (CodeableConcept)
+                opProcedureList
+                    .get(0)
+                    .getExtensionByUrl(fhirProps.getExtensions().getOpIntention())
+                    .getValue();
+        assertThat(opIntention.getCoding().get(0).getCode()).isEqualTo(expectedIntention);
+
+        assertThat(opProcedureList.get(0).getStatus().toString()).isEqualTo(expectedStatus);
+
+        assertThat(opProcedureList.get(0).getPerformedDateTimeType().getValue())
+            .isEqualTo(expectedOpDate);
+
+        assertThat(opProcedureList.get(0).getCode().getCoding()).hasSize(expectedOpsCount);
+
+        assertThat(opProcedureList.get(0).getComplicationFirstRep().getCodingFirstRep().getCode())
+            .isEqualTo(expectedcomplicationCode);
+        assertThat(
+                opProcedureList.get(0).getComplicationFirstRep().getCodingFirstRep().getDisplay())
+            .isEqualTo(expectedcomplicationDisplay);
+      }
+
+      assertThat(stProcedureList).hasSize(expectedProcCountSt);
+
+      int partOfCount = 0;
+      String partOfId = "";
+      List<String> partOfReferences = new ArrayList<>();
+      for (var stProc : stProcedureList) {
+
+        assertThat(stProc.getStatus().toString()).isEqualTo(expectedStatus);
+
+        var stellungOPCc =
+            (CodeableConcept)
+                stProc.getExtensionByUrl(fhirProps.getExtensions().getStellungOP()).getValue();
+        var intentionCC =
+            (CodeableConcept)
+                stProc.getExtensionByUrl(fhirProps.getExtensions().getSystIntention()).getValue();
+
+        assertThat(stellungOPCc.getCoding().get(0).getCode()).isEqualTo(expectedStellungOP);
+        assertThat(intentionCC.getCoding().get(0).getCode()).isEqualTo(expectedIntention);
+
+        assertThat(stProc.getComplicationFirstRep().getCodingFirstRep().getCode())
+            .isEqualTo(expectedcomplicationCode);
+        assertThat(stProc.getComplicationFirstRep().getCodingFirstRep().getDisplay())
+            .isEqualTo(expectedcomplicationDisplay);
+
+        if (stProc.getPartOf().isEmpty()) {
+          partOfId = stProc.getId();
+          partOfCount++;
+        } else {
+          assertThat(stProc.getPartOf()).hasSize(1);
+          partOfReferences.add(stProc.getPartOf().get(0).getReference());
+        }
+      }
+
+      if (!stProcedureList.isEmpty()) {
+        assertThat(partOfCount).isEqualTo(1);
+        String finalPartOfId = partOfId;
+        assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
+      }
 
       // TODO add missing structure definitions
       // assertThat(isValid(resultBundle)).isTrue();
