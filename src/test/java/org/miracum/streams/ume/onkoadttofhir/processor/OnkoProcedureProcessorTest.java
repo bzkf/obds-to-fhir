@@ -150,8 +150,6 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
 
         assertThat(opProcedureList.get(0).getStatus().toString()).isEqualTo(expectedStatus);
 
-
-
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(df.format(opProcedureList.get(0).getPerformedDateTimeType().getValue()))
             .isEqualTo(expectedOpDate);
