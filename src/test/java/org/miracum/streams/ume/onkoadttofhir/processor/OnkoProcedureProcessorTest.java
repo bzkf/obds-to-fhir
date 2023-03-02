@@ -7,6 +7,8 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -148,7 +150,10 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
 
         assertThat(opProcedureList.get(0).getStatus().toString()).isEqualTo(expectedStatus);
 
-        assertThat(opProcedureList.get(0).getPerformedDateTimeType().getValue())
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        assertThat(df.format(opProcedureList.get(0).getPerformedDateTimeType().getValue()))
             .isEqualTo(expectedOpDate);
 
         assertThat(opProcedureList.get(0).getCode().getCoding()).hasSize(expectedOpsCount);
