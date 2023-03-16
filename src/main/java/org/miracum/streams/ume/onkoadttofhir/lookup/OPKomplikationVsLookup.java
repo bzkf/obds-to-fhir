@@ -98,7 +98,7 @@ public class OPKomplikationVsLookup {
         };
   }
 
-  public final String lookupOPIntentionVSDisplay(String code) {
+  public final String lookupOPKomplikationVSDisplay(String code) {
     return lookup.get(code);
   }
 }
