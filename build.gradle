@@ -24,7 +24,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2021.0.2") // 2021.0.3 causes bundle serializing error
-	set('hapiVersion', "6.1.1")
+	set('hapiVersion', "6.4.2")
 }
 
 dependencies {
