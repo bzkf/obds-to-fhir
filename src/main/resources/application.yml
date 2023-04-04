@@ -64,6 +64,8 @@ spring:
   application:
     name: onkoadt-to-fhir
   cloud:
+    function:
+      definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
     stream:
       bindings:
         getMeldungExportObservationProcessor-in-0:
@@ -92,9 +94,6 @@ spring:
           destination: fhir.onkoadt.Condition
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-
-      function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
       kafka:
         streams:
           binder:
