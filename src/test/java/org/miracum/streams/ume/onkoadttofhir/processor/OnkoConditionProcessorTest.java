@@ -7,6 +7,8 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,15 +48,43 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            Arrays.asList(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)),
-            1,
-            "C91.00",
-            "2021"),
-        Arguments.of(
             Arrays.asList(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)),
             1,
             "C72.0",
-            "2021"));
+            "2021",
+            "T",
+            "396360001",
+            2,
+            1,
+            5,
+            "2021-03-18"),
+        Arguments.of(
+            Arrays.asList(new Tupel<>("002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml", 1)),
+            1,
+            "C41.01",
+            "2021",
+            "T",
+            "396360001",
+            0,
+            2,
+            0,
+            "2021-02-08"),
+        Arguments.of(
+            Arrays.asList(
+                new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
+                new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1),
+                new Tupel<>(
+                    "009_Pat1_Tumor1_Statusaenderung_Fernmeta_3x-überschreibt2xFernMetaausDIAGNOSE.xml",
+                    1)),
+            1,
+            "C72.0",
+            "2021",
+            "T",
+            "396360001",
+            2,
+            1,
+            6,
+            "2021-03-18"));
   }
 
   @ParameterizedTest
@@ -63,7 +93,13 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
       List<Tupel<String, Integer>> xmlFileNames,
       int expectedConCount,
       String expectedIcdCode,
-      String expectedIcdVersion)
+      String expectedIcdVersion,
+      String expectedBodySiteAdtCode,
+      String expectedBodySiteSnomedCode,
+      int expectedStageCount,
+      int expectedEvidenceCount,
+      int expectedExtCount,
+      String expectedOnsetDate)
       throws IOException {
 
     MeldungExportList meldungExportList = new MeldungExportList();
@@ -112,10 +148,26 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
       var conditionList = BundleUtil.toListOfResourcesOfType(ctx, resultBundle, Condition.class);
 
       assertThat(conditionList).hasSize(expectedConCount);
+
       assertThat(conditionList.get(0).getCode().getCoding().get(0).getCode())
           .isEqualTo(expectedIcdCode);
       assertThat(conditionList.get(0).getCode().getCoding().get(0).getVersion())
           .isEqualTo(expectedIcdVersion);
+
+      assertThat(conditionList.get(0).getBodySite().get(0).getCoding().get(0).getCode())
+          .isEqualTo(expectedBodySiteAdtCode);
+      assertThat(conditionList.get(0).getBodySite().get(0).getCoding().get(1).getCode())
+          .isEqualTo(expectedBodySiteSnomedCode);
+
+      assertThat(conditionList.get(0).getStage()).hasSize(expectedStageCount);
+
+      assertThat(conditionList.get(0).getEvidence()).hasSize(expectedEvidenceCount);
+
+      assertThat(conditionList.get(0).getExtension()).hasSize(expectedExtCount);
+
+      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+      assertThat(df.format(conditionList.get(0).getOnsetDateTimeType().getValue()))
+          .isEqualTo(expectedOnsetDate);
 
       // TODO add missing structure definitions
       // assertThat(isValid(resultBundle)).isTrue();

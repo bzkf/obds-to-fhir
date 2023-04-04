@@ -44,8 +44,12 @@ public class OnkoObservationProcessorTest extends OnkoProcessorTest {
 
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
+        Arguments.of(Arrays.asList(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)), 9),
         Arguments.of(
-            Arrays.asList(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)), 9));
+            Arrays.asList(
+                new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
+                new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
+            9));
   }
 
   @ParameterizedTest
