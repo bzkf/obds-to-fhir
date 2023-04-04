@@ -7,8 +7,9 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -165,9 +166,13 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
 
       assertThat(conditionList.get(0).getExtension()).hasSize(expectedExtCount);
 
-      DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-      assertThat(df.format(conditionList.get(0).getOnsetDateTimeType().getValue()))
-          .isEqualTo(expectedOnsetDate);
+      DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime expectedLocalDateTime =
+          LocalDateTime.parse(expectedOnsetDate + " 00:00:00", fmt);
+
+      assertThat(conditionList.get(0).getOnsetDateTimeType().getValue().getTime())
+          .isEqualTo(
+              expectedLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
 
       // TODO add missing structure definitions
       // assertThat(isValid(resultBundle)).isTrue();

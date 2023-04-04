@@ -7,8 +7,9 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -127,11 +128,21 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
 
         assertThat(medSt.getStatus().toString()).isEqualTo(expectedStatus);
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        assertThat(df.format(medSt.getEffectivePeriod().getStartElement().getValue()))
-            .isEqualTo(expectedPeriod.getFirst());
-        assertThat(df.format(medSt.getEffectivePeriod().getEndElement().getValue()))
-            .isEqualTo(expectedPeriod.getSecond());
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime expectedStartDateTime =
+            LocalDateTime.parse(expectedPeriod.getFirst() + " 00:00:00", fmt);
+        LocalDateTime expectedEndDateTime =
+            LocalDateTime.parse(expectedPeriod.getSecond() + " 00:00:00", fmt);
+
+        assertThat(medSt.getEffectivePeriod().getStartElement().getValue().getTime())
+            .isEqualTo(
+                expectedStartDateTime
+                    .atZone(ZoneId.of("Europe/Berlin"))
+                    .toInstant()
+                    .toEpochMilli());
+        assertThat(medSt.getEffectivePeriod().getEndElement().getValue().getTime())
+            .isEqualTo(
+                expectedEndDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
 
         var stellungOPCc =
             (CodeableConcept)
