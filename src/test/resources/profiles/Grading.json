@@ -22,7 +22,7 @@
         "id": "Observation.category.coding.system",
         "path": "Observation.category.coding.system",
         "min": 1,
-        "fixedUri": "http://hl7.org/fhir/observation-category"
+        "fixedUri": "http://terminology.hl7.org/CodeSystem/observation-category"
       },
       {
         "id": "Observation.category.coding.code",

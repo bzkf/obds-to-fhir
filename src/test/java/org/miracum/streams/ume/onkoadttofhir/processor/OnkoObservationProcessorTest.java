@@ -97,7 +97,7 @@ public class OnkoObservationProcessorTest extends OnkoProcessorTest {
       assertThat(medicationStatementList).hasSize(expectedObsvCount);
 
       // TODO add missing structure definitions
-      // assertThat(isValid(resultBundle)).isTrue();
+      assertThat(isValid(resultBundle)).isTrue();
     }
   }
 }

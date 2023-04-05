@@ -12,6 +12,7 @@ import java.util.Objects;
 import org.hl7.fhir.common.hapi.validation.support.*;
 import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeSystem;
 import org.hl7.fhir.r4.model.StructureDefinition;
 import org.hl7.fhir.r4.model.ValueSet;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,9 +48,9 @@ public abstract class OnkoProcessorTest {
     var basePath = currentRelativePath.toAbsolutePath().toString();
     var parser = ctx.newJsonParser();
 
-    // var folderCS = new File(basePath + "/src/test/resources/CodeSystems");
     var folder = new File(basePath + "/src/test/resources/profiles");
     var folderVS = new File(basePath + "/src/test/resources/ValueSets");
+    var folderCS = new File(basePath + "/src/test/resources/CodeSystems");
     var prepop = new PrePopulatedValidationSupport(ctx);
 
     for (final var fileEntry : Objects.requireNonNull(folder.listFiles())) {
@@ -66,6 +67,12 @@ public abstract class OnkoProcessorTest {
       var valueSet =
           parser.parseResource(ValueSet.class, new FileReader(fileEntry.getAbsolutePath()));
       prepop.addValueSet(valueSet);
+    }
+
+    for (final var fileEntry : Objects.requireNonNull(folderCS.listFiles())) {
+      var codeSys =
+          parser.parseResource(CodeSystem.class, new FileReader(fileEntry.getAbsolutePath()));
+      prepop.addCodeSystem(codeSys);
     }
 
     return prepop;

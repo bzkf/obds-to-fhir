@@ -65,7 +65,7 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
             0,
             "COMPLETED",
             "",
-            "D",
+            "P",
             "N",
             "4",
             "lebensbedrohlich"));
@@ -211,7 +211,7 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
       }
 
       // TODO add missing structure definitions
-      // assertThat(isValid(resultBundle)).isTrue();
+      assertThat(isValid(resultBundle)).isTrue();
     }
   }
 }

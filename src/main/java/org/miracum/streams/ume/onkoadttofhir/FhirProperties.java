@@ -21,6 +21,7 @@ public class FhirProperties {
     private String stellungOP;
     private String systIntention;
     private String sysTheraProto;
+    private String dataAbsentReason;
   }
 
   @Data

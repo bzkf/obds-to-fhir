@@ -175,7 +175,7 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
               expectedLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant().toEpochMilli());
 
       // TODO add missing structure definitions
-      // assertThat(isValid(resultBundle)).isTrue();
+      assertThat(isValid(resultBundle)).isTrue();
     }
   }
 }
