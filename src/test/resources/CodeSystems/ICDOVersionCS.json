@@ -1,0 +1,41 @@
+{
+  "resourceType": "CodeSystem",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>ICD-O-Version CodeSystem</b></p><p>ICD-O Version</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/ICDOVersionCS",
+  "version": "0.9.0",
+  "name": "ICDOVersionCS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "ICD-O-3 Version",
+  "caseSensitive": true,
+  "compositional": false,
+  "content": "complete",
+  "count": 3,
+  "concept": [
+    {
+      "code": "31",
+      "display": "ICD-O3; 1. Auflage 2003"
+    },
+    {
+      "code": "32",
+      "display": "ICD-O3, 2. Auflage 2013"
+    },
+    {
+      "code": "bb",
+      "display": "Neue Codes aus den WHO-Klassifikationen (BlueBooks)"
+    }
+  ]
+}
