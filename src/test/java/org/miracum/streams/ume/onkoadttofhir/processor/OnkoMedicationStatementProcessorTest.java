@@ -167,7 +167,6 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
       String finalPartOfId = partOfId;
       assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
 
-      // TODO add missing structure definitions
       assertThat(isValid(resultBundle)).isTrue();
     }
   }

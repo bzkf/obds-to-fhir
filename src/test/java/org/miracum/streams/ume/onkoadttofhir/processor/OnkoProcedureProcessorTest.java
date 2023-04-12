@@ -210,7 +210,6 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
         assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
       }
 
-      // TODO add missing structure definitions
       assertThat(isValid(resultBundle)).isTrue();
     }
   }

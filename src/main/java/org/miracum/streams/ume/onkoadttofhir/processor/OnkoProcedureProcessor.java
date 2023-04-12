@@ -374,7 +374,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                             displayStellungOpLookup.lookupStellungOpDisplay(
                                 radioTherapy.getST_Stellung_OP()))));
 
-    // TODO {'None': 99364, 'S': 64, 'K': 9034, 'P': 1338} bei keiner Angabe 'X' setzen?
+    // TODO {'None': 99364, 'S': 64, 'K': 9034, 'P': 1338} bei keiner Angabe 'X' setzen? -> auch in
+    // OP
     stProcedure
         .addExtension()
         .setUrl(fhirProperties.getExtensions().getSystIntention())
