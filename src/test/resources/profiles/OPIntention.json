@@ -1,0 +1,62 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+  "version": "0.9.0",
+  "name": "OPIntention",
+  "status": "active",
+  "description": "Gibt an, mit welchem Ziel die Operation durchgeführt wird",
+  "fhirVersion": "4.0.0",
+  "kind": "complex-type",
+  "abstract": false,
+  "context": [
+    {
+      "type": "element",
+      "expression": "Procedure"
+    }
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "fixedUri": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "min": 1,
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "binding": {
+          "strength": "required",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/OPIntentionVS"
+        }
+      },
+      {
+        "id": "Extension.value[x].coding.code",
+        "path": "Extension.value[x].coding.code",
+        "short": "Intention der Therapie",
+        "definition": "Gibt die Intention der Therapie an",
+        "min": 1,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "ST:ST_Intention, SYST:SYST_Intention",
+            "comment": "ST:ST_Intention, SYST:SYST_Intention"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:67:2, urn:dktk:dataelement:69:2",
+            "comment": "urn:dktk:dataelement:67:2, urn:dktk:dataelement:69:2"
+          }
+        ]
+      }
+    ]
+  }
+}

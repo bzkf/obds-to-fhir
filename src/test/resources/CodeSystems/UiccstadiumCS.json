@@ -1,0 +1,141 @@
+{
+  "resourceType": "CodeSystem",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>uicc-stadium CodeSystem</b></p><p>UICC Stadium</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS",
+  "version": "0.9.0",
+  "name": "UiccstadiumCS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "UICC Stadium",
+  "caseSensitive": true,
+  "compositional": false,
+  "content": "complete",
+  "count": 28,
+  "concept": [
+    {
+      "code": "0",
+      "display": "0"
+    },
+    {
+      "code": "0a",
+      "display": "0a"
+    },
+    {
+      "code": "0is",
+      "display": "0is"
+    },
+    {
+      "code": "I",
+      "display": "I"
+    },
+    {
+      "code": "IA",
+      "display": "IA"
+    },
+    {
+      "code": "IA1",
+      "display": "IA1"
+    },
+    {
+      "code": "IA2",
+      "display": "IA2"
+    },
+    {
+      "code": "IB",
+      "display": "IB"
+    },
+    {
+      "code": "IB1",
+      "display": "IB1"
+    },
+    {
+      "code": "IB2",
+      "display": "IB2"
+    },
+    {
+      "code": "IC",
+      "display": "IC"
+    },
+    {
+      "code": "II",
+      "display": "II"
+    },
+    {
+      "code": "IIA",
+      "display": "IIA"
+    },
+    {
+      "code": "IIA1",
+      "display": "IIA1"
+    },
+    {
+      "code": "IIA2",
+      "display": "IIA2"
+    },
+    {
+      "code": "IIB",
+      "display": "IIB"
+    },
+    {
+      "code": "IIC",
+      "display": "IIC"
+    },
+    {
+      "code": "III",
+      "display": "III"
+    },
+    {
+      "code": "IIIA",
+      "display": "IIIA"
+    },
+    {
+      "code": "IIIB",
+      "display": "IIIB"
+    },
+    {
+      "code": "IIIC",
+      "display": "IIIC"
+    },
+    {
+      "code": "IIIC1",
+      "display": "IIIC1"
+    },
+    {
+      "code": "IIIC2",
+      "display": "IIIC2"
+    },
+    {
+      "code": "IV",
+      "display": "IV"
+    },
+    {
+      "code": "IVA",
+      "display": "IVA"
+    },
+    {
+      "code": "IVB",
+      "display": "IVB"
+    },
+    {
+      "code": "IVC",
+      "display": "IVC"
+    },
+    {
+      "code": "IS",
+      "display": "IS"
+    }
+  ]
+}

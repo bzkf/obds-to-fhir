@@ -1,0 +1,44 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>JNU ValueSet</b></p><p>Ja / Nein / Unbekannt</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/JNUVS",
+  "version": "0.9.0",
+  "name": "JNUVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Ja / Nein / Unbekannt",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+        "concept": [
+          {
+            "code": "J",
+            "display": "Ja"
+          },
+          {
+            "code": "N",
+            "display": "Nein"
+          },
+          {
+            "code": "U",
+            "display": "unbekannt"
+          }
+        ]
+      }
+    ]
+  }
+}

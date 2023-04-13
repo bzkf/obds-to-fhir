@@ -1,0 +1,56 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Beurteilung-Residualstatus ValueSet</b></p><p>Residualstatus</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/GesamtbeurteilungResidualstatusVS",
+  "version": "0.9.0",
+  "name": "GesamtbeurteilungResidualstatusVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Residualstatus",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+        "concept": [
+          {
+            "code": "RX",
+            "display": "Vorhandensein von Residualtumor kann nicht beurteilt werden"
+          },
+          {
+            "code": "R0",
+            "display": "kein Residualtumor"
+          },
+          {
+            "code": "R1",
+            "display": "Mikroskopischer Residualtumor"
+          },
+          {
+            "code": "R1(is)",
+            "display": "In-Situ-Rest"
+          },
+          {
+            "code": "R1(cy+)",
+            "display": "Cytologischer Rest"
+          },
+          {
+            "code": "R2",
+            "display": "Makroskopischer Residualtumor"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>OP-Intention ValueSet</b></p><p>OP Intention</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/OPIntentionVS",
+  "version": "0.9.0",
+  "name": "OPIntentionVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "OP Intention",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+        "concept": [
+          {
+            "code": "K",
+            "display": "kurativ"
+          },
+          {
+            "code": "P",
+            "display": "palliativ"
+          },
+          {
+            "code": "D",
+            "display": "diagnostisch"
+          },
+          {
+            "code": "R",
+            "display": "Revision/Komplikation"
+          },
+          {
+            "code": "S",
+            "display": "sonstiges"
+          },
+          {
+            "code": "X",
+            "display": "Fehlende Angabe"
+          }
+        ]
+      }
+    ]
+  }
+}

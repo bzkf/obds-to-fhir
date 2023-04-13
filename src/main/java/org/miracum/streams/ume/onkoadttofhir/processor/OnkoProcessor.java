@@ -43,6 +43,9 @@ public abstract class OnkoProcessor {
       case "MedicationStatement":
         idToHash = fhirProperties.getSystems().getMedicationStatementId();
         break;
+      case "Procedure":
+        idToHash = fhirProperties.getSystems().getProcedureId();
+        break;
       case "Surrogate":
         return Hashing.sha256().hashString(id, StandardCharsets.UTF_8).toString();
       default:

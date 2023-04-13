@@ -1,0 +1,56 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>Seitenlokalisation ValueSet</b></p><p>Seitenlokalisation des Tumors</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/SeitenlokalisationVS",
+  "version": "0.9.0",
+  "name": "SeitenlokalisationVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "Seitenlokalisation des Tumors",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS",
+        "concept": [
+          {
+            "code": "L",
+            "display": "links"
+          },
+          {
+            "code": "R",
+            "display": "rechts"
+          },
+          {
+            "code": "B",
+            "display": "beidseitig (sollte bei bestimmten Tumoren 2 Meldungen ergeben)"
+          },
+          {
+            "code": "M",
+            "display": "Mittellinie/Mittig"
+          },
+          {
+            "code": "T",
+            "display": "trifft nicht zu (Seitenangabe nicht sinnvoll, einschließlich Systemerkrankungen)"
+          },
+          {
+            "code": "U",
+            "display": "unbekannt"
+          }
+        ]
+      }
+    ]
+  }
+}

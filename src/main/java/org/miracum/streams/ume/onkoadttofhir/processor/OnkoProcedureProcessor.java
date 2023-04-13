@@ -183,6 +183,11 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getOpProcedure())));
 
+    // check if opIntention is defined in xml, otherwise set "X"
+    var opIntention = "X";
+    if (op.getOP_Intention() != null) {
+      opIntention = op.getOP_Intention();
+    }
     // Extensions
     opProcedure
         .addExtension()
@@ -191,11 +196,10 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
             new CodeableConcept()
                 .addCoding(
                     new Coding()
-                        .setCode(op.getOP_Intention())
+                        .setCode(opIntention)
                         .setSystem(fhirProperties.getSystems().getOpIntention())
                         .setDisplay(
-                            displayOPIntentionLookup.lookupOPIntentionVSDisplay(
-                                op.getOP_Intention()))));
+                            displayOPIntentionLookup.lookupOPIntentionVSDisplay(opIntention))));
 
     // Status
     opProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
@@ -273,7 +277,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     // Complication
     if (op.getMenge_Komplikation() != null
         && op.getMenge_Komplikation().getOP_Komplikation() != null
-        && op.getMenge_Komplikation().getOP_Komplikation().size() > 1) {
+        && op.getMenge_Komplikation().getOP_Komplikation().size() > 0) {
       var complicationConcept = new CodeableConcept();
       for (var complication : op.getMenge_Komplikation().getOP_Komplikation()) {
         complicationConcept.addCoding(
@@ -374,6 +378,11 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                             displayStellungOpLookup.lookupStellungOpDisplay(
                                 radioTherapy.getST_Stellung_OP()))));
 
+    // check if systIntention is defined in xml, otherwise set "X"
+    var systIntention = "X";
+    if (radioTherapy.getST_Intention() != null) {
+      systIntention = radioTherapy.getST_Intention();
+    }
     stProcedure
         .addExtension()
         .setUrl(fhirProperties.getExtensions().getSystIntention())
@@ -381,11 +390,10 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
             new CodeableConcept()
                 .addCoding(
                     new Coding()
-                        .setCode(radioTherapy.getST_Intention())
+                        .setCode(systIntention)
                         .setSystem(fhirProperties.getSystems().getSystIntention())
                         .setDisplay(
-                            displaySystIntentionLookup.lookupSystIntentionDisplay(
-                                radioTherapy.getST_Intention()))));
+                            displaySystIntentionLookup.lookupSystIntentionDisplay(systIntention))));
 
     // Status
     if (Objects.equals(meldeanlass, "behandlungsende")) {

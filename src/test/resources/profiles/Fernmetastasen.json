@@ -1,0 +1,55 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+  "version": "0.9.0",
+  "name": "Fernmetastasen",
+  "status": "active",
+  "description": "Gibt an, ob ein positiver Befund von Fernmetastasen vorliegt",
+  "fhirVersion": "4.0.0",
+  "kind": "complex-type",
+  "abstract": false,
+  "context": [
+    {
+      "type": "element",
+      "expression": "Procedure"
+    },
+    {
+      "type": "element",
+      "expression": "Condition"
+    }
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "short": "Fernmetastasen"
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

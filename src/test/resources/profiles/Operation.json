@@ -1,0 +1,252 @@
+{
+  "resourceType": "StructureDefinition",
+  "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation",
+  "version": "0.9.0",
+  "name": "Operation",
+  "status": "active",
+  "description": "Ermittlung der Operationsdaten",
+  "fhirVersion": "4.0.0",
+  "kind": "resource",
+  "abstract": false,
+  "type": "Procedure",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Procedure",
+  "derivation": "constraint",
+  "differential": {
+    "element": [
+      {
+        "id": "Procedure.extension",
+        "path": "Procedure.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Procedure.extension:Intention",
+        "path": "Procedure.extension",
+        "sliceName": "Intention",
+        "max": "1",
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.status",
+        "path": "Procedure.status",
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.category",
+        "path": "Procedure.category",
+        "min": 1,
+        "mustSupport": true,
+        "binding": {
+          "strength": "extensible",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/SYSTTherapieartVS"
+        }
+      },
+      {
+        "id": "Procedure.category.coding",
+        "path": "Procedure.category.coding",
+        "min": 1,
+        "max": "1"
+      },
+      {
+        "id": "Procedure.category.coding.code",
+        "path": "Procedure.category.coding.code",
+        "short": "OP",
+        "definition": "Gibt an, ob der Tumor operiert wurde",
+        "min": 1,
+        "fixedCode": "OP",
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "OP:OP_Datum != NULL",
+            "comment": "abzuleiten"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:dktk:dataelement:33:2"
+          }
+        ]
+      },
+      {
+        "id": "Procedure.code.coding",
+        "path": "Procedure.code.coding",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Procedure.code.coding:OPS",
+        "path": "Procedure.code.coding",
+        "sliceName": "OPS",
+        "type": [
+          {
+            "code": "Coding",
+            "profile": [
+              "http://fhir.de/StructureDefinition/CodingOPS"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Procedure.code.coding:OPS.system",
+        "path": "Procedure.code.coding.system",
+        "min": 1,
+        "fixedUri": "http://fhir.de/CodeSystem/bfarm/ops"
+      },
+      {
+        "id": "Procedure.code.coding:OPS.version",
+        "path": "Procedure.code.coding.version",
+        "binding": {
+          "strength": "extensible",
+          "description": "OPS-Version",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/OPOPSVersionVS"
+        }
+      },
+      {
+        "id": "Procedure.code.coding:OPS.code",
+        "path": "Procedure.code.coding.code",
+        "min": 1
+      },
+      {
+        "id": "Procedure.subject",
+        "path": "Procedure.subject",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Patient",
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Patient-Pseudonym"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.encounter",
+        "path": "Procedure.encounter",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Encounter-Fall"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Procedure.performed[x]",
+        "path": "Procedure.performed[x]",
+        "short": "Datum der OP",
+        "definition": "Datum der Operation",
+        "type": [
+          {
+            "code": "dateTime"
+          }
+        ],
+        "mustSupport": true,
+        "mapping": [
+          {
+            "identity": "ADT-GEKID",
+            "map": "OP:OP_Datum",
+            "comment": "OP:OP_Datum"
+          },
+          {
+            "identity": "ISO-11179",
+            "map": "urn:adt:dataelement:69:1"
+          }
+        ]
+      },
+      {
+        "id": "Procedure.performer.actor",
+        "path": "Procedure.performer.actor",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Organization-Organisation"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "Procedure.reasonReference",
+        "path": "Procedure.reasonReference",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Procedure.outcome.coding",
+        "path": "Procedure.outcome.coding",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        }
+      },
+      {
+        "id": "Procedure.outcome.coding:LokaleBeurteilungResidualstatus",
+        "path": "Procedure.outcome.coding",
+        "sliceName": "LokaleBeurteilungResidualstatus",
+        "max": "1",
+        "binding": {
+          "strength": "extensible",
+          "description": "Lokale Beurteilung Residualstatus",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/LokaleBeurteilungResidualstatusVS"
+        }
+      },
+      {
+        "id": "Procedure.outcome.coding:LokaleBeurteilungResidualstatus.system",
+        "path": "Procedure.outcome.coding.system",
+        "min": 1,
+        "fixedUri": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"
+      },
+      {
+        "id": "Procedure.outcome.coding:GesamtbeurteilungResidualstatus",
+        "path": "Procedure.outcome.coding",
+        "sliceName": "GesamtbeurteilungResidualstatus",
+        "binding": {
+          "strength": "extensible",
+          "description": "Gesamtbeurteilung Resttumor",
+          "valueSet": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/GesamtbeurteilungResidualstatusVS"
+        }
+      },
+      {
+        "id": "Procedure.outcome.coding:GesamtbeurteilungResidualstatus.system",
+        "path": "Procedure.outcome.coding.system",
+        "min": 1,
+        "fixedUri": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
+      }
+    ]
+  }
+}

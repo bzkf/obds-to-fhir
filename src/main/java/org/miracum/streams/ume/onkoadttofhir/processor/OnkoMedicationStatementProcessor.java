@@ -180,6 +180,10 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     } else {
       // Id
       stMedicationStatement.setId(this.getHash("MedicationStatement", partOfId));
+      var absentProcedureDate = new CodeableConcept();
+      absentProcedureDate.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("not-applicable"));
+      stMedicationStatement.setMedication(absentProcedureDate);
     }
 
     /// Meta

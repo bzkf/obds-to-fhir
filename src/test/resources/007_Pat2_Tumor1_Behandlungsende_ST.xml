@@ -36,7 +36,7 @@
                     </Tumorzuordnung>
 					<Menge_ST>
 						<ST ST_ID="45900">
-							<ST_Intention>D</ST_Intention>
+							<ST_Intention>P</ST_Intention>
 							<ST_Stellung_OP>N</ST_Stellung_OP>
 							<Menge_Bestrahlung>
 								<Bestrahlung>

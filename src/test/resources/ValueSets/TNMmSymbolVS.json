@@ -1,0 +1,68 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>TNM-m-Symbol ValueSet</b></p><p>TNM m-Symbol</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/TNMmSymbolVS",
+  "version": "0.9.0",
+  "name": "TNMmSymbolVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "TNM m-Symbol",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS",
+        "concept": [
+          {
+            "code": "m",
+            "display": "Kennzeichnet Vorhandensein multipler Primärtumoren in einem Bezirk"
+          },
+          {
+            "code": "2",
+            "display": "(2) simultaner Tumoren"
+          },
+          {
+            "code": "3",
+            "display": "(3) simultaner Tumoren"
+          },
+          {
+            "code": "4",
+            "display": "(4) simultaner Tumoren"
+          },
+          {
+            "code": "5",
+            "display": "(5) simultaner Tumoren"
+          },
+          {
+            "code": "6",
+            "display": "(6) simultaner Tumoren"
+          },
+          {
+            "code": "7",
+            "display": "(7) simultaner Tumoren"
+          },
+          {
+            "code": "8",
+            "display": "(8) simultaner Tumoren"
+          },
+          {
+            "code": "9",
+            "display": "(9) simultaner Tumoren"
+          }
+        ]
+      }
+    ]
+  }
+}

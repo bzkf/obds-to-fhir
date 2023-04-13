@@ -1,0 +1,104 @@
+{
+  "resourceType": "ValueSet",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><b>OP-OPS-Version ValueSet</b></p><p>OPS Version gemäß ADT-Schema</p></div>"
+  },
+  "url": "http://dktk.dkfz.de/fhir/onco/core/ValueSet/OPOPSVersionVS",
+  "version": "0.9.0",
+  "name": "OPOPSVersionVS",
+  "status": "active",
+  "publisher": "DKTK",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "other",
+          "value": "https://dktk.dkfz.de"
+        }
+      ]
+    }
+  ],
+  "description": "OPS Version gemäß ADT-Schema",
+  "compose": {
+    "include": [
+      {
+        "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPOPSVersionCS",
+        "concept": [
+          {
+            "code": "2004",
+            "display": "Version 2004"
+          },
+          {
+            "code": "2005",
+            "display": "Version 2005"
+          },
+          {
+            "code": "2006",
+            "display": "Version 2006"
+          },
+          {
+            "code": "2007",
+            "display": "Version 2007"
+          },
+          {
+            "code": "2008",
+            "display": "Version 2008"
+          },
+          {
+            "code": "2009",
+            "display": "Version 2009"
+          },
+          {
+            "code": "2010",
+            "display": "Version 2010"
+          },
+          {
+            "code": "2011",
+            "display": "Version 2011"
+          },
+          {
+            "code": "2012",
+            "display": "Version 2012"
+          },
+          {
+            "code": "2013",
+            "display": "Version 2013"
+          },
+          {
+            "code": "2014",
+            "display": "Version 2014"
+          },
+          {
+            "code": "2015",
+            "display": "Version 2015"
+          },
+          {
+            "code": "2016",
+            "display": "Version 2016"
+          },
+          {
+            "code": "2017",
+            "display": "Version 2017"
+          },
+          {
+            "code": "2018",
+            "display": "Version 2018"
+          },
+          {
+            "code": "2019",
+            "display": "Version 2019"
+          },
+          {
+            "code": "2020",
+            "display": "Version 2020"
+          },
+          {
+            "code": "2021",
+            "display": "Version 2021"
+          }
+        ]
+      }
+    ]
+  }
+}
