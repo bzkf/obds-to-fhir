@@ -45,7 +45,33 @@ public class ADT_GEKID implements Serializable {
       @Data
       public static class Patienten_Stammdaten {
 
+        @JsonProperty private String Patient_ID;
         @JsonProperty private String KrankenversichertenNr;
+        @JsonProperty private String KrankenkassenNr;
+        @JsonProperty private String Patienten_Nachname;
+        @JsonProperty private String Patienten_Vornamen;
+        @JsonProperty private String Patienten_Titel;
+        @JsonProperty private String Patienten_Namenszusatz;
+        @JsonProperty private String Patienten_Geburtsname;
+        @JsonProperty private String Patienten_Geschlecht;
+        @JsonProperty private String Patienten_Geburtsdatum;
+
+        @JsonProperty private Menge_Adresse Menge_Adresse;
+
+        @Data
+        public static class Menge_Adresse {
+
+          @JacksonXmlElementWrapper(useWrapping = false)
+          private List<Adresse> Adresse;
+
+          @Data
+          public static class Adresse {
+            @JsonProperty private String Patienten_Strasse;
+            @JsonProperty private String Patienten_Land;
+            @JsonProperty private String Patienten_PLZ;
+            @JsonProperty private String Patienten_Ort;
+          }
+        }
       }
 
       @Data

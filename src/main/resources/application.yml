@@ -68,6 +68,12 @@ spring:
   cloud:
     stream:
       bindings:
+        getMeldungExportPatientProcessor-in-0:
+          destination: onkostar.MELDUNG_EXPORT
+        getMeldungExportPatientProcessor-out-0:
+          destination: fhir.onkoadt.Patient
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObservationProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT
         getMeldungExportObservationProcessor-out-0:
@@ -96,7 +102,7 @@ spring:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
       function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
       kafka:
         streams:
           binder:
@@ -107,6 +113,13 @@ spring:
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           bindings:
+            getMeldungExportPatientProcessor-in-0:
+              consumer:
+                application-id: onko-meldung-exp-patient-processor
+            getMeldungExportPatientProcessor-out-0:
+              producer:
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportObservationProcessor-in-0:
               consumer:
                 application-id: onko-meldung-exp-observ-processor
