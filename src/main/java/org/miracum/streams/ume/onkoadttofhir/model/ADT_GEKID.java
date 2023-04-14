@@ -302,6 +302,8 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private Menge_FM Menge_FM;
 
+              @JsonProperty private Tod Tod;
+
               @Data
               @EqualsAndHashCode(callSuper = true)
               public static class Histologie extends ADT_GEKID.HistologieAbs {
@@ -347,6 +349,21 @@ public class ADT_GEKID implements Serializable {
 
                   @JsonProperty private String FM_Diagnosedatum;
                   @JsonProperty private String FM_Lokalisation;
+                }
+              }
+
+              @Data
+              public static class Tod {
+
+                @JsonProperty private String Sterbedatum;
+                @JsonProperty private String Tod_tumorbedingt;
+
+                @JsonProperty private Menge_Todesursache Menge_Todesursache;
+
+                @Data
+                public static class Menge_Todesursache {
+                  @JsonProperty private String Todesursache_ICD;
+                  @JsonProperty private String Todesursache_ICD_Version;
                 }
               }
             }

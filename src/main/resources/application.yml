@@ -43,6 +43,7 @@ fhir:
     ctcaeGrading: "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"
     sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
     opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
+    observationValue: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -54,6 +55,7 @@ fhir:
     opProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation"
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
+    miiPatientPseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

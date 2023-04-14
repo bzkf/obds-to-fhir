@@ -59,6 +59,7 @@ public class FhirProperties {
     private String ctcaeGrading;
     private String sideEffectTypeOid;
     private String opComplication;
+    private String observationValue;
   }
 
   @Data
@@ -73,6 +74,7 @@ public class FhirProperties {
     private String opProcedure;
     private String stProcedure;
     private String systMedStatement;
+    private String miiPatientPseudonymisiert;
   }
 
   @Data
