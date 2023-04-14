@@ -65,6 +65,8 @@ fhir:
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:default}
   application:
     name: onkoadt-to-fhir
   cloud:
@@ -103,8 +105,6 @@ spring:
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
-      function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
       kafka:
         streams:
           binder:
@@ -167,3 +167,19 @@ spring:
     producer:
       compression-type: gzip
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
+
+---
+spring:
+  profiles: default
+  cloud:
+    stream:
+      function:
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
+---
+spring:
+  profiles: patient
+  cloud:
+    stream:
+      function:
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
+---
