@@ -130,15 +130,13 @@ public class OnkoPatientProcessor extends OnkoProcessor {
           {
             put("W", Enumerations.AdministrativeGender.FEMALE);
             put("M", Enumerations.AdministrativeGender.MALE);
-            put("D", Enumerations.AdministrativeGender.OTHER); // TODO diverse als other?
+            put("D", Enumerations.AdministrativeGender.OTHER); // TODO set genderExtension
             put("U", Enumerations.AdministrativeGender.UNKNOWN);
           }
         };
-    // TODO gender nicht als extension? (siehe
-    // https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.person/2.0.0-ballot2/files/533910)
+
     patient.setGender(genderMap.getOrDefault(patData.getPatienten_Geschlecht(), null));
 
-    // birthDate TODO anschauen
     if (patData.getPatienten_Geburtsdatum() != null) {
       patient.setBirthDateElement(
           new DateType(getBirthDateYearMonthString(patData.getPatienten_Geburtsdatum())));

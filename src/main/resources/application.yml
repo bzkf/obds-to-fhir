@@ -9,6 +9,7 @@ fhir:
     systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+    genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -44,6 +45,7 @@ fhir:
     sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
     opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
     observationValue: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
+    genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -174,12 +176,12 @@ spring:
   cloud:
     stream:
       function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
 ---
 spring:
   profiles: patient
   cloud:
     stream:
       function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
 ---
