@@ -22,6 +22,7 @@ public class FhirProperties {
     private String systIntention;
     private String sysTheraProto;
     private String dataAbsentReason;
+    private String genderAmtlich;
   }
 
   @Data
@@ -59,6 +60,8 @@ public class FhirProperties {
     private String ctcaeGrading;
     private String sideEffectTypeOid;
     private String opComplication;
+    private String observationValue;
+    private String genderAmtlichDe;
   }
 
   @Data
@@ -73,6 +76,7 @@ public class FhirProperties {
     private String opProcedure;
     private String stProcedure;
     private String systMedStatement;
+    private String miiPatientPseudonymisiert;
   }
 
   @Data

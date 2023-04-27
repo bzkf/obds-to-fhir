@@ -25,6 +25,10 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 * Systemtherapie (<https://simplifier.net/oncology/systemtherapie>)
 
+## Patient
+
+* Patient (<https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.person/2.0.0-ballot2/files/533910>)
+
 ## Dev
 
 ### Dev Stack
