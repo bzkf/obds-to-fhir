@@ -101,25 +101,8 @@ public class OnkoPatientProcessor extends OnkoProcessor {
 
     // MII identifier
     var pseudonym = new Identifier();
-    pseudonym
-        .getType()
-        .addCoding(new Coding(fhirProperties.getSystems().getObservationValue(), "PSEUDED", null));
-    pseudonym
-        .setUse(Identifier.IdentifierUse.SECONDARY)
-        .setSystem(fhirProperties.getSystems().getPatientId())
-        .setValue(pid);
+    pseudonym.setSystem(fhirProperties.getSystems().getPatientId()).setValue(pid);
     patient.addIdentifier(pseudonym);
-
-    // legacy MIRACUM identifier for existing references
-    var identifier = new Identifier();
-    identifier
-        .getType()
-        .addCoding(new Coding(fhirProperties.getSystems().getIdentifierType(), "MR", null));
-    identifier
-        .setUse(Identifier.IdentifierUse.OFFICIAL)
-        .setSystem(fhirProperties.getSystems().getPatientId())
-        .setValue(pid);
-    patient.addIdentifier(identifier);
 
     var patData =
         meldungExport.getXml_daten().getMenge_Patient().getPatient().getPatienten_Stammdaten();

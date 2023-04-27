@@ -254,10 +254,6 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     // Effective
