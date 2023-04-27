@@ -107,6 +107,8 @@ spring:
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
+      function:
+        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
       kafka:
         streams:
           binder:
@@ -169,19 +171,3 @@ spring:
     producer:
       compression-type: gzip
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
-
----
-spring:
-  profiles: default
-  cloud:
-    stream:
-      function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor
----
-spring:
-  profiles: patient
-  cloud:
-    stream:
-      function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
----

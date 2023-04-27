@@ -18,6 +18,7 @@ import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class OnkoPatientProcessor extends OnkoProcessor {
@@ -30,6 +31,7 @@ public class OnkoPatientProcessor extends OnkoProcessor {
   }
 
   @Bean
+  @Profile("patient")
   public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
       getMeldungExportPatientProcessor() {
     return stringOnkoMeldungExpTable ->
