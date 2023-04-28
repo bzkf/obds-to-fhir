@@ -103,6 +103,9 @@ public class OnkoPatientProcessor extends OnkoProcessor {
 
     // MII identifier
     var pseudonym = new Identifier();
+    pseudonym
+        .getType()
+        .addCoding(new Coding(fhirProperties.getSystems().getObservationValue(), "PSEUDED", null));
     pseudonym.setSystem(fhirProperties.getSystems().getPatientId()).setValue(pid);
     patient.addIdentifier(pseudonym);
 
