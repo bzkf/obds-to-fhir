@@ -17,12 +17,16 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OnkoMedicationStatementProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoMedicationStatementProcessor.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -99,6 +103,9 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
+    LOG.debug(
+        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "medicationStatement");
+
     var meldung =
         meldungExport
             .getXml_daten()
@@ -124,14 +131,14 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
                 bundle,
                 createSystemtherapyMedicationStatement(
                     meldung, pid, getReportingReasonFromAdt(meldungExport), null));
-      }
 
-      for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createSystemtherapyMedicationStatement(
-                    meldung, pid, getReportingReasonFromAdt(meldungExport), substance));
+        for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createSystemtherapyMedicationStatement(
+                      meldung, pid, getReportingReasonFromAdt(meldungExport), substance));
+        }
       }
 
     } else {

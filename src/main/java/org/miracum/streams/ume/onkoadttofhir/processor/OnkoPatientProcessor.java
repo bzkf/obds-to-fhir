@@ -1,6 +1,5 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +14,8 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,8 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class OnkoPatientProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoPatientProcessor.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -79,7 +82,13 @@ public class OnkoPatientProcessor extends OnkoProcessor {
 
   public Bundle extractOnkoResourcesFromReportingReason(List<MeldungExport> meldungExportList) {
 
+    if (meldungExportList.isEmpty()) {
+      return null;
+    }
+
     var meldungExport = meldungExportList.get(0);
+
+    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "patient");
 
     var patient = new Patient();
 
@@ -144,22 +153,22 @@ public class OnkoPatientProcessor extends OnkoProcessor {
 
     // deceased
     if (Objects.equals(reportingReason, "tod")) {
-      var death =
+      var mengeVerlauf =
           meldungExport
               .getXml_daten()
               .getMenge_Patient()
               .getPatient()
               .getMenge_Meldung()
               .getMeldung()
-              .getMenge_Verlauf()
-              .getVerlauf()
-              .getTod();
+              .getMenge_Verlauf();
 
-      if (death.getSterbedatum() != null) {
+      if (mengeVerlauf != null && mengeVerlauf.getVerlauf() != null) {
 
-        var dateOnlyFormatter = new SimpleDateFormat("dd.MM.yyyy");
-        var dateTimeType = new DateType(dateOnlyFormatter.format(death.getSterbedatum()));
-        patient.setDeceased(dateTimeType);
+        var death = mengeVerlauf.getVerlauf().getTod();
+
+        if (death.getSterbedatum() != null) {
+          patient.setDeceased(extractDateTimeFromADTDate(death.getSterbedatum()));
+        }
       }
     }
 

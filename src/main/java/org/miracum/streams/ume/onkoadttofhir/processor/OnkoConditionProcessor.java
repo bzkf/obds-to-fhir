@@ -15,12 +15,16 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OnkoConditionProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoConditionProcessor.class);
 
   private final SnomedCtSeitenlokalisationLookup snomedCtSeitenlokalisationLookup =
       new SnomedCtSeitenlokalisationLookup();
@@ -93,6 +97,8 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
+    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "condition");
+
     var onkoCondition = new Condition();
 
     var meldung =
@@ -102,6 +108,10 @@ public class OnkoConditionProcessor extends OnkoProcessor {
             .getPatient()
             .getMenge_Meldung()
             .getMeldung();
+
+    var meldungsId = meldung.getMeldung_ID();
+
+    LOG.debug("Processing Meldung: {}", meldungsId);
 
     ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 

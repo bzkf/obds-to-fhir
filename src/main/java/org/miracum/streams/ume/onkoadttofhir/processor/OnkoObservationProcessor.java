@@ -15,12 +15,16 @@ import org.miracum.streams.ume.onkoadttofhir.model.*;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OnkoObservationProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoObservationProcessor.class);
 
   private final GradingLookup gradingLookup = new GradingLookup();
 
@@ -100,6 +104,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     var patId = "";
 
     for (var meldungExport : meldungExportList) {
+
+      LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "observation");
+
       var meldung =
           meldungExport
               .getXml_daten()

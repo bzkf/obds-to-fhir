@@ -1,5 +1,6 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -121,6 +122,16 @@ public abstract class OnkoProcessor {
         .getMeldeanlass();
   }
 
+  public String getReportingIdFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        .getMeldung_ID();
+  }
+
   protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {
     bundle
         .addEntry()
@@ -149,13 +160,17 @@ public abstract class OnkoProcessor {
     if (adtDate.matches("^00.00.\\d{4}$")) {
       adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
     } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(adtDate.length() - 2);
+      adtDate = "15." + adtDate.substring(3); // TODO unit test
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
     LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
-    return new DateTimeType(
-        Date.from(adtLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+    var adtDateTime =
+        new DateTimeType(
+            Date.from(adtLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+
+    adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
+    return adtDateTime;
   }
 }

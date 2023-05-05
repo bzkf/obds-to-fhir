@@ -15,12 +15,16 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OnkoProcedureProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcedureProcessor.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -107,6 +111,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     // get last element of meldungExportList
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
+
+    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "procedure");
 
     var meldung =
         meldungExport
@@ -216,15 +222,17 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                             List.of("OP")))));
 
     // Code
-    var opsCodeConcept = new CodeableConcept();
-    for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
-      opsCodeConcept.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getOps())
-              .setCode(opsCode)
-              .setVersion(op.getOP_OPS_Version()));
+    if (op.getMenge_OPS() != null) {
+      var opsCodeConcept = new CodeableConcept();
+      for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
+        opsCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getOps())
+                .setCode(opsCode)
+                .setVersion(op.getOP_OPS_Version()));
+      }
+      opProcedure.setCode(opsCodeConcept);
     }
-    opProcedure.setCode(opsCodeConcept);
 
     // Subject
     opProcedure.setSubject(
@@ -251,24 +259,36 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                         pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
 
     // Outcome
-    var lokalResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
-    var gesamtResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
-    opProcedure.setOutcome(
-        new CodeableConcept()
-            .addCoding(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
-                    .setCode(lokalResidualstatus)
-                    .setDisplay(
-                        displayBeurteilungResidualstatusLookup
-                            .lookupBeurteilungResidualstatusDisplay(lokalResidualstatus)))
-            .addCoding(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
-                    .setCode(gesamtResidualstatus)
-                    .setDisplay(
-                        displayBeurteilungResidualstatusLookup
-                            .lookupBeurteilungResidualstatusDisplay(gesamtResidualstatus))));
+    if (op.getResidualstatus() != null) {
+      var lokalResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
+      var gesamtResidualstatus = op.getResidualstatus().getGesamtbeurteilung_Residualstatus();
+
+      var outComeCodeConcept = new CodeableConcept();
+
+      if (lokalResidualstatus != null) {
+        outComeCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
+                .setCode(lokalResidualstatus)
+                .setDisplay(
+                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
+                        lokalResidualstatus)));
+      }
+
+      if (gesamtResidualstatus != null) {
+        outComeCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
+                .setCode(gesamtResidualstatus)
+                .setDisplay(
+                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
+                        gesamtResidualstatus)));
+      }
+
+      if (gesamtResidualstatus != null || lokalResidualstatus != null) {
+        opProcedure.setOutcome(outComeCodeConcept);
+      }
+    }
 
     // Complication
     if (op.getMenge_Komplikation() != null

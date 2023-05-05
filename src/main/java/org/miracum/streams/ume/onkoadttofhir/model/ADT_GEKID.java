@@ -370,7 +370,15 @@ public class ADT_GEKID implements Serializable {
           }
 
           @Data
-          public static class Menge_Tumorkonferenz {}
+          public static class Menge_Tumorkonferenz {
+
+            @JsonProperty private Tumorkonferenz Tumorkonferenz;
+
+            @Data
+            public static class Tumorkonferenz {
+              @JsonProperty private String Tumorkonferenz_ID;
+            }
+          }
 
           @Data
           public static class Menge_ST {
