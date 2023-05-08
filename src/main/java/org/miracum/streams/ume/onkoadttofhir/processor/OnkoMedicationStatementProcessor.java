@@ -114,6 +114,9 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             .getMenge_Meldung()
             .getMeldung();
 
+    var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+    var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+
     var patId = meldungExport.getReferenz_nummer();
     var pid = convertId(patId);
 
@@ -130,14 +133,24 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             addResourceAsEntryInBundle(
                 bundle,
                 createSystemtherapyMedicationStatement(
-                    meldung, pid, getReportingReasonFromAdt(meldungExport), null));
+                    meldung,
+                    pid,
+                    senderId,
+                    softwareId,
+                    getReportingReasonFromAdt(meldungExport),
+                    null));
 
         for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
           bundle =
               addResourceAsEntryInBundle(
                   bundle,
                   createSystemtherapyMedicationStatement(
-                      meldung, pid, getReportingReasonFromAdt(meldungExport), substance));
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      getReportingReasonFromAdt(meldungExport),
+                      substance));
         }
       }
 
@@ -159,7 +172,12 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
   // Substances are documented) in ADT
   // as in https://simplifier.net/oncology/systemtherapie
   public MedicationStatement createSystemtherapyMedicationStatement(
-      Meldung meldung, String pid, String meldeanlass, String substance) {
+      Meldung meldung,
+      String pid,
+      String senderId,
+      String softwareId,
+      String meldeanlass,
+      String substance) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
@@ -196,7 +214,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     /// Meta
     stMedicationStatement
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+        .setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     stMedicationStatement
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));

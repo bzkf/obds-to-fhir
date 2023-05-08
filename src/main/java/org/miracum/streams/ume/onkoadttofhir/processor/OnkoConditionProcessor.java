@@ -131,9 +131,13 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
     onkoCondition.setId(this.getHash("Condition", conIdentifier));
 
+    var senderInfo = meldungExport.getXml_daten().getAbsender();
     onkoCondition
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+        .setSource(
+            generateProfileMetaSource(
+                senderInfo.getAbsender_ID(), senderInfo.getSoftware_ID(), appVersion));
+
     onkoCondition
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));

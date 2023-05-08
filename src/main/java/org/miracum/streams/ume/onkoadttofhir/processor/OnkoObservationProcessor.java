@@ -102,6 +102,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
 
     var patId = "";
+    var senderId = "";
+    var softwareId = "";
 
     for (var meldungExport : meldungExportList) {
 
@@ -119,6 +121,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       var meldeanlass = meldung.getMeldeanlass();
 
       patId = meldungExport.getReferenz_nummer();
+      senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+      softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
       // var tumorId = meldung.getTumorzuordnung();
 
@@ -226,7 +230,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
         new ArrayList<>(cTnmMap.values()),
         new ArrayList<>(pTnmMap.values()),
         fernMetaMap,
-        patId);
+        patId,
+        senderId,
+        softwareId);
   }
 
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
@@ -238,7 +244,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
           pTnmList,
       HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap,
-      String patId) {
+      String patId,
+      String senderId,
+      String softwareId) {
 
     var bundle = new Bundle();
 
@@ -252,17 +260,32 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     for (var hist : histologieList) {
       bundle =
-          createHistologieAndGradingObservation(bundle, patId, hist.getFirst(), hist.getSecond());
+          createHistologieAndGradingObservation(
+              bundle, patId, senderId, softwareId, hist.getFirst(), hist.getSecond());
     }
 
     for (var cTnm : cTnmList) {
       bundle =
-          createCTnmObservation(bundle, patId, cTnm.getFirst(), cTnm.getSecond(), cTnm.getThird());
+          createCTnmObservation(
+              bundle,
+              patId,
+              senderId,
+              softwareId,
+              cTnm.getFirst(),
+              cTnm.getSecond(),
+              cTnm.getThird());
     }
 
     for (var pTnm : pTnmList) {
       bundle =
-          createPTnmObservation(bundle, patId, pTnm.getFirst(), pTnm.getSecond(), pTnm.getThird());
+          createPTnmObservation(
+              bundle,
+              patId,
+              senderId,
+              softwareId,
+              pTnm.getFirst(),
+              pTnm.getSecond(),
+              pTnm.getThird());
     }
 
     for (var fernMetaTupel : fernMetaMap.entrySet()) {
@@ -270,6 +293,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
           createFernMetaObservation(
               bundle,
               patId,
+              senderId,
+              softwareId,
               fernMetaTupel.getKey(),
               fernMetaTupel.getValue().getFirst(),
               fernMetaTupel.getValue().getSecond());
@@ -283,7 +308,12 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   }
 
   public Bundle createHistologieAndGradingObservation(
-      Bundle bundle, String patId, ADT_GEKID.HistologieAbs histologie, String meldeanlass) {
+      Bundle bundle,
+      String patId,
+      String senderId,
+      String softwareId,
+      ADT_GEKID.HistologieAbs histologie,
+      String meldeanlass) {
 
     var pid = convertId(patId);
 
@@ -310,9 +340,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
       gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
 
-      gradingObs
-          .getMeta()
-          .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+      gradingObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
       gradingObs
           .getMeta()
@@ -366,9 +394,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     histObs.setId(this.getHash("Observation", observationIdentifier));
 
-    histObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    histObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
     histObs
         .getMeta()
@@ -441,6 +467,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   public Bundle createFernMetaObservation(
       Bundle bundle,
       String patId,
+      String senderId,
+      String softwareId,
       String fernMetaId,
       ADT_GEKID.FernMetastaseAbs fernMeta,
       String meldeanlass) {
@@ -456,9 +484,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     fernMetaObs.setId(this.getHash("Observation", fernMetaId));
 
-    fernMetaObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    fernMetaObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
     fernMetaObs
         .getMeta()
@@ -520,6 +546,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   public Bundle createCTnmObservation(
       Bundle bundle,
       String patId,
+      String senderId,
+      String softwareId,
       ADT_GEKID.CTnmAbs cTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
@@ -534,9 +562,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
 
-    tnmcObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    tnmcObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
     tnmcObs
         .getMeta()
@@ -689,6 +715,8 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   public Bundle createPTnmObservation(
       Bundle bundle,
       String patId,
+      String senderId,
+      String softwareId,
       ADT_GEKID.PTnmAbs pTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
@@ -703,9 +731,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
 
     tnmpObs.setId(this.getHash("Observation", tnmpObsIdentifier));
 
-    tnmpObs
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    tnmpObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
     tnmpObs
         .getMeta()

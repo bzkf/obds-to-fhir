@@ -99,9 +99,12 @@ public class OnkoPatientProcessor extends OnkoProcessor {
     patient.setId(id);
 
     // meta.source
+    var senderInfo = meldungExport.getXml_daten().getAbsender();
     patient
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+        .setSource(
+            generateProfileMetaSource(
+                senderInfo.getAbsender_ID(), senderInfo.getSoftware_ID(), appVersion));
 
     // meta.profile
     patient
