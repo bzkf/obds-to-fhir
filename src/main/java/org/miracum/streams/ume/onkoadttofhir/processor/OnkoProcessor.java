@@ -149,6 +149,15 @@ public abstract class OnkoProcessor {
     return bundle;
   }
 
+  protected String generateProfileMetaSource(
+      String senderId, String softwareId, String appVersion) {
+    if (senderId != null && softwareId != null) {
+      return String.format("%s.%s:onkoadt-to-fhir:%s", senderId, softwareId, appVersion);
+    } else {
+      return "onkoadt-to-fhir:" + appVersion;
+    }
+  }
+
   protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
 
     if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {

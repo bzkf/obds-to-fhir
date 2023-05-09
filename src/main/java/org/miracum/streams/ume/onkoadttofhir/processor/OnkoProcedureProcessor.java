@@ -122,6 +122,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
             .getMenge_Meldung()
             .getMeldung();
 
+    var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+    var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+
     var patId = meldungExport.getReferenz_nummer();
     var pid = convertId(patId);
 
@@ -134,7 +137,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       if (meldung != null
           && meldung.getMenge_OP() != null
           && meldung.getMenge_OP().getOP() != null) {
-        bundle = addResourceAsEntryInBundle(bundle, createOpProcedure(meldung, pid));
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle, createOpProcedure(meldung, pid, senderId, softwareId));
       }
     }
 
@@ -147,13 +152,17 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
           && radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
         bundle =
             addResourceAsEntryInBundle(
-                bundle, createRadiotherapyProcedure(meldung, pid, reportingReason, null, timeSpan));
+                bundle,
+                createRadiotherapyProcedure(
+                    meldung, pid, senderId, softwareId, reportingReason, null, timeSpan));
       }
 
       for (var radio : partialRadiations) {
         bundle =
             addResourceAsEntryInBundle(
-                bundle, createRadiotherapyProcedure(meldung, pid, reportingReason, radio, null));
+                bundle,
+                createRadiotherapyProcedure(
+                    meldung, pid, senderId, softwareId, reportingReason, radio, null));
       }
     }
 
@@ -167,7 +176,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     }
   }
 
-  public Procedure createOpProcedure(Meldung meldung, String pid) {
+  public Procedure createOpProcedure(
+      Meldung meldung, String pid, String senderId, String softwareId) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -182,9 +192,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     opProcedure.setId(this.getHash("Condition", opProcedureIdentifier));
 
     // Meta
-    opProcedure
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    opProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     opProcedure
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getOpProcedure())));
@@ -313,6 +321,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
   public Procedure createRadiotherapyProcedure(
       Meldung meldung,
       String pid,
+      String senderId,
+      String softwareId,
       String meldeanlass,
       Bestrahlung radio,
       Tupel<Date, Date> timeSpan) {
@@ -373,9 +383,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     }
 
     // Meta
-    stProcedure
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    stProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     stProcedure
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getStProcedure())));

@@ -23,6 +23,13 @@ public class ADT_GEKID implements Serializable {
 
   @Data
   public static class Absender {
+
+    @JsonProperty private String Absender_ID;
+
+    @JsonProperty private String Software_ID;
+
+    @JsonProperty private String Installations_ID;
+
     @JsonProperty private String Absender_Bezeichnung;
 
     @JsonProperty private String Absender_Ansprechpartner;
