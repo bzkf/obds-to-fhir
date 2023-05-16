@@ -35,6 +35,9 @@ public class OnkoConditionProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  private boolean checkDigitConversion;
+
   protected OnkoConditionProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -125,7 +128,10 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     }
 
     var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId) + "X";
+    }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
 

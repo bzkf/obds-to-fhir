@@ -35,6 +35,9 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
+  @Value("${app.enableCheckDigitConversion}")
+  private boolean checkDigitConversion;
+
   public OnkoObservationProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -315,7 +318,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       ADT_GEKID.HistologieAbs histologie,
       String meldeanlass) {
 
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     // Create a Grading Observation as in
     // https://simplifier.net/oncology/grading
@@ -473,7 +479,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       ADT_GEKID.FernMetastaseAbs fernMeta,
       String meldeanlass) {
 
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     // Create a Fernmetastasen Observation as in
     // https://simplifier.net/oncology/fernmetastasen-duplicate-2
@@ -552,7 +561,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
 
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
     // TNM Observation
     // Create a TNM-c Observation as in
     // https://simplifier.net/oncology/tnmc
@@ -724,7 +736,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
 
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
     var tnmpObsIdentifier = pid + "ptnm" + pTnm.getTNM_ID();

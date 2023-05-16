@@ -31,6 +31,9 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
+  @Value("${app.enableCheckDigitConversion}")
+  private boolean checkDigitConversion;
+
   private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
 
   private final SystIntentionVsLookup displaySystIntentionLookup = new SystIntentionVsLookup();
@@ -118,7 +121,10 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
     var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     if (meldung != null
         && meldung.getMenge_SYST() != null

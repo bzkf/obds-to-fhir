@@ -29,6 +29,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
+  @Value("${app.enableCheckDigitConversion}")
+  private boolean checkDigitConversion;
+
   protected OnkoProcedureProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -126,7 +129,10 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
     var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 

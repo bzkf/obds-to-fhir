@@ -29,6 +29,9 @@ public class OnkoPatientProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
+  @Value("${app.enableCheckDigitConversion}")
+  private boolean checkDigitConversion;
+
   protected OnkoPatientProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -93,8 +96,11 @@ public class OnkoPatientProcessor extends OnkoProcessor {
     var patient = new Patient();
 
     // id
-    var patid = meldungExport.getReferenz_nummer();
-    var pid = convertId(patid);
+    var patId = meldungExport.getReferenz_nummer();
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
     var id = this.getHash("Patient", pid);
     patient.setId(id);
 
