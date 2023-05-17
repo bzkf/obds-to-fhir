@@ -35,7 +35,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("${app.enableCheckDigitConversion}")
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
   private boolean checkDigitConversion;
 
   public OnkoObservationProcessor(FhirProperties fhirProperties) {

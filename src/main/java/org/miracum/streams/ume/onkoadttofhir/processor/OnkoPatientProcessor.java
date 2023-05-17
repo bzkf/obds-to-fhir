@@ -29,7 +29,7 @@ public class OnkoPatientProcessor extends OnkoProcessor {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("${app.enableCheckDigitConversion}")
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
   private boolean checkDigitConversion;
 
   protected OnkoPatientProcessor(FhirProperties fhirProperties) {
