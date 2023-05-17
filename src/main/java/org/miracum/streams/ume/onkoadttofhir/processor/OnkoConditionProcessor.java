@@ -130,7 +130,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     var patId = meldungExport.getReferenz_nummer();
     var pid = patId;
     if (checkDigitConversion) {
-      pid = convertId(patId) + "X";
+      pid = convertId(patId);
     }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
