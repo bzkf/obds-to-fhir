@@ -8,7 +8,11 @@ import java.util.Map;
 
 public class OnkoResource implements Serializable {
   protected String getString(Map<String, Object> payload, String fieldName) {
-    return payload.get(fieldName) == null ? null : (String) payload.get(fieldName);
+    Object fieldValue = payload.get(fieldName);
+    if (fieldValue == null) {
+      return null;
+    }
+    return String.valueOf(fieldValue);
   }
 
   protected Integer getInt(Map<String, Object> payload, String fieldName) {

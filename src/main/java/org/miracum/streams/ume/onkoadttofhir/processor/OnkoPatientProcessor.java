@@ -56,7 +56,7 @@ public class OnkoPatientProcessor extends OnkoProcessor {
                 (key, value) ->
                     KeyValue.pair(
                         "Struct{REFERENZ_NUMMER="
-                            + value.getReferenz_nummer()
+                            + getPatIdFromAdt(value)
                             + ",TUMOR_ID="
                             + getTumorIdFromAdt(value)
                             + "}",
@@ -96,7 +96,7 @@ public class OnkoPatientProcessor extends OnkoProcessor {
     var patient = new Patient();
 
     // id
-    var patId = meldungExport.getReferenz_nummer();
+    var patId = getPatIdFromAdt(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
