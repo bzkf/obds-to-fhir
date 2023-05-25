@@ -71,10 +71,10 @@ public abstract class OnkoProcessor {
       MeldungExportList meldungExports, List<String> priorityOrder) {
     var meldungen = meldungExports.getElements();
 
-    var meldungExportMap = new HashMap<Integer, MeldungExport>();
+    var meldungExportMap = new HashMap<String, MeldungExport>();
     // meldeanlass bleibt in LKR Meldung immer gleich
     for (var meldung : meldungen) {
-      var lkrId = meldung.getLkr_meldung();
+      var lkrId = getReportingIdFromAdt(meldung);
       var currentMeldungVersion = meldungExportMap.get(lkrId);
       if (currentMeldungVersion == null
           || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
@@ -99,6 +99,15 @@ public abstract class OnkoProcessor {
     meldungExportList.sort(meldungComparator);
 
     return meldungExportList;
+  }
+
+  public String getPatIdFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getPatienten_Stammdaten()
+        .getPatient_ID();
   }
 
   public String getTumorIdFromAdt(MeldungExport meldung) {

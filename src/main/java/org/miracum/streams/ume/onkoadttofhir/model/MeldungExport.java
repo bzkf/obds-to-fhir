@@ -18,7 +18,7 @@ public class MeldungExport extends OnkoResource {
 
   @EqualsAndHashCode.Include String referenz_nummer;
 
-  @EqualsAndHashCode.Include Integer lkr_meldung;
+  @EqualsAndHashCode.Include String lkr_meldung;
 
   @EqualsAndHashCode.Include Integer versionsnummer;
 
@@ -28,7 +28,7 @@ public class MeldungExport extends OnkoResource {
   public void getPayload(Map<String, Object> payload) {
     this.id = getInt(payload, "ID");
     this.referenz_nummer = getString(payload, "REFERENZ_NUMMER");
-    this.lkr_meldung = getInt(payload, "LKR_MELDUNG");
+    this.lkr_meldung = getString(payload, "LKR_MELDUNG");
     this.versionsnummer = getInt(payload, "VERSIONSNUMMER");
 
     XmlMapper xmlMapper = new XmlMapper();

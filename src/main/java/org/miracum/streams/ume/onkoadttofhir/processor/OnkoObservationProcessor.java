@@ -61,7 +61,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
                 (key, value) ->
                     KeyValue.pair(
                         "Struct{REFERENZ_NUMMER="
-                            + value.getReferenz_nummer()
+                            + getPatIdFromAdt(value)
                             + ",TUMOR_ID="
                             + getTumorIdFromAdt(value)
                             + "}",
@@ -123,7 +123,7 @@ public class OnkoObservationProcessor extends OnkoProcessor {
       // reporting reason
       var meldeanlass = meldung.getMeldeanlass();
 
-      patId = meldungExport.getReferenz_nummer();
+      patId = getPatIdFromAdt(meldungExport);
       senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
       softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
