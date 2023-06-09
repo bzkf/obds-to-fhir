@@ -7,9 +7,6 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -151,16 +148,8 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
 
         assertThat(opProcedureList.get(0).getStatus().toString()).isEqualTo(expectedStatus);
 
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime expectedLocalDateTime =
-            LocalDateTime.parse(expectedOpDate + " 00:00:00", fmt);
-
-        assertThat(opProcedureList.get(0).getPerformedDateTimeType().getValue().getTime())
-            .isEqualTo(
-                expectedLocalDateTime
-                    .atZone(ZoneId.of("Europe/Berlin"))
-                    .toInstant()
-                    .toEpochMilli());
+        assertThat(opProcedureList.get(0).getPerformedDateTimeType().getValueAsString())
+            .isEqualTo(expectedOpDate);
 
         assertThat(opProcedureList.get(0).getCode().getCoding()).hasSize(expectedOpsCount);
 

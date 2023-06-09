@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
@@ -135,28 +134,16 @@ public class OnkoObservationProcessorTest extends OnkoProcessorTest {
           LocalDateTime expectedLocalDateTime =
               LocalDateTime.parse(expectedEffectDate + " 00:00:00", fmt);
 
-          assertThat(obsv.getEffectiveDateTimeType().getValue().getTime())
-              .isEqualTo(
-                  expectedLocalDateTime
-                      .atZone(ZoneId.of("Europe/Berlin"))
-                      .toInstant()
-                      .toEpochMilli());
+          assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
+              .isEqualTo(expectedEffectDate);
 
         } else if (Objects.equals(profLoincCode, "59542-1")) { // Grading
 
           var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
           assertThat(valueCode).isEqualTo(expectedGradingCode);
 
-          DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-          LocalDateTime expectedLocalDateTime =
-              LocalDateTime.parse(expectedEffectDate + " 00:00:00", fmt);
-
-          assertThat(obsv.getEffectiveDateTimeType().getValue().getTime())
-              .isEqualTo(
-                  expectedLocalDateTime
-                      .atZone(ZoneId.of("Europe/Berlin"))
-                      .toInstant()
-                      .toEpochMilli());
+          assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
+              .isEqualTo(expectedEffectDate);
 
         } else if (Objects.equals(profLoincCode, "21907-1")) { // Fernmeta
 
