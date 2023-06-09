@@ -5,7 +5,7 @@ import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -185,10 +185,9 @@ public abstract class OnkoProcessor {
     LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
     LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
     var adtDateTime =
-        new DateTimeType(
-            Date.from(adtLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
-
+        new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
     adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
+
     return adtDateTime;
   }
 }
