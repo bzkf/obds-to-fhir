@@ -1,10 +1,10 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.4'
-	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'org.springframework.boot' version '3.1.0'
+	id 'io.spring.dependency-management' version '1.1.0'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '6.11.0'
-	id "io.freefair.lombok" version "6.5.1"
+	id 'com.diffplug.spotless' version '6.19.0'
+	id "io.freefair.lombok" version "8.0.1"
 }
 
 group = 'org.miracum.streams.ume'
@@ -23,7 +23,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2021.0.2") // 2021.0.3 causes bundle serializing error
+	set('springCloudVersion', "2022.0.3")
 	set('hapiVersion', "6.1.1")
 }
 
@@ -31,11 +31,10 @@ dependencies {
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-	implementation "ca.uhn.hapi.fhir:hapi-fhir-base:${hapiVersion}"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
 	implementation 'io.micrometer:micrometer-registry-prometheus:1.9.4'
 	implementation 'io.micrometer:micrometer-core:1.9.4'
-	implementation "org.miracum:kafka-fhir-serializer:1.0.2"
+	implementation "org.miracum:kafka-fhir-serializer:1.0.4"
 	implementation "org.apache.commons:commons-text:1.10.0"
 	implementation "org.scala-lang:scala-library:2.13.10"
 
@@ -55,8 +54,12 @@ dependencyManagement {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.10"
 }
 
 spotless {
@@ -69,9 +72,11 @@ spotless {
 
 jacocoTestReport {
 	reports {
+		csv.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.csv'))
+		csv.required = true
+		html.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.html'))
 		html.required = true
 		xml.required = false
-		csv.required = true
 	}
 }
 

@@ -73,6 +73,8 @@ spring:
   application:
     name: onkoadt-to-fhir
   cloud:
+    function:
+      definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
     stream:
       bindings:
         getMeldungExportPatientProcessor-in-0:
@@ -108,8 +110,6 @@ spring:
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
-      function:
-        definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
       kafka:
         streams:
           binder:
@@ -125,6 +125,7 @@ spring:
                 application-id: onko-meldung-exp-patient-processor
             getMeldungExportPatientProcessor-out-0:
               producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportObservationProcessor-in-0:
@@ -132,6 +133,7 @@ spring:
                 application-id: onko-meldung-exp-observ-processor
             getMeldungExportObservationProcessor-out-0:
               producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportProcedureProcessor-in-0:
@@ -139,6 +141,7 @@ spring:
                 application-id: onko-meldung-exp-proced-processor
             getMeldungExportProcedureProcessor-out-0:
               producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportMedicationStProcessor-in-0:
@@ -146,6 +149,7 @@ spring:
                 application-id: onko-meldung-exp-medst-processor
             getMeldungExportMedicationStProcessor-out-0:
               producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportConditionProcessor-in-0:
@@ -153,9 +157,11 @@ spring:
                 application-id: onko-meldung-exp-cond-processor
             getMeldungExportConditionProcessor-in-1:
               consumer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 application-id: onko-meldung-exp-cond-processor
             getMeldungExportConditionProcessor-out-0:
               producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
 
@@ -171,4 +177,3 @@ spring:
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
       compression-type: gzip
-      value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
