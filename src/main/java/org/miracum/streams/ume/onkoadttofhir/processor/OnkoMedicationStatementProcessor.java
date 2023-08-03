@@ -233,16 +233,25 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     }
 
     // Category
-    var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
     var therapyCategory = new CodeableConcept();
-    therapyCategory.addCoding(
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getSystTherapieart())
-            .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
-            .setDisplay(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
+    if (systemTherapy.getMenge_Therapieart() != null
+        && systemTherapy.getMenge_Therapieart().getSYST_Therapieart() != null) {
+      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
+      therapyCategory.addCoding(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSystTherapieart())
+              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
+              .setDisplay(
+                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
 
-    if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
-      therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
+        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      }
+      stMedicationStatement.setCategory(therapyCategory);
+    } else {
+      // data absent
+      therapyCategory.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
     }
     stMedicationStatement.setCategory(therapyCategory);
 
