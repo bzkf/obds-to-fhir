@@ -191,6 +191,10 @@ public class OnkoConditionProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     var conditionDateString = primDia.getDiagnosedatum();

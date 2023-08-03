@@ -379,6 +379,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
               .setIdentifier(
                   new Identifier()
                       .setSystem(fhirProperties.getSystems().getPatientId())
+                      .setType(
+                          new CodeableConcept(
+                              new Coding(
+                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                       .setValue(pid)));
 
       var gradingValueCodeableCon =
@@ -433,6 +437,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     // Histologiedatum
@@ -526,6 +534,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     // Fernmetastasendatum
@@ -607,6 +619,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     // tnm c Date
@@ -778,6 +794,10 @@ public class OnkoObservationProcessor extends OnkoProcessor {
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
     // tnm p Date
