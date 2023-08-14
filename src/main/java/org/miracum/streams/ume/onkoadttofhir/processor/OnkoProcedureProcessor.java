@@ -318,7 +318,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getOpComplication())
                 .setCode(complication)
-                .setDisplay(displayOPKomplicationLookup.lookupOPIntentionVSDisplay(complication)));
+                .setDisplay(
+                    displayOPKomplicationLookup.lookupOPKomplikationVSDisplay(complication)));
       }
       opProcedure.setComplication(List.of(complicationConcept));
     }

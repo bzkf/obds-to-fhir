@@ -79,16 +79,16 @@
                         </pTNM>
                         <Menge_FM>
                             <Fernmetastase>
-                              <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
-                              <FM_Lokalisation>OSS</FM_Lokalisation>
+                                <FM_Diagnosedatum>26.08.2021</FM_Diagnosedatum>
+                                <FM_Lokalisation>OSS</FM_Lokalisation>
                             </Fernmetastase>
                             <Fernmetastase>
-                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                              <FM_Lokalisation>HEP</FM_Lokalisation>
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                <FM_Lokalisation>HEP</FM_Lokalisation>
                             </Fernmetastase>
                             <Fernmetastase>
-                              <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                              <FM_Lokalisation>LYM</FM_Lokalisation>
+                                <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                <FM_Lokalisation>LYM</FM_Lokalisation>
                             </Fernmetastase>
                             <Fernmetastase>
                                 <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
@@ -98,7 +98,7 @@
                                 <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
                                 <FM_Lokalisation>OTH</FM_Lokalisation>
                             </Fernmetastase>
-                          </Menge_FM>
+                        </Menge_FM>
                         <Menge_Weitere_Klassifikation>
                             <Weitere_Klassifikation>
                                 <Datum>18.03.2021</Datum>
