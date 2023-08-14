@@ -1,4 +1,4 @@
-FROM gradle:8.0.2-jdk17-alpine AS build
+FROM gradle:8.2.1-jdk17-alpine AS build
 WORKDIR /home/gradle/src
 ENV GRADLE_USER_HOME /gradle
 
@@ -8,10 +8,10 @@ RUN gradle clean build --no-daemon || true
 COPY --chown=gradle:gradle . .
 RUN gradle clean build --info && \
     gradle jacocoTestReport &&  \
-    awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/reports/jacoco/test/jacocoTestReport.csv && \
+    awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/jacoco/coverage.csv && \
     java -Djarmode=layertools -jar build/libs/onkoadt-to-fhir-0.0.1-SNAPSHOT.jar extract
 
-FROM gcr.io/distroless/java17-debian11@sha256:6e135f309fb112dcf820fc64b4465772bc045d7bf9fb75fd4cf7e6cf8eed5e47
+FROM gcr.io/distroless/java17-debian11@sha256:672df6324b5e36527b201135c37c3ed14579b2eb9485a4f4e9ab526d466f671c
 WORKDIR /opt/onkoadt-to-fhir
 
 COPY --from=build /home/gradle/src/dependencies/ ./

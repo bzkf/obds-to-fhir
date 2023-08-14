@@ -15,12 +15,16 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OnkoConditionProcessor extends OnkoProcessor {
+
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoConditionProcessor.class);
 
   private final SnomedCtSeitenlokalisationLookup snomedCtSeitenlokalisationLookup =
       new SnomedCtSeitenlokalisationLookup();
@@ -30,6 +34,9 @@ public class OnkoConditionProcessor extends OnkoProcessor {
 
   @Value("${app.version}")
   private String appVersion;
+
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  private boolean checkDigitConversion;
 
   protected OnkoConditionProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -54,7 +61,7 @@ public class OnkoConditionProcessor extends OnkoProcessor {
                 (key, value) ->
                     KeyValue.pair(
                         "Struct{REFERENZ_NUMMER="
-                            + value.getReferenz_nummer()
+                            + getPatIdFromAdt(value)
                             + ",TUMOR_ID="
                             + getTumorIdFromAdt(value)
                             + "}",
@@ -93,6 +100,8 @@ public class OnkoConditionProcessor extends OnkoProcessor {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
+    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "condition");
+
     var onkoCondition = new Condition();
 
     var meldung =
@@ -102,6 +111,10 @@ public class OnkoConditionProcessor extends OnkoProcessor {
             .getPatient()
             .getMenge_Meldung()
             .getMeldung();
+
+    var meldungsId = meldung.getMeldung_ID();
+
+    LOG.debug("Processing Meldung: {}", meldungsId);
 
     ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
@@ -114,16 +127,23 @@ public class OnkoConditionProcessor extends OnkoProcessor {
       }
     }
 
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var patId = getPatIdFromAdt(meldungExport);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
 
     onkoCondition.setId(this.getHash("Condition", conIdentifier));
 
+    var senderInfo = meldungExport.getXml_daten().getAbsender();
     onkoCondition
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+        .setSource(
+            generateProfileMetaSource(
+                senderInfo.getAbsender_ID(), senderInfo.getSoftware_ID(), appVersion));
+
     onkoCondition
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));

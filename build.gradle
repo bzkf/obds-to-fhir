@@ -1,10 +1,10 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.5'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version '3.1.2'
+	id 'io.spring.dependency-management' version '1.1.3'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '6.17.0'
-	id "io.freefair.lombok" version "8.0.1"
+	id 'com.diffplug.spotless' version '6.20.0'
+	id "io.freefair.lombok" version "8.2.2"
 }
 
 group = 'org.miracum.streams.ume'
@@ -23,21 +23,20 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2022.0.2") // 2021.0.3 causes bundle serializing error
-	set('hapiVersion', "6.4.4")
+	set('springCloudVersion', "2022.0.4")
+	set('hapiVersion', "6.6.2")
 }
 
 dependencies {
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-	implementation "ca.uhn.hapi.fhir:hapi-fhir-base:${hapiVersion}"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.9.4'
-	implementation 'io.micrometer:micrometer-core:1.9.4'
-	implementation "org.miracum:kafka-fhir-serializer:1.0.3"
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
+	implementation 'io.micrometer:micrometer-core:1.11.2'
+	implementation "org.miracum:kafka-fhir-serializer:1.0.4"
 	implementation "org.apache.commons:commons-text:1.10.0"
-	implementation "org.scala-lang:scala-library:2.13.10"
+	implementation "org.scala-lang:scala-library:2.13.11"
 
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
@@ -55,8 +54,12 @@ dependencyManagement {
 	}
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jacoco {
+	toolVersion = "0.8.10"
 }
 
 spotless {
@@ -69,9 +72,11 @@ spotless {
 
 jacocoTestReport {
 	reports {
+		csv.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.csv'))
+		csv.required = true
+		html.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.html'))
 		html.required = true
 		xml.required = false
-		csv.required = true
 	}
 }
 

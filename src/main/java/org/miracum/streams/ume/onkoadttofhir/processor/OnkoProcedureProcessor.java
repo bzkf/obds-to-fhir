@@ -15,6 +15,8 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +24,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OnkoProcedureProcessor extends OnkoProcessor {
 
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcedureProcessor.class);
+
   @Value("${app.version}")
   private String appVersion;
+
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  private boolean checkDigitConversion;
 
   protected OnkoProcedureProcessor(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -69,7 +76,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                 (key, value) ->
                     KeyValue.pair(
                         "Struct{REFERENZ_NUMMER="
-                            + value.getReferenz_nummer()
+                            + getPatIdFromAdt(value)
                             + ",TUMOR_ID="
                             + getTumorIdFromAdt(value)
                             + "}",
@@ -108,6 +115,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
+    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "procedure");
+
     var meldung =
         meldungExport
             .getXml_daten()
@@ -116,8 +125,14 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
             .getMenge_Meldung()
             .getMeldung();
 
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+    var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+
+    var patId = getPatIdFromAdt(meldungExport);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
@@ -128,7 +143,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
       if (meldung != null
           && meldung.getMenge_OP() != null
           && meldung.getMenge_OP().getOP() != null) {
-        bundle = addResourceAsEntryInBundle(bundle, createOpProcedure(meldung, pid));
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle, createOpProcedure(meldung, pid, senderId, softwareId));
       }
     }
 
@@ -141,13 +158,17 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
           && radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
         bundle =
             addResourceAsEntryInBundle(
-                bundle, createRadiotherapyProcedure(meldung, pid, reportingReason, null, timeSpan));
+                bundle,
+                createRadiotherapyProcedure(
+                    meldung, pid, senderId, softwareId, reportingReason, null, timeSpan));
       }
 
       for (var radio : partialRadiations) {
         bundle =
             addResourceAsEntryInBundle(
-                bundle, createRadiotherapyProcedure(meldung, pid, reportingReason, radio, null));
+                bundle,
+                createRadiotherapyProcedure(
+                    meldung, pid, senderId, softwareId, reportingReason, radio, null));
       }
     }
 
@@ -161,7 +182,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     }
   }
 
-  public Procedure createOpProcedure(Meldung meldung, String pid) {
+  public Procedure createOpProcedure(
+      Meldung meldung, String pid, String senderId, String softwareId) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -176,9 +198,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     opProcedure.setId(this.getHash("Condition", opProcedureIdentifier));
 
     // Meta
-    opProcedure
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    opProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     opProcedure
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getOpProcedure())));
@@ -216,15 +236,17 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                             List.of("OP")))));
 
     // Code
-    var opsCodeConcept = new CodeableConcept();
-    for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
-      opsCodeConcept.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getOps())
-              .setCode(opsCode)
-              .setVersion(op.getOP_OPS_Version()));
+    if (op.getMenge_OPS() != null) {
+      var opsCodeConcept = new CodeableConcept();
+      for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
+        opsCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getOps())
+                .setCode(opsCode)
+                .setVersion(op.getOP_OPS_Version()));
+      }
+      opProcedure.setCode(opsCodeConcept);
     }
-    opProcedure.setCode(opsCodeConcept);
 
     // Subject
     opProcedure.setSubject(
@@ -255,24 +277,36 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
                         pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
 
     // Outcome
-    var lokalResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
-    var gesamtResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
-    opProcedure.setOutcome(
-        new CodeableConcept()
-            .addCoding(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
-                    .setCode(lokalResidualstatus)
-                    .setDisplay(
-                        displayBeurteilungResidualstatusLookup
-                            .lookupBeurteilungResidualstatusDisplay(lokalResidualstatus)))
-            .addCoding(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
-                    .setCode(gesamtResidualstatus)
-                    .setDisplay(
-                        displayBeurteilungResidualstatusLookup
-                            .lookupBeurteilungResidualstatusDisplay(gesamtResidualstatus))));
+    if (op.getResidualstatus() != null) {
+      var lokalResidualstatus = op.getResidualstatus().getLokale_Beurteilung_Residualstatus();
+      var gesamtResidualstatus = op.getResidualstatus().getGesamtbeurteilung_Residualstatus();
+
+      var outComeCodeConcept = new CodeableConcept();
+
+      if (lokalResidualstatus != null) {
+        outComeCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
+                .setCode(lokalResidualstatus)
+                .setDisplay(
+                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
+                        lokalResidualstatus)));
+      }
+
+      if (gesamtResidualstatus != null) {
+        outComeCodeConcept.addCoding(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
+                .setCode(gesamtResidualstatus)
+                .setDisplay(
+                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
+                        gesamtResidualstatus)));
+      }
+
+      if (gesamtResidualstatus != null || lokalResidualstatus != null) {
+        opProcedure.setOutcome(outComeCodeConcept);
+      }
+    }
 
     // Complication
     if (op.getMenge_Komplikation() != null
@@ -298,6 +332,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
   public Procedure createRadiotherapyProcedure(
       Meldung meldung,
       String pid,
+      String senderId,
+      String softwareId,
       String meldeanlass,
       Bestrahlung radio,
       Tupel<Date, Date> timeSpan) {
@@ -358,9 +394,7 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
     }
 
     // Meta
-    stProcedure
-        .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+    stProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     stProcedure
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getStProcedure())));

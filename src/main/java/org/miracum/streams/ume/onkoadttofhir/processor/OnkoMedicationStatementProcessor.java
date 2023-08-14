@@ -17,6 +17,8 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +26,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OnkoMedicationStatementProcessor extends OnkoProcessor {
 
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoMedicationStatementProcessor.class);
+
   @Value("${app.version}")
   private String appVersion;
+
+  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  private boolean checkDigitConversion;
 
   private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
 
@@ -61,7 +68,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
                 (key, value) ->
                     KeyValue.pair(
                         "Struct{REFERENZ_NUMMER="
-                            + value.getReferenz_nummer()
+                            + getPatIdFromAdt(value)
                             + ",TUMOR_ID="
                             + getTumorIdFromAdt(value)
                             + "}",
@@ -99,6 +106,9 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
+    LOG.debug(
+        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "medicationStatement");
+
     var meldung =
         meldungExport
             .getXml_daten()
@@ -107,8 +117,14 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             .getMenge_Meldung()
             .getMeldung();
 
-    var patId = meldungExport.getReferenz_nummer();
-    var pid = convertId(patId);
+    var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+    var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+
+    var patId = getPatIdFromAdt(meldungExport);
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
 
     if (meldung != null
         && meldung.getMenge_SYST() != null
@@ -123,15 +139,25 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
             addResourceAsEntryInBundle(
                 bundle,
                 createSystemtherapyMedicationStatement(
-                    meldung, pid, getReportingReasonFromAdt(meldungExport), null));
-      }
+                    meldung,
+                    pid,
+                    senderId,
+                    softwareId,
+                    getReportingReasonFromAdt(meldungExport),
+                    null));
 
-      for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createSystemtherapyMedicationStatement(
-                    meldung, pid, getReportingReasonFromAdt(meldungExport), substance));
+        for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createSystemtherapyMedicationStatement(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      getReportingReasonFromAdt(meldungExport),
+                      substance));
+        }
       }
 
     } else {
@@ -152,7 +178,12 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
   // Substances are documented) in ADT
   // as in https://simplifier.net/oncology/systemtherapie
   public MedicationStatement createSystemtherapyMedicationStatement(
-      Meldung meldung, String pid, String meldeanlass, String substance) {
+      Meldung meldung,
+      String pid,
+      String senderId,
+      String softwareId,
+      String meldeanlass,
+      String substance) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
@@ -189,7 +220,7 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     /// Meta
     stMedicationStatement
         .getMeta()
-        .setSource("DWH_ROUTINE.STG_ONKOSTAR_LKR_MELDUNG_EXPORT:onkoadt-to-fhir:" + appVersion);
+        .setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     stMedicationStatement
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
@@ -202,16 +233,25 @@ public class OnkoMedicationStatementProcessor extends OnkoProcessor {
     }
 
     // Category
-    var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
     var therapyCategory = new CodeableConcept();
-    therapyCategory.addCoding(
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getSystTherapieart())
-            .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
-            .setDisplay(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
+    if (systemTherapy.getMenge_Therapieart() != null
+        && systemTherapy.getMenge_Therapieart().getSYST_Therapieart() != null) {
+      var category = systemTherapy.getMenge_Therapieart().getSYST_Therapieart();
+      therapyCategory.addCoding(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSystTherapieart())
+              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
+              .setDisplay(
+                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
 
-    if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
-      therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
+        therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
+      }
+      stMedicationStatement.setCategory(therapyCategory);
+    } else {
+      // data absent
+      therapyCategory.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
     }
     stMedicationStatement.setCategory(therapyCategory);
 

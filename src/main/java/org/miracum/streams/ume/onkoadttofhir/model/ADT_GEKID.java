@@ -23,6 +23,13 @@ public class ADT_GEKID implements Serializable {
 
   @Data
   public static class Absender {
+
+    @JsonProperty private String Absender_ID;
+
+    @JsonProperty private String Software_ID;
+
+    @JsonProperty private String Installations_ID;
+
     @JsonProperty private String Absender_Bezeichnung;
 
     @JsonProperty private String Absender_Ansprechpartner;
@@ -45,7 +52,33 @@ public class ADT_GEKID implements Serializable {
       @Data
       public static class Patienten_Stammdaten {
 
+        @JsonProperty private String Patient_ID;
         @JsonProperty private String KrankenversichertenNr;
+        @JsonProperty private String KrankenkassenNr;
+        @JsonProperty private String Patienten_Nachname;
+        @JsonProperty private String Patienten_Vornamen;
+        @JsonProperty private String Patienten_Titel;
+        @JsonProperty private String Patienten_Namenszusatz;
+        @JsonProperty private String Patienten_Geburtsname;
+        @JsonProperty private String Patienten_Geschlecht;
+        @JsonProperty private String Patienten_Geburtsdatum;
+
+        @JsonProperty private Menge_Adresse Menge_Adresse;
+
+        @Data
+        public static class Menge_Adresse {
+
+          @JacksonXmlElementWrapper(useWrapping = false)
+          private List<Adresse> Adresse;
+
+          @Data
+          public static class Adresse {
+            @JsonProperty private String Patienten_Strasse;
+            @JsonProperty private String Patienten_Land;
+            @JsonProperty private String Patienten_PLZ;
+            @JsonProperty private String Patienten_Ort;
+          }
+        }
       }
 
       @Data
@@ -276,6 +309,8 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private Menge_FM Menge_FM;
 
+              @JsonProperty private Tod Tod;
+
               @Data
               @EqualsAndHashCode(callSuper = true)
               public static class Histologie extends ADT_GEKID.HistologieAbs {
@@ -323,11 +358,34 @@ public class ADT_GEKID implements Serializable {
                   @JsonProperty private String FM_Lokalisation;
                 }
               }
+
+              @Data
+              public static class Tod {
+
+                @JsonProperty private String Sterbedatum;
+                @JsonProperty private String Tod_tumorbedingt;
+
+                @JsonProperty private Menge_Todesursache Menge_Todesursache;
+
+                @Data
+                public static class Menge_Todesursache {
+                  @JsonProperty private String Todesursache_ICD;
+                  @JsonProperty private String Todesursache_ICD_Version;
+                }
+              }
             }
           }
 
           @Data
-          public static class Menge_Tumorkonferenz {}
+          public static class Menge_Tumorkonferenz {
+
+            @JsonProperty private Tumorkonferenz Tumorkonferenz;
+
+            @Data
+            public static class Tumorkonferenz {
+              @JsonProperty private String Tumorkonferenz_ID;
+            }
+          }
 
           @Data
           public static class Menge_ST {

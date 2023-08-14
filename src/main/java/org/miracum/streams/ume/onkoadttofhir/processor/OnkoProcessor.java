@@ -1,10 +1,11 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -70,10 +71,10 @@ public abstract class OnkoProcessor {
       MeldungExportList meldungExports, List<String> priorityOrder) {
     var meldungen = meldungExports.getElements();
 
-    var meldungExportMap = new HashMap<Integer, MeldungExport>();
+    var meldungExportMap = new HashMap<String, MeldungExport>();
     // meldeanlass bleibt in LKR Meldung immer gleich
     for (var meldung : meldungen) {
-      var lkrId = meldung.getLkr_meldung();
+      var lkrId = getReportingIdFromAdt(meldung);
       var currentMeldungVersion = meldungExportMap.get(lkrId);
       if (currentMeldungVersion == null
           || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
@@ -100,6 +101,15 @@ public abstract class OnkoProcessor {
     return meldungExportList;
   }
 
+  public String getPatIdFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getPatienten_Stammdaten()
+        .getPatient_ID();
+  }
+
   public String getTumorIdFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
@@ -121,6 +131,16 @@ public abstract class OnkoProcessor {
         .getMeldeanlass();
   }
 
+  public String getReportingIdFromAdt(MeldungExport meldung) {
+    return meldung
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        .getMeldung_ID();
+  }
+
   protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {
     bundle
         .addEntry()
@@ -138,6 +158,15 @@ public abstract class OnkoProcessor {
     return bundle;
   }
 
+  protected String generateProfileMetaSource(
+      String senderId, String softwareId, String appVersion) {
+    if (senderId != null && softwareId != null) {
+      return String.format("%s.%s:onkoadt-to-fhir:%s", senderId, softwareId, appVersion);
+    } else {
+      return "onkoadt-to-fhir:" + appVersion;
+    }
+  }
+
   protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
 
     if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
@@ -149,13 +178,16 @@ public abstract class OnkoProcessor {
     if (adtDate.matches("^00.00.\\d{4}$")) {
       adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
     } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(adtDate.length() - 2);
+      adtDate = "15." + adtDate.substring(3); // TODO unit test
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
     LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
-    return new DateTimeType(
-        Date.from(adtLocalDateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+    var adtDateTime =
+        new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
+    adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
+
+    return adtDateTime;
   }
 }
