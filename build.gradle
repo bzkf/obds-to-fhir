@@ -32,8 +32,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.11.2'
-	implementation 'io.micrometer:micrometer-core:1.11.2'
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.11.3'
+	implementation 'io.micrometer:micrometer-core:1.11.3'
 	implementation "org.miracum:kafka-fhir-serializer:1.0.4"
 	implementation "org.apache.commons:commons-text:1.10.0"
 	implementation "org.scala-lang:scala-library:2.13.11"
