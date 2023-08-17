@@ -10,13 +10,13 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
-import org.hl7.fhir.common.hapi.validation.support.*;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.MedicationStatement;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
+import org.miracum.streams.ume.onkoadttofhir.mapper.*;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
@@ -27,19 +27,44 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
 
-@SpringBootTest(classes = {FhirProperties.class})
-@EnableConfigurationProperties(value = {FhirProperties.class})
+@SpringBootTest(
+    classes = {
+      FhirProperties.class,
+      OnkoConditionMapper.class,
+      OnkoMedicationStatementMapper.class,
+      OnkoObservationMapper.class,
+      OnkoProcedureMapper.class,
+      OnkoPatientMapper.class,
+      OnkoConditionMapper.class
+    })
+@EnableConfigurationProperties()
 public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
 
   private static final Logger log =
       LoggerFactory.getLogger(OnkoMedicationStatementProcessorTest.class);
 
   private final FhirProperties fhirProps;
+  private final OnkoMedicationStatementMapper onkoMedicationStatementMapper;
+  private final OnkoObservationMapper onkoObservationMapper;
+  private final OnkoProcedureMapper onkoProcedureMapper;
+  private final OnkoPatientMapper onkoPatientMapper;
+  private final OnkoConditionMapper onkoConditionMapper;
   private final FhirContext ctx = FhirContext.forR4();
 
   @Autowired
-  public OnkoMedicationStatementProcessorTest(FhirProperties fhirProperties) {
-    this.fhirProps = fhirProperties;
+  public OnkoMedicationStatementProcessorTest(
+      FhirProperties fhirProps,
+      OnkoMedicationStatementMapper onkoMedicationStatementMapper,
+      OnkoObservationMapper onkoObservationMapper,
+      OnkoProcedureMapper onkoProcedureMapper,
+      OnkoPatientMapper onkoPatientMapper,
+      OnkoConditionMapper onkoConditionMapper) {
+    this.fhirProps = fhirProps;
+    this.onkoMedicationStatementMapper = onkoMedicationStatementMapper;
+    this.onkoObservationMapper = onkoObservationMapper;
+    this.onkoProcedureMapper = onkoProcedureMapper;
+    this.onkoPatientMapper = onkoPatientMapper;
+    this.onkoConditionMapper = onkoConditionMapper;
   }
 
   private static Stream<Arguments> generateTestData() {
@@ -102,11 +127,19 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
       payloadId++;
     }
 
-    OnkoMedicationStatementProcessor medicationStatementProcessor =
-        new OnkoMedicationStatementProcessor(fhirProps);
+    OnkoProcessor medicationStatementProcessor =
+        new OnkoProcessor(
+            fhirProps,
+            onkoMedicationStatementMapper,
+            onkoObservationMapper,
+            onkoProcedureMapper,
+            onkoPatientMapper,
+            onkoConditionMapper);
 
     var resultBundle =
-        medicationStatementProcessor.getOnkoToMedicationStBundleMapper().apply(meldungExportList);
+        medicationStatementProcessor
+            .getOnkoToMedicationStatementBundleMapper()
+            .apply(meldungExportList);
 
     if (expectedMedStCount == 0) {
       assertThat(resultBundle).isNull();

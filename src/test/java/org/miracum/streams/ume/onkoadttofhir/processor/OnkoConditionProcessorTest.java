@@ -7,10 +7,7 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,6 +16,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
+import org.miracum.streams.ume.onkoadttofhir.mapper.*;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
@@ -29,18 +27,43 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
 
-@SpringBootTest(classes = {FhirProperties.class})
-@EnableConfigurationProperties(value = {FhirProperties.class})
+@SpringBootTest(
+    classes = {
+      FhirProperties.class,
+      OnkoConditionMapper.class,
+      OnkoMedicationStatementMapper.class,
+      OnkoObservationMapper.class,
+      OnkoProcedureMapper.class,
+      OnkoPatientMapper.class,
+      OnkoConditionMapper.class
+    })
+@EnableConfigurationProperties()
 public class OnkoConditionProcessorTest extends OnkoProcessorTest {
 
   private static final Logger log = LoggerFactory.getLogger(OnkoConditionProcessorTest.class);
 
   private final FhirProperties fhirProps;
+  private final OnkoMedicationStatementMapper onkoMedicationStatementMapper;
+  private final OnkoObservationMapper onkoObservationMapper;
+  private final OnkoProcedureMapper onkoProcedureMapper;
+  private final OnkoPatientMapper onkoPatientMapper;
+  private final OnkoConditionMapper onkoConditionMapper;
   private final FhirContext ctx = FhirContext.forR4();
 
   @Autowired
-  public OnkoConditionProcessorTest(FhirProperties fhirProperties) {
-    this.fhirProps = fhirProperties;
+  public OnkoConditionProcessorTest(
+      FhirProperties fhirProps,
+      OnkoMedicationStatementMapper onkoMedicationStatementMapper,
+      OnkoObservationMapper onkoObservationMapper,
+      OnkoProcedureMapper onkoProcedureMapper,
+      OnkoPatientMapper onkoPatientMapper,
+      OnkoConditionMapper onkoConditionMapper) {
+    this.fhirProps = fhirProps;
+    this.onkoMedicationStatementMapper = onkoMedicationStatementMapper;
+    this.onkoObservationMapper = onkoObservationMapper;
+    this.onkoProcedureMapper = onkoProcedureMapper;
+    this.onkoPatientMapper = onkoPatientMapper;
+    this.onkoConditionMapper = onkoConditionMapper;
   }
 
   private static Stream<Arguments> generateTestData() {
@@ -126,19 +149,25 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
       payloadId++;
     }
 
-    OnkoConditionProcessor conditionProcessor = new OnkoConditionProcessor(fhirProps);
+    OnkoConditionProcessor conditionProcessor =
+        new OnkoConditionProcessor(fhirProps, onkoConditionMapper);
 
-    OnkoObservationProcessor observationProcessor = new OnkoObservationProcessor(fhirProps);
+    OnkoProcessor observationProcessor =
+        new OnkoProcessor(
+            fhirProps,
+            onkoMedicationStatementMapper,
+            onkoObservationMapper,
+            onkoProcedureMapper,
+            onkoPatientMapper,
+            onkoConditionMapper);
+
+    var observResultBundle =
+        observationProcessor.getOnkoToObservationBundleMapper().apply(meldungExportList);
 
     var resultBundle =
         conditionProcessor
             .getOnkoToConditionBundleMapper()
-            .apply(
-                Pair.of(
-                    meldungExportList,
-                    observationProcessor
-                        .getOnkoToObservationBundleMapper()
-                        .apply(meldungExportList)));
+            .apply(Pair.of(meldungExportList, observResultBundle));
 
     if (expectedConCount == 0) {
       assertThat(resultBundle).isNull();
