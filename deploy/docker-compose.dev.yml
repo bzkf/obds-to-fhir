@@ -13,7 +13,7 @@ services:
       - ./oracle/init:/docker-entrypoint-initdb.d/setup
 
   zoo1:
-    image: zookeeper:3.8.2
+    image: zookeeper:3.9.0
     restart: unless-stopped
     hostname: zoo1
     ports:
