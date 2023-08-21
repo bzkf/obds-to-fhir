@@ -141,7 +141,9 @@ public class OnkoProcessor extends OnkoToFhirMapper {
     return meldungExporte -> {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
-              meldungExporte, Arrays.asList("behandlungsende", "behandlungsbeginn"));
+              meldungExporte,
+              Arrays.asList("behandlungsende", "behandlungsbeginn"),
+              Arrays.asList("behandlungsende", "behandlungsbeginn"));
 
       return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
     };
@@ -151,7 +153,9 @@ public class OnkoProcessor extends OnkoToFhirMapper {
     return meldungExporte -> {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
-              meldungExporte, Arrays.asList("behandlungsende", "behandlungsbeginn"));
+              meldungExporte,
+              Arrays.asList("behandlungsende", "behandlungsbeginn"),
+              Arrays.asList("behandlungsende", "behandlungsbeginn"));
       return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
     };
   }
@@ -160,7 +164,9 @@ public class OnkoProcessor extends OnkoToFhirMapper {
     return meldungExporte -> {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
-              meldungExporte, Arrays.asList("behandlungsende", "statusaenderung", "diagnose"));
+              meldungExporte,
+              Arrays.asList("behandlungsende", "statusaenderung", "diagnose"),
+              null);
 
       return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);
     };
@@ -171,7 +177,8 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"));
+              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
+              null);
 
       return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
     };
@@ -182,7 +189,8 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungPair.getLeft(),
-              Arrays.asList("diagnose", "behandlungsende", "statusaenderung"));
+              Arrays.asList("diagnose", "behandlungsende", "statusaenderung"),
+              null);
 
       return onkoConditionMapper.mapOnkoResourcesToCondition(
           meldungExportList, meldungPair.getRight());

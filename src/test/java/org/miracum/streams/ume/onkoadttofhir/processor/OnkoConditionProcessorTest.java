@@ -149,10 +149,7 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
       payloadId++;
     }
 
-    OnkoConditionProcessor conditionProcessor =
-        new OnkoConditionProcessor(fhirProps, onkoConditionMapper);
-
-    OnkoProcessor observationProcessor =
+    OnkoProcessor onkoProcessor =
         new OnkoProcessor(
             fhirProps,
             onkoMedicationStatementMapper,
@@ -162,10 +159,10 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
             onkoConditionMapper);
 
     var observResultBundle =
-        observationProcessor.getOnkoToObservationBundleMapper().apply(meldungExportList);
+        onkoProcessor.getOnkoToObservationBundleMapper().apply(meldungExportList);
 
     var resultBundle =
-        conditionProcessor
+        onkoProcessor
             .getOnkoToConditionBundleMapper()
             .apply(Pair.of(meldungExportList, observResultBundle));
 

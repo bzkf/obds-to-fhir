@@ -68,32 +68,26 @@ public abstract class OnkoToFhirMapper {
   }
 
   public List<MeldungExport> prioritiseLatestMeldungExports(
-      MeldungExportList meldungExports, List<String> priorityOrder) {
+      MeldungExportList meldungExports, List<String> priorityOrder, List<String> filter) {
     var meldungen = meldungExports.getElements();
 
     var meldungExportMap = new HashMap<String, MeldungExport>();
     // meldeanlass bleibt in LKR Meldung immer gleich
     for (var meldung : meldungen) {
-      var lkrId = getReportingIdFromAdt(meldung);
-      var currentMeldungVersion = meldungExportMap.get(lkrId);
-      if (currentMeldungVersion == null
-          || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
-        meldungExportMap.put(lkrId, meldung);
+      if (filter == null || filter.contains(getReportingReasonFromAdt(meldung))) {
+        var lkrId = getReportingIdFromAdt(meldung);
+        var currentMeldungVersion = meldungExportMap.get(lkrId);
+        if (currentMeldungVersion == null
+            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
+          meldungExportMap.put(lkrId, meldung);
+        }
       }
     }
 
     Collections.reverse(priorityOrder);
 
     Comparator<MeldungExport> meldungComparator =
-        Comparator.comparing(
-            m ->
-                priorityOrder.indexOf(
-                    m.getXml_daten()
-                        .getMenge_Patient()
-                        .getPatient()
-                        .getMenge_Meldung()
-                        .getMeldung()
-                        .getMeldeanlass()));
+        Comparator.comparing(m -> priorityOrder.indexOf(getReportingReasonFromAdt(m)));
 
     List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
     meldungExportList.sort(meldungComparator);
