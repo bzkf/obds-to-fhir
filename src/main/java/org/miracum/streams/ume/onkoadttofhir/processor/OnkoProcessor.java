@@ -165,7 +165,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "statusaenderung", "diagnose"),
+              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
               null);
 
       return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);

@@ -7,9 +7,11 @@ import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.FMLokalisationVsLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.GradingLookup;
+import org.miracum.streams.ume.onkoadttofhir.lookup.JnuVsLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.onkoadttofhir.model.*;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
+import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,8 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
   private final TnmCpuPraefixTvsLookup tnmPraefixLookup = new TnmCpuPraefixTvsLookup();
 
   private final FMLokalisationVsLookup fmLokalisationVSLookup = new FMLokalisationVsLookup();
+
+  private final JnuVsLookup jnuVsLookup = new JnuVsLookup();
 
   @Value("${app.version}")
   private String appVersion;
@@ -52,10 +56,12 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
             Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
         pTnmMap = new HashMap<>();
     HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
+    Tod death = null;
 
     var patId = "";
     var senderId = "";
     var softwareId = "";
+    var verlaufId = "";
 
     for (var meldungExport : meldungExportList) {
 
@@ -142,6 +148,21 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
           }
           pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
         }
+      } else if (Objects.equals(meldeanlass, "tod")) {
+
+        var mengeVerlauf =
+            meldungExport
+                .getXml_daten()
+                .getMenge_Patient()
+                .getPatient()
+                .getMenge_Meldung()
+                .getMeldung()
+                .getMenge_Verlauf();
+
+        if (mengeVerlauf != null && mengeVerlauf.getVerlauf() != null) {
+          verlaufId = mengeVerlauf.getVerlauf().getVerlauf_ID();
+          death = mengeVerlauf.getVerlauf().getTod();
+        }
       }
 
       if (!histList.isEmpty()) {
@@ -182,9 +203,11 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         new ArrayList<>(cTnmMap.values()),
         new ArrayList<>(pTnmMap.values()),
         fernMetaMap,
+        death,
         patId,
         senderId,
-        softwareId);
+        softwareId,
+        verlaufId);
   }
 
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
@@ -196,9 +219,11 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
       List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
           pTnmList,
       HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap,
+      Tod death,
       String patId,
       String senderId,
-      String softwareId) {
+      String softwareId,
+      String verlaufId) {
 
     var bundle = new Bundle();
 
@@ -250,6 +275,10 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
               fernMetaTupel.getKey(),
               fernMetaTupel.getValue().getFirst(),
               fernMetaTupel.getValue().getSecond());
+    }
+
+    if (death != null) {
+      bundle = createDeathObservation(bundle, patId, senderId, softwareId, verlaufId, death);
     }
 
     if (bundle.getEntry().isEmpty()) {
@@ -899,5 +928,87 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         new CodeableConcept(new Coding(tnmValueSystem, tnmValueCode, tnmValueDisplay)));
 
     return tnmBackBone;
+  }
+
+  public Bundle createDeathObservation(
+      Bundle bundle,
+      String patId,
+      String senderId,
+      String softwareId,
+      String verlaufId,
+      Tod death) {
+
+    var pid = patId;
+    if (checkDigitConversion) {
+      pid = convertId(patId);
+    }
+
+    // Create a Death Observation as in
+    // https://simplifier.net/oncology/todursache
+    var deathObs = new Observation();
+
+    var deathId = pid + "death" + verlaufId;
+
+    deathObs.setId(this.getHash("Observation", deathId));
+
+    deathObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+
+    deathObs
+        .getMeta()
+        .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getDeathObservation())));
+
+    deathObs.setStatus(ObservationStatus.FINAL);
+
+    deathObs.setCode(
+        new CodeableConcept(
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getLoinc())
+                .setCode("68343-3")
+                .setDisplay(fhirProperties.getDisplay().getDeathLoinc())));
+
+    deathObs.setSubject(
+        new Reference()
+            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(pid)));
+
+    // Sterbedatum
+    var deathDateString = death.getSterbedatum();
+    if (deathDateString != null) {
+      deathObs.setEffective(extractDateTimeFromADTDate(deathDateString));
+    }
+
+    var deathValueCodeConcept = new CodeableConcept();
+
+    if (death.getMenge_Todesursache() != null
+        && death.getMenge_Todesursache().getTodesursache_ICD() != null) {
+      var icdCoding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getIcd10gm())
+              .setCode(death.getMenge_Todesursache().getTodesursache_ICD());
+      deathValueCodeConcept.addCoding(icdCoding);
+    }
+
+    if (death.getTod_tumorbedingt() != null) {
+      var deathByTumorCoding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getJnuCs())
+              .setCode(death.getTod_tumorbedingt())
+              .setDisplay(jnuVsLookup.lookupJnuDisplay(death.getTod_tumorbedingt()));
+      deathValueCodeConcept.addCoding(deathByTumorCoding);
+    }
+
+    if (!deathValueCodeConcept.isEmpty()) {
+      deathObs.setValue(deathValueCodeConcept);
+      bundle = addResourceAsEntryInBundle(bundle, deathObs);
+    }
+
+    return bundle;
   }
 }
