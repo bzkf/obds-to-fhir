@@ -1,7 +1,6 @@
 package org.miracum.streams.ume.onkoadttofhir.mapper;
 
 import java.util.*;
-import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;

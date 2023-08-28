@@ -1,7 +1,6 @@
 package org.miracum.streams.ume.onkoadttofhir.mapper;
 
 import java.util.*;
-import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.*;
@@ -297,7 +296,9 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
               + radioTherapy.getST_ID()
               + stBeginnDateString
               + radio.getST_Zielgebiet()
-              + radio.getST_Applikationsart(); // multiple radiation with same start date possible;
+              + radio.getST_Seite_Zielgebiet()
+              + radio.getST_Applikationsart();
+
       // Id
       stProcedure.setId(this.getHash("Procedure", id));
 

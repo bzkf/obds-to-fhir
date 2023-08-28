@@ -2,7 +2,6 @@ package org.miracum.streams.ume.onkoadttofhir.mapper;
 
 import java.util.List;
 import java.util.Objects;
-import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.SYSTTherapieartCSLookup;
@@ -88,7 +87,11 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
                     getReportingReasonFromAdt(meldungExport),
                     null));
 
-        for (var substance : systemTherapy.getMenge_Substanz().getSYST_Substanz()) {
+        var substances =
+            systemTherapy.getMenge_Substanz().getSYST_Substanz().stream()
+                .distinct()
+                .toList(); // removes duplicates
+        for (var sub : substances) {
           bundle =
               addResourceAsEntryInBundle(
                   bundle,
@@ -98,7 +101,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
                       senderId,
                       softwareId,
                       getReportingReasonFromAdt(meldungExport),
-                      substance));
+                      sub));
         }
       }
 
@@ -136,6 +139,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
     if (substance != null) {
       // Id
       var id = pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + substance;
+      // resources
       stMedicationStatement.setId(this.getHash("MedicationStatement", id));
 
       // PartOf
