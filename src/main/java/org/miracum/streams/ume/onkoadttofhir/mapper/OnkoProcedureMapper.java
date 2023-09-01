@@ -21,7 +21,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
 
   private final OPIntentionVsLookup displayOPIntentionLookup = new OPIntentionVsLookup();
@@ -116,11 +116,10 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
 
-    // check if Bundle is empty (has entries)
-    if (bundle.getEntry().size() > 0) {
-      return bundle;
-    } else {
+    if (bundle.getEntry().isEmpty()) {
       return null;
+    } else {
+      return bundle;
     }
   }
 

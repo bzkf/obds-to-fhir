@@ -32,7 +32,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
 
   public OnkoObservationMapper(FhirProperties fhirProperties) {
@@ -118,7 +118,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         // Menge_Verlauf), Jasmin klaert das noch
         var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
         if (hist != null) {
-          histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
+          histList = List.of(new Tupel<>(hist, meldeanlass));
         }
 
         var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
@@ -143,7 +143,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         if (meldung.getMenge_OP() != null) {
           var hist = meldung.getMenge_OP().getOP().getHistologie();
           if (hist != null) {
-            histList = Arrays.asList(new Tupel<>(hist, meldeanlass));
+            histList = List.of(new Tupel<>(hist, meldeanlass));
           }
           pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
         }

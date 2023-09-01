@@ -1,5 +1,6 @@
 package org.miracum.streams.ume.onkoadttofhir.mapper;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
@@ -22,7 +23,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
 
   private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
@@ -88,9 +89,9 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
                     null));
 
         var substances =
-            systemTherapy.getMenge_Substanz().getSYST_Substanz().stream()
-                .distinct()
-                .toList(); // removes duplicates
+            new HashSet<>(
+                systemTherapy.getMenge_Substanz().getSYST_Substanz()); // removes duplicates
+
         for (var sub : substances) {
           bundle =
               addResourceAsEntryInBundle(
@@ -111,11 +112,10 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
 
-    // check if Bundle is empty (has entries)
-    if (bundle.getEntry().size() > 0) {
-      return bundle;
-    } else {
+    if (bundle.getEntry().isEmpty()) {
       return null;
+    } else {
+      return bundle;
     }
   }
 

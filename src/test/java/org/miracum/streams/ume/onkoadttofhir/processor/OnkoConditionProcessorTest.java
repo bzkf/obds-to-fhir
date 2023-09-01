@@ -69,7 +69,7 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            Arrays.asList(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)),
+            List.of(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)),
             1,
             "C72.0",
             "2021",
@@ -80,7 +80,7 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
             5,
             "2021-03-18"),
         Arguments.of(
-            Arrays.asList(new Tupel<>("002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml", 1)),
+            List.of(new Tupel<>("002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml", 1)),
             1,
             "C41.01",
             "2021",
@@ -91,7 +91,7 @@ public class OnkoConditionProcessorTest extends OnkoProcessorTest {
             0,
             "2021-02-08"),
         Arguments.of(
-            Arrays.asList(
+            List.of(
                 new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
                 new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1),
                 new Tupel<>(

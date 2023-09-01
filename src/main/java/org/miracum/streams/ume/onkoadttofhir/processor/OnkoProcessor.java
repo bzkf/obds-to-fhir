@@ -143,7 +143,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList("behandlungsende", "behandlungsbeginn"),
-              Arrays.asList("behandlungsende", "behandlungsbeginn"));
+              List.of("behandlungsende", "behandlungsbeginn"));
 
       return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
     };
@@ -155,7 +155,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList("behandlungsende", "behandlungsbeginn"),
-              Arrays.asList("behandlungsende", "behandlungsbeginn"));
+              List.of("behandlungsende", "behandlungsbeginn"));
       return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
     };
   }

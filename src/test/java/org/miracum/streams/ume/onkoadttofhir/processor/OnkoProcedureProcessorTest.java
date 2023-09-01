@@ -69,7 +69,7 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            Arrays.asList(new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
+            List.of(new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
             1,
             1,
             0,
@@ -81,7 +81,7 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
             "N",
             "Nein"),
         Arguments.of(
-            Arrays.asList(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)),
+            List.of(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)),
             3,
             0,
             3,

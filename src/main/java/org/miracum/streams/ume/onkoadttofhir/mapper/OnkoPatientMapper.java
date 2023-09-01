@@ -20,7 +20,7 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
 
   protected OnkoPatientMapper(FhirProperties fhirProperties) {

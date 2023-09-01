@@ -70,7 +70,7 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            Arrays.asList(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)),
+            List.of(new Tupel<>("008_Pat3_Tumor1_Behandlungsende_SYST.xml", 1)),
             5,
             "CI",
             "COMPLETED",
@@ -78,7 +78,7 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
             "O",
             "K"),
         Arguments.of(
-            Arrays.asList(
+            List.of(
                 new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
                 new Tupel<>("002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml", 1)),
             0,
