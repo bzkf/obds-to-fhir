@@ -226,7 +226,7 @@ public class OnkoObservationProcessorTest extends OnkoProcessorTest {
       }
       assertThat(fenMetaCount).isEqualTo(expectedFernMetaCount);
 
-      // assertThat(isValid(resultBundle)).isTrue();
+      assertThat(isValid(resultBundle)).isTrue();
     }
   }
 }
