@@ -1,193 +1,199 @@
 package org.miracum.streams.ume.onkoadttofhir.processor;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import com.google.common.hash.Hashing;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.function.BiFunction;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
+import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
+import org.miracum.streams.ume.onkoadttofhir.mapper.*;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
+import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
+import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-public abstract class OnkoProcessor {
-  protected final FhirProperties fhirProperties;
+@Configuration
+public class OnkoProcessor extends OnkoToFhirMapper {
 
-  private static final Logger log = LoggerFactory.getLogger(OnkoProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcessor.class);
 
-  protected OnkoProcessor(final FhirProperties fhirProperties) {
-    this.fhirProperties = fhirProperties;
+  @Value("${spring.profiles.active}")
+  private String profile;
+
+  private final OnkoMedicationStatementMapper onkoMedicationStatementMapper;
+  private final OnkoObservationMapper onkoObservationMapper;
+  private final OnkoProcedureMapper onkoProcedureMapper;
+  private final OnkoPatientMapper onkoPatientMapper;
+  private final OnkoConditionMapper onkoConditionMapper;
+
+  @Autowired
+  protected OnkoProcessor(
+      FhirProperties fhirProperties,
+      OnkoMedicationStatementMapper onkoMedicationStatementMapper,
+      OnkoObservationMapper onkoObservationMapper,
+      OnkoProcedureMapper onkoProcedureMapper,
+      OnkoPatientMapper onkoPatientMapper,
+      OnkoConditionMapper onkoConditionMapper) {
+    super(fhirProperties);
+    this.onkoMedicationStatementMapper = onkoMedicationStatementMapper;
+    this.onkoObservationMapper = onkoObservationMapper;
+    this.onkoProcedureMapper = onkoProcedureMapper;
+    this.onkoPatientMapper = onkoPatientMapper;
+    this.onkoConditionMapper = onkoConditionMapper;
   }
 
-  protected String getHash(String type, String id) {
-    String idToHash;
-    switch (type) {
-      case "Patient":
-        idToHash = fhirProperties.getSystems().getPatientId();
-        break;
-      case "Condition":
-        idToHash = fhirProperties.getSystems().getConditionId();
-        break;
-      case "Observation":
-        idToHash = fhirProperties.getSystems().getObservationId();
-        break;
-      case "MedicationStatement":
-        idToHash = fhirProperties.getSystems().getMedicationStatementId();
-        break;
-      case "Procedure":
-        idToHash = fhirProperties.getSystems().getProcedureId();
-        break;
-      case "Surrogate":
-        return Hashing.sha256().hashString(id, StandardCharsets.UTF_8).toString();
-      default:
-        return null;
-    }
-    return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
-  }
+  @Bean
+  public BiFunction<
+          KTable<String, MeldungExport>, KTable<String, Bundle>, KStream<String, Bundle>[]>
+      getMeldungExportOnkoProcessor() {
 
-  protected static String convertId(String id) {
-    Pattern pattern = Pattern.compile("[^0]\\d{8}");
-    Matcher matcher = pattern.matcher(id);
-    var convertedId = "";
-    if (matcher.find()) {
-      convertedId = matcher.group();
-    } else {
-      log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
-    }
-    return convertedId;
-  }
+    return (stringOnkoMeldungExpTable, stringOnkoObsBundles) -> {
+      // return (stringOnkoMeldungExpTable) ->
+      var output =
+          stringOnkoMeldungExpTable
+              .filter(
+                  (key, value) ->
+                      value
+                              .getXml_daten()
+                              .getMenge_Patient()
+                              .getPatient()
+                              .getMenge_Meldung()
+                              .getMeldung()
+                              .getMenge_Tumorkonferenz()
+                          == null) // ignore tumor conferences
+              .groupBy(
+                  (key, value) ->
+                      KeyValue.pair(
+                          "Struct{REFERENZ_NUMMER="
+                              + getPatIdFromAdt(value)
+                              + ",TUMOR_ID="
+                              + getTumorIdFromAdt(value)
+                              + "}",
+                          value),
+                  Grouped.with(Serdes.String(), new MeldungExportSerde()))
+              .aggregate(
+                  MeldungExportList::new,
+                  (key, value, aggregate) -> aggregate.addElement(value),
+                  (key, value, aggregate) -> aggregate.removeElement(value),
+                  Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+              .toStream()
+              .split(Named.as("out-"))
+              .branch((k, v) -> v != null, Branched.as("Aggregate"))
+              .noDefaultBranch();
 
-  public List<MeldungExport> prioritiseLatestMeldungExports(
-      MeldungExportList meldungExports, List<String> priorityOrder) {
-    var meldungen = meldungExports.getElements();
-
-    var meldungExportMap = new HashMap<String, MeldungExport>();
-    // meldeanlass bleibt in LKR Meldung immer gleich
-    for (var meldung : meldungen) {
-      var lkrId = getReportingIdFromAdt(meldung);
-      var currentMeldungVersion = meldungExportMap.get(lkrId);
-      if (currentMeldungVersion == null
-          || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
-        meldungExportMap.put(lkrId, meldung);
+      if (Objects.equals(profile, "patient")) {
+        return new KStream[] {
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToMedicationStatementBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToObservationBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToProcedureBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .leftJoin(stringOnkoObsBundles, Pair::of)
+              .mapValues(this.getOnkoToConditionBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToPatientBundleMapper())
+              .filter((key, value) -> value != null)
+        };
+      } else {
+        return new KStream[] {
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToMedicationStatementBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToObservationBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .mapValues(this.getOnkoToProcedureBundleMapper())
+              .filter((key, value) -> value != null),
+          output
+              .get("out-Aggregate")
+              .leftJoin(stringOnkoObsBundles, Pair::of)
+              .mapValues(this.getOnkoToConditionBundleMapper())
+              .filter((key, value) -> value != null)
+        };
       }
-    }
-
-    Collections.reverse(priorityOrder);
-
-    Comparator<MeldungExport> meldungComparator =
-        Comparator.comparing(
-            m ->
-                priorityOrder.indexOf(
-                    m.getXml_daten()
-                        .getMenge_Patient()
-                        .getPatient()
-                        .getMenge_Meldung()
-                        .getMeldung()
-                        .getMeldeanlass()));
-
-    List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
-    meldungExportList.sort(meldungComparator);
-
-    return meldungExportList;
+    };
   }
 
-  public String getPatIdFromAdt(MeldungExport meldung) {
-    return meldung
-        .getXml_daten()
-        .getMenge_Patient()
-        .getPatient()
-        .getPatienten_Stammdaten()
-        .getPatient_ID();
+  public ValueMapper<MeldungExportList, Bundle> getOnkoToMedicationStatementBundleMapper() {
+    return meldungExporte -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungExporte,
+              Arrays.asList("behandlungsende", "behandlungsbeginn"),
+              List.of("behandlungsende", "behandlungsbeginn"));
+
+      return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
+    };
   }
 
-  public String getTumorIdFromAdt(MeldungExport meldung) {
-    return meldung
-        .getXml_daten()
-        .getMenge_Patient()
-        .getPatient()
-        .getMenge_Meldung()
-        .getMeldung()
-        .getTumorzuordnung()
-        .getTumor_ID();
+  public ValueMapper<MeldungExportList, Bundle> getOnkoToProcedureBundleMapper() {
+    return meldungExporte -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungExporte,
+              Arrays.asList("behandlungsende", "behandlungsbeginn"),
+              List.of("behandlungsende", "behandlungsbeginn"));
+      return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
+    };
   }
 
-  public String getReportingReasonFromAdt(MeldungExport meldung) {
-    return meldung
-        .getXml_daten()
-        .getMenge_Patient()
-        .getPatient()
-        .getMenge_Meldung()
-        .getMeldung()
-        .getMeldeanlass();
+  public ValueMapper<MeldungExportList, Bundle> getOnkoToObservationBundleMapper() {
+    return meldungExporte -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungExporte,
+              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
+              null);
+
+      return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);
+    };
   }
 
-  public String getReportingIdFromAdt(MeldungExport meldung) {
-    return meldung
-        .getXml_daten()
-        .getMenge_Patient()
-        .getPatient()
-        .getMenge_Meldung()
-        .getMeldung()
-        .getMeldung_ID();
+  public ValueMapper<MeldungExportList, Bundle> getOnkoToPatientBundleMapper() {
+    return meldungExporte -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungExporte,
+              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
+              null);
+
+      return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
+    };
   }
 
-  protected Bundle addResourceAsEntryInBundle(Bundle bundle, DomainResource resource) {
-    bundle
-        .addEntry()
-        .setFullUrl(
-            new Reference(
-                    String.format("%s/%s", resource.getResourceType().name(), resource.getId()))
-                .getReference())
-        .setResource(resource)
-        .setRequest(
-            new Bundle.BundleEntryRequestComponent()
-                .setMethod(Bundle.HTTPVerb.PUT)
-                .setUrl(
-                    String.format("%s/%s", resource.getResourceType().name(), resource.getId())));
+  public ValueMapper<Pair<MeldungExportList, Bundle>, Bundle> getOnkoToConditionBundleMapper() {
+    return meldungPair -> {
+      List<MeldungExport> meldungExportList =
+          prioritiseLatestMeldungExports(
+              meldungPair.getLeft(),
+              Arrays.asList("diagnose", "behandlungsende", "statusaenderung"),
+              null);
 
-    return bundle;
-  }
-
-  protected String generateProfileMetaSource(
-      String senderId, String softwareId, String appVersion) {
-    if (senderId != null && softwareId != null) {
-      return String.format("%s.%s:onkoadt-to-fhir:%s", senderId, softwareId, appVersion);
-    } else {
-      return "onkoadt-to-fhir:" + appVersion;
-    }
-  }
-
-  protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
-
-    if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
-      return null;
-    }
-
-    // 00.00.2022 -> 01.07.2022
-    // 00.04.2022 -> 15.04.2022
-    if (adtDate.matches("^00.00.\\d{4}$")) {
-      adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
-    } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(3); // TODO unit test
-    }
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
-    LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
-    var adtDateTime =
-        new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
-    adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
-
-    return adtDateTime;
+      return onkoConditionMapper.mapOnkoResourcesToCondition(
+          meldungExportList, meldungPair.getRight());
+    };
   }
 }

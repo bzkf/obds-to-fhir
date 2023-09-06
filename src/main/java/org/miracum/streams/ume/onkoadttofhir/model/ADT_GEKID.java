@@ -414,6 +414,7 @@ public class ADT_GEKID implements Serializable {
                   @JsonProperty private String ST_Beginn_Datum;
                   @JsonProperty private String ST_Ende_Datum;
                   @JsonProperty private String ST_Zielgebiet;
+                  @JsonProperty private String ST_Seite_Zielgebiet;
                   @JsonProperty private String ST_Applikationsart;
                 }
               }

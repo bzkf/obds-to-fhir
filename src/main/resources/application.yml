@@ -59,12 +59,14 @@ fhir:
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     miiPatientPseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
+    deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
     tnmcLoinc: "Stage group.clinical Cancer"
     tnmpLoinc: "Stage group.pathology Cancer"
     fernMetaLoinc: "Distant metastases.clinical"
+    deathLoinc: "Primary cause of death"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:
@@ -74,39 +76,31 @@ spring:
     name: onkoadt-to-fhir
   cloud:
     function:
-      definition: getMeldungExportObservationProcessor;getMeldungExportProcedureProcessor;getMeldungExportConditionProcessor;getMeldungExportMedicationStProcessor;getMeldungExportPatientProcessor
+      definition: getMeldungExportOnkoProcessor
     stream:
       bindings:
-        getMeldungExportPatientProcessor-in-0:
+        getMeldungExportOnkoProcessor-in-0:
           destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportPatientProcessor-out-0:
-          destination: fhir.onkoadt.Patient${YEAR_LIMITATION_SUFFIX:}
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportObservationProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportObservationProcessor-out-0:
+        getMeldungExportOnkoProcessor-in-1:
           destination: fhir.onkoadt.Observation${YEAR_LIMITATION_SUFFIX:}
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportProcedureProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportProcedureProcessor-out-0:
-          destination: fhir.onkoadt.Procedure${YEAR_LIMITATION_SUFFIX:}
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportMedicationStProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportMedicationStProcessor-out-0:
+        getMeldungExportOnkoProcessor-out-0:
           destination: fhir.onkoadt.MedicationStatement${YEAR_LIMITATION_SUFFIX:}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportConditionProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportConditionProcessor-in-1:
+        getMeldungExportOnkoProcessor-out-1:
           destination: fhir.onkoadt.Observation${YEAR_LIMITATION_SUFFIX:}
-        getMeldungExportConditionProcessor-out-0:
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportOnkoProcessor-out-2:
+          destination: fhir.onkoadt.Procedure${YEAR_LIMITATION_SUFFIX:}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportOnkoProcessor-out-3:
           destination: fhir.onkoadt.Condition${YEAR_LIMITATION_SUFFIX:}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportOnkoProcessor-out-4:
+          destination: fhir.onkoadt.Patient${YEAR_LIMITATION_SUFFIX:}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
@@ -120,46 +114,34 @@ spring:
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           bindings:
-            getMeldungExportPatientProcessor-in-0:
+            getMeldungExportOnkoProcessor-in-0:
               consumer:
-                application-id: onko-meldung-exp-patient-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportPatientProcessor-out-0:
+                application-id: onko-meldung-exp-grouped-processor${YEAR_LIMITATION_SUFFIX:}
+            getMeldungExportOnkoProcessor-in-1:
+              consumer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                application-id: onko-meldung-exp-condition-processor${YEAR_LIMITATION_SUFFIX:}
+            getMeldungExportOnkoProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
-            getMeldungExportObservationProcessor-in-0:
-              consumer:
-                application-id: onko-meldung-exp-observ-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportObservationProcessor-out-0:
+            getMeldungExportOnkoProcessor-out-1:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
-            getMeldungExportProcedureProcessor-in-0:
-              consumer:
-                application-id: onko-meldung-exp-proced-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportProcedureProcessor-out-0:
+            getMeldungExportOnkoProcessor-out-2:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
-            getMeldungExportMedicationStProcessor-in-0:
-              consumer:
-                application-id: onko-meldung-exp-medst-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportMedicationStProcessor-out-0:
+            getMeldungExportOnkoProcessor-out-3:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
-            getMeldungExportConditionProcessor-in-0:
-              consumer:
-                application-id: onko-meldung-exp-cond-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportConditionProcessor-in-1:
-              consumer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                application-id: onko-meldung-exp-cond-processor${YEAR_LIMITATION_SUFFIX:}
-            getMeldungExportConditionProcessor-out-0:
+            getMeldungExportOnkoProcessor-out-4:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:

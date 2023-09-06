@@ -1,40 +1,28 @@
-package org.miracum.streams.ume.onkoadttofhir.processor;
+package org.miracum.streams.ume.onkoadttofhir.mapper;
 
 import java.util.*;
-import java.util.function.Function;
-import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.*;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_ST.ST.Menge_Bestrahlung.Bestrahlung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
-import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
-import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportListSerde;
-import org.miracum.streams.ume.onkoadttofhir.serde.MeldungExportSerde;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoProcedureProcessor extends OnkoProcessor {
+public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcedureProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcedureMapper.class);
 
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("#{new Boolean('${app.enableCheckDigitConversion}')}")
+  @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
-
-  protected OnkoProcedureProcessor(FhirProperties fhirProperties) {
-    super(fhirProperties);
-  }
 
   private final OPIntentionVsLookup displayOPIntentionLookup = new OPIntentionVsLookup();
 
@@ -52,54 +40,8 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
   private final OPKomplikationVsLookup displayOPKomplicationLookup = new OPKomplikationVsLookup();
 
-  @Bean
-  public Function<KTable<String, MeldungExport>, KStream<String, Bundle>>
-      getMeldungExportProcedureProcessor() {
-    return stringOnkoMeldungExpTable ->
-        // return (stringOnkoMeldungExpTable) ->
-        stringOnkoMeldungExpTable
-            .filter(
-                (key, value) ->
-                    value
-                            .getXml_daten()
-                            .getMenge_Patient()
-                            .getPatient()
-                            .getMenge_Meldung()
-                            .getMeldung()
-                            .getMenge_Tumorkonferenz()
-                        == null) // ignore tumor conferences
-            .filter(
-                (key, value) ->
-                    Objects.equals(getReportingReasonFromAdt(value), "behandlungsende")
-                        || Objects.equals(getReportingReasonFromAdt(value), "behandlungsbeginn"))
-            .groupBy(
-                (key, value) ->
-                    KeyValue.pair(
-                        "Struct{REFERENZ_NUMMER="
-                            + getPatIdFromAdt(value)
-                            + ",TUMOR_ID="
-                            + getTumorIdFromAdt(value)
-                            + "}",
-                        value),
-                Grouped.with(Serdes.String(), new MeldungExportSerde()))
-            .aggregate(
-                MeldungExportList::new,
-                (key, value, aggregate) -> aggregate.addElement(value),
-                (key, value, aggregate) -> aggregate.removeElement(value),
-                Materialized.with(Serdes.String(), new MeldungExportListSerde()))
-            .mapValues(this.getOnkoToProcedureBundleMapper())
-            .toStream()
-            .filter((key, value) -> value != null);
-  }
-
-  public ValueMapper<MeldungExportList, Bundle> getOnkoToProcedureBundleMapper() {
-    return meldungExporte -> {
-      List<MeldungExport> meldungExportList =
-          prioritiseLatestMeldungExports(
-              meldungExporte, Arrays.asList("behandlungsende", "behandlungsbeginn"));
-
-      return mapOnkoResourcesToProcedure(meldungExportList);
-    };
+  public OnkoProcedureMapper(FhirProperties fhirProperties) {
+    super(fhirProperties);
   }
 
   public Bundle mapOnkoResourcesToProcedure(List<MeldungExport> meldungExportList) {
@@ -174,11 +116,10 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
 
-    // check if Bundle is empty (has entries)
-    if (bundle.getEntry().size() > 0) {
-      return bundle;
-    } else {
+    if (bundle.getEntry().isEmpty()) {
       return null;
+    } else {
+      return bundle;
     }
   }
 
@@ -354,7 +295,9 @@ public class OnkoProcedureProcessor extends OnkoProcessor {
               + radioTherapy.getST_ID()
               + stBeginnDateString
               + radio.getST_Zielgebiet()
-              + radio.getST_Applikationsart(); // multiple radiation with same start date possible;
+              + radio.getST_Seite_Zielgebiet()
+              + radio.getST_Applikationsart();
+
       // Id
       stProcedure.setId(this.getHash("Procedure", id));
 

@@ -77,6 +77,7 @@ public class FhirProperties {
     private String stProcedure;
     private String systMedStatement;
     private String miiPatientPseudonymisiert;
+    private String deathObservation;
   }
 
   @Data
@@ -86,6 +87,7 @@ public class FhirProperties {
     private String tnmcLoinc;
     private String tnmpLoinc;
     private String fernMetaLoinc;
+    private String deathLoinc;
   }
 
   @Data
