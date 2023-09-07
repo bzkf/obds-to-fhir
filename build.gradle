@@ -24,7 +24,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2022.0.4")
-	set('hapiVersion', "6.8.1")
+	set('hapiVersion', "6.8.2")
 }
 
 dependencies {
@@ -36,7 +36,7 @@ dependencies {
 	implementation 'io.micrometer:micrometer-core:1.11.3'
 	implementation "org.miracum:kafka-fhir-serializer:1.0.4"
 	implementation "org.apache.commons:commons-text:1.10.0"
-	implementation "org.scala-lang:scala-library:2.13.11"
+	implementation "org.scala-lang:scala-library:2.13.12"
 
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 
