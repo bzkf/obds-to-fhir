@@ -411,11 +411,11 @@ public class ADT_GEKID implements Serializable {
 
                 @Data
                 public static class Bestrahlung {
-                  @JsonProperty private String ST_Beginn_Datum;
+                  @JsonProperty @EqualsAndHashCode.Include private String ST_Beginn_Datum;
                   @JsonProperty private String ST_Ende_Datum;
-                  @JsonProperty private String ST_Zielgebiet;
-                  @JsonProperty private String ST_Seite_Zielgebiet;
-                  @JsonProperty private String ST_Applikationsart;
+                  @JsonProperty @EqualsAndHashCode.Include private String ST_Zielgebiet;
+                  @JsonProperty @EqualsAndHashCode.Include private String ST_Seite_Zielgebiet;
+                  @JsonProperty @EqualsAndHashCode.Include private String ST_Applikationsart;
                 }
               }
 

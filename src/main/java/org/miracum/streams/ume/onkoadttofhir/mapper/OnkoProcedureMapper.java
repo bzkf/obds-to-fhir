@@ -104,24 +104,41 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
     if (meldung != null && meldung.getMenge_ST() != null && meldung.getMenge_ST().getST() != null) {
       var radioTherapy = meldung.getMenge_ST().getST();
-      var partialRadiations = radioTherapy.getMenge_Bestrahlung().getBestrahlung();
-      var timeSpan = getTimeSpanFromPartialRadiations(partialRadiations);
 
-      if (radioTherapy.getMenge_Bestrahlung() != null
-          && radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createRadiotherapyProcedure(
-                    meldung, pid, senderId, softwareId, reportingReason, null, timeSpan));
-      }
+      if (radioTherapy.getMenge_Bestrahlung() != null) {
+        var partialRadiations = radioTherapy.getMenge_Bestrahlung().getBestrahlung();
+        var distinctPartialRadiations = new HashSet<>(partialRadiations); // removes duplicates
+        var timeSpan = getTimeSpanFromPartialRadiations(partialRadiations);
 
-      for (var radio : partialRadiations) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createRadiotherapyProcedure(
-                    meldung, pid, senderId, softwareId, reportingReason, radio, null));
+        if (distinctPartialRadiations.size() > 1) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createRadiotherapyProcedure(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      reportingReason,
+                      null,
+                      timeSpan,
+                      distinctPartialRadiations));
+        }
+
+        for (var radio : distinctPartialRadiations) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createRadiotherapyProcedure(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      reportingReason,
+                      radio,
+                      null,
+                      distinctPartialRadiations));
+        }
       }
     }
 
@@ -302,7 +319,8 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       String softwareId,
       String meldeanlass,
       Bestrahlung radio,
-      Tupel<Date, Date> timeSpan) {
+      Tupel<Date, Date> timeSpan,
+      HashSet<Bestrahlung> distinctPartialRadiations) {
 
     var radioTherapy = meldung.getMenge_ST().getST();
 
@@ -327,7 +345,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       stProcedure.setId(this.getHash("Procedure", id));
 
       // PartOf
-      if (radioTherapy.getMenge_Bestrahlung().getBestrahlung().size() > 1) {
+      if (distinctPartialRadiations.size() > 1) {
         stProcedure.setPartOf(
             List.of(
                 new Reference().setReference("Procedure/" + this.getHash("Procedure", partOfId))));
