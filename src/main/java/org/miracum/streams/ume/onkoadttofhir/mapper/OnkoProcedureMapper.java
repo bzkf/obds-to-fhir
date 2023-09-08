@@ -84,20 +84,24 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       // Strahlentherapie kann auch im beginn stehen, op aber nicht
       if (meldung != null
           && meldung.getMenge_OP() != null
-          && meldung.getMenge_OP().getOP() != null) {
+          && meldung.getMenge_OP().getOP() != null
+          && meldung.getMenge_OP().getOP().getMenge_OPS() != null) {
 
-        var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS();
+        var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS().getOP_OPS();
+        var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
 
-        if (opsSet != null && opsSet.getOP_OPS().size() > 1) {
+        if (distinctOpsSet.size() > 1) {
           bundle =
               addResourceAsEntryInBundle(
-                  bundle, createOpProcedure(meldung, pid, senderId, softwareId, null));
+                  bundle,
+                  createOpProcedure(meldung, pid, senderId, softwareId, null, distinctOpsSet));
         }
 
-        for (var opsCode : opsSet.getOP_OPS()) {
+        for (var opsCode : distinctOpsSet) {
           bundle =
               addResourceAsEntryInBundle(
-                  bundle, createOpProcedure(meldung, pid, senderId, softwareId, opsCode));
+                  bundle,
+                  createOpProcedure(meldung, pid, senderId, softwareId, opsCode, distinctOpsSet));
         }
       }
     }
@@ -152,7 +156,12 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
   }
 
   public Procedure createOpProcedure(
-      Meldung meldung, String pid, String senderId, String softwareId, String opsCode) {
+      Meldung meldung,
+      String pid,
+      String senderId,
+      String softwareId,
+      String opsCode,
+      HashSet<String> distinctOpsSet) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -171,7 +180,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       opProcedure.setId(this.getHash("Procedure", opProcedureIdentifier));
 
       // PartOf
-      if (op.getMenge_OPS().getOP_OPS().size() > 1) {
+      if (distinctOpsSet.size() > 1) {
         opProcedure.setPartOf(
             List.of(
                 new Reference().setReference("Procedure/" + this.getHash("Procedure", partOfId))));
