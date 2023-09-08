@@ -70,8 +70,8 @@ public class OnkoProcedureProcessorTest extends OnkoProcessorTest {
     return Stream.of(
         Arguments.of(
             List.of(new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
-            1,
-            1,
+            9,
+            9,
             0,
             8,
             "COMPLETED",

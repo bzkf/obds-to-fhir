@@ -85,9 +85,20 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       if (meldung != null
           && meldung.getMenge_OP() != null
           && meldung.getMenge_OP().getOP() != null) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle, createOpProcedure(meldung, pid, senderId, softwareId));
+
+        var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS();
+
+        if (opsSet != null && opsSet.getOP_OPS().size() > 1) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle, createOpProcedure(meldung, pid, senderId, softwareId, null));
+        }
+
+        for (var opsCode : opsSet.getOP_OPS()) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle, createOpProcedure(meldung, pid, senderId, softwareId, opsCode));
+        }
       }
     }
 
@@ -124,7 +135,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
   }
 
   public Procedure createOpProcedure(
-      Meldung meldung, String pid, String senderId, String softwareId) {
+      Meldung meldung, String pid, String senderId, String softwareId, String opsCode) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -133,10 +144,37 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
     var opProcedure = new Procedure();
 
-    var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID();
+    var partOfId = pid + "op-partOf-procedure" + op.getOP_ID();
 
-    // Id
-    opProcedure.setId(this.getHash("Condition", opProcedureIdentifier));
+    if (opsCode != null) {
+
+      var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID() + opsCode;
+
+      // Id
+      opProcedure.setId(this.getHash("Procedure", opProcedureIdentifier));
+
+      // PartOf
+      if (op.getMenge_OPS().getOP_OPS().size() > 1) {
+        opProcedure.setPartOf(
+            List.of(
+                new Reference().setReference("Procedure/" + this.getHash("Procedure", partOfId))));
+      }
+
+      // Code
+      var opsCodeConcept =
+          new CodeableConcept()
+              .addCoding(
+                  new Coding()
+                      .setSystem(fhirProperties.getSystems().getOps())
+                      .setCode(opsCode)
+                      .setVersion(op.getOP_OPS_Version()));
+
+      opProcedure.setCode(opsCodeConcept);
+
+    } else {
+      // Id
+      opProcedure.setId(this.getHash("Procedure", partOfId));
+    }
 
     // Meta
     opProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
@@ -175,19 +213,6 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
                     .setDisplay(
                         displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
                             List.of("OP")))));
-
-    // Code
-    if (op.getMenge_OPS() != null) {
-      var opsCodeConcept = new CodeableConcept();
-      for (var opsCode : op.getMenge_OPS().getOP_OPS()) {
-        opsCodeConcept.addCoding(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getOps())
-                .setCode(opsCode)
-                .setVersion(op.getOP_OPS_Version()));
-      }
-      opProcedure.setCode(opsCodeConcept);
-    }
 
     // Subject
     opProcedure.setSubject(
