@@ -74,23 +74,25 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
 
       var systemTherapy = meldung.getMenge_SYST().getSYST();
 
-      if (systemTherapy.getMenge_Substanz() != null
-          && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
-
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createSystemtherapyMedicationStatement(
-                    meldung,
-                    pid,
-                    senderId,
-                    softwareId,
-                    getReportingReasonFromAdt(meldungExport),
-                    null));
-
+      if (systemTherapy.getMenge_Substanz() != null) {
         var substances =
             new HashSet<>(
                 systemTherapy.getMenge_Substanz().getSYST_Substanz()); // removes duplicates
+
+        if (substances.size() > 1) {
+
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createSystemtherapyMedicationStatement(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      getReportingReasonFromAdt(meldungExport),
+                      null,
+                      substances));
+        }
 
         for (var sub : substances) {
           bundle =
@@ -102,7 +104,8 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
                       senderId,
                       softwareId,
                       getReportingReasonFromAdt(meldungExport),
-                      sub));
+                      sub,
+                      substances));
         }
       }
 
@@ -128,7 +131,8 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
       String senderId,
       String softwareId,
       String meldeanlass,
-      String substance) {
+      String substance,
+      HashSet<String> substances) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
@@ -143,8 +147,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
       stMedicationStatement.setId(this.getHash("MedicationStatement", id));
 
       // PartOf
-      if (systemTherapy.getMenge_Substanz() != null
-          && systemTherapy.getMenge_Substanz().getSYST_Substanz().size() > 1) {
+      if (systemTherapy.getMenge_Substanz() != null && substances.size() > 1) {
         stMedicationStatement.setPartOf(
             List.of(
                 new Reference()
