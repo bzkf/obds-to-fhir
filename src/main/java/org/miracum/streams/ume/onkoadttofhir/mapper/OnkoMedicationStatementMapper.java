@@ -146,15 +146,16 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
       // resources
       stMedicationStatement.setId(this.getHash("MedicationStatement", id));
 
+      // Medication
+      stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
+
       // PartOf
-      if (systemTherapy.getMenge_Substanz() != null && substances.size() > 1) {
+      if (substances.size() > 1) {
         stMedicationStatement.setPartOf(
             List.of(
                 new Reference()
                     .setReference(
                         "MedicationStatement/" + this.getHash("MedicationStatement", partOfId))));
-        // Medication
-        stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
       }
 
     } else {
