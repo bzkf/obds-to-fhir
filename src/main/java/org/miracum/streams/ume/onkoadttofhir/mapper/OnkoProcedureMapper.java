@@ -57,7 +57,8 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
-    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "procedure");
+    LOG.debug(
+        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), ResourceType.Procedure);
 
     var meldung =
         meldungExport
@@ -78,7 +79,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
-    if (Objects.equals(reportingReason, "behandlungsende")) {
+    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getTreatmentEnd())) {
 
       // OP und Strahlentherapie sofern vorhanden
       // Strahlentherapie kann auch im beginn stehen, op aber nicht
@@ -177,13 +178,17 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID() + opsCode;
 
       // Id
-      opProcedure.setId(this.getHash("Procedure", opProcedureIdentifier));
+      opProcedure.setId(this.getHash(ResourceType.Procedure, opProcedureIdentifier));
 
       // PartOf
       if (distinctOpsSet.size() > 1) {
         opProcedure.setPartOf(
             List.of(
-                new Reference().setReference("Procedure/" + this.getHash("Procedure", partOfId))));
+                new Reference()
+                    .setReference(
+                        ResourceType.Procedure
+                            + "/"
+                            + this.getHash(ResourceType.Procedure, partOfId))));
       }
 
       // Code
@@ -199,7 +204,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
     } else {
       // Id
-      opProcedure.setId(this.getHash("Procedure", partOfId));
+      opProcedure.setId(this.getHash(ResourceType.Procedure, partOfId));
     }
 
     // Meta
@@ -243,7 +248,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
     // Subject
     opProcedure.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -263,9 +268,10 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
     opProcedure.addReasonReference(
         new Reference()
             .setReference(
-                "Condition/"
+                ResourceType.Condition
+                    + "/"
                     + this.getHash(
-                        "Condition",
+                        ResourceType.Condition,
                         pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
 
     // Outcome
@@ -351,13 +357,17 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
               + radio.getST_Applikationsart();
 
       // Id
-      stProcedure.setId(this.getHash("Procedure", id));
+      stProcedure.setId(this.getHash(ResourceType.Procedure, id));
 
       // PartOf
       if (distinctPartialRadiations.size() > 1) {
         stProcedure.setPartOf(
             List.of(
-                new Reference().setReference("Procedure/" + this.getHash("Procedure", partOfId))));
+                new Reference()
+                    .setReference(
+                        ResourceType.Procedure
+                            + "/"
+                            + this.getHash(ResourceType.Procedure, partOfId))));
       }
       // Performed
       DateTimeType stBeginnDateType = extractDateTimeFromADTDate(stBeginnDateString);
@@ -371,7 +381,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
       }
     } else {
       // Id
-      stProcedure.setId(this.getHash("Procedure", partOfId));
+      stProcedure.setId(this.getHash(ResourceType.Procedure, partOfId));
 
       // Performed
       if (timeSpan != null) {
@@ -426,7 +436,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
                             displaySystIntentionLookup.lookupSystIntentionDisplay(systIntention))));
 
     // Status
-    if (Objects.equals(meldeanlass, "behandlungsende")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
       stProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
     } else {
       stProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
@@ -446,7 +456,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
     // Subject
     stProcedure.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -460,9 +470,10 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
     stProcedure.addReasonReference(
         new Reference()
             .setReference(
-                "Condition/"
+                ResourceType.Condition
+                    + "/"
                     + this.getHash(
-                        "Condition",
+                        ResourceType.Condition,
                         pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
 
     // Complication

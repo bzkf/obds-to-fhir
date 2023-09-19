@@ -49,7 +49,9 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
     LOG.debug(
-        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "medicationStatement");
+        "Mapping Meldung {} to {}",
+        getReportingIdFromAdt(meldungExport),
+        ResourceType.MedicationStatement);
 
     var meldung =
         meldungExport
@@ -144,7 +146,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
       // Id
       var id = pid + "st-medicationStatement" + systemTherapy.getSYST_ID() + substance;
       // resources
-      stMedicationStatement.setId(this.getHash("MedicationStatement", id));
+      stMedicationStatement.setId(this.getHash(ResourceType.MedicationStatement, id));
 
       // Medication
       stMedicationStatement.setMedication(new CodeableConcept().setText(substance));
@@ -155,12 +157,14 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
             List.of(
                 new Reference()
                     .setReference(
-                        "MedicationStatement/" + this.getHash("MedicationStatement", partOfId))));
+                        ResourceType.MedicationStatement
+                            + "/"
+                            + this.getHash(ResourceType.MedicationStatement, partOfId))));
       }
 
     } else {
       // Id
-      stMedicationStatement.setId(this.getHash("MedicationStatement", partOfId));
+      stMedicationStatement.setId(this.getHash(ResourceType.MedicationStatement, partOfId));
       var absentProcedureDate = new CodeableConcept();
       absentProcedureDate.addExtension(
           fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("not-applicable"));
@@ -176,7 +180,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
 
     // Status
-    if (Objects.equals(meldeanlass, "behandlungsende")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
       stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
     } else {
       stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
@@ -240,7 +244,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
     // Subject
     stMedicationStatement.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -276,9 +280,10 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
     stMedicationStatement.addReasonReference(
         new Reference()
             .setReference(
-                "Condition/"
+                ResourceType.Condition
+                    + "/"
                     + this.getHash(
-                        "Condition",
+                        ResourceType.Condition,
                         pid + "condition" + meldung.getTumorzuordnung().getTumor_ID())));
 
     return stMedicationStatement;

@@ -10,10 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.DomainResource;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
@@ -29,9 +26,9 @@ public abstract class OnkoToFhirMapper {
     this.fhirProperties = fhirProperties;
   }
 
-  protected String getHash(String type, String id) {
+  protected String getHash(ResourceType type, String id) {
     String idToHash;
-    switch (type) {
+    switch (type.toString()) {
       case "Patient":
         idToHash = fhirProperties.getSystems().getPatientId();
         break;

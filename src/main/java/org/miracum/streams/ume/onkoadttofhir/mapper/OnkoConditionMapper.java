@@ -46,7 +46,8 @@ public class OnkoConditionMapper extends OnkoToFhirMapper {
     // TODO ueberpruefen ob letzte Meldung reicht
     var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
 
-    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "condition");
+    LOG.debug(
+        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), ResourceType.Condition);
 
     var onkoCondition = new Condition();
 
@@ -81,7 +82,7 @@ public class OnkoConditionMapper extends OnkoToFhirMapper {
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
 
-    onkoCondition.setId(this.getHash("Condition", conIdentifier));
+    onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
     var senderInfo = meldungExport.getXml_daten().getAbsender();
     onkoCondition
@@ -133,7 +134,7 @@ public class OnkoConditionMapper extends OnkoToFhirMapper {
 
     onkoCondition.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())

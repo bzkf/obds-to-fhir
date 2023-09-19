@@ -35,7 +35,8 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
 
     var meldungExport = meldungExportList.get(0);
 
-    LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "patient");
+    LOG.debug(
+        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), ResourceType.Patient);
 
     var patient = new Patient();
 
@@ -45,7 +46,7 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
     if (checkDigitConversion) {
       pid = convertId(patId);
     }
-    var id = this.getHash("Patient", pid);
+    var id = this.getHash(ResourceType.Patient, pid);
     patient.setId(id);
 
     // meta.source
@@ -105,7 +106,7 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
             .getMeldeanlass();
 
     // deceased
-    if (Objects.equals(reportingReason, "tod")) {
+    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getDeath())) {
       var mengeVerlauf =
           meldungExport
               .getXml_daten()

@@ -64,7 +64,10 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     for (var meldungExport : meldungExportList) {
 
-      LOG.debug("Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), "observation");
+      LOG.debug(
+          "Mapping Meldung {} to {}",
+          getReportingIdFromAdt(meldungExport),
+          ResourceType.Observation);
 
       var meldung =
           meldungExport
@@ -88,7 +91,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
       Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> pTnm = null;
       List<Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaList = new ArrayList<>();
 
-      if (Objects.equals(meldeanlass, "diagnose")) {
+      if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDiagnosis())) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
         histList = new ArrayList<>();
         for (var hist : meldung.getDiagnose().getMenge_Histologie().getHistologie()) {
@@ -112,7 +115,8 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
           }
         }
 
-      } else if (Objects.equals(meldeanlass, "statusaenderung")) {
+      } else if (Objects.equals(
+          meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
         // aus Verlauf: histologie, grading und p-tnm
         // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
@@ -137,7 +141,8 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
             fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
           }
         }
-      } else if (Objects.equals(meldeanlass, "behandlungsende")) {
+      } else if (Objects.equals(
+          meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
         // aus Operation: histologie, grading und p-tnm
         // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
         if (meldung.getMenge_OP() != null) {
@@ -147,7 +152,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
           }
           pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
         }
-      } else if (Objects.equals(meldeanlass, "tod")) {
+      } else if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDeath())) {
 
         var mengeVerlauf =
             meldungExport
@@ -321,7 +326,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     // grading may be undefined / null
     if (grading != null) {
 
-      gradingObs.setId(this.getHash("Observation", gradingObsIdentifier));
+      gradingObs.setId(this.getHash(ResourceType.Observation, gradingObsIdentifier));
 
       gradingObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -329,7 +334,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
           .getMeta()
           .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
 
-      if (Objects.equals(meldeanlass, "statusaenderung")) {
+      if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
         gradingObs.setStatus(ObservationStatus.AMENDED);
       } else {
         gradingObs.setStatus(ObservationStatus.FINAL);
@@ -352,7 +357,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
       gradingObs.setSubject(
           new Reference()
-              .setReference("Patient/" + this.getHash("Patient", pid))
+              .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
               .setIdentifier(
                   new Identifier()
                       .setSystem(fhirProperties.getSystems().getPatientId())
@@ -379,7 +384,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
     var observationIdentifier = pid + "histologie" + histId;
 
-    histObs.setId(this.getHash("Observation", observationIdentifier));
+    histObs.setId(this.getHash(ResourceType.Observation, observationIdentifier));
 
     histObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -387,7 +392,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
 
-    if (Objects.equals(meldeanlass, "statusaenderung")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
       histObs.setStatus(ObservationStatus.AMENDED);
     } else {
       histObs.setStatus(ObservationStatus.FINAL);
@@ -410,7 +415,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     histObs.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -443,7 +448,10 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     if (grading != null) {
       histObs.addHasMember(
           new Reference()
-              .setReference("Observation/" + this.getHash("Observation", gradingObsIdentifier)));
+              .setReference(
+                  ResourceType.Observation
+                      + "/"
+                      + this.getHash(ResourceType.Observation, gradingObsIdentifier)));
     }
 
     bundle = addResourceAsEntryInBundle(bundle, histObs);
@@ -476,7 +484,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     var fernMetaDateString = fernMeta.getFM_Diagnosedatum();
     var fernMetaLokal = fernMeta.getFM_Lokalisation();
 
-    fernMetaObs.setId(this.getHash("Observation", fernMetaId));
+    fernMetaObs.setId(this.getHash(ResourceType.Observation, fernMetaId));
 
     fernMetaObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -484,7 +492,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getFernMeta())));
 
-    if (Objects.equals(meldeanlass, "statusaenderung")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
       fernMetaObs.setStatus(ObservationStatus.AMENDED);
     } else {
       fernMetaObs.setStatus(ObservationStatus.FINAL);
@@ -507,7 +515,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     fernMetaObs.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -561,7 +569,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     // Generate an identifier based on Referenz_nummer (Pat. Id) and c-tnm Id
     var tnmcObsIdentifier = pid + "ctnm" + cTnm.getTNM_ID();
 
-    tnmcObs.setId(this.getHash("Observation", tnmcObsIdentifier));
+    tnmcObs.setId(this.getHash(ResourceType.Observation, tnmcObsIdentifier));
 
     tnmcObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -569,7 +577,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmC())));
 
-    if (Objects.equals(meldeanlass, "statusaenderung")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
       tnmcObs.setStatus(ObservationStatus.AMENDED);
     } else {
       tnmcObs.setStatus(ObservationStatus.FINAL);
@@ -592,7 +600,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     tnmcObs.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -737,7 +745,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
     var tnmpObsIdentifier = pid + "ptnm" + pTnm.getTNM_ID();
 
-    tnmpObs.setId(this.getHash("Observation", tnmpObsIdentifier));
+    tnmpObs.setId(this.getHash(ResourceType.Observation, tnmpObsIdentifier));
 
     tnmpObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -745,7 +753,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmP())));
 
-    if (Objects.equals(meldeanlass, "statusaenderung")) {
+    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
       tnmpObs.setStatus(ObservationStatus.AMENDED);
     } else {
       tnmpObs.setStatus(ObservationStatus.FINAL);
@@ -767,7 +775,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     tnmpObs.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -948,7 +956,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     var deathId = pid + "death" + verlaufId;
 
-    deathObs.setId(this.getHash("Observation", deathId));
+    deathObs.setId(this.getHash(ResourceType.Observation, deathId));
 
     deathObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
 
@@ -967,7 +975,7 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
 
     deathObs.setSubject(
         new Reference()
-            .setReference("Patient/" + this.getHash("Patient", pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())

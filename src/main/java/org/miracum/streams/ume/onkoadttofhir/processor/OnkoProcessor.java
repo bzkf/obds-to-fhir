@@ -142,8 +142,12 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "behandlungsbeginn"),
-              List.of("behandlungsende", "behandlungsbeginn"));
+              Arrays.asList(
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
+                  fhirProperties.getReportingReason().getTreatmentStart()),
+              List.of(
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
+                  fhirProperties.getReportingReason().getTreatmentStart()));
 
       return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
     };
@@ -154,8 +158,12 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "behandlungsbeginn"),
-              List.of("behandlungsende", "behandlungsbeginn"));
+              Arrays.asList(
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
+                  fhirProperties.getReportingReason().getTreatmentStart()),
+              List.of(
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
+                  fhirProperties.getReportingReason().getTreatmentStart()));
       return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
     };
   }
@@ -165,7 +173,11 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
+              Arrays.asList(
+                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getStatusChange(),
+                  fhirProperties.getReportingReason().getDiagnosis(),
+                  fhirProperties.getReportingReason().getDeath()),
               null);
 
       return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);
@@ -177,7 +189,11 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList("behandlungsende", "statusaenderung", "diagnose", "tod"),
+              Arrays.asList(
+                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getStatusChange(),
+                  fhirProperties.getReportingReason().getDiagnosis(),
+                  fhirProperties.getReportingReason().getDeath()),
               null);
 
       return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
@@ -189,7 +205,10 @@ public class OnkoProcessor extends OnkoToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungPair.getLeft(),
-              Arrays.asList("diagnose", "behandlungsende", "statusaenderung"),
+              Arrays.asList(
+                  fhirProperties.getReportingReason().getDiagnosis(),
+                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getStatusChange()),
               null);
 
       return onkoConditionMapper.mapOnkoResourcesToCondition(
