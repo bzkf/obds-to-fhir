@@ -174,7 +174,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
                   fhirProperties.getReportingReason().getStatusChange(),
                   fhirProperties.getReportingReason().getDiagnosis(),
                   fhirProperties.getReportingReason().getDeath()),
@@ -190,7 +190,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
                   fhirProperties.getReportingReason().getStatusChange(),
                   fhirProperties.getReportingReason().getDiagnosis(),
                   fhirProperties.getReportingReason().getDeath()),
@@ -207,7 +207,7 @@ public class OnkoProcessor extends OnkoToFhirMapper {
               meldungPair.getLeft(),
               Arrays.asList(
                   fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getTreatmentStart(),
+                  fhirProperties.getReportingReason().getTreatmentEnd(),
                   fhirProperties.getReportingReason().getStatusChange()),
               null);
 
