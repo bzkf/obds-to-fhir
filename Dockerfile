@@ -1,4 +1,4 @@
-FROM gradle:8.3.0-jdk17-alpine AS build
+FROM gradle:8.4.0-jdk17-alpine AS build
 WORKDIR /home/gradle/src
 ENV GRADLE_USER_HOME /gradle
 
