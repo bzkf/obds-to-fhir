@@ -4,7 +4,7 @@ plugins {
 	id 'jacoco'
 	id 'java'
 	id 'com.diffplug.spotless' version '6.22.0'
-	id "io.freefair.lombok" version "8.3"
+	id "io.freefair.lombok" version "8.4"
 }
 
 group = 'org.miracum.streams.ume'
