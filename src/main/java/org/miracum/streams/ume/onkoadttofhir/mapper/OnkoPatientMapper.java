@@ -33,6 +33,7 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
       return null;
     }
 
+    // get first element of meldungExportList
     var meldungExport = meldungExportList.get(0);
 
     LOG.debug(

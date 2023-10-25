@@ -44,9 +44,8 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
 
     var bundle = new Bundle();
 
-    // get last element of meldungExportList
-    // TODO ueberpruefen ob letzte Meldung reicht
-    var meldungExport = meldungExportList.get(meldungExportList.size() - 1);
+    // get first element of meldungExportList
+    var meldungExport = meldungExportList.get(0);
 
     LOG.debug(
         "Mapping Meldung {} to {}",

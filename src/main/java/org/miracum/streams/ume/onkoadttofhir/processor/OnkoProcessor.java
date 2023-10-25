@@ -190,10 +190,10 @@ public class OnkoProcessor extends OnkoToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
+                  fhirProperties.getReportingReason().getDeath(),
                   fhirProperties.getReportingReason().getTreatmentEnd(),
                   fhirProperties.getReportingReason().getStatusChange(),
-                  fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getDeath()),
+                  fhirProperties.getReportingReason().getDiagnosis()),
               null);
 
       return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);

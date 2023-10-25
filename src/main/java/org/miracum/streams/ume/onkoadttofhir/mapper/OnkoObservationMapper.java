@@ -62,7 +62,9 @@ public class OnkoObservationMapper extends OnkoToFhirMapper {
     var softwareId = "";
     var verlaufId = "";
 
-    for (var meldungExport : meldungExportList) {
+    // Process prioritized reports at the end of the for-loop
+    for (int i = meldungExportList.size() - 1; i >= 0; i--) {
+      var meldungExport = meldungExportList.get(i);
 
       LOG.debug(
           "Mapping Meldung {} to {}",

@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
@@ -81,15 +82,16 @@ public abstract class OnkoToFhirMapper {
       }
     }
 
-    Collections.reverse(priorityOrder);
+    List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
 
     Comparator<MeldungExport> meldungComparator =
-        Comparator.comparing(m -> priorityOrder.indexOf(getReportingReasonFromAdt(m)));
+        Comparator.comparingInt(
+            m -> {
+              int index = priorityOrder.indexOf(getReportingReasonFromAdt(m));
+              return index == -1 ? Integer.MAX_VALUE : index;
+            });
 
-    List<MeldungExport> meldungExportList = new ArrayList<>(meldungExportMap.values());
-    meldungExportList.sort(meldungComparator);
-
-    return meldungExportList;
+    return meldungExportList.stream().sorted(meldungComparator).collect(Collectors.toList());
   }
 
   public String getPatIdFromAdt(MeldungExport meldung) {
