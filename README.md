@@ -1,6 +1,6 @@
-# onkoadt-to-fhir
+# obds-to-fhir
 
-This project contains a Kafka Stream processor that creates FHIR resources from Erlangen Onkostar ADT-XML data and writes them to a FHIR Topic.
+This project contains a Kafka Stream processor that creates FHIR resources from Onkostar oBDS-XML data and writes them to a FHIR Topic.
 
 ## Used FHIR profiles
 

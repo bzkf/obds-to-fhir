@@ -1,0 +1,107 @@
+package org.miracum.streams.ume.obdstofhir;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConfigurationProperties(prefix = "fhir")
+@Data
+public class FhirProperties {
+  private FhirExtensions extensions;
+  private FhirSystems systems;
+  private FhirDisplay display;
+  private FhirProfiles profiles;
+  private FhirUrl url;
+  private FhirReportingReason reportingReason;
+
+  @Data
+  public static class FhirExtensions {
+    private String fernMetaExt;
+    private String opIntention;
+    private String stellungOP;
+    private String systIntention;
+    private String sysTheraProto;
+    private String dataAbsentReason;
+    private String genderAmtlich;
+  }
+
+  @Data
+  public static class FhirSystems {
+    private String patientId;
+    private String identifierType;
+    private String conditionId;
+    private String observationId;
+    private String procedureId;
+    private String medicationStatementId;
+    private String observationCategorySystem;
+    private String loinc;
+    private String idco3Morphologie;
+    private String gradingDktk;
+    private String uicc;
+    private String tnmPraefix;
+    private String tnmTCs;
+    private String tnmNCs;
+    private String tnmMCs;
+    private String tnmYSymbolCs;
+    private String tnmRSymbolCs;
+    private String tnmMSymbolCs;
+    private String fMLokalisationCS;
+    private String jnuCs;
+    private String icd10gm;
+    private String adtSeitenlokalisation;
+    private String snomed;
+    private String opIntention;
+    private String systTherapieart;
+    private String ops;
+    private String lokalBeurtResidualCS;
+    private String gesamtBeurtResidualCS;
+    private String systIntention;
+    private String systStellungOP;
+    private String ctcaeGrading;
+    private String sideEffectTypeOid;
+    private String opComplication;
+    private String observationValue;
+    private String genderAmtlichDe;
+  }
+
+  @Data
+  public static class FhirProfiles {
+    private String histologie;
+    private String grading;
+    private String tnmC;
+    private String tnmP;
+    private String fernMeta;
+    private String condition;
+    private String genVariante;
+    private String opProcedure;
+    private String stProcedure;
+    private String systMedStatement;
+    private String miiPatientPseudonymisiert;
+    private String deathObservation;
+  }
+
+  @Data
+  public static class FhirDisplay {
+    private String histologyLoinc;
+    private String gradingLoinc;
+    private String tnmcLoinc;
+    private String tnmpLoinc;
+    private String fernMetaLoinc;
+    private String deathLoinc;
+  }
+
+  @Data
+  public static class FhirUrl {
+    private String tnmPraefix;
+  }
+
+  @Data
+  public static class FhirReportingReason {
+    private String treatmentEnd;
+    private String treatmentStart;
+    private String statusChange;
+    private String diagnosis;
+    private String death;
+  }
+}
