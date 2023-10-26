@@ -21,27 +21,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoProcessor extends OnkoToFhirMapper {
+public class ObdsProcessor extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsProcessor.class);
 
   @Value("${spring.profiles.active}")
   private String profile;
 
-  private final OnkoMedicationStatementMapper onkoMedicationStatementMapper;
-  private final OnkoObservationMapper onkoObservationMapper;
-  private final OnkoProcedureMapper onkoProcedureMapper;
-  private final OnkoPatientMapper onkoPatientMapper;
-  private final OnkoConditionMapper onkoConditionMapper;
+  private final ObdsMedicationStatementMapper onkoMedicationStatementMapper;
+  private final ObdsObservationMapper onkoObservationMapper;
+  private final ObdsProcedureMapper onkoProcedureMapper;
+  private final ObdsPatientMapper onkoPatientMapper;
+  private final ObdsConditionMapper onkoConditionMapper;
 
   @Autowired
-  protected OnkoProcessor(
+  protected ObdsProcessor(
       FhirProperties fhirProperties,
-      OnkoMedicationStatementMapper onkoMedicationStatementMapper,
-      OnkoObservationMapper onkoObservationMapper,
-      OnkoProcedureMapper onkoProcedureMapper,
-      OnkoPatientMapper onkoPatientMapper,
-      OnkoConditionMapper onkoConditionMapper) {
+      ObdsMedicationStatementMapper onkoMedicationStatementMapper,
+      ObdsObservationMapper onkoObservationMapper,
+      ObdsProcedureMapper onkoProcedureMapper,
+      ObdsPatientMapper onkoPatientMapper,
+      ObdsConditionMapper onkoConditionMapper) {
     super(fhirProperties);
     this.onkoMedicationStatementMapper = onkoMedicationStatementMapper;
     this.onkoObservationMapper = onkoObservationMapper;

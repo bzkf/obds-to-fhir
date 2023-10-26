@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OnkoAdtToFhirApplication {
+public class ObdsToFhirApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(OnkoAdtToFhirApplication.class, args);
+    SpringApplication.run(ObdsToFhirApplication.class, args);
   }
 }

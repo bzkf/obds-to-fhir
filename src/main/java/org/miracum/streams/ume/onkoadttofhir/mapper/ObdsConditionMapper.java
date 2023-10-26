@@ -5,8 +5,8 @@ import java.util.List;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.*;
-import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
+import org.miracum.streams.ume.onkoadttofhir.model.Obds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoConditionMapper extends OnkoToFhirMapper {
+public class ObdsConditionMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoConditionMapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsConditionMapper.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -31,7 +31,7 @@ public class OnkoConditionMapper extends OnkoToFhirMapper {
       new DisplayAdtSeitenlokalisationLookup();
 
   @Autowired
-  public OnkoConditionMapper(FhirProperties fhirProperties) {
+  public ObdsConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
@@ -62,7 +62,7 @@ public class OnkoConditionMapper extends OnkoToFhirMapper {
 
     LOG.debug("Processing Meldung: {}", meldungsId);
 
-    ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
+    Obds.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
     // diagnose Tag ist only specified in meldeanlass 'diagnose', otherwise use tag 'Tumorzuordung'
     if (primDia == null) {

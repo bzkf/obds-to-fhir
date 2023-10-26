@@ -19,9 +19,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class OnkoProcessorTest {
+public abstract class ObdsProcessorTest {
 
-  private static final Logger log = LoggerFactory.getLogger(OnkoProcessorTest.class);
+  private static final Logger log = LoggerFactory.getLogger(ObdsProcessorTest.class);
 
   private static FhirValidator validator;
 

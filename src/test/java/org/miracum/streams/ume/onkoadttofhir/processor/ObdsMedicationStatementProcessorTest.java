@@ -30,35 +30,35 @@ import org.springframework.util.ResourceUtils;
 @SpringBootTest(
     classes = {
       FhirProperties.class,
-      OnkoConditionMapper.class,
-      OnkoMedicationStatementMapper.class,
-      OnkoObservationMapper.class,
-      OnkoProcedureMapper.class,
-      OnkoPatientMapper.class,
-      OnkoConditionMapper.class
+      ObdsConditionMapper.class,
+      ObdsMedicationStatementMapper.class,
+      ObdsObservationMapper.class,
+      ObdsProcedureMapper.class,
+      ObdsPatientMapper.class,
+      ObdsConditionMapper.class
     })
 @EnableConfigurationProperties()
-public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
+public class ObdsMedicationStatementProcessorTest extends ObdsProcessorTest {
 
   private static final Logger log =
-      LoggerFactory.getLogger(OnkoMedicationStatementProcessorTest.class);
+      LoggerFactory.getLogger(ObdsMedicationStatementProcessorTest.class);
 
   private final FhirProperties fhirProps;
-  private final OnkoMedicationStatementMapper onkoMedicationStatementMapper;
-  private final OnkoObservationMapper onkoObservationMapper;
-  private final OnkoProcedureMapper onkoProcedureMapper;
-  private final OnkoPatientMapper onkoPatientMapper;
-  private final OnkoConditionMapper onkoConditionMapper;
+  private final ObdsMedicationStatementMapper onkoMedicationStatementMapper;
+  private final ObdsObservationMapper onkoObservationMapper;
+  private final ObdsProcedureMapper onkoProcedureMapper;
+  private final ObdsPatientMapper onkoPatientMapper;
+  private final ObdsConditionMapper onkoConditionMapper;
   private final FhirContext ctx = FhirContext.forR4();
 
   @Autowired
-  public OnkoMedicationStatementProcessorTest(
+  public ObdsMedicationStatementProcessorTest(
       FhirProperties fhirProps,
-      OnkoMedicationStatementMapper onkoMedicationStatementMapper,
-      OnkoObservationMapper onkoObservationMapper,
-      OnkoProcedureMapper onkoProcedureMapper,
-      OnkoPatientMapper onkoPatientMapper,
-      OnkoConditionMapper onkoConditionMapper) {
+      ObdsMedicationStatementMapper onkoMedicationStatementMapper,
+      ObdsObservationMapper onkoObservationMapper,
+      ObdsProcedureMapper onkoProcedureMapper,
+      ObdsPatientMapper onkoPatientMapper,
+      ObdsConditionMapper onkoConditionMapper) {
     this.fhirProps = fhirProps;
     this.onkoMedicationStatementMapper = onkoMedicationStatementMapper;
     this.onkoObservationMapper = onkoObservationMapper;
@@ -127,8 +127,8 @@ public class OnkoMedicationStatementProcessorTest extends OnkoProcessorTest {
       payloadId++;
     }
 
-    OnkoProcessor medicationStatementProcessor =
-        new OnkoProcessor(
+    ObdsProcessor medicationStatementProcessor =
+        new ObdsProcessor(
             fhirProps,
             onkoMedicationStatementMapper,
             onkoObservationMapper,

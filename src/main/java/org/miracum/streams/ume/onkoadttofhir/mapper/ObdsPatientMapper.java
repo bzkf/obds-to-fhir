@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoPatientMapper extends OnkoToFhirMapper {
+public class ObdsPatientMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoPatientMapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsPatientMapper.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -23,7 +23,7 @@ public class OnkoPatientMapper extends OnkoToFhirMapper {
   @Value("${app.enableCheckDigitConversion}")
   private boolean checkDigitConversion;
 
-  protected OnkoPatientMapper(FhirProperties fhirProperties) {
+  protected ObdsPatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 

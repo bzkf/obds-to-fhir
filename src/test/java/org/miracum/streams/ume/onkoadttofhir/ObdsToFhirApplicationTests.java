@@ -2,7 +2,7 @@ package org.miracum.streams.ume.onkoadttofhir;
 
 /*
 @SpringBootTest
-class OnkoAdtToFhirApplicationTests {
+class ObdsToFhirApplicationTests {
 
   @Test
   void contextLoads() {}

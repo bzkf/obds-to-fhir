@@ -4,9 +4,9 @@ import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.*;
-import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
-import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_ST.ST.Menge_Bestrahlung.Bestrahlung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
+import org.miracum.streams.ume.onkoadttofhir.model.Obds.Menge_Patient.Patient.Menge_Meldung.Meldung;
+import org.miracum.streams.ume.onkoadttofhir.model.Obds.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_ST.ST.Menge_Bestrahlung.Bestrahlung;
 import org.miracum.streams.ume.onkoadttofhir.model.Tupel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoProcedureMapper extends OnkoToFhirMapper {
+public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoProcedureMapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsProcedureMapper.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -40,7 +40,7 @@ public class OnkoProcedureMapper extends OnkoToFhirMapper {
 
   private final OPKomplikationVsLookup displayOPKomplicationLookup = new OPKomplikationVsLookup();
 
-  public OnkoProcedureMapper(FhirProperties fhirProperties) {
+  public ObdsProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 

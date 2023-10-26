@@ -13,7 +13,7 @@ import lombok.*;
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ADT_GEKID implements Serializable {
+public class Obds implements Serializable {
 
   @JsonProperty private String Schema_Version;
 
@@ -144,7 +144,7 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               @EqualsAndHashCode(callSuper = true)
-              public static class Histologie extends ADT_GEKID.HistologieAbs {
+              public static class Histologie extends Obds.HistologieAbs {
 
                 @JsonProperty private String Histologie_ID;
                 @JsonProperty private String Tumor_Histologiedatum;
@@ -172,7 +172,7 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             @EqualsAndHashCode(callSuper = true)
-            public static class cTNM extends ADT_GEKID.CTnmAbs {
+            public static class cTNM extends Obds.CTnmAbs {
               @JsonProperty private String TNM_ID;
               @JsonProperty private String TNM_Datum;
               @JsonProperty private String TNM_Version;
@@ -190,7 +190,7 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             @EqualsAndHashCode(callSuper = true)
-            public static class pTNM extends ADT_GEKID.PTnmAbs {
+            public static class pTNM extends Obds.PTnmAbs {
               @JsonProperty private String TNM_ID;
               @JsonProperty private String TNM_Datum;
               @JsonProperty private String TNM_Version;
@@ -242,7 +242,7 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               @EqualsAndHashCode(callSuper = true)
-              public static class Histologie extends ADT_GEKID.HistologieAbs {
+              public static class Histologie extends Obds.HistologieAbs {
                 @JsonProperty private String Histologie_ID;
                 @JsonProperty private String Tumor_Histologiedatum;
                 @JsonProperty private String Morphologie_Code; // Morphologie_ICD_O_3_Code
@@ -253,7 +253,7 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               @EqualsAndHashCode(callSuper = true)
-              public static class TNM extends ADT_GEKID.PTnmAbs {
+              public static class TNM extends Obds.PTnmAbs {
                 @JsonProperty private String TNM_ID;
                 @JsonProperty private String TNM_Datum;
                 @JsonProperty private String TNM_Version;
@@ -313,7 +313,7 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               @EqualsAndHashCode(callSuper = true)
-              public static class Histologie extends ADT_GEKID.HistologieAbs {
+              public static class Histologie extends Obds.HistologieAbs {
                 @JsonProperty private String Histologie_ID;
                 @JsonProperty private String Tumor_Histologiedatum;
                 @JsonProperty private String Morphologie_Code; // Morphologie_ICD_O_3_Code
@@ -324,7 +324,7 @@ public class ADT_GEKID implements Serializable {
 
               @Data
               @EqualsAndHashCode(callSuper = true)
-              public static class TNM extends ADT_GEKID.PTnmAbs {
+              public static class TNM extends Obds.PTnmAbs {
                 @JsonProperty private String TNM_ID;
                 @JsonProperty private String TNM_Datum;
                 @JsonProperty private String TNM_Version;

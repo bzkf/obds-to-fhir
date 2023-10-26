@@ -18,12 +18,12 @@ import org.miracum.streams.ume.onkoadttofhir.model.MeldungExportList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class OnkoToFhirMapper {
+public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
 
-  private static final Logger log = LoggerFactory.getLogger(OnkoToFhirMapper.class);
+  private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
-  protected OnkoToFhirMapper(final FhirProperties fhirProperties) {
+  protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
   }
 
@@ -154,9 +154,9 @@ public abstract class OnkoToFhirMapper {
   protected String generateProfileMetaSource(
       String senderId, String softwareId, String appVersion) {
     if (senderId != null && softwareId != null) {
-      return String.format("%s.%s:onkoadt-to-fhir:%s", senderId, softwareId, appVersion);
+      return String.format("%s.%s:obds-to-fhir:%s", senderId, softwareId, appVersion);
     } else {
-      return "onkoadt-to-fhir:" + appVersion;
+      return "obds-to-fhir:" + appVersion;
     }
   }
 

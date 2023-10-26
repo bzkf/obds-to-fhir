@@ -8,17 +8,17 @@ import org.miracum.streams.ume.onkoadttofhir.FhirProperties;
 import org.miracum.streams.ume.onkoadttofhir.lookup.SYSTTherapieartCSLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.StellungOpVsLookup;
 import org.miracum.streams.ume.onkoadttofhir.lookup.SystIntentionVsLookup;
-import org.miracum.streams.ume.onkoadttofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.onkoadttofhir.model.MeldungExport;
+import org.miracum.streams.ume.onkoadttofhir.model.Obds.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
+public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OnkoMedicationStatementMapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsMedicationStatementMapper.class);
 
   @Value("${app.version}")
   private String appVersion;
@@ -32,7 +32,7 @@ public class OnkoMedicationStatementMapper extends OnkoToFhirMapper {
 
   private final SYSTTherapieartCSLookup displaySystTherapieLookup = new SYSTTherapieartCSLookup();
 
-  public OnkoMedicationStatementMapper(FhirProperties fhirProperties) {
+  public ObdsMedicationStatementMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
