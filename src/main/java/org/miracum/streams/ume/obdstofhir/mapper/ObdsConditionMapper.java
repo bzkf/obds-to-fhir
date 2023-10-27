@@ -5,8 +5,8 @@ import java.util.List;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
-import org.miracum.streams.ume.obdstofhir.model.Obds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     LOG.debug("Processing Meldung: {}", meldungsId);
 
-    Obds.PrimaryConditionAbs primDia = meldung.getDiagnose();
+    ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
     // diagnose Tag ist only specified in meldeanlass 'diagnose', otherwise use tag 'Tumorzuordung'
     if (primDia == null) {

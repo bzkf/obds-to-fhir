@@ -59,6 +59,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       // return (stringOnkoMeldungExpTable) ->
       var output =
           stringOnkoMeldungExpTable
+              // only process adt v2.x.x
+              .filter((key, value) -> value.getXml_daten().getSchema_Version().matches("^2\\..*"))
               .filter(
                   (key, value) ->
                       value

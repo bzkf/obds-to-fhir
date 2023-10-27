@@ -9,8 +9,8 @@ import org.miracum.streams.ume.obdstofhir.lookup.GradingLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.JnuVsLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.obdstofhir.model.*;
-import org.miracum.streams.ume.obdstofhir.model.Obds.Menge_Patient.Patient.Menge_Meldung.Meldung;
-import org.miracum.streams.ume.obdstofhir.model.Obds.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,12 +45,16 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       return null;
     }
 
-    HashMap<String, Tupel<Obds.HistologieAbs, String>> histMap = new HashMap<>();
-    HashMap<String, Triple<Obds.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+    HashMap<String, Tupel<ADT_GEKID.HistologieAbs, String>> histMap = new HashMap<>();
+    HashMap<
+            String,
+            Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
         cTnmMap = new HashMap<>();
-    HashMap<String, Triple<Obds.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+    HashMap<
+            String,
+            Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
         pTnmMap = new HashMap<>();
-    HashMap<String, Tupel<Obds.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
     Tod death = null;
 
     var patId = "";
@@ -84,10 +88,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
       // var tumorId = meldung.getTumorzuordnung();
 
-      List<Tupel<Obds.HistologieAbs, String>> histList = new ArrayList<>();
-      Triple<Obds.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> cTnm = null;
-      Triple<Obds.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> pTnm = null;
-      List<Tupel<Obds.FernMetastaseAbs, String>> fernMetaList = new ArrayList<>();
+      List<Tupel<ADT_GEKID.HistologieAbs, String>> histList = new ArrayList<>();
+      Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> cTnm = null;
+      Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> pTnm = null;
+      List<Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaList = new ArrayList<>();
 
       if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDiagnosis())) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
@@ -215,10 +219,12 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
   // return meldungExport -> {
   public Bundle mapOnkoResourcesToObservationsBundle(
-      List<Tupel<Obds.HistologieAbs, String>> histologieList,
-      List<Triple<Obds.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>> cTnmList,
-      List<Triple<Obds.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>> pTnmList,
-      HashMap<String, Tupel<Obds.FernMetastaseAbs, String>> fernMetaMap,
+      List<Tupel<ADT_GEKID.HistologieAbs, String>> histologieList,
+      List<Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+          cTnmList,
+      List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+          pTnmList,
+      HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap,
       Tod death,
       String patId,
       String senderId,
@@ -293,7 +299,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       String patId,
       String senderId,
       String softwareId,
-      Obds.HistologieAbs histologie,
+      ADT_GEKID.HistologieAbs histologie,
       String meldeanlass) {
 
     var pid = patId;
@@ -465,7 +471,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       String senderId,
       String softwareId,
       String fernMetaId,
-      Obds.FernMetastaseAbs fernMeta,
+      ADT_GEKID.FernMetastaseAbs fernMeta,
       String meldeanlass) {
 
     var pid = patId;
@@ -550,7 +556,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       String patId,
       String senderId,
       String softwareId,
-      Obds.CTnmAbs cTnm,
+      ADT_GEKID.CTnmAbs cTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
 
@@ -726,7 +732,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       String patId,
       String senderId,
       String softwareId,
-      Obds.PTnmAbs pTnm,
+      ADT_GEKID.PTnmAbs pTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
     // Create a TNM-p Observation as in

@@ -22,7 +22,7 @@ public class MeldungExport extends OnkoResource {
 
   @EqualsAndHashCode.Include Integer versionsnummer;
 
-  Obds xml_daten;
+  ADT_GEKID xml_daten;
 
   @JsonProperty("payload")
   public void getPayload(Map<String, Object> payload) {
@@ -34,7 +34,7 @@ public class MeldungExport extends OnkoResource {
     XmlMapper xmlMapper = new XmlMapper();
     xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     try {
-      this.xml_daten = xmlMapper.readValue(getString(payload, "XML_DATEN"), Obds.class);
+      this.xml_daten = xmlMapper.readValue(getString(payload, "XML_DATEN"), ADT_GEKID.class);
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);
     }
