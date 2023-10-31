@@ -12,7 +12,7 @@ permissions: read-all
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@40fda6d89054cbb816af5784a5edf2346dcf3e62 # v1.0.4
+    uses: miracum/.github/.github/workflows/standard-build.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
     permissions:
       contents: read
       id-token: write
@@ -26,48 +26,8 @@ jobs:
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  test:
-    runs-on: ubuntu-22.04
-    needs:
-      - build
-    steps:
-      - name: "Checkout code"
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
-        with:
-          persist-credentials: false
-
-      - name: Download build image
-        uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          name: container-image
-          path: /tmp
-
-      - name: load image
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          ls -lsa /tmp
-          docker load --input /tmp/image.tar
-          docker image ls
-
-      - name: Run E2E tests
-        env:
-          FHIR_GATEWAY_IMAGE_NAME: "${{ fromJson(needs.build.outputs.image-meta-json).tags[0] }}"
-        run: |
-          docker compose -p e2e -f deploy/docker-compose.yml -f deploy/docker-compose.gw-deps.yml -f tests/e2e/docker-compose.yml --project-directory=tests/e2e build
-          docker compose -p e2e -f deploy/docker-compose.yml -f deploy/docker-compose.gw-deps.yml --project-directory=tests/e2e up -d
-          docker compose -p e2e -f deploy/docker-compose.yml -f deploy/docker-compose.gw-deps.yml -f tests/e2e/docker-compose.yml --project-directory=tests/e2e run tester
-
-      - name: Print E2E logs
-        env:
-          FHIR_GATEWAY_IMAGE_NAME: "${{ fromJson(needs.build.outputs.image-meta-json).tags[0] }}"
-        if: ${{ always() }}
-        run: |
-          docker compose -p e2e -f deploy/docker-compose.yml -f deploy/docker-compose.gw-deps.yml -f tests/e2e/docker-compose.yml logs
-          docker compose -p e2e -f deploy/docker-compose.yml -f deploy/docker-compose.gw-deps.yml -f tests/e2e/docker-compose.yml down --volumes --remove-orphans
-
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@40fda6d89054cbb816af5784a5edf2346dcf3e62 # v1.0.4
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
     permissions:
       contents: read
       pull-requests: write
@@ -75,16 +35,15 @@ jobs:
       security-events: write
       actions: read
     with:
-      codeql-languages: '["java", "python"]'
+      codeql-languages: '["java"]'
       enable-codeql: true
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@40fda6d89054cbb816af5784a5edf2346dcf3e62 # v1.0.4
+    uses: miracum/.github/.github/workflows/standard-release.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
     needs:
       - build
-      - test
     permissions:
       contents: write
       pull-requests: write

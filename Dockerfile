@@ -9,7 +9,7 @@ COPY --chown=gradle:gradle . .
 RUN gradle clean build --info && \
     gradle jacocoTestReport &&  \
     awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/jacoco/coverage.csv && \
-    java -Djarmode=layertools -jar build/libs/obds-to-fhir-0.0.1-SNAPSHOT.jar extract
+    java -Djarmode=layertools -jar build/libs/obds-to-fhir-0.0.1.jar extract
 
 FROM gcr.io/distroless/java17-debian11@sha256:12c7afb1875a0c01f2c0138698e619a1d39a8319fd40e020a6d8349cf5aae043
 WORKDIR /opt/obds-to-fhir

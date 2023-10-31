@@ -1,5 +1,5 @@
 app:
-  version: 0.0.1-SNAPSHOT
+  version: 0.0.0
   enableCheckDigitConversion: ${CHECK_DIGIT_CONVERSION:false}
 
 fhir:
