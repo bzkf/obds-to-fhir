@@ -101,9 +101,7 @@
         "type": [
           {
             "code": "Coding",
-            "profile": [
-              "http://fhir.de/StructureDefinition/CodingOPS"
-            ]
+            "profile": ["http://fhir.de/StructureDefinition/CodingOPS"]
           }
         ]
       },

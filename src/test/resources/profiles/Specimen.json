@@ -54,9 +54,7 @@
             "targetProfile": [
               "https://fhir.bbmri.de/StructureDefinition/Specimen"
             ],
-            "aggregation": [
-              "referenced"
-            ]
+            "aggregation": ["referenced"]
           }
         ]
       }
