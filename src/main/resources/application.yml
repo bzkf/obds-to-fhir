@@ -1,6 +1,6 @@
 app:
   version: 1.0.0
-  enableCheckDigitConversion: 1.0.0
+  enableCheckDigitConversion: ${CHECK_DIGIT_CONVERSION:false}
 
 fhir:
   extensions:

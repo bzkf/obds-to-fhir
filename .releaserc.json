@@ -73,7 +73,7 @@
         "replacements": [
           {
             "files": ["src/main/resources/application.yml"],
-            "from": "version: .*",
+            "from": "$version: .*",
             "to": "version: ${nextRelease.version}",
             "results": [
               {
