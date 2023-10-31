@@ -65,9 +65,7 @@
         "type": [
           {
             "code": "Extension",
-            "profile": [
-              "http://fhir.de/StructureDefinition/seitenlokalisation"
-            ]
+            "profile": ["http://fhir.de/StructureDefinition/seitenlokalisation"]
           }
         ]
       },

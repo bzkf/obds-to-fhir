@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+  release:
+    types: [created]
+  pull_request:
+    branches: [master]
+
+permissions: read-all
+
+jobs:
+  build:
+    uses: miracum/.github/.github/workflows/standard-build.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+      pull-requests: write
+      actions: read
+      security-events: write
+    with:
+      enable-build-test-layer: false
+      enable-upload-test-image: false
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      security-events: write
+      actions: read
+    with:
+      codeql-languages: '["java"]'
+      enable-codeql: true
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    uses: miracum/.github/.github/workflows/standard-release.yaml@a4a6c1a49dd35e232eceaa6e583cd9665572d90b # v1.3.0
+    needs:
+      - build
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    secrets:
+      semantic-release-token: ${{ secrets.MIRACUM_BOT_SEMANTIC_RELEASE_TOKEN }}

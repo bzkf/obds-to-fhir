@@ -6,40 +6,40 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Observations
 
-* Histologie (<https://simplifier.net/oncology/histologie>)
-* Grading (<https://simplifier.net/oncology/grading>)
-* TNMc (<https://simplifier.net/oncology/tnmc>)
-* TNMp (<https://simplifier.net/oncology/tnmp>)
-* Fernmetastasen (<https://simplifier.net/oncology/fernmetastasen-duplicate-2>)
-* Tod Ursache (<https://simplifier.net/oncology/todursache>)
+- Histologie (<https://simplifier.net/oncology/histologie>)
+- Grading (<https://simplifier.net/oncology/grading>)
+- TNMc (<https://simplifier.net/oncology/tnmc>)
+- TNMp (<https://simplifier.net/oncology/tnmp>)
+- Fernmetastasen (<https://simplifier.net/oncology/fernmetastasen-duplicate-2>)
+- Tod Ursache (<https://simplifier.net/oncology/todursache>)
 
 ## Condition
 
-* Primärdiagnose (<https://simplifier.net/oncology/primaerdiagnose>)
+- Primärdiagnose (<https://simplifier.net/oncology/primaerdiagnose>)
 
 ## Procedure
 
-* Operation (<https://simplifier.net/oncology/operation>)
-* Strahlentherapie (<https://simplifier.net/oncology/strahlentherapie>)
+- Operation (<https://simplifier.net/oncology/operation>)
+- Strahlentherapie (<https://simplifier.net/oncology/strahlentherapie>)
 
 ## MedicationStatement
 
-* Systemtherapie (<https://simplifier.net/oncology/systemtherapie>)
+- Systemtherapie (<https://simplifier.net/oncology/systemtherapie>)
 
 ## Patient
 
-* Patient (<https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.person/2.0.0-ballot2/files/533910>)
+- Patient (<https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.person/2.0.0-ballot2/files/533910>)
 
 ## Dev
 
 ### Dev Stack
 
-* Zookeeper: `$DOCKER_HOST_IP:2181`
-* Kafka Broker: `$DOCKER_HOST_IP:9092`
-* Kafka Rest Proxy: `$DOCKER_HOST_IP:8082`
-* Kafka Connect: `$DOCKER_HOST_IP:8083`
-* AKHQ: `$DOCKER_HOST_IP:8080`
-* Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/COGN12` (Use credentials from init script)
+- Zookeeper: `$DOCKER_HOST_IP:2181`
+- Kafka Broker: `$DOCKER_HOST_IP:9092`
+- Kafka Rest Proxy: `$DOCKER_HOST_IP:8082`
+- Kafka Connect: `$DOCKER_HOST_IP:8083`
+- AKHQ: `$DOCKER_HOST_IP:8080`
+- Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/COGN12` (Use credentials from init script)
 
 ### Prerequisites
 

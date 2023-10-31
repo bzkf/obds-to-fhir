@@ -20,10 +20,6 @@
           {
             "type": "build",
             "release": "patch"
-          },
-          {
-            "type": "revert",
-            "release": "patch"
           }
         ]
       }
@@ -70,16 +66,40 @@
         }
       }
     ],
+    "@semantic-release/github",
     [
-      "@semantic-release/exec",
+      "semantic-release-replace-plugin",
       {
-        "verifyReleaseCmd": "echo ${nextRelease.version} > .VERSION"
+        "replacements": [
+          {
+            "files": ["src/main/resources/application.yml"],
+            "from": "version: .*",
+            "to": "version: ${nextRelease.version}",
+            "results": [
+              {
+                "file": "src/main/resources/application.yml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
+            "files": ["build.gradle"],
+            "from": "version = \".*\"",
+            "to": "version = \"${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "build.gradle",
+                "hasChanged": true
+              }
+            ]
+          }
+        ]
       }
     ],
     [
-      "@semantic-release/gitlab",
+      "@semantic-release/git",
       {
-        "gitlabUrl": "https://gitlab.miracum.org"
+        "assets": ["src/main/resources/application.yml", "build.gradle"]
       }
     ]
   ]
