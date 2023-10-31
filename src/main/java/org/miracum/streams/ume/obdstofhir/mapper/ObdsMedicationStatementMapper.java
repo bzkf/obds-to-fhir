@@ -23,7 +23,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("${app.enableCheckDigitConversion}")
+  @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
   private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();

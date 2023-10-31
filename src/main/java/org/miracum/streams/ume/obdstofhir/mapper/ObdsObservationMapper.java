@@ -32,7 +32,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("${app.enableCheckDigitConversion}")
+  @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
   public ObdsObservationMapper(FhirProperties fhirProperties) {

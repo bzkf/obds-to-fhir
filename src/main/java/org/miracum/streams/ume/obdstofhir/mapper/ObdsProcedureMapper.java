@@ -21,7 +21,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
   @Value("${app.version}")
   private String appVersion;
 
-  @Value("${app.enableCheckDigitConversion}")
+  @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
   private final OPIntentionVsLookup displayOPIntentionLookup = new OPIntentionVsLookup();
