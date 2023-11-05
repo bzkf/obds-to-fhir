@@ -24,7 +24,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2022.0.4")
-	set('hapiVersion', "6.8.4")
+	set('hapiVersion', "6.8.5")
 }
 
 dependencies {
