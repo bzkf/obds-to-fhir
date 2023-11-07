@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
+import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Procedure;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -69,7 +70,7 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
   private static Stream<Arguments> generateTestData() {
     return Stream.of(
         Arguments.of(
-            List.of(new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1)),
+            new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1),
             9,
             9,
             0,
@@ -81,7 +82,7 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
             "N",
             "Nein"),
         Arguments.of(
-            List.of(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)),
+            new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1),
             3,
             0,
             3,
@@ -97,7 +98,7 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
   @ParameterizedTest
   @MethodSource("generateTestData")
   void mapProcedure_withGivenAdtXml(
-      List<Tupel<String, Integer>> xmlFileNames,
+      Tupel<String, Integer> xmlTupel,
       int expectedProcCount,
       int expectedProcCountOp,
       int expectedProcCountSt,
@@ -112,29 +113,23 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
 
     MeldungExportList meldungExportList = new MeldungExportList();
 
-    int payloadId = 1;
+    File xmlFile = ResourceUtils.getFile("classpath:" + xmlTupel.getFirst());
+    String xmlContent = new String(Files.readAllBytes(xmlFile.toPath()));
 
-    for (var xmlTupel : xmlFileNames) {
-      File xmlFile = ResourceUtils.getFile("classpath:" + xmlTupel.getFirst());
-      String xmlContent = new String(Files.readAllBytes(xmlFile.toPath()));
+    var meldungsId = StringUtils.substringBetween(xmlContent, "Meldung_ID=\"", "\" Melder_ID");
+    var melderId = StringUtils.substringBetween(xmlContent, "Melder_ID=\"", "\">");
+    var patId = StringUtils.substringBetween(xmlContent, "Patient_ID=\"", "\">");
 
-      var meldungsId = StringUtils.substringBetween(xmlContent, "Meldung_ID=\"", "\" Melder_ID");
-      var melderId = StringUtils.substringBetween(xmlContent, "Melder_ID=\"", "\">");
-      var patId = StringUtils.substringBetween(xmlContent, "Patient_ID=\"", "\">");
+    Map<String, Object> payloadOnkoRessource = new HashMap<>();
+    payloadOnkoRessource.put("ID", 1);
+    payloadOnkoRessource.put("REFERENZ_NUMMER", patId);
+    payloadOnkoRessource.put("LKR_MELDUNG", Integer.parseInt(meldungsId.replace(melderId, "")));
+    payloadOnkoRessource.put("VERSIONSNUMMER", xmlTupel.getSecond());
+    payloadOnkoRessource.put("XML_DATEN", xmlContent);
 
-      Map<String, Object> payloadOnkoRessource = new HashMap<>();
-      payloadOnkoRessource.put("ID", payloadId);
-      payloadOnkoRessource.put("REFERENZ_NUMMER", patId);
-      payloadOnkoRessource.put("LKR_MELDUNG", Integer.parseInt(meldungsId.replace(melderId, "")));
-      payloadOnkoRessource.put("VERSIONSNUMMER", xmlTupel.getSecond());
-      payloadOnkoRessource.put("XML_DATEN", xmlContent);
-
-      MeldungExport meldungExport = new MeldungExport();
-      meldungExport.getPayload(payloadOnkoRessource);
-      meldungExportList.addElement(meldungExport);
-
-      payloadId++;
-    }
+    MeldungExport meldungExport = new MeldungExport();
+    meldungExport.getPayload(payloadOnkoRessource);
+    meldungExportList.addElement(meldungExport);
 
     ObdsProcessor procedureProcessor =
         new ObdsProcessor(
@@ -232,7 +227,14 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
         assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
       }
 
-      assertThat(isValid(resultBundle)).isTrue();
+      var fhirParser = ctx.newJsonParser().setPrettyPrint(true);
+      var fhirJson = fhirParser.encodeResourceToString(resultBundle);
+      Approvals.verify(
+          fhirJson,
+          Approvals.NAMES
+              .withParameters(xmlTupel.getFirst())
+              .forFile()
+              .withExtension(".fhir.json"));
     }
   }
 }
