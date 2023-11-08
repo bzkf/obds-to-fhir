@@ -7,7 +7,7 @@
       "resourceType": "Patient",
       "id": "d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
       "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
       },
       "identifier": [ {

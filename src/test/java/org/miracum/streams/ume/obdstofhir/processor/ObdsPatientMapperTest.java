@@ -7,15 +7,10 @@ import org.approvaltests.Approvals;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {ObdsPatientMapper.class, FhirProperties.class})
-@EnableConfigurationProperties()
 class ObdsPatientMapperTest extends ObdsProcessorTest {
 
   private final ObdsPatientMapper onkoPatientMapper;

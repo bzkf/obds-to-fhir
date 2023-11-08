@@ -7,7 +7,7 @@
       "resourceType": "Procedure",
       "id": "504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -74,7 +74,7 @@
       "resourceType": "Procedure",
       "id": "8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -151,7 +151,7 @@
       "resourceType": "Procedure",
       "id": "8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -228,7 +228,7 @@
       "resourceType": "Procedure",
       "id": "d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -305,7 +305,7 @@
       "resourceType": "Procedure",
       "id": "a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -382,7 +382,7 @@
       "resourceType": "Procedure",
       "id": "cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -459,7 +459,7 @@
       "resourceType": "Procedure",
       "id": "605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -536,7 +536,7 @@
       "resourceType": "Procedure",
       "id": "a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {
@@ -613,7 +613,7 @@
       "resourceType": "Procedure",
       "id": "b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd",
       "meta": {
-        "source": "UKER.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
       },
       "extension": [ {

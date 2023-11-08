@@ -7,7 +7,7 @@
       "resourceType": "Condition",
       "id": "438ded78a47f0cc1921fd82237f9c5aaca5fa381ef2e5b4e65538087dd08d47c",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
       },
       "code": {

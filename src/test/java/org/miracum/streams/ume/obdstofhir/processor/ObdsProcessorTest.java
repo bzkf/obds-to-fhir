@@ -10,13 +10,33 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
+import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsConditionMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsMedicationStatementMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsPatientMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsProcedureMapper;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
 
+@SpringBootTest(
+    classes = {
+      FhirProperties.class,
+      ObdsConditionMapper.class,
+      ObdsMedicationStatementMapper.class,
+      ObdsObservationMapper.class,
+      ObdsProcedureMapper.class,
+      ObdsPatientMapper.class,
+      ObdsConditionMapper.class
+    },
+    properties = {"app.version=0.0.0-test"})
+@EnableConfigurationProperties()
 public abstract class ObdsProcessorTest {
 
   private static final Logger log = LoggerFactory.getLogger(ObdsProcessorTest.class);

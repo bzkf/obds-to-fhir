@@ -7,7 +7,7 @@
       "resourceType": "MedicationStatement",
       "id": "3a6f9e3df20464337ff932ea9833acdfc92c3dd4afa444f2d1bf900627eec020",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie" ]
       },
       "extension": [ {
@@ -74,7 +74,7 @@
       "resourceType": "MedicationStatement",
       "id": "ea3bdcd0ac67e6103589595775d905b521ca5ce5370018e7b738e0806fde2821",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie" ]
       },
       "extension": [ {
@@ -141,7 +141,7 @@
       "resourceType": "MedicationStatement",
       "id": "3eb18c984d23b8a3bbf02fe2c2cb385c5f9ec86602c8fb2749dae763b1ad79e5",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie" ]
       },
       "extension": [ {
@@ -208,7 +208,7 @@
       "resourceType": "MedicationStatement",
       "id": "328a01d32491f06ac6ab8564d059cc313390645329af4539a2185cafb7c92c8d",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie" ]
       },
       "extension": [ {
@@ -275,7 +275,7 @@
       "resourceType": "MedicationStatement",
       "id": "d2aa80723b3d9fa509c68ef373c0963fb20bffe801aeecc72c81c806160ddd0f",
       "meta": {
-        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie" ]
       },
       "extension": [ {

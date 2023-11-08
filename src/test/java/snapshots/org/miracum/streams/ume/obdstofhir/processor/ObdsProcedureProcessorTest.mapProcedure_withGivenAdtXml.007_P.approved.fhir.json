@@ -7,7 +7,7 @@
       "resourceType": "Procedure",
       "id": "4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567",
       "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
       },
       "extension": [ {
@@ -71,7 +71,7 @@
       "resourceType": "Procedure",
       "id": "2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5",
       "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
       },
       "extension": [ {
@@ -138,7 +138,7 @@
       "resourceType": "Procedure",
       "id": "5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce",
       "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:2.0.3",
+        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
       },
       "extension": [ {
