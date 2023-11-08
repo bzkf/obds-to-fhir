@@ -27,5 +27,7 @@ jobs:
           fhir restore
 
       - name: Validate generated FHIR resources
+        # TODO: switch to 'xargs' or for loop so if any validation fails, the entire command fails.
+        # for fhir_file in src/test/java/snapshots/**/*.fhir.json; do fhir validate --verbose --fail "$fhir_file"; done
         run: |
-            find src/test/java/snapshots -name "*.fhir.json" -exec fhir validate --verbose --fail "{}" \;
+          find src/test/java/snapshots -name "*.fhir.json" -exec fhir validate --verbose --fail "{}" \;
