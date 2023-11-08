@@ -207,7 +207,10 @@ public class ObdsProcedureProcessorTest extends ObdsProcessorTest {
       Approvals.verify(
           fhirJson,
           Approvals.NAMES
-              .withParameters(xmlFileNames.stream().map(t -> t.getFirst()).toArray(String[]::new))
+              .withParameters(
+                  xmlFileNames.stream()
+                      .map(t -> t.getFirst().substring(0, 5))
+                      .toArray(String[]::new))
               .forFile()
               .withExtension(".fhir.json"));
     }
