@@ -1,0 +1,581 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Observation/4d8b7cdb7f7e81ecfeceafb96ac5c4390ae37be6b3b38f21ba315389dccb040b",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4d8b7cdb7f7e81ecfeceafb96ac5c4390ae37be6b3b38f21ba315389dccb040b",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-03-18",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "urn:oid:2.16.840.1.113883.6.43.1",
+          "version": "32",
+          "code": "9391/3"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/98af71c27bc7328e3d2e184eca58d8e402a246efda16516f5382efba6fda4e50"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4d8b7cdb7f7e81ecfeceafb96ac5c4390ae37be6b3b38f21ba315389dccb040b"
+    }
+  }, {
+    "fullUrl": "Observation/98af71c27bc7328e3d2e184eca58d8e402a246efda16516f5382efba6fda4e50",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "98af71c27bc7328e3d2e184eca58d8e402a246efda16516f5382efba6fda4e50",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59542-1",
+          "display": "Grade pathology value Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-03-18",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS",
+          "code": "T",
+          "display": "trifft nicht zu"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/98af71c27bc7328e3d2e184eca58d8e402a246efda16516f5382efba6fda4e50"
+    }
+  }, {
+    "fullUrl": "Observation/fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21908-9",
+          "display": "Stage group.clinical Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-10-21",
+      "component": [ {
+        "extension": [ {
+          "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS",
+              "code": "c",
+              "display": "Kategorie wurde durch klinische Angaben festgestellt, bzw. erfüllt die Kriterien für p nicht"
+            } ]
+          }
+        } ],
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "code": "21905-5",
+            "display": "Primary tumor.clinical Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS",
+            "code": "0",
+            "display": "0"
+          } ]
+        }
+      }, {
+        "extension": [ {
+          "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS",
+              "code": "c",
+              "display": "Kategorie wurde durch klinische Angaben festgestellt, bzw. erfüllt die Kriterien für p nicht"
+            } ]
+          }
+        } ],
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "code": "21906-3",
+            "display": "Regional lymph nodes.clinical"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS",
+            "code": "1",
+            "display": "1"
+          } ]
+        }
+      }, {
+        "extension": [ {
+          "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS",
+              "code": "c",
+              "display": "Kategorie wurde durch klinische Angaben festgestellt, bzw. erfüllt die Kriterien für p nicht"
+            } ]
+          }
+        } ],
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "code": "21907-1",
+            "display": "Distant metastases.clinical [Class] Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS",
+            "code": "0",
+            "display": "0"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc"
+    }
+  }, {
+    "fullUrl": "Observation/555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21902-2",
+          "display": "Stage group.pathology Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-11-05",
+      "component": [ {
+        "extension": [ {
+          "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS",
+              "code": "p",
+              "display": "Feststellung der Kategorie erfolgte durch eine pathohistologische Untersuchung, mit der auch der höchste Grad der jeweiligen Kategorie hätte festgestellt werden können"
+            } ]
+          }
+        } ],
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "code": "21900-6",
+            "display": "Regional lymph nodes.pathology"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS",
+            "code": "2a",
+            "display": "2a"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1"
+    }
+  }, {
+    "fullUrl": "Observation/7b3181b44891bb7bba0f7ebb2511285589df40eb54a6073e390ed8550fc3ad8d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7b3181b44891bb7bba0f7ebb2511285589df40eb54a6073e390ed8550fc3ad8d",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21907-1",
+          "display": "Distant metastases.clinical"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-02-12",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      },
+      "bodySite": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS",
+          "code": "OTH",
+          "display": "Andere Organe"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7b3181b44891bb7bba0f7ebb2511285589df40eb54a6073e390ed8550fc3ad8d"
+    }
+  }, {
+    "fullUrl": "Observation/aa0f0ae0f151114fd167c207b9216685244dd8a17739f01e2e3fda9cada6491a",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "aa0f0ae0f151114fd167c207b9216685244dd8a17739f01e2e3fda9cada6491a",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21907-1",
+          "display": "Distant metastases.clinical"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-08-26",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      },
+      "bodySite": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS",
+          "code": "OSS",
+          "display": "Knochen"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/aa0f0ae0f151114fd167c207b9216685244dd8a17739f01e2e3fda9cada6491a"
+    }
+  }, {
+    "fullUrl": "Observation/a0bac97bc3de3b565faba74d49c0b6eb43751b07fa5deda2f63b75eb8db66147",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a0bac97bc3de3b565faba74d49c0b6eb43751b07fa5deda2f63b75eb8db66147",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21907-1",
+          "display": "Distant metastases.clinical"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-02-12",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      },
+      "bodySite": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS",
+          "code": "OTH",
+          "display": "Andere Organe"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a0bac97bc3de3b565faba74d49c0b6eb43751b07fa5deda2f63b75eb8db66147"
+    }
+  }, {
+    "fullUrl": "Observation/302e6b7f1b82d044c443cd186dad3eb3470351b10d6e0808fefcf9c99c354753",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "302e6b7f1b82d044c443cd186dad3eb3470351b10d6e0808fefcf9c99c354753",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21907-1",
+          "display": "Distant metastases.clinical"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-02-12",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      },
+      "bodySite": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS",
+          "code": "HEP",
+          "display": "Leber"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/302e6b7f1b82d044c443cd186dad3eb3470351b10d6e0808fefcf9c99c354753"
+    }
+  }, {
+    "fullUrl": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen" ]
+      },
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://hl7.org/fhir/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21907-1",
+          "display": "Distant metastases.clinical"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-02-12",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      },
+      "bodySite": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS",
+          "code": "LYM",
+          "display": "Lymphknoten"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d"
+    }
+  } ]
+}

@@ -18,7 +18,7 @@ fhir:
     observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id"
     procedureId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id"
     medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
-    observationCategorySystem: "http://terminology.hl7.org/CodeSystem/observation-category"
+    observationCategorySystem: "http://hl7.org/fhir/observation-category"
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
     gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"

@@ -57,3 +57,5 @@ bin
 # ignored since it isn't automatically refreshed by renovate
 # (we're also pinning the dependency versions anyways)
 fhirpkg.lock.json
+
+*.received.fhir.json

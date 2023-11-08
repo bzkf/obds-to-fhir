@@ -1,0 +1,96 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:2.0.3",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/eb9b082adf8afc80a6858bc05886c1ecb08b5caf7d2864198baad0903ac55baf"
+        }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/7b3181b44891bb7bba0f7ebb2511285589df40eb54a6073e390ed8550fc3ad8d"
+        }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/aa0f0ae0f151114fd167c207b9216685244dd8a17739f01e2e3fda9cada6491a"
+        }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/a0bac97bc3de3b565faba74d49c0b6eb43751b07fa5deda2f63b75eb8db66147"
+        }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/302e6b7f1b82d044c443cd186dad3eb3470351b10d6e0808fefcf9c99c354753"
+        }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
+        "valueReference": {
+          "reference": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d"
+        }
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2021",
+          "code": "C72.0"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS",
+          "code": "T",
+          "display": "trifft nicht zu (Seitenangabe nicht sinnvoll, einschließlich Systemerkrankungen)"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "396360001",
+          "display": "Tumor site not applicable (finding)"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "onsetDateTime": "2021-03-18",
+      "stage": [ {
+        "assessment": [ {
+          "reference": "Observation/fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc"
+        } ]
+      }, {
+        "assessment": [ {
+          "reference": "Observation/555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1"
+        } ]
+      } ],
+      "evidence": [ {
+        "detail": [ {
+          "reference": "Observation/4d8b7cdb7f7e81ecfeceafb96ac5c4390ae37be6b3b38f21ba315389dccb040b"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+    }
+  } ]
+}
