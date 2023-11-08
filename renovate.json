@@ -1,19 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    ":preserveSemverRanges",
-    "group:all",
-    "config:base",
-    ":disableDependencyDashboard"
-  ],
-  "groupName": "all dependencies",
-  "separateMajorMinor": true,
-  "groupSlug": "all",
-  "packageRules": [
-    {
-      "packagePatterns": ["*"],
-      "groupName": "all dependencies",
-      "groupSlug": "all"
-    }
-  ]
+  "extends": ["github>miracum/.github//renovate/default"],
+  "ignoreDeps": ["harbor.miracum.org/oracle/database:19.3.0-se2"]
 }
