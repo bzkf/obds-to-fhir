@@ -92,6 +92,17 @@
                 "hasChanged": true
               }
             ]
+          },
+          {
+            "files": ["package.json"],
+            "from": "\"version\": \".*\"",
+            "to": "\"version\": \"${nextRelease.version}\"",
+            "results": [
+              {
+                "file": "package.json",
+                "hasChanged": true
+              }
+            ]
           }
         ]
       }

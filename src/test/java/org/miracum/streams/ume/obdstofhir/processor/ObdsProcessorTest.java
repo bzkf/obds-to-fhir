@@ -1,97 +1,80 @@
 package org.miracum.streams.ume.obdstofhir.processor;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.context.support.DefaultProfileValidationSupport;
-import ca.uhn.fhir.validation.FhirValidator;
-import ca.uhn.fhir.validation.SingleValidationMessage;
+import ca.uhn.fhir.parser.IParser;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.nio.file.Paths;
-import java.util.Objects;
-import org.hl7.fhir.common.hapi.validation.support.*;
-import org.hl7.fhir.common.hapi.validation.validator.FhirInstanceValidator;
-import org.hl7.fhir.r4.model.Bundle;
-import org.hl7.fhir.r4.model.CodeSystem;
-import org.hl7.fhir.r4.model.StructureDefinition;
-import org.hl7.fhir.r4.model.ValueSet;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
+import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsConditionMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsMedicationStatementMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsPatientMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsProcedureMapper;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
+import org.miracum.streams.ume.obdstofhir.model.Tupel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.ResourceUtils;
 
+@SpringBootTest(
+    classes = {
+      FhirProperties.class,
+      ObdsConditionMapper.class,
+      ObdsMedicationStatementMapper.class,
+      ObdsObservationMapper.class,
+      ObdsProcedureMapper.class,
+      ObdsPatientMapper.class,
+      ObdsConditionMapper.class
+    },
+    properties = {"app.version=0.0.0-test"})
+@EnableConfigurationProperties()
 public abstract class ObdsProcessorTest {
 
   private static final Logger log = LoggerFactory.getLogger(ObdsProcessorTest.class);
 
-  private static FhirValidator validator;
+  protected final FhirContext ctx = FhirContext.forR4();
+  protected final IParser fhirParser = ctx.newJsonParser().setPrettyPrint(true);
 
   @BeforeAll
-  static void setUp() throws FileNotFoundException {
-    var ctx = FhirContext.forR4();
-    validator = ctx.newValidator();
+  static void setUp() {}
 
-    var validationSupportChain =
-        new ValidationSupportChain(
-            new DefaultProfileValidationSupport(ctx),
-            getProfiles(ctx),
-            new SnapshotGeneratingValidationSupport(ctx),
-            new InMemoryTerminologyServerValidationSupport(ctx),
-            new CommonCodeSystemsTerminologyService(ctx));
+  protected MeldungExportList buildMeldungExportList(List<Tupel<String, Integer>> xmlFileNames)
+      throws IOException, NumberFormatException {
+    var meldungExportList = new MeldungExportList();
 
-    var instanceValidator = new FhirInstanceValidator(validationSupportChain);
-    validator.registerValidatorModule(instanceValidator);
-  }
+    int payloadId = 1;
 
-  private static PrePopulatedValidationSupport getProfiles(FhirContext ctx)
-      throws FileNotFoundException {
-    var currentRelativePath = Paths.get("");
-    var basePath = currentRelativePath.toAbsolutePath().toString();
-    var parser = ctx.newJsonParser();
+    for (var xmlTupel : xmlFileNames) {
+      File xmlFile = ResourceUtils.getFile("classpath:" + xmlTupel.getFirst());
+      String xmlContent = new String(Files.readAllBytes(xmlFile.toPath()));
 
-    var folder = new File(basePath + "/src/test/resources/profiles");
-    var folderVS = new File(basePath + "/src/test/resources/ValueSets");
-    var folderCS = new File(basePath + "/src/test/resources/CodeSystems");
-    var prepop = new PrePopulatedValidationSupport(ctx);
+      var meldungsId = StringUtils.substringBetween(xmlContent, "Meldung_ID=\"", "\" Melder_ID");
+      var melderId = StringUtils.substringBetween(xmlContent, "Melder_ID=\"", "\">");
+      var patId = StringUtils.substringBetween(xmlContent, "Patient_ID=\"", "\">");
 
-    for (final var fileEntry : Objects.requireNonNull(folder.listFiles())) {
-      var struct =
-          parser.parseResource(
-              StructureDefinition.class, new FileReader(fileEntry.getAbsolutePath()));
-      prepop.addStructureDefinition(struct);
+      Map<String, Object> payloadOnkoRessource = new HashMap<>();
+      payloadOnkoRessource.put("ID", payloadId);
+      payloadOnkoRessource.put("REFERENZ_NUMMER", patId);
+      payloadOnkoRessource.put("LKR_MELDUNG", Integer.parseInt(meldungsId.replace(melderId, "")));
+      payloadOnkoRessource.put("VERSIONSNUMMER", xmlTupel.getSecond());
+      payloadOnkoRessource.put("XML_DATEN", xmlContent);
+
+      MeldungExport meldungExport = new MeldungExport();
+      meldungExport.getPayload(payloadOnkoRessource);
+      meldungExportList.addElement(meldungExport);
+
+      payloadId++;
     }
 
-    // ToDo: Often the valuesets are included in the codesystem resources.
-    //  However, the validator somehow does not find them in there.
-    // Validation against ValueSet
-    for (final var fileEntry : Objects.requireNonNull(folderVS.listFiles())) {
-      var valueSet =
-          parser.parseResource(ValueSet.class, new FileReader(fileEntry.getAbsolutePath()));
-      prepop.addValueSet(valueSet);
-    }
-
-    for (final var fileEntry : Objects.requireNonNull(folderCS.listFiles())) {
-      var codeSys =
-          parser.parseResource(CodeSystem.class, new FileReader(fileEntry.getAbsolutePath()));
-      prepop.addCodeSystem(codeSys);
-    }
-
-    return prepop;
-  }
-
-  protected boolean isValid(Bundle fhirBundle) {
-    var result = validator.validateWithResult(fhirBundle);
-    var valResultMessages = result.getMessages();
-
-    for (SingleValidationMessage message : valResultMessages) {
-      log.error(
-          "issue: "
-              + message.getSeverity()
-              + " - "
-              + message.getLocationString()
-              + " - "
-              + message.getMessage());
-    }
-
-    return result.isSuccessful();
+    return meldungExportList;
   }
 }

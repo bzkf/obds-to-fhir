@@ -23,7 +23,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  protected ObdsPatientMapper(FhirProperties fhirProperties) {
+  public ObdsPatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 

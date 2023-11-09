@@ -4,6 +4,8 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Used FHIR profiles
 
+See [package.json](package.json) for a list of used packages and their versions.
+
 ## Observations
 
 - Histologie (<https://simplifier.net/oncology/histologie>)
@@ -28,7 +30,7 @@ This project contains a Kafka Stream processor that creates FHIR resources from 
 
 ## Patient
 
-- Patient (<https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.person/2.0.0-ballot2/files/533910>)
+- Patient (<https://simplifier.net/medizininformatikinitiative-modulperson>)
 
 ## Dev
 

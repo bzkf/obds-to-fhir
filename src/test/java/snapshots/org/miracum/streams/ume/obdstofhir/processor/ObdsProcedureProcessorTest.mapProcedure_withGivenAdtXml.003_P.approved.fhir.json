@@ -1,0 +1,688 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+    }
+  }, {
+    "fullUrl": "Procedure/8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-930.00"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d"
+    }
+  }, {
+    "fullUrl": "Procedure/8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-010.01"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202"
+    }
+  }, {
+    "fullUrl": "Procedure/d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-852.g0"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1"
+    }
+  }, {
+    "fullUrl": "Procedure/a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-988.0"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a"
+    }
+  }, {
+    "fullUrl": "Procedure/cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-021.0"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012"
+    }
+  }, {
+    "fullUrl": "Procedure/605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-930.4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8"
+    }
+  }, {
+    "fullUrl": "Procedure/a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-015.4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679"
+    }
+  }, {
+    "fullUrl": "Procedure/b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
+      },
+      "extension": [ {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS",
+            "code": "K",
+            "display": "kurativ"
+          } ]
+        }
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
+          "code": "OP",
+          "display": "Operation"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2021",
+          "code": "5-984"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "performedDateTime": "2021-01-04",
+      "reasonReference": [ {
+        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        }, {
+          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS",
+          "code": "R0",
+          "display": "kein Residualtumor"
+        } ]
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "urn:oid:1.2.276.0.76.3.1.131.1.5.122",
+          "code": "N",
+          "display": "Nein"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd"
+    }
+  } ]
+}

@@ -1,0 +1,33 @@
+name: validate-fhir-resources
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions: read-all
+
+jobs:
+  validate-fhir-resource:
+    name: Validate FHIR resources
+    runs-on: ubuntu-22.04
+    container: ghcr.io/miracum/ig-build-tools:v2.0.12@sha256:f2cca9f26f7bdb9fe238798b6f60b7798553c7d488633ded6f5a90ce6f083deb
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Install Firely.Terminal
+        run: |
+          dotnet tool install --global Firely.Terminal --version 3.1.0
+          fhir --help
+
+      - name: Restore FHIR package dependencies
+        run: |
+          fhir restore
+
+      - name: Validate generated FHIR resources
+        # TODO: switch to 'xargs' or for loop so if any validation fails, the entire command fails.
+        # for fhir_file in src/test/java/snapshots/**/*.fhir.json; do fhir validate --verbose --fail "$fhir_file"; done
+        run: |
+          find src/test/java/snapshots -name "*.fhir.json" -exec fhir validate --verbose --fail "{}" \;
