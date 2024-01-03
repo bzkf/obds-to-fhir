@@ -11,7 +11,7 @@ RUN gradle clean build --info && \
     awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/jacoco/coverage.csv && \
     java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
 
-FROM gcr.io/distroless/java17-debian11@sha256:b50c5d2f702a755dfaa18463edfd76c6cd0d8cb9a0e3073d99b8392b189aab24
+FROM gcr.io/distroless/java17-debian11@sha256:bc99bb6dfb842c0d07410cb341e1a993b4b75198f6e883315d8dc42588844a16
 WORKDIR /opt/obds-to-fhir
 
 COPY --from=build /home/gradle/src/dependencies/ ./
