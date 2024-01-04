@@ -21,10 +21,10 @@ public class SnomedCtSeitenlokalisationLookup {
   }
 
   public final String lookupSnomedCode(String AdtCode) {
-    return lookup.get(AdtCode).get(0);
+    return lookup.get(AdtCode) != null ? lookup.get(AdtCode).get(0) : null;
   }
 
   public final String lookupSnomedDisplay(String AdtCode) {
-    return lookup.get(AdtCode).get(1);
+    return lookup.get(AdtCode) != null ? lookup.get(AdtCode).get(1) : null;
   }
 }

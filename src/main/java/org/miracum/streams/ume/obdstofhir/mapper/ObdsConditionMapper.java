@@ -116,16 +116,29 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var adtBodySite = primDia.getSeitenlokalisation();
 
     if (adtBodySite != null) {
-      bodySiteADTCoding
-          .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
-          .setCode(adtBodySite)
-          .setDisplay(
-              displayAdtSeitenlokalisationLookup.lookupAdtSeitenlokalisationDisplay(adtBodySite));
-      bodySiteSNOMEDCoding
-          .setSystem(fhirProperties.getSystems().getSnomed())
-          .setCode(snomedCtSeitenlokalisationLookup.lookupSnomedCode(adtBodySite))
-          .setDisplay(snomedCtSeitenlokalisationLookup.lookupSnomedDisplay(adtBodySite));
+      var adtSeitenlokalisationDisplay =
+          displayAdtSeitenlokalisationLookup.lookupAdtSeitenlokalisationDisplay(adtBodySite);
+      var snomedCtSeitenlokalisationCode =
+          snomedCtSeitenlokalisationLookup.lookupSnomedCode(adtBodySite);
+      var snomedCtSeitenlokalisationDisplay =
+          snomedCtSeitenlokalisationLookup.lookupSnomedDisplay(adtBodySite);
 
+      if (adtSeitenlokalisationDisplay != null) {
+        bodySiteADTCoding
+            .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
+            .setCode(adtBodySite)
+            .setDisplay(adtSeitenlokalisationDisplay);
+      } else {
+        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+      }
+      if (adtSeitenlokalisationDisplay != null) {
+        bodySiteSNOMEDCoding
+            .setSystem(fhirProperties.getSystems().getSnomed())
+            .setCode(snomedCtSeitenlokalisationCode)
+            .setDisplay(snomedCtSeitenlokalisationDisplay);
+      } else {
+        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+      }
       var bodySiteConcept = new CodeableConcept();
       bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
       onkoCondition.addBodySite(bodySiteConcept);
