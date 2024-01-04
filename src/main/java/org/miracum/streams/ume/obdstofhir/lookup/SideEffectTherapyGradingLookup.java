@@ -21,10 +21,10 @@ public class SideEffectTherapyGradingLookup {
   }
 
   public final String lookupSideEffectTherapyGradingCode(String code) {
-    return lookup.get(code).get(0);
+    return lookup.get(code) != null ? lookup.get(code).get(0) : null;
   }
 
   public final String lookupSideEffectTherapyGradingDisplay(String code) {
-    return lookup.get(code).get(1);
+    return lookup.get(code) != null ? lookup.get(code).get(1) : null;
   }
 }
