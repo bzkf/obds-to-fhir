@@ -12,7 +12,7 @@ jobs:
   validate-fhir-resource:
     name: Validate FHIR resources
     runs-on: ubuntu-22.04
-    container: ghcr.io/miracum/ig-build-tools:v2.0.12@sha256:f2cca9f26f7bdb9fe238798b6f60b7798553c7d488633ded6f5a90ce6f083deb
+    container: ghcr.io/miracum/ig-build-tools:v2.0.16@sha256:b4d90ad9c5d3f78ce9b479b11f01262937bf38fc3097e44f176a4553d272fa9e
     steps:
       - name: Checkout code
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
