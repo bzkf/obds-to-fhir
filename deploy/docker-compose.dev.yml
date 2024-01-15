@@ -24,7 +24,7 @@ services:
       ZOO_SERVERS: server.1=zoo1:2888:3888;2181
 
   kafka1:
-    image: confluentinc/cp-kafka:7.5.1
+    image: confluentinc/cp-kafka:7.5.3@sha256:51145a40d23336a11085ca695d02bdeee66fe01b582837c6d223384952226be9
     hostname: kafka1
     ports:
       - "9092:9092"
@@ -40,7 +40,7 @@ services:
       - zoo1
 
   kafka-rest-proxy:
-    image: confluentinc/cp-kafka-rest:7.5.1
+    image: confluentinc/cp-kafka-rest:7.5.3@sha256:a4558632cad6c4eedd8bc340a30277ab020b4fd97444844df1be0dbf9061782d
     hostname: kafka-rest-proxy
     ports:
       - "8082:8082"
@@ -55,7 +55,7 @@ services:
       - kafka1
 
   kafka-connect:
-    image: confluentinc/cp-kafka-connect:7.5.1
+    image: confluentinc/cp-kafka-connect:7.5.3@sha256:e6bc1b88b43a23de290da574b0bbc06135b0005ecb9cac0c95155d3ff50f283a
     hostname: kafka-connect
     ports:
       - "8083:8083"
