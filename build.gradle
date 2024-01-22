@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'org.miracum.streams.ume'
-version = '2.0.11'
+version = '2.0.12'
 sourceCompatibility = '17'
 targetCompatibility = '17'
 
