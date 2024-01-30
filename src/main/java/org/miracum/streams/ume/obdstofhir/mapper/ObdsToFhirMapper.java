@@ -61,6 +61,7 @@ public abstract class ObdsToFhirMapper {
       convertedId = matcher.group();
     } else {
       log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
+      return id;
     }
     return convertedId;
   }
