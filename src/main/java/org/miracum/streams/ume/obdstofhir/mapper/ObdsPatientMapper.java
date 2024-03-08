@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 @Configuration
 public class ObdsPatientMapper extends ObdsToFhirMapper {
@@ -128,12 +129,10 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     }
 
     // address
-    var address = new Address();
     var patAddess = patData.getMenge_Adresse().getAdresse().get(0);
-    if (patAddess.getPatienten_PLZ() != null && patAddess.getPatienten_PLZ().length() >= 2) {
-      address
-          .setPostalCode(patAddess.getPatienten_PLZ().substring(0, 2))
-          .setType(Address.AddressType.BOTH);
+    if (StringUtils.hasLength(patAddess.getPatienten_PLZ())) {
+      var address = new Address();
+      address.setPostalCode(patAddess.getPatienten_PLZ()).setType(Address.AddressType.BOTH);
       if (patAddess.getPatienten_Land() != null
           && patAddess.getPatienten_Land().matches("[a-zA-Z]{2,3}")) {
         address.setCountry(patAddess.getPatienten_Land().toUpperCase());
@@ -143,8 +142,8 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
             .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
             .setValue(new CodeType("unknown"));
       }
+      patient.addAddress(address);
     }
-    patient.addAddress(address);
 
     var bundle = new Bundle();
     bundle.setType(Bundle.BundleType.TRANSACTION);
