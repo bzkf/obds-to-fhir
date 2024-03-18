@@ -165,6 +165,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
     var evidenceBackBoneComponentList = new ArrayList<Condition.ConditionEvidenceComponent>();
 
+    // TODO: @chgl - add gleason score observation here
     if (observationBundle != null && observationBundle.getEntry() != null) {
       for (var obsEntry : observationBundle.getEntry()) {
         var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();

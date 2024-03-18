@@ -31,6 +31,7 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
     }
 
     var gleasonScoreObservation = new Observation();
+    // TODO: dnymisch je nach meldeanlass
     gleasonScoreObservation.setStatus(ObservationStatus.FINAL);
 
     var identifierValue = patientId + "-op-gleason-score-" + opId;
