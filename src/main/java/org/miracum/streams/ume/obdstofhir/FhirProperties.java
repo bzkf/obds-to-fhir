@@ -13,7 +13,6 @@ public class FhirProperties {
   private FhirDisplay display;
   private FhirProfiles profiles;
   private FhirUrl url;
-  private FhirReportingReason reportingReason;
 
   @Data
   public static class FhirExtensions {
@@ -97,14 +96,5 @@ public class FhirProperties {
   @Data
   public static class FhirUrl {
     private String tnmPraefix;
-  }
-
-  @Data
-  public static class FhirReportingReason {
-    private String treatmentEnd;
-    private String treatmentStart;
-    private String statusChange;
-    private String diagnosis;
-    private String death;
   }
 }

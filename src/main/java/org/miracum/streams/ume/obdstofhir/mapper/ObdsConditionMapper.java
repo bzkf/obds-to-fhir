@@ -165,26 +165,43 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
     var evidenceBackBoneComponentList = new ArrayList<Condition.ConditionEvidenceComponent>();
 
-    // TODO: @chgl - add gleason score observation here
     if (observationBundle != null && observationBundle.getEntry() != null) {
       for (var obsEntry : observationBundle.getEntry()) {
-        var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
-        if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
-          // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische Variante
-          // erst ab ADTv3
-          var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
-          conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
-          evidenceBackBoneComponentList.add(conditionEvidenceComponent);
-        } else if (profile.equals(fhirProperties.getProfiles().getTnmC())
-            || profile.equals(fhirProperties.getProfiles().getTnmP())) {
-          var conditionStageComponent = new Condition.ConditionStageComponent();
-          conditionStageComponent.addAssessment(new Reference(obsEntry.getFullUrl()));
-          stageBackBoneComponentList.add(conditionStageComponent);
-        } else if (profile.equals(fhirProperties.getProfiles().getFernMeta())) {
-          onkoCondition
-              .addExtension()
-              .setUrl(fhirProperties.getExtensions().getFernMetaExt())
-              .setValue(new Reference(obsEntry.getFullUrl()));
+        if (obsEntry.getResource().getMeta().getProfile().isEmpty()) {
+          // For now, the custom Gleason score observation doesn't set a profile.
+          var observation = (Observation) obsEntry.getResource();
+          if (observation.getCode().getCodingFirstRep().getCode().equals("35266-6")) {
+            var conditionStageComponent =
+                new Condition.ConditionStageComponent()
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getSnomed(),
+                                "106241006",
+                                "Gleason grading system for prostatic cancer (staging scale)")))
+                    .addAssessment(new Reference(obsEntry.getFullUrl()));
+            stageBackBoneComponentList.add(conditionStageComponent);
+          }
+        } else {
+          var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
+          if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
+            // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische
+            // Variante
+            // erst ab ADTv3
+            var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
+            conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
+            evidenceBackBoneComponentList.add(conditionEvidenceComponent);
+          } else if (profile.equals(fhirProperties.getProfiles().getTnmC())
+              || profile.equals(fhirProperties.getProfiles().getTnmP())) {
+            var conditionStageComponent = new Condition.ConditionStageComponent();
+            conditionStageComponent.addAssessment(new Reference(obsEntry.getFullUrl()));
+            stageBackBoneComponentList.add(conditionStageComponent);
+          } else if (profile.equals(fhirProperties.getProfiles().getFernMeta())) {
+            onkoCondition
+                .addExtension()
+                .setUrl(fhirProperties.getExtensions().getFernMetaExt())
+                .setValue(new Reference(obsEntry.getFullUrl()));
+          }
         }
       }
     }

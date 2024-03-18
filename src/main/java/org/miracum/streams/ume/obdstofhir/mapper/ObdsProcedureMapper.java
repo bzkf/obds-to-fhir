@@ -6,6 +6,7 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_ST.ST.Menge_Bestrahlung.Bestrahlung;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
 import org.slf4j.Logger;
@@ -78,8 +79,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
-    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getTreatmentEnd())) {
-
+    if (reportingReason == Meldeanlass.BEHANDLUNGSENDE) {
       // OP und Strahlentherapie sofern vorhanden
       // Strahlentherapie kann auch im beginn stehen, op aber nicht
       if (meldung != null
@@ -331,7 +331,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       String pid,
       String senderId,
       String softwareId,
-      String meldeanlass,
+      Meldeanlass meldeanlass,
       Bestrahlung radio,
       Tupel<Date, Date> timeSpan,
       HashSet<Bestrahlung> distinctPartialRadiations) {
@@ -435,7 +435,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                             displaySystIntentionLookup.lookupSystIntentionDisplay(systIntention))));
 
     // Status
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
+    if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
       stProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
     } else {
       stProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);

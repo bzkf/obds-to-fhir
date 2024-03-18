@@ -91,7 +91,8 @@ public class ADT_GEKID implements Serializable {
           @JsonProperty private String Meldung_ID;
 
           @JsonProperty private String Meldedatum;
-          @JsonProperty private String Meldeanlass;
+
+          @JsonProperty private Meldeanlass Meldeanlass;
 
           @JsonProperty private Tumorzuordnung Tumorzuordnung;
 

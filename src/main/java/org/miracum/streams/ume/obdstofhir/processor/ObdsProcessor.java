@@ -9,6 +9,7 @@ import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
@@ -144,12 +145,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()),
-              List.of(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()));
+              Arrays.asList(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN),
+              List.of(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN));
 
       return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
     };
@@ -160,12 +157,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()),
-              List.of(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()));
+              Arrays.asList(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN),
+              List.of(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN));
       return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
     };
   }
@@ -176,10 +169,10 @@ public class ObdsProcessor extends ObdsToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange(),
-                  fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getDeath()),
+                  Meldeanlass.BEHANDLUNGSENDE,
+                  Meldeanlass.STATUSAENDERUNG,
+                  Meldeanlass.DIAGNOSE,
+                  Meldeanlass.TOD),
               null);
 
       return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);
@@ -192,10 +185,10 @@ public class ObdsProcessor extends ObdsToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
-                  fhirProperties.getReportingReason().getDeath(),
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange(),
-                  fhirProperties.getReportingReason().getDiagnosis()),
+                  Meldeanlass.TOD,
+                  Meldeanlass.BEHANDLUNGSENDE,
+                  Meldeanlass.STATUSAENDERUNG,
+                  Meldeanlass.DIAGNOSE),
               null);
 
       return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
@@ -208,9 +201,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungPair.getLeft(),
               Arrays.asList(
-                  fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange()),
+                  Meldeanlass.DIAGNOSE, Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.STATUSAENDERUNG),
               null);
 
       return onkoConditionMapper.mapOnkoResourcesToCondition(

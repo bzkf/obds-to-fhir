@@ -11,7 +11,7 @@
     } ]
   },
   "subject": {
-    "reference": "Patient/7eeaf3eef9303b4f49457c2ec3d6b975ca92f371ee5d848fceeae3e633b4ae78",
+    "reference": "Patient/pid-1",
     "identifier": {
       "type": {
         "coding": [ {
@@ -23,5 +23,6 @@
       "value": "pid-1"
     }
   },
+  "effectiveDateTime": "2000-01-01T00:00:00",
   "valueInteger": 3
 }

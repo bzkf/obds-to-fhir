@@ -72,12 +72,6 @@ fhir:
     gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
-  reportingReason:
-    treatmentEnd: "behandlungsende"
-    treatmentStart: "behandlungsbeginn"
-    statusChange: "statusaenderung"
-    diagnosis: "diagnose"
-    death: "tod"
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

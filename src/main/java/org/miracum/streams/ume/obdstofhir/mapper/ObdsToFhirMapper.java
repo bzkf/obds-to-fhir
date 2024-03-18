@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.slf4j.Logger;
@@ -73,7 +74,7 @@ public abstract class ObdsToFhirMapper {
   }
 
   public List<MeldungExport> prioritiseLatestMeldungExports(
-      MeldungExportList meldungExports, List<String> priorityOrder, List<String> filter) {
+      MeldungExportList meldungExports, List<Meldeanlass> priorityOrder, List<Meldeanlass> filter) {
     var meldungen = meldungExports.getElements();
 
     var meldungExportMap = new HashMap<String, MeldungExport>();
@@ -121,7 +122,7 @@ public abstract class ObdsToFhirMapper {
         .getTumor_ID();
   }
 
-  public String getReportingReasonFromAdt(MeldungExport meldung) {
+  public Meldeanlass getReportingReasonFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
