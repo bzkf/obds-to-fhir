@@ -165,3 +165,20 @@ spring:
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
       compression-type: gzip
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+        add-additional-paths: true
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
