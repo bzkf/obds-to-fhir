@@ -83,6 +83,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       var meldeanlass = meldung.getMeldeanlass();
 
       patId = getPatIdFromAdt(meldungExport);
+      if (checkDigitConversion) {
+        patId = convertId(patId);
+      }
+
       senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
       softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
@@ -153,6 +157,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             histList = List.of(new Tupel<>(hist, meldeanlass));
           }
           pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
+          // TODO: @chgl: gleason score hier
         }
       } else if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDeath())) {
 
@@ -302,11 +307,6 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       ADT_GEKID.HistologieAbs histologie,
       String meldeanlass) {
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
     // Create a Grading Observation as in
     // https://simplifier.net/oncology/grading
     var gradingObs = new Observation();
@@ -323,7 +323,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var grading = histologie.getGrading();
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var gradingObsIdentifier = pid + "grading" + histId;
+    var gradingObsIdentifier = patId + "grading" + histId;
 
     // grading may be undefined / null
     if (grading != null) {
@@ -359,7 +359,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
       gradingObs.setSubject(
           new Reference()
-              .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+              .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
               .setIdentifier(
                   new Identifier()
                       .setSystem(fhirProperties.getSystems().getPatientId())
@@ -367,7 +367,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                           new CodeableConcept(
                               new Coding(
                                   fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(pid)));
+                      .setValue(patId)));
 
       var gradingValueCodeableCon =
           new CodeableConcept(
@@ -384,7 +384,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var histObs = new Observation();
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var observationIdentifier = pid + "histologie" + histId;
+    var observationIdentifier = patId + "histologie" + histId;
 
     histObs.setId(this.getHash(ResourceType.Observation, observationIdentifier));
 
@@ -417,7 +417,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     histObs.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -425,7 +425,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                         new CodeableConcept(
                             new Coding(
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+                    .setValue(patId)));
 
     // Histologiedatum
     if (histDateString != null) {
@@ -474,11 +474,6 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       ADT_GEKID.FernMetastaseAbs fernMeta,
       String meldeanlass) {
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
     // Create a Fernmetastasen Observation as in
     // https://simplifier.net/oncology/fernmetastasen-duplicate-2
     var fernMetaObs = new Observation();
@@ -517,7 +512,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     fernMetaObs.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -525,7 +520,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                         new CodeableConcept(
                             new Coding(
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+                    .setValue(patId)));
 
     // Fernmetastasendatum
     if (fernMetaDateString != null) {
@@ -560,16 +555,12 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       String meldeanlass) {
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
     // TNM Observation
     // Create a TNM-c Observation as in
     // https://simplifier.net/oncology/tnmc
     var tnmcObs = new Observation();
     // Generate an identifier based on Referenz_nummer (Pat. Id) and c-tnm Id
-    var tnmcObsIdentifier = pid + "ctnm" + cTnm.getTNM_ID();
+    var tnmcObsIdentifier = patId + "ctnm" + cTnm.getTNM_ID();
 
     tnmcObs.setId(this.getHash(ResourceType.Observation, tnmcObsIdentifier));
 
@@ -602,7 +593,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     tnmcObs.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -610,7 +601,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                         new CodeableConcept(
                             new Coding(
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+                    .setValue(patId)));
 
     // tnm c Date
     var tnmcDateString = cTnm.getTNM_Datum();
@@ -739,13 +730,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
     // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
-    var tnmpObsIdentifier = pid + "ptnm" + pTnm.getTNM_ID();
+    var tnmpObsIdentifier = patId + "ptnm" + pTnm.getTNM_ID();
 
     tnmpObs.setId(this.getHash(ResourceType.Observation, tnmpObsIdentifier));
 
@@ -777,7 +763,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     tnmpObs.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -785,7 +771,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                         new CodeableConcept(
                             new Coding(
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+                    .setValue(patId)));
 
     // tnm p Date
     var tnmpDateString = pTnm.getTNM_Datum();
@@ -947,16 +933,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       String verlaufId,
       Tod death) {
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
     // Create a Death Observation as in
     // https://simplifier.net/oncology/todursache
     var deathObs = new Observation();
 
-    var deathId = pid + "death" + verlaufId;
+    var deathId = patId + "death" + verlaufId;
 
     deathObs.setId(this.getHash(ResourceType.Observation, deathId));
 
@@ -977,7 +958,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     deathObs.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -985,7 +966,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                         new CodeableConcept(
                             new Coding(
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+                    .setValue(patId)));
 
     // Sterbedatum
     var deathDateString = death.getSterbedatum();
