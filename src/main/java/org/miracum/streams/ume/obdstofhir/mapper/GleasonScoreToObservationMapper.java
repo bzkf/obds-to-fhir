@@ -11,8 +11,10 @@ import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP.OP.Modul_Prostata;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+@Service
 public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
 
   private static final Pattern gleasonErgebnisPattern = Pattern.compile("^(\\d{1,2})[a-z]?$");
