@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation 'org.springframework.cloud:spring-cloud-stream'
 	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
 	implementation 'io.micrometer:micrometer-registry-prometheus:1.12.2'
 	implementation 'io.micrometer:micrometer-core:1.12.2'

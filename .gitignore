@@ -59,3 +59,5 @@ bin
 fhirpkg.lock.json
 
 *.received.fhir.json
+
+tests/k8s/**/charts

@@ -12,7 +12,7 @@ permissions: read-all
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@e86b05b914141334811d43d0973c95cec61bb729 # v1.4.6
+    uses: miracum/.github/.github/workflows/standard-build.yaml@f9d64a7dbe928557fde9f96defa3e372bc0eaf21 # v1.6.1
     permissions:
       contents: read
       id-token: write
@@ -26,8 +26,79 @@ jobs:
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
+  test:
+    name: run k8s smoke test
+    runs-on: ubuntu-22.04
+    if: ${{ github.event_name == 'pull_request' }}
+    needs:
+      - build
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Create KinD cluster
+        uses: helm/kind-action@99576bfa6ddf9a8e612d83b513da5a75875caced # v1.9.0
+        with:
+          cluster_name: kind
+
+      - name: Download image
+        uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
+        with:
+          name: ${{ needs.build.outputs.image-slug }}
+          path: /tmp
+
+      - name: Load image into KinD
+        run: |
+          kind load image-archive /tmp/image.tar
+
+      - name: List images in cluster
+        run: docker exec kind-control-plane crictl images
+
+      - name: Install test chart
+        env:
+          IMAGE_TAG: ${{ needs.build.outputs.image-version }}
+        run: |
+          helm dep up tests/k8s
+
+          # start by first installing the Strimzi and Prometheus operators
+          helm upgrade --install \
+            --set "stream-processors.enabled=false" \
+            --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
+            --wait \
+            --timeout=10m \
+            obds-to-fhir-test \
+            tests/k8s
+
+          # install the actual obds-to-fhir stream processor
+          helm upgrade --install \
+            --set "stream-processors.enabled=true" \
+            --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
+            --wait \
+            --timeout=10m \
+            obds-to-fhir-test \
+            tests/k8s
+
+      - name: Run Helm test to make sure everything started correctly
+        run: |
+          helm test obds-to-fhir-test
+
+      - name: Print cluster logs
+        if: always()
+        run: |
+          kubectl cluster-info dump -o yaml | tee kind-cluster-dump.txt
+
+      - name: Upload cluster dump
+        if: always()
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        with:
+          name: kind-cluster-dump.txt
+          path: |
+            kind-cluster-dump.txt
+
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@e86b05b914141334811d43d0973c95cec61bb729 # v1.4.6
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@f9d64a7dbe928557fde9f96defa3e372bc0eaf21 # v1.6.1
     permissions:
       contents: read
       pull-requests: write
@@ -41,7 +112,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@e86b05b914141334811d43d0973c95cec61bb729 # v1.4.6
+    uses: miracum/.github/.github/workflows/standard-release.yaml@f9d64a7dbe928557fde9f96defa3e372bc0eaf21 # v1.6.1
     needs:
       - build
     permissions:

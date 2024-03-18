@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   oracle2:
-    image: docker.miracum.org/oracle/database:19.3.0-se2
+    image: harbor.miracum.org/oracle/database:19.3.0-se2
     hostname: oracle2
     ports:
       - "1521:1521"
@@ -39,21 +39,6 @@ services:
     depends_on:
       - zoo1
 
-  kafka-rest-proxy:
-    image: confluentinc/cp-kafka-rest:7.5.3@sha256:a4558632cad6c4eedd8bc340a30277ab020b4fd97444844df1be0dbf9061782d
-    hostname: kafka-rest-proxy
-    ports:
-      - "8082:8082"
-    environment:
-      # KAFKA_REST_ZOOKEEPER_CONNECT: zoo1:2181
-      KAFKA_REST_LISTENERS: http://0.0.0.0:8082/
-      KAFKA_REST_SCHEMA_REGISTRY_URL: http://kafka-schema-registry:8081/
-      KAFKA_REST_HOST_NAME: kafka-rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: PLAINTEXT://kafka1:19092
-    depends_on:
-      - zoo1
-      - kafka1
-
   kafka-connect:
     image: confluentinc/cp-kafka-connect:7.5.3@sha256:e6bc1b88b43a23de290da574b0bbc06135b0005ecb9cac0c95155d3ff50f283a
     hostname: kafka-connect
@@ -80,7 +65,6 @@ services:
     depends_on:
       - zoo1
       - kafka1
-      - kafka-rest-proxy
 
   akhq:
     image: tchiotludo/akhq:0.24.0
