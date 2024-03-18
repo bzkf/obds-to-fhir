@@ -2,7 +2,7 @@
 <ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
     <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
         <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
-        <Absender_Ansprechpartner/>
+        <Absender_Ansprechpartner />
         <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
     </Absender>
     <Menge_Patient>
@@ -29,7 +29,7 @@
                     <Meldebegruendung>I</Meldebegruendung>
                     <Meldeanlass>behandlungsende</Meldeanlass>
                     <Tumorzuordnung Tumor_ID="1">
-                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Code>C61.0</Primaertumor_ICD_Code>
                         <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
                         <Diagnosedatum>18.03.2021</Diagnosedatum>
                         <Seitenlokalisation>T</Seitenlokalisation>
@@ -79,6 +79,16 @@
                             <Menge_Operateur>
                                 <Name_Operateur>Darwin, Charles</Name_Operateur>
                             </Menge_Operateur>
+                            <Modul_Prostata>
+                                <GleasonScore>
+                                    <GleasonGradPrimaer>3</GleasonGradPrimaer>
+                                    <GleasonGradSekundaer>4</GleasonGradSekundaer>
+                                    <GleasonScoreErgebnis>7a</GleasonScoreErgebnis>
+                                </GleasonScore>
+                                <AnlassGleasonScore>O</AnlassGleasonScore>
+                                <PSA>7.390</PSA>
+                                <DatumPSA>2019-05-02+02:00</DatumPSA>
+                            </Modul_Prostata>
                         </OP>
                     </Menge_OP>
                 </Meldung>

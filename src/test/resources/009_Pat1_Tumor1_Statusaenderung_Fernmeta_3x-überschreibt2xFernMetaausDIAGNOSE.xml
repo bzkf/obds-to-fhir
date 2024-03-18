@@ -2,7 +2,7 @@
 <ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.1.2">
     <Absender Absender_ID="UKER" Software_ID="ONKOSTAR" Installations_ID="2.9.2">
         <Absender_Bezeichnung>UKER</Absender_Bezeichnung>
-        <Absender_Ansprechpartner/>
+        <Absender_Ansprechpartner />
         <Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
     </Absender>
     <Menge_Patient>
@@ -29,7 +29,7 @@
                     <Meldebegruendung>I</Meldebegruendung>
                     <Meldeanlass>statusaenderung</Meldeanlass>
                     <Tumorzuordnung Tumor_ID="1">
-                        <Primaertumor_ICD_Code>C72.0</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Code>C61.0</Primaertumor_ICD_Code>
                         <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
                         <Diagnosedatum>18.03.2021</Diagnosedatum>
                         <Seitenlokalisation>T</Seitenlokalisation>
@@ -49,11 +49,11 @@
                                 <Fernmetastase>
                                     <FM_Diagnosedatum>23.02.2021</FM_Diagnosedatum>
                                     <FM_Lokalisation>LYM</FM_Lokalisation>
-                                  </Fernmetastase>
-                                  <Fernmetastase>
-                                      <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
-                                      <FM_Lokalisation>OTH</FM_Lokalisation>
-                                  </Fernmetastase>
+                                </Fernmetastase>
+                                <Fernmetastase>
+                                    <FM_Diagnosedatum>12.02.2021</FM_Diagnosedatum>
+                                    <FM_Lokalisation>OTH</FM_Lokalisation>
+                                </Fernmetastase>
                             </Menge_FM>
                             <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>
                             <Modul_Prostata>
