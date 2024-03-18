@@ -53,6 +53,12 @@ public abstract class ObdsToFhirMapper {
     return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
   }
 
+  protected String computeResourceIdFromIdentifier(Identifier identifier) {
+    return Hashing.sha256()
+        .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
+        .toString();
+  }
+
   protected static String convertId(String id) {
     Pattern pattern = Pattern.compile("[^0]\\d{8}");
     Matcher matcher = pattern.matcher(id);
