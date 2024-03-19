@@ -91,7 +91,8 @@ public class ADT_GEKID implements Serializable {
           @JsonProperty private String Meldung_ID;
 
           @JsonProperty private String Meldedatum;
-          @JsonProperty private String Meldeanlass;
+
+          @JsonProperty private Meldeanlass Meldeanlass;
 
           @JsonProperty private Tumorzuordnung Tumorzuordnung;
 
@@ -240,6 +241,8 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private Residualstatus Residualstatus;
 
+              @JsonProperty private Modul_Prostata Modul_Prostata;
+
               @Data
               @EqualsAndHashCode(callSuper = true)
               public static class Histologie extends ADT_GEKID.HistologieAbs {
@@ -289,6 +292,21 @@ public class ADT_GEKID implements Serializable {
               public static class Residualstatus {
                 @JsonProperty private String Lokale_Beurteilung_Residualstatus;
                 @JsonProperty private String Gesamtbeurteilung_Residualstatus;
+              }
+
+              @Data
+              public static class GleasonScore {
+                @JsonProperty private String GleasonGradPrimaer;
+                @JsonProperty private String GleasonGradSekundaer;
+                @JsonProperty private String GleasonScoreErgebnis;
+              }
+
+              @Data
+              public static class Modul_Prostata {
+                @JsonProperty private GleasonScore GleasonScore;
+                @JsonProperty private String AnlassGleasonScore;
+                @JsonProperty private String PSA;
+                @JsonProperty private String DatumPSA;
               }
             }
           }

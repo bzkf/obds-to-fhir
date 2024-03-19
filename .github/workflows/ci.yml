@@ -71,6 +71,8 @@ jobs:
             obds-to-fhir-test \
             tests/k8s
 
+          kubectl wait kafka/obds-to-fhir-kafka --for=condition=Ready --timeout=300s
+
           # install the actual obds-to-fhir stream processor
           helm upgrade --install \
             --set "stream-processors.enabled=true" \

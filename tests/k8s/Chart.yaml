@@ -11,6 +11,7 @@ dependencies:
   - name: stream-processors
     repository: oci://ghcr.io/miracum/charts
     version: 1.6.1
+    condition: stream-processors.enabled
   - name: strimzi-kafka-operator
     repository: oci://quay.io/strimzi-helm
     version: 0.40.0
