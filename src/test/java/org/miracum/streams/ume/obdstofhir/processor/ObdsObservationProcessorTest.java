@@ -66,7 +66,7 @@ class ObdsObservationProcessorTest extends ObdsProcessorTest {
                 new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
                 new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1),
                 new Tupel<>("010_Pat2_Tumor1_Tod.xml", 1)),
-            10,
+            11,
             "9391/8",
             "2021-03-20",
             "U",
@@ -117,69 +117,73 @@ class ObdsObservationProcessorTest extends ObdsProcessorTest {
 
       for (var obsv : observationList) {
 
-        var profLoincCode = obsv.getCode().getCodingFirstRep().getCode();
-        var valueCodeableCon = (CodeableConcept) obsv.getValue();
+        // Gleason Score Observations are using valueInteger,
+        // so add this conversion to make sure we only check against
+        // valueCodeableConcept
+        if (obsv.getValue() instanceof CodeableConcept valueCodeableCon) {
+          var profLoincCode = obsv.getCode().getCodingFirstRep().getCode();
 
-        if (Objects.equals(profLoincCode, "59847-4")) { // Histologie
+          if (Objects.equals(profLoincCode, "59847-4")) { // Histologie
 
-          var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
-          assertThat(valueCode).isEqualTo(expectedMorphCode);
+            var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
+            assertThat(valueCode).isEqualTo(expectedMorphCode);
 
-          assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
-              .isEqualTo(expectedEffectDate);
+            assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
+                .isEqualTo(expectedEffectDate);
 
-        } else if (Objects.equals(profLoincCode, "59542-1")) { // Grading
+          } else if (Objects.equals(profLoincCode, "59542-1")) { // Grading
 
-          var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
-          assertThat(valueCode).isEqualTo(expectedGradingCode);
+            var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
+            assertThat(valueCode).isEqualTo(expectedGradingCode);
 
-          assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
-              .isEqualTo(expectedEffectDate);
+            assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
+                .isEqualTo(expectedEffectDate);
 
-        } else if (Objects.equals(profLoincCode, "21907-1")) { // Fernmeta
+          } else if (Objects.equals(profLoincCode, "21907-1")) { // Fernmeta
 
-          var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
-          assertThat(valueCode).isEqualTo("J");
+            var valueCode = valueCodeableCon.getCodingFirstRep().getCode();
+            assertThat(valueCode).isEqualTo("J");
 
-          fenMetaCount += 1;
+            fenMetaCount += 1;
 
-        } else if (Objects.equals(profLoincCode, "21908-9")) { // TNMc
+          } else if (Objects.equals(profLoincCode, "21908-9")) { // TNMc
 
-          for (var comp : obsv.getComponent()) {
-            var componentCode = comp.getCode().getCodingFirstRep().getCode();
-            var componentValueCodableCon = (CodeableConcept) comp.getValue();
-            var componentValue = componentValueCodableCon.getCodingFirstRep().getCode();
-            if (Objects.equals(componentCode, "21905-5")) { // cTNM-T
-              assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(0));
-            } else if (Objects.equals(componentCode, "201906-3")) { // cTNM-N
-              assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(1));
-            } else if (Objects.equals(componentCode, "21907-1")) { // cTNM-M
-              assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(2));
+            for (var comp : obsv.getComponent()) {
+              var componentCode = comp.getCode().getCodingFirstRep().getCode();
+              var componentValueCodableCon = (CodeableConcept) comp.getValue();
+              var componentValue = componentValueCodableCon.getCodingFirstRep().getCode();
+              if (Objects.equals(componentCode, "21905-5")) { // cTNM-T
+                assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(0));
+              } else if (Objects.equals(componentCode, "201906-3")) { // cTNM-N
+                assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(1));
+              } else if (Objects.equals(componentCode, "21907-1")) { // cTNM-M
+                assertThat(componentValue).isEqualTo(expectedTnmCCodes.get(2));
+              }
             }
-          }
 
-        } else if (Objects.equals(profLoincCode, "21902-2")) { // TNMp
+          } else if (Objects.equals(profLoincCode, "21902-2")) { // TNMp
 
-          for (var comp : obsv.getComponent()) {
-            var componentCode = comp.getCode().getCodingFirstRep().getCode();
-            var componentValueCodableCon = (CodeableConcept) comp.getValue();
-            var componentValue = componentValueCodableCon.getCodingFirstRep().getCode();
-            if (Objects.equals(componentCode, "21899-0")) { // pTNM-T
-              assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(0));
-            } else if (Objects.equals(componentCode, "21900-6")) { // pTNM-N
-              assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(1));
-            } else if (Objects.equals(componentCode, "21901-4")) { // pTNM-M
-              assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(2));
+            for (var comp : obsv.getComponent()) {
+              var componentCode = comp.getCode().getCodingFirstRep().getCode();
+              var componentValueCodableCon = (CodeableConcept) comp.getValue();
+              var componentValue = componentValueCodableCon.getCodingFirstRep().getCode();
+              if (Objects.equals(componentCode, "21899-0")) { // pTNM-T
+                assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(0));
+              } else if (Objects.equals(componentCode, "21900-6")) { // pTNM-N
+                assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(1));
+              } else if (Objects.equals(componentCode, "21901-4")) { // pTNM-M
+                assertThat(componentValue).isEqualTo(expectedTnmPCodes.get(2));
+              }
             }
-          }
 
-        } else if (Objects.equals(profLoincCode, "68343-3")) { // Death
-          assertThat(((CodeableConcept) obsv.getValue()).getCodingFirstRep().getCode())
-              .isEqualTo(expectedDeathIcdCode);
-          assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
-              .isEqualTo(expectedDeathDate);
-        } else {
-          assertThat(true).isFalse();
+          } else if (Objects.equals(profLoincCode, "68343-3")) { // Death
+            assertThat(((CodeableConcept) obsv.getValue()).getCodingFirstRep().getCode())
+                .isEqualTo(expectedDeathIcdCode);
+            assertThat(obsv.getEffectiveDateTimeType().getValueAsString())
+                .isEqualTo(expectedDeathDate);
+          } else {
+            assertThat(true).isFalse();
+          }
         }
       }
       assertThat(fenMetaCount).isEqualTo(expectedFernMetaCount);

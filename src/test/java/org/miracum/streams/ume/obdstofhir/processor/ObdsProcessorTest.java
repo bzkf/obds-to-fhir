@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.mapper.GleasonScoreToObservationMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsConditionMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsMedicationStatementMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper;
@@ -33,7 +34,8 @@ import org.springframework.util.ResourceUtils;
       ObdsObservationMapper.class,
       ObdsProcedureMapper.class,
       ObdsPatientMapper.class,
-      ObdsConditionMapper.class
+      ObdsConditionMapper.class,
+      GleasonScoreToObservationMapper.class
     },
     properties = {"app.version=0.0.0-test"})
 @EnableConfigurationProperties()

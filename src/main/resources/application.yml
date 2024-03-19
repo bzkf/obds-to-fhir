@@ -19,6 +19,7 @@ fhir:
     procedureId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id"
     medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
+    gleasonScoreObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/gleason-score-observation-id"
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
     gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
@@ -67,14 +68,10 @@ fhir:
     tnmpLoinc: "Stage group.pathology Cancer"
     fernMetaLoinc: "Distant metastases.clinical"
     deathLoinc: "Primary cause of death"
+    gleasonScoreSct: "Gleason score (observable entity)"
+    gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
-  reportingReason:
-    treatmentEnd: "behandlungsende"
-    treatmentStart: "behandlungsbeginn"
-    statusChange: "statusaenderung"
-    diagnosis: "diagnose"
-    death: "tod"
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

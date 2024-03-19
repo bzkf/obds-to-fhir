@@ -82,7 +82,7 @@ class ObdsConditionProcessorTest extends ObdsProcessorTest {
             "2021",
             "T",
             "396360001",
-            2,
+            3,
             1,
             6,
             "2021-03-18"));

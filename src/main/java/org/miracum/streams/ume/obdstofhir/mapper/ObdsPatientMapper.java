@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
             .getMeldeanlass();
 
     // deceased
-    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getDeath())) {
+    if (reportingReason == Meldeanlass.TOD) {
       var mengeVerlauf =
           meldungExport
               .getXml_daten()
