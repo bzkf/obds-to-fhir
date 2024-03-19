@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 @Configuration
 public class ObdsObservationMapper extends ObdsToFhirMapper {
@@ -335,7 +336,20 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
               patientReference);
     }
 
-    for (var op : opList.stream().filter(o -> o.getFirst().getModul_Prostata() != null).toList()) {
+    // TODO: we might want to try using Optional<> to create the nested object hierarchies
+    //       to simplify the null-checking (in absence of null-coalescing)
+    for (var op :
+        opList.stream()
+            .filter(
+                o ->
+                    o.getFirst().getModul_Prostata() != null
+                        && o.getFirst().getModul_Prostata().getGleasonScore() != null
+                        && StringUtils.hasLength(
+                            o.getFirst()
+                                .getModul_Prostata()
+                                .getGleasonScore()
+                                .getGleasonScoreErgebnis()))
+            .toList()) {
       bundle =
           createGleasonScoreObservation(
               bundle, patId, senderId, softwareId, op.getFirst(), op.getSecond(), patientReference);
