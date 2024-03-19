@@ -2,11 +2,15 @@ name: ci
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
+      - beta
   release:
     types: [created]
   pull_request:
-    branches: [master]
+    branches:
+      - master
+      - beta
 
 permissions: read-all
 
