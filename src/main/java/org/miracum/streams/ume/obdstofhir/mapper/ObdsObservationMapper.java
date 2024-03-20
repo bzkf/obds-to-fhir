@@ -127,6 +127,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             histList.add(new Tupel<>(hist, meldeanlass));
           }
         }
+
         cTnm =
             new Triple<>(
                 meldung.getDiagnose().getCTNM(),
