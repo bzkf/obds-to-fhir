@@ -11,7 +11,9 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper.ModulPros
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PsaToObservationMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(PsaToObservationMapper.class);
 
