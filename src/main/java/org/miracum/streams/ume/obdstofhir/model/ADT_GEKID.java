@@ -565,7 +565,7 @@ public class ADT_GEKID implements Serializable {
   public static class Modul_Prostata {
     @JsonProperty private Optional<GleasonScore> GleasonScore = Optional.empty();
     @JsonProperty private Optional<AnlassGleasonScore> AnlassGleasonScore = Optional.empty();
-    @JsonProperty private Optional<Float> PSA;
+    @JsonProperty private Optional<Double> PSA;
     @JsonProperty private Optional<String> DatumPSA;
     @JsonProperty private Optional<String> DatumStanzen;
 
