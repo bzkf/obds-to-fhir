@@ -72,7 +72,7 @@ fhir:
     deathLoinc: "Primary cause of death"
     gleasonScoreSct: "Gleason score (observable entity)"
     gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
-    psaLoinc: "Prostate Specific Ag Free [Units/volume] in Serum or Plasma"
+    psaLoinc: "Prostate specific Ag [Mass/volume] in Serum or Plasma"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:

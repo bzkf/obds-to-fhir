@@ -9,8 +9,8 @@
     "coding": [ {
       "system": "http://loinc.org",
       "version": "2.77",
-      "code": "19201-3",
-      "display": "Prostate Specific Ag Free [Units/volume] in Serum or Plasma"
+      "code": "2857-1",
+      "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
     } ]
   },
   "subject": {
@@ -29,7 +29,7 @@
   "effectiveDateTime": "2023-07-01",
   "valueQuantity": {
     "value": 80.0,
-    "unit": "nanogram per millliiter",
+    "unit": "ng/mL",
     "system": "http://unitsofmeasure.org",
     "code": "ng/mL"
   }
