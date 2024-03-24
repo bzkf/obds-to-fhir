@@ -259,8 +259,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     // Performed
     var opDateString = op.getOP_Datum();
-    if (opDateString != null) {
-      opProcedure.setPerformed(extractDateTimeFromADTDate(opDateString));
+    if (opDateString.isPresent()) {
+      opProcedure.setPerformed(extractDateTimeFromADTDate(opDateString.get()));
     }
 
     // ReasonReference

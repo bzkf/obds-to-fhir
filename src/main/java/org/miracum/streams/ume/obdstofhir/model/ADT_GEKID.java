@@ -2,9 +2,11 @@ package org.miracum.streams.ume.obdstofhir.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import lombok.*;
 
 @Data
@@ -112,7 +114,7 @@ public class ADT_GEKID implements Serializable {
           public static class Tumorzuordnung extends PrimaryConditionAbs {
             @JsonProperty private String Tumor_ID;
             @JsonProperty private String Primaertumor_ICD_Version;
-            @JsonProperty private String Diagnosedatum;
+            @JsonProperty private Optional<String> Diagnosedatum;
             @JsonProperty private String Seitenlokalisation;
           }
 
@@ -126,7 +128,7 @@ public class ADT_GEKID implements Serializable {
             // @JsonProperty private String ICD_O_Topographie_Code;  nicht sicher ob notwendig, aber
             // wenn's schon da ist, why not
             // @JsonProperty private String ICD_O_Topographie_Version;
-            @JsonProperty private String Diagnosedatum;
+            @JsonProperty private Optional<String> Diagnosedatum = Optional.empty();
             @JsonProperty private String Seitenlokalisation;
 
             @JsonProperty private Menge_Histologie Menge_Histologie;
@@ -137,6 +139,8 @@ public class ADT_GEKID implements Serializable {
             @JsonProperty private Menge_Weitere_Klassifikation Menge_Weitere_Klassifikation;
 
             @JsonProperty private Menge_FM Menge_FM;
+
+            @JsonProperty private Optional<Modul_Prostata> Modul_Prostata = Optional.empty();
 
             @Data
             public static class Menge_Histologie {
@@ -229,7 +233,7 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private String OP_ID;
               @JsonProperty private String OP_Intention;
-              @JsonProperty private String OP_Datum;
+              @JsonProperty private Optional<String> OP_Datum;
               @JsonProperty private String OP_OPS_Version;
 
               @JsonProperty private Histologie Histologie;
@@ -241,7 +245,7 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private Residualstatus Residualstatus;
 
-              @JsonProperty private Modul_Prostata Modul_Prostata;
+              @JsonProperty private Optional<Modul_Prostata> Modul_Prostata = Optional.empty();
 
               @Data
               @EqualsAndHashCode(callSuper = true)
@@ -293,21 +297,6 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String Lokale_Beurteilung_Residualstatus;
                 @JsonProperty private String Gesamtbeurteilung_Residualstatus;
               }
-
-              @Data
-              public static class GleasonScore {
-                @JsonProperty private String GleasonGradPrimaer;
-                @JsonProperty private String GleasonGradSekundaer;
-                @JsonProperty private String GleasonScoreErgebnis;
-              }
-
-              @Data
-              public static class Modul_Prostata {
-                @JsonProperty private GleasonScore GleasonScore;
-                @JsonProperty private String AnlassGleasonScore;
-                @JsonProperty private String PSA;
-                @JsonProperty private String DatumPSA;
-              }
             }
           }
 
@@ -328,6 +317,10 @@ public class ADT_GEKID implements Serializable {
               @JsonProperty private Menge_FM Menge_FM;
 
               @JsonProperty private Tod Tod;
+
+              @JsonProperty private Optional<Modul_Prostata> Modul_Prostata = Optional.empty();
+
+              @JsonProperty private Optional<String> Untersuchungsdatum_Verlauf = Optional.empty();
 
               @Data
               @EqualsAndHashCode(callSuper = true)
@@ -564,7 +557,42 @@ public class ADT_GEKID implements Serializable {
     public String Tumor_ID;
     public String Primaertumor_ICD_Code;
     public String Primaertumor_ICD_Version;
-    public String Diagnosedatum;
+    public Optional<String> Diagnosedatum;
     public String Seitenlokalisation;
+  }
+
+  @Data
+  public static class Modul_Prostata {
+    @JsonProperty private Optional<GleasonScore> GleasonScore = Optional.empty();
+    @JsonProperty private Optional<AnlassGleasonScore> AnlassGleasonScore = Optional.empty();
+    @JsonProperty private Optional<Float> PSA;
+    @JsonProperty private Optional<String> DatumPSA;
+    @JsonProperty private Optional<String> DatumStanzen;
+
+    @Data
+    public static class GleasonScore {
+      @JsonProperty private String GleasonGradPrimaer;
+      @JsonProperty private String GleasonGradSekundaer;
+      @JsonProperty private String GleasonScoreErgebnis;
+    }
+  }
+
+  public enum AnlassGleasonScore {
+    OP("O"),
+    STANZE("S"),
+    UNBEKANNT("U"),
+    ;
+
+    private final String text;
+
+    AnlassGleasonScore(final String text) {
+      this.text = text;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return text;
+    }
   }
 }

@@ -628,10 +628,10 @@
       "url": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d"
     }
   }, {
-    "fullUrl": "Observation/e9992221db7c714a1bc349ed1ef2a28a72a9c68ed91dc9e1ee164fb180b2f7de",
+    "fullUrl": "Observation/7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34",
     "resource": {
       "resourceType": "Observation",
-      "id": "e9992221db7c714a1bc349ed1ef2a28a72a9c68ed91dc9e1ee164fb180b2f7de",
+      "id": "7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test"
       },
@@ -658,11 +658,18 @@
         }
       },
       "effectiveDateTime": "2021-01-04",
-      "valueInteger": 7
+      "valueInteger": 7,
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/e9992221db7c714a1bc349ed1ef2a28a72a9c68ed91dc9e1ee164fb180b2f7de"
+      "url": "Observation/7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34"
     }
   }, {
     "fullUrl": "Observation/caeb45a6afede2449dbf70201c0f5db2670dd8a0092432cfaa4f4b46bb4b4b18",

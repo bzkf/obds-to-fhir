@@ -2,14 +2,15 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.IntegerType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
-import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP.OP.Modul_Prostata;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper.ModulProstataMappingParams;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.AnlassGleasonScore;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,40 +18,45 @@ import org.springframework.util.StringUtils;
 @Service
 public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
 
+  // we currently ignore the 7a/7b difference. We could map it when using
+  // valueCodeableConcept with https://loinc.org/94734-1
   private static final Pattern gleasonErgebnisPattern = Pattern.compile("^(\\d{1,2})[a-z]?$");
 
   public GleasonScoreToObservationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
-  // TODO: we might need more than just the opId, since the module also exists
-  // in Diagnose, Verlauf, Pathologie
   public Observation map(
-      Modul_Prostata modulProstata,
-      String patientId,
-      String opId,
-      DateTimeType effective,
-      Meldeanlass meldeanlass,
-      Reference patientReference) {
-    var gleasonScoreErgebnis = modulProstata.getGleasonScore().getGleasonScoreErgebnis();
+      ModulProstataMappingParams modulProstataParams,
+      Reference patientReference,
+      String metaSource) {
+    var modulProstata = modulProstataParams.modulProstata();
+    if (modulProstata.getGleasonScore().isEmpty()) {
+      throw new IllegalArgumentException("Modul_Prostata_GleasonScore is unset.");
+    }
 
-    if (!StringUtils.hasLength(gleasonScoreErgebnis)) {
-      throw new IllegalArgumentException("gleasonScoreErgebnis is null or empty");
+    var gleasonScoreErgebnis = modulProstata.getGleasonScore().get().getGleasonScoreErgebnis();
+
+    if (!StringUtils.hasText(gleasonScoreErgebnis)) {
+      throw new IllegalArgumentException("GleasonScoreErgebnis is null or empty");
     }
 
     var gleasonScoreObservation = new Observation();
+    gleasonScoreObservation.getMeta().setSource(metaSource);
 
-    if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
+    if (modulProstataParams.meldeanlass() == Meldeanlass.STATUSAENDERUNG) {
       gleasonScoreObservation.setStatus(ObservationStatus.AMENDED);
     } else {
       gleasonScoreObservation.setStatus(ObservationStatus.FINAL);
     }
 
-    var identifierValue = patientId + "-op-gleason-score-" + opId;
+    var identifierValue =
+        String.format(
+            "%s-%s-%s-gleason-score",
+            modulProstataParams.patientId(),
+            modulProstata.getAnlassGleasonScore().orElse(AnlassGleasonScore.UNBEKANNT),
+            modulProstataParams.baseId());
 
-    // TODO: if we also set Observation.identifier, we need to make sure to cryptohash/pseudonymize
-    // it since it contains
-    // the patient id in plaintext
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getGleasonScoreObservationId())
@@ -59,6 +65,25 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
     gleasonScoreObservation.setId(computeResourceIdFromIdentifier(identifier));
 
     gleasonScoreObservation.setSubject(patientReference);
+
+    // TODO: if we can't assume that the AnlassGleasonScore is always set, we may have to
+    // approximate it
+    // based on whether the Score is from the OP, Diagnose, or Verlauf element.
+    if (modulProstata.getAnlassGleasonScore().isPresent()) {
+      var code =
+          switch (modulProstata.getAnlassGleasonScore().get()) {
+            case OP ->
+                new Coding(
+                    fhirProperties.getSystems().getSnomed(), "65801008", "Excision (procedure)");
+            case STANZE ->
+                new Coding(
+                    fhirProperties.getSystems().getSnomed(), "86273004", "Biopsy (procedure)");
+              // feels a bit ugly to set an empty coding as the "unset".
+            case UNBEKANNT -> new Coding();
+          };
+
+      gleasonScoreObservation.setMethod(new CodeableConcept(code));
+    }
 
     var gleasonConcept = new CodeableConcept();
     gleasonConcept
@@ -69,9 +94,19 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
         .setDisplay(fhirProperties.getDisplay().getGleasonScoreLoinc());
     gleasonScoreObservation.setCode(gleasonConcept);
 
-    gleasonScoreObservation.setEffective(effective);
+    if (modulProstataParams.baseDatum().isPresent()) {
+      gleasonScoreObservation.setEffective(modulProstataParams.baseDatum().get());
+    }
 
-    // Offen ob diese auch gemappt werden sollten als primär/sekundär Component
+    // if it's a biopsy and a more accurate biopsy date is available, use that
+    if (modulProstata.getAnlassGleasonScore().isPresent()
+        && modulProstata.getAnlassGleasonScore().get() == AnlassGleasonScore.STANZE
+        && modulProstata.getDatumStanzen().isPresent()) {
+      gleasonScoreObservation.setEffective(
+          ObdsToFhirMapper.extractDateTimeFromADTDate(modulProstata.getDatumStanzen().get()));
+    }
+
+    // should we also map the "source" gradings?
     // s.a. https://build.fhir.org/ig/davidhay25/actnow/Observation-ExObservationGleason.json.html
     // var gleasonGradPrimaer = modulProstata.getGleasonScore().getGleasonGradPrimaer();
     // var gleasonGradSekundär = modulProstata.getGleasonScore().getGleasonGradSekundaer();
