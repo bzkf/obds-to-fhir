@@ -20,6 +20,7 @@ fhir:
     medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
     gleasonScoreObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/gleason-score-observation-id"
+    psaObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/psa-observation-id"
     loinc: "http://loinc.org"
     idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
     gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
@@ -48,6 +49,7 @@ fhir:
     opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
     observationValue: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
     genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
+    ucum: http://unitsofmeasure.org
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -70,6 +72,7 @@ fhir:
     deathLoinc: "Primary cause of death"
     gleasonScoreSct: "Gleason score (observable entity)"
     gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
+    psaLoinc: "Prostate Specific Ag Free [Units/volume] in Serum or Plasma"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 spring:

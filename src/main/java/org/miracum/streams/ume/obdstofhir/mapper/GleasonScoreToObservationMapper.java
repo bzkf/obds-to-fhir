@@ -94,8 +94,8 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
         .setDisplay(fhirProperties.getDisplay().getGleasonScoreLoinc());
     gleasonScoreObservation.setCode(gleasonConcept);
 
-    if (modulProstataParams.baseDatum().isPresent()) {
-      gleasonScoreObservation.setEffective(modulProstataParams.baseDatum().get());
+    if (modulProstataParams.baseDatum() != null) {
+      gleasonScoreObservation.setEffective(modulProstataParams.baseDatum());
     }
 
     // if it's a biopsy and a more accurate biopsy date is available, use that

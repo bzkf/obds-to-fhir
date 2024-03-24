@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -39,7 +38,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       Modul_Prostata modulProstata,
       String patientId,
       String baseId,
-      Optional<DateTimeType> baseDatum) {}
+      DateTimeType baseDatum,
+      DateTimeType meldedatum) {}
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsObservationMapper.class);
 
@@ -159,17 +159,17 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
         if (meldung.getDiagnose().getModul_Prostata().isPresent()) {
           var baseDatum =
-              meldung
-                  .getDiagnose()
-                  .getDiagnosedatum()
-                  .map(datum -> extractDateTimeFromADTDate(datum));
+              extractDateTimeFromADTDate(meldung.getDiagnose().getDiagnosedatum().orElse(null));
+          var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
+
           prostataMappingParams =
               new ModulProstataMappingParams(
                   meldeanlass,
                   meldung.getDiagnose().getModul_Prostata().get(),
                   patId,
                   meldung.getDiagnose().getTumor_ID(),
-                  baseDatum);
+                  baseDatum,
+                  meldedatum);
         }
       } else if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         // aus Verlauf: histologie, grading und p-tnm
@@ -198,9 +198,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
         if (verlauf.getModul_Prostata().isPresent()) {
           var baseDatum =
-              verlauf
-                  .getUntersuchungsdatum_Verlauf()
-                  .map(datum -> extractDateTimeFromADTDate(datum));
+              extractDateTimeFromADTDate(verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
+          var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
 
           prostataMappingParams =
               new ModulProstataMappingParams(
@@ -208,7 +207,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                   verlauf.getModul_Prostata().get(),
                   patId,
                   meldung.getTumorzuordnung().getTumor_ID() + " - " + verlauf.getVerlauf_ID(),
-                  baseDatum);
+                  baseDatum,
+                  meldedatum);
         }
       } else if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
         // aus Operation: histologie, grading und p-tnm
@@ -222,7 +222,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           pTnm = new Triple<>(op.getTNM(), null, meldeanlass);
 
           if (op.getModul_Prostata().isPresent()) {
-            var baseDatum = op.getOP_Datum().map(datum -> extractDateTimeFromADTDate(datum));
+            var baseDatum = extractDateTimeFromADTDate(op.getOP_Datum().orElse(null));
+            var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
 
             prostataMappingParams =
                 new ModulProstataMappingParams(
@@ -230,7 +231,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                     op.getModul_Prostata().get(),
                     patId,
                     meldung.getTumorzuordnung().getTumor_ID() + " - " + op.getOP_ID(),
-                    baseDatum);
+                    baseDatum,
+                    meldedatum);
           }
         }
       } else if (meldeanlass == Meldeanlass.TOD) {

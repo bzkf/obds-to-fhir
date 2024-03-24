@@ -1,0 +1,36 @@
+{
+  "resourceType": "Observation",
+  "id": "d54c64a271f5726fb6fc81b08397b8d3a95a1aedd09349e19625869009db689d",
+  "meta": {
+    "source": "test"
+  },
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.77",
+      "code": "19201-3",
+      "display": "Prostate Specific Ag Free [Units/volume] in Serum or Plasma"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/pid-1",
+    "identifier": {
+      "type": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+          "code": "MR"
+        } ]
+      },
+      "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+      "value": "pid-1"
+    }
+  },
+  "effectiveDateTime": "2023-07-01",
+  "valueQuantity": {
+    "value": 80.0,
+    "unit": "nanogram per millliiter",
+    "system": "http://unitsofmeasure.org",
+    "code": "ng/mL"
+  }
+}

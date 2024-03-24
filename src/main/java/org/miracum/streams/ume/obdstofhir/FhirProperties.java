@@ -63,6 +63,8 @@ public class FhirProperties {
     private String observationValue;
     private String genderAmtlichDe;
     private String gleasonScoreObservationId;
+    private String psaObservationId;
+    private String ucum;
   }
 
   @Data
@@ -91,6 +93,7 @@ public class FhirProperties {
     private String deathLoinc;
     private String gleasonScoreSct;
     private String gleasonScoreLoinc;
+    private String psaLoinc;
   }
 
   @Data
