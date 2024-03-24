@@ -59,11 +59,16 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   private final GleasonScoreToObservationMapper gleasonScoreMapper;
 
+  private final PsaToObservationMapper psaMapper;
+
   public ObdsObservationMapper(
-      FhirProperties fhirProperties, GleasonScoreToObservationMapper gleasonScoreMapper) {
+      FhirProperties fhirProperties,
+      GleasonScoreToObservationMapper gleasonScoreMapper,
+      PsaToObservationMapper psaMapper) {
     super(fhirProperties);
 
     this.gleasonScoreMapper = gleasonScoreMapper;
+    this.psaMapper = psaMapper;
   }
 
   public Bundle mapOnkoResourcesToObservation(List<MeldungExport> meldungExportList) {
@@ -384,6 +389,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             createGleasonScoreObservation(
                 bundle, metaSource, modulProstataParams, patientReference);
       }
+
+      if (modulProstataParams.modulProstata.getPSA().isPresent()) {
+        bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
+      }
     }
 
     if (death != null) {
@@ -404,6 +413,16 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       ModulProstataMappingParams modulProstataParams,
       Reference patientReference) {
     var observation = gleasonScoreMapper.map(modulProstataParams, patientReference, metaSource);
+
+    return addResourceAsEntryInBundle(bundle, observation);
+  }
+
+  private Bundle createPsaObservation(
+      Bundle bundle,
+      String metaSource,
+      ModulProstataMappingParams modulProstataParams,
+      Reference patientReference) {
+    var observation = psaMapper.map(modulProstataParams, patientReference, metaSource);
 
     return addResourceAsEntryInBundle(bundle, observation);
   }
