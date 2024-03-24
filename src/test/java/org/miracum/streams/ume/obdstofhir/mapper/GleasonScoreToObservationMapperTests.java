@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.Optional;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -17,8 +18,9 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
-import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP.OP.GleasonScore;
-import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP.OP.Modul_Prostata;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper.ModulProstataMappingParams;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Modul_Prostata;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Modul_Prostata.GleasonScore;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.processor.ObdsProcessorTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,16 +62,17 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
     gleasonScore.setGleasonScoreErgebnis(gleasonScoreErgebnis);
     var modulProstata = new Modul_Prostata();
 
-    modulProstata.setGleasonScore(gleasonScore);
+    modulProstata.setGleasonScore(Optional.of(gleasonScore));
 
-    var observation =
-        sut.map(
+    var params =
+        new ModulProstataMappingParams(
+            Meldeanlass.BEHANDLUNGSENDE,
             modulProstata,
             "pid-1",
             "op-id-1",
-            new DateTimeType("2000-01-01T00:00:00"),
-            Meldeanlass.BEHANDLUNGSENDE,
-            getPatientReference("pid-1"));
+            Optional.of(new DateTimeType("2000-01-01T00:00:00")));
+
+    var observation = sut.map(params, getPatientReference("pid-1"), "test");
 
     assertThat(observation.getValueIntegerType().getValue()).isEqualTo(expectedValue);
   }
@@ -81,16 +84,17 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
     gleasonScore.setGleasonScoreErgebnis("3");
     var modulProstata = new Modul_Prostata();
 
-    modulProstata.setGleasonScore(gleasonScore);
+    modulProstata.setGleasonScore(Optional.of(gleasonScore));
 
-    var observation =
-        sut.map(
+    var params =
+        new ModulProstataMappingParams(
+            Meldeanlass.BEHANDLUNGSENDE,
             modulProstata,
             "pid-1",
             "op-id-1",
-            new DateTimeType("2000-01-01T00:00:00"),
-            Meldeanlass.BEHANDLUNGSENDE,
-            getPatientReference("pid-1"));
+            Optional.of(new DateTimeType("2000-01-01T00:00:00")));
+
+    var observation = sut.map(params, getPatientReference("pid-1"), "test");
 
     var fhirJson = fhirParser.encodeResourceToString(observation);
     Approvals.verify(fhirJson, new Options().forFile().withExtension(".fhir.json"));
@@ -105,19 +109,18 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
     gleasonScore.setGleasonScoreErgebnis(gleasonScoreErgebnis);
     var modulProstata = new Modul_Prostata();
 
-    modulProstata.setGleasonScore(gleasonScore);
+    modulProstata.setGleasonScore(Optional.of(gleasonScore));
 
-    var dateTime = new DateTimeType("2000-01-01T00:00:00");
+    var params =
+        new ModulProstataMappingParams(
+            Meldeanlass.BEHANDLUNGSENDE,
+            modulProstata,
+            "pid-1",
+            "op-id-1",
+            Optional.of(new DateTimeType("2000-01-01T00:00:00")));
+
     var patReference = getPatientReference("pid-1");
-    assertThatThrownBy(
-            () ->
-                sut.map(
-                    modulProstata,
-                    "pid-1",
-                    "op-id-1",
-                    dateTime,
-                    Meldeanlass.BEHANDLUNGSENDE,
-                    patReference))
+    assertThatThrownBy(() -> sut.map(params, patReference, "test"))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

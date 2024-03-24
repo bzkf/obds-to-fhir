@@ -41,6 +41,10 @@ dependencies {
 	implementation "org.scala-lang:scala-library:2.13.12"
 
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
+	// <https://github.com/FasterXML/jackson-modules-java8>
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 

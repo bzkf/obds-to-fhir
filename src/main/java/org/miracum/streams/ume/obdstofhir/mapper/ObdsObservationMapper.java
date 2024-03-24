@@ -3,11 +3,14 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CanonicalType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
@@ -21,16 +24,22 @@ import org.miracum.streams.ume.obdstofhir.lookup.JnuVsLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.obdstofhir.model.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
-import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_OP.OP;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Modul_Prostata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
 
 @Configuration
 public class ObdsObservationMapper extends ObdsToFhirMapper {
+
+  public static record ModulProstataMappingParams(
+      Meldeanlass meldeanlass,
+      Modul_Prostata modulProstata,
+      String patientId,
+      String baseId,
+      Optional<DateTimeType> baseDatum) {}
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsObservationMapper.class);
 
@@ -73,14 +82,13 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
         pTnmMap = new HashMap<>();
     HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaMap = new HashMap<>();
-    HashMap<String, Tupel<OP, Meldeanlass>> opMap = new HashMap<>();
+    HashMap<String, ModulProstataMappingParams> modulProstataMappingMap = new HashMap<>();
 
     Tod death = null;
 
     var patId = "";
-    var senderId = "";
-    var softwareId = "";
     var verlaufId = "";
+    var metaSource = "";
 
     // Process prioritized reports at the end of the for-loop
     for (int i = meldungExportList.size() - 1; i >= 0; i--) {
@@ -107,8 +115,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         patId = convertId(patId);
       }
 
-      senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
-      softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+      var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+      var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+
+      metaSource = generateProfileMetaSource(senderId, softwareId, appVersion);
 
       List<Tupel<ADT_GEKID.HistologieAbs, Meldeanlass>> histList = new ArrayList<>();
       Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass> cTnm =
@@ -116,7 +126,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass> pTnm =
           null;
       List<Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaList = new ArrayList<>();
-      Tupel<OP, Meldeanlass> op = null;
+
+      ModulProstataMappingParams prostataMappingParams = null;
 
       if (meldeanlass == Meldeanlass.DIAGNOSE) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
@@ -145,16 +156,31 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           }
         }
 
+        if (meldung.getDiagnose().getModul_Prostata().isPresent()) {
+          var baseDatum =
+              meldung
+                  .getDiagnose()
+                  .getDiagnosedatum()
+                  .map(datum -> extractDateTimeFromADTDate(datum));
+          prostataMappingParams =
+              new ModulProstataMappingParams(
+                  meldeanlass,
+                  meldung.getDiagnose().getModul_Prostata().get(),
+                  patId,
+                  meldung.getDiagnose().getTumor_ID(),
+                  baseDatum);
+        }
       } else if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         // aus Verlauf: histologie, grading und p-tnm
         // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
-        var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
+        var verlauf = meldung.getMenge_Verlauf().getVerlauf();
+        var hist = verlauf.getHistologie();
         if (hist != null) {
           histList = List.of(new Tupel<>(hist, meldeanlass));
         }
 
-        var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
+        var statusTnm = verlauf.getTNM();
         if (statusTnm != null
             && (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
                 || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
@@ -163,22 +189,48 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         }
 
         fernMetaList = new ArrayList<>();
-        if (meldung.getMenge_Verlauf().getVerlauf().getMenge_FM() != null) {
-          for (var fernMeta :
-              meldung.getMenge_Verlauf().getVerlauf().getMenge_FM().getFernmetastase()) {
+        if (verlauf.getMenge_FM() != null) {
+          for (var fernMeta : verlauf.getMenge_FM().getFernmetastase()) {
             fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
           }
+        }
+
+        if (verlauf.getModul_Prostata().isPresent()) {
+          var baseDatum =
+              verlauf
+                  .getUntersuchungsdatum_Verlauf()
+                  .map(datum -> extractDateTimeFromADTDate(datum));
+
+          prostataMappingParams =
+              new ModulProstataMappingParams(
+                  meldeanlass,
+                  verlauf.getModul_Prostata().get(),
+                  patId,
+                  meldung.getTumorzuordnung().getTumor_ID() + " - " + verlauf.getVerlauf_ID(),
+                  baseDatum);
         }
       } else if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
         // aus Operation: histologie, grading und p-tnm
         // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
         if (meldung.getMenge_OP() != null) {
-          var hist = meldung.getMenge_OP().getOP().getHistologie();
+          var op = meldung.getMenge_OP().getOP();
+          var hist = op.getHistologie();
           if (hist != null) {
             histList = List.of(new Tupel<>(hist, meldeanlass));
           }
-          pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
-          op = new Tupel<>(meldung.getMenge_OP().getOP(), meldeanlass);
+          pTnm = new Triple<>(op.getTNM(), null, meldeanlass);
+
+          if (op.getModul_Prostata().isPresent()) {
+            var baseDatum = op.getOP_Datum().map(datum -> extractDateTimeFromADTDate(datum));
+
+            prostataMappingParams =
+                new ModulProstataMappingParams(
+                    meldeanlass,
+                    op.getModul_Prostata().get(),
+                    patId,
+                    meldung.getTumorzuordnung().getTumor_ID() + " - " + op.getOP_ID(),
+                    baseDatum);
+          }
         }
       } else if (meldeanlass == Meldeanlass.TOD) {
 
@@ -211,8 +263,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         pTnmMap.put(pTnm.getFirst().getTNM_ID(), pTnm);
       }
 
-      if (op != null) {
-        opMap.put(op.getFirst().getOP_ID(), op);
+      if (prostataMappingParams != null) {
+        modulProstataMappingMap.put(prostataMappingParams.baseId(), prostataMappingParams);
       }
 
       if (!fernMetaList.isEmpty()) {
@@ -238,12 +290,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         new ArrayList<>(histMap.values()),
         new ArrayList<>(cTnmMap.values()),
         new ArrayList<>(pTnmMap.values()),
-        new ArrayList<>(opMap.values()),
+        new ArrayList<>(modulProstataMappingMap.values()),
         fernMetaMap,
         death,
         patId,
-        senderId,
-        softwareId,
+        metaSource,
         verlaufId);
   }
 
@@ -255,12 +306,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           cTnmList,
       List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
           pTnmList,
-      List<Tupel<OP, Meldeanlass>> opList,
-      HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaMap,
+      List<ModulProstataMappingParams> modulProstataList,
+      Map<String, Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaMap,
       Tod death,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String verlaufId) {
 
     var patientReference =
@@ -288,13 +338,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     for (var hist : histologieList) {
       bundle =
           createHistologieAndGradingObservation(
-              bundle,
-              patId,
-              senderId,
-              softwareId,
-              hist.getFirst(),
-              hist.getSecond(),
-              patientReference);
+              bundle, patId, metaSource, hist.getFirst(), hist.getSecond(), patientReference);
     }
 
     for (var cTnm : cTnmList) {
@@ -302,8 +346,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           createCTnmObservation(
               bundle,
               patId,
-              senderId,
-              softwareId,
+              metaSource,
               cTnm.getFirst(),
               cTnm.getSecond(),
               cTnm.getThird(),
@@ -315,8 +358,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           createPTnmObservation(
               bundle,
               patId,
-              senderId,
-              softwareId,
+              metaSource,
               pTnm.getFirst(),
               pTnm.getSecond(),
               pTnm.getThird(),
@@ -327,38 +369,24 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       bundle =
           createFernMetaObservation(
               bundle,
-              patId,
-              senderId,
-              softwareId,
+              metaSource,
               fernMetaTupel.getKey(),
               fernMetaTupel.getValue().getFirst(),
               fernMetaTupel.getValue().getSecond(),
               patientReference);
     }
 
-    // TODO: we might want to try using Optional<> to create the nested object hierarchies
-    //       to simplify the null-checking (in absence of null-coalescing)
-    for (var op :
-        opList.stream()
-            .filter(
-                o ->
-                    o.getFirst().getModul_Prostata() != null
-                        && o.getFirst().getModul_Prostata().getGleasonScore() != null
-                        && StringUtils.hasLength(
-                            o.getFirst()
-                                .getModul_Prostata()
-                                .getGleasonScore()
-                                .getGleasonScoreErgebnis()))
-            .toList()) {
-      bundle =
-          createGleasonScoreObservation(
-              bundle, patId, senderId, softwareId, op.getFirst(), op.getSecond(), patientReference);
+    for (var modulProstataParams : modulProstataList) {
+      if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
+        bundle =
+            createGleasonScoreObservation(
+                bundle, metaSource, modulProstataParams, patientReference);
+      }
     }
 
     if (death != null) {
       bundle =
-          createDeathObservation(
-              bundle, patId, senderId, softwareId, verlaufId, death, patientReference);
+          createDeathObservation(bundle, patId, metaSource, verlaufId, death, patientReference);
     }
 
     if (bundle.getEntry().isEmpty()) {
@@ -370,32 +398,18 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   private Bundle createGleasonScoreObservation(
       Bundle bundle,
-      String patId,
-      String senderId,
-      String softwareId,
-      OP op,
-      Meldeanlass meldeanlass,
+      String metaSource,
+      ModulProstataMappingParams modulProstataParams,
       Reference patientReference) {
-    var effectiveDateTime = extractDateTimeFromADTDate(op.getOP_Datum());
-    var observation =
-        gleasonScoreMapper.map(
-            op.getModul_Prostata(),
-            patId,
-            op.getOP_ID(),
-            effectiveDateTime,
-            meldeanlass,
-            patientReference);
+    var observation = gleasonScoreMapper.map(modulProstataParams, patientReference, metaSource);
 
-    // TODO: should happen inside the mapper, keep the observation immutable.
-    observation.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
     return addResourceAsEntryInBundle(bundle, observation);
   }
 
   public Bundle createHistologieAndGradingObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.HistologieAbs histologie,
       Meldeanlass meldeanlass,
       Reference patientReference) {
@@ -423,7 +437,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
       gradingObs.setId(this.getHash(ResourceType.Observation, gradingObsIdentifier));
 
-      gradingObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+      gradingObs.getMeta().setSource(metaSource);
 
       gradingObs
           .getMeta()
@@ -471,7 +485,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     histObs.setId(this.getHash(ResourceType.Observation, observationIdentifier));
 
-    histObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    histObs.getMeta().setSource(metaSource);
 
     histObs
         .getMeta()
@@ -540,9 +554,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   public Bundle createFernMetaObservation(
       Bundle bundle,
-      String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String fernMetaId,
       ADT_GEKID.FernMetastaseAbs fernMeta,
       Meldeanlass meldeanlass,
@@ -555,9 +567,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var fernMetaDateString = fernMeta.getFM_Diagnosedatum();
     var fernMetaLokal = fernMeta.getFM_Lokalisation();
 
+    // TODO: this builds the indentifier slightly different than the other Observations.
+    // worth investigating if we should standardize instead?
     fernMetaObs.setId(this.getHash(ResourceType.Observation, fernMetaId));
 
-    fernMetaObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    fernMetaObs.getMeta().setSource(metaSource);
 
     fernMetaObs
         .getMeta()
@@ -613,8 +627,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createCTnmObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.CTnmAbs cTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       Meldeanlass meldeanlass,
@@ -629,7 +642,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     tnmcObs.setId(this.getHash(ResourceType.Observation, tnmcObsIdentifier));
 
-    tnmcObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    tnmcObs.getMeta().setSource(metaSource);
 
     tnmcObs
         .getMeta()
@@ -775,8 +788,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createPTnmObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.PTnmAbs pTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
       Meldeanlass meldeanlass,
@@ -790,7 +802,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     tnmpObs.setId(this.getHash(ResourceType.Observation, tnmpObsIdentifier));
 
-    tnmpObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    tnmpObs.getMeta().setSource(metaSource);
 
     tnmpObs
         .getMeta()
@@ -972,8 +984,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createDeathObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String verlaufId,
       Tod death,
       Reference patientReference) {
@@ -986,7 +997,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     deathObs.setId(this.getHash(ResourceType.Observation, deathId));
 
-    deathObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    deathObs.getMeta().setSource(metaSource);
 
     deathObs
         .getMeta()

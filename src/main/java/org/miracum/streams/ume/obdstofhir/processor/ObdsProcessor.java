@@ -16,12 +16,11 @@ import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportSerde;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
-@Configuration
+@Service
 public class ObdsProcessor extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsProcessor.class);
@@ -35,7 +34,6 @@ public class ObdsProcessor extends ObdsToFhirMapper {
   private final ObdsPatientMapper onkoPatientMapper;
   private final ObdsConditionMapper onkoConditionMapper;
 
-  @Autowired
   protected ObdsProcessor(
       FhirProperties fhirProperties,
       ObdsMedicationStatementMapper onkoMedicationStatementMapper,

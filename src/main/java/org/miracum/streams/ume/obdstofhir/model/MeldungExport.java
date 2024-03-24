@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import java.util.Map;
 import lombok.*;
 
@@ -33,6 +34,7 @@ public class MeldungExport extends OnkoResource {
 
     XmlMapper xmlMapper = new XmlMapper();
     xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    xmlMapper.registerModule(new Jdk8Module());
     try {
       this.xml_daten = xmlMapper.readValue(getString(payload, "XML_DATEN"), ADT_GEKID.class);
     } catch (JsonProcessingException e) {

@@ -157,9 +157,8 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
                     .setValue(pid)));
 
     var conditionDateString = primDia.getDiagnosedatum();
-
-    if (conditionDateString != null) {
-      onkoCondition.setOnset(extractDateTimeFromADTDate(conditionDateString));
+    if (conditionDateString.isPresent()) {
+      onkoCondition.setOnset(extractDateTimeFromADTDate(conditionDateString.get()));
     }
 
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();

@@ -18,6 +18,7 @@ import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
@@ -168,9 +169,9 @@ public abstract class ObdsToFhirMapper {
     }
   }
 
-  protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
+  public static DateTimeType extractDateTimeFromADTDate(String adtDate) {
 
-    if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
+    if (!StringUtils.hasText(adtDate)) {
       return null;
     }
 
@@ -179,7 +180,7 @@ public abstract class ObdsToFhirMapper {
     if (adtDate.matches("^00.00.\\d{4}$")) {
       adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
     } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(3); // TODO unit test
+      adtDate = "15." + adtDate.substring(3);
     }
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
