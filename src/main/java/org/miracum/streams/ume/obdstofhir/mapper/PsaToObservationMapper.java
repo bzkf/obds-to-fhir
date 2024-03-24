@@ -53,7 +53,7 @@ public class PsaToObservationMapper extends ObdsToFhirMapper {
     psaConcept
         .addCoding()
         .setSystem(fhirProperties.getSystems().getLoinc())
-        .setCode("19201-3")
+        .setCode("2857-1")
         .setVersion("2.77")
         .setDisplay(fhirProperties.getDisplay().getPsaLoinc());
     psaObservation.setCode(psaConcept);
@@ -72,7 +72,7 @@ public class PsaToObservationMapper extends ObdsToFhirMapper {
             .setValue(psaValue)
             .setSystem(fhirProperties.getSystems().getUcum())
             .setCode("ng/mL")
-            .setUnit("nanogram per millliiter");
+            .setUnit("ng/mL");
     psaObservation.setValue(quantity);
 
     return psaObservation;
