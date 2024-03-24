@@ -93,7 +93,7 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
             modulProstata,
             "pid-1",
             "op-id-1",
-            new DateTimeType("2000-01-01T00:00:00"),
+            new DateTimeType("2000-01-01"),
             new DateTimeType("2001-01-01T00:00:00"));
 
     var observation = sut.map(params, getPatientReference("pid-1"), "test");
