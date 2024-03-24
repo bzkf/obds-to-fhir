@@ -54,11 +54,11 @@ jobs:
           path: /tmp
 
       - name: Load image into KinD
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           kind load image-archive /tmp/image.tar
-
-      - name: List images in cluster
-        run: docker exec kind-control-plane crictl images
+          # list images in cluster
+          docker exec kind-control-plane crictl images
 
       - name: Install test chart
         env:
