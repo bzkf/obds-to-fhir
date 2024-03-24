@@ -17,6 +17,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsMedicationStatementMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsPatientMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsProcedureMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.PsaToObservationMapper;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
@@ -35,7 +36,8 @@ import org.springframework.util.ResourceUtils;
       ObdsProcedureMapper.class,
       ObdsPatientMapper.class,
       ObdsConditionMapper.class,
-      GleasonScoreToObservationMapper.class
+      GleasonScoreToObservationMapper.class,
+      PsaToObservationMapper.class,
     },
     properties = {"app.version=0.0.0-test"})
 @EnableConfigurationProperties()

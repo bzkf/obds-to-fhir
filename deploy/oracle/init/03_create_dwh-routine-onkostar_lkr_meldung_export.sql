@@ -739,7 +739,7 @@ VALUES (9, 8318, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
                             </Menge_FM>') || to_clob(' <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>
                             <Modul_Prostata>
                                 <PSA>0.160</PSA>
-                                <DatumPSA>2021-08-26+02:00</DatumPSA>
+                                <DatumPSA>26.08.2021</DatumPSA>
                             </Modul_Prostata>
                             <Modul_Allgemein>
                                 <DatumStudienrekrutierung>

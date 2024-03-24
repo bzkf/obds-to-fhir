@@ -66,7 +66,7 @@ class ObdsObservationProcessorTest extends ObdsProcessorTest {
                 new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1),
                 new Tupel<>("003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml", 1),
                 new Tupel<>("010_Pat2_Tumor1_Tod.xml", 1)),
-            11,
+            12,
             "9391/8",
             "2021-03-20",
             "U",
