@@ -103,7 +103,7 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
         && modulProstata.getAnlassGleasonScore().get() == AnlassGleasonScore.STANZE
         && modulProstata.getDatumStanzen().isPresent()) {
       gleasonScoreObservation.setEffective(
-          ObdsToFhirMapper.extractDateTimeFromADTDate(modulProstata.getDatumStanzen().get()));
+          ObdsToFhirMapper.convertObdsDateToDateTimeType(modulProstata.getDatumStanzen().get()));
     }
 
     // should we also map the "source" gradings?

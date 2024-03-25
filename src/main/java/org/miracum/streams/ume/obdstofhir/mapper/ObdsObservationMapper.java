@@ -163,8 +163,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
         if (meldung.getDiagnose().getModul_Prostata().isPresent()) {
           var baseDatum =
-              extractDateTimeFromADTDate(meldung.getDiagnose().getDiagnosedatum().orElse(null));
-          var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
+              convertObdsDateToDateTimeType(meldung.getDiagnose().getDiagnosedatum().orElse(null));
+          var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
 
           prostataMappingParams =
               new ModulProstataMappingParams(
@@ -202,8 +202,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
         if (verlauf.getModul_Prostata().isPresent()) {
           var baseDatum =
-              extractDateTimeFromADTDate(verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
-          var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
+              convertObdsDateToDateTimeType(verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
+          var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
 
           prostataMappingParams =
               new ModulProstataMappingParams(
@@ -226,8 +226,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           pTnm = new Triple<>(op.getTNM(), null, meldeanlass);
 
           if (op.getModul_Prostata().isPresent()) {
-            var baseDatum = extractDateTimeFromADTDate(op.getOP_Datum().orElse(null));
-            var meldedatum = extractDateTimeFromADTDate(meldung.getMeldedatum());
+            var baseDatum = convertObdsDateToDateTimeType(op.getOP_Datum().orElse(null));
+            var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
 
             prostataMappingParams =
                 new ModulProstataMappingParams(
@@ -445,7 +445,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var histDateString = histologie.getTumor_Histologiedatum();
 
     if (histDateString != null) {
-      gradingObs.setEffective(extractDateTimeFromADTDate(histDateString));
+      gradingObs.setEffective(convertObdsDateToDateTimeType(histDateString));
     }
 
     var grading = histologie.getGrading();
@@ -537,7 +537,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     // Histologiedatum
     if (histDateString != null) {
-      histObs.setEffective(extractDateTimeFromADTDate(histDateString));
+      histObs.setEffective(convertObdsDateToDateTimeType(histDateString));
     }
 
     var valueCodeableCon =
@@ -623,7 +623,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     // Fernmetastasendatum
     if (fernMetaDateString != null) {
-      fernMetaObs.setEffective(extractDateTimeFromADTDate(fernMetaDateString));
+      fernMetaObs.setEffective(convertObdsDateToDateTimeType(fernMetaDateString));
     }
 
     fernMetaObs.setValue(
@@ -696,7 +696,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var tnmcDateString = cTnm.getTNM_Datum();
 
     if (tnmcDateString != null) {
-      tnmcObs.setEffective(extractDateTimeFromADTDate(tnmcDateString));
+      tnmcObs.setEffective(convertObdsDateToDateTimeType(tnmcDateString));
     }
 
     if (classification != null
@@ -855,7 +855,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var tnmpDateString = pTnm.getTNM_Datum();
 
     if (tnmpDateString != null) {
-      tnmpObs.setEffective(extractDateTimeFromADTDate(tnmpDateString));
+      tnmpObs.setEffective(convertObdsDateToDateTimeType(tnmpDateString));
     }
 
     // only defined in diagnosis
@@ -1038,7 +1038,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     // Sterbedatum
     var deathDateString = death.getSterbedatum();
     if (deathDateString != null) {
-      deathObs.setEffective(extractDateTimeFromADTDate(deathDateString));
+      deathObs.setEffective(convertObdsDateToDateTimeType(deathDateString));
     }
 
     var deathValueCodeConcept = new CodeableConcept();

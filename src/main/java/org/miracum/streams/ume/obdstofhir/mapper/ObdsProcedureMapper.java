@@ -260,7 +260,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     // Performed
     var opDateString = op.getOP_Datum();
     if (opDateString.isPresent()) {
-      opProcedure.setPerformed(extractDateTimeFromADTDate(opDateString.get()));
+      opProcedure.setPerformed(convertObdsDateToDateTimeType(opDateString.get()));
     }
 
     // ReasonReference
@@ -369,8 +369,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                             + this.getHash(ResourceType.Procedure, partOfId))));
       }
       // Performed
-      DateTimeType stBeginnDateType = extractDateTimeFromADTDate(stBeginnDateString);
-      DateTimeType stEndDateType = extractDateTimeFromADTDate(stEndDateString);
+      DateTimeType stBeginnDateType = convertObdsDateToDateTimeType(stBeginnDateString);
+      DateTimeType stEndDateType = convertObdsDateToDateTimeType(stEndDateString);
 
       if (stBeginnDateType != null && stEndDateType != null) {
         stProcedure.setPerformed(
@@ -521,10 +521,10 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     for (var radio : partialRadiations) {
       if (radio.getST_Beginn_Datum() != null) {
-        minDates.add(extractDateTimeFromADTDate(radio.getST_Beginn_Datum()).getValue());
+        minDates.add(convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()).getValue());
       }
       if (radio.getST_Ende_Datum() != null) {
-        maxDates.add(extractDateTimeFromADTDate(radio.getST_Ende_Datum()).getValue());
+        maxDates.add(convertObdsDateToDateTimeType(radio.getST_Ende_Datum()).getValue());
       }
     }
 
