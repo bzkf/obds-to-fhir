@@ -261,11 +261,11 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     DateTimeType systEndDateType = null;
 
     if (systBeginnDateString != null) {
-      systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
+      systBeginnDateType = convertObdsDateToDateTimeType(systBeginnDateString);
     }
 
     if (systEndDateString != null) {
-      systEndDateType = extractDateTimeFromADTDate(systEndDateString);
+      systEndDateType = convertObdsDateToDateTimeType(systEndDateString);
     }
 
     if (systBeginnDateType != null && systEndDateType != null) {

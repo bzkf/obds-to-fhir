@@ -61,7 +61,7 @@ public class PsaToObservationMapper extends ObdsToFhirMapper {
     psaObservation.setCode(psaConcept);
 
     if (modulProstata.getDatumPSA().isPresent()) {
-      psaObservation.setEffective(extractDateTimeFromADTDate(modulProstata.getDatumPSA().get()));
+      psaObservation.setEffective(convertObdsDateToDateTimeType(modulProstata.getDatumPSA().get()));
     } else if (modulProstataParams.baseDatum() != null) {
       psaObservation.setEffective(modulProstataParams.baseDatum());
     } else {

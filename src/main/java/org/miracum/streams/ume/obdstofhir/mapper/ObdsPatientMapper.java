@@ -124,7 +124,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
         var death = mengeVerlauf.getVerlauf().getTod();
 
         if (death.getSterbedatum() != null) {
-          patient.setDeceased(extractDateTimeFromADTDate(death.getSterbedatum()));
+          patient.setDeceased(convertObdsDateToDateTimeType(death.getSterbedatum()));
         }
       }
     }

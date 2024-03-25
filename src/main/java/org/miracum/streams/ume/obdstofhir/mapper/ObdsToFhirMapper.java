@@ -4,7 +4,6 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -169,27 +168,32 @@ public abstract class ObdsToFhirMapper {
     }
   }
 
-  public static DateTimeType extractDateTimeFromADTDate(String adtDate) {
+  public static DateTimeType convertObdsDateToDateTimeType(String obdsDate) {
 
-    if (!StringUtils.hasText(adtDate)) {
+    if (!StringUtils.hasText(obdsDate)) {
       return null;
     }
 
-    // 00.00.2022 -> 01.07.2022
-    // 00.04.2022 -> 15.04.2022
-    if (adtDate.matches("^00.00.\\d{4}$")) {
-      adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
-    } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(3);
+    // default formatter for xs:date
+    var formatter = DateTimeFormatter.ISO_OFFSET_DATE;
+
+    // if it's a Datum_Typ
+    if (obdsDate.matches("(([0-2]\\d)|(3[01]))\\.((0\\d)|(1[0-2]))\\.(18|19|20)\\d\\d")) {
+      // 00.00.2022 -> 01.07.2022
+      // 00.04.2022 -> 15.04.2022
+      if (obdsDate.matches("^00.00.\\d{4}$")) {
+        obdsDate = "01.07." + obdsDate.substring(obdsDate.length() - 4);
+      } else if (obdsDate.matches("^00.\\d{2}.\\d{4}$")) {
+        obdsDate = "15." + obdsDate.substring(3);
+      }
+      formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
-    LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
+    var adtLocalDate = LocalDate.parse(obdsDate, formatter);
+    var adtLocalDateTime = adtLocalDate.atStartOfDay();
     var adtDateTime =
         new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
     adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
-
     return adtDateTime;
   }
 }
