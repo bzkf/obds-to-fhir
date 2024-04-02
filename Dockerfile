@@ -19,7 +19,5 @@ COPY --from=build /home/gradle/src/spring-boot-loader/ ./
 COPY --from=build /home/gradle/src/snapshot-dependencies/ ./
 COPY --from=build /home/gradle/src/application/ ./
 
-USER 65532
-ARG VERSION=0.0.0
-ENV APP_VERSION=${VERSION}
+USER 65532:65532
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "org.springframework.boot.loader.launch.JarLauncher"]
