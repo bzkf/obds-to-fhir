@@ -69,8 +69,11 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
-    // diagnose Tag ist only specified in meldeanlass 'diagnose', otherwise use tag 'Tumorzuordung'
-    if (primDia == null) {
+    // Diagnose Element is only fully specified in meldeanlass 'diagnose', otherwise use element
+    // 'Tumorzuordung'
+    // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
+    // in that case also use the TumorZuordnung to construct the Condition.
+    if (primDia == null || primDia.getPrimaertumor_ICD_Code() == null) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
