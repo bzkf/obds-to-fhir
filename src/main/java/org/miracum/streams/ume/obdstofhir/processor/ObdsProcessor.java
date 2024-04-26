@@ -1,5 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.processor;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleUtil;
 import java.util.*;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,6 +9,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Patient;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
@@ -24,6 +27,7 @@ import org.springframework.stereotype.Service;
 public class ObdsProcessor extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsProcessor.class);
+  private static final FhirContext ctx = FhirContext.forR4();
 
   @Value("${spring.profiles.active}")
   private String profile;
@@ -113,6 +117,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
               .get("out-Aggregate")
               .mapValues(this.getOnkoToPatientBundleMapper())
               .filter((key, value) -> value != null)
+              .selectKey((key, value) -> patientBundleKeySelector(value))
         };
       } else {
         return new KStream[] {
@@ -205,5 +210,15 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       return onkoConditionMapper.mapOnkoResourcesToCondition(
           meldungExportList, meldungPair.getRight());
     };
+  }
+
+  private static String patientBundleKeySelector(Bundle bundle) {
+    var patients = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class);
+
+    if (patients.isEmpty() || patients.size() > 1) {
+      throw new RuntimeException("A patient bundle contains more or less than 1 resource");
+    }
+    var patient = patients.get(0);
+    return String.format("%s/%s", patient.getResourceType(), patient.getId());
   }
 }

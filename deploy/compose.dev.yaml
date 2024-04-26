@@ -30,6 +30,8 @@ services:
       KAFKA_CFG_LOG_CLEANUP_POLICY: compact
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    ports:
+      - 127.0.0.1:9094:9094
 
   kafka-connect:
     #image: ghcr.io/miracum/kafka-connect-images/cricketeerone-kafka-connect:v1.1.0@sha256:172f25d8b8beed81bf2839a7164eeff1b195238d6b5aa35307eff83296d6d42f
