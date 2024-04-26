@@ -9,6 +9,7 @@ public enum Meldeanlass {
   STATUSMELDUNG("statusmeldung"),
   DIAGNOSE("diagnose"),
   TOD("tod"),
+  HISTOLOGIE_ZYTOLOGIE("histologie_zytologie"),
   ;
 
   private final String text;
