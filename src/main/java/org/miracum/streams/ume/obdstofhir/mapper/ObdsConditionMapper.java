@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
@@ -12,11 +13,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 @Configuration
 public class ObdsConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsConditionMapper.class);
+
+  private static final Pattern icdVersionPattern =
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
   @Value("${app.version}")
   private String appVersion;
@@ -64,8 +69,12 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     ADT_GEKID.PrimaryConditionAbs primDia = meldung.getDiagnose();
 
-    // diagnose Tag ist only specified in meldeanlass 'diagnose', otherwise use tag 'Tumorzuordung'
-    if (primDia == null) {
+    // Diagnose Element is only fully specified in meldeanlass 'diagnose', otherwise use element
+    // 'Tumorzuordung'
+    // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
+    // in that case also use the TumorZuordnung to construct the Condition.
+    var useTumorZuordnung = primDia == null || primDia.getPrimaertumor_ICD_Code() == null;
+    if (useTumorZuordnung) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
@@ -80,6 +89,9 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
+    if (useTumorZuordnung) {
+      conIdentifier += "-from-tumorzuordnung";
+    }
 
     onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
@@ -94,18 +106,26 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getCondition())));
 
-    var coding = new Coding();
-    var icd10Version = primDia.getPrimaertumor_ICD_Version();
+    var coding =
+        new Coding()
+            .setCode(primDia.getPrimaertumor_ICD_Code())
+            .setSystem(fhirProperties.getSystems().getIcd10gm());
+
     // Aufbau: "10 2021 GM"
-    String[] icdVersionArray = icd10Version.split(" ");
-
-    if (icdVersionArray.length == 3 && icdVersionArray[1].matches("^20\\d{2}$")) {
-      coding.setVersion(icdVersionArray[1]);
-    } // FIXME: else throw exception?
-
-    coding
-        .setCode(primDia.getPrimaertumor_ICD_Code())
-        .setSystem(fhirProperties.getSystems().getIcd10gm());
+    var icd10Version = primDia.getPrimaertumor_ICD_Version();
+    if (StringUtils.hasLength(icd10Version)) {
+      var matcher = icdVersionPattern.matcher(icd10Version);
+      if (matcher.matches()) {
+        coding.setVersion(matcher.group("versionYear"));
+      } else {
+        LOG.warn(
+            "Primaertumor_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
+            icdVersionPattern.pattern(),
+            icd10Version);
+      }
+    } else {
+      LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+    }
 
     var conditionCode = new CodeableConcept().addCoding(coding);
     onkoCondition.setCode(conditionCode);

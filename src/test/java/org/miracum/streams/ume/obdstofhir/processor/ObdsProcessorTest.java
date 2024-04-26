@@ -68,7 +68,7 @@ public abstract class ObdsProcessorTest {
       Map<String, Object> payloadOnkoRessource = new HashMap<>();
       payloadOnkoRessource.put("ID", payloadId);
       payloadOnkoRessource.put("REFERENZ_NUMMER", patId);
-      payloadOnkoRessource.put("LKR_MELDUNG", Integer.parseInt(meldungsId.replace(melderId, "")));
+      payloadOnkoRessource.put("LKR_MELDUNG", meldungsId.replace(melderId, ""));
       payloadOnkoRessource.put("VERSIONSNUMMER", xmlTupel.getSecond());
       payloadOnkoRessource.put("XML_DATEN", xmlContent);
 

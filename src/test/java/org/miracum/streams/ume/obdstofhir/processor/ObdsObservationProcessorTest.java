@@ -6,11 +6,13 @@ import ca.uhn.fhir.util.BundleUtil;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.tuple.Pair;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Observation;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
@@ -197,5 +199,36 @@ class ObdsObservationProcessorTest extends ObdsProcessorTest {
               .forFile()
               .withExtension(".fhir.json"));
     }
+  }
+
+  @ParameterizedTest
+  @CsvSource({"diagnosis_set.xml", "diagnosis_unset.xml"})
+  void mapObservation_withGivenObdsXml_shouldMatchSnapshot(String resourceXmlName)
+      throws IOException {
+
+    var meldungExportList =
+        buildMeldungExportList(List.of(new Tupel<String, Integer>(resourceXmlName, 1)));
+
+    var onkoProcessor =
+        new ObdsProcessor(
+            fhirProps,
+            onkoMedicationStatementMapper,
+            onkoObservationMapper,
+            onkoProcedureMapper,
+            onkoPatientMapper,
+            onkoConditionMapper);
+
+    var observResultBundle =
+        onkoProcessor.getOnkoToObservationBundleMapper().apply(meldungExportList);
+
+    var resultBundle =
+        onkoProcessor
+            .getOnkoToConditionBundleMapper()
+            .apply(Pair.of(meldungExportList, observResultBundle));
+
+    var fhirJson = fhirParser.encodeResourceToString(resultBundle);
+    Approvals.verify(
+        fhirJson,
+        Approvals.NAMES.withParameters(resourceXmlName).forFile().withExtension(".fhir.json"));
   }
 }
