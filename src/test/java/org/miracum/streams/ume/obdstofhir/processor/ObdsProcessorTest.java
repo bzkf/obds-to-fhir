@@ -21,8 +21,6 @@ import org.miracum.streams.ume.obdstofhir.mapper.PsaToObservationMapper;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.ResourceUtils;
@@ -42,8 +40,6 @@ import org.springframework.util.ResourceUtils;
     properties = {"app.version=0.0.0-test"})
 @EnableConfigurationProperties()
 public abstract class ObdsProcessorTest {
-
-  private static final Logger log = LoggerFactory.getLogger(ObdsProcessorTest.class);
 
   protected final FhirContext ctx = FhirContext.forR4();
   protected final IParser fhirParser = ctx.newJsonParser().setPrettyPrint(true);
