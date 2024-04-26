@@ -34,10 +34,7 @@ services:
       - 127.0.0.1:9094:9094
 
   kafka-connect:
-    #image: ghcr.io/miracum/kafka-connect-images/cricketeerone-kafka-connect:v1.1.0@sha256:172f25d8b8beed81bf2839a7164eeff1b195238d6b5aa35307eff83296d6d42f
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/miracum/kafka-connect-images/cricketeerone-kafka-connect:v1.6.0@sha256:5d4c79d5b9d64562d8906aec14c66ed5f48ddb0f9e7f12949547ab89b69e3f0f
     restart: unless-stopped
     cap_drop:
       - ALL
