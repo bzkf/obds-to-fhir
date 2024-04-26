@@ -1,3 +1,4 @@
+#checkov:skip=CKV_SECRET_6: all dev setup
 services:
   oracle:
     image: docker.io/gvenzl/oracle-xe:21.3.0-slim-faststart
