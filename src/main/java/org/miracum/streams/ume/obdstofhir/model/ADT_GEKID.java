@@ -114,7 +114,6 @@ public class ADT_GEKID implements Serializable {
           public static class Tumorzuordnung extends PrimaryConditionAbs {
             @JsonProperty private String Tumor_ID;
             @JsonProperty private String Primaertumor_ICD_Version;
-            @JsonProperty private Optional<String> Diagnosedatum;
             @JsonProperty private String Seitenlokalisation;
           }
 
@@ -128,7 +127,6 @@ public class ADT_GEKID implements Serializable {
             // @JsonProperty private String ICD_O_Topographie_Code;  nicht sicher ob notwendig, aber
             // wenn's schon da ist, why not
             // @JsonProperty private String ICD_O_Topographie_Version;
-            @JsonProperty private Optional<String> Diagnosedatum = Optional.empty();
             @JsonProperty private String Seitenlokalisation;
 
             @JsonProperty private Menge_Histologie Menge_Histologie;
@@ -557,7 +555,7 @@ public class ADT_GEKID implements Serializable {
     public String Tumor_ID;
     public String Primaertumor_ICD_Code;
     public String Primaertumor_ICD_Version;
-    public Optional<String> Diagnosedatum;
+    public Optional<String> Diagnosedatum = Optional.empty();
     public String Seitenlokalisation;
   }
 

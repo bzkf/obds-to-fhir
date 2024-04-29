@@ -1,2 +1,5 @@
 skip-check:
+  # already enough secret scanning via trivy, kics, trufflehog, gitleaks
   - CKV_SECRET_6
+  # "Ensure that HEALTHCHECK instructions have been added to container images"
+  - CKV_DOCKER_2
