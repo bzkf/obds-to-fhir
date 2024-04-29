@@ -39,7 +39,7 @@ See [package.json](package.json) for a list of used packages and their versions.
 - Kafka Broker: `$DOCKER_HOST_IP:9094`
 - Kafka Connect: `$DOCKER_HOST_IP:8083`
 - AKHQ: `$DOCKER_HOST_IP:8080`
-- Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/XEPDB1` (Use credentials from init script)
+- Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/FREEPDB1` (Use credentials from init script)
 
 ### Run with
 
