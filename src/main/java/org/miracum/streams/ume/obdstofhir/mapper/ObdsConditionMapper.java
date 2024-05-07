@@ -82,7 +82,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
       }
     }
 
-    var patId = getPatIdFromAdt(meldungExport);
+    var patId = getPatIdFromMeldung(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
