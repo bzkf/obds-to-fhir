@@ -102,7 +102,7 @@ public abstract class ObdsToFhirMapper {
     return meldungExportList.stream().sorted(meldungComparator).collect(Collectors.toList());
   }
 
-  public String getPatIdFromAdt(MeldungExport meldung) {
+  public String getPatIdFromMeldung(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
