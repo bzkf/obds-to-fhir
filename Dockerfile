@@ -2,7 +2,7 @@ FROM docker.io/library/gradle:8.6.0-jdk17@sha256:27ed98487dd9c155d555955084dfd33
 WORKDIR /home/gradle/src
 ENV GRADLE_USER_HOME /gradle
 
-COPY build.gradle settings.gradle gradle.properties ./
+COPY build.gradle settings.gradle ./
 RUN gradle clean build --no-daemon || true
 
 COPY --chown=gradle:gradle . .
