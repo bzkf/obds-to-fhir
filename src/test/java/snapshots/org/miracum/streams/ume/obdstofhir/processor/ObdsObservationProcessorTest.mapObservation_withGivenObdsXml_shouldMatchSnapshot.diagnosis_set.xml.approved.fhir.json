@@ -1,0 +1,39 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
+      "meta": {
+        "source": "KR7X825X.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2010",
+          "code": "C43.5"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/19cc75fbfb51266ac0149828ae2f8522106e3ba176ceac2b40acb3cb1c9365f9",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "0001234567"
+        }
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110"
+    }
+  } ]
+}
