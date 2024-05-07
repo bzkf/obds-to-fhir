@@ -231,7 +231,7 @@ public class ADT_GEKID implements Serializable {
 
               @JsonProperty private String OP_ID;
               @JsonProperty private String OP_Intention;
-              @JsonProperty private Optional<String> OP_Datum;
+              @JsonProperty private Optional<String> OP_Datum = Optional.empty();
               @JsonProperty private String OP_OPS_Version;
 
               @JsonProperty private Histologie Histologie;
@@ -563,9 +563,9 @@ public class ADT_GEKID implements Serializable {
   public static class Modul_Prostata {
     @JsonProperty private Optional<GleasonScore> GleasonScore = Optional.empty();
     @JsonProperty private Optional<AnlassGleasonScore> AnlassGleasonScore = Optional.empty();
-    @JsonProperty private Optional<Double> PSA;
-    @JsonProperty private Optional<String> DatumPSA;
-    @JsonProperty private Optional<String> DatumStanzen;
+    @JsonProperty private Optional<Double> PSA = Optional.empty();
+    @JsonProperty private Optional<String> DatumPSA = Optional.empty();
+    @JsonProperty private Optional<String> DatumStanzen = Optional.empty();
 
     @Data
     public static class GleasonScore {
