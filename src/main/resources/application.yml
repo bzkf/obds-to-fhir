@@ -1,5 +1,5 @@
 app:
-  version: 2.1.0-beta.14
+  version: 2.1.0-beta.1
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
 
 fhir:
