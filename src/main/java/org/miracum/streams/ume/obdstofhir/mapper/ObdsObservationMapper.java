@@ -96,8 +96,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDiagnosis())) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
         histList = new ArrayList<>();
-        for (var hist : meldung.getDiagnose().getMenge_Histologie().getHistologie()) {
-          histList.add(new Tupel<>(hist, meldeanlass));
+        var mengeHistologie = meldung.getDiagnose().getMenge_Histologie();
+        if (mengeHistologie != null) {
+          for (var hist : mengeHistologie.getHistologie()) {
+            histList.add(new Tupel<>(hist, meldeanlass));
+          }
         }
         cTnm =
             new Triple<>(
