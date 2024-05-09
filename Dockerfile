@@ -1,15 +1,18 @@
 FROM docker.io/library/gradle:8.6.0-jdk17@sha256:27ed98487dd9c155d555955084dfd33f32d9f7ac5a90a79b1323ab002a1a8b6e AS build
-WORKDIR /home/gradle/src
-ENV GRADLE_USER_HOME /gradle
-
-COPY build.gradle settings.gradle ./
-RUN gradle clean build --no-daemon || true
+WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle . .
-RUN gradle clean build --info && \
-    gradle jacocoTestReport &&  \
-    awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/jacoco/coverage.csv && \
-    java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
+
+RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
+gradle clean build --info --no-daemon
+gradle jacocoTestReport --no-daemon
+java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
+EOF
+
+FROM scratch AS test
+WORKDIR /test
+COPY --from=build /home/gradle/project/build/reports/ .
+ENTRYPOINT [ "true" ]
 
 FROM docker.io/library/debian:11.9-slim@sha256:715354035496a48b9c4c8f146a6f751de70449913773038776eb1f3d01c93989 AS jemalloc
 # hadolint ignore=DL3008
@@ -26,10 +29,10 @@ ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
 
 COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
-COPY --from=build /home/gradle/src/dependencies/ ./
-COPY --from=build /home/gradle/src/spring-boot-loader/ ./
-COPY --from=build /home/gradle/src/snapshot-dependencies/ ./
-COPY --from=build /home/gradle/src/application/ ./
+COPY --from=build /home/gradle/project/dependencies/ ./
+COPY --from=build /home/gradle/project/spring-boot-loader/ ./
+COPY --from=build /home/gradle/project/snapshot-dependencies/ ./
+COPY --from=build /home/gradle/project/application/ ./
 
 USER 65532:65532
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "org.springframework.boot.loader.launch.JarLauncher"]
