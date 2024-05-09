@@ -1,9 +1,6 @@
 FROM docker.io/library/gradle:8.6.0-jdk17@sha256:27ed98487dd9c155d555955084dfd33f32d9f7ac5a90a79b1323ab002a1a8b6e AS build
 WORKDIR /home/gradle/project
 
-COPY build.gradle settings.gradle ./
-RUN --mount=type=cache,target=/home/gradle/.gradle/caches gradle clean build --no-daemon || true
-
 COPY --chown=gradle:gradle . .
 
 RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
