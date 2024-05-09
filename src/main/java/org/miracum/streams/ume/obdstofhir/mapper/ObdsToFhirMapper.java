@@ -67,13 +67,13 @@ public abstract class ObdsToFhirMapper {
     if (matcher.find()) {
       convertedId = matcher.group();
     } else {
-      log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
+      log.warn("Identifier to convert does not have 9 digits without leading '0': {}", id);
       return id;
     }
     return convertedId;
   }
 
-  public List<MeldungExport> prioritiseLatestMeldungExports(
+  public static List<MeldungExport> prioritiseLatestMeldungExports(
       MeldungExportList meldungExports, List<Meldeanlass> priorityOrder, List<Meldeanlass> filter) {
     var meldungen = meldungExports.getElements();
 
@@ -99,10 +99,13 @@ public abstract class ObdsToFhirMapper {
               return index == -1 ? Integer.MAX_VALUE : index;
             });
 
+    // TODO: do this in-place sort instead:
+    // meldungExportList.sort(meldungComparator);
+
     return meldungExportList.stream().sorted(meldungComparator).collect(Collectors.toList());
   }
 
-  public String getPatIdFromMeldung(MeldungExport meldung) {
+  public static String getPatIdFromMeldung(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -111,7 +114,7 @@ public abstract class ObdsToFhirMapper {
         .getPatient_ID();
   }
 
-  public String getTumorIdFromAdt(MeldungExport meldung) {
+  public static String getTumorIdFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -122,7 +125,7 @@ public abstract class ObdsToFhirMapper {
         .getTumor_ID();
   }
 
-  public Meldeanlass getReportingReasonFromAdt(MeldungExport meldung) {
+  public static Meldeanlass getReportingReasonFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -132,7 +135,7 @@ public abstract class ObdsToFhirMapper {
         .getMeldeanlass();
   }
 
-  public String getReportingIdFromAdt(MeldungExport meldung) {
+  public static String getReportingIdFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
