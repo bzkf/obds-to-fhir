@@ -79,11 +79,9 @@ spotless {
 
 jacocoTestReport {
 	reports {
-		csv.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.csv'))
 		csv.required = true
-		html.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.html'))
 		html.required = true
-		xml.required = false
+		xml.required = true
 	}
 }
 
