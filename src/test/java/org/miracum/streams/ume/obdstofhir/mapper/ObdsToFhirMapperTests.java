@@ -59,13 +59,15 @@ class ObdsToFhirMapperTests {
   @Test
   void
       prioritiseLatestMeldungExports_withSamePrioriyOrderUsedForMappingThePatientResource_shouldHandleMultipleDeathReports() {
+    var expectedFirstDeathMeldung = createMeldungExport("3", 5, Meldeanlass.TOD);
+
     var meldungExports = new MeldungExportList();
     meldungExports.addElement(createMeldungExport("0", 1, Meldeanlass.DIAGNOSE));
     meldungExports.addElement(createMeldungExport("1", 1, Meldeanlass.BEHANDLUNGSBEGINN));
     meldungExports.addElement(createMeldungExport("2", 1, Meldeanlass.BEHANDLUNGSENDE));
     meldungExports.addElement(createMeldungExport("3", 1, Meldeanlass.TOD));
     meldungExports.addElement(createMeldungExport("4", 3, Meldeanlass.BEHANDLUNGSBEGINN));
-    meldungExports.addElement(createMeldungExport("3", 5, Meldeanlass.TOD));
+    meldungExports.addElement(expectedFirstDeathMeldung);
     meldungExports.addElement(createMeldungExport("6", 7, Meldeanlass.BEHANDLUNGSENDE));
     meldungExports.addElement(createMeldungExport("0", 2, Meldeanlass.DIAGNOSE));
     meldungExports.addElement(createMeldungExport("3", 3, Meldeanlass.TOD));
@@ -80,6 +82,6 @@ class ObdsToFhirMapperTests {
                 Meldeanlass.DIAGNOSE),
             null);
 
-    assertThat(prioritised).isNotEmpty();
+    assertThat(prioritised).first().isEqualTo(expectedFirstDeathMeldung);
   }
 }

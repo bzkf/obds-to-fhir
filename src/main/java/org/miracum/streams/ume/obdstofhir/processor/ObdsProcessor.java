@@ -166,19 +166,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
   }
 
   public ValueMapper<MeldungExportList, Bundle> getOnkoToPatientBundleMapper() {
-    return meldungExporte -> {
-      List<MeldungExport> meldungExportList =
-          prioritiseLatestMeldungExports(
-              meldungExporte,
-              Arrays.asList(
-                  Meldeanlass.TOD,
-                  Meldeanlass.BEHANDLUNGSENDE,
-                  Meldeanlass.STATUSAENDERUNG,
-                  Meldeanlass.DIAGNOSE),
-              null);
-
-      return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
-    };
+    return meldungExporte ->
+        onkoPatientMapper.mapOnkoResourcesToPatient(meldungExporte.getElements());
   }
 
   public ValueMapper<Pair<MeldungExportList, Bundle>, Bundle> getOnkoToConditionBundleMapper() {

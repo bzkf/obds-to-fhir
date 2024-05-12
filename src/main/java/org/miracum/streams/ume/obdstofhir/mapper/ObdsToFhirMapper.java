@@ -99,9 +99,6 @@ public abstract class ObdsToFhirMapper {
               return index == -1 ? Integer.MAX_VALUE : index;
             });
 
-    // TODO: do this in-place sort instead:
-    // meldungExportList.sort(meldungComparator);
-
     return meldungExportList.stream().sorted(meldungComparator).collect(Collectors.toList());
   }
 

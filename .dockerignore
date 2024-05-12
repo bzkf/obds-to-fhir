@@ -2,3 +2,4 @@
 !src
 !*.gradle
 !gradle.properties
+!lombok.config
