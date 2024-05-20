@@ -60,7 +60,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
 
     return (stringOnkoMeldungExpTable, stringOnkoObsBundles) -> {
       // return (stringOnkoMeldungExpTable) ->
-      var output =
+      var filtered =
           stringOnkoMeldungExpTable
               // only process adt v2.x.x
               .filter((key, value) -> value.getXml_daten().getSchema_Version().matches("^2\\..*"))
@@ -73,11 +73,14 @@ public class ObdsProcessor extends ObdsToFhirMapper {
                               .getMenge_Meldung()
                               .getMeldung()
                               .getMenge_Tumorkonferenz()
-                          == null) // ignore tumor conferences
-              // group by the patient number. This ensures that all meldungen of one patient
-              // are processed by the same downstream consumer.
+                          == null); // ignore tumor conferences
+
+      var output =
+          filtered
               .groupBy(
-                  (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
+                  (key, meldung) ->
+                      KeyValue.pair(
+                          getPatIdFromMeldung(meldung) + "-" + getTumorIdFromAdt(meldung), meldung),
                   Grouped.with(Serdes.String(), new MeldungExportSerde()))
               .aggregate(
                   MeldungExportList::new,
@@ -114,12 +117,24 @@ public class ObdsProcessor extends ObdsToFhirMapper {
 
       // ...but only conditionally map Patient resources
       if (Objects.equals(profile, "patient")) {
-        branches.add(
-            output
-                .get("out-Aggregate")
+        var patientStream =
+            filtered
+                // group by the patient number. This ensures that all meldungen of one patient
+                // are processed by the same downstream consumer.
+                .groupBy(
+                    (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
+                    Grouped.with(Serdes.String(), new MeldungExportSerde()))
+                .aggregate(
+                    MeldungExportList::new,
+                    (key, value, aggregate) -> aggregate.addElement(value),
+                    (key, value, aggregate) -> aggregate.removeElement(value),
+                    Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+                .toStream()
                 .mapValues(this.getOnkoToPatientBundleMapper())
                 .filter((key, value) -> value != null)
-                .selectKey((key, value) -> patientBundleKeySelector(value)));
+                .selectKey((key, value) -> patientBundleKeySelector(value));
+
+        branches.add(patientStream);
       }
 
       return branches.toArray(new KStream[branches.size()]);
