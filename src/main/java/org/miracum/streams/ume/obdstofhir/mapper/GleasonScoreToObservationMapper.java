@@ -20,7 +20,7 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
 
   // we currently ignore the 7a/7b difference. We could map it when using
   // valueCodeableConcept with https://loinc.org/94734-1
-  private static final Pattern gleasonErgebnisPattern = Pattern.compile("^(\\d{1,2})[a-z]?$");
+  private static final Pattern gleasonErgebnisPattern = Pattern.compile("^(\\d{1,2})[ab]?$");
 
   public GleasonScoreToObservationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -35,6 +35,8 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
       throw new IllegalArgumentException("Modul_Prostata_GleasonScore is unset.");
     }
 
+    // TODO: per https://basisdatensatz.de/xml/ADT_GEKID_v2.2.3.xsd komplexer typ aus
+    // GleasonGradPrimaer + GleasonGradSekundaer = GleasonScoreErgebnis. vollständig implementieren!
     var gleasonScoreErgebnis = modulProstata.getGleasonScore().get().getGleasonScoreErgebnis();
 
     if (!StringUtils.hasText(gleasonScoreErgebnis)) {
@@ -80,8 +82,10 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
                     fhirProperties.getSystems().getSnomed(), "86273004", "Biopsy (procedure)");
               // feels a bit ugly to set an empty coding as the "unset".
             case UNBEKANNT ->
-            new Coding(
-                fhirProperties.getSystems().getSnomed(), "261665006", "Unknown (qualifier value)");
+                new Coding(
+                    fhirProperties.getSystems().getSnomed(),
+                    "261665006",
+                    "Unknown (qualifier value)");
           };
 
       gleasonScoreObservation.setMethod(new CodeableConcept(code));

@@ -54,7 +54,7 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"7b, 7", "10c, 10", "3, 3"})
+  @CsvSource({"7a, 7", "7b, 7", "10, 10", "3, 3"})
   void map_withGivenScoreErgebnis_shouldSetToValueInteger(
       String gleasonScoreErgebnis, Integer expectedValue) {
 

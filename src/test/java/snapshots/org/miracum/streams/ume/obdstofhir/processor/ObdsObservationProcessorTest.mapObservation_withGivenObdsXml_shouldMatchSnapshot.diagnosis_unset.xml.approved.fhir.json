@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Condition/dd9844e53c6d877fb91a9059f1bc0a433e7e892cd272770caa84aad4e7b7189d",
+    "fullUrl": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
     "resource": {
       "resourceType": "Condition",
-      "id": "dd9844e53c6d877fb91a9059f1bc0a433e7e892cd272770caa84aad4e7b7189d",
+      "id": "04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
       "meta": {
         "source": "KR7X825X.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
@@ -45,7 +45,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/dd9844e53c6d877fb91a9059f1bc0a433e7e892cd272770caa84aad4e7b7189d"
+      "url": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110"
     }
   } ]
 }
