@@ -73,8 +73,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     // 'Tumorzuordung'
     // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
     // in that case also use the TumorZuordnung to construct the Condition.
-    var useTumorZuordnung = primDia == null || primDia.getPrimaertumor_ICD_Code() == null;
-    if (useTumorZuordnung) {
+    if (primDia == null || primDia.getPrimaertumor_ICD_Code() == null) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
@@ -89,9 +88,6 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
-    if (useTumorZuordnung) {
-      conIdentifier += "-from-tumorzuordnung";
-    }
 
     onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
@@ -149,16 +145,18 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
             .setCode(adtBodySite)
             .setDisplay(adtSeitenlokalisationDisplay);
       } else {
-        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+        LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
       }
-      if (adtSeitenlokalisationDisplay != null) {
+
+      if (snomedCtSeitenlokalisationDisplay != null) {
         bodySiteSNOMEDCoding
             .setSystem(fhirProperties.getSystems().getSnomed())
             .setCode(snomedCtSeitenlokalisationCode)
             .setDisplay(snomedCtSeitenlokalisationDisplay);
       } else {
-        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+        LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
       }
+
       var bodySiteConcept = new CodeableConcept();
       bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
       onkoCondition.addBodySite(bodySiteConcept);
