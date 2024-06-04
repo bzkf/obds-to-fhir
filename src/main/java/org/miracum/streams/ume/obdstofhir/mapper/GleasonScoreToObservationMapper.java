@@ -79,7 +79,9 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
                 new Coding(
                     fhirProperties.getSystems().getSnomed(), "86273004", "Biopsy (procedure)");
               // feels a bit ugly to set an empty coding as the "unset".
-            case UNBEKANNT -> new Coding();
+            case UNBEKANNT ->
+            new Coding(
+                fhirProperties.getSystems().getSnomed(), "261665006", "Unknown (qualifier value)");
           };
 
       gleasonScoreObservation.setMethod(new CodeableConcept(code));
