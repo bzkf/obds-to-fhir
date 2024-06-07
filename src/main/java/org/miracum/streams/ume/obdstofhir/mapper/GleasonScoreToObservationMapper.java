@@ -80,7 +80,6 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
             case STANZE ->
                 new Coding(
                     fhirProperties.getSystems().getSnomed(), "86273004", "Biopsy (procedure)");
-              // feels a bit ugly to set an empty coding as the "unset".
             case UNBEKANNT ->
                 new Coding(
                     fhirProperties.getSystems().getSnomed(),
