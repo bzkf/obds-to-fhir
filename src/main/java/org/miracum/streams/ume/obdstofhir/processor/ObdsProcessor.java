@@ -83,7 +83,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
                           "Struct{REFERENZ_NUMMER="
                               + getPatIdFromMeldung(meldung)
                               + ",TUMOR_ID="
-                              + getTumorIdFromAdt(meldung)
+                              + getTumorIdFromMeldung(meldung)
                               + "}",
                           meldung),
                   Grouped.with(Serdes.String(), new MeldungExportSerde()))

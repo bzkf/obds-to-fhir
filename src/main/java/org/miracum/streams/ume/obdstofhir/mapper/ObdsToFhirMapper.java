@@ -111,7 +111,7 @@ public abstract class ObdsToFhirMapper {
         .getPatient_ID();
   }
 
-  public static String getTumorIdFromAdt(MeldungExport meldung) {
+  public static String getTumorIdFromMeldung(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
