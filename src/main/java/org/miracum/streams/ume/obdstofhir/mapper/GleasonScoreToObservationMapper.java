@@ -90,6 +90,11 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
       gleasonScoreObservation.setMethod(new CodeableConcept(code));
     }
 
+    // TODO: refer to
+    // https://build.fhir.org/ig/HL7/fhir-mCODE-ig/branches/__default/StructureDefinition-mcode-prostate-gleason-grade-group.html
+    // with the https://hl7.org/fhir/R4/extension-ordinalvalue.html extension on the coding
+    // this should also use both the getGleasonGradPrimaer and getGleasonGradSekundaer grading
+    // instead of just gleasonScoreErgebnis
     var gleasonConcept = new CodeableConcept();
     gleasonConcept
         .addCoding()

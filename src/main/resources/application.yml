@@ -75,6 +75,10 @@ fhir:
     psaLoinc: "Prostate specific Ag [Mass/volume] in Serum or Plasma"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
+  mappings:
+    modul:
+      prostata:
+        enabled: false
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

@@ -57,6 +57,9 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
+  @Value("${fhir.mappings.modul.prostata.enabled}")
+  private boolean isModulProstataMappingEnabled;
+
   private final GleasonScoreToObservationMapper gleasonScoreMapper;
 
   private final PsaToObservationMapper psaMapper;
@@ -384,15 +387,17 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
               patientReference);
     }
 
-    for (var modulProstataParams : modulProstataList) {
-      if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
-        bundle =
-            createGleasonScoreObservation(
-                bundle, metaSource, modulProstataParams, patientReference);
-      }
+    if (isModulProstataMappingEnabled) {
+      for (var modulProstataParams : modulProstataList) {
+        if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
+          bundle =
+              createGleasonScoreObservation(
+                  bundle, metaSource, modulProstataParams, patientReference);
+        }
 
-      if (modulProstataParams.modulProstata.getPSA().isPresent()) {
-        bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
+        if (modulProstataParams.modulProstata.getPSA().isPresent()) {
+          bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
+        }
       }
     }
 
