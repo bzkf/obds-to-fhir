@@ -80,7 +80,12 @@ public class ObdsProcessor extends ObdsToFhirMapper {
               .groupBy(
                   (key, meldung) ->
                       KeyValue.pair(
-                          getPatIdFromMeldung(meldung) + "-" + getTumorIdFromAdt(meldung), meldung),
+                          "Struct{REFERENZ_NUMMER="
+                              + getPatIdFromMeldung(meldung)
+                              + ",TUMOR_ID="
+                              + getTumorIdFromAdt(meldung)
+                              + "}",
+                          meldung),
                   Grouped.with(Serdes.String(), new MeldungExportSerde()))
               .aggregate(
                   MeldungExportList::new,
