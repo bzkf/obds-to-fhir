@@ -155,6 +155,7 @@ jobs:
     with:
       codeql-languages: '["java"]'
       enable-codeql: true
+      java-version: "21"
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
