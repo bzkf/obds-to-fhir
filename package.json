@@ -4,7 +4,7 @@
   "description": "Creates FHIR resources from oBDS-XML data",
   "dependencies": {
     "hl7.fhir.r4.core": "4.0.1",
-    "de.dktk.oncology": "1.3.0",
+    "de.dktk.oncology": "1.6.0",
     "de.medizininformatikinitiative.kerndatensatz.person": "2024.0.0"
   },
   "fhirVersions": [

@@ -1,10 +1,10 @@
 plugins {
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '3.3.2'
+	id 'io.spring.dependency-management' version '1.1.6'
 	id 'jacoco'
 	id 'java'
 	id 'com.diffplug.spotless' version '6.25.0'
-	id "io.freefair.lombok" version "8.4"
+	id "io.freefair.lombok" version "8.6"
 }
 
 group = 'org.miracum.streams.ume'
@@ -23,8 +23,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2023.0.0")
-	set('hapiVersion', "6.10.4")
+	set('springCloudVersion', "2023.0.3")
+	set('hapiVersion', "6.10.5")
 }
 
 dependencies {
@@ -34,11 +34,11 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-actuator"
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.12.2'
-	implementation 'io.micrometer:micrometer-core:1.12.2'
-	implementation "org.miracum:kafka-fhir-serializer:1.0.4"
-	implementation "org.apache.commons:commons-text:1.11.0"
-	implementation "org.scala-lang:scala-library:2.13.12"
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.13.2'
+	implementation 'io.micrometer:micrometer-core:1.13.2'
+	implementation "org.miracum:kafka-fhir-serializer:1.0.6"
+	implementation "org.apache.commons:commons-text:1.12.0"
+	implementation "org.scala-lang:scala-library:2.13.14"
 
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
 	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
@@ -52,7 +52,7 @@ dependencies {
 	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:22.3.3"
+	testImplementation "com.approvaltests:approvaltests:22.4.0"
 }
 
 dependencyManagement {
@@ -66,7 +66,7 @@ tasks.named('test') {
 }
 
 jacoco {
-	toolVersion = "0.8.11"
+	toolVersion = "0.8.12"
 }
 
 spotless {
