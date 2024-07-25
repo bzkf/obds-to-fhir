@@ -162,6 +162,7 @@ jobs:
   release:
     uses: miracum/.github/.github/workflows/standard-release.yaml@6e79e87ffce2b28fa1052cbe3ac78f9ab7a2ea77 # v1.11.3
     needs:
+      - lint
       - build
     permissions:
       contents: write
