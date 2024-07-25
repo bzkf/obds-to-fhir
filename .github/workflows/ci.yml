@@ -47,7 +47,6 @@ jobs:
 
       - name: Load test image
         run: |
-          ls -lsa /tmp
           docker load --input /tmp/image-test.tar
           docker image ls
 
