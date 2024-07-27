@@ -1,25 +1,38 @@
-FROM gradle:8.9.0-jdk17-alpine@sha256:1b2cc1b2eafa12bd1240b419fa26eb8c87bebc6ca4090d097b98dcb64b8be8ed AS build
-WORKDIR /home/gradle/src
-ENV GRADLE_USER_HOME /gradle
-
-COPY build.gradle settings.gradle gradle.properties ./
-RUN gradle clean build --no-daemon || true
+FROM docker.io/library/gradle:8.8.0-jdk21@sha256:c582bc70eb666f62d90525367974dd66122bf069c1d45a70f621b0d08bd2182c AS build
+WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle . .
-RUN gradle clean build --info && \
-    gradle jacocoTestReport &&  \
-    awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, " instructions covered"; print 100*covered/instructions, "% covered" }' build/jacoco/coverage.csv && \
-    java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
 
-FROM gcr.io/distroless/java17-debian11@sha256:66dcffeebf676f18b50e0c3544eb5a2636e3254a36b6f2b1aab961ffeb96e059
+RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
+gradle clean build --info --no-daemon
+gradle jacocoTestReport --no-daemon
+java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
+EOF
+
+FROM scratch AS test
+WORKDIR /test
+COPY --from=build /home/gradle/project/build/reports/ .
+ENTRYPOINT [ "true" ]
+
+FROM docker.io/library/debian:12.5-slim@sha256:804194b909ef23fb995d9412c9378fb3505fe2427b70f3cc425339e48a828fca AS jemalloc
+# hadolint ignore=DL3008
+RUN <<EOF
+apt-get update
+apt-get install -y --no-install-recommends libjemalloc-dev
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+EOF
+
+FROM gcr.io/distroless/java21-debian12:nonroot@sha256:0ba7333a0fb7cbcf90b18073132f4f445870608e8cdc179664f10ce4d00964c2
 WORKDIR /opt/obds-to-fhir
+ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
 
-COPY --from=build /home/gradle/src/dependencies/ ./
-COPY --from=build /home/gradle/src/spring-boot-loader/ ./
-COPY --from=build /home/gradle/src/snapshot-dependencies/ ./
-COPY --from=build /home/gradle/src/application/ ./
+COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
-USER 65532
-ARG VERSION=0.0.0
-ENV APP_VERSION=${VERSION}
+COPY --from=build /home/gradle/project/dependencies/ ./
+COPY --from=build /home/gradle/project/spring-boot-loader/ ./
+COPY --from=build /home/gradle/project/snapshot-dependencies/ ./
+COPY --from=build /home/gradle/project/application/ ./
+
+USER 65532:65532
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "org.springframework.boot.loader.launch.JarLauncher"]

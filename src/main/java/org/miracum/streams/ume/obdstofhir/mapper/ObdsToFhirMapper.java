@@ -4,7 +4,6 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -13,10 +12,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
@@ -53,6 +54,12 @@ public abstract class ObdsToFhirMapper {
     return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
   }
 
+  protected String computeResourceIdFromIdentifier(Identifier identifier) {
+    return Hashing.sha256()
+        .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
+        .toString();
+  }
+
   protected static String convertId(String id) {
     Pattern pattern = Pattern.compile("[^0]\\d{8}");
     Matcher matcher = pattern.matcher(id);
@@ -60,14 +67,14 @@ public abstract class ObdsToFhirMapper {
     if (matcher.find()) {
       convertedId = matcher.group();
     } else {
-      log.warn("Identifier to convert does not have 9 digits without leading '0': " + id);
+      log.warn("Identifier to convert does not have 9 digits without leading '0': {}", id);
       return id;
     }
     return convertedId;
   }
 
-  public List<MeldungExport> prioritiseLatestMeldungExports(
-      MeldungExportList meldungExports, List<String> priorityOrder, List<String> filter) {
+  public static List<MeldungExport> prioritiseLatestMeldungExports(
+      MeldungExportList meldungExports, List<Meldeanlass> priorityOrder, List<Meldeanlass> filter) {
     var meldungen = meldungExports.getElements();
 
     var meldungExportMap = new HashMap<String, MeldungExport>();
@@ -95,7 +102,7 @@ public abstract class ObdsToFhirMapper {
     return meldungExportList.stream().sorted(meldungComparator).collect(Collectors.toList());
   }
 
-  public String getPatIdFromAdt(MeldungExport meldung) {
+  public static String getPatIdFromMeldung(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -104,7 +111,7 @@ public abstract class ObdsToFhirMapper {
         .getPatient_ID();
   }
 
-  public String getTumorIdFromAdt(MeldungExport meldung) {
+  public static String getTumorIdFromMeldung(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -115,7 +122,7 @@ public abstract class ObdsToFhirMapper {
         .getTumor_ID();
   }
 
-  public String getReportingReasonFromAdt(MeldungExport meldung) {
+  public static Meldeanlass getReportingReasonFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -125,7 +132,7 @@ public abstract class ObdsToFhirMapper {
         .getMeldeanlass();
   }
 
-  public String getReportingIdFromAdt(MeldungExport meldung) {
+  public static String getReportingIdFromAdt(MeldungExport meldung) {
     return meldung
         .getXml_daten()
         .getMenge_Patient()
@@ -161,27 +168,32 @@ public abstract class ObdsToFhirMapper {
     }
   }
 
-  protected DateTimeType extractDateTimeFromADTDate(String adtDate) {
+  public static DateTimeType convertObdsDateToDateTimeType(String obdsDate) {
 
-    if (Objects.equals(adtDate, "") || Objects.equals(adtDate, " ") || adtDate == null) {
+    if (!StringUtils.hasText(obdsDate)) {
       return null;
     }
 
-    // 00.00.2022 -> 01.07.2022
-    // 00.04.2022 -> 15.04.2022
-    if (adtDate.matches("^00.00.\\d{4}$")) {
-      adtDate = "01.07." + adtDate.substring(adtDate.length() - 4);
-    } else if (adtDate.matches("^00.\\d{2}.\\d{4}$")) {
-      adtDate = "15." + adtDate.substring(3); // TODO unit test
+    // default formatter for xs:date
+    var formatter = DateTimeFormatter.ISO_OFFSET_DATE;
+
+    // if it's a Datum_Typ
+    if (obdsDate.matches("(([0-2]\\d)|(3[01]))\\.((0\\d)|(1[0-2]))\\.(18|19|20)\\d\\d")) {
+      // 00.00.2022 -> 01.07.2022
+      // 00.04.2022 -> 15.04.2022
+      if (obdsDate.matches("^00.00.\\d{4}$")) {
+        obdsDate = "01.07." + obdsDate.substring(obdsDate.length() - 4);
+      } else if (obdsDate.matches("^00.\\d{2}.\\d{4}$")) {
+        obdsDate = "15." + obdsDate.substring(3);
+      }
+      formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     }
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    LocalDate adtLocalDate = LocalDate.parse(adtDate, formatter);
-    LocalDateTime adtLocalDateTime = adtLocalDate.atStartOfDay();
+    var adtLocalDate = LocalDate.parse(obdsDate, formatter);
+    var adtLocalDateTime = adtLocalDate.atStartOfDay();
     var adtDateTime =
         new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
     adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
-
     return adtDateTime;
   }
 }

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Patient;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +15,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
@@ -28,7 +30,7 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
     this.onkoPatientMapper = onkoPatientMapper;
   }
 
-  private static MeldungExportList createMeldungExportListFromPLZ(String plz) {
+  private static MeldungExport createMeldungExportFromPLZ(String plz) {
     // TODO: we might want to introduce more concise builder patterns
     var meldung = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung();
     meldung.setMeldung_ID("id-" + plz);
@@ -62,6 +64,17 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
     var meldungExport = new MeldungExport();
     meldungExport.setXml_daten(obdsData);
 
+    return meldungExport;
+  }
+
+  private static MeldungExportList createMeldungExportListFromPLZ(String plz) {
+    var meldungExport = createMeldungExportFromPLZ(plz);
+
+    return createMeldungExportListFromMeldungExport(meldungExport);
+  }
+
+  private static MeldungExportList createMeldungExportListFromMeldungExport(
+      MeldungExport meldungExport) {
     var meldungExportList = new MeldungExportList();
     meldungExportList.addElement(meldungExport);
 
@@ -125,5 +138,87 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
     var patient = (Patient) resultBundle.getEntry().get(0).getResource();
 
     assertThat(patient.getAddress()).isEmpty();
+  }
+
+  @Test
+  void
+      mapOnkoResourcesToPatient_withMeldungExportListWithMultipleDeathReports_shouldSetDeathDateFromMostRecentReport()
+          throws IOException {
+    var meldungExportList = new MeldungExportList();
+    for (int i = 1; i < 6; i++) {
+      var tod =
+          new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod();
+      tod.setSterbedatum(String.format("%02d.%02d.2%03d", i, i, i));
+      var verlauf =
+          new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf();
+      verlauf.setTod(tod);
+      var mengeVerlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf();
+      mengeVerlauf.setVerlauf(verlauf);
+      var meldungExport = createMeldungExportFromPLZ("" + i);
+      meldungExport.setVersionsnummer(i);
+      meldungExport
+          .getXml_daten()
+          .getMenge_Patient()
+          .getPatient()
+          .getMenge_Meldung()
+          .getMeldung()
+          // set death only for even "i"s for more realistic testing.
+          .setMeldeanlass(i % 2 == 0 ? Meldeanlass.TOD : Meldeanlass.DIAGNOSE);
+      meldungExport
+          .getXml_daten()
+          .getMenge_Patient()
+          .getPatient()
+          .getMenge_Meldung()
+          .getMeldung()
+          .setMenge_Verlauf(mengeVerlauf);
+
+      meldungExportList.addElement(meldungExport);
+    }
+
+    var resultBundle = onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList.getElements());
+
+    assertThat(resultBundle.getEntry()).hasSize(1);
+
+    var patient = (Patient) resultBundle.getEntry().get(0).getResource();
+
+    assertThat(patient.getDeceasedDateTimeType().asStringValue()).isEqualTo("2004-04-04");
+  }
+
+  @Test
+  void mapOnkoResourcesToPatient_withMeldungExportListWithoutDeathDate_shouldSetDeathBooleanToTrue()
+      throws IOException {
+    var tod = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod();
+    var verlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf();
+    verlauf.setTod(tod);
+    var mengeVerlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf();
+    mengeVerlauf.setVerlauf(verlauf);
+    var meldungExport = createMeldungExportFromPLZ("" + 0);
+    meldungExport.setVersionsnummer(0);
+    meldungExport
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        // set death only for even "i"s for more realistic testing.
+        .setMeldeanlass(Meldeanlass.TOD);
+    meldungExport
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung()
+        .setMenge_Verlauf(mengeVerlauf);
+
+    var meldungExportList = new MeldungExportList();
+    meldungExportList.addElement(meldungExport);
+
+    var resultBundle = onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList.getElements());
+
+    assertThat(resultBundle.getEntry()).hasSize(1);
+
+    var patient = (Patient) resultBundle.getEntry().get(0).getResource();
+
+    assertThat(patient.getDeceasedBooleanType().getValue()).isTrue();
   }
 }

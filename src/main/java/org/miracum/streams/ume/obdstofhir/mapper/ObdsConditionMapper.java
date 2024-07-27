@@ -73,8 +73,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     // 'Tumorzuordung'
     // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
     // in that case also use the TumorZuordnung to construct the Condition.
-    var useTumorZuordnung = primDia == null || primDia.getPrimaertumor_ICD_Code() == null;
-    if (useTumorZuordnung) {
+    if (primDia == null || primDia.getPrimaertumor_ICD_Code() == null) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
@@ -82,16 +81,13 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
       }
     }
 
-    var patId = getPatIdFromAdt(meldungExport);
+    var patId = getPatIdFromMeldung(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
     }
 
     var conIdentifier = pid + "condition" + primDia.getTumor_ID();
-    if (useTumorZuordnung) {
-      conIdentifier += "-from-tumorzuordnung";
-    }
 
     onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
@@ -149,16 +145,18 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
             .setCode(adtBodySite)
             .setDisplay(adtSeitenlokalisationDisplay);
       } else {
-        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+        LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
       }
-      if (adtSeitenlokalisationDisplay != null) {
+
+      if (snomedCtSeitenlokalisationDisplay != null) {
         bodySiteSNOMEDCoding
             .setSystem(fhirProperties.getSystems().getSnomed())
             .setCode(snomedCtSeitenlokalisationCode)
             .setDisplay(snomedCtSeitenlokalisationDisplay);
       } else {
-        LOG.warn("Unmappable body site in oBDS data: " + adtBodySite);
+        LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
       }
+
       var bodySiteConcept = new CodeableConcept();
       bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
       onkoCondition.addBodySite(bodySiteConcept);
@@ -177,9 +175,8 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
                     .setValue(pid)));
 
     var conditionDateString = primDia.getDiagnosedatum();
-
-    if (conditionDateString != null) {
-      onkoCondition.setOnset(extractDateTimeFromADTDate(conditionDateString));
+    if (conditionDateString.isPresent()) {
+      onkoCondition.setOnset(convertObdsDateToDateTimeType(conditionDateString.get()));
     }
 
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
@@ -187,23 +184,41 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     if (observationBundle != null && observationBundle.getEntry() != null) {
       for (var obsEntry : observationBundle.getEntry()) {
-        var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
-        if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
-          // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische Variante
-          // erst ab ADTv3
-          var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
-          conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
-          evidenceBackBoneComponentList.add(conditionEvidenceComponent);
-        } else if (profile.equals(fhirProperties.getProfiles().getTnmC())
-            || profile.equals(fhirProperties.getProfiles().getTnmP())) {
-          var conditionStageComponent = new Condition.ConditionStageComponent();
-          conditionStageComponent.addAssessment(new Reference(obsEntry.getFullUrl()));
-          stageBackBoneComponentList.add(conditionStageComponent);
-        } else if (profile.equals(fhirProperties.getProfiles().getFernMeta())) {
-          onkoCondition
-              .addExtension()
-              .setUrl(fhirProperties.getExtensions().getFernMetaExt())
-              .setValue(new Reference(obsEntry.getFullUrl()));
+        if (obsEntry.getResource().getMeta().getProfile().isEmpty()) {
+          // For now, the custom Gleason score observation doesn't set a profile.
+          var observation = (Observation) obsEntry.getResource();
+          if (observation.getCode().getCodingFirstRep().getCode().equals("35266-6")) {
+            var conditionStageComponent =
+                new Condition.ConditionStageComponent()
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getSnomed(),
+                                "106241006",
+                                "Gleason grading system for prostatic cancer (staging scale)")))
+                    .addAssessment(new Reference(obsEntry.getFullUrl()));
+            stageBackBoneComponentList.add(conditionStageComponent);
+          }
+        } else {
+          var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
+          if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
+            // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische
+            // Variante
+            // erst ab ADTv3
+            var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
+            conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
+            evidenceBackBoneComponentList.add(conditionEvidenceComponent);
+          } else if (profile.equals(fhirProperties.getProfiles().getTnmC())
+              || profile.equals(fhirProperties.getProfiles().getTnmP())) {
+            var conditionStageComponent = new Condition.ConditionStageComponent();
+            conditionStageComponent.addAssessment(new Reference(obsEntry.getFullUrl()));
+            stageBackBoneComponentList.add(conditionStageComponent);
+          } else if (profile.equals(fhirProperties.getProfiles().getFernMeta())) {
+            onkoCondition
+                .addExtension()
+                .setUrl(fhirProperties.getExtensions().getFernMetaExt())
+                .setValue(new Reference(obsEntry.getFullUrl()));
+          }
         }
       }
     }

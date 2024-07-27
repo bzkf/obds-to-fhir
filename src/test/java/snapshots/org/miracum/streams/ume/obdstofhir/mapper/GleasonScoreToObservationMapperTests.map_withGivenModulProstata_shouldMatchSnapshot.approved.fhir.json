@@ -1,0 +1,31 @@
+{
+  "resourceType": "Observation",
+  "id": "39be5b3e98dd115395047a69e69a7a2b1d559cf4f7c6cad47ca003cdd256f992",
+  "meta": {
+    "source": "test"
+  },
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.77",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/pid-1",
+    "identifier": {
+      "type": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+          "code": "MR"
+        } ]
+      },
+      "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+      "value": "pid-1"
+    }
+  },
+  "effectiveDateTime": "2000-01-01",
+  "valueInteger": 3
+}

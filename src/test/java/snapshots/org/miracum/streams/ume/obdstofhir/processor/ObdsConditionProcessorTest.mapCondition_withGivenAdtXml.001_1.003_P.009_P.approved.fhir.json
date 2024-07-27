@@ -81,6 +81,17 @@
         "assessment": [ {
           "reference": "Observation/555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1"
         } ]
+      }, {
+        "assessment": [ {
+          "reference": "Observation/7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34"
+        } ],
+        "type": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "106241006",
+            "display": "Gleason grading system for prostatic cancer (staging scale)"
+          } ]
+        }
       } ],
       "evidence": [ {
         "detail": [ {

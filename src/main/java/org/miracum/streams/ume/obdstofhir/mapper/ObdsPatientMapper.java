@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
   public Bundle mapOnkoResourcesToPatient(List<MeldungExport> meldungExportList) {
 
     if (meldungExportList.isEmpty()) {
+      LOG.warn("Cannot map empty list of MeldungExport to {}", ResourceType.Patient);
       return null;
     }
 
@@ -38,12 +40,15 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     var meldungExport = meldungExportList.get(0);
 
     LOG.debug(
-        "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), ResourceType.Patient);
+        "Mapping Meldung {} (one of total {} in export list) to {}",
+        getReportingIdFromAdt(meldungExport),
+        meldungExportList.size(),
+        ResourceType.Patient);
 
     var patient = new Patient();
 
     // id
-    var patId = getPatIdFromAdt(meldungExport);
+    var patId = getPatIdFromMeldung(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
@@ -81,15 +86,12 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
         meldungExport.getXml_daten().getMenge_Patient().getPatient().getPatienten_Stammdaten();
 
     // gender
-    var genderMap =
-        new HashMap<String, Enumerations.AdministrativeGender>() {
-          {
-            put("W", Enumerations.AdministrativeGender.FEMALE);
-            put("M", Enumerations.AdministrativeGender.MALE);
-            put("D", Enumerations.AdministrativeGender.OTHER); // TODO set genderExtension
-            put("U", Enumerations.AdministrativeGender.UNKNOWN);
-          }
-        };
+    // TODO set genderExtension if AdministrativeGender.OTHER
+    var genderMap = new HashMap<String, Enumerations.AdministrativeGender>();
+    genderMap.put("W", Enumerations.AdministrativeGender.FEMALE);
+    genderMap.put("M", Enumerations.AdministrativeGender.MALE);
+    genderMap.put("D", Enumerations.AdministrativeGender.OTHER);
+    genderMap.put("U", Enumerations.AdministrativeGender.UNKNOWN);
 
     patient.setGender(genderMap.getOrDefault(patData.getPatienten_Geschlecht(), null));
 
@@ -98,33 +100,66 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
           new DateType(getBirthDateYearMonthString(patData.getPatienten_Geburtsdatum())));
     }
 
-    var reportingReason =
-        meldungExport
-            .getXml_daten()
-            .getMenge_Patient()
-            .getPatient()
-            .getMenge_Meldung()
-            .getMeldung()
-            .getMeldeanlass();
+    // check if any one of the meldungen reported the death
+    var deathReports =
+        meldungExportList.stream()
+            .filter(m -> getReportingReasonFromAdt(m) == Meldeanlass.TOD)
+            .toList();
 
     // deceased
-    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getDeath())) {
-      var mengeVerlauf =
-          meldungExport
-              .getXml_daten()
-              .getMenge_Patient()
-              .getPatient()
-              .getMenge_Meldung()
-              .getMeldung()
-              .getMenge_Verlauf();
+    if (!deathReports.isEmpty()) {
+      // start by setting deceased to true. If a more detailed death date is
+      // available in the data, override it further down this code path.
+      patient.setDeceased(new BooleanType(true));
 
-      if (mengeVerlauf != null && mengeVerlauf.getVerlauf() != null) {
+      // get the first entry with the largest version number where the death date is set
+      var reportWithSterbeDatum =
+          deathReports.stream()
+              .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
+              .filter(
+                  m -> {
+                    var mengeVerlauf =
+                        m.getXml_daten()
+                            .getMenge_Patient()
+                            .getPatient()
+                            .getMenge_Meldung()
+                            .getMeldung()
+                            .getMenge_Verlauf();
 
-        var death = mengeVerlauf.getVerlauf().getTod();
+                    if (mengeVerlauf == null) {
+                      return false;
+                    }
 
-        if (death.getSterbedatum() != null) {
-          patient.setDeceased(extractDateTimeFromADTDate(death.getSterbedatum()));
-        }
+                    if (mengeVerlauf.getVerlauf() == null) {
+                      return false;
+                    }
+
+                    if (mengeVerlauf.getVerlauf().getTod() == null) {
+                      return false;
+                    }
+
+                    return StringUtils.hasLength(
+                        mengeVerlauf.getVerlauf().getTod().getSterbedatum());
+                  })
+              .findFirst();
+
+      if (reportWithSterbeDatum.isPresent()) {
+        var deathDate =
+            reportWithSterbeDatum
+                .get()
+                .getXml_daten()
+                .getMenge_Patient()
+                .getPatient()
+                .getMenge_Meldung()
+                .getMeldung()
+                .getMenge_Verlauf()
+                .getVerlauf()
+                .getTod()
+                .getSterbedatum();
+
+        patient.setDeceased(convertObdsDateToDateTimeType(deathDate));
+      } else {
+        LOG.warn("Sterbedatum not set on any of the Tod Meldungen.");
       }
     }
 

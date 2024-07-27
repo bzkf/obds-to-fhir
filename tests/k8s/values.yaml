@@ -1,5 +1,5 @@
 stream-processors:
-  enabled: true
+  enabled: false
   strimziClusterName: obds-to-fhir-kafka
   processors:
     obds-to-fhir:
@@ -88,12 +88,3 @@ restrictedContainerSecurityContext:
   runAsGroup: 65534
   seccompProfile:
     type: RuntimeDefault
-
-tests:
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi

@@ -628,6 +628,92 @@
       "url": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d"
     }
   }, {
+    "fullUrl": "Observation/7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test"
+      },
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.77",
+          "code": "35266-6",
+          "display": "Gleason score in Specimen Qualitative"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2021-01-04",
+      "valueInteger": 7,
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7e3fb816279bad79a7c88e6693199b4e9d5abbec9a1b9e0a2b0525b9b58a8c34"
+    }
+  }, {
+    "fullUrl": "Observation/7ebb5288d78f96ef6202da9d762923113845bf72017eb479f25f761979d42ece",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7ebb5288d78f96ef6202da9d762923113845bf72017eb479f25f761979d42ece",
+      "meta": {
+        "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test"
+      },
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.77",
+          "code": "2857-1",
+          "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "effectiveDateTime": "2019-05-02",
+      "valueQuantity": {
+        "value": 7.39,
+        "unit": "ng/mL",
+        "system": "http://unitsofmeasure.org",
+        "code": "ng/mL"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7ebb5288d78f96ef6202da9d762923113845bf72017eb479f25f761979d42ece"
+    }
+  }, {
     "fullUrl": "Observation/caeb45a6afede2449dbf70201c0f5db2670dd8a0092432cfaa4f4b46bb4b4b18",
     "resource": {
       "resourceType": "Observation",

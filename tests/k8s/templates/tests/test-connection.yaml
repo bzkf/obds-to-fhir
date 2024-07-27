@@ -1,3 +1,4 @@
+{{- if index .Values "stream-processors" "enabled" -}}
 {{- $streamProcessorsFullName := (include "stream-processors.fullname" (index .Subcharts "stream-processors")) -}}
 apiVersion: v1
 kind: Pod
@@ -17,10 +18,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tests.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       livenessProbe:
         exec:
           command: ["true"]
@@ -36,13 +33,10 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tests.resources }}
-      resources:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       livenessProbe:
         exec:
           command: ["true"]
       readinessProbe:
         exec:
           command: ["true"]
+{{- end -}}

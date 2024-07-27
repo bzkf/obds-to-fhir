@@ -8,9 +8,9 @@ plugins {
 }
 
 group = 'org.miracum.streams.ume'
-version = '2.0.18'
-sourceCompatibility = '17'
-targetCompatibility = '17'
+version = '2.1.0-beta.31'
+sourceCompatibility = '21'
+targetCompatibility = '21'
 
 configurations {
 	compileOnly {
@@ -41,6 +41,10 @@ dependencies {
 	implementation "org.scala-lang:scala-library:2.13.14"
 
 	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
+	// <https://github.com/FasterXML/jackson-modules-java8>
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
@@ -75,11 +79,9 @@ spotless {
 
 jacocoTestReport {
 	reports {
-		csv.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.csv'))
 		csv.required = true
-		html.outputLocation = file(layout.buildDirectory.dir('jacoco/coverage.html'))
 		html.required = true
-		xml.required = false
+		xml.required = true
 	}
 }
 

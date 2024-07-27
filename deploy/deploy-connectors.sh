@@ -1,14 +1,14 @@
 #!/bin/sh
 curl -X POST \
-	http://localhost:8083/connectors \
-	-H 'Content-Type: application/json' \
-	-H 'Accept: application/json' \
-	-d '{
+  http://localhost:8083/connectors \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
   "name": "onkostar-meldung-export-connector",
   "config": {
     "tasks.max": "1",
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
-    "connection.url": "jdbc:oracle:thin:@//oracle2:1521/COGN12",
+    "connection.url": "jdbc:oracle:thin:@//oracle:1521/FREEPDB1",
     "connection.user": "DWH_ROUTINE",
     "connection.password": "devPassword",
     "schema.pattern": "DWH_ROUTINE",

@@ -2,13 +2,13 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.SYSTTherapieartCSLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.StellungOpVsLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.SystIntentionVsLookup;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
-    var patId = getPatIdFromAdt(meldungExport);
+    var patId = getPatIdFromMeldung(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
@@ -131,7 +131,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
       String pid,
       String senderId,
       String softwareId,
-      String meldeanlass,
+      Meldeanlass meldeanlass,
       String substance,
       HashSet<String> substances) {
 
@@ -179,7 +179,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getSystMedStatement())));
 
     // Status
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
+    if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
       stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.COMPLETED);
     } else {
       stMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
@@ -261,11 +261,11 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     DateTimeType systEndDateType = null;
 
     if (systBeginnDateString != null) {
-      systBeginnDateType = extractDateTimeFromADTDate(systBeginnDateString);
+      systBeginnDateType = convertObdsDateToDateTimeType(systBeginnDateString);
     }
 
     if (systEndDateString != null) {
-      systEndDateType = extractDateTimeFromADTDate(systEndDateString);
+      systEndDateType = convertObdsDateToDateTimeType(systEndDateString);
     }
 
     if (systBeginnDateType != null && systEndDateType != null) {

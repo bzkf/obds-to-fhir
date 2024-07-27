@@ -13,7 +13,6 @@ public class FhirProperties {
   private FhirDisplay display;
   private FhirProfiles profiles;
   private FhirUrl url;
-  private FhirReportingReason reportingReason;
 
   @Data
   public static class FhirExtensions {
@@ -63,6 +62,9 @@ public class FhirProperties {
     private String opComplication;
     private String observationValue;
     private String genderAmtlichDe;
+    private String gleasonScoreObservationId;
+    private String psaObservationId;
+    private String ucum;
   }
 
   @Data
@@ -89,19 +91,13 @@ public class FhirProperties {
     private String tnmpLoinc;
     private String fernMetaLoinc;
     private String deathLoinc;
+    private String gleasonScoreSct;
+    private String gleasonScoreLoinc;
+    private String psaLoinc;
   }
 
   @Data
   public static class FhirUrl {
     private String tnmPraefix;
-  }
-
-  @Data
-  public static class FhirReportingReason {
-    private String treatmentEnd;
-    private String treatmentStart;
-    private String statusChange;
-    private String diagnosis;
-    private String death;
   }
 }

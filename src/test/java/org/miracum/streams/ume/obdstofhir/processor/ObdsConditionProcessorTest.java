@@ -15,13 +15,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class ObdsConditionProcessorTest extends ObdsProcessorTest {
-
-  private static final Logger log = LoggerFactory.getLogger(ObdsConditionProcessorTest.class);
 
   private final FhirProperties fhirProps;
   private final ObdsMedicationStatementMapper onkoMedicationStatementMapper;
@@ -82,7 +78,7 @@ class ObdsConditionProcessorTest extends ObdsProcessorTest {
             "2021",
             "T",
             "396360001",
-            2,
+            3,
             1,
             6,
             "2021-03-18"));

@@ -1,8 +1,21 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
-import java.util.*;
-import org.hl7.fhir.r4.model.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CanonicalType;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
+import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.FMLokalisationVsLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.GradingLookup;
@@ -11,6 +24,7 @@ import org.miracum.streams.ume.obdstofhir.lookup.TnmCpuPraefixTvsLookup;
 import org.miracum.streams.ume.obdstofhir.model.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Modul_Prostata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +32,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ObdsObservationMapper extends ObdsToFhirMapper {
+
+  public static record ModulProstataMappingParams(
+      Meldeanlass meldeanlass,
+      Modul_Prostata modulProstata,
+      String patientId,
+      String baseId,
+      DateTimeType baseDatum,
+      DateTimeType meldedatum) {}
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsObservationMapper.class);
 
@@ -35,8 +57,21 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  public ObdsObservationMapper(FhirProperties fhirProperties) {
+  @Value("${fhir.mappings.modul.prostata.enabled}")
+  private boolean isModulProstataMappingEnabled;
+
+  private final GleasonScoreToObservationMapper gleasonScoreMapper;
+
+  private final PsaToObservationMapper psaMapper;
+
+  public ObdsObservationMapper(
+      FhirProperties fhirProperties,
+      GleasonScoreToObservationMapper gleasonScoreMapper,
+      PsaToObservationMapper psaMapper) {
     super(fhirProperties);
+
+    this.gleasonScoreMapper = gleasonScoreMapper;
+    this.psaMapper = psaMapper;
   }
 
   public Bundle mapOnkoResourcesToObservation(List<MeldungExport> meldungExportList) {
@@ -45,22 +80,23 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       return null;
     }
 
-    HashMap<String, Tupel<ADT_GEKID.HistologieAbs, String>> histMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.HistologieAbs, Meldeanlass>> histMap = new HashMap<>();
     HashMap<
             String,
-            Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+            Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
         cTnmMap = new HashMap<>();
     HashMap<
             String,
-            Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+            Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
         pTnmMap = new HashMap<>();
-    HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap = new HashMap<>();
+    HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaMap = new HashMap<>();
+    HashMap<String, ModulProstataMappingParams> modulProstataMappingMap = new HashMap<>();
+
     Tod death = null;
 
     var patId = "";
-    var senderId = "";
-    var softwareId = "";
     var verlaufId = "";
+    var metaSource = "";
 
     // Process prioritized reports at the end of the for-loop
     for (int i = meldungExportList.size() - 1; i >= 0; i--) {
@@ -82,18 +118,26 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       // reporting reason
       var meldeanlass = meldung.getMeldeanlass();
 
-      patId = getPatIdFromAdt(meldungExport);
-      senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
-      softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
+      patId = getPatIdFromMeldung(meldungExport);
+      if (checkDigitConversion) {
+        patId = convertId(patId);
+      }
 
-      // var tumorId = meldung.getTumorzuordnung();
+      var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
+      var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
-      List<Tupel<ADT_GEKID.HistologieAbs, String>> histList = new ArrayList<>();
-      Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> cTnm = null;
-      Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String> pTnm = null;
-      List<Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaList = new ArrayList<>();
+      metaSource = generateProfileMetaSource(senderId, softwareId, appVersion);
 
-      if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDiagnosis())) {
+      List<Tupel<ADT_GEKID.HistologieAbs, Meldeanlass>> histList = new ArrayList<>();
+      Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass> cTnm =
+          null;
+      Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass> pTnm =
+          null;
+      List<Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaList = new ArrayList<>();
+
+      ModulProstataMappingParams prostataMappingParams = null;
+
+      if (meldeanlass == Meldeanlass.DIAGNOSE) {
         // aus Diagnose: histologie, grading, c-tnm und p-tnm
         histList = new ArrayList<>();
         var mengeHistologie = meldung.getDiagnose().getMenge_Histologie();
@@ -102,6 +146,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             histList.add(new Tupel<>(hist, meldeanlass));
           }
         }
+
         cTnm =
             new Triple<>(
                 meldung.getDiagnose().getCTNM(),
@@ -120,44 +165,85 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           }
         }
 
-      } else if (Objects.equals(
-          meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+        if (meldung.getDiagnose().getModul_Prostata().isPresent()) {
+          var baseDatum =
+              convertObdsDateToDateTimeType(meldung.getDiagnose().getDiagnosedatum().orElse(null));
+          var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
+
+          prostataMappingParams =
+              new ModulProstataMappingParams(
+                  meldeanlass,
+                  meldung.getDiagnose().getModul_Prostata().get(),
+                  patId,
+                  meldung.getDiagnose().getTumor_ID(),
+                  baseDatum,
+                  meldedatum);
+        }
+      } else if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         // aus Verlauf: histologie, grading und p-tnm
         // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
-        var hist = meldung.getMenge_Verlauf().getVerlauf().getHistologie();
+        var verlauf = meldung.getMenge_Verlauf().getVerlauf();
+        var hist = verlauf.getHistologie();
         if (hist != null) {
           histList = List.of(new Tupel<>(hist, meldeanlass));
         }
 
-        var statusTnm = meldung.getMenge_Verlauf().getVerlauf().getTNM();
-        if (statusTnm != null) {
-          if (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
-              || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
-              || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p")) {
-            pTnm = new Triple<>(statusTnm, null, meldeanlass);
-          }
+        var statusTnm = verlauf.getTNM();
+        if (statusTnm != null
+            && (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
+                || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
+                || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p"))) {
+          pTnm = new Triple<>(statusTnm, null, meldeanlass);
         }
 
         fernMetaList = new ArrayList<>();
-        if (meldung.getMenge_Verlauf().getVerlauf().getMenge_FM() != null) {
-          for (var fernMeta :
-              meldung.getMenge_Verlauf().getVerlauf().getMenge_FM().getFernmetastase()) {
+        if (verlauf.getMenge_FM() != null) {
+          for (var fernMeta : verlauf.getMenge_FM().getFernmetastase()) {
             fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
           }
         }
-      } else if (Objects.equals(
-          meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
+
+        if (verlauf.getModul_Prostata().isPresent()) {
+          var baseDatum =
+              convertObdsDateToDateTimeType(verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
+          var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
+
+          prostataMappingParams =
+              new ModulProstataMappingParams(
+                  meldeanlass,
+                  verlauf.getModul_Prostata().get(),
+                  patId,
+                  meldung.getTumorzuordnung().getTumor_ID() + " - " + verlauf.getVerlauf_ID(),
+                  baseDatum,
+                  meldedatum);
+        }
+      } else if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
         // aus Operation: histologie, grading und p-tnm
         // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
         if (meldung.getMenge_OP() != null) {
-          var hist = meldung.getMenge_OP().getOP().getHistologie();
+          var op = meldung.getMenge_OP().getOP();
+          var hist = op.getHistologie();
           if (hist != null) {
             histList = List.of(new Tupel<>(hist, meldeanlass));
           }
-          pTnm = new Triple<>(meldung.getMenge_OP().getOP().getTNM(), null, meldeanlass);
+          pTnm = new Triple<>(op.getTNM(), null, meldeanlass);
+
+          if (op.getModul_Prostata().isPresent()) {
+            var baseDatum = convertObdsDateToDateTimeType(op.getOP_Datum().orElse(null));
+            var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
+
+            prostataMappingParams =
+                new ModulProstataMappingParams(
+                    meldeanlass,
+                    op.getModul_Prostata().get(),
+                    patId,
+                    meldung.getTumorzuordnung().getTumor_ID() + " - " + op.getOP_ID(),
+                    baseDatum,
+                    meldedatum);
+          }
         }
-      } else if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getDeath())) {
+      } else if (meldeanlass == Meldeanlass.TOD) {
 
         var mengeVerlauf =
             meldungExport
@@ -188,6 +274,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         pTnmMap.put(pTnm.getFirst().getTNM_ID(), pTnm);
       }
 
+      if (prostataMappingParams != null) {
+        modulProstataMappingMap.put(prostataMappingParams.baseId(), prostataMappingParams);
+      }
+
       if (!fernMetaList.isEmpty()) {
         var index = 0;
         for (var fernMetaTupel : fernMetaList) {
@@ -211,28 +301,40 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         new ArrayList<>(histMap.values()),
         new ArrayList<>(cTnmMap.values()),
         new ArrayList<>(pTnmMap.values()),
+        new ArrayList<>(modulProstataMappingMap.values()),
         fernMetaMap,
         death,
         patId,
-        senderId,
-        softwareId,
+        metaSource,
         verlaufId);
   }
 
   // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
   // return meldungExport -> {
   public Bundle mapOnkoResourcesToObservationsBundle(
-      List<Tupel<ADT_GEKID.HistologieAbs, String>> histologieList,
-      List<Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+      List<Tupel<ADT_GEKID.HistologieAbs, Meldeanlass>> histologieList,
+      List<Triple<ADT_GEKID.CTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
           cTnmList,
-      List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, String>>
+      List<Triple<ADT_GEKID.PTnmAbs, Meldung.Diagnose.Menge_Weitere_Klassifikation, Meldeanlass>>
           pTnmList,
-      HashMap<String, Tupel<ADT_GEKID.FernMetastaseAbs, String>> fernMetaMap,
+      List<ModulProstataMappingParams> modulProstataList,
+      Map<String, Tupel<ADT_GEKID.FernMetastaseAbs, Meldeanlass>> fernMetaMap,
       Tod death,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String verlaufId) {
+
+    var patientReference =
+        new Reference()
+            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
+            .setIdentifier(
+                new Identifier()
+                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setType(
+                        new CodeableConcept(
+                            new Coding(
+                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
+                    .setValue(patId));
 
     var bundle = new Bundle();
 
@@ -247,7 +349,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     for (var hist : histologieList) {
       bundle =
           createHistologieAndGradingObservation(
-              bundle, patId, senderId, softwareId, hist.getFirst(), hist.getSecond());
+              bundle, patId, metaSource, hist.getFirst(), hist.getSecond(), patientReference);
     }
 
     for (var cTnm : cTnmList) {
@@ -255,11 +357,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           createCTnmObservation(
               bundle,
               patId,
-              senderId,
-              softwareId,
+              metaSource,
               cTnm.getFirst(),
               cTnm.getSecond(),
-              cTnm.getThird());
+              cTnm.getThird(),
+              patientReference);
     }
 
     for (var pTnm : pTnmList) {
@@ -267,27 +369,41 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           createPTnmObservation(
               bundle,
               patId,
-              senderId,
-              softwareId,
+              metaSource,
               pTnm.getFirst(),
               pTnm.getSecond(),
-              pTnm.getThird());
+              pTnm.getThird(),
+              patientReference);
     }
 
     for (var fernMetaTupel : fernMetaMap.entrySet()) {
       bundle =
           createFernMetaObservation(
               bundle,
-              patId,
-              senderId,
-              softwareId,
+              metaSource,
               fernMetaTupel.getKey(),
               fernMetaTupel.getValue().getFirst(),
-              fernMetaTupel.getValue().getSecond());
+              fernMetaTupel.getValue().getSecond(),
+              patientReference);
+    }
+
+    if (isModulProstataMappingEnabled) {
+      for (var modulProstataParams : modulProstataList) {
+        if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
+          bundle =
+              createGleasonScoreObservation(
+                  bundle, metaSource, modulProstataParams, patientReference);
+        }
+
+        if (modulProstataParams.modulProstata.getPSA().isPresent()) {
+          bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
+        }
+      }
     }
 
     if (death != null) {
-      bundle = createDeathObservation(bundle, patId, senderId, softwareId, verlaufId, death);
+      bundle =
+          createDeathObservation(bundle, patId, metaSource, verlaufId, death, patientReference);
     }
 
     if (bundle.getEntry().isEmpty()) {
@@ -297,18 +413,33 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     return bundle;
   }
 
+  private Bundle createGleasonScoreObservation(
+      Bundle bundle,
+      String metaSource,
+      ModulProstataMappingParams modulProstataParams,
+      Reference patientReference) {
+    var observation = gleasonScoreMapper.map(modulProstataParams, patientReference, metaSource);
+
+    return addResourceAsEntryInBundle(bundle, observation);
+  }
+
+  private Bundle createPsaObservation(
+      Bundle bundle,
+      String metaSource,
+      ModulProstataMappingParams modulProstataParams,
+      Reference patientReference) {
+    var observation = psaMapper.map(modulProstataParams, patientReference, metaSource);
+
+    return addResourceAsEntryInBundle(bundle, observation);
+  }
+
   public Bundle createHistologieAndGradingObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.HistologieAbs histologie,
-      String meldeanlass) {
-
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
+      Meldeanlass meldeanlass,
+      Reference patientReference) {
 
     // Create a Grading Observation as in
     // https://simplifier.net/oncology/grading
@@ -320,26 +451,26 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var histDateString = histologie.getTumor_Histologiedatum();
 
     if (histDateString != null) {
-      gradingObs.setEffective(extractDateTimeFromADTDate(histDateString));
+      gradingObs.setEffective(convertObdsDateToDateTimeType(histDateString));
     }
 
     var grading = histologie.getGrading();
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var gradingObsIdentifier = pid + "grading" + histId;
+    var gradingObsIdentifier = patId + "grading" + histId;
 
     // grading may be undefined / null
     if (grading != null) {
 
       gradingObs.setId(this.getHash(ResourceType.Observation, gradingObsIdentifier));
 
-      gradingObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+      gradingObs.getMeta().setSource(metaSource);
 
       gradingObs
           .getMeta()
           .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getGrading())));
 
-      if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+      if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         gradingObs.setStatus(ObservationStatus.AMENDED);
       } else {
         gradingObs.setStatus(ObservationStatus.FINAL);
@@ -360,17 +491,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                   .setCode("59542-1")
                   .setDisplay(fhirProperties.getDisplay().getGradingLoinc())));
 
-      gradingObs.setSubject(
-          new Reference()
-              .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-              .setIdentifier(
-                  new Identifier()
-                      .setSystem(fhirProperties.getSystems().getPatientId())
-                      .setType(
-                          new CodeableConcept(
-                              new Coding(
-                                  fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                      .setValue(pid)));
+      gradingObs.setSubject(patientReference);
 
       var gradingValueCodeableCon =
           new CodeableConcept(
@@ -387,17 +508,17 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var histObs = new Observation();
 
     // Generate an identifier based on Referenz_nummer (Pat. Id) and Histologie_ID
-    var observationIdentifier = pid + "histologie" + histId;
+    var observationIdentifier = patId + "histologie" + histId;
 
     histObs.setId(this.getHash(ResourceType.Observation, observationIdentifier));
 
-    histObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    histObs.getMeta().setSource(metaSource);
 
     histObs
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getHistologie())));
 
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+    if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
       histObs.setStatus(ObservationStatus.AMENDED);
     } else {
       histObs.setStatus(ObservationStatus.FINAL);
@@ -418,21 +539,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .setCode("59847-4")
                 .setDisplay(fhirProperties.getDisplay().getHistologyLoinc())));
 
-    histObs.setSubject(
-        new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+    histObs.setSubject(patientReference);
 
     // Histologiedatum
     if (histDateString != null) {
-      histObs.setEffective(extractDateTimeFromADTDate(histDateString));
+      histObs.setEffective(convertObdsDateToDateTimeType(histDateString));
     }
 
     var valueCodeableCon =
@@ -470,17 +581,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   public Bundle createFernMetaObservation(
       Bundle bundle,
-      String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String fernMetaId,
       ADT_GEKID.FernMetastaseAbs fernMeta,
-      String meldeanlass) {
-
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
+      Meldeanlass meldeanlass,
+      Reference patientReference) {
 
     // Create a Fernmetastasen Observation as in
     // https://simplifier.net/oncology/fernmetastasen-duplicate-2
@@ -489,15 +594,17 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var fernMetaDateString = fernMeta.getFM_Diagnosedatum();
     var fernMetaLokal = fernMeta.getFM_Lokalisation();
 
+    // TODO: this builds the indentifier slightly different than the other Observations.
+    // worth investigating if we should standardize instead?
     fernMetaObs.setId(this.getHash(ResourceType.Observation, fernMetaId));
 
-    fernMetaObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    fernMetaObs.getMeta().setSource(metaSource);
 
     fernMetaObs
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getFernMeta())));
 
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+    if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
       fernMetaObs.setStatus(ObservationStatus.AMENDED);
     } else {
       fernMetaObs.setStatus(ObservationStatus.FINAL);
@@ -518,21 +625,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .setCode("21907-1")
                 .setDisplay(fhirProperties.getDisplay().getFernMetaLoinc())));
 
-    fernMetaObs.setSubject(
-        new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+    fernMetaObs.setSubject(patientReference);
 
     // Fernmetastasendatum
     if (fernMetaDateString != null) {
-      fernMetaObs.setEffective(extractDateTimeFromADTDate(fernMetaDateString));
+      fernMetaObs.setEffective(convertObdsDateToDateTimeType(fernMetaDateString));
     }
 
     fernMetaObs.setValue(
@@ -557,32 +654,28 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createCTnmObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.CTnmAbs cTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
-      String meldeanlass) {
+      Meldeanlass meldeanlass,
+      Reference patientReference) {
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
     // TNM Observation
     // Create a TNM-c Observation as in
     // https://simplifier.net/oncology/tnmc
     var tnmcObs = new Observation();
     // Generate an identifier based on Referenz_nummer (Pat. Id) and c-tnm Id
-    var tnmcObsIdentifier = pid + "ctnm" + cTnm.getTNM_ID();
+    var tnmcObsIdentifier = patId + "ctnm" + cTnm.getTNM_ID();
 
     tnmcObs.setId(this.getHash(ResourceType.Observation, tnmcObsIdentifier));
 
-    tnmcObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    tnmcObs.getMeta().setSource(metaSource);
 
     tnmcObs
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmC())));
 
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+    if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
       tnmcObs.setStatus(ObservationStatus.AMENDED);
     } else {
       tnmcObs.setStatus(ObservationStatus.FINAL);
@@ -603,36 +696,25 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .setCode("21908-9")
                 .setDisplay(fhirProperties.getDisplay().getTnmcLoinc())));
 
-    tnmcObs.setSubject(
-        new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+    tnmcObs.setSubject(patientReference);
 
     // tnm c Date
     var tnmcDateString = cTnm.getTNM_Datum();
 
     if (tnmcDateString != null) {
-      tnmcObs.setEffective(extractDateTimeFromADTDate(tnmcDateString));
+      tnmcObs.setEffective(convertObdsDateToDateTimeType(tnmcDateString));
     }
 
-    if (classification != null) {
-      if (classification.getWeitere_Klassifikation().getName().equals("UICC")) {
-        var valueCodeableCon =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getUicc())
-                    .setCode(classification.getWeitere_Klassifikation().getStadium())
-                    .setVersion(cTnm.getTNM_Version()));
+    if (classification != null
+        && (classification.getWeitere_Klassifikation().getName().equals("UICC"))) {
+      var valueCodeableCon =
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getUicc())
+                  .setCode(classification.getWeitere_Klassifikation().getStadium())
+                  .setVersion(cTnm.getTNM_Version()));
 
-        tnmcObs.setValue(valueCodeableCon);
-      }
+      tnmcObs.setValue(valueCodeableCon);
     }
 
     var backBoneComponentListC = new ArrayList<Observation.ObservationComponentComponent>();
@@ -733,32 +815,27 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createPTnmObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       ADT_GEKID.PTnmAbs pTnm,
       Meldung.Diagnose.Menge_Weitere_Klassifikation classification,
-      String meldeanlass) {
+      Meldeanlass meldeanlass,
+      Reference patientReference) {
     // Create a TNM-p Observation as in
     // https://simplifier.net/oncology/tnmp
     var tnmpObs = new Observation();
 
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
     // Generate an identifier based on Referenz_nummer (Pat. Id) and p-tnm Id
-    var tnmpObsIdentifier = pid + "ptnm" + pTnm.getTNM_ID();
+    var tnmpObsIdentifier = patId + "ptnm" + pTnm.getTNM_ID();
 
     tnmpObs.setId(this.getHash(ResourceType.Observation, tnmpObsIdentifier));
 
-    tnmpObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    tnmpObs.getMeta().setSource(metaSource);
 
     tnmpObs
         .getMeta()
         .setProfile(List.of(new CanonicalType(fhirProperties.getProfiles().getTnmP())));
 
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getStatusChange())) {
+    if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
       tnmpObs.setStatus(ObservationStatus.AMENDED);
     } else {
       tnmpObs.setStatus(ObservationStatus.FINAL);
@@ -778,37 +855,26 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .setCode("21902-2")
                 .setDisplay(fhirProperties.getDisplay().getTnmpLoinc())));
 
-    tnmpObs.setSubject(
-        new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+    tnmpObs.setSubject(patientReference);
 
     // tnm p Date
     var tnmpDateString = pTnm.getTNM_Datum();
 
     if (tnmpDateString != null) {
-      tnmpObs.setEffective(extractDateTimeFromADTDate(tnmpDateString));
+      tnmpObs.setEffective(convertObdsDateToDateTimeType(tnmpDateString));
     }
 
     // only defined in diagnosis
-    if (classification != null) {
-      if (classification.getWeitere_Klassifikation().getName().equals("UICC")) {
-        var valueCodeableCon =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getUicc())
-                    .setCode(classification.getWeitere_Klassifikation().getStadium())
-                    .setVersion(pTnm.getTNM_Version()));
+    if (classification != null
+        && (classification.getWeitere_Klassifikation().getName().equals("UICC"))) {
+      var valueCodeableCon =
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getUicc())
+                  .setCode(classification.getWeitere_Klassifikation().getStadium())
+                  .setVersion(pTnm.getTNM_Version()));
 
-        tnmpObs.setValue(valueCodeableCon);
-      }
+      tnmpObs.setValue(valueCodeableCon);
     }
 
     var backBoneComponentListP = new ArrayList<Observation.ObservationComponentComponent>();
@@ -945,25 +1011,20 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
   public Bundle createDeathObservation(
       Bundle bundle,
       String patId,
-      String senderId,
-      String softwareId,
+      String metaSource,
       String verlaufId,
-      Tod death) {
-
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
+      Tod death,
+      Reference patientReference) {
 
     // Create a Death Observation as in
     // https://simplifier.net/oncology/todursache
     var deathObs = new Observation();
 
-    var deathId = pid + "death" + verlaufId;
+    var deathId = patId + "death" + verlaufId;
 
     deathObs.setId(this.getHash(ResourceType.Observation, deathId));
 
-    deathObs.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
+    deathObs.getMeta().setSource(metaSource);
 
     deathObs
         .getMeta()
@@ -978,22 +1039,12 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .setCode("68343-3")
                 .setDisplay(fhirProperties.getDisplay().getDeathLoinc())));
 
-    deathObs.setSubject(
-        new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
-            .setIdentifier(
-                new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
-                    .setType(
-                        new CodeableConcept(
-                            new Coding(
-                                fhirProperties.getSystems().getIdentifierType(), "MR", null)))
-                    .setValue(pid)));
+    deathObs.setSubject(patientReference);
 
     // Sterbedatum
     var deathDateString = death.getSterbedatum();
     if (deathDateString != null) {
-      deathObs.setEffective(extractDateTimeFromADTDate(deathDateString));
+      deathObs.setEffective(convertObdsDateToDateTimeType(deathDateString));
     }
 
     var deathValueCodeConcept = new CodeableConcept();

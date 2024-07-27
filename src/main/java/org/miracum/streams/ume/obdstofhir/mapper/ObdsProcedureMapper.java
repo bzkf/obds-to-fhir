@@ -6,6 +6,7 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_ST.ST.Menge_Bestrahlung.Bestrahlung;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.Tupel;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
-    var patId = getPatIdFromAdt(meldungExport);
+    var patId = getPatIdFromMeldung(meldungExport);
     var pid = patId;
     if (checkDigitConversion) {
       pid = convertId(patId);
@@ -78,8 +79,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
-    if (Objects.equals(reportingReason, fhirProperties.getReportingReason().getTreatmentEnd())) {
-
+    if (reportingReason == Meldeanlass.BEHANDLUNGSENDE) {
       // OP und Strahlentherapie sofern vorhanden
       // Strahlentherapie kann auch im beginn stehen, op aber nicht
       if (meldung != null
@@ -259,8 +259,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     // Performed
     var opDateString = op.getOP_Datum();
-    if (opDateString != null) {
-      opProcedure.setPerformed(extractDateTimeFromADTDate(opDateString));
+    if (opDateString.isPresent()) {
+      opProcedure.setPerformed(convertObdsDateToDateTimeType(opDateString.get()));
     }
 
     // ReasonReference
@@ -331,7 +331,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       String pid,
       String senderId,
       String softwareId,
-      String meldeanlass,
+      Meldeanlass meldeanlass,
       Bestrahlung radio,
       Tupel<Date, Date> timeSpan,
       HashSet<Bestrahlung> distinctPartialRadiations) {
@@ -369,8 +369,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                             + this.getHash(ResourceType.Procedure, partOfId))));
       }
       // Performed
-      DateTimeType stBeginnDateType = extractDateTimeFromADTDate(stBeginnDateString);
-      DateTimeType stEndDateType = extractDateTimeFromADTDate(stEndDateString);
+      DateTimeType stBeginnDateType = convertObdsDateToDateTimeType(stBeginnDateString);
+      DateTimeType stEndDateType = convertObdsDateToDateTimeType(stEndDateString);
 
       if (stBeginnDateType != null && stEndDateType != null) {
         stProcedure.setPerformed(
@@ -435,7 +435,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                             displaySystIntentionLookup.lookupSystIntentionDisplay(systIntention))));
 
     // Status
-    if (Objects.equals(meldeanlass, fhirProperties.getReportingReason().getTreatmentEnd())) {
+    if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
       stProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
     } else {
       stProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
@@ -521,10 +521,10 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     for (var radio : partialRadiations) {
       if (radio.getST_Beginn_Datum() != null) {
-        minDates.add(extractDateTimeFromADTDate(radio.getST_Beginn_Datum()).getValue());
+        minDates.add(convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()).getValue());
       }
       if (radio.getST_Ende_Datum() != null) {
-        maxDates.add(extractDateTimeFromADTDate(radio.getST_Ende_Datum()).getValue());
+        maxDates.add(convertObdsDateToDateTimeType(radio.getST_Ende_Datum()).getValue());
       }
     }
 

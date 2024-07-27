@@ -1,5 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.processor;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleUtil;
 import java.util.*;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
@@ -7,23 +9,25 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Patient;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.*;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportSerde;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
-@Configuration
+@Service
 public class ObdsProcessor extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsProcessor.class);
+  private static final FhirContext ctx = FhirContext.forR4();
 
   @Value("${spring.profiles.active}")
   private String profile;
@@ -34,7 +38,6 @@ public class ObdsProcessor extends ObdsToFhirMapper {
   private final ObdsPatientMapper onkoPatientMapper;
   private final ObdsConditionMapper onkoConditionMapper;
 
-  @Autowired
   protected ObdsProcessor(
       FhirProperties fhirProperties,
       ObdsMedicationStatementMapper onkoMedicationStatementMapper,
@@ -57,7 +60,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
 
     return (stringOnkoMeldungExpTable, stringOnkoObsBundles) -> {
       // return (stringOnkoMeldungExpTable) ->
-      var output =
+      var filtered =
           stringOnkoMeldungExpTable
               // only process adt v2.x.x
               .filter((key, value) -> value.getXml_daten().getSchema_Version().matches("^2\\..*"))
@@ -70,16 +73,19 @@ public class ObdsProcessor extends ObdsToFhirMapper {
                               .getMenge_Meldung()
                               .getMeldung()
                               .getMenge_Tumorkonferenz()
-                          == null) // ignore tumor conferences
+                          == null); // ignore tumor conferences
+
+      var output =
+          filtered
               .groupBy(
-                  (key, value) ->
+                  (key, meldung) ->
                       KeyValue.pair(
                           "Struct{REFERENZ_NUMMER="
-                              + getPatIdFromAdt(value)
+                              + getPatIdFromMeldung(meldung)
                               + ",TUMOR_ID="
-                              + getTumorIdFromAdt(value)
+                              + getTumorIdFromMeldung(meldung)
                               + "}",
-                          value),
+                          meldung),
                   Grouped.with(Serdes.String(), new MeldungExportSerde()))
               .aggregate(
                   MeldungExportList::new,
@@ -91,51 +97,52 @@ public class ObdsProcessor extends ObdsToFhirMapper {
               .branch((k, v) -> v != null, Branched.as("Aggregate"))
               .noDefaultBranch();
 
+      var branches = new ArrayList<KStream<String, Bundle>>();
+
+      // always map Medication, Observation, Procedure, Condition...
+      branches.addAll(
+          List.of(
+              output
+                  .get("out-Aggregate")
+                  .mapValues(this.getOnkoToMedicationStatementBundleMapper())
+                  .filter((key, value) -> value != null),
+              output
+                  .get("out-Aggregate")
+                  .mapValues(this.getOnkoToObservationBundleMapper())
+                  .filter((key, value) -> value != null),
+              output
+                  .get("out-Aggregate")
+                  .mapValues(this.getOnkoToProcedureBundleMapper())
+                  .filter((key, value) -> value != null),
+              output
+                  .get("out-Aggregate")
+                  .leftJoin(stringOnkoObsBundles, Pair::of)
+                  .mapValues(this.getOnkoToConditionBundleMapper())
+                  .filter((key, value) -> value != null)));
+
+      // ...but only conditionally map Patient resources
       if (Objects.equals(profile, "patient")) {
-        return new KStream[] {
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToMedicationStatementBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToObservationBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToProcedureBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .leftJoin(stringOnkoObsBundles, Pair::of)
-              .mapValues(this.getOnkoToConditionBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToPatientBundleMapper())
-              .filter((key, value) -> value != null)
-        };
-      } else {
-        return new KStream[] {
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToMedicationStatementBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToObservationBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .mapValues(this.getOnkoToProcedureBundleMapper())
-              .filter((key, value) -> value != null),
-          output
-              .get("out-Aggregate")
-              .leftJoin(stringOnkoObsBundles, Pair::of)
-              .mapValues(this.getOnkoToConditionBundleMapper())
-              .filter((key, value) -> value != null)
-        };
+        var patientStream =
+            filtered
+                // group by the patient number. This ensures that all meldungen of one patient
+                // are processed by the same downstream consumer.
+                .groupBy(
+                    (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
+                    Grouped.with(Serdes.String(), new MeldungExportSerde()))
+                .aggregate(
+                    MeldungExportList::new,
+                    (key, value, aggregate) -> aggregate.addElement(value),
+                    (key, value, aggregate) -> aggregate.removeElement(value),
+                    Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+                .toStream()
+                .mapValues(this.getOnkoToPatientBundleMapper())
+                .filter((key, value) -> value != null)
+                .selectKey((key, value) -> patientBundleKeySelector(value));
+
+        branches.add(patientStream);
       }
+
+      return branches.toArray(new KStream[branches.size()]);
     };
   }
 
@@ -144,12 +151,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()),
-              List.of(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()));
+              Arrays.asList(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN),
+              List.of(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN));
 
       return onkoMedicationStatementMapper.mapOnkoResourcesToMedicationStatement(meldungExportList);
     };
@@ -160,12 +163,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       List<MeldungExport> meldungExportList =
           prioritiseLatestMeldungExports(
               meldungExporte,
-              Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()),
-              List.of(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getTreatmentStart()));
+              Arrays.asList(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN),
+              List.of(Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.BEHANDLUNGSBEGINN));
       return onkoProcedureMapper.mapOnkoResourcesToProcedure(meldungExportList);
     };
   }
@@ -176,10 +175,10 @@ public class ObdsProcessor extends ObdsToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungExporte,
               Arrays.asList(
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange(),
-                  fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getDeath()),
+                  Meldeanlass.BEHANDLUNGSENDE,
+                  Meldeanlass.STATUSAENDERUNG,
+                  Meldeanlass.DIAGNOSE,
+                  Meldeanlass.TOD),
               null);
 
       return onkoObservationMapper.mapOnkoResourcesToObservation(meldungExportList);
@@ -187,19 +186,8 @@ public class ObdsProcessor extends ObdsToFhirMapper {
   }
 
   public ValueMapper<MeldungExportList, Bundle> getOnkoToPatientBundleMapper() {
-    return meldungExporte -> {
-      List<MeldungExport> meldungExportList =
-          prioritiseLatestMeldungExports(
-              meldungExporte,
-              Arrays.asList(
-                  fhirProperties.getReportingReason().getDeath(),
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange(),
-                  fhirProperties.getReportingReason().getDiagnosis()),
-              null);
-
-      return onkoPatientMapper.mapOnkoResourcesToPatient(meldungExportList);
-    };
+    return meldungExporte ->
+        onkoPatientMapper.mapOnkoResourcesToPatient(meldungExporte.getElements());
   }
 
   public ValueMapper<Pair<MeldungExportList, Bundle>, Bundle> getOnkoToConditionBundleMapper() {
@@ -208,13 +196,22 @@ public class ObdsProcessor extends ObdsToFhirMapper {
           prioritiseLatestMeldungExports(
               meldungPair.getLeft(),
               Arrays.asList(
-                  fhirProperties.getReportingReason().getDiagnosis(),
-                  fhirProperties.getReportingReason().getTreatmentEnd(),
-                  fhirProperties.getReportingReason().getStatusChange()),
+                  Meldeanlass.DIAGNOSE, Meldeanlass.BEHANDLUNGSENDE, Meldeanlass.STATUSAENDERUNG),
               null);
 
       return onkoConditionMapper.mapOnkoResourcesToCondition(
           meldungExportList, meldungPair.getRight());
     };
+  }
+
+  private static String patientBundleKeySelector(Bundle bundle) {
+    var patients = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class);
+
+    if (patients.isEmpty() || patients.size() > 1) {
+      throw new RuntimeException(
+          String.format("A patient bundle contains %d resources instead of 1", patients.size()));
+    }
+    var patient = patients.get(0);
+    return String.format("%s/%s", patient.getResourceType(), patient.getId());
   }
 }
