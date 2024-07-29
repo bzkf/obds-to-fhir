@@ -17,8 +17,6 @@ import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportSerde;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -26,7 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObdsProcessor extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ObdsProcessor.class);
   private static final FhirContext ctx = FhirContext.forR4();
 
   @Value("${spring.profiles.active}")

@@ -13,7 +13,7 @@ stream-processors:
       container:
         image:
           registry: ghcr.io
-          repository: miracum/obds-to-fhir
+          repository: bzkf/obds-to-fhir
           tag: "" # set in CI
           pullPolicy: IfNotPresent
         securityContext:

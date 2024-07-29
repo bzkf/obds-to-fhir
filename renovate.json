@@ -1,5 +1,4 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>miracum/.github//renovate/default"],
-  "ignoreDeps": ["harbor.miracum.org/oracle/database"]
+  "extends": ["github>miracum/.github//renovate/default"]
 }
