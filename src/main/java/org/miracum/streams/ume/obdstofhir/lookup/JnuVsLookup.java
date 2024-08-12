@@ -12,7 +12,7 @@ public class JnuVsLookup {
         }
       };
 
-  public final String lookupJnuDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

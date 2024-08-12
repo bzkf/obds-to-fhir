@@ -39,7 +39,7 @@ public class SYSTTherapieartCSLookup {
         }
       };
 
-  public final String lookupSYSTTherapieartCSLookupDisplay(List<String> code) {
+  public final String lookupDisplay(List<String> code) {
 
     if (code.size() == 1) {
       return lookup.get(code.get(0));
@@ -50,7 +50,7 @@ public class SYSTTherapieartCSLookup {
     }
   }
 
-  public final String lookupSYSTTherapieartCSLookupCode(List<String> code) {
+  public final String lookupCode(List<String> code) {
 
     if (code.size() == 1) {
       return code.get(0);

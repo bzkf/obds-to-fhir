@@ -14,7 +14,7 @@ public class StellungOpVsLookup {
         }
       };
 
-  public final String lookupStellungOpDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

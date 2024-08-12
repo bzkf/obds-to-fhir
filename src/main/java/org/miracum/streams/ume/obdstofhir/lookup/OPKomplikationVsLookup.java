@@ -94,7 +94,7 @@ public class OPKomplikationVsLookup {
         }
       };
 
-  public final String lookupOPKomplikationVSDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

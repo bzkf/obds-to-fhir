@@ -22,7 +22,7 @@ public class GradingLookup {
         }
       };
 
-  public final String lookupGradingDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

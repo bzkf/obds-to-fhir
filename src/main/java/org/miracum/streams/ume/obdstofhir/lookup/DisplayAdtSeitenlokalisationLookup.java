@@ -17,7 +17,7 @@ public class DisplayAdtSeitenlokalisationLookup {
         }
       };
 
-  public final String lookupAdtSeitenlokalisationDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

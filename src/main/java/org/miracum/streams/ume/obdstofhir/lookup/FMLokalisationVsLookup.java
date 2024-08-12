@@ -21,7 +21,7 @@ public class FMLokalisationVsLookup {
         }
       };
 
-  public final String lookupFMLokalisationVSDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

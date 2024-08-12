@@ -19,7 +19,7 @@ public class TnmCpuPraefixTvsLookup {
         }
       };
 
-  public final String lookupTnmCpuPraefixDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

@@ -16,7 +16,7 @@ public class OPIntentionVsLookup {
         }
       };
 
-  public final String lookupOPIntentionVSDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

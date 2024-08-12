@@ -498,7 +498,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getGradingDktk())
                   .setCode(grading)
-                  .setDisplay(gradingLookup.lookupGradingDisplay(grading)));
+                  .setDisplay(gradingLookup.lookupDisplay(grading)));
 
       gradingObs.setValue(gradingValueCodeableCon);
     }
@@ -644,7 +644,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getFMLokalisationCS())
                 .setCode(fernMetaLokal)
-                .setDisplay(fmLokalisationVSLookup.lookupFMLokalisationVSDisplay(fernMetaLokal))));
+                .setDisplay(fmLokalisationVSLookup.lookupDisplay(fernMetaLokal))));
 
     bundle = addResourceAsEntryInBundle(bundle, fernMetaObs);
 
@@ -734,7 +734,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixT,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixT),
+              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixT),
               "21905-5",
               "Primary tumor.clinical Cancer",
               fhirProperties.getSystems().getTnmTCs(),
@@ -747,7 +747,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixN,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixN),
+              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixN),
               "21906-3",
               "Regional lymph nodes.clinical",
               fhirProperties.getSystems().getTnmNCs(),
@@ -760,7 +760,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixM,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(cTnmCpuPraefixM),
+              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixM),
               "21907-1",
               "Distant metastases.clinical [Class] Cancer",
               fhirProperties.getSystems().getTnmMCs(),
@@ -894,7 +894,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixT,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixT),
+              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixT),
               "21899-0",
               "Primary tumor.pathology Cancer",
               fhirProperties.getSystems().getTnmTCs(),
@@ -907,7 +907,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixN,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixN),
+              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixN),
               "21900-6",
               "Regional lymph nodes.pathology",
               fhirProperties.getSystems().getTnmNCs(),
@@ -920,7 +920,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixM,
-              tnmPraefixLookup.lookupTnmCpuPraefixDisplay(pTnmCpuPraefixM),
+              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixM),
               "21901-4",
               "Distant metastases.pathology [Class] Cancer",
               fhirProperties.getSystems().getTnmMCs(),
@@ -1063,7 +1063,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           new Coding()
               .setSystem(fhirProperties.getSystems().getJnuCs())
               .setCode(death.getTod_tumorbedingt())
-              .setDisplay(jnuVsLookup.lookupJnuDisplay(death.getTod_tumorbedingt()));
+              .setDisplay(jnuVsLookup.lookupDisplay(death.getTod_tumorbedingt()));
       deathValueCodeConcept.addCoding(deathByTumorCoding);
     }
 
