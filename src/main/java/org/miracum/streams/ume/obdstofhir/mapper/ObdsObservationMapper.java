@@ -43,14 +43,6 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsObservationMapper.class);
 
-  private final GradingLookup gradingLookup = new GradingLookup();
-
-  private final TnmCpuPraefixTvsLookup tnmPraefixLookup = new TnmCpuPraefixTvsLookup();
-
-  private final FMLokalisationVsLookup fmLokalisationVSLookup = new FMLokalisationVsLookup();
-
-  private final JnuVsLookup jnuVsLookup = new JnuVsLookup();
-
   @Value("${app.version}")
   private String appVersion;
 
@@ -498,7 +490,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getGradingDktk())
                   .setCode(grading)
-                  .setDisplay(gradingLookup.lookupDisplay(grading)));
+                  .setDisplay(GradingLookup.lookupDisplay(grading)));
 
       gradingObs.setValue(gradingValueCodeableCon);
     }
@@ -644,7 +636,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getFMLokalisationCS())
                 .setCode(fernMetaLokal)
-                .setDisplay(fmLokalisationVSLookup.lookupDisplay(fernMetaLokal))));
+                .setDisplay(FMLokalisationVsLookup.lookupDisplay(fernMetaLokal))));
 
     bundle = addResourceAsEntryInBundle(bundle, fernMetaObs);
 
@@ -734,7 +726,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixT,
-              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixT),
+              TnmCpuPraefixTvsLookup.lookupDisplay(cTnmCpuPraefixT),
               "21905-5",
               "Primary tumor.clinical Cancer",
               fhirProperties.getSystems().getTnmTCs(),
@@ -747,7 +739,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixN,
-              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixN),
+              TnmCpuPraefixTvsLookup.lookupDisplay(cTnmCpuPraefixN),
               "21906-3",
               "Regional lymph nodes.clinical",
               fhirProperties.getSystems().getTnmNCs(),
@@ -760,7 +752,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListC.add(
           createTNMComponentElement(
               cTnmCpuPraefixM,
-              tnmPraefixLookup.lookupDisplay(cTnmCpuPraefixM),
+              TnmCpuPraefixTvsLookup.lookupDisplay(cTnmCpuPraefixM),
               "21907-1",
               "Distant metastases.clinical [Class] Cancer",
               fhirProperties.getSystems().getTnmMCs(),
@@ -894,7 +886,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixT,
-              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixT),
+              TnmCpuPraefixTvsLookup.lookupDisplay(pTnmCpuPraefixT),
               "21899-0",
               "Primary tumor.pathology Cancer",
               fhirProperties.getSystems().getTnmTCs(),
@@ -907,7 +899,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixN,
-              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixN),
+              TnmCpuPraefixTvsLookup.lookupDisplay(pTnmCpuPraefixN),
               "21900-6",
               "Regional lymph nodes.pathology",
               fhirProperties.getSystems().getTnmNCs(),
@@ -920,7 +912,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       backBoneComponentListP.add(
           createTNMComponentElement(
               pTnmCpuPraefixM,
-              tnmPraefixLookup.lookupDisplay(pTnmCpuPraefixM),
+              TnmCpuPraefixTvsLookup.lookupDisplay(pTnmCpuPraefixM),
               "21901-4",
               "Distant metastases.pathology [Class] Cancer",
               fhirProperties.getSystems().getTnmMCs(),
@@ -1063,7 +1055,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           new Coding()
               .setSystem(fhirProperties.getSystems().getJnuCs())
               .setCode(death.getTod_tumorbedingt())
-              .setDisplay(jnuVsLookup.lookupDisplay(death.getTod_tumorbedingt()));
+              .setDisplay(JnuVsLookup.lookupDisplay(death.getTod_tumorbedingt()));
       deathValueCodeConcept.addCoding(deathByTumorCoding);
     }
 

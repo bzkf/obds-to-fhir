@@ -29,12 +29,6 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  private final SnomedCtSeitenlokalisationLookup snomedCtSeitenlokalisationLookup =
-      new SnomedCtSeitenlokalisationLookup();
-
-  private final DisplayAdtSeitenlokalisationLookup displayAdtSeitenlokalisationLookup =
-      new DisplayAdtSeitenlokalisationLookup();
-
   @Autowired
   public ObdsConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -133,10 +127,10 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     if (adtBodySite != null) {
       var adtSeitenlokalisationDisplay =
-          displayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
-      var snomedCtSeitenlokalisationCode = snomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
+          DisplayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+      var snomedCtSeitenlokalisationCode = SnomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
       var snomedCtSeitenlokalisationDisplay =
-          snomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+          SnomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
 
       if (adtSeitenlokalisationDisplay != null) {
         bodySiteADTCoding
