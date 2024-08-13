@@ -4,23 +4,19 @@ import java.util.HashMap;
 
 public class OPIntentionVsLookup {
 
-  private final HashMap<String, String> lookup;
+  private static final HashMap<String, String> lookup =
+      new HashMap<>() {
+        {
+          put("K", "kurativ");
+          put("P", "palliativ");
+          put("D", "diagnostisch");
+          put("R", "Revision/Komplikation");
+          put("S", "sonstiges");
+          put("X", "Fehlende Angabe");
+        }
+      };
 
-  public OPIntentionVsLookup() {
-    lookup =
-        new HashMap<>() {
-          {
-            put("K", "kurativ");
-            put("P", "palliativ");
-            put("D", "diagnostisch");
-            put("R", "Revision/Komplikation");
-            put("S", "sonstiges");
-            put("X", "Fehlende Angabe");
-          }
-        };
-  }
-
-  public final String lookupOPIntentionVSDisplay(String code) {
+  public final String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

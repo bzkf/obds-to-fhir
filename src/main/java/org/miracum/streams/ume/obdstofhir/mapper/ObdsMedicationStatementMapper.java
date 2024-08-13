@@ -193,9 +193,8 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
       therapyCategory.addCoding(
           new Coding()
               .setSystem(fhirProperties.getSystems().getSystTherapieart())
-              .setCode(displaySystTherapieLookup.lookupSYSTTherapieartCSLookupCode(category))
-              .setDisplay(
-                  displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(category)));
+              .setCode(displaySystTherapieLookup.lookupCode(category))
+              .setDisplay(displaySystTherapieLookup.lookupDisplay(category)));
 
       if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
         therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
@@ -219,7 +218,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
                         .setCode(systemTherapy.getSYST_Stellung_OP())
                         .setSystem(fhirProperties.getSystems().getSystStellungOP())
                         .setDisplay(
-                            displayStellungOpLookup.lookupStellungOpDisplay(
+                            displayStellungOpLookup.lookupDisplay(
                                 systemTherapy.getSYST_Stellung_OP()))));
 
     stMedicationStatement
@@ -232,7 +231,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
                         .setCode(systemTherapy.getSYST_Intention())
                         .setSystem(fhirProperties.getSystems().getSystIntention())
                         .setDisplay(
-                            displaySystIntentionLookup.lookupSystIntentionDisplay(
+                            displaySystIntentionLookup.lookupDisplay(
                                 systemTherapy.getSYST_Intention()))));
 
     stMedicationStatement

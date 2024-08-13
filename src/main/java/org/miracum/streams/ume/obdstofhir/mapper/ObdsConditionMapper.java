@@ -133,11 +133,10 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     if (adtBodySite != null) {
       var adtSeitenlokalisationDisplay =
-          displayAdtSeitenlokalisationLookup.lookupAdtSeitenlokalisationDisplay(adtBodySite);
-      var snomedCtSeitenlokalisationCode =
-          snomedCtSeitenlokalisationLookup.lookupSnomedCode(adtBodySite);
+          displayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+      var snomedCtSeitenlokalisationCode = snomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
       var snomedCtSeitenlokalisationDisplay =
-          snomedCtSeitenlokalisationLookup.lookupSnomedDisplay(adtBodySite);
+          snomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
 
       if (adtSeitenlokalisationDisplay != null) {
         bodySiteADTCoding

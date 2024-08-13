@@ -227,8 +227,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                     new Coding()
                         .setCode(opIntention)
                         .setSystem(fhirProperties.getSystems().getOpIntention())
-                        .setDisplay(
-                            displayOPIntentionLookup.lookupOPIntentionVSDisplay(opIntention))));
+                        .setDisplay(displayOPIntentionLookup.lookupDisplay(opIntention))));
 
     // Status
     opProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
@@ -240,9 +239,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("OP")
-                    .setDisplay(
-                        displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
-                            List.of("OP")))));
+                    .setDisplay(displaySystTherapieLookup.lookupDisplay(List.of("OP")))));
 
     // Subject
     opProcedure.setSubject(
@@ -286,8 +283,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
                 .setCode(lokalResidualstatus)
                 .setDisplay(
-                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
-                        lokalResidualstatus)));
+                    displayBeurteilungResidualstatusLookup.lookupDisplay(lokalResidualstatus)));
       }
 
       if (gesamtResidualstatus != null) {
@@ -296,8 +292,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
                 .setCode(gesamtResidualstatus)
                 .setDisplay(
-                    displayBeurteilungResidualstatusLookup.lookupBeurteilungResidualstatusDisplay(
-                        gesamtResidualstatus)));
+                    displayBeurteilungResidualstatusLookup.lookupDisplay(gesamtResidualstatus)));
       }
 
       if (gesamtResidualstatus != null || lokalResidualstatus != null) {
@@ -315,8 +310,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getOpComplication())
                 .setCode(complication)
-                .setDisplay(
-                    displayOPKomplicationLookup.lookupOPKomplikationVSDisplay(complication)));
+                .setDisplay(displayOPKomplicationLookup.lookupDisplay(complication)));
       }
       opProcedure.setComplication(List.of(complicationConcept));
     }
@@ -414,7 +408,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                         .setCode(radioTherapy.getST_Stellung_OP())
                         .setSystem(fhirProperties.getSystems().getSystStellungOP())
                         .setDisplay(
-                            displayStellungOpLookup.lookupStellungOpDisplay(
+                            displayStellungOpLookup.lookupDisplay(
                                 radioTherapy.getST_Stellung_OP()))));
 
     // check if systIntention is defined in xml, otherwise set "X"
@@ -431,8 +425,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                     new Coding()
                         .setCode(systIntention)
                         .setSystem(fhirProperties.getSystems().getSystIntention())
-                        .setDisplay(
-                            displaySystIntentionLookup.lookupSystIntentionDisplay(systIntention))));
+                        .setDisplay(displaySystIntentionLookup.lookupDisplay(systIntention))));
 
     // Status
     if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
@@ -448,9 +441,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("ST")
-                    .setDisplay(
-                        displaySystTherapieLookup.lookupSYSTTherapieartCSLookupDisplay(
-                            List.of("ST")))));
+                    .setDisplay(displaySystTherapieLookup.lookupDisplay(List.of("ST")))));
 
     // Subject
     stProcedure.setSubject(
@@ -488,12 +479,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
         if (sideEffectGrading != null && !sideEffectGrading.equals("U")) {
           sideEffectsCodeConcept.addCoding(
               new Coding()
-                  .setCode(
-                      displaySideEffectGradingLookup.lookupSideEffectTherapyGradingCode(
-                          sideEffectGrading))
-                  .setDisplay(
-                      displaySideEffectGradingLookup.lookupSideEffectTherapyGradingDisplay(
-                          sideEffectGrading))
+                  .setCode(displaySideEffectGradingLookup.lookupCode(sideEffectGrading))
+                  .setDisplay(displaySideEffectGradingLookup.lookupDisplay(sideEffectGrading))
                   .setSystem(fhirProperties.getSystems().getCtcaeGrading()));
         }
 
