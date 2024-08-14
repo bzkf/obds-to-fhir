@@ -2,10 +2,12 @@ package org.miracum.streams.ume.obdstofhir.processor;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
@@ -15,8 +17,10 @@ import org.miracum.streams.ume.obdstofhir.mapper.*;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
+import org.miracum.streams.ume.obdstofhir.model.StructKey;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportSerde;
+import org.miracum.streams.ume.obdstofhir.serde.StructKeyStringSerde;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -52,7 +56,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
 
   @Bean
   public BiFunction<
-          KTable<String, MeldungExport>, KTable<String, Bundle>, KStream<String, Bundle>[]>
+          KTable<StructKey, MeldungExport>, KTable<StructKey, Bundle>, KStream<StructKey, Bundle>[]>
       getMeldungExportObdsProcessor() {
 
     return (stringOnkoMeldungExpTable, stringOnkoObsBundles) -> {
@@ -77,24 +81,23 @@ public class ObdsProcessor extends ObdsToFhirMapper {
               .groupBy(
                   (key, meldung) ->
                       KeyValue.pair(
-                          "Struct{REFERENZ_NUMMER="
-                              + getPatIdFromMeldung(meldung)
-                              + ",TUMOR_ID="
-                              + getTumorIdFromMeldung(meldung)
-                              + "}",
+                          StructKey.builder()
+                              .referenzNummer(getPatIdFromMeldung(meldung))
+                              .tumorId(getTumorIdFromMeldung(meldung))
+                              .build(),
                           meldung),
-                  Grouped.with(Serdes.String(), new MeldungExportSerde()))
+                  Grouped.with(new StructKeyStringSerde(), new MeldungExportSerde()))
               .aggregate(
                   MeldungExportList::new,
                   (key, value, aggregate) -> aggregate.addElement(value),
                   (key, value, aggregate) -> aggregate.removeElement(value),
-                  Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+                  Materialized.with(new StructKeyStringSerde(), new MeldungExportListSerde()))
               .toStream()
               .split(Named.as("out-"))
               .branch((k, v) -> v != null, Branched.as("Aggregate"))
               .noDefaultBranch();
 
-      var branches = new ArrayList<KStream<String, Bundle>>();
+      var branches = new ArrayList<KStream<StructKey, Bundle>>();
 
       // always map Medication, Observation, Procedure, Condition...
       branches.addAll(
@@ -124,17 +127,26 @@ public class ObdsProcessor extends ObdsToFhirMapper {
                 // group by the patient number. This ensures that all meldungen of one patient
                 // are processed by the same downstream consumer.
                 .groupBy(
-                    (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
-                    Grouped.with(Serdes.String(), new MeldungExportSerde()))
+                    (key, meldung) ->
+                        KeyValue.pair(
+                            StructKey.builder()
+                                .referenzNummer(getPatIdFromMeldung(meldung))
+                                .build(),
+                            meldung),
+                    Grouped.with(new StructKeyStringSerde(), new MeldungExportSerde()))
                 .aggregate(
                     MeldungExportList::new,
                     (key, value, aggregate) -> aggregate.addElement(value),
                     (key, value, aggregate) -> aggregate.removeElement(value),
-                    Materialized.with(Serdes.String(), new MeldungExportListSerde()))
+                    Materialized.with(new StructKeyStringSerde(), new MeldungExportListSerde()))
                 .toStream()
                 .mapValues(this.getOnkoToPatientBundleMapper())
                 .filter((key, value) -> value != null)
-                .selectKey((key, value) -> patientBundleKeySelector(value));
+                .selectKey(
+                    (key, value) ->
+                        StructKey.builder()
+                            .referenzNummer(patientBundleKeySelector(value))
+                            .build());
 
         branches.add(patientStream);
       }
