@@ -21,8 +21,8 @@ public class StructKeyStringSerde implements Serde<StructKey> {
       }
       return String.format(
               "Struct{REFERENZ_NUMMER=\"%s\",TUMOR_ID=\"%s\"}",
-              null == structKey.getReferenzNummer() ? "" : structKey.getReferenzNummer(),
-              null == structKey.getTumorId() ? "" : structKey.getTumorId())
+              null == structKey.referenzNummer() ? "" : structKey.referenzNummer(),
+              null == structKey.tumorId() ? "" : structKey.tumorId())
           .getBytes(StandardCharsets.UTF_8);
     };
   }

@@ -35,4 +35,12 @@ public class StructKeyStringSerdeTest {
                     .getBytes(StandardCharsets.UTF_8));
     assertThat(actual).isEqualTo(new StructKey("01234", "1"));
   }
+
+  @Test
+  void shouldUseLombokBuilderForStructKeyRecord() {
+    var expected = new StructKey("01234", "1");
+    var actual = StructKey.builder().referenzNummer("01234").tumorId("1").build();
+
+    assertThat(actual).isEqualTo(expected);
+  }
 }
