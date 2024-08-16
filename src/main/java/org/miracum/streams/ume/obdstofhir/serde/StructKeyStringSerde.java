@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.serde;
 
 import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;
@@ -11,7 +12,7 @@ public class StructKeyStringSerde implements Serde<StructKey> {
 
   private static final Pattern structPattern =
       Pattern.compile(
-          "Struct\\{REFERENZ_NUMMER=\"(?<referenznummer>.*)\",\\s*TUMOR_ID=\"(?<tumorid>.*)\"\\}");
+          "Struct\\{(REFERENZ_NUMMER=\"(?<referenznummer>[^\"]*)\")?,?\\s*(TUMOR_ID=\"(?<tumorid>[^\"]*)\")?\\}");
 
   @Override
   public Serializer<StructKey> serializer() {
@@ -19,11 +20,18 @@ public class StructKeyStringSerde implements Serde<StructKey> {
       if (null == structKey) {
         return null;
       }
-      return String.format(
-              "Struct{REFERENZ_NUMMER=\"%s\",TUMOR_ID=\"%s\"}",
-              null == structKey.referenzNummer() ? "" : structKey.referenzNummer(),
-              null == structKey.tumorId() ? "" : structKey.tumorId())
-          .getBytes(StandardCharsets.UTF_8);
+
+      var values = new StringJoiner(",");
+
+      if (null != structKey.referenzNummer()) {
+        values.add(String.format("REFERENZ_NUMMER=\"%s\"", structKey.referenzNummer()));
+      }
+
+      if (null != structKey.tumorId()) {
+        values.add(String.format("TUMOR_ID=\"%s\"", structKey.tumorId()));
+      }
+
+      return String.format("Struct{%s}", values).getBytes(StandardCharsets.UTF_8);
     };
   }
 

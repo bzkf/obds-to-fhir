@@ -25,6 +25,19 @@ public class StructKeyStringSerdeTest {
   }
 
   @Test
+  void shouldSerializePartialStructKeyWithRefNumOnly() {
+    var actual = serde.serializer().serialize("any", new StructKey("01234", null));
+    assertThat(actual)
+        .isEqualTo("Struct{REFERENZ_NUMMER=\"01234\"}".getBytes(StandardCharsets.UTF_8));
+  }
+
+  @Test
+  void shouldSerializeStructKeyWithTumIdOnly() {
+    var actual = serde.serializer().serialize("any", new StructKey(null, "1"));
+    assertThat(actual).isEqualTo("Struct{TUMOR_ID=\"1\"}".getBytes(StandardCharsets.UTF_8));
+  }
+
+  @Test
   void shouldDeserializeStructKey() {
     var actual =
         serde
@@ -34,6 +47,25 @@ public class StructKeyStringSerdeTest {
                 "Struct{REFERENZ_NUMMER=\"01234\",TUMOR_ID=\"1\"}"
                     .getBytes(StandardCharsets.UTF_8));
     assertThat(actual).isEqualTo(new StructKey("01234", "1"));
+  }
+
+  @Test
+  void shouldDeserializePartialStructKeyWithRefNumOnly() {
+    var actual =
+        serde
+            .deserializer()
+            .deserialize(
+                "any", "Struct{REFERENZ_NUMMER=\"01234\"}".getBytes(StandardCharsets.UTF_8));
+    assertThat(actual).isEqualTo(new StructKey("01234", null));
+  }
+
+  @Test
+  void shouldDeserializePartialStructKeyWithTumIdOnly() {
+    var actual =
+        serde
+            .deserializer()
+            .deserialize("any", "Struct{TUMOR_ID=\"1\"}".getBytes(StandardCharsets.UTF_8));
+    assertThat(actual).isEqualTo(new StructKey(null, "1"));
   }
 
   @Test
