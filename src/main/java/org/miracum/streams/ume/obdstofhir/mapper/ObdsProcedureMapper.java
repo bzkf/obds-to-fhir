@@ -303,7 +303,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     // Complication
     if (op.getMenge_Komplikation() != null
         && op.getMenge_Komplikation().getOP_Komplikation() != null
-        && op.getMenge_Komplikation().getOP_Komplikation().size() > 0) {
+        && !op.getMenge_Komplikation().getOP_Komplikation().isEmpty()) {
       var complicationConcept = new CodeableConcept();
       for (var complication : op.getMenge_Komplikation().getOP_Komplikation()) {
         complicationConcept.addCoding(
