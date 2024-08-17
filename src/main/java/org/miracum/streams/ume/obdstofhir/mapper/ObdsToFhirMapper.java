@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import java.nio.charset.StandardCharsets;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -189,11 +190,28 @@ public abstract class ObdsToFhirMapper {
       formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     }
 
-    var adtLocalDate = LocalDate.parse(obdsDate, formatter);
-    var adtLocalDateTime = adtLocalDate.atStartOfDay();
-    var adtDateTime =
-        new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
-    adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
-    return adtDateTime;
+    // if already in FHIR format 'yyyy-MM-dd' e.g. if it is in oBDS 3.x format
+    if (obdsDate.matches("^(18|19|20)\\d\\d-((0\\d)|(1[0-2]))-([0-2]\\d)|(3[01])$")) {
+      // 2022-00-00 -> 2022-07-01
+      // 2022-04-00 -> 2022-04-15
+      if (obdsDate.matches("^\\d{4}-00-00$")) {
+        obdsDate = obdsDate.substring(0, 4) + "-07-01";
+      } else if (obdsDate.matches("^\\d{4}-\\d{2}-00$")) {
+        obdsDate = obdsDate.substring(0, 7) + "-15";
+      }
+      formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    }
+
+    try {
+      var adtLocalDate = LocalDate.parse(obdsDate, formatter);
+      var adtLocalDateTime = adtLocalDate.atStartOfDay();
+      var adtDateTime =
+          new DateTimeType(Date.from(adtLocalDateTime.atZone(ZoneOffset.UTC).toInstant()));
+      adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
+      return adtDateTime;
+    } catch (DateTimeException e) {
+      log.warn("Cannot parse '{}' as date", obdsDate);
+    }
+    return null;
   }
 }
