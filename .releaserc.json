@@ -7,14 +7,7 @@
         "releaseRules": [
           {
             "type": "chore",
-            "release": "patch"
-          },
-          {
-            "type": "refactor",
-            "release": "patch"
-          },
-          {
-            "type": "style",
+            "scope": "deps",
             "release": "patch"
           },
           {

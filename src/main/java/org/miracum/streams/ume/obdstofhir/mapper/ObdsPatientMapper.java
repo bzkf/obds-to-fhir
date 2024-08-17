@@ -164,7 +164,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     }
 
     // address
-    var patAddess = patData.getMenge_Adresse().getAdresse().get(0);
+    var patAddess = patData.getMenge_Adresse().getAdresse().getFirst();
     if (StringUtils.hasLength(patAddess.getPatienten_PLZ())) {
       var address = new Address();
       address.setPostalCode(patAddess.getPatienten_PLZ()).setType(Address.AddressType.BOTH);

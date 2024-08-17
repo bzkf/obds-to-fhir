@@ -42,7 +42,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     }
 
     // get first element of meldungExportList
-    var meldungExport = meldungExportList.get(0);
+    var meldungExport = meldungExportList.getFirst();
 
     LOG.debug(
         "Mapping Meldung {} to {}", getReportingIdFromAdt(meldungExport), ResourceType.Condition);
@@ -167,10 +167,9 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
                                 fhirProperties.getSystems().getIdentifierType(), "MR", null)))
                     .setValue(pid)));
 
-    var conditionDateString = primDia.getDiagnosedatum();
-    if (conditionDateString.isPresent()) {
-      onkoCondition.setOnset(convertObdsDateToDateTimeType(conditionDateString.get()));
-    }
+    primDia
+        .getDiagnosedatum()
+        .ifPresent(value -> onkoCondition.setOnset(convertObdsDateToDateTimeType(value)));
 
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
     var evidenceBackBoneComponentList = new ArrayList<Condition.ConditionEvidenceComponent>();
@@ -193,7 +192,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
             stageBackBoneComponentList.add(conditionStageComponent);
           }
         } else {
-          var profile = obsEntry.getResource().getMeta().getProfile().get(0).getValue();
+          var profile = obsEntry.getResource().getMeta().getProfile().getFirst().getValue();
           if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
             // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische
             // Variante

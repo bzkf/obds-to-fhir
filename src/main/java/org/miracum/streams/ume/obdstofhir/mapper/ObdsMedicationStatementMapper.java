@@ -39,7 +39,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     var bundle = new Bundle();
 
     // get first element of meldungExportList
-    var meldungExport = meldungExportList.get(0);
+    var meldungExport = meldungExportList.getFirst();
 
     LOG.debug(
         "Mapping Meldung {} to {}",

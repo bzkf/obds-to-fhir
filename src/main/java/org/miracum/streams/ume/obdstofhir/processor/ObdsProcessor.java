@@ -204,11 +204,11 @@ public class ObdsProcessor extends ObdsToFhirMapper {
   private static String patientBundleKeySelector(Bundle bundle) {
     var patients = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class);
 
-    if (patients.isEmpty() || patients.size() > 1) {
+    if (patients.size() != 1) {
       throw new RuntimeException(
           String.format("A patient bundle contains %d resources instead of 1", patients.size()));
     }
-    var patient = patients.get(0);
+    var patient = patients.getFirst();
     return String.format("%s/%s", patient.getResourceType(), patient.getId());
   }
 }
