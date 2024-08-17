@@ -50,6 +50,18 @@ public class StructKeyStringSerdeTest {
   }
 
   @Test
+  void shouldDeserializeStructKeyWithInvertedPropertyOrder() {
+    var actual =
+        serde
+            .deserializer()
+            .deserialize(
+                "any",
+                "Struct{TUMOR_ID=\"1\",REFERENZ_NUMMER=\"01234\"}"
+                    .getBytes(StandardCharsets.UTF_8));
+    assertThat(actual).isEqualTo(new StructKey("01234", "1"));
+  }
+
+  @Test
   void shouldDeserializePartialStructKeyWithRefNumOnly() {
     var actual =
         serde

@@ -12,7 +12,7 @@ public class StructKeyStringSerde implements Serde<StructKey> {
 
   private static final Pattern structPattern =
       Pattern.compile(
-          "Struct\\{(REFERENZ_NUMMER=\"(?<referenznummer>[^\"]*)\")?,?\\s*(TUMOR_ID=\"(?<tumorid>[^\"]*)\")?\\}");
+          "Struct\\{((REFERENZ_NUMMER=\"(?<referenznummer>[^\"]*)\")|(TUMOR_ID=\"(?<tumorid>[^\"]*))\"|,\\s*)+\\}");
 
   @Override
   public Serializer<StructKey> serializer() {
