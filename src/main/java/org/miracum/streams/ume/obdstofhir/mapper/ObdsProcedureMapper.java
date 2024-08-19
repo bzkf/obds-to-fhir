@@ -510,6 +510,10 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
    * @return A tuple with start date and end date of all given partial radiations
    */
   public Tupel<Date, Date> getTimeSpanFromPartialRadiations(List<Bestrahlung> partialRadiations) {
+    if (null == partialRadiations || partialRadiations.isEmpty()) {
+      return new Tupel<>(null, null);
+    }
+
     val minDates =
         partialRadiations.stream()
             .map(radio -> convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()))
