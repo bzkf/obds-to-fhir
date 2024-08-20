@@ -1,7 +1,7 @@
 #checkov:skip=CKV_SECRET_6: all dev setup
 services:
   oracle:
-    image: docker.io/gvenzl/oracle-free:23.4-slim-faststart@sha256:7d40f1174fd64070aecec7722db0156b5c935b8a2ae1277bac656d0346662fad
+    image: docker.io/gvenzl/oracle-free:23.5-slim-faststart@sha256:1af6ddc85a3efafdc47e1f235694af2d8ea566556ff968f722d9a1f95f07507a
     cap_drop:
       - ALL
     privileged: false
@@ -17,7 +17,7 @@ services:
       - ./oracle/init:/docker-entrypoint-initdb.d/setup
 
   kafka:
-    image: docker.io/bitnami/kafka:3.7.1@sha256:dfa51517c4823ad8ce97cd5b5ed06798067c40634c06144384ee91097ceeabb2
+    image: docker.io/bitnami/kafka:3.8.0@sha256:864379e966cad4c2a37843a9c25f258df21250e70d6d1ce4ef6cfd88acb2205d
     restart: unless-stopped
     cap_drop:
       - ALL
