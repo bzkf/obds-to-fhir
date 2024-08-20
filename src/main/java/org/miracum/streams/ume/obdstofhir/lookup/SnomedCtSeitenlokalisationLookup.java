@@ -16,11 +16,11 @@ public class SnomedCtSeitenlokalisationLookup {
         }
       };
 
-  public final String lookupCode(String AdtCode) {
+  public static String lookupCode(String AdtCode) {
     return lookup.get(AdtCode) != null ? lookup.get(AdtCode).get(0) : null;
   }
 
-  public final String lookupDisplay(String AdtCode) {
+  public static String lookupDisplay(String AdtCode) {
     return lookup.get(AdtCode) != null ? lookup.get(AdtCode).get(1) : null;
   }
 }

@@ -26,12 +26,6 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
-
-  private final SystIntentionVsLookup displaySystIntentionLookup = new SystIntentionVsLookup();
-
-  private final SYSTTherapieartCSLookup displaySystTherapieLookup = new SYSTTherapieartCSLookup();
-
   public ObdsMedicationStatementMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -193,8 +187,8 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
       therapyCategory.addCoding(
           new Coding()
               .setSystem(fhirProperties.getSystems().getSystTherapieart())
-              .setCode(displaySystTherapieLookup.lookupCode(category))
-              .setDisplay(displaySystTherapieLookup.lookupDisplay(category)));
+              .setCode(SYSTTherapieartCSLookup.lookupCode(category))
+              .setDisplay(SYSTTherapieartCSLookup.lookupDisplay(category)));
 
       if (systemTherapy.getSYST_Therapieart_Anmerkung() != null) {
         therapyCategory.setText(systemTherapy.getSYST_Therapieart_Anmerkung());
@@ -218,7 +212,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
                         .setCode(systemTherapy.getSYST_Stellung_OP())
                         .setSystem(fhirProperties.getSystems().getSystStellungOP())
                         .setDisplay(
-                            displayStellungOpLookup.lookupDisplay(
+                            StellungOpVsLookup.lookupDisplay(
                                 systemTherapy.getSYST_Stellung_OP()))));
 
     stMedicationStatement
@@ -231,7 +225,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
                         .setCode(systemTherapy.getSYST_Intention())
                         .setSystem(fhirProperties.getSystems().getSystIntention())
                         .setDisplay(
-                            displaySystIntentionLookup.lookupDisplay(
+                            SystIntentionVsLookup.lookupDisplay(
                                 systemTherapy.getSYST_Intention()))));
 
     stMedicationStatement
