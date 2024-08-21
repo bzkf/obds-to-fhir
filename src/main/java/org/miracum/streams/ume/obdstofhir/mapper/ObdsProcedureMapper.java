@@ -1,7 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
 import java.util.*;
-import lombok.val;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
@@ -514,14 +513,14 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       return new Tupel<>(null, null);
     }
 
-    val minDates =
+    final var minDates =
         partialRadiations.stream()
             .map(radio -> convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()))
             .filter(Objects::nonNull)
             .map(PrimitiveType::getValue)
             .toList();
 
-    val maxDates =
+    final var maxDates =
         partialRadiations.stream()
             .map(radio -> convertObdsDateToDateTimeType(radio.getST_Ende_Datum()))
             .filter(Objects::nonNull)

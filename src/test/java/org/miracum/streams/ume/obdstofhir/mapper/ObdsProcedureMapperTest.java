@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -23,13 +22,13 @@ public class ObdsProcedureMapperTest {
 
   @Test
   void shouldGetWholeTimeSpanFromPartialRadiations() {
-    val partialRadiations =
+    final var partialRadiations =
         List.of(
             getTestPartialRadiationForTimespand("01.01.2024", "31.01.2024"),
             getTestPartialRadiationForTimespand("01.03.2024", "30.04.2024"),
             getTestPartialRadiationForTimespand("10.05.2024", "31.05.2024"));
 
-    val actual = this.mapper.getTimeSpanFromPartialRadiations(partialRadiations);
+    final var actual = this.mapper.getTimeSpanFromPartialRadiations(partialRadiations);
 
     assertThat(actual)
         .isEqualTo(
