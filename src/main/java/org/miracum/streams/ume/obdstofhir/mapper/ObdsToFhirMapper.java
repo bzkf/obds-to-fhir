@@ -210,8 +210,8 @@ public abstract class ObdsToFhirMapper {
       adtDateTime.setPrecision(TemporalPrecisionEnum.DAY);
       return adtDateTime;
     } catch (DateTimeException e) {
-      log.warn("Cannot parse '{}' as date", obdsDate);
+      log.error("Cannot parse '{}' as date", obdsDate);
+      throw e;
     }
-    return null;
   }
 }

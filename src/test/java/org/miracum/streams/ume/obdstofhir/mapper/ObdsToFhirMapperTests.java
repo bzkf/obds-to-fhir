@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.DateTimeException;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -90,8 +92,11 @@ class ObdsToFhirMapperTests {
   }
 
   @Test
-  void convertObdsDateToDateTimeTypeShouldNotThrowException() {
-    var fhirDate = ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere");
-    assertThat(fhirDate).isNull();
+  void convertObdsDateToDateTimeTypeShouldThrowExceptionOnUnparsableDateString() {
+    assertThrows(
+        DateTimeException.class,
+        () -> {
+          ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere");
+        });
   }
 }
