@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.DateTimeException;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,12 +49,16 @@ class ObdsToFhirMapperTests {
     "31.03.2022,2022-03-31",
     "2019-12-21+02:00,2019-12-21",
     "2000-01-03-01:00,2000-01-03",
-    "1999-12-31+08:00,1999-12-31"
+    "1999-12-31+08:00,1999-12-31",
+    "2024-08-17,2024-08-17",
+    "2024-08-00,2024-08-15",
+    "2024-00-00,2024-07-01"
   })
   void extractDateTimeFromADTDate_withGivenObdsDate_shouldConvertToExpectedFhirDateTime(
       String obdsDate, String expectedFhirDateTimeString) {
     var fhirDate = ObdsToFhirMapper.convertObdsDateToDateTimeType(obdsDate);
 
+    assertThat(fhirDate).isNotNull();
     assertThat(fhirDate.asStringValue()).isEqualTo(expectedFhirDateTimeString);
   }
 
@@ -83,5 +89,14 @@ class ObdsToFhirMapperTests {
             null);
 
     assertThat(prioritised).first().isEqualTo(expectedFirstDeathMeldung);
+  }
+
+  @Test
+  void convertObdsDateToDateTimeTypeShouldThrowExceptionOnUnparsableDateString() {
+    assertThrows(
+        DateTimeException.class,
+        () -> {
+          ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere");
+        });
   }
 }
