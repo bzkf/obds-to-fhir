@@ -481,31 +481,36 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     return stProcedure;
   }
 
+  /**
+   * This will return the whole timespan of completed partial radiations as part of a therapy. If no
+   * usable start or end dates have been found, this method will return a tuple containing `null`
+   * values.
+   *
+   * @param partialRadiations The partial radiations
+   * @return A tuple with start date and end date of all given partial radiations
+   */
   public Tupel<Date, Date> getTimeSpanFromPartialRadiations(List<Bestrahlung> partialRadiations) {
-    // min Beginndatum
-    List<Date> minDates = new ArrayList<>();
-    // maxBeginndatum
-    List<Date> maxDates = new ArrayList<>();
-
-    for (var radio : partialRadiations) {
-      if (radio.getST_Beginn_Datum() != null) {
-        minDates.add(convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()).getValue());
-      }
-      if (radio.getST_Ende_Datum() != null) {
-        maxDates.add(convertObdsDateToDateTimeType(radio.getST_Ende_Datum()).getValue());
-      }
+    if (null == partialRadiations || partialRadiations.isEmpty()) {
+      return new Tupel<>(null, null);
     }
 
-    Date minDate = null;
-    Date maxDate = null;
+    final var minDates =
+        partialRadiations.stream()
+            .map(radio -> convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()))
+            .filter(Objects::nonNull)
+            .map(PrimitiveType::getValue)
+            .toList();
 
-    if (!minDates.isEmpty()) {
-      minDate = Collections.min(minDates);
-    }
-    if (!maxDates.isEmpty()) {
-      maxDate = Collections.min(maxDates);
-    }
+    final var maxDates =
+        partialRadiations.stream()
+            .map(radio -> convertObdsDateToDateTimeType(radio.getST_Ende_Datum()))
+            .filter(Objects::nonNull)
+            .map(PrimitiveType::getValue)
+            .toList();
 
-    return new Tupel<>(minDate, maxDate);
+    return Tupel.<Date, Date>builder()
+        .first(minDates.isEmpty() ? null : Collections.min(minDates))
+        .second(maxDates.isEmpty() ? null : Collections.max(maxDates))
+        .build();
   }
 }
