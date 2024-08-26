@@ -16,7 +16,7 @@ public class BeurteilungResidualstatusVsLookup {
         }
       };
 
-  public final String lookupDisplay(String code) {
+  public static String lookupDisplay(String code) {
     return lookup.get(code);
   }
 }

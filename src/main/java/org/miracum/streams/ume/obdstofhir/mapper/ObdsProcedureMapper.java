@@ -25,22 +25,6 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  private final OPIntentionVsLookup displayOPIntentionLookup = new OPIntentionVsLookup();
-
-  private final BeurteilungResidualstatusVsLookup displayBeurteilungResidualstatusLookup =
-      new BeurteilungResidualstatusVsLookup();
-
-  private final StellungOpVsLookup displayStellungOpLookup = new StellungOpVsLookup();
-
-  private final SystIntentionVsLookup displaySystIntentionLookup = new SystIntentionVsLookup();
-
-  private final SideEffectTherapyGradingLookup displaySideEffectGradingLookup =
-      new SideEffectTherapyGradingLookup();
-
-  private final SYSTTherapieartCSLookup displaySystTherapieLookup = new SYSTTherapieartCSLookup();
-
-  private final OPKomplikationVsLookup displayOPKomplicationLookup = new OPKomplikationVsLookup();
-
   public ObdsProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -227,7 +211,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                     new Coding()
                         .setCode(opIntention)
                         .setSystem(fhirProperties.getSystems().getOpIntention())
-                        .setDisplay(displayOPIntentionLookup.lookupDisplay(opIntention))));
+                        .setDisplay(OPIntentionVsLookup.lookupDisplay(opIntention))));
 
     // Status
     opProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
@@ -239,7 +223,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("OP")
-                    .setDisplay(displaySystTherapieLookup.lookupDisplay(List.of("OP")))));
+                    .setDisplay(SYSTTherapieartCSLookup.lookupDisplay(List.of("OP")))));
 
     // Subject
     opProcedure.setSubject(
@@ -282,8 +266,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getLokalBeurtResidualCS())
                 .setCode(lokalResidualstatus)
-                .setDisplay(
-                    displayBeurteilungResidualstatusLookup.lookupDisplay(lokalResidualstatus)));
+                .setDisplay(BeurteilungResidualstatusVsLookup.lookupDisplay(lokalResidualstatus)));
       }
 
       if (gesamtResidualstatus != null) {
@@ -291,8 +274,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getGesamtBeurtResidualCS())
                 .setCode(gesamtResidualstatus)
-                .setDisplay(
-                    displayBeurteilungResidualstatusLookup.lookupDisplay(gesamtResidualstatus)));
+                .setDisplay(BeurteilungResidualstatusVsLookup.lookupDisplay(gesamtResidualstatus)));
       }
 
       if (gesamtResidualstatus != null || lokalResidualstatus != null) {
@@ -310,7 +292,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getOpComplication())
                 .setCode(complication)
-                .setDisplay(displayOPKomplicationLookup.lookupDisplay(complication)));
+                .setDisplay(OPKomplikationVsLookup.lookupDisplay(complication)));
       }
       opProcedure.setComplication(List.of(complicationConcept));
     }
@@ -408,8 +390,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                         .setCode(radioTherapy.getST_Stellung_OP())
                         .setSystem(fhirProperties.getSystems().getSystStellungOP())
                         .setDisplay(
-                            displayStellungOpLookup.lookupDisplay(
-                                radioTherapy.getST_Stellung_OP()))));
+                            StellungOpVsLookup.lookupDisplay(radioTherapy.getST_Stellung_OP()))));
 
     // check if systIntention is defined in xml, otherwise set "X"
     var systIntention = "X";
@@ -425,7 +406,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                     new Coding()
                         .setCode(systIntention)
                         .setSystem(fhirProperties.getSystems().getSystIntention())
-                        .setDisplay(displaySystIntentionLookup.lookupDisplay(systIntention))));
+                        .setDisplay(SystIntentionVsLookup.lookupDisplay(systIntention))));
 
     // Status
     if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
@@ -441,7 +422,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getSystTherapieart())
                     .setCode("ST")
-                    .setDisplay(displaySystTherapieLookup.lookupDisplay(List.of("ST")))));
+                    .setDisplay(SYSTTherapieartCSLookup.lookupDisplay(List.of("ST")))));
 
     // Subject
     stProcedure.setSubject(
@@ -479,8 +460,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
         if (sideEffectGrading != null && !sideEffectGrading.equals("U")) {
           sideEffectsCodeConcept.addCoding(
               new Coding()
-                  .setCode(displaySideEffectGradingLookup.lookupCode(sideEffectGrading))
-                  .setDisplay(displaySideEffectGradingLookup.lookupDisplay(sideEffectGrading))
+                  .setCode(SideEffectTherapyGradingLookup.lookupCode(sideEffectGrading))
+                  .setDisplay(SideEffectTherapyGradingLookup.lookupDisplay(sideEffectGrading))
                   .setSystem(fhirProperties.getSystems().getCtcaeGrading()));
         }
 
@@ -500,31 +481,36 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     return stProcedure;
   }
 
+  /**
+   * This will return the whole timespan of completed partial radiations as part of a therapy. If no
+   * usable start or end dates have been found, this method will return a tuple containing `null`
+   * values.
+   *
+   * @param partialRadiations The partial radiations
+   * @return A tuple with start date and end date of all given partial radiations
+   */
   public Tupel<Date, Date> getTimeSpanFromPartialRadiations(List<Bestrahlung> partialRadiations) {
-    // min Beginndatum
-    List<Date> minDates = new ArrayList<>();
-    // maxBeginndatum
-    List<Date> maxDates = new ArrayList<>();
-
-    for (var radio : partialRadiations) {
-      if (radio.getST_Beginn_Datum() != null) {
-        minDates.add(convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()).getValue());
-      }
-      if (radio.getST_Ende_Datum() != null) {
-        maxDates.add(convertObdsDateToDateTimeType(radio.getST_Ende_Datum()).getValue());
-      }
+    if (null == partialRadiations || partialRadiations.isEmpty()) {
+      return new Tupel<>(null, null);
     }
 
-    Date minDate = null;
-    Date maxDate = null;
+    final var minDates =
+        partialRadiations.stream()
+            .map(radio -> convertObdsDateToDateTimeType(radio.getST_Beginn_Datum()))
+            .filter(Objects::nonNull)
+            .map(PrimitiveType::getValue)
+            .toList();
 
-    if (!minDates.isEmpty()) {
-      minDate = Collections.min(minDates);
-    }
-    if (!maxDates.isEmpty()) {
-      maxDate = Collections.min(maxDates);
-    }
+    final var maxDates =
+        partialRadiations.stream()
+            .map(radio -> convertObdsDateToDateTimeType(radio.getST_Ende_Datum()))
+            .filter(Objects::nonNull)
+            .map(PrimitiveType::getValue)
+            .toList();
 
-    return new Tupel<>(minDate, maxDate);
+    return Tupel.<Date, Date>builder()
+        .first(minDates.isEmpty() ? null : Collections.min(minDates))
+        .second(maxDates.isEmpty() ? null : Collections.max(maxDates))
+        .build();
   }
 }
