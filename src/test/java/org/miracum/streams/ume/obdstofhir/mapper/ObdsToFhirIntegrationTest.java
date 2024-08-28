@@ -23,7 +23,7 @@ public class ObdsToFhirIntegrationTest {
 
   @Nested
   @TestPropertySource(properties = {"app.localPatientIdPattern=\\\\w*"})
-  class AllWordCharactersAllowed {
+  class AllWordCharactersAllowedPattern {
 
     @ParameterizedTest
     @CsvSource({
@@ -33,7 +33,24 @@ public class ObdsToFhirIntegrationTest {
       "1234567891,1234567891",
       "0000012345,0000012345"
     })
-    void keepPatientIdWithLocalPatientIdPattern(String input, String output) {
+    void applyLocalPatientIdPattern(String input, String output) {
+      var actual = ObdsToFhirMapper.convertId(input);
+      assertThat(actual).isEqualTo(output);
+    }
+  }
+
+  @Nested
+  class UseDefaultPatternWithoutConfig {
+
+    @ParameterizedTest
+    @CsvSource({
+      "12345,12345",
+      "123456789,123456789",
+      "1234567890,123456789", // Max 9 digits, remove last digit '0'
+      "1234567891,123456789", // Max 9 digits, remove last digit '1'
+      "0000012345,0000012345", // Not mathching pattern - keep as is
+    })
+    void applyDefaultPattern(String input, String output) {
       var actual = ObdsToFhirMapper.convertId(input);
       assertThat(actual).isEqualTo(output);
     }
