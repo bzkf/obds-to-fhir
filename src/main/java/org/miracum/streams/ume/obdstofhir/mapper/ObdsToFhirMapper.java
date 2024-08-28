@@ -64,14 +64,12 @@ public abstract class ObdsToFhirMapper {
   protected static String convertId(String id) {
     Pattern pattern = Pattern.compile("[^0]\\d{8}");
     Matcher matcher = pattern.matcher(id);
-    var convertedId = "";
     if (matcher.find()) {
-      convertedId = matcher.group();
+      return matcher.group();
     } else {
       log.warn("Identifier to convert does not have 9 digits without leading '0': {}", id);
       return id;
     }
-    return convertedId;
   }
 
   public static List<MeldungExport> prioritiseLatestMeldungExports(
