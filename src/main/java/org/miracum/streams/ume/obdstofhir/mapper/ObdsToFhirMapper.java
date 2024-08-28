@@ -18,12 +18,24 @@ import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
+  static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
+
+  @Value("${app.localPatientIdPattern:[^0]\\d{8}}")
+  void setStringPattern(String value) {
+    try {
+      ObdsToFhirMapper.localPatientIdPattern = Pattern.compile(value);
+    } catch (Exception e) {
+      log.error("Not a valid patient ID pattern: {}. Use valid RegExp instead.", value);
+      throw e;
+    }
+  }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
@@ -62,8 +74,7 @@ public abstract class ObdsToFhirMapper {
   }
 
   protected static String convertId(String id) {
-    Pattern pattern = Pattern.compile("[^0]\\d{8}");
-    Matcher matcher = pattern.matcher(id);
+    Matcher matcher = ObdsToFhirMapper.localPatientIdPattern.matcher(id);
     if (matcher.find()) {
       return matcher.group();
     } else {
