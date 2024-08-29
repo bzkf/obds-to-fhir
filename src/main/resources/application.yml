@@ -1,7 +1,7 @@
 app:
   version: 2.1.3
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
-  localPatientIdPattern: "\\w*"
+  #localPatientIdPattern: "[^0]\\d{8}"
 
 fhir:
   extensions:
