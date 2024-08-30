@@ -22,7 +22,7 @@ public class ObdsToFhirIntegrationTest {
   @Autowired ObdsTestMapper mapper;
 
   @Nested
-  @TestPropertySource(properties = {"app.localPatientIdPattern=\\\\w*"})
+  @TestPropertySource(properties = {"app.patient-id-pattern=\\\\w*"})
   class AllWordCharactersAllowedPattern {
 
     @ParameterizedTest

@@ -27,7 +27,7 @@ public abstract class ObdsToFhirMapper {
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
-  @Value("${app.localPatientIdPattern:[^0]\\d{8}}")
+  @Value("${app.patient-id-pattern:[^0]\\d{8}}")
   void setStringPattern(String value) {
     try {
       ObdsToFhirMapper.localPatientIdPattern = Pattern.compile(value);
