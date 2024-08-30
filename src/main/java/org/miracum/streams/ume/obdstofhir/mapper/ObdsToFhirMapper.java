@@ -78,7 +78,7 @@ public abstract class ObdsToFhirMapper {
     if (matcher.find()) {
       return matcher.group();
     } else {
-      log.warn("Identifier to convert does not have 9 digits without leading '0': {}", id);
+      log.warn("Identifier to convert does not match pattern: {}", matcher.pattern().toString());
       return id;
     }
   }
