@@ -99,4 +99,20 @@ class ObdsToFhirMapperTests {
           ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere");
         });
   }
+
+  @ParameterizedTest
+  @CsvSource({
+    "12345,12345",
+    "123456789,123456789",
+    "1234567890,123456789", // Max 9 digits, remove last digit '0'
+    "1234567891,123456789", // Max 9 digits, remove last digit '1'
+    "0000012345,0000012345", // Not mathching pattern - keep as is
+    "G1234,G1234", // Not mathching pattern - keep as is
+    "G123456,G123456", // Not matching pattern - keep as is
+    "G123456789,G12345678", // return Non-zero and 8 digits
+  })
+  void convertPatientIdWithDefaultPattern(String input, String output) {
+    var actual = ObdsToFhirMapper.convertId(input);
+    assertThat(actual).isEqualTo(output);
+  }
 }
