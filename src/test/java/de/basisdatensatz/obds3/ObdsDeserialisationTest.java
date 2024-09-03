@@ -12,17 +12,25 @@ public class ObdsDeserialisationTest {
 
   @Test
   void testShouldDeserializeObds3() throws IOException {
-    var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
-    var xmlMapper =
+    final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+    final var xmlMapper =
         XmlMapper.builder()
             .defaultUseWrapper(false)
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
             .build();
 
-    var actual = xmlMapper.readValue(resource.openStream(), OBDS.class);
+    final var actual = xmlMapper.readValue(resource.openStream(), OBDS.class);
 
     assertThat(actual).isInstanceOf(OBDS.class);
-    assertThat(actual.mengePatient.getPatient().get(0).patientID).isEqualTo("00001234");
+    assertThat(actual.getMengePatient().getPatient()).hasSize(1);
+
+    final var patient = actual.getMengePatient().getPatient().getFirst();
+    assertThat(patient).isInstanceOf(OBDS.MengePatient.Patient.class);
+    assertThat(patient.getMengeMeldung().getMeldung()).hasSize(1);
+
+    final var meldung = patient.getMengeMeldung().getMeldung().getFirst();
+    assertThat(meldung).isInstanceOf(OBDS.MengePatient.Patient.MengeMeldung.Meldung.class);
+    assertThat(meldung.getTumorzuordnung()).isInstanceOf(TumorzuordnungTyp.class);
   }
 }
