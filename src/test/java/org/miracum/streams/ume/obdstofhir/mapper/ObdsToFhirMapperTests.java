@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.DateTimeException;
 import java.util.Arrays;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
@@ -114,5 +117,26 @@ class ObdsToFhirMapperTests {
   void convertPatientIdWithDefaultPattern(String input, String output) {
     var actual = ObdsToFhirMapper.convertId(input);
     assertThat(actual).isEqualTo(output);
+  }
+
+  @ParameterizedTest
+  @MethodSource("icd10GmCodeValidationData")
+  void checkValueToMatchIcd10Pattern(String input, boolean valid) {
+    var actual = ObdsToFhirMapper.isIcd10GmCode(input);
+    assertThat(actual).isEqualTo(valid);
+  }
+
+  private static Stream<Arguments> icd10GmCodeValidationData() {
+    return Stream.of(
+        Arguments.of("C00.0", true),
+        Arguments.of("C37", true),
+        Arguments.of("C79.88", true),
+        Arguments.of("C88.20", true),
+        Arguments.of("C30.0", true),
+        Arguments.of("D00.0", true),
+        Arguments.of("D00.000", false),
+        Arguments.of("CC0.0", false),
+        Arguments.of("", false),
+        Arguments.of(null, false));
   }
 }

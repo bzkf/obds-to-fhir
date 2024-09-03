@@ -67,7 +67,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     // 'Tumorzuordung'
     // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
     // in that case also use the TumorZuordnung to construct the Condition.
-    if (primDia == null || primDia.getPrimaertumor_ICD_Code() == null) {
+    if (primDia == null || !isIcd10GmCode(primDia.getPrimaertumor_ICD_Code())) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {

@@ -223,4 +223,8 @@ public abstract class ObdsToFhirMapper {
       throw e;
     }
   }
+
+  public static boolean isIcd10GmCode(String value) {
+    return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+  }
 }
