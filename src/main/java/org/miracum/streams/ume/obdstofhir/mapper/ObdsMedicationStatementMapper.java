@@ -149,10 +149,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
         stMedicationStatement.setPartOf(
             List.of(
                 new Reference()
-                    .setReference(
-                        ResourceType.MedicationStatement
-                            + "/"
-                            + this.getHash(ResourceType.MedicationStatement, partOfId))));
+                    .setReference(this.getReference(ResourceType.MedicationStatement, partOfId))));
       }
 
     } else {

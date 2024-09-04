@@ -157,7 +157,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     onkoCondition.setSubject(
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
+            .setReference(this.getReference(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())

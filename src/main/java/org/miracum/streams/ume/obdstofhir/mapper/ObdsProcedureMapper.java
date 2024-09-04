@@ -167,11 +167,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       if (distinctOpsSet.size() > 1) {
         opProcedure.setPartOf(
             List.of(
-                new Reference()
-                    .setReference(
-                        ResourceType.Procedure
-                            + "/"
-                            + this.getHash(ResourceType.Procedure, partOfId))));
+                new Reference().setReference(this.getReference(ResourceType.Procedure, partOfId))));
       }
 
       // Code
