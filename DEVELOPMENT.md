@@ -87,15 +87,6 @@ Avoid using the ternary operator except for trivial expressions.
 It is suggested to declare members in private inner classes as public if they
 are part of the class API.
 
-### Avoid mocks
-
-Do not use mocking libraries. These libraries encourage testing specific call
-sequences, interactions, and other internal behavior, which we believe leads to
-fragile tests. They also make it possible to mock complex interfaces or
-classes, which hides the fact that these classes are not (easily) testable. We
-prefer to write mocks by hand, which forces code to be written in a certain
-testable style.
-
 ### Use AssertJ
 
 Prefer AssertJ for complex assertions.
@@ -118,6 +109,11 @@ the enum values. Handling the unknown option case after the switch statement
 allows static code analysis tools (e.g. Error Prone's `MissingCasesInEnumSwitch`
 check) report a problem when the enum definition is updated but the code using
 it is not.
+
+### Use constructor injection
+
+Prefer [constructor-based dependency injection](https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html#beans-constructor-injection)
+over field or setter injection.
 
 ## Releases
 
