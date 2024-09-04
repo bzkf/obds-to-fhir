@@ -64,3 +64,6 @@ package-lock.json
 tests/k8s/**/charts
 
 node_modules/
+
+# generated code
+src/generated/
