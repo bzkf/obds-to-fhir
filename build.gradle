@@ -114,7 +114,7 @@ tasks.register('xsd2java') {
 
 		ant.xjc(
 				destdir: '${jaxbTargetDir}',
-				package: 'de.basisdatensatz.obds3',
+				package: 'de.basisdatensatz.obds.v3',
 				schema: 'src/main/resources/schema/oBDS_v3.0.2.xsd'
 		)
 

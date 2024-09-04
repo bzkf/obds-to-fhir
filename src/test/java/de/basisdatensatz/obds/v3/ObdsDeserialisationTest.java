@@ -1,4 +1,4 @@
-package de.basisdatensatz.obds3;
+package de.basisdatensatz.obds.v3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
