@@ -76,7 +76,15 @@ public abstract class ObdsToFhirMapper {
   protected static String convertId(String id) {
     Matcher matcher = ObdsToFhirMapper.localPatientIdPattern.matcher(id);
     if (matcher.find()) {
-      return matcher.group();
+      if (matcher.groupCount() == 0) {
+        return matcher.group();
+      }
+      var resultBuilder = new StringBuilder();
+      for (int i = 1; i <= matcher.groupCount(); i++) {
+        var x = matcher.group(i);
+        resultBuilder.append(x);
+      }
+      return resultBuilder.toString();
     } else {
       log.warn("Identifier to convert does not match pattern: {}", matcher.pattern().toString());
       return id;
