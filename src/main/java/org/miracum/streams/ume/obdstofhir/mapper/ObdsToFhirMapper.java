@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
+  static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
@@ -35,6 +36,11 @@ public abstract class ObdsToFhirMapper {
       log.error("Not a valid patient ID pattern: {}. Use valid RegExp instead.", value);
       throw e;
     }
+  }
+
+  @Value("${app.enableCheckDigitConv:false}")
+  void setCheckDigitConversion(boolean checkDigitConversion) {
+    ObdsToFhirMapper.checkDigitConversion = checkDigitConversion;
   }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
@@ -71,6 +77,14 @@ public abstract class ObdsToFhirMapper {
     return Hashing.sha256()
         .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
         .toString();
+  }
+
+  protected static String getConvertedPatIdFromMeldung(MeldungExport meldung) {
+    var patId = getPatIdFromMeldung(meldung);
+    if (checkDigitConversion) {
+      return convertId(patId);
+    }
+    return patId;
   }
 
   protected static String convertId(String id) {

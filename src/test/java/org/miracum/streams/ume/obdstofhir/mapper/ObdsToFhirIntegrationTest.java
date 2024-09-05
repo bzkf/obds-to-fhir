@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -95,6 +97,62 @@ public class ObdsToFhirIntegrationTest {
       var actual = ObdsToFhirMapper.convertId(input);
       assertThat(actual).isEqualTo(output);
     }
+  }
+
+  @Nested
+  @TestPropertySource(
+      properties = {
+        "app.patient-id-pattern=G/([0-9]{4})-([0-9]{4})",
+        "app.enableCheckDigitConv=true"
+      })
+  class UseEnabledCheckDigitConf {
+
+    @ParameterizedTest
+    @CsvSource({
+      "12345,12345", // not matching, return as is ...
+      // else return complete groups of 4 numbers found in input after "G/" and seperated by "-"
+      "G/1234-56789,12345678",
+      "G/1234-5678,12345678",
+    })
+    void shouldCheckDigitConf(String input, String output) {
+      var actual = ObdsToFhirMapper.getConvertedPatIdFromMeldung(createMeldungExport(input));
+      assertThat(actual).isEqualTo(output);
+    }
+  }
+
+  @Nested
+  @TestPropertySource(
+      properties = {
+        "app.patient-id-pattern=G/([0-9]{4})-([0-9]{4})",
+        "app.enableCheckDigitConv=false"
+      })
+  class UseDisabledCheckDigitConf {
+
+    @ParameterizedTest
+    @CsvSource({
+      "12345,12345", // not matching, return as is ...
+      // else return complete groups of 4 numbers found in input after "G/" and seperated by "-"
+      "G/1234-56789,G/1234-56789",
+      "G/1234-5678,G/1234-5678",
+    })
+    void shouldCheckDigitConf(String input, String output) {
+      var actual = ObdsToFhirMapper.getConvertedPatIdFromMeldung(createMeldungExport(input));
+      assertThat(actual).isEqualTo(output);
+    }
+  }
+
+  private static MeldungExport createMeldungExport(String patientId) {
+    var meldungExport = new MeldungExport();
+    var data = new ADT_GEKID();
+    var patientenStammdaten = new ADT_GEKID.Menge_Patient.Patient.Patienten_Stammdaten();
+    patientenStammdaten.setPatient_ID(patientId);
+    var patient = new ADT_GEKID.Menge_Patient.Patient();
+    patient.setPatienten_Stammdaten(patientenStammdaten);
+    var mengePatient = new ADT_GEKID.Menge_Patient();
+    mengePatient.setPatient(patient);
+    data.setMenge_Patient(mengePatient);
+    meldungExport.setXml_daten(data);
+    return meldungExport;
   }
 }
 
