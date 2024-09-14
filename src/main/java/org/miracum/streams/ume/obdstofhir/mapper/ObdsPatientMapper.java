@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Patienten_Stammdaten.Menge_Adresse.Adresse;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.slf4j.Logger;
@@ -108,76 +109,13 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
 
     // deceased
     if (!deathReports.isEmpty()) {
-      // start by setting deceased to true. If a more detailed death date is
-      // available in the data, override it further down this code path.
-      patient.setDeceased(new BooleanType(true));
-
-      // get the first entry with the largest version number where the death date is set
-      var reportWithSterbeDatum =
-          deathReports.stream()
-              .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
-              .filter(
-                  m -> {
-                    var mengeVerlauf =
-                        m.getXml_daten()
-                            .getMenge_Patient()
-                            .getPatient()
-                            .getMenge_Meldung()
-                            .getMeldung()
-                            .getMenge_Verlauf();
-
-                    if (mengeVerlauf == null) {
-                      return false;
-                    }
-
-                    if (mengeVerlauf.getVerlauf() == null) {
-                      return false;
-                    }
-
-                    if (mengeVerlauf.getVerlauf().getTod() == null) {
-                      return false;
-                    }
-
-                    return StringUtils.hasLength(
-                        mengeVerlauf.getVerlauf().getTod().getSterbedatum());
-                  })
-              .findFirst();
-
-      if (reportWithSterbeDatum.isPresent()) {
-        var deathDate =
-            reportWithSterbeDatum
-                .get()
-                .getXml_daten()
-                .getMenge_Patient()
-                .getPatient()
-                .getMenge_Meldung()
-                .getMeldung()
-                .getMenge_Verlauf()
-                .getVerlauf()
-                .getTod()
-                .getSterbedatum();
-
-        patient.setDeceased(convertObdsDateToDateTimeType(deathDate));
-      } else {
-        LOG.warn("Sterbedatum not set on any of the Tod Meldungen.");
-      }
+      patient.setDeceased(getDeceased(deathReports));
     }
 
     // address
-    var patAddess = patData.getMenge_Adresse().getAdresse().getFirst();
-    if (StringUtils.hasLength(patAddess.getPatienten_PLZ())) {
-      var address = new Address();
-      address.setPostalCode(patAddess.getPatienten_PLZ()).setType(Address.AddressType.BOTH);
-      if (patAddess.getPatienten_Land() != null
-          && patAddess.getPatienten_Land().matches("[a-zA-Z]{2,3}")) {
-        address.setCountry(patAddess.getPatienten_Land().toUpperCase());
-      } else {
-        address
-            .addExtension()
-            .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-            .setValue(new CodeType("unknown"));
-      }
-      patient.addAddress(address);
+    var patAddress = patData.getMenge_Adresse().getAdresse().getFirst();
+    if (StringUtils.hasLength(patAddress.getPatienten_PLZ())) {
+      patient.addAddress(getAddress(patAddress));
     }
 
     var bundle = new Bundle();
@@ -196,5 +134,67 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     var quarterMonth = ((localBirthDate.getMonthValue() - 1) / 3 + 1) * 3 - 2;
 
     return YearMonth.of(localBirthDate.getYear(), quarterMonth).toString();
+  }
+
+  private Type getDeceased(List<MeldungExport> deathReports) {
+    // get the first entry with the largest version number where the death date is set
+    var reportWithSterbeDatum =
+        deathReports.stream()
+            .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
+            .filter(
+                m -> {
+                  var mengeVerlauf =
+                      m.getXml_daten()
+                          .getMenge_Patient()
+                          .getPatient()
+                          .getMenge_Meldung()
+                          .getMeldung()
+                          .getMenge_Verlauf();
+
+                  try {
+                    return StringUtils.hasLength(
+                        mengeVerlauf.getVerlauf().getTod().getSterbedatum());
+                  } catch (NullPointerException e) {
+                    return false;
+                  }
+                })
+            .findFirst();
+
+    if (reportWithSterbeDatum.isPresent()) {
+      var deathDate =
+          reportWithSterbeDatum
+              .get()
+              .getXml_daten()
+              .getMenge_Patient()
+              .getPatient()
+              .getMenge_Meldung()
+              .getMeldung()
+              .getMenge_Verlauf()
+              .getVerlauf()
+              .getTod()
+              .getSterbedatum();
+
+      return convertObdsDateToDateTimeType(deathDate);
+    } else {
+      LOG.warn("Sterbedatum not set on any of the Tod Meldungen.");
+    }
+
+    // If a more detailed death date is not available in the data, return true.
+    return new BooleanType(true);
+  }
+
+  private Address getAddress(Adresse patAddress) {
+    var address = new Address();
+    address.setPostalCode(patAddress.getPatienten_PLZ()).setType(Address.AddressType.BOTH);
+    if (patAddress.getPatienten_Land() != null
+        && patAddress.getPatienten_Land().matches("[a-zA-Z]{2,3}")) {
+      address.setCountry(patAddress.getPatienten_Land().toUpperCase());
+    } else {
+      address
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+          .setValue(new CodeType("unknown"));
+    }
+    return address;
   }
 }
