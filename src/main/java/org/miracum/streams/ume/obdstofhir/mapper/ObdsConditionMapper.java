@@ -120,39 +120,9 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var conditionCode = new CodeableConcept().addCoding(coding);
     onkoCondition.setCode(conditionCode);
 
-    var bodySiteADTCoding = new Coding();
-    var bodySiteSNOMEDCoding = new Coding();
-
     var adtBodySite = primDia.getSeitenlokalisation();
-
     if (adtBodySite != null) {
-      var adtSeitenlokalisationDisplay =
-          DisplayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
-      var snomedCtSeitenlokalisationCode = SnomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
-      var snomedCtSeitenlokalisationDisplay =
-          SnomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
-
-      if (adtSeitenlokalisationDisplay != null) {
-        bodySiteADTCoding
-            .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
-            .setCode(adtBodySite)
-            .setDisplay(adtSeitenlokalisationDisplay);
-      } else {
-        LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
-      }
-
-      if (snomedCtSeitenlokalisationDisplay != null) {
-        bodySiteSNOMEDCoding
-            .setSystem(fhirProperties.getSystems().getSnomed())
-            .setCode(snomedCtSeitenlokalisationCode)
-            .setDisplay(snomedCtSeitenlokalisationDisplay);
-      } else {
-        LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
-      }
-
-      var bodySiteConcept = new CodeableConcept();
-      bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
-      onkoCondition.addBodySite(bodySiteConcept);
+      onkoCondition.addBodySite(getBodySiteConcept(adtBodySite));
     }
 
     onkoCondition.setSubject(
@@ -228,5 +198,39 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     bundle = addResourceAsEntryInBundle(bundle, onkoCondition);
 
     return bundle;
+  }
+
+  private CodeableConcept getBodySiteConcept(String adtBodySite) {
+    var bodySiteADTCoding = new Coding();
+    var bodySiteSNOMEDCoding = new Coding();
+
+    var adtSeitenlokalisationDisplay =
+        DisplayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+    var snomedCtSeitenlokalisationCode = SnomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
+    var snomedCtSeitenlokalisationDisplay =
+        SnomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+
+    if (adtSeitenlokalisationDisplay != null) {
+      bodySiteADTCoding
+          .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
+          .setCode(adtBodySite)
+          .setDisplay(adtSeitenlokalisationDisplay);
+    } else {
+      LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
+    }
+
+    if (snomedCtSeitenlokalisationDisplay != null) {
+      bodySiteSNOMEDCoding
+          .setSystem(fhirProperties.getSystems().getSnomed())
+          .setCode(snomedCtSeitenlokalisationCode)
+          .setDisplay(snomedCtSeitenlokalisationDisplay);
+    } else {
+      LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
+    }
+
+    var bodySiteConcept = new CodeableConcept();
+    bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
+
+    return bodySiteConcept;
   }
 }
