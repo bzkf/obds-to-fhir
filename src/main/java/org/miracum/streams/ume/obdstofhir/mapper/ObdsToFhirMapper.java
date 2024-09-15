@@ -67,6 +67,10 @@ public abstract class ObdsToFhirMapper {
     return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
   }
 
+  protected String getReference(ResourceType type, String id) {
+    return type + "/" + this.getHash(type, id);
+  }
+
   protected String computeResourceIdFromIdentifier(Identifier identifier) {
     return Hashing.sha256()
         .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)

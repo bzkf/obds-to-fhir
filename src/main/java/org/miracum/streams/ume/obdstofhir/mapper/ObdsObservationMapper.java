@@ -318,7 +318,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     var patientReference =
         new Reference()
-            .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
+            .setReference(this.getReference(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
                     .setSystem(fhirProperties.getSystems().getPatientId())
@@ -556,10 +556,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     if (grading != null) {
       histObs.addHasMember(
           new Reference()
-              .setReference(
-                  ResourceType.Observation
-                      + "/"
-                      + this.getHash(ResourceType.Observation, gradingObsIdentifier)));
+              .setReference(this.getReference(ResourceType.Observation, gradingObsIdentifier)));
     }
 
     bundle = addResourceAsEntryInBundle(bundle, histObs);

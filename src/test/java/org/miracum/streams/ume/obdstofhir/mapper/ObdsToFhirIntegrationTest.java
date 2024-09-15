@@ -1,9 +1,12 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
 
+import org.hl7.fhir.r4.model.ResourceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,8 +20,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @Import({ObdsTestMapper.class})
-@MockBean(FhirProperties.class)
 public class ObdsToFhirIntegrationTest {
+
+  @MockBean FhirProperties fhirProperties;
 
   ObdsTestMapper mapper;
 
@@ -94,6 +98,26 @@ public class ObdsToFhirIntegrationTest {
     void applyPatientIdPattern(String input, String output) {
       var actual = ObdsToFhirMapper.convertId(input);
       assertThat(actual).isEqualTo(output);
+    }
+  }
+
+  @Nested
+  class References {
+
+    @Test
+    void shouldCreateReferenceString() {
+      doAnswer(
+              invocationOnMock -> {
+                final var fhirSystems = new FhirProperties.FhirSystems();
+                fhirSystems.setPatientId("https://fhir.diz.uk-erlangen.de/identifiers/patient-id");
+                return fhirSystems;
+              })
+          .when(fhirProperties)
+          .getSystems();
+
+      final var actual = mapper.getReference(ResourceType.Patient, "1");
+      assertThat(actual)
+          .isEqualTo("Patient/82a86769573e519a1fa2d79911fb19fbdceabe2416a5c9230b503618a23a31c1");
     }
   }
 }
