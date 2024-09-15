@@ -157,7 +157,11 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
                 .getTod()
                 .getSterbedatum();
 
-        patient.setDeceased(convertObdsDateToDateTimeType(deathDate));
+        final var deceased = convertObdsDateToDateTimeType(deathDate);
+        if (null == deceased) {
+          LOG.warn("Sterbedatum is NULL.");
+        }
+        patient.setDeceased(deceased);
       } else {
         LOG.warn("Sterbedatum not set on any of the Tod Meldungen.");
       }
