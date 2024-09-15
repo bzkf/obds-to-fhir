@@ -49,11 +49,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     var patient = new Patient();
 
     // id
-    var patId = getPatIdFromMeldung(meldungExport);
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
+    final var pid = getConvertedPatIdFromMeldung(meldungExport);
     var id = this.getHash(ResourceType.Patient, pid);
     patient.setId(id);
 

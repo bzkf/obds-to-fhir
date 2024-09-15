@@ -75,13 +75,8 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
       }
     }
 
-    var patId = getPatIdFromMeldung(meldungExport);
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
-    var conIdentifier = pid + "condition" + primDia.getTumor_ID();
+    final var pid = getConvertedPatIdFromMeldung(meldungExport);
+    final var conIdentifier = pid + "condition" + primDia.getTumor_ID();
 
     onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
