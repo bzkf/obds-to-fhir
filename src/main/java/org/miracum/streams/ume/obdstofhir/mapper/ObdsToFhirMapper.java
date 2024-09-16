@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
+  static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
@@ -35,6 +36,11 @@ public abstract class ObdsToFhirMapper {
       log.error("Not a valid patient ID pattern: {}. Use valid RegExp instead.", value);
       throw e;
     }
+  }
+
+  @Value("${app.enableCheckDigitConv:false}")
+  void setCheckDigitConversion(boolean checkDigitConversion) {
+    ObdsToFhirMapper.checkDigitConversion = checkDigitConversion;
   }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
@@ -73,10 +79,26 @@ public abstract class ObdsToFhirMapper {
         .toString();
   }
 
+  protected static String getConvertedPatIdFromMeldung(MeldungExport meldung) {
+    var patId = getPatIdFromMeldung(meldung);
+    if (checkDigitConversion) {
+      return convertId(patId);
+    }
+    return patId;
+  }
+
   protected static String convertId(String id) {
     Matcher matcher = ObdsToFhirMapper.localPatientIdPattern.matcher(id);
     if (matcher.find()) {
-      return matcher.group();
+      if (matcher.groupCount() == 0) {
+        return matcher.group();
+      }
+      var resultBuilder = new StringBuilder();
+      for (int i = 1; i <= matcher.groupCount(); i++) {
+        var x = matcher.group(i);
+        resultBuilder.append(x);
+      }
+      return resultBuilder.toString();
     } else {
       log.warn("Identifier to convert does not match pattern: {}", matcher.pattern().toString());
       return id;
