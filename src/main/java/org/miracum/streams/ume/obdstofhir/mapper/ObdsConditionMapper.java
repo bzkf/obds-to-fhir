@@ -67,7 +67,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     // 'Tumorzuordung'
     // It's possible that 'Meldung.Diagnose' is set but 'Meldung.Diagnose.Primaertumor_*' is not,
     // in that case also use the TumorZuordnung to construct the Condition.
-    if (primDia == null || primDia.getPrimaertumor_ICD_Code() == null) {
+    if (primDia == null || !isIcd10GmCode(primDia.getPrimaertumor_ICD_Code())) {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
@@ -75,13 +75,8 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
       }
     }
 
-    var patId = getPatIdFromMeldung(meldungExport);
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
-
-    var conIdentifier = pid + "condition" + primDia.getTumor_ID();
+    final var pid = getConvertedPatIdFromMeldung(meldungExport);
+    final var conIdentifier = pid + "condition" + primDia.getTumor_ID();
 
     onkoCondition.setId(this.getHash(ResourceType.Condition, conIdentifier));
 
@@ -120,39 +115,9 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var conditionCode = new CodeableConcept().addCoding(coding);
     onkoCondition.setCode(conditionCode);
 
-    var bodySiteADTCoding = new Coding();
-    var bodySiteSNOMEDCoding = new Coding();
-
     var adtBodySite = primDia.getSeitenlokalisation();
-
     if (adtBodySite != null) {
-      var adtSeitenlokalisationDisplay =
-          DisplayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
-      var snomedCtSeitenlokalisationCode = SnomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
-      var snomedCtSeitenlokalisationDisplay =
-          SnomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
-
-      if (adtSeitenlokalisationDisplay != null) {
-        bodySiteADTCoding
-            .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
-            .setCode(adtBodySite)
-            .setDisplay(adtSeitenlokalisationDisplay);
-      } else {
-        LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
-      }
-
-      if (snomedCtSeitenlokalisationDisplay != null) {
-        bodySiteSNOMEDCoding
-            .setSystem(fhirProperties.getSystems().getSnomed())
-            .setCode(snomedCtSeitenlokalisationCode)
-            .setDisplay(snomedCtSeitenlokalisationDisplay);
-      } else {
-        LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
-      }
-
-      var bodySiteConcept = new CodeableConcept();
-      bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
-      onkoCondition.addBodySite(bodySiteConcept);
+      onkoCondition.addBodySite(getBodySiteConcept(adtBodySite));
     }
 
     onkoCondition.setSubject(
@@ -228,5 +193,39 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     bundle = addResourceAsEntryInBundle(bundle, onkoCondition);
 
     return bundle;
+  }
+
+  private CodeableConcept getBodySiteConcept(String adtBodySite) {
+    var bodySiteADTCoding = new Coding();
+    var bodySiteSNOMEDCoding = new Coding();
+
+    var adtSeitenlokalisationDisplay =
+        DisplayAdtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+    var snomedCtSeitenlokalisationCode = SnomedCtSeitenlokalisationLookup.lookupCode(adtBodySite);
+    var snomedCtSeitenlokalisationDisplay =
+        SnomedCtSeitenlokalisationLookup.lookupDisplay(adtBodySite);
+
+    if (adtSeitenlokalisationDisplay != null) {
+      bodySiteADTCoding
+          .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
+          .setCode(adtBodySite)
+          .setDisplay(adtSeitenlokalisationDisplay);
+    } else {
+      LOG.warn("Unmappable body site in oBDS data: {}", adtBodySite);
+    }
+
+    if (snomedCtSeitenlokalisationDisplay != null) {
+      bodySiteSNOMEDCoding
+          .setSystem(fhirProperties.getSystems().getSnomed())
+          .setCode(snomedCtSeitenlokalisationCode)
+          .setDisplay(snomedCtSeitenlokalisationDisplay);
+    } else {
+      LOG.warn("Unmappable snomed body site in oBDS data: {}", adtBodySite);
+    }
+
+    var bodySiteConcept = new CodeableConcept();
+    bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
+
+    return bodySiteConcept;
   }
 }

@@ -110,10 +110,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
       // reporting reason
       var meldeanlass = meldung.getMeldeanlass();
 
-      patId = getPatIdFromMeldung(meldungExport);
-      if (checkDigitConversion) {
-        patId = convertId(patId);
-      }
+      patId = getConvertedPatIdFromMeldung(meldungExport);
 
       var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
       var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
