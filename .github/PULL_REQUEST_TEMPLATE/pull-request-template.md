@@ -1,5 +1,7 @@
 ## Describe your changes
 
+<!-- It's OK to be brief. Or skip this entirely if the changes are obvious. -->
+
 ## Issue ticket number and link
 
 <!-- Optional -->
