@@ -16,7 +16,7 @@ permissions: read-all
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@49140a0c55dda78f1694ffb02ef3b182a3347756 # v1.12.2
+    uses: miracum/.github/.github/workflows/standard-build.yaml@b2389048770aa5b9ed439810bf84911fbb07f645 # v1.12.3
     permissions:
       contents: write
       id-token: write
@@ -70,7 +70,7 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: madrapps/jacoco-report@db72e7e7c96f98d239967958b0a0a6ca7d3bb45f # v1.6.1
+        uses: madrapps/jacoco-report@7c362aca34caf958e7b1c03464bd8781db9f8da7 # v1.7.1
         with:
           paths: |
             ${{ github.workspace }}/test/jacoco/test/jacocoTestReport.xml
@@ -90,7 +90,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
 
       - name: Create KinD cluster
         uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # v1.10.0
@@ -148,14 +148,14 @@ jobs:
 
       - name: Upload cluster dump
         if: always()
-        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
         with:
           name: kind-cluster-dump.txt
           path: |
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@49140a0c55dda78f1694ffb02ef3b182a3347756 # v1.12.2
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@b2389048770aa5b9ed439810bf84911fbb07f645 # v1.12.3
     permissions:
       contents: read
       pull-requests: write
@@ -170,7 +170,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@49140a0c55dda78f1694ffb02ef3b182a3347756 # v1.12.2
+    uses: miracum/.github/.github/workflows/standard-release.yaml@b2389048770aa5b9ed439810bf84911fbb07f645 # v1.12.3
     needs:
       - lint
       - build
