@@ -57,11 +57,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
-    var patId = getPatIdFromMeldung(meldungExport);
-    var pid = patId;
-    if (checkDigitConversion) {
-      pid = convertId(patId);
-    }
+    final var pid = getConvertedPatIdFromMeldung(meldungExport);
 
     if (meldung != null
         && meldung.getMenge_SYST() != null
