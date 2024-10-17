@@ -42,7 +42,7 @@ services:
       - 127.0.0.1:9094:9094
 
   kafka-connect:
-    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.0@sha256:5d4c79d5b9d64562d8906aec14c66ed5f48ddb0f9e7f12949547ab89b69e3f0f
+    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.1@sha256:9a5db59dcb79f53d1526fcab7cd78d9dc430af0258f96dddc53694f3f266070d
     restart: unless-stopped
     cap_drop:
       - ALL
