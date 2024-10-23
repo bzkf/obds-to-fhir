@@ -1,0 +1,9 @@
+{
+  "resourceType": "Condition",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  }
+}
