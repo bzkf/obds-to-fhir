@@ -16,6 +16,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	xsd2java
 }
 
 repositories {
@@ -25,6 +26,15 @@ repositories {
 ext {
 	set('springCloudVersion', "2023.0.3")
 	set('hapiVersion', "7.4.0")
+	jaxbTargetDir = file("src/generated/java")
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs jaxbTargetDir
+		}
+	}
 }
 
 dependencies {
@@ -44,7 +54,11 @@ dependencies {
 	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
 	// <https://github.com/FasterXML/jackson-modules-java8>
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+	implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
 
+	// JAXB code generation
+	xsd2java "com.sun.xml.bind:jaxb-xjc:4.0.5"
+	xsd2java "com.sun.xml.bind:jaxb-impl:4.0.5"
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
@@ -71,6 +85,8 @@ jacoco {
 
 spotless {
 	java {
+		target("**/*.java")
+		targetExclude("src/generated/java/**/*.*")
 		importOrder()
 		removeUnusedImports()
 		googleJavaFormat()
@@ -88,3 +104,22 @@ jacocoTestReport {
 jar {
 	enabled = false
 }
+
+tasks.register('xsd2java') {
+
+	doLast {
+		jaxbTargetDir.mkdirs()
+
+		ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.xsd2java.asPath)
+		ant.jaxbTargetDir = jaxbTargetDir
+
+
+		ant.xjc(
+				destdir: "${jaxbTargetDir}",
+				package: 'de.basisdatensatz.obds.v3',
+				schema: 'src/main/resources/schema/oBDS_v3.0.3.xsd'
+		)
+
+	}
+}
+compileJava.dependsOn xsd2java
