@@ -31,7 +31,7 @@
 																<xs:element name="Eigene_Leistung" type="JNU_Typ">
 																	<xs:annotation>
 																		<xs:documentation>
-																			Aus Gründen unter anderem der Qualitätssicherung ist eine explizite Angabe von Ja oder Nein erforderlich. 
+																			Aus Gründen unter anderem der Qualitätssicherung ist eine explizite Angabe von Ja oder Nein erforderlich.
 																			Die Ausprägung "unbekannt" darf nur verwendet werden, wenn es sich um historische Sätze handelt, für die die Situation nicht zu klären ist.
 																			Für aktuelle Sätze muss diese Information bekannt und in den Systemen hinterlegbar sein.
 																		</xs:documentation>
@@ -99,7 +99,7 @@
 								<xs:documentation>
 								- Änderung der Annotation in der Diagnosesicherung für die Diagnose
 								- Änderung des Elements 'Bezeichnung' im Element 'Absender' von Datentyp 'A' auf 'B'
-								- Pathologie: Erweiterung des Elements 'Diagnosesicherung' um die Ausprägungen '7.1'-'7.3' und '8' (§65c 2023/63/c1) 
+								- Pathologie: Erweiterung des Elements 'Diagnosesicherung' um die Ausprägungen '7.1'-'7.3' und '8' (§65c 2023/63/c1)
 								- Modul_DKKR: Erweiterung des Elements 'Einwilligung' um die Ausprägungen '6' und '7'
 								</xs:documentation>
 							</xs:annotation>
@@ -298,9 +298,9 @@
 			<xs:element name="Geschlecht">
 				<xs:annotation>
 					<xs:documentation>
-Es wird, wenn möglich, das Geschlecht verwendet, wie es im Melderegister und auf der Gesundheitskarte vermerkt ist. 
-Es ist zu beachten, dass X=unbestimmtes Geschlecht (amtlich: keine Angabe) einer expliziten Angabe im Personenstandsregister entspricht und auf keinen Fall mit U=unbekannt gleichzusetzen ist. 
-"Unbekannt" bedeutet, dass dem Melder das Geschlecht tatsächlich unbekannt ist und stellt eine absolute Ausnahmesituation dar, da beispielsweise eine Versichertenkarte das amtliche Geschlecht enthält. 
+Es wird, wenn möglich, das Geschlecht verwendet, wie es im Melderegister und auf der Gesundheitskarte vermerkt ist.
+Es ist zu beachten, dass X=unbestimmtes Geschlecht (amtlich: keine Angabe) einer expliziten Angabe im Personenstandsregister entspricht und auf keinen Fall mit U=unbekannt gleichzusetzen ist.
+"Unbekannt" bedeutet, dass dem Melder das Geschlecht tatsächlich unbekannt ist und stellt eine absolute Ausnahmesituation dar, da beispielsweise eine Versichertenkarte das amtliche Geschlecht enthält.
 					</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
@@ -691,7 +691,7 @@ Es ist zu beachten, dass X=unbestimmtes Geschlecht (amtlich: keine Angabe) einer
 						<xs:element name="Lokalisation">
 							<xs:annotation>
 								<xs:documentation>
-									Lokalisation der Fernmetastase 
+									Lokalisation der Fernmetastase
 									PUL = Lunge
 									OSS = Knochen
 									HEP = Leber
@@ -781,7 +781,7 @@ Es ist zu beachten, dass X=unbestimmtes Geschlecht (amtlich: keine Angabe) einer
 			<xs:element name="Grad_maximal2_oder_unbekannt">
 				<xs:annotation>
 					<xs:documentation>
-						Gibt an, zu welchem Schweregrad von Nebenwirkungen es bei der Bestrahlung gekommen ist (sogenannte akute Nebenwirkungen bis zum 90 Tag nach Bestrahlungsbeginn) 
+						Gibt an, zu welchem Schweregrad von Nebenwirkungen es bei der Bestrahlung gekommen ist (sogenannte akute Nebenwirkungen bis zum 90 Tag nach Bestrahlungsbeginn)
 						Art der Nebenwirkung nach CTC + Schweregrad
 						K = keine
 						1 = mild
@@ -1086,7 +1086,7 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 				<xs:annotation>
 					<xs:documentation>
 					Rezeptorstatus Positiv/Negativ (gemäß immunreaktiven Scores nach Leitlinie)
-					P = Positiv, d. h. 
+					P = Positiv, d. h.
 						IHC +++ oder
 						IHC ++ und ISH (FISH, CISH o. Ä.) positiv
 					N = Negativ
@@ -1593,11 +1593,11 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 			Ausprägungen:
 			-1 = nicht zu beurteilen
 			0 = kein Abstand
-			n = Abstand in mm (natürliche Zahl) 
+			n = Abstand in mm (natürliche Zahl)
                   Hinweis:
-                  Es ist der endgültige kumulative Sicherheitsabstand, d. h. nach definitiver operativer Versorgung zu verwenden. 
-                  Es soll die sichere Untergrenze angegeben werden. 
-                  Ein Abstand von 0 entspricht lokal R1 oder R2, bzw. randständig. 
+                  Es ist der endgültige kumulative Sicherheitsabstand, d. h. nach definitiver operativer Versorgung zu verwenden.
+                  Es soll die sichere Untergrenze angegeben werden.
+                  Ein Abstand von 0 entspricht lokal R1 oder R2, bzw. randständig.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:integer">
@@ -1626,7 +1626,7 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 							<xs:documentation>
 							Pathologisches Kriterium der Ulzeration erfüllt.
 							Hinweis:
-							Dieses Feld soll nur im TNM-Stadium pT1b angegeben werden, 
+							Dieses Feld soll nur im TNM-Stadium pT1b angegeben werden,
 							da dieses Stadium mit und ohne Ulzerationen definiert ist.
 							(Quelle: TNM-Klassifikation, 8. Auflage 2020, S. 188).
 							</xs:documentation>
@@ -1727,7 +1727,7 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 			</xs:element>
 			<xs:element name="GPOH_Therapiestudienpatient" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation>Therapiestudien, Therapieoptimierungsstudien, Therapieprotokolle oder tumorspezifische Register unter dem Dach der GPOH. 
+					<xs:documentation>Therapiestudien, Therapieoptimierungsstudien, Therapieprotokolle oder tumorspezifische Register unter dem Dach der GPOH.
 "ja": Patient kommt für eine Studie/Register in Frage bzw wurde der Studien-/Registerleitung mitgeteilt, bei jedem Meldeanlass</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
@@ -2028,7 +2028,7 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 						</xs:enumeration>
 						<xs:enumeration value="p">
 							<xs:annotation>
-								<xs:documentation> Feststellung der Kategorie erfolgte durch eine pathohistologische Untersuchung, mit der auch der höchste Grad der jeweiligen Kategorie hätte festgestellt werden können 
+								<xs:documentation> Feststellung der Kategorie erfolgte durch eine pathohistologische Untersuchung, mit der auch der höchste Grad der jeweiligen Kategorie hätte festgestellt werden können
 											</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
@@ -2158,15 +2158,15 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 			<xs:element name="S" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>
-						Serumtumormarker 
-						SX = Werte der Serumtumormarker nicht verfügbar oder entsprechende Untersuchungen nicht vorgenommen 
-						S0 = Serumtumormarker innerhalb der normalen Grenzen 
-						S1–S3 = Wenigstens einer der Serumtumormarker erhöht 
-									LDH					HCG					AFP 
-						S1			&lt; 1,5N		und		&lt; 5000		und		&lt; 1000 
-						S2			1,5-10N		oder	5000-50000  oder	1000-10000 
+						Serumtumormarker
+						SX = Werte der Serumtumormarker nicht verfügbar oder entsprechende Untersuchungen nicht vorgenommen
+						S0 = Serumtumormarker innerhalb der normalen Grenzen
+						S1–S3 = Wenigstens einer der Serumtumormarker erhöht
+									LDH					HCG					AFP
+						S1			&lt; 1,5N		und		&lt; 5000		und		&lt; 1000
+						S2			1,5-10N		oder	5000-50000  oder	1000-10000
 						S3			&gt; 10 N		oder	&gt; 50000		oder	&gt; 10000
-						N = obere Grenze des Normalwertes 
+						N = obere Grenze des Normalwertes
 						(Quelle: TNM-Klassifikation, 8. Auflage 2020, S.252)
 					</xs:documentation>
 				</xs:annotation>
@@ -2496,7 +2496,7 @@ Dafür ist statt einer Ausprägung das Freitextfeld Sonstige_Auspraegung vorgese
 	<xs:complexType name="Versichertendaten_Sonstige_Typ">
 		<xs:annotation>
 			<xs:documentation>
-				Diese Felder sind nur dann zu nutzen, wenn keine gültigen Angaben zu GKV oder PKV vorliegen. 
+				Diese Felder sind nur dann zu nutzen, wenn keine gültigen Angaben zu GKV oder PKV vorliegen.
 				Außerdem bildet dieser Typ einige Spezialfälle ab, bei denen eine Kassen-IKNR zwar mit 10 beginnt,
 				die Versicherten jedoch keine eGK-Nummer bekommen (aus dem Bereich Post, Polizei, ...)
 			</xs:documentation>
@@ -3934,8 +3934,8 @@ Zielgebietschlüssel nach oBDS 2014
 				<xs:annotation>
 					<xs:documentation>
 				Höchste erreichte Diagnosesicherheit zum Diagnosedatum (siehe BfArM, ICD-O-3.2: Ergänzende Informationen, Abschnitt 4.5. "Sicherheit der Diagnose").
-				ohne 1 = Klinisch ohne tumorspezifische Diagnostik (nur körperliche Untersuchung) 
-				ohne 2 = Klinisch: Klinische Diagnose vor dem Sterbedatum durchgeführt; schließt diagnostische Techniken, inklusive Röntgen, Endoskopie, weitere bildgebende Verfahren, Ultraschall, exploratorische Chirurgie (Laparatomie, etc.) und Autopsie, ohne mikroskopische Gewebediagnose, ein.  
+				ohne 1 = Klinisch ohne tumorspezifische Diagnostik (nur körperliche Untersuchung)
+				ohne 2 = Klinisch: Klinische Diagnose vor dem Sterbedatum durchgeführt; schließt diagnostische Techniken, inklusive Röntgen, Endoskopie, weitere bildgebende Verfahren, Ultraschall, exploratorische Chirurgie (Laparatomie, etc.) und Autopsie, ohne mikroskopische Gewebediagnose, ein.
 				</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
@@ -4656,7 +4656,7 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Stellung_OP">
 				<xs:annotation>
 					<xs:documentation>
-					Gibt an, in welchem Bezug zu einer operativen Therapie die Bestrahlung steht.  
+					Gibt an, in welchem Bezug zu einer operativen Therapie die Bestrahlung steht.
 					Hinweise:
 					A = adjuvant gilt für Therapien nach R0 Resektion
 					Z = additiv gilt für Therapien nach R1/R2 und RX Resektion
@@ -5125,7 +5125,7 @@ Zielgebietschlüssel nach oBDS 2014
 	<xs:simpleType name="Seite_Zielgebiet_Typ">
 		<xs:annotation>
 			<xs:documentation>
-			Gibt die Seitenlokalisation des Zielgebietes an 
+			Gibt die Seitenlokalisation des Zielgebietes an
 			Hinweise:
 			Bei Zielgebieten, die durch "(r, l)" gekennzeichnet sind, ist eine Seitenangabe Pflicht.
 			Bei beidseitiger Bestrahlung paariger Organe sind die Bestrahlungen einzeln zu melden.
@@ -5317,7 +5317,7 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Menge_Substanz" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>
-					Gibt an, mit welcher Substanz die Systemtherapie durchgeführt wurde. 
+					Gibt an, mit welcher Substanz die Systemtherapie durchgeführt wurde.
 					Mehrere Substanzen sind einzeln anzugeben. Eine kommaseparierte Liste ist nicht zulässig.
 					Substanzen können mit ihrer Bezeichnung oder als ATC-Code inklusive Version angegebenw erden.
 				</xs:documentation>
@@ -5357,7 +5357,7 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Ende_Grund" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>
-					Gibt den Grund an, warum die Systemtherapie beendet wurde. 
+					Gibt den Grund an, warum die Systemtherapie beendet wurde.
 				</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
@@ -5430,8 +5430,8 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Gesamtbeurteilung_Tumorstatus">
 				<xs:annotation>
 					<xs:documentation>
-					Gesamtbeurteilung der Erkrankung unter Berücksichtigung aller Manifestationen.  
-					Hinweise: 
+					Gesamtbeurteilung der Erkrankung unter Berücksichtigung aller Manifestationen.
+					Hinweise:
 					P = Progression (Fortschreiten der Erkrankung)
 					Y = Rezidiv, jedes Wiederauftreten der Erkrankung bei vorheriger kompletter klinischer Tumorfreiheit (biochemisches Rezidiv, Lokalrezidiv und/oder Metastasierung)
 				</xs:documentation>
@@ -5547,7 +5547,7 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Verlauf_Tumorstatus_Lymphknoten" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>
-					Beurteilung der Situation im Bereich der regionären Lymphknoten  
+					Beurteilung der Situation im Bereich der regionären Lymphknoten
 					Hinweis:
 					T = bekannter Lymphknotenbefall Residuen, unbekannt, ob Progress oder No Change
 				</xs:documentation>
@@ -5600,9 +5600,9 @@ Zielgebietschlüssel nach oBDS 2014
 			<xs:element name="Verlauf_Tumorstatus_Fernmetastasen" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>
-					Beurteilung der Situation im Bereich der Fernmetastasen  
+					Beurteilung der Situation im Bereich der Fernmetastasen
 					Hinweis:
-					R= Neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidivbeschriebt eine Situation, in der zuvor Metastatsenfreiheit bestanden hat 
+					R= Neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidivbeschriebt eine Situation, in der zuvor Metastatsenfreiheit bestanden hat
 					oder durch Therapie erreicht wurde.Neue Metastasen auch unter "Fernmetastasen" mit Lokalisation und Datum übermitteln.
 					P= Wenn zu bestehenden Fernmetastasen neue hinzukommen. Bei einem klinisch divergenten Geschehen, ist die prognostisch ungünstigere Ausprägung zu übermitteln.
 					Neue Metastasen auch unter "Fernmetastasen" mit Lokalisation und Datum übermitteln.
