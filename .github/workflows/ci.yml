@@ -6,11 +6,13 @@ on:
       - master
       - beta
   release:
-    types: [created]
+    types:
+      - created
   pull_request:
     branches:
       - master
       - beta
+  workflow_dispatch: {}
 
 permissions: read-all
 
@@ -171,6 +173,7 @@ jobs:
 
   release:
     uses: miracum/.github/.github/workflows/standard-release.yaml@26fdadd65c14ba321e4c3a167f86df9b41b3e813 # v1.12.6
+    if: ${{ github.ref_name == 'master' || github.event_name == 'workflow_dispatch' }}
     needs:
       - lint
       - build
