@@ -3,7 +3,14 @@
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
   },
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "code": "C17.1"
+    } ]
+  },
   "subject": {
     "reference": "Patient/1"
-  }
+  },
+  "recordedDate": "2024-06-10T02:00:00+02:00"
 }
