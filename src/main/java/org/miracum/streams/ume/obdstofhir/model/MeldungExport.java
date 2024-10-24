@@ -15,7 +15,7 @@ import lombok.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class MeldungExport extends OnkoResource {
 
-  @EqualsAndHashCode.Include Integer id;
+  @EqualsAndHashCode.Include String id;
 
   @EqualsAndHashCode.Include String referenz_nummer;
 
@@ -27,7 +27,7 @@ public class MeldungExport extends OnkoResource {
 
   @JsonProperty("payload")
   public void getPayload(Map<String, Object> payload) {
-    this.id = getInt(payload, "ID");
+    this.id = getString(payload, "ID");
     this.referenz_nummer = getString(payload, "REFERENZ_NUMMER");
     this.lkr_meldung = getString(payload, "LKR_MELDUNG");
     this.versionsnummer = getInt(payload, "VERSIONSNUMMER");
