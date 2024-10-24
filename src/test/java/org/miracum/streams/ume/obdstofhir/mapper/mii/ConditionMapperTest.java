@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.TimeZone;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
 import org.hl7.fhir.r4.model.Reference;
@@ -29,6 +30,7 @@ class ConditionMapperTest {
 
   @Test
   void map_withGivenObds_shouldCreateValidConditionResource() throws IOException {
+    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     // TODO: refactor to use a data provider for parameterized tests
     final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
     assertThat(resource).isNotNull();
@@ -45,9 +47,7 @@ class ConditionMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     final var condition =
-        sut.map(
-            obdsPatient.getMengeMeldung().getMeldung().getFirst().getDiagnose(),
-            new Reference("Patient/1"));
+        sut.map(obdsPatient.getMengeMeldung().getMeldung().getFirst(), new Reference("Patient/1"));
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     var fhirJson = fhirParser.encodeResourceToString(condition);
