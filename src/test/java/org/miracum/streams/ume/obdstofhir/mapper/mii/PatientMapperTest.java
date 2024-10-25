@@ -14,18 +14,18 @@ import org.approvaltests.core.Options;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.FhirProps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class})
+@SpringBootTest(classes = {FhirProps.class})
 @EnableConfigurationProperties
 class PatientMapperTest {
   private static PatientMapper sut;
 
   @BeforeAll
-  static void beforeEach(@Autowired FhirProperties fhirProps) {
+  static void beforeEach(@Autowired FhirProps fhirProps) {
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new PatientMapper(fhirProps);
   }
@@ -47,8 +47,7 @@ class PatientMapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
-    final var patient =
-        sut.map(obdsPatient.getPatientenStammdaten(), obdsPatient.getMengeMeldung().getMeldung());
+    final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     var fhirJson = fhirParser.encodeResourceToString(patient);

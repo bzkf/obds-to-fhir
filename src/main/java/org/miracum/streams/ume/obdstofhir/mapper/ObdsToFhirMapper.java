@@ -2,6 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -248,5 +250,14 @@ public abstract class ObdsToFhirMapper {
 
   public static boolean isIcd10GmCode(String value) {
     return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+  }
+
+  public static DateTimeType convertObdsDatumToDateTimeType(
+      DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    return new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+  }
+
+  public static DateType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {
+    return null;
   }
 }
