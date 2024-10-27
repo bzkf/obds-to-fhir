@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
@@ -41,6 +42,7 @@ class ConditionMapperTest {
     final var xmlMapper =
         XmlMapper.builder()
             .defaultUseWrapper(false)
+            .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
             .build();
