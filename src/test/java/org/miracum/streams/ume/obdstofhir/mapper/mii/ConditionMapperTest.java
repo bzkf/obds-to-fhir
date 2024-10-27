@@ -13,7 +13,8 @@ import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,14 +28,14 @@ class ConditionMapperTest {
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
+    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new ConditionMapper(fhirProps);
   }
 
-  @Test
-  void map_withGivenObds_shouldCreateValidConditionResource() throws IOException {
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
-    // TODO: refactor to use a data provider for parameterized tests
-    final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+  @ParameterizedTest
+  @CsvSource({"obds3/test1.xml"})
+  void map_withGivenObds_shouldCreateValidConditionResource(String sourceFile) throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource(sourceFile);
     assertThat(resource).isNotNull();
 
     final var xmlMapper =
