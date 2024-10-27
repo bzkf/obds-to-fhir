@@ -12,6 +12,7 @@ import java.util.TimeZone;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
 import org.hl7.fhir.r4.model.Reference;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
 class ConditionMapperTest {
-  private final ConditionMapper sut;
 
-  @Autowired
-  ConditionMapperTest(FhirProperties fhirProps) {
+  private static ConditionMapper sut;
+
+  @BeforeAll
+  static void beforeEach(@Autowired FhirProperties fhirProps) {
     sut = new ConditionMapper(fhirProps);
   }
 
