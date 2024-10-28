@@ -1,7 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -11,7 +10,8 @@ import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,10 +27,10 @@ class PatientMapperTest {
     sut = new PatientMapper(fhirProps);
   }
 
-  @Test
-  void map_withGivenObds_shouldCreateValidPatientResource() throws IOException {
-    // TODO: refactor to use a data provider for parameterized tests
-    final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+  @ParameterizedTest
+  @CsvSource({"obds3/test1.xml"})
+  void map_withGivenObds_shouldCreateValidPatientResource(String sourceFile) throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource(sourceFile);
     assertThat(resource).isNotNull();
 
     final var xmlMapper =
