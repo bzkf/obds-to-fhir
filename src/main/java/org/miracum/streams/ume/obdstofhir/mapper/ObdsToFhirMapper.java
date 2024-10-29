@@ -276,6 +276,18 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static DateType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {
-    return null;
+    var dateTime = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+        // exakt (entspricht taggenau)
+      case E:
+        dateTime.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+        // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        dateTime.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+    }
+
+    return dateTime;
   }
 }
