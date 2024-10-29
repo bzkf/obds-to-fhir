@@ -20,5 +20,10 @@
     "value": "11"
   } ],
   "gender": "male",
-  "birthDate": "1951-01-07"
+  "birthDate": "1951-01-07",
+  "address": [ {
+    "type": "both",
+    "postalCode": "98765",
+    "country": "DE"
+  } ]
 }

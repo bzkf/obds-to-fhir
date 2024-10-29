@@ -93,6 +93,23 @@ public class PatientMapper extends ObdsToFhirMapper {
       patient.setDeceased(deceased);
     }
 
+    // address
+    var address = new Address();
+    var patAddress = obdsPatient.getPatientenStammdaten().getAdresse();
+    address.setPostalCode(patAddress.getPLZ()).setType(Address.AddressType.BOTH);
+
+    var land = patAddress.getLand();
+    if (land != null && land.matches("[a-zA-Z]{2,3}")) {
+      address.setCountry(land.toUpperCase());
+    } else {
+      address
+          .addExtension()
+          .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+          .setValue(new CodeType("unknown"));
+    }
+
+    patient.addAddress(address);
+
     return patient;
   }
 }

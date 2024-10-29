@@ -20,5 +20,10 @@
     "value": "00001234"
   } ],
   "gender": "male",
-  "birthDate": "1980-01"
+  "birthDate": "1980-01",
+  "address": [ {
+    "type": "both",
+    "postalCode": "01234",
+    "country": "DE"
+  } ]
 }

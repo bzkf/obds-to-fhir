@@ -20,5 +20,10 @@
     "value": "12"
   } ],
   "gender": "female",
-  "birthDate": "1953-07-21"
+  "birthDate": "1953-07-21",
+  "address": [ {
+    "type": "both",
+    "postalCode": "00000",
+    "country": "DE"
+  } ]
 }

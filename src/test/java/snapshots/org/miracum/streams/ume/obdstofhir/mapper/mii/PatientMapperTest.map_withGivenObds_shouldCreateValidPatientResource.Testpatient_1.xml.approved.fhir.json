@@ -21,5 +21,10 @@
   } ],
   "gender": "female",
   "birthDate": "1950-05-01",
-  "deceasedDateTime": "2022-08-01"
+  "deceasedDateTime": "2022-08-01",
+  "address": [ {
+    "type": "both",
+    "postalCode": "12345",
+    "country": "DE"
+  } ]
 }
