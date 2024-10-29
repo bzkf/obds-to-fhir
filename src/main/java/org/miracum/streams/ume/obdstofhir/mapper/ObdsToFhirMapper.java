@@ -252,9 +252,27 @@ public abstract class ObdsToFhirMapper {
     return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
   }
 
-  public static DateTimeType convertObdsDatumToDateTimeType(
+  public static DateType convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
-    return new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var dateTime = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+        // exakt (entspricht taggenau)
+      case E:
+        dateTime.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+        // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        dateTime.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+        // Monat geschätzt (entspricht jahrgenau)
+      case M:
+        dateTime.setPrecision(TemporalPrecisionEnum.YEAR);
+        break;
+        // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
+      case V:
+        log.warn("Date precision is completely estimated. Likely not a correct value.");
+    }
+    return dateTime;
   }
 
   public static DateType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {

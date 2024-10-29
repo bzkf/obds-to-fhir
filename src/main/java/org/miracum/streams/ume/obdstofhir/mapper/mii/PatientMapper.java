@@ -1,5 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import java.util.*;
@@ -68,15 +69,9 @@ public class PatientMapper extends ObdsToFhirMapper {
         genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
 
     if (obdsPatient.getPatientenStammdaten().getGeburtsdatum().getValue() != null) {
-      // TODO: likely has to take Datumsgenauigkeit into considerations
-      patient.setBirthDateElement(
-          new DateType(
-              obdsPatient
-                  .getPatientenStammdaten()
-                  .getGeburtsdatum()
-                  .getValue()
-                  .toGregorianCalendar()
-                  .getTime()));
+      var birthdate =
+          convertObdsDatumToDateType(obdsPatient.getPatientenStammdaten().getGeburtsdatum());
+      patient.setBirthDateElement(birthdate);
     }
 
     // check if any of the meldungen reported death
@@ -84,16 +79,20 @@ public class PatientMapper extends ObdsToFhirMapper {
 
     if (!deathReports.isEmpty()) {
       if (deathReports.size() > 1) {
-        LOG.warn("Meldungen contains more than one death type.");
+        LOG.warn("Meldungen contains more than one death report.");
       }
-      patient.setDeceased(getDeceased(deathReports));
+      // sorts ascending by default, so to most recent report ist the last one in the list
+      var latestReport =
+          deathReports.stream()
+              .sorted(Comparator.comparing(r -> r.getTod().getSterbedatum().toGregorianCalendar()))
+              .toList()
+              .getLast();
+      var deceased =
+          new DateTimeType(latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
+      deceased.setPrecision(TemporalPrecisionEnum.DAY);
+      patient.setDeceased(deceased);
     }
 
     return patient;
-  }
-
-  private Type getDeceased(List<OBDS.MengePatient.Patient.MengeMeldung.Meldung> deathReports) {
-    // If a more detailed death date is not available in the data, return true.
-    return new BooleanType(true);
   }
 }
