@@ -2,7 +2,7 @@ name: validate-fhir-resources
 
 on:
   pull_request:
-    branches: 
+    branches:
       - master
       - beta
   push:
