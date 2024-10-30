@@ -34,8 +34,13 @@
                             <Version>10 2015 GM</Version>
                         </Primaertumor_ICD>
                         <Diagnosedatum Datumsgenauigkeit="T">2024-06-10</Diagnosedatum>
+                        <Seitenlokalisation>L</Seitenlokalisation>
                     </Tumorzuordnung>
                     <Diagnose>
+                        <Primaertumor_Topographie_ICD_O>
+                            <Code>C42.1</Code>
+                            <Version>33</Version>
+                        </Primaertumor_Topographie_ICD_O>
                         <Diagnosesicherung>1</Diagnosesicherung>
                         <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
                     </Diagnose>
