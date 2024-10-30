@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="2" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="11">
+      <Patienten_Stammdaten>
+        <Versichertendaten_PKV>
+          <IKNR>168100008</IKNR>
+          <PKV_Versichertennummer>as123</PKV_Versichertennummer>
+          <Beihilfetraeger>Heilfürsorge der Bundespolizei</Beihilfetraeger>
+        </Versichertendaten_PKV>
+        <Nachname>Arbeit</Nachname>
+        <Titel>Prof.</Titel>
+        <Namenszusatz>jun.</Namenszusatz>
+        <Namensvorsatz>von der</Namensvorsatz>
+        <Vornamen>Andy</Vornamen>
+        <Geburtsname>Freizeit</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Muße</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1951-01-07</Geburtsdatum>
+        <Adresse>
+          <Strasse>Große Straße</Strasse>
+          <Hausnummer>22b</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>98765</PLZ>
+          <Ort>Dort</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_1_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="111">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Prostata-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C61.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Prostata</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Prostata>
+              <GleasonScore>
+                <GradPrimaer>3</GradPrimaer>
+                <GradSekundaer>4</GradSekundaer>
+                <ScoreErgebnis>7</ScoreErgebnis>
+              </GleasonScore>
+              <AnlassGleasonScore>S</AnlassGleasonScore>
+              <DatumStanzen>2021-07-08</DatumStanzen>
+              <AnzahlStanzen>8</AnzahlStanzen>
+              <AnzahlPosStanzen>6</AnzahlPosStanzen>
+              <CaBefallStanze>
+                <Prozentzahl>88</Prozentzahl>
+              </CaBefallStanze>
+              <PSA>20.51</PSA>
+              <DatumPSA>2021-07-08</DatumPSA>
+            </Modul_Prostata>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_1_OP_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="111">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="151">
+            <Intention>K</Intention>
+            <Datum>2021-09-09</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-604.02</Code>
+                <Version>2021</Version>
+              </OPS>
+            </Menge_OPS>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R0</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Komplikation_nein_oder_unbekannt>N</Komplikation_nein_oder_unbekannt>
+            </Komplikationen>
+            <Modul_Prostata>
+              <GleasonScore>
+                <GradPrimaer>4</GradPrimaer>
+                <GradSekundaer>4</GradSekundaer>
+                <ScoreErgebnis>8</ScoreErgebnis>
+              </GleasonScore>
+              <AnlassGleasonScore>O</AnlassGleasonScore>
+              <KomplPostOP_ClavienDindo>N</KomplPostOP_ClavienDindo>
+            </Modul_Prostata>
+          </OP>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_1_SY_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="111">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="11_1_Innere.1">
+            <Meldeanlass>behandlungsbeginn</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>O</Stellung_OP>
+            <Therapieart>HO</Therapieart>
+            <Beginn Datumsgenauigkeit="E">2021-11-08</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <Bezeichnung>Bicalutamid</Bezeichnung>
+              </Substanz>
+            </Menge_Substanz>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_1_VE_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="111">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="164">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2022-01-20</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>Y</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>R</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Prostata>
+              <GleasonScore>
+                <GradPrimaer>3</GradPrimaer>
+                <GradSekundaer>4</GradSekundaer>
+                <ScoreErgebnis>7</ScoreErgebnis>
+              </GleasonScore>
+              <AnlassGleasonScore>S</AnlassGleasonScore>
+              <DatumStanzen>2022-01-20</DatumStanzen>
+              <AnzahlStanzen>5</AnzahlStanzen>
+              <AnzahlPosStanzen>4</AnzahlPosStanzen>
+              <CaBefallStanze>
+                <Prozentzahl>72</Prozentzahl>
+              </CaBefallStanze>
+              <PSA>198.2</PSA>
+              <DatumPSA>2022-01-20</DatumPSA>
+            </Modul_Prostata>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_1_ST-1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="111">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <ST ST_ID="11_1_Strahlen.1">
+            <Meldeanlass>behandlungsbeginn</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>O</Stellung_OP>
+            <Menge_Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2022-03-01</Beginn>
+                <Applikationsart>
+                  <Perkutan>
+                    <Radiochemo>RCN</Radiochemo>
+                    <Stereotaktisch>ST</Stereotaktisch>
+                    <Atemgetriggert>4D</Atemgetriggert>
+                    <Zielgebiet>
+                      <CodeVersion2014>5.4.-</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>T</Seite_Zielgebiet>
+                    <Strahlenart>NE</Strahlenart>
+                    <Einzeldosis>
+                      <Dosis>1.8</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Einzeldosis>
+                  </Perkutan>
+                </Applikationsart>
+              </Bestrahlung>
+            </Menge_Bestrahlung>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </ST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_2_DI-2">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="112">
+            <Primaertumor_ICD>
+              <Code>C91.1</Code>
+              <Version>10 2017 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2017-05-05</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>9823/3</Code>
+              <Version>32</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Chronisch lymphatische Leukämie</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C42.1</Code>
+              <Version>32</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Knochenmark</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="279">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2017-05-05</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H1234/2015</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>9823/3</Code>
+                <Version>32</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Chronisch lymphatische Leukämie</Morphologie_Freitext>
+              <Grading>T</Grading>
+            </Histologie>
+            <Menge_Weitere_Klassifikation>
+              <Weitere_Klassifikation>
+                <Datum Datumsgenauigkeit="E">2017-05-05</Datum>
+                <Name>Binet</Name>
+                <Stadium>A</Stadium>
+              </Weitere_Klassifikation>
+            </Menge_Weitere_Klassifikation>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="11_2_VE_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="112">
+            <Primaertumor_ICD>
+              <Code>C91.1</Code>
+              <Version>10 2017 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2017-05-05</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>9823/3</Code>
+              <Version>32</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="1.1.1">
+            <Meldeanlass>statusmeldung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2020-07-18</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>K</Gesamtbeurteilung_Tumorstatus>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+          </Verlauf>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>
