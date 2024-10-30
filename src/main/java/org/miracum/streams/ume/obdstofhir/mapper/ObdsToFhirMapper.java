@@ -254,29 +254,29 @@ public abstract class ObdsToFhirMapper {
 
   public static DateType convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
-    var dateTime = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var date = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
     switch (obdsDatum.getDatumsgenauigkeit()) {
         // exakt (entspricht taggenau)
       case E:
-        dateTime.setPrecision(TemporalPrecisionEnum.DAY);
+        date.setPrecision(TemporalPrecisionEnum.DAY);
         break;
         // Tag geschätzt (entspricht monatsgenau)
       case T:
-        dateTime.setPrecision(TemporalPrecisionEnum.MONTH);
+        date.setPrecision(TemporalPrecisionEnum.MONTH);
         break;
         // Monat geschätzt (entspricht jahrgenau)
       case M:
-        dateTime.setPrecision(TemporalPrecisionEnum.YEAR);
+        date.setPrecision(TemporalPrecisionEnum.YEAR);
         break;
         // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
       case V:
         log.warn("Date precision is completely estimated. Likely not a correct value.");
     }
-    return dateTime;
+    return date;
   }
 
-  public static DateType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {
-    var dateTime = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+  public static DateTimeType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {
+    var dateTime = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
     switch (obdsDatum.getDatumsgenauigkeit()) {
         // exakt (entspricht taggenau)
       case E:
