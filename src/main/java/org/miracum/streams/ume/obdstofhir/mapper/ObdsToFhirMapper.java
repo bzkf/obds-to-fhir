@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -248,5 +249,28 @@ public abstract class ObdsToFhirMapper {
 
   public static boolean isIcd10GmCode(String value) {
     return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+  }
+
+  public static DateType convertObdsDatumToDateType(
+      DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    var date = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+        // exakt (entspricht taggenau)
+      case E:
+        date.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+        // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        date.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+        // Monat geschätzt (entspricht jahrgenau)
+      case M:
+        date.setPrecision(TemporalPrecisionEnum.YEAR);
+        break;
+        // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
+      case V:
+        log.warn("Date precision is completely estimated. Likely not a correct value.");
+    }
+    return date;
   }
 }
