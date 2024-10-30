@@ -3,6 +3,12 @@
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
   },
+  "verificationStatus": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+      "code": "1"
+    } ]
+  },
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
