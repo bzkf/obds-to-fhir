@@ -31,7 +31,13 @@ class PatientMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"test1.xml", "Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({
+    "test1.xml",
+    "Testpatient_1.xml",
+    "Testpatient_2.xml",
+    "Testpatient_3.xml",
+    "Testpatient_leer.xml"
+  })
   void map_withGivenObds_shouldCreateValidPatientResource(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();

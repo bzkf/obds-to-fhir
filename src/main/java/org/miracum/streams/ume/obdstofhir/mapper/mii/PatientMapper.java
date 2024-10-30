@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import com.google.common.base.Strings;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import java.util.*;
@@ -43,8 +44,12 @@ public class PatientMapper extends ObdsToFhirMapper {
     var patient = new Patient();
     patient.getMeta().addProfile(fhirProperties.getProfiles().getMiiPatientPseudonymisiert());
 
+    if (Strings.isNullOrEmpty(obdsPatient.getPatientID())) {
+      throw new IllegalArgumentException("Patient ID is unset.");
+    }
+
     // TODO: this could be placed inside the application.yaml as well
-    //       and mapped to the fhir props
+    // and mapped to the fhir props
     var mrTypeConcept = new CodeableConcept();
     mrTypeConcept
         .addCoding()
@@ -82,7 +87,6 @@ public class PatientMapper extends ObdsToFhirMapper {
         LOG.warn("Meldungen contains more than one death report.");
       }
       // sorts ascending by default, so to most recent report ist the last one in the list
-      // TODO: lieber nach meldungsdatum sortieren und aktuellste Todesmeldung nach Datum wählen
       var latestReport =
           deathReports.stream()
               .sorted(Comparator.comparing(r -> r.getTod().getSterbedatum().toGregorianCalendar()))
@@ -95,21 +99,34 @@ public class PatientMapper extends ObdsToFhirMapper {
     }
 
     // address
-    var address = new Address();
     var patAddress = obdsPatient.getPatientenStammdaten().getAdresse();
-    address.setPostalCode(patAddress.getPLZ()).setType(Address.AddressType.BOTH);
 
-    var land = patAddress.getLand();
-    if (land != null && land.matches("[a-zA-Z]{2,3}")) {
-      address.setCountry(land.toUpperCase());
-    } else {
-      address
-          .addExtension()
-          .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-          .setValue(new CodeType("unknown"));
+    if (patAddress != null) {
+      var address = new Address().setType(Address.AddressType.BOTH);
+
+      if (!Strings.isNullOrEmpty(patAddress.getPLZ())) {
+        address.setPostalCode(patAddress.getPLZ());
+      } else {
+        address
+            .getPostalCodeElement()
+            .addExtension()
+            .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+            .setValue(new CodeType("unknown"));
+      }
+
+      var land = patAddress.getLand();
+      if (!Strings.isNullOrEmpty(land) && land.matches("[a-zA-Z]{2,3}")) {
+        address.setCountry(land.toUpperCase());
+      } else {
+        address
+            .getCountryElement()
+            .addExtension()
+            .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+            .setValue(new CodeType("unknown"));
+      }
+
+      patient.addAddress(address);
     }
-
-    patient.addAddress(address);
 
     return patient;
   }
