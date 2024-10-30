@@ -2,7 +2,6 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
-import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
@@ -273,21 +272,5 @@ public abstract class ObdsToFhirMapper {
         log.warn("Date precision is completely estimated. Likely not a correct value.");
     }
     return date;
-  }
-
-  public static DateTimeType convertObdsDatumToDateTimeType(DatumTagOderMonatGenauTyp obdsDatum) {
-    var dateTime = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
-    switch (obdsDatum.getDatumsgenauigkeit()) {
-        // exakt (entspricht taggenau)
-      case E:
-        dateTime.setPrecision(TemporalPrecisionEnum.DAY);
-        break;
-        // Tag geschätzt (entspricht monatsgenau)
-      case T:
-        dateTime.setPrecision(TemporalPrecisionEnum.MONTH);
-        break;
-    }
-
-    return dateTime;
   }
 }
