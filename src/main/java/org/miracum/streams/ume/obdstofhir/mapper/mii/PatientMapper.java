@@ -82,6 +82,7 @@ public class PatientMapper extends ObdsToFhirMapper {
         LOG.warn("Meldungen contains more than one death report.");
       }
       // sorts ascending by default, so to most recent report ist the last one in the list
+      // TODO: lieber nach meldungsdatum sortieren und aktuellste Todesmeldung nach Datum wählen
       var latestReport =
           deathReports.stream()
               .sorted(Comparator.comparing(r -> r.getTod().getSterbedatum().toGregorianCalendar()))
