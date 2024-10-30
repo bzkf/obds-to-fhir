@@ -17,25 +17,23 @@ import org.springframework.stereotype.Service;
 public class PatientMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(PatientMapper.class);
-  private Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender> genderMap;
+  private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
+      genderMap;
 
   @Autowired
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
 
-    genderMap = new HashMap<>();
-    genderMap.put(
-        PatientenStammdatenMelderTyp.Geschlecht.W, Enumerations.AdministrativeGender.FEMALE);
-    genderMap.put(
-        PatientenStammdatenMelderTyp.Geschlecht.M, Enumerations.AdministrativeGender.MALE);
-    genderMap.put(
-        PatientenStammdatenMelderTyp.Geschlecht.D, Enumerations.AdministrativeGender.OTHER);
-    genderMap.put(
-        PatientenStammdatenMelderTyp.Geschlecht.U, Enumerations.AdministrativeGender.UNKNOWN);
-    genderMap.put(
-        PatientenStammdatenMelderTyp.Geschlecht.X, Enumerations.AdministrativeGender.OTHER);
+    var gMap =
+        new EnumMap<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>(
+            PatientenStammdatenMelderTyp.Geschlecht.class);
+    gMap.put(PatientenStammdatenMelderTyp.Geschlecht.W, Enumerations.AdministrativeGender.FEMALE);
+    gMap.put(PatientenStammdatenMelderTyp.Geschlecht.M, Enumerations.AdministrativeGender.MALE);
+    gMap.put(PatientenStammdatenMelderTyp.Geschlecht.D, Enumerations.AdministrativeGender.OTHER);
+    gMap.put(PatientenStammdatenMelderTyp.Geschlecht.U, Enumerations.AdministrativeGender.UNKNOWN);
+    gMap.put(PatientenStammdatenMelderTyp.Geschlecht.X, Enumerations.AdministrativeGender.OTHER);
 
-    genderMap = Collections.unmodifiableMap(genderMap);
+    this.genderMap = Collections.unmodifiableMap(gMap);
   }
 
   public Patient map(
