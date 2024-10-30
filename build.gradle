@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'org.miracum.streams.ume'
-version = '2.3.0-beta.1'
+version = '2.3.0-beta.2'
 sourceCompatibility = '21'
 targetCompatibility = '21'
 
@@ -117,7 +117,8 @@ tasks.register('xsd2java') {
 		ant.xjc(
 				destdir: "${jaxbTargetDir}",
 				package: 'de.basisdatensatz.obds.v3',
-				schema: 'src/main/resources/schema/oBDS_v3.0.3.xsd'
+				schema: 'src/main/resources/schema/oBDS_v3.0.3.xsd',
+				binding: 'src/main/resources/schema/oBDS_v3.0.3.bindings.xjb'
 		)
 
 	}
