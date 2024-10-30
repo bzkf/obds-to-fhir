@@ -37,6 +37,14 @@ See [package.json](package.json) for a list of used packages and their versions.
 
 ## Dev
 
+### oBDS v3 code generation
+
+This task is included in default build task. In case you want to just generate oBDS v3 classes run:
+
+```sh
+./gradlew xsd2java
+```
+
 ### Topology
 
 ![Stream Topology generated via https://zz85.github.io/kafka-streams-viz/ using http://localhost:8080/actuator/kafkastreamstopology](docs/img/obds-to-fhir-topology.png)
