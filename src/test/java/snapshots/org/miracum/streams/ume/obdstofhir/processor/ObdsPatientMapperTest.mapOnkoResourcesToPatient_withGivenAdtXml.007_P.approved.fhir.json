@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
+    "fullUrl": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
     "resource": {
       "resourceType": "Patient",
-      "id": "d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
+      "id": "e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
       "meta": {
         "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
@@ -21,7 +21,7 @@
             "display": "Medical·record·number"
           } ]
         },
-        "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
         "value": "1055555888"
       } ],
       "gender": "male",
@@ -34,7 +34,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937"
+      "url": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7"
     }
   } ]
 }
