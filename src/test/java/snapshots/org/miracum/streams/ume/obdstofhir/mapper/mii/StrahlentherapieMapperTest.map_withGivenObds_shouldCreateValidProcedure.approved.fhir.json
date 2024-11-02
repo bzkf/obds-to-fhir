@@ -2,5 +2,6 @@
   "resourceType": "Procedure",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie" ]
-  }
+  },
+  "status": "in-progress"
 }

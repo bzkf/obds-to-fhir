@@ -17,8 +17,20 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
   }
 
   public Procedure map(STTyp st) {
+    if (null == st) {
+      throw new IllegalArgumentException("No Strahlentherapie: value is null");
+    }
+
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
+
+    // Status
+    if (st.getMeldeanlass() == STTyp.Meldeanlass.BEHANDLUNGSENDE) {
+      procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+    } else {
+      procedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
+    }
+
     return procedure;
   }
 }

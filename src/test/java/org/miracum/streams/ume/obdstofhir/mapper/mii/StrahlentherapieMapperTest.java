@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-public class StrahlentherapieMapperTest {
+class StrahlentherapieMapperTest {
   private static StrahlentherapieMapper sut;
 
   @BeforeAll
@@ -33,7 +33,7 @@ public class StrahlentherapieMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"obds3/test1.xml"})
+  @CsvSource({"obds3/Testpatient_4.xml"})
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile)
       throws StreamReadException, DatabindException, IOException {
     final var resource = this.getClass().getClassLoader().getResource(sourceFile);
