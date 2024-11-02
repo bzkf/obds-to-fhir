@@ -82,6 +82,7 @@ public class FhirProperties {
     private String miiPatientPseudonymisiert;
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
+    private String miiPrOnkoOperation;
   }
 
   @Data
