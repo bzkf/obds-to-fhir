@@ -1,11 +1,14 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.STTyp;
+import java.util.Objects;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Quantity;
@@ -24,12 +27,22 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
   }
 
   public Procedure map(STTyp st, Reference subject) {
-    if (null == st) {
-      throw new IllegalArgumentException("No Strahlentherapie: value is null");
-    }
+    Objects.requireNonNull(st);
+    Objects.requireNonNull(subject);
+
+    Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
+
+    // TODO: can we be sure that this ST-ID is globally unqiue across all STs? -
+    // if not we may instead need to construct the ID from the patient-id + others.
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getStrahlentherapieProcedureId())
+            .setValue(st.getSTID());
+    procedure.addIdentifier(identifier);
+    procedure.setId(computeResourceIdFromIdentifier(identifier));
 
     // Status
     if (st.getMeldeanlass() == STTyp.Meldeanlass.BEHANDLUNGSENDE) {

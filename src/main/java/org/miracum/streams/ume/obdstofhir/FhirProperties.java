@@ -71,6 +71,7 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieApplikationsart;
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
+    private String strahlentherapieProcedureId;
   }
 
   @Data
