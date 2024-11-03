@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import java.util.TimeZone;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +25,6 @@ class PatientMapperTest {
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new PatientMapper(fhirProps);
   }
 

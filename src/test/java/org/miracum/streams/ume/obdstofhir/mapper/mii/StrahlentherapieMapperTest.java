@@ -9,7 +9,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import java.util.TimeZone;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +26,6 @@ class StrahlentherapieMapperTest {
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new StrahlentherapieMapper(fhirProps);
   }
 
