@@ -12,9 +12,7 @@ import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.StringType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -77,13 +75,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     var dataAbsentConcept = new CodeableConcept();
     dataAbsentConcept.addExtension(dataAbsentExtension);
 
-    var dataAbsentQuantity = new Quantity();
-    dataAbsentQuantity.setSystem(fhirProperties.getSystems().getUcum());
-    dataAbsentQuantity.setCodeElement(dataAbsentCode);
-    var absentUnit = new StringType();
-    absentUnit.addExtension(dataAbsentExtension);
-    dataAbsentQuantity.setUnitElement(absentUnit);
-
     var performedStart = new DateTimeType();
     performedStart.addExtension(dataAbsentExtension);
     var performed = new Period().setStartElement(performedStart);
@@ -125,6 +116,13 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     bestrahlung.addExtension("Zielgebiet", zielgebiet);
 
     /* The extensions below are optional:
+    var dataAbsentQuantity = new Quantity();
+    dataAbsentQuantity.setSystem(fhirProperties.getSystems().getUcum());
+    dataAbsentQuantity.setCodeElement(dataAbsentCode);
+    var absentUnit = new StringType();
+    absentUnit.addExtension(dataAbsentExtension);
+    dataAbsentQuantity.setUnitElement(absentUnit);
+
     bestrahlung.addExtension("Zielgebiet_Lateralitaet", dataAbsentConcept);
     bestrahlung.addExtension("Gesamtdosis", dataAbsentQuantity);
     bestrahlung.addExtension("Einzeldosis", dataAbsentQuantity);
