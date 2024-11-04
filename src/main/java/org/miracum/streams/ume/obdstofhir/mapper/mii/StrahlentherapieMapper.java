@@ -7,6 +7,7 @@ import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
@@ -31,6 +32,10 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     Objects.requireNonNull(subject);
 
     Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
+    Validate.isTrue(
+        Objects.equals(
+            subject.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
+        "The subject reference should point to a Patient resource");
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
