@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import org.approvaltests.Approvals;
-import org.approvaltests.core.Options;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,9 +34,7 @@ class ConditionMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml",
-    "Testpatient_2.xml",
-    "Testpatient_3.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
   void map_withGivenObds_shouldCreateValidConditionResource(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -55,13 +52,16 @@ class ConditionMapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var conMeldung =
-      obdsPatient.getMengeMeldung().getMeldung().stream()
-      .filter(m->m.getST() != null).findFirst().get();
-    final var condition =
-        sut.map(conMeldung, new Reference("Patient/1"));
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getDiagnose() != null)
+            .findFirst()
+            .get();
+
+    final var condition = sut.map(conMeldung, new Reference("Patient/1"));
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     var fhirJson = fhirParser.encodeResourceToString(condition);
-    Approvals.verify(fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+    Approvals.verify(
+        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }
 }
