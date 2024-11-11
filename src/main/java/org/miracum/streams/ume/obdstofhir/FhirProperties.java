@@ -37,7 +37,7 @@ public class FhirProperties {
     private String medicationStatementId;
     private String observationCategorySystem;
     private String loinc;
-    private String idco3Morphologie;
+    private String icdo3Morphologie;
     private String gradingDktk;
     private String uicc;
     private String tnmPraefix;
