@@ -68,6 +68,7 @@ public class FhirProperties {
     private String psaObservationId;
     private String ucum;
     private String miiCsOnkoIntention;
+    private String miiCsOnkoPrimaertumorDiagnosesicherung;
     private String miiCsOnkoStrahlentherapieApplikationsart;
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
