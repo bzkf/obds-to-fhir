@@ -43,9 +43,10 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     Coding icd =
         new Coding(
-            fhirProperties.getSystems().getIcd10gm(),
-            tumorzuordnung.getPrimaertumorICD().getCode(),
-            "").setVersion(tumorzuordnung.getPrimaertumorICD().getVersion());
+                fhirProperties.getSystems().getIcd10gm(),
+                tumorzuordnung.getPrimaertumorICD().getCode(),
+                "")
+            .setVersion(tumorzuordnung.getPrimaertumorICD().getVersion());
 
     Coding morphologie =
         new Coding(
@@ -65,7 +66,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
                   .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
-                .setVersion(meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
+                  .setVersion(meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
       bodySite.add(topographie);
     }
 
@@ -73,15 +74,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
       CodeableConcept seitenlokalisation =
           new CodeableConcept(
               new Coding()
-                  .setSystem(
-                      "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation")
+                  .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
                   .setCode(tumorzuordnung.getSeitenlokalisation().value()));
       bodySite.add(seitenlokalisation);
     }
     condition.setBodySite(bodySite);
 
     condition.setRecordedDate(
-      tumorzuordnung.getDiagnosedatum().getValue().toGregorianCalendar().getTime());
+        tumorzuordnung.getDiagnosedatum().getValue().toGregorianCalendar().getTime());
     return condition;
   }
 }
