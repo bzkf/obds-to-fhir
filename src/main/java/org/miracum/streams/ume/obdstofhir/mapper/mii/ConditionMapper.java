@@ -29,12 +29,17 @@ public class ConditionMapper extends ObdsToFhirMapper {
     var condition = new Condition();
 
     if (meldung.getDiagnose().getDiagnosesicherung() != null) {
-      condition.setVerificationStatus(
-          new CodeableConcept(
-              new Coding(
-                  "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-                  meldung.getDiagnose().getDiagnosesicherung().value(),
-                  "")));
+      Coding verStatus =
+          new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
+      Coding diagnosesicherung =
+          new Coding(
+              fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
+              meldung.getDiagnose().getDiagnosesicherung().value(),
+              "");
+
+      CodeableConcept verificationStatus = new CodeableConcept();
+      verificationStatus.addCoding(verStatus).addCoding(diagnosesicherung);
+      condition.setVerificationStatus(verificationStatus);
     }
 
     condition.setSubject(patient);
