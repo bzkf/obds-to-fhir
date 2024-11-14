@@ -1,5 +1,5 @@
 app:
-  version: 2.3.0-beta.4
+  version: 2.3.0-beta.6
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -56,6 +56,7 @@ fhir:
     genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
     ucum: "http://unitsofmeasure.org"
     mii-cs-onko-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention"
+    mii-cs-onko-primaertumor-diagnosesicherung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung"
     mii-cs-onko-strahlentherapie-applikationsart: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart"
     mii-cs-onko-strahlentherapie-strahlenart: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart"
     mii-cs-onko-strahlentherapie-zielgebiet: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet"
