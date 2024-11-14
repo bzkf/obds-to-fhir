@@ -25,6 +25,7 @@ public class FhirProperties {
     private String genderAmtlich;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieBestrahlung;
+    private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
   }
 
   @Data
