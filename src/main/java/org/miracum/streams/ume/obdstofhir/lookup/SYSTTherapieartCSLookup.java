@@ -7,37 +7,35 @@ import java.util.List;
 
 public class SYSTTherapieartCSLookup {
 
-  private static final HashMap<String, String> lookup =
-      new HashMap<>() {
-        {
-          put("CH", "Chemotherapie");
-          put("HO", "Hormontherapie");
-          put("IM", "Immun- und Antikörpertherapie");
-          put("KM", "Knochenmarkstransplantation");
-          put("WS", "Wait and see");
-          put("AS", "Active Surveillance");
-          put("ZS", "Zielgerichtete Substanzen");
-          put("SO", "Sonstiges");
-          put("ST", "Strahlentherapie");
-          put("OP", "Operation");
-          put("CI", "Chemo- + Immun-/Antikörpertherapie");
-          put("CZ", "Chemotherapie + zielgerichtete Substanzen");
-          put("CIZ", "Chemo- + Immun-/Antikörpertherapie + zielgerichtete Substanzen");
-          put("IZ", "Immun-/Antikörpertherapie + zielgerichtete Substanzen");
-          put("SZ", "Stammzelltransplantation (inkl. Knochenmarktransplantation)");
-          put("WW", "Watchful Waiting");
-        }
-      };
+  private static final HashMap<String, String> lookup = new HashMap<>();
 
-  private static final HashMap<String, String> multipleKeyLookup =
-      new HashMap<>() {
-        {
-          put("CHIM", "CI");
-          put("CHZS", "CZ");
-          put("CHIMZS", "CIZ");
-          put("IMZS", "IZ");
-        }
-      };
+  static {
+    lookup.put("CH", "Chemotherapie");
+    lookup.put("HO", "Hormontherapie");
+    lookup.put("IM", "Immun- und Antikörpertherapie");
+    lookup.put("KM", "Knochenmarkstransplantation");
+    lookup.put("WS", "Wait and see");
+    lookup.put("AS", "Active Surveillance");
+    lookup.put("ZS", "Zielgerichtete Substanzen");
+    lookup.put("SO", "Sonstiges");
+    lookup.put("ST", "Strahlentherapie");
+    lookup.put("OP", "Operation");
+    lookup.put("CI", "Chemo- + Immun-/Antikörpertherapie");
+    lookup.put("CZ", "Chemotherapie + zielgerichtete Substanzen");
+    lookup.put("CIZ", "Chemo- + Immun-/Antikörpertherapie + zielgerichtete Substanzen");
+    lookup.put("IZ", "Immun-/Antikörpertherapie + zielgerichtete Substanzen");
+    lookup.put("SZ", "Stammzelltransplantation (inkl. Knochenmarktransplantation)");
+    lookup.put("WW", "Watchful Waiting");
+  }
+
+  private static final HashMap<String, String> multipleKeyLookup = new HashMap<>();
+
+  static {
+    multipleKeyLookup.put("CHIM", "CI");
+    multipleKeyLookup.put("CHZS", "CZ");
+    multipleKeyLookup.put("CHIMZS", "CIZ");
+    multipleKeyLookup.put("IMZS", "IZ");
+  }
 
   public static String lookupDisplay(List<String> code) {
 
