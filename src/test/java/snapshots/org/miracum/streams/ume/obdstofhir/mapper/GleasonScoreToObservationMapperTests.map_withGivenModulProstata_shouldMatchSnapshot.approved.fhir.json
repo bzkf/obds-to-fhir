@@ -1,6 +1,6 @@
 {
   "resourceType": "Observation",
-  "id": "39be5b3e98dd115395047a69e69a7a2b1d559cf4f7c6cad47ca003cdd256f992",
+  "id": "2ae11aa547b7b1a906c1682ff35649ea154583c572e547df569a05b9927aea51",
   "meta": {
     "source": "test"
   },
@@ -22,7 +22,7 @@
           "code": "MR"
         } ]
       },
-      "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+      "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
       "value": "pid-1"
     }
   },

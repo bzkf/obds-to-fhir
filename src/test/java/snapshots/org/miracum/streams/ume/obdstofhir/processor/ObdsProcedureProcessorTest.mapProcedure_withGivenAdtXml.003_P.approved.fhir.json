@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b",
+    "fullUrl": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef",
     "resource": {
       "resourceType": "Procedure",
-      "id": "504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b",
+      "id": "67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -29,7 +29,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -37,13 +37,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -66,13 +66,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+      "url": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
     }
   }, {
-    "fullUrl": "Procedure/8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d",
+    "fullUrl": "Procedure/997749c5aad83cc122a0df58ba78d104e47547e9d0da14c45215d967c748a42c",
     "resource": {
       "resourceType": "Procedure",
-      "id": "8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d",
+      "id": "997749c5aad83cc122a0df58ba78d104e47547e9d0da14c45215d967c748a42c",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -88,7 +88,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -106,7 +106,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -114,13 +114,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -143,13 +143,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/8e57241123584a00f73ad564f8ddee4779bb11be6a1672667c6f7c25923eef6d"
+      "url": "Procedure/997749c5aad83cc122a0df58ba78d104e47547e9d0da14c45215d967c748a42c"
     }
   }, {
-    "fullUrl": "Procedure/8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202",
+    "fullUrl": "Procedure/0271bd915b0f59f3494c1fe6e66b39ecd730c0c6c17f5fb3f9bf83e4f8cc0618",
     "resource": {
       "resourceType": "Procedure",
-      "id": "8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202",
+      "id": "0271bd915b0f59f3494c1fe6e66b39ecd730c0c6c17f5fb3f9bf83e4f8cc0618",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -165,7 +165,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -183,7 +183,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -191,13 +191,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -220,13 +220,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/8c3586c870a05d3f8c8a8ce5ffda1e537b4d548222bab351cfcc538fcad1e202"
+      "url": "Procedure/0271bd915b0f59f3494c1fe6e66b39ecd730c0c6c17f5fb3f9bf83e4f8cc0618"
     }
   }, {
-    "fullUrl": "Procedure/d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1",
+    "fullUrl": "Procedure/1da7084bddd52812320bf9104710ea51ec7ed3ccc95759f54b7db9407b6a56ca",
     "resource": {
       "resourceType": "Procedure",
-      "id": "d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1",
+      "id": "1da7084bddd52812320bf9104710ea51ec7ed3ccc95759f54b7db9407b6a56ca",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -242,7 +242,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -260,7 +260,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -268,13 +268,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -297,13 +297,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/d0771f7da8853d501a94c7d1421087cc4f125bd9007204e0309487f1cd6d9ef1"
+      "url": "Procedure/1da7084bddd52812320bf9104710ea51ec7ed3ccc95759f54b7db9407b6a56ca"
     }
   }, {
-    "fullUrl": "Procedure/a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a",
+    "fullUrl": "Procedure/177c9bd0cc2192fa7a0143890232dc31b06feb26c20afe249cb621e49e2f0aea",
     "resource": {
       "resourceType": "Procedure",
-      "id": "a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a",
+      "id": "177c9bd0cc2192fa7a0143890232dc31b06feb26c20afe249cb621e49e2f0aea",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -319,7 +319,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -337,7 +337,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -345,13 +345,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -374,13 +374,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/a6150ae1b4d941d69ac855964d198a35159849d355bd6f076ac05d3ac1ef362a"
+      "url": "Procedure/177c9bd0cc2192fa7a0143890232dc31b06feb26c20afe249cb621e49e2f0aea"
     }
   }, {
-    "fullUrl": "Procedure/cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012",
+    "fullUrl": "Procedure/736cababc9c7c9ad356682814ecfc185cc6064e4239f2fbf5e96e7c5826d4d4e",
     "resource": {
       "resourceType": "Procedure",
-      "id": "cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012",
+      "id": "736cababc9c7c9ad356682814ecfc185cc6064e4239f2fbf5e96e7c5826d4d4e",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -396,7 +396,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -414,7 +414,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -422,13 +422,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -451,13 +451,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/cf69ef139af8c0f17ea6bd94c97fd055f905d1659ebca02f1c2a7f46360c8012"
+      "url": "Procedure/736cababc9c7c9ad356682814ecfc185cc6064e4239f2fbf5e96e7c5826d4d4e"
     }
   }, {
-    "fullUrl": "Procedure/605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8",
+    "fullUrl": "Procedure/cd4fd19c92f75153be0d3e5889bc0e8248ff8b5c46f8a101a6776ffea88cb55b",
     "resource": {
       "resourceType": "Procedure",
-      "id": "605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8",
+      "id": "cd4fd19c92f75153be0d3e5889bc0e8248ff8b5c46f8a101a6776ffea88cb55b",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -473,7 +473,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -491,7 +491,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -499,13 +499,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -528,13 +528,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/605b70af168defb122c3d4a752e4f8b3ec0795fba5e089c9dd69d4c29458f4c8"
+      "url": "Procedure/cd4fd19c92f75153be0d3e5889bc0e8248ff8b5c46f8a101a6776ffea88cb55b"
     }
   }, {
-    "fullUrl": "Procedure/a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679",
+    "fullUrl": "Procedure/53c334edeb66e6f86604f023ae862826833baa3dd50d27e06e64db7502b0d85b",
     "resource": {
       "resourceType": "Procedure",
-      "id": "a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679",
+      "id": "53c334edeb66e6f86604f023ae862826833baa3dd50d27e06e64db7502b0d85b",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -550,7 +550,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -568,7 +568,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -576,13 +576,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -605,13 +605,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/a0a09ec8b53171d0a469e64b36281548b3a3695f876a2a238bd62523396c0679"
+      "url": "Procedure/53c334edeb66e6f86604f023ae862826833baa3dd50d27e06e64db7502b0d85b"
     }
   }, {
-    "fullUrl": "Procedure/b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd",
+    "fullUrl": "Procedure/80aa7379eac9467437c19a78bd049066873dc86e2ed79fc731dbead4d0c0f927",
     "resource": {
       "resourceType": "Procedure",
-      "id": "b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd",
+      "id": "80aa7379eac9467437c19a78bd049066873dc86e2ed79fc731dbead4d0c0f927",
       "meta": {
         "source": "UKER.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation" ]
@@ -627,7 +627,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/504712505573445ca38a9af0bb977864d031e5934d0525f203f6e2a62a0cbb4b"
+        "reference": "Procedure/67f141dc664ef9460c9d6342c6cd2e32e581913a36116b68f1218e8b5d60c6ef"
       } ],
       "status": "completed",
       "category": {
@@ -645,7 +645,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -653,13 +653,13 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "performedDateTime": "2021-01-04",
       "reasonReference": [ {
-        "reference": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+        "reference": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
       } ],
       "outcome": {
         "coding": [ {
@@ -682,7 +682,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/b23a84e352ad4c3be35628c95c8daf97c5b9397d8e6cc61c5e50632a244307fd"
+      "url": "Procedure/80aa7379eac9467437c19a78bd049066873dc86e2ed79fc731dbead4d0c0f927"
     }
   } ]
 }
