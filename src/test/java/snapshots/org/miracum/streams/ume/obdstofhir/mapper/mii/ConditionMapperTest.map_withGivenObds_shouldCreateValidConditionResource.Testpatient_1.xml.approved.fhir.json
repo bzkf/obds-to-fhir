@@ -1,0 +1,48 @@
+{
+  "resourceType": "Condition",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+        "version": "33",
+        "code": "8010/3"
+      } ]
+    }
+  } ],
+  "verificationStatus": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+      "code": "confirmed"
+    }, {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+      "code": "7"
+    } ]
+  },
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "2020",
+      "code": "C50.9"
+    } ]
+  },
+  "bodySite": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+      "version": "33",
+      "code": "C50.9"
+    } ]
+  }, {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+      "code": "R"
+    } ]
+  } ],
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "recordedDate": "2020-03-01T00:00:00+01:00"
+}
