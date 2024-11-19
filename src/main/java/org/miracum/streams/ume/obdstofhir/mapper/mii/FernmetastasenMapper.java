@@ -17,6 +17,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
 
   public Bundle map(OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient) {
     var obsBundle = new Bundle();
+    obsBundle.setType(Bundle.BundleType.COLLECTION);
     // alle Meldungen
     for (var meldung : meldungen.getMeldung()) {
 

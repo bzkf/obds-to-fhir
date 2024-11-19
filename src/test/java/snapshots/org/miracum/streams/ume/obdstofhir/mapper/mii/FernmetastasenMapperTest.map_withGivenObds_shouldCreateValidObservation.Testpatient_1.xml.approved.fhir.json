@@ -1,5 +1,6 @@
 {
   "resourceType": "Bundle",
+  "type": "collection",
   "entry": [ {
     "resource": {
       "resourceType": "Observation",
