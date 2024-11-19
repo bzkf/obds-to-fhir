@@ -4,95 +4,94 @@ import java.util.HashMap;
 
 public class OPKomplikationVsLookup {
 
-  private static final HashMap<String, String> lookup =
-      new HashMap<>() {
-        {
-          put("N", "Nein");
-          put("U", "Unbekannt");
-          put("ABD", "Abszeß in einem Drainagekanal");
-          put("ABS", "Abszeß, intraabdominaler oder intrathorakaler");
-          put("ASF", "Abszeß, subfaszialer");
-          put("ANI", "Akute Niereninsuffizienz");
-          put("AEP", "Alkoholentzugspsychose");
-          put("ALR", "Allergische Reaktion ohne Schocksymptomatik");
-          put("ANS", "Anaphylaktischer Schock");
-          put("AEE", "Anastomoseninsuffizienz einer Enterostomie");
-          put("API", "Apoplektischer Insult");
-          put("BIF", "Biliäre Fistel");
-          put("BOG", "Blutung, obere gastrointestinale (z.B \"Stressulkus\")");
-          put("BOE", "Bolusverlegung eines Endotubus");
-          put("BSI", "Bronchusstumpfinsuffizienz");
-          put("CHI", "Cholangitis");
-          put("DAI", "Darmanastomoseinsuffizienz");
-          put("DPS", "Darmpassagestörungen (z.B. protrahierte Atonie, Subileus, Ileus)");
-          put("DIC", "Disseminierte intravasale Koagulopathie");
-          put("DEP", "Drogenentzugspsychose");
-          put("DLU", "Druck- und Lagerungsschäden, z.B. Dekubitalulzera");
-          put("DSI", "Duodenalstumpfinsuffizienz");
-          put("ENF", "Enterale Fistel");
-          put("GER", "Gerinnungsstörung");
-          put("HEM", "Hämatemesis");
-          put("HUR", "Hämaturie");
-          put("HAE", "Hämorrhagischer Schock");
-          put("HFI", "Harnfistel");
-          put("HNK", "Hautnekrose im Operationsbereich");
-          put("HZI", "Herzinsuffizienz");
-          put("HRS", "Herzrhythmusstörungen");
-          put("HNA", "Hirnnervenausfälle");
-          put("HOP", "Hirnorganisches Psychosyndrom (z.B. \"Durchgangssyndrom\")");
-          put("HYB", "Hyperbilirubinämie");
-          put("HYF", "Hypopharynxfistel");
-          put("IFV", "Ileofemorale Venenthrombose");
-          put("KAS", "Kardiogener Schock");
-          put("KES", "Komplikationen einer Stomaanlage");
-          put(
-              "KIM",
-              "Komplikation eines Implantates (Gefäßprothese, Totalendoprothese, Katheter), z.B. Dislokation");
-          put("KRA", "Krampfanfall");
-          put("KDS", "Kurzdarmsyndrom");
-          put("LEV", "Leberversagen");
-          put("LOE", "Lungenödem");
-          put("LYF", "Lymphfistel");
-          put("LYE", "Lymphozele");
-          put("MES", "Magenentleerungsstörung");
-          put("MIL", "Mechanischer Ileus");
-          put("MED", "Mediastinitis");
-          put("MAT", "Mesenterialarterien- oder -venenthrombose");
-          put("MYI", "Myokardinfarkt");
-          put("RNB", "Nachblutung, revisionsbedürftig, anderweitig nicht erwähnt");
-          put("NAB", "Nachblutung, nicht revisionsbedürftig, anderweitig nicht erwähnt");
-          put("NIN", "Nahtinsuffizienz, anderweitig nicht erwähnt");
-          put("OES", "Ösophagitis");
-          put("OSM", "Osteitis, Osteomyelitis");
-          put("PAF", "Pankreasfistel");
-          put("PIT", "Pankreatitis");
-          put("PAB", "Peranale Blutung");
-          put("PPA", "Periphere Parese");
-          put("PAV", "Peripherer arterieller Verschluß (Embolie, Thrombose)");
-          put("PER", "Peritonitis");
-          put("PLB", "Platzbauch");
-          put("PEY", "Pleuraempyem");
-          put("PLE", "Pleuraerguß");
-          put("PMN", "Pneumonie");
-          put("PNT", "Pneumothorax");
-          put("PDA", "Protrahierte Darmatonie (paralytischer Ileus)");
-          put("PAE", "Pulmonalarterienembolie");
-          put("RPA", "Rekurrensparese");
-          put("RIN", "Respiratorische Insuffizienz");
-          put("SKI", "Septische Komplikation eines Implantates");
-          put("SES", "Septischer Schock");
-          put("SFH", "Störungen des Flüssigkeits-, Elektrolyt- und Säurebasenhaushaltes");
-          put("SON", "Sonstige Komplikation");
-          put("STK", "Stomakomplikation (z.B. Blutung, Nekrose, Stenose)");
-          put("TZP", "Thrombozytopenie");
-          put(
-              "TIA",
-              "TIA (transitorische ischämische Attacke) oder RIND (reversibles ischämisches neurologisches Defizit)");
-          put("TRZ", "Transfusionszwischenfall");
-          put("WUH", "Wundhämatom (konservativ therapiert)");
-          put("WSS", "Wundheilungsstörung, subkutane");
-        }
-      };
+  private static final HashMap<String, String> lookup = new HashMap<>();
+
+  static {
+    lookup.put("N", "Nein");
+    lookup.put("U", "Unbekannt");
+    lookup.put("ABD", "Abszeß in einem Drainagekanal");
+    lookup.put("ABS", "Abszeß, intraabdominaler oder intrathorakaler");
+    lookup.put("ASF", "Abszeß, subfaszialer");
+    lookup.put("ANI", "Akute Niereninsuffizienz");
+    lookup.put("AEP", "Alkoholentzugspsychose");
+    lookup.put("ALR", "Allergische Reaktion ohne Schocksymptomatik");
+    lookup.put("ANS", "Anaphylaktischer Schock");
+    lookup.put("AEE", "Anastomoseninsuffizienz einer Enterostomie");
+    lookup.put("API", "Apoplektischer Insult");
+    lookup.put("BIF", "Biliäre Fistel");
+    lookup.put("BOG", "Blutung, obere gastrointestinale (z.B \"Stressulkus\")");
+    lookup.put("BOE", "Bolusverlegung eines Endotubus");
+    lookup.put("BSI", "Bronchusstumpfinsuffizienz");
+    lookup.put("CHI", "Cholangitis");
+    lookup.put("DAI", "Darmanastomoseinsuffizienz");
+    lookup.put("DPS", "Darmpassagestörungen (z.B. protrahierte Atonie, Subileus, Ileus)");
+    lookup.put("DIC", "Disseminierte intravasale Koagulopathie");
+    lookup.put("DEP", "Drogenentzugspsychose");
+    lookup.put("DLU", "Druck- und Lagerungsschäden, z.B. Dekubitalulzera");
+    lookup.put("DSI", "Duodenalstumpfinsuffizienz");
+    lookup.put("ENF", "Enterale Fistel");
+    lookup.put("GER", "Gerinnungsstörung");
+    lookup.put("HEM", "Hämatemesis");
+    lookup.put("HUR", "Hämaturie");
+    lookup.put("HAE", "Hämorrhagischer Schock");
+    lookup.put("HFI", "Harnfistel");
+    lookup.put("HNK", "Hautnekrose im Operationsbereich");
+    lookup.put("HZI", "Herzinsuffizienz");
+    lookup.put("HRS", "Herzrhythmusstörungen");
+    lookup.put("HNA", "Hirnnervenausfälle");
+    lookup.put("HOP", "Hirnorganisches Psychosyndrom (z.B. \"Durchgangssyndrom\")");
+    lookup.put("HYB", "Hyperbilirubinämie");
+    lookup.put("HYF", "Hypopharynxfistel");
+    lookup.put("IFV", "Ileofemorale Venenthrombose");
+    lookup.put("KAS", "Kardiogener Schock");
+    lookup.put("KES", "Komplikationen einer Stomaanlage");
+    lookup.put(
+        "KIM",
+        "Komplikation eines Implantates (Gefäßprothese, Totalendoprothese, Katheter), z.B. Dislokation");
+    lookup.put("KRA", "Krampfanfall");
+    lookup.put("KDS", "Kurzdarmsyndrom");
+    lookup.put("LEV", "Leberversagen");
+    lookup.put("LOE", "Lungenödem");
+    lookup.put("LYF", "Lymphfistel");
+    lookup.put("LYE", "Lymphozele");
+    lookup.put("MES", "Magenentleerungsstörung");
+    lookup.put("MIL", "Mechanischer Ileus");
+    lookup.put("MED", "Mediastinitis");
+    lookup.put("MAT", "Mesenterialarterien- oder -venenthrombose");
+    lookup.put("MYI", "Myokardinfarkt");
+    lookup.put("RNB", "Nachblutung, revisionsbedürftig, anderweitig nicht erwähnt");
+    lookup.put("NAB", "Nachblutung, nicht revisionsbedürftig, anderweitig nicht erwähnt");
+    lookup.put("NIN", "Nahtinsuffizienz, anderweitig nicht erwähnt");
+    lookup.put("OES", "Ösophagitis");
+    lookup.put("OSM", "Osteitis, Osteomyelitis");
+    lookup.put("PAF", "Pankreasfistel");
+    lookup.put("PIT", "Pankreatitis");
+    lookup.put("PAB", "Peranale Blutung");
+    lookup.put("PPA", "Periphere Parese");
+    lookup.put("PAV", "Peripherer arterieller Verschluß (Embolie, Thrombose)");
+    lookup.put("PER", "Peritonitis");
+    lookup.put("PLB", "Platzbauch");
+    lookup.put("PEY", "Pleuraempyem");
+    lookup.put("PLE", "Pleuraerguß");
+    lookup.put("PMN", "Pneumonie");
+    lookup.put("PNT", "Pneumothorax");
+    lookup.put("PDA", "Protrahierte Darmatonie (paralytischer Ileus)");
+    lookup.put("PAE", "Pulmonalarterienembolie");
+    lookup.put("RPA", "Rekurrensparese");
+    lookup.put("RIN", "Respiratorische Insuffizienz");
+    lookup.put("SKI", "Septische Komplikation eines Implantates");
+    lookup.put("SES", "Septischer Schock");
+    lookup.put("SFH", "Störungen des Flüssigkeits-, Elektrolyt- und Säurebasenhaushaltes");
+    lookup.put("SON", "Sonstige Komplikation");
+    lookup.put("STK", "Stomakomplikation (z.B. Blutung, Nekrose, Stenose)");
+    lookup.put("TZP", "Thrombozytopenie");
+    lookup.put(
+        "TIA",
+        "TIA (transitorische ischämische Attacke) oder RIND (reversibles ischämisches neurologisches Defizit)");
+    lookup.put("TRZ", "Transfusionszwischenfall");
+    lookup.put("WUH", "Wundhämatom (konservativ therapiert)");
+    lookup.put("WSS", "Wundheilungsstörung, subkutane");
+  }
 
   public static String lookupDisplay(String code) {
     return lookup.get(code);
