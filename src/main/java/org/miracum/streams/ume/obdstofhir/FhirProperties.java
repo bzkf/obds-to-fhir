@@ -73,6 +73,7 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
     private String strahlentherapieProcedureId;
+    private String miiCsOnkoFernmetastasen;
   }
 
   @Data
@@ -91,6 +92,7 @@ public class FhirProperties {
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoStrahlentherapie;
+    private String miiPrOnkoFernmetastasen;
   }
 
   @Data
