@@ -76,6 +76,7 @@ public class FhirProperties {
     private String strahlentherapieProcedureId;
     private String miiCsOnkoSeitenlokalisation;
     private String conditionVerStatus;
+    private String icdo3MorphologieOid;
   }
 
   @Data
