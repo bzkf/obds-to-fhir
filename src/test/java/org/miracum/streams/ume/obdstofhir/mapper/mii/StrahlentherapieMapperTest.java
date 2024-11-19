@@ -10,6 +10,7 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
+import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -20,23 +21,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class PatientMapperTest {
-  private static PatientMapper sut;
+class StrahlentherapieMapperTest {
+  private static StrahlentherapieMapper sut;
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    sut = new PatientMapper(fhirProps);
+    sut = new StrahlentherapieMapper(fhirProps);
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "test1.xml",
-    "Testpatient_1.xml",
-    "Testpatient_2.xml",
-    "Testpatient_3.xml",
-    "Testpatient_leer.xml"
-  })
-  void map_withGivenObds_shouldCreateValidPatientResource(String sourceFile) throws IOException {
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -45,8 +40,6 @@ class PatientMapperTest {
             .defaultUseWrapper(false)
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
-            // added because the Testpatient_*.xml contain the `xsi:schemaLocation` attribute which
-            // isn't code-generated
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
 
@@ -54,10 +47,16 @@ class PatientMapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
-    final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
+    var subject = new Reference("Patient/any");
+    var stMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getST() != null)
+            .findFirst()
+            .get();
+    var procedure = sut.map(stMeldung.getST(), subject);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(patient);
+    var fhirJson = fhirParser.encodeResourceToString(procedure);
     Approvals.verify(
         fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }

@@ -25,5 +25,8 @@
                 <jaxb:typesafeEnumMember value="9" name="DS_9" />
             </jaxb:typesafeEnumClass>
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='ST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
+        </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>
