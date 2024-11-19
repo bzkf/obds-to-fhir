@@ -141,7 +141,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       String senderId,
       String softwareId,
       String opsCode,
-      HashSet<String> distinctOpsSet) {
+      Set<String> distinctOpsSet) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -306,7 +306,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       Meldeanlass meldeanlass,
       Bestrahlung radio,
       Tupel<Date, Date> timeSpan,
-      HashSet<Bestrahlung> distinctPartialRadiations) {
+      Set<Bestrahlung> distinctPartialRadiations) {
 
     var radioTherapy = meldung.getMenge_ST().getST();
 
