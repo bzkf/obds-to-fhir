@@ -72,14 +72,8 @@ public class SystemischeTherapieMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     } else {
       var performed = new Period();
-      var performedStart = new DateTimeType();
-      performedStart.setValue(syst.getBeginn().getValue().toGregorianCalendar().getTime());
-      performed.setStartElement(performedStart);
-      if (syst.getEnde() != null) {
-        var performedEnd = new DateTimeType();
-        performedEnd.setValue(syst.getEnde().toGregorianCalendar().getTime());
-        performed.setEndElement(performedEnd);
-      }
+      convertObdsDatumToDateTimeType(syst.getBeginn()).ifPresent(performed::setStartElement);
+      convertObdsDatumToDateTimeType(syst.getEnde()).ifPresent(performed::setEndElement);
       procedure.setPerformed(performed);
     }
 
