@@ -5,7 +5,6 @@ import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Extension;
@@ -88,11 +87,11 @@ public class SystemischeTherapieMapper extends ObdsToFhirMapper {
 
     procedure.setCode(code);
 
-    // TODO: Same as in Strahlentherapie?
-    var category =
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getSnomed(), "277132007", "Therapeutic procedure"));
+    var category = new CodeableConcept();
+    category
+        .addCoding()
+        .setSystem(fhirProperties.getSystems().getSnomed())
+        .setCodeElement(dataAbsentCode);
     procedure.setCategory(category);
 
     var intention = new CodeableConcept();

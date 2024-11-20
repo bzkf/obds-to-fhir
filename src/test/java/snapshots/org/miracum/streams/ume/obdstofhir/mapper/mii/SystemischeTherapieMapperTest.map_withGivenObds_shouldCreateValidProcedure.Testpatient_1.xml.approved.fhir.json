@@ -21,8 +21,12 @@
   "category": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "277132007",
-      "display": "Therapeutic procedure"
+      "_code": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      }
     } ]
   },
   "code": {
