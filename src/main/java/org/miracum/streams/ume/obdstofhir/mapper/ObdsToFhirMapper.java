@@ -25,6 +25,7 @@ public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
+  static Pattern icd10CodePattern = Pattern.compile("[A-Z]\\d{2}(\\.\\d{1,2})?");
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
@@ -247,6 +248,6 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static boolean isIcd10GmCode(String value) {
-    return null != value && value.matches("[A-Z]\\d{2}(\\.\\d{1,2})?");
+    return null != value && icd10CodePattern.matcher(value).matches();
   }
 }
