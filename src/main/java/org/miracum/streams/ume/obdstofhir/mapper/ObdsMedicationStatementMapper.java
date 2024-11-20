@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.SYSTTherapieartCSLookup;
@@ -123,7 +124,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
       String softwareId,
       Meldeanlass meldeanlass,
       String substance,
-      HashSet<String> substances) {
+      Set<String> substances) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
