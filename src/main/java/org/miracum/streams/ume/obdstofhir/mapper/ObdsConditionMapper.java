@@ -99,15 +99,14 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     // Aufbau: "10 2021 GM"
     var icd10Version = primDia.getPrimaertumor_ICD_Version();
     if (StringUtils.hasLength(icd10Version)) {
-      var matcher = icdVersionPattern.matcher(icd10Version);
-      if (matcher.matches()) {
-        coding.setVersion(matcher.group("versionYear"));
-      } else {
-        LOG.warn(
-            "Primaertumor_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
-            icdVersionPattern.pattern(),
-            icd10Version);
-      }
+      getIcd10VersionYear(icd10Version)
+          .ifPresentOrElse(
+              coding::setVersion,
+              () ->
+                  LOG.warn(
+                      "Primaertumor_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
+                      icdVersionPattern.pattern(),
+                      icd10Version));
     } else {
       LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
     }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.DateTimeException;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -121,7 +122,7 @@ class ObdsToFhirMapperTests {
 
   @ParameterizedTest
   @MethodSource("icd10GmCodeValidationData")
-  void checkValueToMatchIcd10Pattern(String input, boolean valid) {
+  void checkValueToMatchIcd10CodePattern(String input, boolean valid) {
     var actual = ObdsToFhirMapper.isIcd10GmCode(input);
     assertThat(actual).isEqualTo(valid);
   }
@@ -138,5 +139,41 @@ class ObdsToFhirMapperTests {
         Arguments.of("CC0.0", false),
         Arguments.of("", false),
         Arguments.of(null, false));
+  }
+
+  @ParameterizedTest
+  @MethodSource("icd10VersionValidationResult")
+  void checkValueToMatchIcd10VersionPattern(String input, boolean valid) {
+    var actual = ObdsToFhirMapper.isIcd10VersionString(input);
+    assertThat(actual).isEqualTo(valid);
+  }
+
+  @ParameterizedTest
+  @MethodSource("icd10VersionYearResult")
+  void shouldExtractYearFromIcd10Version(String input, Optional<String> year) {
+    var actual = ObdsToFhirMapper.getIcd10VersionYear(input);
+    assertThat(actual).isEqualTo(year);
+  }
+
+  private static Stream<Arguments> icd10VersionValidationResult() {
+    return Stream.of(
+        Arguments.of("10 2019 GM", true),
+        Arguments.of("10 2017 GM", true),
+        Arguments.of("10 2024 WHO", true),
+        Arguments.of("Sonstige", true),
+        Arguments.of("10 2024 Other", false),
+        Arguments.of("", false),
+        Arguments.of(null, false));
+  }
+
+  private static Stream<Arguments> icd10VersionYearResult() {
+    return Stream.of(
+        Arguments.of("10 2019 GM", Optional.of("2019")),
+        Arguments.of("10 2017 GM", Optional.of("2017")),
+        Arguments.of("10 2024 WHO", Optional.of("2024")),
+        Arguments.of("Sonstige", Optional.empty()),
+        Arguments.of("10 2024 Other", Optional.empty()),
+        Arguments.of("", Optional.empty()),
+        Arguments.of(null, Optional.empty()));
   }
 }

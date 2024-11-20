@@ -25,6 +25,8 @@ public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
+  static Pattern icd10VersionPattern =
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
@@ -248,5 +250,31 @@ public abstract class ObdsToFhirMapper {
 
   public static boolean isIcd10GmCode(String value) {
     return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+  }
+
+  /**
+   * Returns the ICD 10 version year if the input is a valid ICD 10 version string
+   *
+   * @param value The input to extract the year
+   * @return An optional containing the extracted year if input is a valid ICD 10 version string.
+   */
+  public static Optional<String> getIcd10VersionYear(String value) {
+    if (StringUtils.hasText(value)) {
+      var matcher = icd10VersionPattern.matcher(value);
+      if (matcher.matches()) {
+        return Optional.ofNullable(matcher.group("versionYear"));
+      }
+    }
+    return Optional.empty();
+  }
+
+  /**
+   * Check if the input string is a valid ICD 10 version string
+   *
+   * @param value The input to check
+   * @return Returns true if input is a valid ICD 10 version string.
+   */
+  public static boolean isIcd10VersionString(String value) {
+    return StringUtils.hasText(value) && icd10VersionPattern.matcher(value).matches();
   }
 }
