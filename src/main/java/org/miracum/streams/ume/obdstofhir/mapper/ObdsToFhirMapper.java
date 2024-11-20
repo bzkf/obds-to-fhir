@@ -25,6 +25,7 @@ public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
+  static Pattern icd10CodePattern = Pattern.compile("[A-Z]\\d{2}(\\.\\d{1,2})?");
   static Pattern icd10VersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
@@ -249,7 +250,7 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static boolean isIcd10GmCode(String value) {
-    return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+    return null != value && icd10CodePattern.matcher(value).matches();
   }
 
   /**
