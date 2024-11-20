@@ -83,9 +83,15 @@ public class SystemischeTherapieMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     }
 
-    // Set to absent as of now
     var code = new CodeableConcept();
+    // Always add absent OPS
     code.addCoding().setSystem(fhirProperties.getSystems().getOps()).setCodeElement(dataAbsentCode);
+    if (null != syst.getTherapieart()) {
+      code.addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
+          .setCode(syst.getTherapieart().value());
+    }
+
     procedure.setCode(code);
 
     // TODO: Same as in Strahlentherapie?
