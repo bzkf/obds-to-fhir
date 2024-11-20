@@ -17,6 +17,7 @@ fhir:
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-bestrahlung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"
     mii-ex-onko-histology-morphology-behavior-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3"
+    mii-ex-onko-systemische-therapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"
   systems:
     patientId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/patient-id"
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -28,6 +29,7 @@ fhir:
     gleasonScoreObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/psa-observation-id"
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/strahlentherapie-procedure-id"
+    systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-procedure-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -81,6 +83,7 @@ fhir:
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie"
+    mii-pr-onko-systemische-therapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

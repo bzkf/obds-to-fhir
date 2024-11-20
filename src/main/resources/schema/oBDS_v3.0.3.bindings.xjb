@@ -28,5 +28,8 @@
         <jaxb:bindings node="//xs:complexType[@name='ST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Meldeanlass" />
         </jaxb:bindings>
+                <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
+        </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>

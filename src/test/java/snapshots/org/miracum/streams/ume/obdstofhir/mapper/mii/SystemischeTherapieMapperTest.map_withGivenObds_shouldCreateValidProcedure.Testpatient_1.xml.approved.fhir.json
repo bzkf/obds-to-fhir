@@ -1,0 +1,46 @@
+{
+  "resourceType": "Procedure",
+  "id": "8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+        "code": "P"
+      } ]
+    }
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+    "value": "101_IN-1"
+  } ],
+  "status": "completed",
+  "category": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "277132007",
+      "display": "Therapeutic procedure"
+    } ]
+  },
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/ops",
+      "_code": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      }
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "performedPeriod": {
+    "start": "2020-05-01T02:00:00+02:00",
+    "end": "2020-10-15T02:00:00+02:00"
+  }
+}
