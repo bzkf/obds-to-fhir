@@ -19,11 +19,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SystemischeTherapieMapper extends ObdsToFhirMapper {
+public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SystemischeTherapieMapper.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
 
-  public SystemischeTherapieMapper(FhirProperties fhirProperties) {
+  public SystemischeTherapieProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 

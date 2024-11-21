@@ -21,12 +21,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class SystemischeTherapieMapperTest {
-  private static SystemischeTherapieMapper sut;
+class SystemischeTherapieProcedureMapperTest {
+  private static SystemischeTherapieProcedureMapper sut;
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    sut = new SystemischeTherapieMapper(fhirProps);
+    sut = new SystemischeTherapieProcedureMapper(fhirProps);
   }
 
   @ParameterizedTest
