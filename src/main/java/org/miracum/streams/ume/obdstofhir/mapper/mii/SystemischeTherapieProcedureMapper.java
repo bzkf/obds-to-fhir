@@ -103,6 +103,15 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     procedure.addExtension(
         fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieIntention(), intention);
 
+    if (null != syst.getEndeGrund()) {
+      var outcome = new CodeableConcept();
+      outcome
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsTherapieGrundEnde())
+          .setCode(syst.getEndeGrund().value());
+      procedure.setOutcome(outcome);
+    }
+
     return procedure;
   }
 }
