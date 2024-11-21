@@ -25,7 +25,7 @@ class SystemischeTherapieProcedureMapperTest {
   private static SystemischeTherapieProcedureMapper sut;
 
   @BeforeAll
-  static void beforeEach(@Autowired FhirProperties fhirProps) {
+  static void beforeAll(@Autowired FhirProperties fhirProps) {
     sut = new SystemischeTherapieProcedureMapper(fhirProps);
   }
 
