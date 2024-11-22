@@ -12,6 +12,9 @@
         "code": "8461/3"
       } ]
     }
+  }, {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+    "valueDateTime": "2017-07-02"
   } ],
   "verificationStatus": {
     "coding": [ {
@@ -44,5 +47,5 @@
   "subject": {
     "reference": "Patient/1"
   },
-  "recordedDate": "2017-07-02T00:00:00+02:00"
+  "recordedDate": "2017-07-02"
 }

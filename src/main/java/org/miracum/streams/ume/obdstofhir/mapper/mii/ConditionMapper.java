@@ -3,13 +3,15 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,12 +22,19 @@ public class ConditionMapper extends ObdsToFhirMapper {
   private static final Pattern icdVersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
-  @Autowired
   public ConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
   public Condition map(OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
+    Objects.requireNonNull(meldung);
+    Objects.requireNonNull(meldung.getTumorzuordnung());
+    Objects.requireNonNull(patient);
+    Validate.isTrue(
+        Objects.equals(
+            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
+        "The subject reference should point to a Patient resource");
+
     var condition = new Condition();
 
     if (meldung.getDiagnose().getDiagnosesicherung() != null) {
@@ -46,9 +55,6 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoDiagnosePrimaertumor());
 
     var tumorzuordnung = meldung.getTumorzuordnung();
-    if (tumorzuordnung == null) {
-      throw new RuntimeException("Tumorzuordnung ist null");
-    }
 
     Coding icd =
         new Coding(
@@ -105,8 +111,11 @@ public class ConditionMapper extends ObdsToFhirMapper {
     }
     condition.setBodySite(bodySite);
 
-    condition.setRecordedDate(
-        tumorzuordnung.getDiagnosedatum().getValue().toGregorianCalendar().getTime());
+    var diagnoseDatum = convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum());
+    condition.setRecordedDateElement(diagnoseDatum);
+    condition.addExtension(
+        fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum);
+
     return condition;
   }
 }
