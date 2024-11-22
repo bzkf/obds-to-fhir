@@ -301,7 +301,7 @@ public abstract class ObdsToFhirMapper {
       case V:
         date.setPrecision(TemporalPrecisionEnum.YEAR);
         log.warn(
-            "Date precision is completely estimated. Likely not a correct value."
+            "Date precision is completely estimated. Likely not a correct value. "
                 + "Defaulting to most granular 'year' precision.");
         break;
     }
