@@ -100,6 +100,7 @@ public class FhirProperties {
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
+    private String miiPrMedicationStatement;
   }
 
   @Data

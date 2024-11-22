@@ -1,0 +1,21 @@
+{
+  "resourceType": "Bundle",
+  "entry": [ {
+    "fullUrl": "MedicationStatement/d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "value": "11_1_Innere.1_Bicalutamid"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b"
+    }
+  } ]
+}
