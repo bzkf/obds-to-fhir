@@ -4,6 +4,8 @@ import de.basisdatensatz.obds.v3.SYSTTyp;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.MedicationStatement;
@@ -41,6 +43,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         "The subject reference should point to a Procedure resource");
 
     var bundle = new Bundle();
+    bundle.setType(Bundle.BundleType.TRANSACTION);
 
     for (var substanz : syst.getMengeSubstanz().getSubstanz()) {
       var systMedicationStatement = new MedicationStatement();
@@ -53,8 +56,14 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         var substanzId = "";
         if (null != substanz.getATC() && StringUtils.hasText(substanz.getATC().getCode())) {
           substanzId = substanz.getATC().getCode();
+          var atcCoding =
+              new Coding(
+                  fhirProperties.getSystems().getAtcBfarm(), substanz.getATC().getCode(), "");
+          systMedicationStatement.setMedication(new CodeableConcept(atcCoding));
         } else {
           substanzId = substanz.getBezeichnung().replaceAll("[^A-Za-z0-9]", "");
+          systMedicationStatement.setMedication(
+              new CodeableConcept().setText(substanz.getBezeichnung()));
         }
 
         // TODO: can we be sure that this SYST-ID is globally unqiue across all SYSTs?

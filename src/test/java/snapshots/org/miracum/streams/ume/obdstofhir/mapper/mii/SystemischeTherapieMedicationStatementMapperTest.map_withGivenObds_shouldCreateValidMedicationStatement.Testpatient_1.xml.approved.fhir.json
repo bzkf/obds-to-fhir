@@ -1,5 +1,6 @@
 {
   "resourceType": "Bundle",
+  "type": "transaction",
   "entry": [ {
     "fullUrl": "MedicationStatement/99635bf8744dadda1f8b293046f2bfb3d021938263616e6228523113af2695c1",
     "resource": {
@@ -11,7 +12,13 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
         "value": "101_IN-1_L01FF05"
-      } ]
+      } ],
+      "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01FF05"
+        } ]
+      }
     },
     "request": {
       "method": "PUT",
