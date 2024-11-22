@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616",
+    "fullUrl": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e",
     "resource": {
       "resourceType": "Condition",
-      "id": "a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616",
+      "id": "fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e",
       "meta": {
         "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
@@ -13,27 +13,27 @@
       "extension": [ {
         "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
         "valueReference": {
-          "reference": "Observation/7b3181b44891bb7bba0f7ebb2511285589df40eb54a6073e390ed8550fc3ad8d"
+          "reference": "Observation/19005daf0d1dca12a5f1c6f1cfeb0f66846505b2767132256aa4f8cc37377948"
         }
       }, {
         "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
         "valueReference": {
-          "reference": "Observation/aa0f0ae0f151114fd167c207b9216685244dd8a17739f01e2e3fda9cada6491a"
+          "reference": "Observation/f4e9826582d85a66ffd6d1b8bdcf6c69716e41ba7522fdca02c3877a8d6b5160"
         }
       }, {
         "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
         "valueReference": {
-          "reference": "Observation/a0bac97bc3de3b565faba74d49c0b6eb43751b07fa5deda2f63b75eb8db66147"
+          "reference": "Observation/d1bc93be5b023be71fc2612bfe9d1416e079512e59d0e95d739a52234a82a620"
         }
       }, {
         "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
         "valueReference": {
-          "reference": "Observation/302e6b7f1b82d044c443cd186dad3eb3470351b10d6e0808fefcf9c99c354753"
+          "reference": "Observation/0676e83d85646f8e574c6d7572b2e26a80f9ad3388ca635c1b0013b8b6b73bd9"
         }
       }, {
         "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen",
         "valueReference": {
-          "reference": "Observation/734471546228b0e9385706399d6eeef9860ab8cb67536c07a0d9712d7bea302d"
+          "reference": "Observation/22086985fb414b2951feee882b84a9f53858271b6e0c85de31f34249428b6388"
         }
       } ],
       "code": {
@@ -55,7 +55,7 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -63,29 +63,29 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "onsetDateTime": "2021-03-18",
       "stage": [ {
         "assessment": [ {
-          "reference": "Observation/fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc"
+          "reference": "Observation/6f87f78ab622c2def32d0c0ae38293670f4e48c43f956e87b542cdf6b4d523ac"
         } ]
       }, {
         "assessment": [ {
-          "reference": "Observation/555236ab41f9cc4e258c40c578b4ffbcb355055b8977706c983a3f338b6298b1"
+          "reference": "Observation/22f18c0e387674e8c10cbcb816ce1556aa41c608b3e5ed62058a171ff53a1bcd"
         } ]
       } ],
       "evidence": [ {
         "detail": [ {
-          "reference": "Observation/4d8b7cdb7f7e81ecfeceafb96ac5c4390ae37be6b3b38f21ba315389dccb040b"
+          "reference": "Observation/9fd1b6f977fd35cc51761f5d05e69778757eee67929f0eb70c5ecf7485ee7119"
         } ]
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
+      "url": "Condition/fdb5758af35fbfd2804a92e990d703db8840f4a50ea16a1a736f16d72fec431e"
     }
   } ]
 }

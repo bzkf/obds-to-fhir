@@ -1,6 +1,6 @@
 {
   "resourceType": "Patient",
-  "id": "9a4965dcb45d403e91fba874d9641ac1f040d420aea61aa45e519dad820f9aec",
+  "id": "6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
   },
@@ -16,7 +16,7 @@
         "display": "pseudonymized"
       } ]
     },
-    "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
     "value": "00001234"
   } ],
   "address": [ {
