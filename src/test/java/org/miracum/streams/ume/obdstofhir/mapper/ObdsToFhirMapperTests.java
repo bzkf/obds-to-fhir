@@ -209,6 +209,7 @@ class ObdsToFhirMapperTests {
     "2017-07-02,T,2017-07",
     "2017-07-02,M,2017",
     "1999-12-31,M,1999",
+    "2000-01-01,V,2000",
   })
   void shouldConvertDatumTagOderMonatOderJahrOderNichtGenauTypToDateType(
       String input,
