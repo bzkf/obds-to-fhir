@@ -29,6 +29,8 @@ public class ConditionMapper extends ObdsToFhirMapper {
   public Condition map(OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
     Objects.requireNonNull(meldung);
     Objects.requireNonNull(meldung.getTumorzuordnung());
+    Objects.requireNonNull(meldung.getDiagnose());
+    Objects.requireNonNull(meldung.getMeldungID());
     Objects.requireNonNull(patient);
     Validate.isTrue(
         Objects.equals(
@@ -36,6 +38,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
         "The subject reference should point to a Patient resource");
 
     var condition = new Condition();
+
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getConditionId())
+            .setValue(meldung.getTumorzuordnung().getTumorID());
+    condition.addIdentifier(identifier);
+    condition.setId(computeResourceIdFromIdentifier(identifier));
 
     if (meldung.getDiagnose().getDiagnosesicherung() != null) {
       Coding verStatus =
