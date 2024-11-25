@@ -76,6 +76,7 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieZielgebiet;
     private String strahlentherapieProcedureId;
     private String systemischeTherapieProcedureId;
+    private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
     private String miiCsTherapieGrundEnde;

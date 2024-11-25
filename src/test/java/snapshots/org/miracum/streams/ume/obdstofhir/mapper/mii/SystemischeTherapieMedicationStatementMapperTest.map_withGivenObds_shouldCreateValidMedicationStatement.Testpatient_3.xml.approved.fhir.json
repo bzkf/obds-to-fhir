@@ -2,15 +2,15 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "MedicationStatement/69e986083bed8b3ee0519fda269bfa44104d421348ccd8214f1af901b26650df",
+    "fullUrl": "MedicationStatement/da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "69e986083bed8b3ee0519fda269bfa44104d421348ccd8214f1af901b26650df",
+      "id": "da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
         "value": "12_1_Innere.1_Paclitaxel_a0a4"
       } ],
       "partOf": [ {
@@ -29,7 +29,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/69e986083bed8b3ee0519fda269bfa44104d421348ccd8214f1af901b26650df"
+      "url": "MedicationStatement/da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7"
     }
   } ]
 }
