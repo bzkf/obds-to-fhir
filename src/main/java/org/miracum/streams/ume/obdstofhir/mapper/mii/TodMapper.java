@@ -46,6 +46,7 @@ public class TodMapper extends ObdsToFhirMapper {
     */
 
     var observation = new Observation();
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
 
     // Observation Code
     var snomedCode = new CodeableConcept();
@@ -70,16 +71,17 @@ public class TodMapper extends ObdsToFhirMapper {
 
     // Value | Todesursache ICD10GM
     if (meldung.getTod().getMengeTodesursachen() != null) {
+      var todesursacheConcept = new CodeableConcept();
       for (AllgemeinICDTyp todesursache :
           meldung.getTod().getMengeTodesursachen().getTodesursacheICD()) {
-        var todesursacheConcept = new CodeableConcept();
         todesursacheConcept
             .addCoding()
             .setSystem(fhirProperties.getSystems().getIcd10gm())
             .setCode(todesursache.getCode())
-            .setDisplay(todesursache.getCode());
-        observation.setCode(todesursacheConcept);
+            .setDisplay(todesursache.getCode())
+            .setVersion(todesursache.getVersion());
       }
+      observation.setValue(todesursacheConcept);
     }
 
     // Interpretation
