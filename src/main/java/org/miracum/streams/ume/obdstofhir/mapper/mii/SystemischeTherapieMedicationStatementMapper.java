@@ -2,6 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
+
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.Bundle;
@@ -96,6 +98,9 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
         // Subject
         systMedicationStatement.setSubject(patient);
+
+        // Part of
+        systMedicationStatement.setPartOf(List.of(procedure));
 
         bundle = addResourceAsEntryInBundle(bundle, systMedicationStatement);
       }
