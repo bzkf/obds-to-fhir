@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -59,5 +61,65 @@ class SystemischeTherapieProcedureMapperTest {
     var fhirJson = fhirParser.encodeResourceToString(procedure);
     Approvals.verify(
         fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+  }
+
+  @Test
+  void shouldNotVerifyNullReferences() throws Exception {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/Testpatient_1.xml");
+    assertThat(resource).isNotNull();
+
+    final var xmlMapper =
+        XmlMapper.builder()
+            .defaultUseWrapper(false)
+            .addModule(new JakartaXmlBindAnnotationModule())
+            .addModule(new Jdk8Module())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .build();
+
+    final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
+
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+
+    var wrongPatient = (Reference) null;
+    var systMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getSYST() != null)
+            .findFirst()
+            .get();
+
+    var ex =
+        assertThrows(
+            NullPointerException.class, () -> sut.map(systMeldung.getSYST(), wrongPatient));
+    assertThat(ex).hasMessage("Reference to PATIENT must not be null");
+  }
+
+  @Test
+  void shouldNotVerifyWrongReferencesType() throws Exception {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/Testpatient_1.xml");
+    assertThat(resource).isNotNull();
+
+    final var xmlMapper =
+        XmlMapper.builder()
+            .defaultUseWrapper(false)
+            .addModule(new JakartaXmlBindAnnotationModule())
+            .addModule(new Jdk8Module())
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .build();
+
+    final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
+
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+
+    var wrongPatient = new Reference("Procedure/any");
+    var systMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getSYST() != null)
+            .findFirst()
+            .get();
+
+    var ex =
+        assertThrows(
+            IllegalArgumentException.class, () -> sut.map(systMeldung.getSYST(), wrongPatient));
+    assertThat(ex).hasMessage("The reference should point to a PATIENT resource");
   }
 }

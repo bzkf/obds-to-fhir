@@ -23,7 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper {
+public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper
+    implements Mapper<SYSTTyp, Bundle> {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
@@ -34,18 +35,10 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
   public Bundle map(SYSTTyp syst, Reference patient, Reference procedure) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Objects.requireNonNull(procedure, "Reference to Procedure must not be null");
-
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            procedure.getReferenceElement().getResourceType(), ResourceType.PROCEDURE.toCode()),
-        "The subject reference should point to a Procedure resource");
+
+    verifyReference(patient, ResourceType.PATIENT);
+    verifyReference(procedure, ResourceType.PROCEDURE);
 
     var bundle = new Bundle();
     bundle.setType(Bundle.BundleType.TRANSACTION);

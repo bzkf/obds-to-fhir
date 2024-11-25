@@ -19,7 +19,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
+public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper
+    implements Mapper<SYSTTyp, Procedure> {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
@@ -30,13 +31,9 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
   public Procedure map(SYSTTyp syst, Reference subject) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
-    Objects.requireNonNull(subject, "Reference must not be null");
-
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            subject.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+
+    verifyReference(subject, ResourceType.PATIENT);
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());

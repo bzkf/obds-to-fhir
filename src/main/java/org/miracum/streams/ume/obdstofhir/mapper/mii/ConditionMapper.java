@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -14,7 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class ConditionMapper extends ObdsToFhirMapper {
+public class ConditionMapper extends ObdsToFhirMapper
+    implements Mapper<OBDS.MengePatient.Patient.MengeMeldung.Meldung, Condition> {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
   private static final Pattern icdVersionPattern =
@@ -27,6 +29,8 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
   public Condition map(OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
     var condition = new Condition();
+
+    verifyReference(patient, ResourceType.PATIENT);
 
     if (meldung.getDiagnose().getDiagnosesicherung() != null) {
       Coding verStatus =
