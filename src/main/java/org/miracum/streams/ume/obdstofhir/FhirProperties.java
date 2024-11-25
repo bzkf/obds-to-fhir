@@ -81,6 +81,7 @@ public class FhirProperties {
     private String miiCsTherapieGrundEnde;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
+    private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
 
   @Data
