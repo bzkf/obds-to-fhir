@@ -18,7 +18,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StrahlentherapieMapper extends ObdsToFhirMapper {
+public class StrahlentherapieMapper extends ObdsToFhirMapper implements Mapper<STTyp, Procedure> {
   private static final Logger LOG = LoggerFactory.getLogger(StrahlentherapieMapper.class);
 
   public StrahlentherapieMapper(FhirProperties fhirProperties) {
@@ -27,13 +27,9 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
   public Procedure map(STTyp st, Reference subject) {
     Objects.requireNonNull(st);
-    Objects.requireNonNull(subject);
-
     Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            subject.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+
+    verifyReference(subject, ResourceType.PATIENT);
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
