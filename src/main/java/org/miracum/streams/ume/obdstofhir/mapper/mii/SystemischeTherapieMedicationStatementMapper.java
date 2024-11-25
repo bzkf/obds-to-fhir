@@ -1,8 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
+import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
-
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -65,7 +66,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
                   fhirProperties.getSystems().getAtcBfarm(), substanz.getATC().getCode(), "");
           systMedicationStatement.setMedication(new CodeableConcept(atcCoding));
         } else {
-          substanzId = substanz.getBezeichnung().replaceAll("[^A-Za-z0-9]", "");
+          substanzId = createSubstanzIdFromPlain(substanz.getBezeichnung());
           systMedicationStatement.setMedication(
               new CodeableConcept().setText(substanz.getBezeichnung()));
         }
@@ -107,5 +108,13 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     }
 
     return bundle;
+  }
+
+  private String createSubstanzIdFromPlain(String plainName) {
+    Validate.notBlank(plainName, "Required substance name is unset");
+    return String.format(
+        "%s_%s",
+        plainName.replaceAll("[^A-Za-z0-9]+", ""),
+        Hashing.sha256().hashString(plainName, StandardCharsets.UTF_8).toString().substring(0, 4));
   }
 }

@@ -2,16 +2,16 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "MedicationStatement/d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b",
+    "fullUrl": "MedicationStatement/2be692115f7383b050211e2c4b857655192448b28772b0a5af15839b1a84fa5e",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b",
+      "id": "2be692115f7383b050211e2c4b857655192448b28772b0a5af15839b1a84fa5e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
-        "value": "11_1_Innere.1_Bicalutamid"
+        "value": "11_1_Innere.1_Bicalutamid_fa96"
       } ],
       "partOf": [ {
         "reference": "Procedure/any"
@@ -29,7 +29,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/d5925147316a1e8c6e69c3f663fad0301c1666ca5bf1b14f4c75cdda22ffce3b"
+      "url": "MedicationStatement/2be692115f7383b050211e2c4b857655192448b28772b0a5af15839b1a84fa5e"
     }
   } ]
 }
