@@ -13,11 +13,19 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
         "value": "101_IN-1_L01FF05"
       } ],
+      "status": "completed",
       "medicationCodeableConcept": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "code": "L01FF05"
         } ]
+      },
+      "subject": {
+        "reference": "Patient/any"
+      },
+      "effectivePeriod": {
+        "start": "2020-05",
+        "end": "2020-10-15"
       }
     },
     "request": {

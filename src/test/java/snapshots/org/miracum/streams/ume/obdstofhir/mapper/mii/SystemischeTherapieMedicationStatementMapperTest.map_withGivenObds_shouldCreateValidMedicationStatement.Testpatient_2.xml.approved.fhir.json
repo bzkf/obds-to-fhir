@@ -13,8 +13,15 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
         "value": "11_1_Innere.1_Bicalutamid"
       } ],
+      "status": "active",
       "medicationCodeableConcept": {
         "text": "Bicalutamid"
+      },
+      "subject": {
+        "reference": "Patient/any"
+      },
+      "effectivePeriod": {
+        "start": "2021-11-08"
       }
     },
     "request": {

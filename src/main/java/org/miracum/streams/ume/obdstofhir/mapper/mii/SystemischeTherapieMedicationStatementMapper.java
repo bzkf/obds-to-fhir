@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.SYSTTyp;
+import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.Bundle;
@@ -9,6 +10,7 @@ import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.MedicationStatement;
+import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -74,6 +76,26 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
                 .setValue(String.format("%s_%s", syst.getSYSTID(), substanzId));
         systMedicationStatement.addIdentifier(identifier);
         systMedicationStatement.setId(computeResourceIdFromIdentifier(identifier));
+
+        // Status / Effective
+        var meldeanlass = syst.getMeldeanlass();
+        var period = new Period();
+        if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
+          systMedicationStatement.setStatus(
+              MedicationStatement.MedicationStatementStatus.COMPLETED);
+          convertObdsDatumToDateTimeType(syst.getBeginn())
+              .ifPresent(start -> period.setStart(start.getValue(), start.getPrecision()));
+          convertObdsDatumToDateTimeType(syst.getEnde())
+              .ifPresent(end -> period.setEnd(end.getValue(), end.getPrecision()));
+        } else {
+          systMedicationStatement.setStatus(MedicationStatement.MedicationStatementStatus.ACTIVE);
+          convertObdsDatumToDateTimeType(syst.getBeginn())
+              .ifPresent(start -> period.setStart(start.getValue(), start.getPrecision()));
+        }
+        systMedicationStatement.setEffective(period);
+
+        // Subject
+        systMedicationStatement.setSubject(patient);
 
         bundle = addResourceAsEntryInBundle(bundle, systMedicationStatement);
       }
