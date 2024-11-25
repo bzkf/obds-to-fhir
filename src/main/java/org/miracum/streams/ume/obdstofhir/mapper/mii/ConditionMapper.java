@@ -1,10 +1,12 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
@@ -26,12 +28,16 @@ public class ConditionMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Condition map(OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
+  public Condition map(
+      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      Reference patient,
+      XMLGregorianCalendar meldeDatum) {
     Objects.requireNonNull(meldung);
     Objects.requireNonNull(meldung.getTumorzuordnung());
     Objects.requireNonNull(meldung.getDiagnose());
     Objects.requireNonNull(meldung.getMeldungID());
     Objects.requireNonNull(patient);
+    Objects.requireNonNull(meldeDatum);
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
@@ -121,9 +127,12 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setBodySite(bodySite);
 
     var diagnoseDatum = convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum());
-    condition.setRecordedDateElement(diagnoseDatum);
     condition.addExtension(
         fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum);
+
+    var recorded = new DateTimeType(meldeDatum.toGregorianCalendar().getTime());
+    recorded.setPrecision(TemporalPrecisionEnum.DAY);
+    condition.setRecordedDateElement(recorded);
 
     return condition;
   }
