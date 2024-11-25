@@ -85,6 +85,7 @@ public class FhirProperties {
     private String icdo3MorphologieOid;
     private String atcBfarm;
     private String atcWho;
+    private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
 
   @Data

@@ -10,7 +10,7 @@
         <jaxb:bindings node="//xs:complexType[@name='Datum_Tag_oder_Monat_oder_Jahr_oder_nicht_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau" />
         </jaxb:bindings>
-            <jaxb:bindings node="//xs:complexType[@name='Diagnose_Typ']//xs:element[@name='Diagnosesicherung']/xs:simpleType">
+        <jaxb:bindings node="//xs:complexType[@name='Diagnose_Typ']//xs:element[@name='Diagnosesicherung']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DiagnoseTypDiagnosesicherung" >
                 <jaxb:typesafeEnumMember value="1" name="DS_1" />
                 <jaxb:typesafeEnumMember value="2" name="DS_2" />
@@ -23,6 +23,26 @@
                 <jaxb:typesafeEnumMember value="7.3" name="DS_7_3" />
                 <jaxb:typesafeEnumMember value="8" name="DS_8" />
                 <jaxb:typesafeEnumMember value="9" name="DS_9" />
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:simpleType[@name='Allgemeiner_Leistungszustand_Typ']" >
+            <jaxb:typesafeEnumClass name="AllgemeinerLeistungszustand" >
+                <jaxb:typesafeEnumMember value="0" name="ECOG_0" />
+                <jaxb:typesafeEnumMember value="1" name="ECOG_1" />
+                <jaxb:typesafeEnumMember value="2" name="ECOG_2" />
+                <jaxb:typesafeEnumMember value="3" name="ECOG_3" />
+                <jaxb:typesafeEnumMember value="4" name="ECOG_4" />
+                <jaxb:typesafeEnumMember value="U" name="ECOG_U" />
+                <jaxb:typesafeEnumMember value="10%" name="KARNOFSKY_10" />
+                <jaxb:typesafeEnumMember value="20%" name="KARNOFSKY_20" />
+                <jaxb:typesafeEnumMember value="30%" name="KARNOFSKY_30" />
+                <jaxb:typesafeEnumMember value="40%" name="KARNOFSKY_40" />
+                <jaxb:typesafeEnumMember value="50%" name="KARNOFSKY_50" />
+                <jaxb:typesafeEnumMember value="60%" name="KARNOFSKY_60" />
+                <jaxb:typesafeEnumMember value="70%" name="KARNOFSKY_70" />
+                <jaxb:typesafeEnumMember value="80%" name="KARNOFSKY_80" />
+                <jaxb:typesafeEnumMember value="90%" name="KARNOFSKY_90" />
+                <jaxb:typesafeEnumMember value="100%" name="KARNOFSKY_100" />
             </jaxb:typesafeEnumClass>
         </jaxb:bindings>
         <jaxb:bindings node="//xs:complexType[@name='ST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
