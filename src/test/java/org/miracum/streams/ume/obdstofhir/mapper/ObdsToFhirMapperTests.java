@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp.DatumsgenauigkeitTagOderMonatGenau;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp.DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau;
 import java.time.DateTimeException;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -198,5 +200,28 @@ class ObdsToFhirMapperTests {
     var actual = ObdsToFhirMapper.convertObdsDatumToDateTimeType((DatumTagOderMonatGenauTyp) null);
 
     assertThat(actual).isEmpty();
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "2017-07-02,E,2017-07-02",
+    "1999-12-31,E,1999-12-31",
+    "2017-07-02,T,2017-07",
+    "2017-07-02,M,2017",
+    "1999-12-31,M,1999",
+    "2000-01-01,V,2000",
+  })
+  void shouldConvertDatumTagOderMonatOderJahrOderNichtGenauTypToDateType(
+      String input,
+      DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau genauigkeit,
+      String expected) {
+    var calendar = DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar(input);
+    var datum = new DatumTagOderMonatOderJahrOderNichtGenauTyp();
+    datum.setValue(calendar);
+    datum.setDatumsgenauigkeit(genauigkeit);
+
+    var actual = ObdsToFhirMapper.convertObdsDatumToDateType(datum);
+
+    assertThat(actual.asStringValue()).isEqualTo(expected);
   }
 }
