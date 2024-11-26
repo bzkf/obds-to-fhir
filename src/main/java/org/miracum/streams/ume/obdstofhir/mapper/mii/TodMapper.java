@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.OBDS;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
@@ -47,8 +48,9 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
+    observation.setStatus(Observation.ObservationStatus.FINAL);
 
-    // Observation Code
+    // Code | 184305005 | Cause of death (observable entity)
     var snomedCode = new CodeableConcept();
     snomedCode.addCoding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("184305005");
     observation.setCode(snomedCode);
@@ -56,7 +58,7 @@ public class TodMapper extends ObdsToFhirMapper {
     // Subject
     observation.setSubject(patient);
 
-    // Effective | Todesdatum
+    // Effective | Sterbedatum
     var todesZeitpunkt = convertObdsDatumToDateTimeType(meldung.getTod().getSterbedatum());
     if (todesZeitpunkt.isPresent()) {
       observation.setEffective(todesZeitpunkt.get());
@@ -69,7 +71,7 @@ public class TodMapper extends ObdsToFhirMapper {
     observation.setFocus(focusList);
     */
 
-    // Value | Todesursache ICD10GM
+    // Value | Todesursache(n) ICD10GM
     if (meldung.getTod().getMengeTodesursachen() != null) {
       var todesursacheConcept = new CodeableConcept();
       for (AllgemeinICDTyp todesursache :
@@ -78,22 +80,19 @@ public class TodMapper extends ObdsToFhirMapper {
             .addCoding()
             .setSystem(fhirProperties.getSystems().getIcd10gm())
             .setCode(todesursache.getCode())
-            .setDisplay(todesursache.getCode())
             .setVersion(todesursache.getVersion());
       }
       observation.setValue(todesursacheConcept);
     }
 
-    // Interpretation
-    // ToDo get display from system
+    // Interpretation | Tod Tumorbedingt
     if (meldung.getTod().getTodTumorbedingt() != null) {
       var interpretation = new CodeableConcept();
       interpretation
           .addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
-          .setCode(meldung.getTod().getTodTumorbedingt().value())
-          .setDisplay(meldung.getTod().getTodTumorbedingt().value());
-      observation.setCode(interpretation);
+          .setCode(meldung.getTod().getTodTumorbedingt().value());
+      observation.setInterpretation(Arrays.asList(interpretation));
     }
 
     return observation;
