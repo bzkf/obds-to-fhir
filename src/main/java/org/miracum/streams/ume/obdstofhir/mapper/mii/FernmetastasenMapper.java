@@ -1,12 +1,14 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
-
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import de.basisdatensatz.obds.v3.MengeFMTyp;
 import de.basisdatensatz.obds.v3.OBDS;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Objects;
 
 public class FernmetastasenMapper extends ObdsToFhirMapper {
   private static final Logger Log = LoggerFactory.getLogger(FernmetastasenMapper.class);
@@ -16,6 +18,15 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
   }
 
   public Bundle map(OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient) {
+
+    Objects.requireNonNull(meldungen);
+    Objects.requireNonNull(meldungen.getMeldung());
+    Objects.requireNonNull(patient);
+    Validate.isTrue(
+      Objects.equals(
+        patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
+      "The subject reference should point to a Patient resource");
+
     var obsBundle = new Bundle();
     obsBundle.setType(Bundle.BundleType.COLLECTION);
     // alle Meldungen
