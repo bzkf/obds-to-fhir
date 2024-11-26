@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp.DatumsgenauigkeitTagOderMonatGenau;
 import java.time.DateTimeException;
@@ -198,5 +199,34 @@ class ObdsToFhirMapperTests {
     var actual = ObdsToFhirMapper.convertObdsDatumToDateTimeType((DatumTagOderMonatGenauTyp) null);
 
     assertThat(actual).isEmpty();
+  }
+
+  @ParameterizedTest
+  @MethodSource("allgemeinerLeistungszustandTestData")
+  void shouldMapAllegemeinerLeistungszustandToEcog(
+      AllgemeinerLeistungszustand in, AllgemeinerLeistungszustand expected) {
+    var actual = ObdsConditionMapper.allgemeinerLeistungszustandToEcog(in);
+    assertThat(actual).isEqualTo(expected);
+  }
+
+  static Stream<Arguments> allgemeinerLeistungszustandTestData() {
+    return Stream.of(
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_100, AllgemeinerLeistungszustand.ECOG_0),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_90, AllgemeinerLeistungszustand.ECOG_0),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_80, AllgemeinerLeistungszustand.ECOG_1),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_70, AllgemeinerLeistungszustand.ECOG_1),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_60, AllgemeinerLeistungszustand.ECOG_2),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_50, AllgemeinerLeistungszustand.ECOG_2),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_40, AllgemeinerLeistungszustand.ECOG_3),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_30, AllgemeinerLeistungszustand.ECOG_3),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_20, AllgemeinerLeistungszustand.ECOG_4),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_10, AllgemeinerLeistungszustand.ECOG_4),
+        Arguments.of(AllgemeinerLeistungszustand.KARNOFSKY_40, AllgemeinerLeistungszustand.ECOG_3),
+        Arguments.of(AllgemeinerLeistungszustand.U, AllgemeinerLeistungszustand.U),
+        Arguments.of(AllgemeinerLeistungszustand.ECOG_0, AllgemeinerLeistungszustand.ECOG_0),
+        Arguments.of(AllgemeinerLeistungszustand.ECOG_1, AllgemeinerLeistungszustand.ECOG_1),
+        Arguments.of(AllgemeinerLeistungszustand.ECOG_2, AllgemeinerLeistungszustand.ECOG_2),
+        Arguments.of(AllgemeinerLeistungszustand.ECOG_3, AllgemeinerLeistungszustand.ECOG_3),
+        Arguments.of(AllgemeinerLeistungszustand.ECOG_4, AllgemeinerLeistungszustand.ECOG_4));
   }
 }

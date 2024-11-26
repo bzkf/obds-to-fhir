@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
+import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.nio.charset.StandardCharsets;
@@ -304,5 +305,34 @@ public abstract class ObdsToFhirMapper {
     var date = new DateTimeType(obdsDatum.toGregorianCalendar().getTime());
     date.setPrecision(TemporalPrecisionEnum.DAY);
     return Optional.of(date);
+  }
+
+  /**
+   * Transforms AllgemeinerLeistungszustand to another AllgemeinerLeistungszustand using ECOG.
+   *
+   * @param value The value to be transformed
+   * @return Returns AllgemeinerLeistungszustand for ECOG or U (unknown)
+   */
+  public static AllgemeinerLeistungszustand allgemeinerLeistungszustandToEcog(
+      AllgemeinerLeistungszustand value) {
+    switch (value) {
+      case AllgemeinerLeistungszustand.KARNOFSKY_100:
+      case AllgemeinerLeistungszustand.KARNOFSKY_90:
+        return AllgemeinerLeistungszustand.ECOG_0;
+      case AllgemeinerLeistungszustand.KARNOFSKY_80:
+      case AllgemeinerLeistungszustand.KARNOFSKY_70:
+        return AllgemeinerLeistungszustand.ECOG_1;
+      case AllgemeinerLeistungszustand.KARNOFSKY_60:
+      case AllgemeinerLeistungszustand.KARNOFSKY_50:
+        return AllgemeinerLeistungszustand.ECOG_2;
+      case AllgemeinerLeistungszustand.KARNOFSKY_40:
+      case AllgemeinerLeistungszustand.KARNOFSKY_30:
+        return AllgemeinerLeistungszustand.ECOG_3;
+      case AllgemeinerLeistungszustand.KARNOFSKY_20:
+      case AllgemeinerLeistungszustand.KARNOFSKY_10:
+        return AllgemeinerLeistungszustand.ECOG_4;
+      default:
+        return value;
+    }
   }
 }

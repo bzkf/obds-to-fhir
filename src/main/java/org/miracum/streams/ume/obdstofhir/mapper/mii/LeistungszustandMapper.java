@@ -53,44 +53,43 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getMiiCsOnkoAllgemeinerLeistungszustandEcog());
     AllgemeinerLeistungszustand allgemeinerLeistungszustand =
         meldung.getDiagnose().getAllgemeinerLeistungszustand();
-    switch (allgemeinerLeistungszustand) {
-      case ECOG_0, KARNOFSKY_90, KARNOFSKY_100:
+    switch (allgemeinerLeistungszustandToEcog(allgemeinerLeistungszustand)) {
+      case ECOG_0:
         value.setCode("0");
         value.setDisplay(
             "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % "
                 + "nach Karnofsky)");
         break;
-      case ECOG_1, KARNOFSKY_70, KARNOFSKY_80:
+      case ECOG_1:
         value.setCode("1");
         value.setDisplay(
             "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte "
                 + "körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) "
                 + "möglich (70 - 80 % nach Karnofsky)");
         break;
-      case ECOG_2, KARNOFSKY_50, KARNOFSKY_60:
+      case ECOG_2:
         value.setCode("2");
         value.setDisplay(
             "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr "
                 + "als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)");
         break;
-      case ECOG_3, KARNOFSKY_30, KARNOFSKY_40:
+      case ECOG_3:
         value.setCode("3");
         value.setDisplay(
             "Nur begrenzte Selbstversorgung möglich; ist 50 % oder mehr der Wachzeit"
                 + " an Bett oder Stuhl gebunden (30 40 % nach Karnofsky)");
         break;
-      case ECOG_4, KARNOFSKY_10, KARNOFSKY_20:
+      case ECOG_4:
         value.setCode("4");
         value.setDisplay(
             "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an "
                 + "Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)");
         break;
-      case ECOG_U:
+      case U:
+      default:
         value.setCode("U");
         value.setDisplay("Unbekannt");
         break;
-      default:
-        break; // TODO: is this even possible? mandatory in oBDS
     }
     observation.setValue(new CodeableConcept(value));
 
