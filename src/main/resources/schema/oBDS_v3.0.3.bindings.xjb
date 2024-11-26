@@ -37,5 +37,25 @@
         <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
             <jaxb:typesafeEnumClass name="EndeGrund" />
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:simpleType[@name='Allgemeiner_Leistungszustand_Typ']">
+            <jaxb:typesafeEnumClass name="Allgemeiner_Leistungszustand_Typ">
+                <jaxb:typesafeEnumMember value="0" name="ECOG_0"/>
+                <jaxb:typesafeEnumMember value="1" name="ECOG_1"/>
+                <jaxb:typesafeEnumMember value="2" name="ECOG_2"/>
+                <jaxb:typesafeEnumMember value="3" name="ECOG_3"/>
+                <jaxb:typesafeEnumMember value="4" name="ECOG_4"/>
+                <jaxb:typesafeEnumMember value="U" name="U"/>
+                <jaxb:typesafeEnumMember value="10%" name="KARNOFSKY_10"/>
+                <jaxb:typesafeEnumMember value="20%" name="KARNOFSKY_20"/>
+                <jaxb:typesafeEnumMember value="30%" name="KARNOFSKY_30"/>
+                <jaxb:typesafeEnumMember value="40%" name="KARNOFSKY_40"/>
+                <jaxb:typesafeEnumMember value="50%" name="KARNOFSKY_50"/>
+                <jaxb:typesafeEnumMember value="60%" name="KARNOFSKY_60"/>
+                <jaxb:typesafeEnumMember value="70%" name="KARNOFSKY_70"/>
+                <jaxb:typesafeEnumMember value="80%" name="KARNOFSKY_80"/>
+                <jaxb:typesafeEnumMember value="90%" name="KARNOFSKY_90"/>
+                <jaxb:typesafeEnumMember value="100%" name="KARNOFSKY_100"/>
+            </jaxb:typesafeEnumClass>
+        </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>
