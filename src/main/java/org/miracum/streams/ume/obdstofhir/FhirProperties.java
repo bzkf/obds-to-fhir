@@ -23,6 +23,7 @@ public class FhirProperties {
     private String sysTheraProto;
     private String dataAbsentReason;
     private String genderAmtlich;
+    private String miiExOnkoOPIntention;
   }
 
   @Data
@@ -65,6 +66,7 @@ public class FhirProperties {
     private String gleasonScoreObservationId;
     private String psaObservationId;
     private String ucum;
+    private String miiCsOnkoIntention;
   }
 
   @Data
