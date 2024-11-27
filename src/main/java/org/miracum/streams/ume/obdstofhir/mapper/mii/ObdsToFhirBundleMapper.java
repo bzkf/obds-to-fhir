@@ -15,15 +15,20 @@ public class ObdsToFhirBundleMapper {
   private final ConditionMapper conditionMapper;
   private final StrahlentherapieMapper strahlentherapieMapper;
   private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
+  private final SystemischeTherapieMedicationStatementMapper
+      systemischeTherapieMedicationStatementMapper;
 
   public ObdsToFhirBundleMapper(
       PatientMapper patientMapper,
       ConditionMapper conditionMapper,
       SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper,
+      SystemischeTherapieMedicationStatementMapper systemischeTherapieMedicationStatementMapper,
       StrahlentherapieMapper strahlentherapieMapper) {
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
     this.systemischeTherapieProcedureMapper = systemischeTherapieProcedureMapper;
+    this.systemischeTherapieMedicationStatementMapper =
+        systemischeTherapieMedicationStatementMapper;
     this.strahlentherapieMapper = strahlentherapieMapper;
   }
 
@@ -48,12 +53,28 @@ public class ObdsToFhirBundleMapper {
           addEntryToBundle(bundle, condition);
         }
 
+        // Systemtherapie
         if (meldung.getSYST() != null) {
-          var systProcedure =
-              systemischeTherapieProcedureMapper.map(meldung.getSYST(), patientReference);
+          var syst = meldung.getSYST();
+
+          var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
           addEntryToBundle(bundle, systProcedure);
+
+          var procedureReference = new Reference("Procedure/" + systProcedure.getId());
+
+          if (syst.getMengeSubstanz() != null) {
+            var systMedicationStatement =
+                systemischeTherapieMedicationStatementMapper.map(
+                    syst, patientReference, procedureReference);
+            // TODO: updated if the mapper returnss a List<> instead
+            for (var resource :
+                systMedicationStatement.getEntry().stream().map(e -> e.getResource()).toList()) {
+              addEntryToBundle(bundle, resource);
+            }
+          }
         }
 
+        // Strahlenterhapie
         if (meldung.getST() != null) {
           var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
           addEntryToBundle(bundle, stProcedure);

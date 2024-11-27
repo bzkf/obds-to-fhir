@@ -237,6 +237,39 @@
     }
   }, {
     "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "101_IN-1_L01FF05"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf"
+      } ],
+      "status": "completed",
+      "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01FF05"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "effectivePeriod": {
+        "start": "2020-05",
+        "end": "2020-10-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978"
+    }
+  }, {
+    "resource": {
       "resourceType": "Condition",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
