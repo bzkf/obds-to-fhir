@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       PatientMapper.class,
       ConditionMapper.class,
       SystemischeTherapieProcedureMapper.class,
+      SystemischeTherapieMedicationStatementMapper.class,
       StrahlentherapieMapper.class,
     })
 @EnableConfigurationProperties
@@ -37,9 +38,7 @@ class ObdsToFhirBundleMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "Testpatient_1.xml",
-  })
+  @CsvSource({"Testpatient_1.xml"})
   void map_withGivenObds_shouldCreateBundleMatchingSnapshot(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
