@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
+  },
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "184305005"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "effectiveDateTime": "2022-08-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "10 2020 GM",
+      "code": "C50.9"
+    }, {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "10 2020 GM",
+      "code": "T57.3"
+    } ]
+  },
+  "interpretation": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
+      "code": "J"
+    } ]
+  } ]
+}
