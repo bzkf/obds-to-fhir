@@ -1,39 +1,28 @@
 {
-  "resourceType": "Bundle",
-  "type": "transaction",
-  "entry": [ {
-    "fullUrl": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "101_IN-1_L01FF05"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/any"
-      } ],
-      "status": "completed",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01FF05"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/any"
-      },
-      "effectivePeriod": {
-        "start": "2020-05",
-        "end": "2020-10-15"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978"
-    }
-  } ]
+  "resourceType": "MedicationStatement",
+  "id": "050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+    "value": "101_IN-1_L01FF05"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/any"
+  } ],
+  "status": "completed",
+  "medicationCodeableConcept": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+      "code": "L01FF05"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "effectivePeriod": {
+    "start": "2020-05",
+    "end": "2020-10-15"
+  }
 }

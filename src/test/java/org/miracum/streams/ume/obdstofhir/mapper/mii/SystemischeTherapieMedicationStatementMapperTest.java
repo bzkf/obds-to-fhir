@@ -55,10 +55,12 @@ class SystemischeTherapieMedicationStatementMapperTest {
             .filter(m -> m.getSYST() != null)
             .findFirst()
             .get();
-    var bundle = sut.map(systMeldung.getSYST(), patient, procedure);
+    var list = sut.map(systMeldung.getSYST(), patient, procedure);
+
+    assertThat(list).hasSize(1);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(bundle);
+    var fhirJson = fhirParser.encodeResourceToString(list.get(0));
 
     Approvals.verify(
         fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
