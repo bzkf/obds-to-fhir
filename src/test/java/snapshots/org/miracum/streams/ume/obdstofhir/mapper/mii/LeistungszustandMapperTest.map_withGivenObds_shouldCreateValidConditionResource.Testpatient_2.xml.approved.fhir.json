@@ -1,0 +1,25 @@
+{
+  "resourceType": "Observation",
+  "id": "77951180aba80503043684f703f8f07490e021daf41799832e27df788faaf428",
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+    "value": "ECOG-11_1_DI_1"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "423740007"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+      "code": "1",
+      "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
+    } ]
+  }
+}
