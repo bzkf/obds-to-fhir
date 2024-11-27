@@ -49,7 +49,7 @@ public class ObdsToFhirBundleMapper {
       for (var meldung : meldungen) {
         // Diagnose
         if (meldung.getDiagnose() != null) {
-          var condition = conditionMapper.map(meldung, patientReference);
+          var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
           addEntryToBundle(bundle, condition);
         }
 
@@ -63,12 +63,11 @@ public class ObdsToFhirBundleMapper {
           var procedureReference = new Reference("Procedure/" + systProcedure.getId());
 
           if (syst.getMengeSubstanz() != null) {
-            var systMedicationStatement =
+            var systMedicationStatements =
                 systemischeTherapieMedicationStatementMapper.map(
                     syst, patientReference, procedureReference);
-            // TODO: updated if the mapper returnss a List<> instead
-            for (var resource :
-                systMedicationStatement.getEntry().stream().map(e -> e.getResource()).toList()) {
+
+            for (var resource : systMedicationStatements) {
               addEntryToBundle(bundle, resource);
             }
           }
