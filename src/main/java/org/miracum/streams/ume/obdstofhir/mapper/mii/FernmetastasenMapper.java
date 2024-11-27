@@ -1,4 +1,5 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import de.basisdatensatz.obds.v3.MengeFMTyp;
 import de.basisdatensatz.obds.v3.OBDS;
@@ -43,20 +44,21 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
         for (var fernmetastase : mengeFM.getFernmetastase()) {
           var observation = new Observation();
 
-          // Set Meta-Daten, Status, Code, Subject
+          //Meta-Daten
           observation
               .getMeta()
               .addProfile(fhirProperties.getProfiles().getMiiPrOnkoFernmetastasen());
           observation.setStatus(Observation.ObservationStatus.FINAL);
+          //Code
           observation.setCode(
               new CodeableConcept(
-                  new Coding(fhirProperties.getSystems().getIcd10gm(), "385421009", "")));
+                  new Coding(fhirProperties.getSystems().getSnomed(), "385421009", "")));
+          //Subject
           observation.setSubject(patient);
-
           // Datum
-          var date = fernmetastase.getDiagnosedatum().getValue().toGregorianCalendar().getTime();
-          observation.setEffective(new DateTimeType(date));
-
+          var effective = new DateTimeType(fernmetastase.getDiagnosedatum().getValue().toGregorianCalendar().getTime());
+          effective.setPrecision(TemporalPrecisionEnum.DAY);
+          observation.setEffective(effective);
           // Lokalisation
           var lokalisation = new CodeableConcept();
           lokalisation
