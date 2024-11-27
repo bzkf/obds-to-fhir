@@ -32,7 +32,7 @@
                 <jaxb:typesafeEnumMember value="2" name="ECOG_2" />
                 <jaxb:typesafeEnumMember value="3" name="ECOG_3" />
                 <jaxb:typesafeEnumMember value="4" name="ECOG_4" />
-                <jaxb:typesafeEnumMember value="U" name="ECOG_U" />
+                <jaxb:typesafeEnumMember value="U" name="U" />
                 <jaxb:typesafeEnumMember value="10%" name="KARNOFSKY_10" />
                 <jaxb:typesafeEnumMember value="20%" name="KARNOFSKY_20" />
                 <jaxb:typesafeEnumMember value="30%" name="KARNOFSKY_30" />

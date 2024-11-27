@@ -85,12 +85,14 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
             "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an "
                 + "Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)");
         break;
-      case ECOG_U:
+      case U:
         value.setCode("U");
         value.setDisplay("Unbekannt");
         break;
       default:
-        break; // TODO: is this even possible? mandatory in oBDS
+        value.setCode("U");
+        value.setDisplay("Unbekannt");
+        break;
     }
     observation.setValue(new CodeableConcept(value));
 
