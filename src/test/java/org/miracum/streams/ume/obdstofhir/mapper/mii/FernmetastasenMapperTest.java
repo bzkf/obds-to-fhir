@@ -52,10 +52,14 @@ public class FernmetastasenMapperTest {
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
-    for (int i=0;i< list.size();i++){
+    for (int i = 0; i < list.size(); i++) {
       var fhirJson = fhirParser.encodeResourceToString(list.get(i));
       Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile, "index_"+i).forFile().withExtension(".fhir.json"));
+          fhirJson,
+          Approvals.NAMES
+              .withParameters(sourceFile, "index_" + i)
+              .forFile()
+              .withExtension(".fhir.json"));
     }
   }
 }
