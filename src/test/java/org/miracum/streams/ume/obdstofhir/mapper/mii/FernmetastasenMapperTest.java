@@ -48,10 +48,14 @@ public class FernmetastasenMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
 
-    final var bundle = sut.map(obdsPatient.getMengeMeldung(), subject);
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
+
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(bundle);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+
+    for (int i=0;i< list.size();i++){
+      var fhirJson = fhirParser.encodeResourceToString(list.get(i));
+      Approvals.verify(
+        fhirJson, Approvals.NAMES.withParameters(sourceFile, "index_"+i).forFile().withExtension(".fhir.json"));
+    }
   }
 }
