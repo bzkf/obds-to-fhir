@@ -28,7 +28,6 @@ class LeistungszustandMapperTest {
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    //    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new LeistungszustandMapper(fhirProps);
   }
 
@@ -47,16 +46,19 @@ class LeistungszustandMapperTest {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
 
+    assert resource != null;
     final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
-    var conMeldung =
+    var conMeldungOptional =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getDiagnose() != null)
-            .findFirst()
-            .get();
+            .findFirst();
+    assert conMeldungOptional.isPresent();
+    var conMeldung = conMeldungOptional.get();
 
-    final var leistungszustand = sut.map(conMeldung, new Reference("Patient/1"));
+    final var leistungszustand =
+        sut.map(conMeldung, new Reference("Patient/1"), new Reference("Condition/Primärdiagnose"));
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     var fhirJson = fhirParser.encodeResourceToString(leistungszustand);

@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
 import de.basisdatensatz.obds.v3.OBDS;
+import java.util.Collections;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -17,7 +18,9 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
+      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      Reference patient,
+      Reference condition) {
 
     Objects.requireNonNull(meldung);
     Objects.requireNonNull(meldung.getDiagnose());
@@ -32,10 +35,14 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
 
-    // TODO: is this prefix suitable? e.g. ECOG-10_1_DI_1
+    observation.setMeta(
+        new Meta()
+            .addProfile(
+                fhirProperties.getProfiles().getMiiPrOnkoAllgemeinerLeistungszustandEcog()));
+
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getConditionId())
+            .setSystem(fhirProperties.getSystems().getAllgemeinerLeistungszustandEcogId())
             .setValue("ECOG-" + meldung.getMeldungID());
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
@@ -47,6 +54,12 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
     observation.setCode(
         new CodeableConcept(
             new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("423740007")));
+
+    var dateOptional =
+        convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum().getValue());
+    dateOptional.ifPresent(observation::setEffective);
+
+    observation.setFocus(Collections.singletonList(condition));
 
     Coding value =
         new Coding()

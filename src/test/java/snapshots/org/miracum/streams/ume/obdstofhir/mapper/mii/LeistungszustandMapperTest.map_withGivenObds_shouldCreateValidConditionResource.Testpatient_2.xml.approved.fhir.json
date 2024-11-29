@@ -1,8 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "77951180aba80503043684f703f8f07490e021daf41799832e27df788faaf428",
+  "id": "e058ce128aad62443a3b697b4ab50088b836ab2ee177fa3373c106280f1b5ec1",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+  },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
     "value": "ECOG-11_1_DI_1"
   } ],
   "status": "final",
@@ -15,6 +18,10 @@
   "subject": {
     "reference": "Patient/1"
   },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-07-08",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
