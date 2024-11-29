@@ -26,6 +26,8 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
+    private String miiExOnkoSystemischeTherapieIntention;
+    private String conditionAssertedDate;
   }
 
   @Data
@@ -74,9 +76,15 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
     private String strahlentherapieProcedureId;
+    private String systemischeTherapieProcedureId;
+    private String systemischeTherapieMedicationStatementId;
+    private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
+    private String miiCsTherapieGrundEnde;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
+    private String atcBfarm;
+    private String atcWho;
   }
 
   @Data
@@ -95,6 +103,8 @@ public class FhirProperties {
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoStrahlentherapie;
+    private String miiPrOnkoSystemischeTherapie;
+    private String miiPrMedicationStatement;
   }
 
   @Data

@@ -1,5 +1,6 @@
 {
   "resourceType": "Condition",
+  "id": "a31f38c3b6c0d35e6f228a50ba288b814250c774b8dc89cf5ae36455eb6d1ea8",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
   },
@@ -12,6 +13,13 @@
         "code": "8140/3"
       } ]
     }
+  }, {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+    "valueDateTime": "2021-07-08"
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+    "value": "111"
   } ],
   "verificationStatus": {
     "coding": [ {
@@ -44,5 +52,5 @@
   "subject": {
     "reference": "Patient/1"
   },
-  "recordedDate": "2021-07-08T00:00:00+02:00"
+  "recordedDate": "2024-02-16"
 }

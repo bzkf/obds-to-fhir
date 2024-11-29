@@ -3,9 +3,16 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp.DatumsgenauigkeitTagOderMonatGenau;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp.DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau;
 import java.time.DateTimeException;
 import java.util.Arrays;
 import java.util.stream.Stream;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -98,9 +105,7 @@ class ObdsToFhirMapperTests {
   void convertObdsDateToDateTimeTypeShouldThrowExceptionOnUnparsableDateString() {
     assertThrows(
         DateTimeException.class,
-        () -> {
-          ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere");
-        });
+        () -> ObdsToFhirMapper.convertObdsDateToDateTimeType("some shiny day somewere"));
   }
 
   @ParameterizedTest
@@ -138,5 +143,85 @@ class ObdsToFhirMapperTests {
         Arguments.of("CC0.0", false),
         Arguments.of("", false),
         Arguments.of(null, false));
+  }
+
+  @ParameterizedTest
+  @MethodSource("obdsDatumToDateTimeTypeData")
+  void shouldConvertDatumTagOderMonatGenauTypToDateTimeType(
+      XMLGregorianCalendar sourceDate,
+      DatumsgenauigkeitTagOderMonatGenau genauigkeit,
+      DateTimeType expected) {
+    var data = new DatumTagOderMonatGenauTyp();
+    data.setValue(sourceDate);
+    data.setDatumsgenauigkeit(genauigkeit);
+
+    var actual = ObdsToFhirMapper.convertObdsDatumToDateTimeType(data);
+
+    assertThat(actual)
+        .hasValueSatisfying(
+            dateTime ->
+                assertThat(dateTime.getValueAsString()).isEqualTo(expected.getValueAsString()));
+  }
+
+  private static Stream<Arguments> obdsDatumToDateTimeTypeData() {
+    return Stream.of(
+        Arguments.of(
+            DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar("2024-11-21"),
+            DatumsgenauigkeitTagOderMonatGenau.E,
+            DateTimeType.parseV3("20241121")),
+        Arguments.of(
+            DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar("2024-11-21"),
+            DatumsgenauigkeitTagOderMonatGenau.T,
+            DateTimeType.parseV3("202411")));
+  }
+
+  @Test
+  void shouldConvertCalendarToDateTimeType() {
+    var actual =
+        ObdsToFhirMapper.convertObdsDatumToDateTimeType(
+            DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar("2024-11-21"));
+
+    assertThat(actual)
+        .hasValueSatisfying(
+            dateTime ->
+                assertThat(dateTime.getValueAsString())
+                    .isEqualTo(DateTimeType.parseV3("20241121").getValueAsString()));
+  }
+
+  @Test
+  void shouldNotConvertCalendarToDateTimeTypeFromNull() {
+    var actual = ObdsToFhirMapper.convertObdsDatumToDateTimeType((XMLGregorianCalendar) null);
+
+    assertThat(actual).isEmpty();
+  }
+
+  @Test
+  void shouldNotConvertDatumTagOderMonatGenauTypToDateTimeTypeFromNull() {
+    var actual = ObdsToFhirMapper.convertObdsDatumToDateTimeType((DatumTagOderMonatGenauTyp) null);
+
+    assertThat(actual).isEmpty();
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "2017-07-02,E,2017-07-02",
+    "1999-12-31,E,1999-12-31",
+    "2017-07-02,T,2017-07",
+    "2017-07-02,M,2017",
+    "1999-12-31,M,1999",
+    "2000-01-01,V,2000",
+  })
+  void shouldConvertDatumTagOderMonatOderJahrOderNichtGenauTypToDateType(
+      String input,
+      DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau genauigkeit,
+      String expected) {
+    var calendar = DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar(input);
+    var datum = new DatumTagOderMonatOderJahrOderNichtGenauTyp();
+    datum.setValue(calendar);
+    datum.setDatumsgenauigkeit(genauigkeit);
+
+    var actual = ObdsToFhirMapper.convertObdsDatumToDateType(datum);
+
+    assertThat(actual.asStringValue()).isEqualTo(expected);
   }
 }

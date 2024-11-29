@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;
@@ -12,6 +13,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
@@ -253,7 +255,35 @@ public abstract class ObdsToFhirMapper {
 
   public static DateType convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
-    var date = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var dateTimeType = convertObdsDatumToDateTimeType(obdsDatum);
+    var dateType = new DateType(dateTimeType.getValue());
+    dateType.setPrecision(dateTimeType.getPrecision());
+    return dateType;
+  }
+
+  public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
+      DatumTagOderMonatGenauTyp obdsDatum) {
+    if (null == obdsDatum) {
+      return Optional.empty();
+    }
+
+    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+        // exakt (entspricht taggenau)
+      case E:
+        date.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+        // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        date.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+    }
+    return Optional.of(date);
+  }
+
+  public static DateTimeType convertObdsDatumToDateTimeType(
+      DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
     switch (obdsDatum.getDatumsgenauigkeit()) {
         // exakt (entspricht taggenau)
       case E:
@@ -269,8 +299,22 @@ public abstract class ObdsToFhirMapper {
         break;
         // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
       case V:
-        log.warn("Date precision is completely estimated. Likely not a correct value.");
+        date.setPrecision(TemporalPrecisionEnum.YEAR);
+        log.warn(
+            "Date precision is completely estimated. Likely not a correct value. "
+                + "Defaulting to most granular 'year' precision.");
+        break;
     }
     return date;
+  }
+
+  public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
+      XMLGregorianCalendar obdsDatum) {
+    if (null == obdsDatum) {
+      return Optional.empty();
+    }
+    var date = new DateTimeType(obdsDatum.toGregorianCalendar().getTime());
+    date.setPrecision(TemporalPrecisionEnum.DAY);
+    return Optional.of(date);
   }
 }
