@@ -250,7 +250,7 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static boolean isIcd10GmCode(String value) {
-    return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+    return null != value && value.matches("[A-Z]\\d{2}(\\.\\d{1,2})?");
   }
 
   public static DateType convertObdsDatumToDateType(
