@@ -1,5 +1,15 @@
 {
   "resourceType": "Observation",
+  "status": "unknown",
+  "code": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+      "code": "R0"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",

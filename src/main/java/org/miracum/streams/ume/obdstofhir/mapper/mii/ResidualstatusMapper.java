@@ -31,12 +31,25 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
 
+    // Subject
+    observation.setSubject(patient);
+
     // Gesamtbeurteilung des Residualstatus
-    var code = new CodeableConcept();
-    code.addCoding()
+    var value = new CodeableConcept();
+    value
+        .addCoding()
         .setSystem(fhirProperties.getSystems().getMiiCsOnkoResidualstatus())
         .setCode(rs.getGesamtbeurteilungResidualstatus().value());
-    observation.setValue(code);
+    observation.setValue(value);
+
+    // See: https://loinc.org/84892-9/
+    var code = new CodeableConcept();
+    code.addCoding().setCode(fhirProperties.getSystems().getLoinc()).setCode("84892-9");
+    observation.setCode(value);
+
+    // Status
+    // TODO: Correct status
+    observation.setStatus(Observation.ObservationStatus.UNKNOWN);
 
     return observation;
   }
