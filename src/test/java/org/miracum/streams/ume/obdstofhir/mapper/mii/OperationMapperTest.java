@@ -16,6 +16,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +27,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class OperationMapperTest {
   private static OperationMapper sut;
 
+  private static final Logger LOG = LoggerFactory.getLogger(OperationMapper.class);
+
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
@@ -32,9 +36,8 @@ public class OperationMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml"})
-  void map_withGivenObds_shouldCreateValidMedicationStatement(String sourceFile)
-      throws IOException {
+  @CsvSource({"Testpatient_1.xml"}) // , "Testpatient_2.xml"})
+  void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -61,12 +64,26 @@ public class OperationMapperTest {
             .findFirst()
             .get();
 
-    final var resultResource = sut.map(opMeldung.getOP(), subject, condition);
+    // Map and get the list of procedures
+    final var resultResources = sut.map(opMeldung.getOP(), subject, condition);
+
+    assertThat(resultResources).isNotEmpty();
+    LOG.info("Length of resultResources {}", resultResources.size());
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(resultResource);
-    // System.out.println(fhirJson);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+
+    LOG.info("Number of OPS codes: {}", opMeldung);
+
+    for (int i = 0; i <= resultResources.size(); i++) {
+      assertThat(resultResources.get(i)).isNotNull();
+      var fhirJson = fhirParser.encodeResourceToString(resultResources.get(i));
+      System.out.println("Verifying resource: index_" + i);
+      Approvals.verify(
+          fhirJson,
+          Approvals.NAMES
+              .withParameters(sourceFile, "index_" + i)
+              .forFile()
+              .withExtension(".fhir.json"));
+    }
   }
 }

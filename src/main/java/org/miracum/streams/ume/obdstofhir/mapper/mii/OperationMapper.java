@@ -1,15 +1,17 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OPTyp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.Validate;
 
 @Service
 public class OperationMapper extends ObdsToFhirMapper {
@@ -21,65 +23,95 @@ public class OperationMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Procedure map(OPTyp op, Reference subject, Reference condition) {
+  public List<Procedure> map(OPTyp op, Reference subject, Reference condition) {
 
     Objects.requireNonNull(op, "OP must not be null");
     Objects.requireNonNull(subject, "Reference must not be null");
     Validate.notBlank(op.getOPID(), "Required OP_ID is unset");
 
-    var procedure = new Procedure();
+    // create a list to hold all single Procedure resources
+    var procedureList = new ArrayList<Procedure>();
 
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getProcedureId())
-            .setValue(op.getOPID());
-    procedure.addIdentifier(identifier);
-    procedure.setId(computeResourceIdFromIdentifier(identifier));
+    LOG.info("Number of OPS codes: {}", op.getMengeOPS().getOPS().size());
 
-    procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
-
-    // I would suggestion to always use COMPLETED here, any objections?
-    procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
-
-    // there could be multiple OPS codes here --> create one coding for each, iterate through ops
-    // codes+
-    // do I need distinct values = remove duplicates?
-    CodeableConcept opsCodeableConcept = new CodeableConcept();
     for (var opsCode : op.getMengeOPS().getOPS()) {
+      var i = 0;
+      System.out.println(opsCode);
+      var procedure = new Procedure();
 
-      Coding ops = new Coding(fhirProperties.getSystems().getOps(), opsCode.getCode(), "");
-      ops.setVersion(opsCode.getVersion());
-      opsCodeableConcept.addCoding(ops);
-    }
+      // identifier, meta
 
-    // set all Codings gathered in the codeableconcept to code
-    procedure.setCode(opsCodeableConcept);
+      // so war es in alter Version: patientId +getOP_ID() + opsCode
+      // var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID() + opsCode;
+      // to do: brauch ich hier die patid? dann muss ich meine Parameter nochmal überdenken weil im
+      // OPTyp steht die nicht drin
 
-    procedure.setSubject(subject);
+      var identifier =
+          new Identifier()
+              .setSystem(fhirProperties.getSystems().getProcedureId())
+              .setValue(op.getOPID() + opsCode.getCode());
+      procedure.addIdentifier(identifier);
+      procedure.setId(
+          computeResourceIdFromIdentifier(
+              identifier)); // das hier macht den Hash vom identifier.value
 
-    // taken from SystTherapieProcedureMapper
-    var dataAbsentExtension =
-        new Extension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-    var dataAbsentCode = new CodeType();
-    dataAbsentCode.addExtension(dataAbsentExtension);
+      procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
 
-    var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
-    if (dateTime.isPresent()) {
-      procedure.setPerformed(dateTime.get());
-    } else {
-      var performed = new DateTimeType();
-      performed.addExtension(dataAbsentExtension);
-      procedure.setPerformed(performed);
-    }
+      // status
+      procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
 
-    var intention = new CodeableConcept();
-    intention
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-        .setCode(op.getIntention()); // Direct mapping from oBDS value
-    procedure.addExtension(fhirProperties.getExtensions().getMiiExOnkoOPIntention(), intention);
+      // code
+      CodeableConcept opsCodeableConcept =
+          new CodeableConcept()
+              .addCoding(
+                  new Coding()
+                      .setSystem(fhirProperties.getSystems().getOps())
+                      .setCode(opsCode.getCode())
+                      .setVersion(opsCode.getVersion()));
 
-    return procedure;
+      procedure.setCode(opsCodeableConcept);
+
+      // subject reference
+      procedure.setSubject(subject);
+
+      // performed
+      var dataAbsentExtension =
+          new Extension(
+              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      var dataAbsentCode = new CodeType();
+      dataAbsentCode.addExtension(dataAbsentExtension);
+
+      var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
+      if (dateTime.isPresent()) {
+        procedure.setPerformed(dateTime.get());
+      } else {
+        var performed = new DateTimeType();
+        performed.addExtension(dataAbsentExtension);
+        procedure.setPerformed(performed);
+      }
+
+      // ReasonReference
+      procedure.addReasonReference(condition);
+
+      // intention
+      var intention = new CodeableConcept();
+      intention
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
+          .setCode(op.getIntention());
+
+      var intentionExtens =
+          new Extension()
+              .setUrl(fhirProperties.getExtensions().getMiiExOnkoOPIntention())
+              .setValue(intention);
+
+      procedure.addExtension(intentionExtens);
+
+      // add procedure to procedure list here
+      procedureList.add(procedure);
+      LOG.info("Created Procedure with ID: {} and Code: {}", procedure.getId(), opsCode.getCode());
+    } // end for loop iterating over ops codes
+    LOG.debug("Mapped procedures: {}", procedureList.size());
+    return procedureList;
   }
 }

@@ -12,7 +12,7 @@ fhir:
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
-    mii-ex-onko-op-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
+    miiExOnkoOPIntention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
   systems:
     patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -52,6 +52,7 @@ fhir:
     observation-value: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
     genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
     ucum: "http://unitsofmeasure.org"
+    miiCsOnkoIntention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
