@@ -42,6 +42,9 @@ public class SpecimenMapper extends ObdsToFhirMapper {
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
         histologie.add(meldung.getOP().getHistologie());
       }
+      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
+        histologie.add(meldung.getPathologie().getHistologie());
+      }
     }
 
     for (var histo : histologie) {
