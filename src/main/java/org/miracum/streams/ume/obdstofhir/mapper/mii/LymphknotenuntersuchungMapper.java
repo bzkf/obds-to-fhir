@@ -171,7 +171,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
               .setValue(histo.getLKBefallen().intValue())
-              .setUnit("" + "#");
+              .setUnit("#");
       obs_befallen.setValue(value_befallen);
       var value_untersucht =
           new Quantity()
