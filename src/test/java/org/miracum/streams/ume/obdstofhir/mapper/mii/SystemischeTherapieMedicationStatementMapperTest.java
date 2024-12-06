@@ -10,6 +10,7 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
+import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -20,23 +21,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class PatientMapperTest {
-  private static PatientMapper sut;
+class SystemischeTherapieMedicationStatementMapperTest {
+  private static SystemischeTherapieMedicationStatementMapper sut;
 
   @BeforeAll
-  static void beforeEach(@Autowired FhirProperties fhirProps) {
-    sut = new PatientMapper(fhirProps);
+  static void beforeAll(@Autowired FhirProperties fhirProps) {
+    sut = new SystemischeTherapieMedicationStatementMapper(fhirProps);
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "test1.xml",
-    "Testpatient_1.xml",
-    "Testpatient_2.xml",
-    "Testpatient_3.xml",
-    "Testpatient_leer.xml"
-  })
-  void map_withGivenObds_shouldCreateValidPatientResource(String sourceFile) throws IOException {
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  void map_withGivenObds_shouldCreateValidMedicationStatement(String sourceFile)
+      throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -45,8 +41,6 @@ class PatientMapperTest {
             .defaultUseWrapper(false)
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
-            // added because the Testpatient_*.xml contain the `xsi:schemaLocation` attribute which
-            // isn't code-generated
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
 
@@ -54,10 +48,20 @@ class PatientMapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
-    final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
+    var patient = new Reference("Patient/any");
+    var procedure = new Reference("Procedure/any");
+    var systMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getSYST() != null)
+            .findFirst()
+            .get();
+    var list = sut.map(systMeldung.getSYST(), patient, procedure);
+
+    assertThat(list).hasSize(1);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(patient);
+    var fhirJson = fhirParser.encodeResourceToString(list.get(0));
+
     Approvals.verify(
         fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }

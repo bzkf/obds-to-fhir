@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Condition/438ded78a47f0cc1921fd82237f9c5aaca5fa381ef2e5b4e65538087dd08d47c",
+    "fullUrl": "Condition/065cbf5eb7ef2abad0324e135de9523e49ac36a11272a75e4b0ff70373457261",
     "resource": {
       "resourceType": "Condition",
-      "id": "438ded78a47f0cc1921fd82237f9c5aaca5fa381ef2e5b4e65538087dd08d47c",
+      "id": "065cbf5eb7ef2abad0324e135de9523e49ac36a11272a75e4b0ff70373457261",
       "meta": {
         "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
@@ -29,7 +29,7 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
         "identifier": {
           "type": {
             "coding": [ {
@@ -37,24 +37,24 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555999"
         }
       },
       "onsetDateTime": "2021-02-08",
       "evidence": [ {
         "detail": [ {
-          "reference": "Observation/c283276eb31614ec2e9ea44e9d844ff51c3de42b20cead14da926251a1ddbafc"
+          "reference": "Observation/4ca8b009caf2cdff90cb5bc4798663956004775a0e353702605a13a8739792a1"
         } ]
       }, {
         "detail": [ {
-          "reference": "Observation/5f8a74450706bd0d34767d104eeb16c99eb69bbaea1f6ce1049c87f09bea2df0"
+          "reference": "Observation/1367dad6d7171ff1ef4c2c9295e994db32ab7b990ac1fb832ca5ab235544c36d"
         } ]
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/438ded78a47f0cc1921fd82237f9c5aaca5fa381ef2e5b4e65538087dd08d47c"
+      "url": "Condition/065cbf5eb7ef2abad0324e135de9523e49ac36a11272a75e4b0ff70373457261"
     }
   } ]
 }

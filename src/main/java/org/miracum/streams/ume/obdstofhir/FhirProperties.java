@@ -24,6 +24,11 @@ public class FhirProperties {
     private String dataAbsentReason;
     private String genderAmtlich;
     private String miiExOnkoOPIntention;
+    private String miiExOnkoStrahlentherapieIntention;
+    private String miiExOnkoStrahlentherapieBestrahlung;
+    private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
+    private String miiExOnkoSystemischeTherapieIntention;
+    private String conditionAssertedDate;
   }
 
   @Data
@@ -36,7 +41,7 @@ public class FhirProperties {
     private String medicationStatementId;
     private String observationCategorySystem;
     private String loinc;
-    private String idco3Morphologie;
+    private String icdo3Morphologie;
     private String gradingDktk;
     private String uicc;
     private String tnmPraefix;
@@ -67,6 +72,20 @@ public class FhirProperties {
     private String psaObservationId;
     private String ucum;
     private String miiCsOnkoIntention;
+    private String miiCsOnkoPrimaertumorDiagnosesicherung;
+    private String miiCsOnkoStrahlentherapieApplikationsart;
+    private String miiCsOnkoStrahlentherapieStrahlenart;
+    private String miiCsOnkoStrahlentherapieZielgebiet;
+    private String strahlentherapieProcedureId;
+    private String systemischeTherapieProcedureId;
+    private String systemischeTherapieMedicationStatementId;
+    private String miiCsOnkoSystemischeTherapieArt;
+    private String miiCsOnkoSeitenlokalisation;
+    private String miiCsTherapieGrundEnde;
+    private String conditionVerStatus;
+    private String icdo3MorphologieOid;
+    private String atcBfarm;
+    private String atcWho;
   }
 
   @Data
@@ -85,6 +104,9 @@ public class FhirProperties {
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoOperation;
+    private String miiPrOnkoStrahlentherapie;
+    private String miiPrOnkoSystemischeTherapie;
+    private String miiPrMedicationStatement;
   }
 
   @Data

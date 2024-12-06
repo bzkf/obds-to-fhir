@@ -4,8 +4,9 @@ WORKDIR /home/gradle/project
 COPY --chown=gradle:gradle . .
 
 RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
-gradle clean build --info --no-daemon
-gradle jacocoTestReport --no-daemon
+set -e
+gradle clean build --info
+gradle jacocoTestReport
 java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
 EOF
 
@@ -17,6 +18,7 @@ ENTRYPOINT [ "true" ]
 FROM docker.io/library/debian:12.6-slim@sha256:2ccc7e39b0a6f504d252f807da1fc4b5bcd838e83e4dec3e2f57b2a4a64e7214 AS jemalloc
 # hadolint ignore=DL3008
 RUN <<EOF
+set -e
 apt-get update
 apt-get install -y --no-install-recommends libjemalloc-dev
 apt-get clean

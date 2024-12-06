@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
+    "fullUrl": "Condition/cab0194996be0d2e5b7cf98b2d0192e0c8556e3de8cd07bc5474469a3aee4b75",
     "resource": {
       "resourceType": "Condition",
-      "id": "04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110",
+      "id": "cab0194996be0d2e5b7cf98b2d0192e0c8556e3de8cd07bc5474469a3aee4b75",
       "meta": {
         "source": "KR7X825X.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose" ]
@@ -18,7 +18,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/19cc75fbfb51266ac0149828ae2f8522106e3ba176ceac2b40acb3cb1c9365f9",
+        "reference": "Patient/427d579eb1e0242dbc668018a7603e00d74143f3c4ae01acfb2c75e3a2509060",
         "identifier": {
           "type": {
             "coding": [ {
@@ -26,14 +26,14 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "0001234567"
         }
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/04c8f27ca021b8fd87ffd3abbde1f4b907bb3d6921fd61c5d4b9a0a756b8d110"
+      "url": "Condition/cab0194996be0d2e5b7cf98b2d0192e0c8556e3de8cd07bc5474469a3aee4b75"
     }
   } ]
 }

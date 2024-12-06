@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567",
+    "fullUrl": "Procedure/c276bcce0327d29013769ce9e8fe45b314fb930334463d4df69343d92f1164aa",
     "resource": {
       "resourceType": "Procedure",
-      "id": "4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567",
+      "id": "c276bcce0327d29013769ce9e8fe45b314fb930334463d4df69343d92f1164aa",
       "meta": {
         "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
@@ -38,7 +38,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
+        "reference": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
         "identifier": {
           "type": {
             "coding": [ {
@@ -46,12 +46,12 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555888"
         }
       },
       "reasonReference": [ {
-        "reference": "Condition/7f1aeff536cbf279167b567fbd01427d0ac271d1a3d3b13dedf8561587a45fff"
+        "reference": "Condition/5b35fb59f35cb37caa458922afc70148c9ffe9e3963cc3ea803a4a40fc2b014c"
       } ],
       "complication": [ {
         "coding": [ {
@@ -63,13 +63,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
+      "url": "Procedure/c276bcce0327d29013769ce9e8fe45b314fb930334463d4df69343d92f1164aa"
     }
   }, {
-    "fullUrl": "Procedure/2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5",
+    "fullUrl": "Procedure/54711c3acea72420da79d7e6941c989b4ecc77f0f87b04f9fa6a94cd0bcf2eba",
     "resource": {
       "resourceType": "Procedure",
-      "id": "2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5",
+      "id": "54711c3acea72420da79d7e6941c989b4ecc77f0f87b04f9fa6a94cd0bcf2eba",
       "meta": {
         "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
@@ -94,7 +94,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
+        "reference": "Procedure/c276bcce0327d29013769ce9e8fe45b314fb930334463d4df69343d92f1164aa"
       } ],
       "status": "completed",
       "category": {
@@ -105,7 +105,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
+        "reference": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
         "identifier": {
           "type": {
             "coding": [ {
@@ -113,12 +113,12 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555888"
         }
       },
       "reasonReference": [ {
-        "reference": "Condition/7f1aeff536cbf279167b567fbd01427d0ac271d1a3d3b13dedf8561587a45fff"
+        "reference": "Condition/5b35fb59f35cb37caa458922afc70148c9ffe9e3963cc3ea803a4a40fc2b014c"
       } ],
       "complication": [ {
         "coding": [ {
@@ -130,13 +130,13 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5"
+      "url": "Procedure/54711c3acea72420da79d7e6941c989b4ecc77f0f87b04f9fa6a94cd0bcf2eba"
     }
   }, {
-    "fullUrl": "Procedure/5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce",
+    "fullUrl": "Procedure/07cdd3d30d4636a8232e892fe90448e72a8e85d4f60952c4a902c53657761e16",
     "resource": {
       "resourceType": "Procedure",
-      "id": "5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce",
+      "id": "07cdd3d30d4636a8232e892fe90448e72a8e85d4f60952c4a902c53657761e16",
       "meta": {
         "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
@@ -161,7 +161,7 @@
         }
       } ],
       "partOf": [ {
-        "reference": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
+        "reference": "Procedure/c276bcce0327d29013769ce9e8fe45b314fb930334463d4df69343d92f1164aa"
       } ],
       "status": "completed",
       "category": {
@@ -172,7 +172,7 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
+        "reference": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
         "identifier": {
           "type": {
             "coding": [ {
@@ -180,12 +180,12 @@
               "code": "MR"
             } ]
           },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
           "value": "1055555888"
         }
       },
       "reasonReference": [ {
-        "reference": "Condition/7f1aeff536cbf279167b567fbd01427d0ac271d1a3d3b13dedf8561587a45fff"
+        "reference": "Condition/5b35fb59f35cb37caa458922afc70148c9ffe9e3963cc3ea803a4a40fc2b014c"
       } ],
       "complication": [ {
         "coding": [ {
@@ -197,7 +197,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce"
+      "url": "Procedure/07cdd3d30d4636a8232e892fe90448e72a8e85d4f60952c4a902c53657761e16"
     }
   } ]
 }

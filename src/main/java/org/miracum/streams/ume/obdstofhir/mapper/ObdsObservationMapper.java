@@ -538,7 +538,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var valueCodeableCon =
         new CodeableConcept(
             new Coding()
-                .setSystem(fhirProperties.getSystems().getIdco3Morphologie())
+                .setSystem(fhirProperties.getSystems().getIcdo3MorphologieOid())
                 .setCode(histologie.getMorphologie_Code())
                 .setVersion(histologie.getMorphologie_ICD_O_Version()));
 

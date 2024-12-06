@@ -1,0 +1,24 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+    "value": "12_1_Innere.1_Paclitaxel_a0a4"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/any"
+  } ],
+  "status": "active",
+  "medicationCodeableConcept": {
+    "text": "Paclitaxel"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "effectivePeriod": {
+    "start": "2018-03-17"
+  }
+}
