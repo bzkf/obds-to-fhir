@@ -44,7 +44,6 @@ public class OperationMapper extends ObdsToFhirMapper {
       // so war es in alter Version: patientId +getOP_ID() + opsCode
       // var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID() + opsCode;
       // to do: brauch ich hier die patid? dann muss ich meine Parameter nochmal überdenken weil im
-      // OPTyp steht die nicht drin
 
       var identifier =
           new Identifier()
@@ -110,7 +109,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       // add procedure to procedure list here
       procedureList.add(procedure);
       LOG.info("Created Procedure with ID: {} and Code: {}", procedure.getId(), opsCode.getCode());
-    } // end for loop iterating over ops codes
+    }
     LOG.debug("Mapped procedures: {}", procedureList.size());
     return procedureList;
   }

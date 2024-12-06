@@ -36,7 +36,7 @@ public class OperationMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml"}) // , "Testpatient_2.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml"})
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -74,7 +74,7 @@ public class OperationMapperTest {
 
     LOG.info("Number of OPS codes: {}", opMeldung);
 
-    for (int i = 0; i <= resultResources.size(); i++) {
+    for (int i = 0; i < resultResources.size(); i++) {
       assertThat(resultResources.get(i)).isNotNull();
       var fhirJson = fhirParser.encodeResourceToString(resultResources.get(i));
       System.out.println("Verifying resource: index_" + i);

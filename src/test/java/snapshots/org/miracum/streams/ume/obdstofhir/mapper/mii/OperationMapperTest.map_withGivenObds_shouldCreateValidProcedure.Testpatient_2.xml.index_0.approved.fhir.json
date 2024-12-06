@@ -1,0 +1,35 @@
+{
+  "resourceType": "Procedure",
+  "id": "7efb8c1ac3ba65518206b7ae1bdff70b2feb86cd79f82d922fc5a73c7652a77b",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+        "code": "K"
+      } ]
+    }
+  } ],
+  "identifier": [ {
+    "system": "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id",
+    "value": "1515-604.02"
+  } ],
+  "status": "completed",
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/ops",
+      "version": "2021",
+      "code": "5-604.02"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "performedDateTime": "2021-09-09",
+  "reasonReference": [ {
+    "reference": "Condition/any"
+  } ]
+}
