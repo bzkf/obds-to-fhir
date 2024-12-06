@@ -38,6 +38,7 @@ public class FhirProperties {
     private String observationId;
     private String procedureId;
     private String medicationStatementId;
+    private String specimenId;
     private String observationCategorySystem;
     private String loinc;
     private String icdo3Morphologie;
@@ -105,6 +106,7 @@ public class FhirProperties {
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
     private String miiPrMedicationStatement;
+    private String miiPrOnkoSpecimen;
   }
 
   @Data
