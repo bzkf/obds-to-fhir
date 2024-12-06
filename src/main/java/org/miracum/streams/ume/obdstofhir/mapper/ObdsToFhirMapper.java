@@ -309,26 +309,6 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
-      DatumTagOderMonatGenauTyp obdsDatum) {
-    if (null == obdsDatum) {
-      return Optional.empty();
-    }
-
-    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
-    switch (obdsDatum.getDatumsgenauigkeit()) {
-        // exakt (entspricht taggenau)
-      case E:
-        date.setPrecision(TemporalPrecisionEnum.DAY);
-        break;
-        // Tag geschätzt (entspricht monatsgenau)
-      case T:
-        date.setPrecision(TemporalPrecisionEnum.MONTH);
-        break;
-    }
-    return Optional.of(date);
-  }
-
-  public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
       XMLGregorianCalendar obdsDatum) {
     if (null == obdsDatum) {
       return Optional.empty();

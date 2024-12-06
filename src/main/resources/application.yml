@@ -14,7 +14,6 @@ fhir:
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
-    miiExOnkoOPIntention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-bestrahlung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"
     mii-ex-onko-histology-morphology-behavior-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3"
@@ -63,7 +62,6 @@ fhir:
     observation-value: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
     genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
     ucum: "http://unitsofmeasure.org"
-    miiCsOnkoIntention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention"
     condition-ver-status: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
     mii-cs-onko-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention"
     mii-cs-onko-primaertumor-diagnosesicherung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung"
@@ -89,7 +87,6 @@ fhir:
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
     # MII
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
-    mii-pr-onko-diagnose-primaertumor: https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor
     mii-pr-onko-operation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie"
