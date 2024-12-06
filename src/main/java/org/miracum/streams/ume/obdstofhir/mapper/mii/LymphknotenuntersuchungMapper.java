@@ -170,25 +170,29 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
-              .setValue(histo.getLKBefallen().intValue());
+              .setValue(histo.getLKBefallen().intValue())
+              .setUnit("");
       obs_befallen.setValue(value_befallen);
       var value_untersucht =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
-              .setValue(histo.getLKUntersucht().intValue());
+              .setValue(histo.getLKUntersucht().intValue())
+              .setUnit("");
       obs_untersucht.setValue(value_untersucht);
       var value_befallen_sentinel =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
-              .setValue(histo.getSentinelLKBefallen().intValue());
+              .setValue(histo.getSentinelLKBefallen().intValue())
+              .setUnit("");
       obs_befallen_sentienel.setValue(value_befallen_sentinel);
       var value_untersucht_sentinel =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
-              .setValue(histo.getSentinelLKUntersucht().intValue());
+              .setValue(histo.getSentinelLKUntersucht().intValue())
+              .setUnit("");
       obs_untersucht_sentinel.setValue(value_untersucht_sentinel);
 
       result.add(obs_befallen);
