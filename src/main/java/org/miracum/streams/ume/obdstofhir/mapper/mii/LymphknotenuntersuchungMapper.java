@@ -33,7 +33,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
     var result = new ArrayList<Observation>();
 
-    // Collect histologieTyp from Diagnose, Verlauf and OP
+    // Collect histologieTyp from Diagnose, Verlauf, OP, Pathologie
     var histologie = new ArrayList<HistologieTyp>();
     for (var meldung : meldungen.getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
@@ -44,6 +44,9 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       }
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
         histologie.add(meldung.getOP().getHistologie());
+      }
+      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
+        histologie.add(meldung.getPathologie().getHistologie());
       }
     }
     // Create Obserations
@@ -59,8 +62,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       var obs_befallen_sentienel = new Observation();
       var obs_untersucht = new Observation();
       var obs_untersucht_sentinel = new Observation();
-
-      // Identifer
+            // Identifer
       var identifier_befallen =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getObservationHistologieId())
