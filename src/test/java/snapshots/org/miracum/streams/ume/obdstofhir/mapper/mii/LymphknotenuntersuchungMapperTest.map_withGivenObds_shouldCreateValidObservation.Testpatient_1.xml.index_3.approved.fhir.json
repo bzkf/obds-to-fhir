@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-    "value": "521_untersucht"
+    "value": "521_untersucht_sentinel"
   } ],
   "status": "final",
   "category": [ {
@@ -17,10 +17,10 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "code": "21894-1"
+      "code": "85347-3"
     }, {
       "system": "http://snomed.info/sct",
-      "code": "444025001"
+      "code": "444411008"
     } ]
   },
   "subject": {
@@ -28,7 +28,8 @@
   },
   "effectiveDateTime": "2020-03-05",
   "valueQuantity": {
-    "value": 10,
+    "value": 2,
+    "unit": "#",
     "system": "http://unitsofmeasure.org",
     "code": "1"
   }

@@ -29,6 +29,7 @@
   "effectiveDateTime": "2021-06-01",
   "valueQuantity": {
     "value": 5,
+    "unit": "#",
     "system": "http://unitsofmeasure.org",
     "code": "1"
   }
