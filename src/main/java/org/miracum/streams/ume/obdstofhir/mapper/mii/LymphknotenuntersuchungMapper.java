@@ -62,7 +62,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       var obs_befallen_sentienel = new Observation();
       var obs_untersucht = new Observation();
       var obs_untersucht_sentinel = new Observation();
-            // Identifer
+      // Identifer
       var identifier_befallen =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getObservationHistologieId())
