@@ -327,7 +327,7 @@ public abstract class ObdsToFhirMapper {
     }
     return Optional.of(date);
   }
-  
+
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
       XMLGregorianCalendar obdsDatum) {
     if (null == obdsDatum) {
