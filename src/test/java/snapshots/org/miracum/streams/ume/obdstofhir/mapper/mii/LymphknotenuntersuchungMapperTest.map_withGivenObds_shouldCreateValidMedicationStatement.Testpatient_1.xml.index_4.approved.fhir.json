@@ -5,7 +5,7 @@
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-    "value": "521_befallen"
+    "value": "522_befallen"
   } ],
   "status": "final",
   "category": [ {
@@ -29,7 +29,6 @@
   "effectiveDateTime": "2020-03-05",
   "valueQuantity": {
     "value": 2,
-    "unit": "#",
     "system": "http://unitsofmeasure.org",
     "code": "1"
   }
