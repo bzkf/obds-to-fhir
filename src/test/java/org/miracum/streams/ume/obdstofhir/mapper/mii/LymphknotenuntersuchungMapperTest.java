@@ -32,7 +32,7 @@ public class LymphknotenuntersuchungMapperTest {
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidMedicationStatement(String sourceFile)
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile)
       throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();

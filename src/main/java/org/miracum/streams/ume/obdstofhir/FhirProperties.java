@@ -86,6 +86,7 @@ public class FhirProperties {
     private String atcBfarm;
     private String atcWho;
     private String observationHistologieId;
+    private String observationCategory;
   }
 
   @Data

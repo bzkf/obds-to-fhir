@@ -112,8 +112,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       // Category
       var laboratory =
           new CodeableConcept(
-              new Coding(
-                  fhirProperties.getSystems().getObservationCategorySystem(), "laboratory", ""));
+              new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
       List<CodeableConcept> list = new ArrayList<>();
       list.add(laboratory);
       obs_befallen.setCategory(list);
@@ -171,28 +170,28 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
               .setValue(histo.getLKBefallen().intValue())
-              .setUnit("");
+              .setUnit("#");
       obs_befallen.setValue(value_befallen);
       var value_untersucht =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
               .setValue(histo.getLKUntersucht().intValue())
-              .setUnit("");
+              .setUnit("#");
       obs_untersucht.setValue(value_untersucht);
       var value_befallen_sentinel =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
               .setValue(histo.getSentinelLKBefallen().intValue())
-              .setUnit("");
+              .setUnit("#");
       obs_befallen_sentienel.setValue(value_befallen_sentinel);
       var value_untersucht_sentinel =
           new Quantity()
               .setCode("1")
               .setSystem(fhirProperties.getSystems().getUcum())
               .setValue(histo.getSentinelLKUntersucht().intValue())
-              .setUnit("");
+              .setUnit("#");
       obs_untersucht_sentinel.setValue(value_untersucht_sentinel);
 
       result.add(obs_befallen);
