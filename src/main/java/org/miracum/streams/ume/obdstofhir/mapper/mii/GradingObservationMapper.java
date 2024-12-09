@@ -74,8 +74,6 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
       var laboratory =
           new CodeableConcept(
               new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
-      List<CodeableConcept> list = new ArrayList<>();
-      list.add(laboratory);
       observation.addCategory(laboratory);
 
       // code
