@@ -32,6 +32,7 @@ fhir:
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/strahlentherapie-procedure-id"
     systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-procedure-id"
     systemische-therapie-medication-statement-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id"
+    observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -91,6 +92,7 @@ fhir:
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie"
     mii-pr-onko-systemische-therapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie"
     mii-pr-medication-statement: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
+    mii-pr-onko-histologie-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
