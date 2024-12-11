@@ -47,9 +47,8 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     code.addCoding().setCode(fhirProperties.getSystems().getLoinc()).setCode("84892-9");
     observation.setCode(value);
 
-    // Status
-    // TODO: Correct status
-    observation.setStatus(Observation.ObservationStatus.UNKNOWN);
+    // Status - always final
+    observation.setStatus(Observation.ObservationStatus.FINAL);
 
     return observation;
   }
