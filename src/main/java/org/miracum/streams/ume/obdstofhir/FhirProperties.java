@@ -80,6 +80,7 @@ public class FhirProperties {
     private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
+    private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;

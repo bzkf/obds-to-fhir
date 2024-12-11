@@ -70,6 +70,7 @@ fhir:
     mii-cs-onko-strahlentherapie-zielgebiet: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet"
     mii-cs-onko-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation"
     mii-cs-onko-systemische-therapie-art: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
+    mii-cs-onko-residualstatus: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus"
     mii-cs-therapie-grund-ende: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
     atcWho: "http://www.whocc.no/atc"

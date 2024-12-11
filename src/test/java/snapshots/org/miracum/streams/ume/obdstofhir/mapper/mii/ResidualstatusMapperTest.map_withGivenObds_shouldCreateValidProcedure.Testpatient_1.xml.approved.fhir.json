@@ -1,0 +1,19 @@
+{
+  "resourceType": "Observation",
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "84892-9"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+      "code": "R2"
+    } ]
+  }
+}
