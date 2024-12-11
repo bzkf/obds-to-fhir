@@ -3,8 +3,8 @@
   "status": "final",
   "code": {
     "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-      "code": "R0"
+      "system": "http://loinc.org",
+      "code": "84892-9"
     } ]
   },
   "subject": {

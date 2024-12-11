@@ -44,8 +44,8 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
 
     // See: https://loinc.org/84892-9/
     var code = new CodeableConcept();
-    code.addCoding().setCode(fhirProperties.getSystems().getLoinc()).setCode("84892-9");
-    observation.setCode(value);
+    code.addCoding().setSystem(fhirProperties.getSystems().getLoinc()).setCode("84892-9");
+    observation.setCode(code);
 
     // Status - always final
     observation.setStatus(Observation.ObservationStatus.FINAL);
