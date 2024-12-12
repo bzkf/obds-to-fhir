@@ -26,6 +26,9 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/Diagnose_Primärtumor"
+  } ],
   "effectiveDateTime": "2021-06-01",
   "valueQuantity": {
     "value": 5,
