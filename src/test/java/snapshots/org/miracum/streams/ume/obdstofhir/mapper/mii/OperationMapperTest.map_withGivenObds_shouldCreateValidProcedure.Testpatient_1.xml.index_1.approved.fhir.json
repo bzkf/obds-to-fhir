@@ -18,6 +18,13 @@
     "value": "3015-401.1"
   } ],
   "status": "completed",
+  "category": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "387713003",
+      "display": "Surgical procedure"
+    } ]
+  },
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/ops",

@@ -40,11 +40,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       var procedure = new Procedure();
 
       // identifier, meta
-
-      // so war es in alter Version: patientId +getOP_ID() + opsCode
-      // var opProcedureIdentifier = pid + "op-procedure" + op.getOP_ID() + opsCode;
       // to do: brauch ich hier die patid? dann muss ich meine Parameter nochmal überdenken weil im
-
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getProcedureId())
@@ -69,6 +65,36 @@ public class OperationMapper extends ObdsToFhirMapper {
                       .setVersion(opsCode.getVersion()));
 
       procedure.setCode(opsCodeableConcept);
+
+      // category: if OPS starts with 5, set 387713003; if first digit 1, set 165197003; else
+      // 394841004
+      // https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.prozedur/2024.0.0-ballot/files/2253000
+      String firstDigitOPS = opsCode.getCode().substring(0, 1);
+      String categoryCode;
+      String categoryDisplay;
+
+      switch (firstDigitOPS) {
+        case "5":
+          categoryCode = "387713003";
+          categoryDisplay = "Surgical procedure";
+          break;
+        case "1":
+          categoryCode = "165197003";
+          categoryDisplay = "Diagnostic assessment";
+          break;
+        default:
+          categoryCode = "394841004";
+          categoryDisplay = "Other category";
+          break;
+      }
+
+      procedure.setCategory(
+          new CodeableConcept()
+              .addCoding(
+                  new Coding()
+                      .setSystem(fhirProperties.getSystems().getSnomed())
+                      .setCode(categoryCode)
+                      .setDisplay(categoryDisplay)));
 
       // subject reference
       procedure.setSubject(subject);
