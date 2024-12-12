@@ -21,11 +21,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
 class DiagnosticReportMapperTest {
-  private static DiagnosticReportMapper sut;
+  private static DiagosticReportMapper sut;
 
   @BeforeAll
   static void beforeAll(@Autowired FhirProperties fhirProperties) {
-    sut = new DiagnosticReportMapper(fhirProperties);
+    sut = new DiagosticReportMapper(fhirProperties);
   }
 
   @ParameterizedTest
