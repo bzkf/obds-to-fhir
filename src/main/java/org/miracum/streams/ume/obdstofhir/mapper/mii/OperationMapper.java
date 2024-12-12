@@ -35,8 +35,6 @@ public class OperationMapper extends ObdsToFhirMapper {
     LOG.info("Number of OPS codes: {}", op.getMengeOPS().getOPS().size());
 
     for (var opsCode : op.getMengeOPS().getOPS()) {
-      var i = 0;
-      System.out.println(opsCode);
       var procedure = new Procedure();
 
       // identifier, meta
