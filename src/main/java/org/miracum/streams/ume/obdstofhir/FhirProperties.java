@@ -23,6 +23,7 @@ public class FhirProperties {
     private String sysTheraProto;
     private String dataAbsentReason;
     private String genderAmtlich;
+    private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
@@ -102,6 +103,7 @@ public class FhirProperties {
     private String miiPatientPseudonymisiert;
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
+    private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
     private String miiPrMedicationStatement;
