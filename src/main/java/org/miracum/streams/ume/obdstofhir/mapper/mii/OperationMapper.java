@@ -32,8 +32,6 @@ public class OperationMapper extends ObdsToFhirMapper {
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();
 
-    LOG.info("Number of OPS codes: {}", op.getMengeOPS().getOPS().size());
-
     for (var opsCode : op.getMengeOPS().getOPS()) {
       var procedure = new Procedure();
 
@@ -132,9 +130,8 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       // add procedure to procedure list here
       procedureList.add(procedure);
-      LOG.info("Created Procedure with ID: {} and Code: {}", procedure.getId(), opsCode.getCode());
     }
-    LOG.debug("Mapped procedures: {}", procedureList.size());
+
     return procedureList;
   }
 }
