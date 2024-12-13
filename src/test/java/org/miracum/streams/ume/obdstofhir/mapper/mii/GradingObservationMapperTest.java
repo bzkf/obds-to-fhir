@@ -49,7 +49,8 @@ public class GradingObservationMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
+    var diagnose = new Reference("Condition/Primärdiagnose");
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnose);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     for (int i = 0; i < list.size(); i++) {

@@ -24,8 +24,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient) {
+      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference diagnose) {
     Objects.requireNonNull(meldungen, "Meldungen must not be null");
+    Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Validate.isTrue(
         Objects.equals(
@@ -85,6 +86,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
       // subject
       observation.setSubject(patient);
+
+      // focus
+      observation.addFocus(diagnose);
 
       // effective
       var date =

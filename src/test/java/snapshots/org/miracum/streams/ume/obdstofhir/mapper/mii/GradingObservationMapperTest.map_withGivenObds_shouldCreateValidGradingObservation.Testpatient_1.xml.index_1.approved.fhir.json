@@ -26,6 +26,9 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
   "effectiveDateTime": "2020-03-05",
   "valueCodeableConcept": {
     "coding": [ {
