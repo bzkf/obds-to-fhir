@@ -25,10 +25,14 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference specimen) {
+      OBDS.MengePatient.Patient.MengeMeldung meldungen,
+      Reference patient,
+      Reference specimen,
+      Reference diagnose) {
     Objects.requireNonNull(meldungen, "Meldungen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(specimen, "Reference to Specimen must not be null");
+    Objects.requireNonNull(specimen, "Reference to Condition must not be null");
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(),
@@ -39,6 +43,11 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
             specimen.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.SPECIMEN.toCode()),
         "The specimen reference should point to a Specimen resource");
+    Validate.isTrue(
+        Objects.equals(
+            diagnose.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.CONDITION.toCode()),
+        "The condition reference should point to a Condition resource");
 
     var result = new ArrayList<Observation>();
 
@@ -85,6 +94,9 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
 
       // subject
       observation.setSubject(patient);
+
+      // focus
+      observation.addFocus(diagnose);
 
       // effective
       var date =

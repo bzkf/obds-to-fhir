@@ -49,8 +49,9 @@ public class VerlaufhistorieObservationMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    var specimen = new Reference("Specimen/any");
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, specimen);
+    var specimen = new Reference("Specimen/Onko");
+    var diagnose = new Reference("Condition/Primärdiagnose");
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, specimen, diagnose);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     for (int i = 0; i < list.size(); i++) {

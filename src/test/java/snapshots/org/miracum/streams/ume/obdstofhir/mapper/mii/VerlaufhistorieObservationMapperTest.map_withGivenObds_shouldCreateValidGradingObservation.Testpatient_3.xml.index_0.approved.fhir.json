@@ -17,6 +17,9 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
   "effectiveDateTime": "2017-07-02",
   "valueCodeableConcept": {
     "coding": [ {
@@ -27,6 +30,6 @@
     } ]
   },
   "specimen": {
-    "reference": "Specimen/any"
+    "reference": "Specimen/Onko"
   }
 }
