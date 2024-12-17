@@ -16,7 +16,7 @@ permissions: read-all
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-build.yaml@abfae5033f23299a721ddda53263e32d18f33d8a # v1.12.12
     permissions:
       contents: write
       id-token: write
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Create KinD cluster
-        uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # v1.10.0
+        uses: helm/kind-action@ae94020eaf628e9b9b9f341a10cc0cdcf5c018fb # v1.11.0
         with:
           cluster_name: kind
 
@@ -148,14 +148,14 @@ jobs:
 
       - name: Upload cluster dump
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4.5.0
         with:
           name: kind-cluster-dump.txt
           path: |
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@abfae5033f23299a721ddda53263e32d18f33d8a # v1.12.12
     permissions:
       contents: read
       pull-requests: write
@@ -170,7 +170,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-release.yaml@abfae5033f23299a721ddda53263e32d18f33d8a # v1.12.12
     needs:
       - lint
       - build
