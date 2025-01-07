@@ -1,6 +1,8 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import java.util.ArrayList;
+import java.util.List;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
@@ -32,19 +34,22 @@ public class ObdsToFhirBundleMapper {
     this.strahlentherapieMapper = strahlentherapieMapper;
   }
 
-  public Bundle map(OBDS obds) {
-    var bundle = new Bundle();
-    bundle.setType(BundleType.TRANSACTION);
+  public List<Bundle> map(OBDS obds) {
 
-    // TODO: set bundle id... to the patient id? sum of all ids?
-    // TODO: or one bundle per Patient instead?
+    var bundles = new ArrayList<Bundle>();
+
     for (var obdsPatient : obds.getMengePatient().getPatient()) {
+      var bundle = new Bundle();
+      bundle.setType(BundleType.TRANSACTION);
+
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
       // Patient
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = new Reference("Patient/" + patient.getId());
       addEntryToBundle(bundle, patient);
+
+      bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
         // Diagnose
@@ -79,9 +84,11 @@ public class ObdsToFhirBundleMapper {
           addEntryToBundle(bundle, stProcedure);
         }
       }
+
+      bundles.add(bundle);
     }
 
-    return bundle;
+    return bundles;
   }
 
   private static Bundle addEntryToBundle(Bundle bundle, Resource resource) {

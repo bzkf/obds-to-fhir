@@ -55,11 +55,18 @@ class ObdsToFhirBundleMapperTest {
 
     final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
 
-    final var bundle = sut.map(obds);
+    final var bundles = sut.map(obds);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(bundle);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+
+    for (int i = 0; i < bundles.size(); i++) {
+      var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
+      Approvals.verify(
+          fhirJson,
+          Approvals.NAMES
+              .withParameters(sourceFile, "index_" + i)
+              .forFile()
+              .withExtension(".fhir.json"));
+    }
   }
 }
