@@ -57,7 +57,7 @@ class ConditionMapperTest {
             .findFirst()
             .get();
 
-    final var condition = sut.map(conMeldung, new Reference("Patient/1"));
+    final var condition = sut.map(conMeldung, new Reference("Patient/1"), obds.getMeldedatum());
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     var fhirJson = fhirParser.encodeResourceToString(condition);

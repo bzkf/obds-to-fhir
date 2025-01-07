@@ -250,30 +250,15 @@ public abstract class ObdsToFhirMapper {
   }
 
   public static boolean isIcd10GmCode(String value) {
-    return null != value && value.matches("[A-Z][0-9]{2}(\\.[0-9]{1,2})?");
+    return null != value && value.matches("[A-Z]\\d{2}(\\.\\d{1,2})?");
   }
 
   public static DateType convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
-    var date = new DateType(obdsDatum.getValue().toGregorianCalendar().getTime());
-    switch (obdsDatum.getDatumsgenauigkeit()) {
-        // exakt (entspricht taggenau)
-      case E:
-        date.setPrecision(TemporalPrecisionEnum.DAY);
-        break;
-        // Tag geschätzt (entspricht monatsgenau)
-      case T:
-        date.setPrecision(TemporalPrecisionEnum.MONTH);
-        break;
-        // Monat geschätzt (entspricht jahrgenau)
-      case M:
-        date.setPrecision(TemporalPrecisionEnum.YEAR);
-        break;
-        // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
-      case V:
-        log.warn("Date precision is completely estimated. Likely not a correct value.");
-    }
-    return date;
+    var dateTimeType = convertObdsDatumToDateTimeType(obdsDatum);
+    var dateType = new DateType(dateTimeType.getValue());
+    dateType.setPrecision(dateTimeType.getPrecision());
+    return dateType;
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
@@ -294,6 +279,33 @@ public abstract class ObdsToFhirMapper {
         break;
     }
     return Optional.of(date);
+  }
+
+  public static DateTimeType convertObdsDatumToDateTimeType(
+      DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+        // exakt (entspricht taggenau)
+      case E:
+        date.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+        // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        date.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+        // Monat geschätzt (entspricht jahrgenau)
+      case M:
+        date.setPrecision(TemporalPrecisionEnum.YEAR);
+        break;
+        // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
+      case V:
+        date.setPrecision(TemporalPrecisionEnum.YEAR);
+        log.warn(
+            "Date precision is completely estimated. Likely not a correct value. "
+                + "Defaulting to most granular 'year' precision.");
+        break;
+    }
+    return date;
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(

@@ -4,10 +4,10 @@ import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
@@ -32,7 +32,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     super(fhirProperties);
   }
 
-  public Bundle map(SYSTTyp syst, Reference patient, Reference procedure) {
+  public List<MedicationStatement> map(SYSTTyp syst, Reference patient, Reference procedure) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(procedure, "Reference to Procedure must not be null");
@@ -47,8 +47,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
             procedure.getReferenceElement().getResourceType(), ResourceType.PROCEDURE.toCode()),
         "The subject reference should point to a Procedure resource");
 
-    var bundle = new Bundle();
-    bundle.setType(Bundle.BundleType.TRANSACTION);
+    var result = new ArrayList<MedicationStatement>();
 
     for (var substanz : syst.getMengeSubstanz().getSubstanz()) {
       var systMedicationStatement = new MedicationStatement();
@@ -104,11 +103,11 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         // Part of
         systMedicationStatement.setPartOf(List.of(procedure));
 
-        bundle = addResourceAsEntryInBundle(bundle, systMedicationStatement);
+        result.add(systMedicationStatement);
       }
     }
 
-    return bundle;
+    return result;
   }
 
   private String createSubstanzIdFromPlain(String plainName) {
