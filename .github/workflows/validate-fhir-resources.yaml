@@ -26,13 +26,11 @@ jobs:
         id: extract
         run: |
           PREFIXES=$(find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -name "*.fhir.json" \
-            | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s .)
-          echo "Extracted prefixes: $PREFIXES"
-          echo "Single-line: $( echo -n "$PREFIXES" | tr '\n' ' ')"
-          echo "mapper-names=$( echo -n "$PREFIXES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
+            | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s -c .)
+          echo "Extracted prefixes: "$PREFIXES""
+          echo "mapper-names=$PREFIXES" >> $GITHUB_OUTPUT
 
   validate-fhir-resource:
-    name: Validate FHIR resources
     runs-on: ubuntu-22.04
     container: ghcr.io/miracum/ig-build-tools:v2.1.6@sha256:26bc1eaf0a259e8c16d0eeeb8622c7aecaa45d41e39f158696f9aec90b142596
     needs:
