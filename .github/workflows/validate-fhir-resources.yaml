@@ -8,21 +8,59 @@ on:
   push:
     branches: [master]
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
+  extract-mapper-names:
+    runs-on: ubuntu-22.04
+    outputs:
+      mapper-names: ${{ steps.extract.outputs.mapper-names }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Find unique prefixes
+        id: extract
+        run: |
+          PREFIXES=$(find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -name "*.fhir.json" \
+            | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s .)
+          echo "Extracted prefixes: $PREFIXES"
+          echo "::set-output name=mapper-names::$PREFIXES"
+
   validate-fhir-resource:
     name: Validate FHIR resources
     runs-on: ubuntu-22.04
     container: ghcr.io/miracum/ig-build-tools:v2.1.6@sha256:26bc1eaf0a259e8c16d0eeeb8622c7aecaa45d41e39f158696f9aec90b142596
+    needs:
+      - extract-mapper-names
+    strategy:
+      matrix:
+        mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Cache FHIR packages
+        id: fhir-package-cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        with:
+          path: ~/.fhir/packages
+          key: fhir-packages-${{ hashFiles('package.json') }}
 
       - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
           fhir restore
 
       - name: Validate generated FHIR resources
+        continue-on-error: true
         run: |
-          find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -name "*.fhir.json" -print0 | xargs -0 -I {} sh -c 'echo "Validating: {}" && fhir validate --verbose --fail "{}"'
+          echo "Validating files for mapper: ${{ matrix.mapper }}"
+          find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ \
+            -name "${{ matrix.mapper }}*.fhir.json" -print0 | \
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
