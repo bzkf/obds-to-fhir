@@ -28,7 +28,8 @@ jobs:
           PREFIXES=$(find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -name "*.fhir.json" \
             | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s .)
           echo "Extracted prefixes: $PREFIXES"
-          echo "mapper-names=$( echo "$PREFIXES" )" >> $GITHUB_OUTPUT
+          echo "Single-line: $( echo -n "$PREFIXES" | tr '\n' ' ')"
+          echo "mapper-names=$( echo -n "$PREFIXES" | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
   validate-fhir-resource:
     name: Validate FHIR resources
