@@ -52,7 +52,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
 
       - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
           fhir restore
 
