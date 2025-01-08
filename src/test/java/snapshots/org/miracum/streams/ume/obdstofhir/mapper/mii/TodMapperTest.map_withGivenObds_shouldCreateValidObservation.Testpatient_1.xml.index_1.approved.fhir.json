@@ -1,0 +1,38 @@
+{
+  "resourceType": "Observation",
+  "id": "8170fbf5aebdce7c20b3f7c634b1367c621664782d28d4c57593e4d8d048c8cd",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
+    "value": "161_T57.3"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "184305005"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
+  "effectiveDateTime": "2022-08-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "2020",
+      "code": "T57.3"
+    } ]
+  },
+  "interpretation": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
+      "code": "J"
+    } ]
+  } ]
+}

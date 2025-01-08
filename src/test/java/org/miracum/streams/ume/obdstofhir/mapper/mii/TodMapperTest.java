@@ -10,7 +10,6 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
-import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,7 +31,7 @@ class TodMapperTest {
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml"})
-  void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -55,20 +54,19 @@ class TodMapperTest {
             .filter(m -> m.getTod() != null)
             .findFirst()
             .get();
-    var observationList = tm.map(tMeldung, subject, condition);
+
+    var observations = tm.map(tMeldung, subject, condition);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
-    var observListString = "[";
-    for (Observation observation : observationList) {
-      var fhirJson = fhirParser.encodeResourceToString(observation);
-      observListString += fhirJson + ",\n";
+    for (int i = 0; i < observations.size(); i++) {
+      var fhirJson = fhirParser.encodeResourceToString(observations.get(i));
+      Approvals.verify(
+          fhirJson,
+          Approvals.NAMES
+              .withParameters(sourceFile, "index_" + i)
+              .forFile()
+              .withExtension(".fhir.json"));
     }
-    observListString = observListString.substring(0, observListString.length() - 2);
-    observListString += "]";
-
-    Approvals.verify(
-        observListString,
-        Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }
 }

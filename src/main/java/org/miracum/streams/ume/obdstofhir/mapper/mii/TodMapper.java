@@ -63,7 +63,7 @@ public class TodMapper extends ObdsToFhirMapper {
 
         Identifier identifier =
             new Identifier()
-                .setSystem(fhirProperties.getSystems().getObservationId())
+                .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodObservationId())
                 .setValue(
                     String.format(
                         "%s_%s", meldung.getTod().getAbschlussID(), todesursache.getCode()));
