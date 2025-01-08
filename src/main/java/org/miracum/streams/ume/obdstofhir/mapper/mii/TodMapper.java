@@ -2,7 +2,9 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.OBDS;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
@@ -27,7 +29,7 @@ public class TodMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Observation map(
+  public List<Observation> map(
       OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
       Reference patient,
       Reference condition) {
@@ -48,39 +50,48 @@ public class TodMapper extends ObdsToFhirMapper {
             Enumerations.ResourceType.CONDITION.toCode()),
         "The condition reference should point to a Condition resource");
 
-    var observation = new Observation();
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
-    observation.setStatus(Observation.ObservationStatus.FINAL);
+    var observationList = new ArrayList<Observation>();
 
-    Identifier identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getObservationId())
-            .setValue(meldung.getTod().getAbschlussID());
-    observation.addIdentifier(identifier);
-
-    // Code | 184305005 | Cause of death (observable entity)
-    var snomedCode = new CodeableConcept();
-    snomedCode.addCoding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("184305005");
-    observation.setCode(snomedCode);
-
-    // Subject
-    observation.setSubject(patient);
-
-    // Effective | Sterbedatum
-    var todesZeitpunkt = convertObdsDatumToDateTimeType(meldung.getTod().getSterbedatum());
-    if (todesZeitpunkt.isPresent()) {
-      observation.setEffective(todesZeitpunkt.get());
-    }
-
-    // Focus | Bezugsdiagnose
-    observation.addFocus(condition);
-
-    // Value | Todesursache(n) ICD10GM
     if (meldung.getTod().getMengeTodesursachen() != null) {
-      var todesursacheConcept = new CodeableConcept();
+
       for (AllgemeinICDTyp todesursache :
           meldung.getTod().getMengeTodesursachen().getTodesursacheICD()) {
 
+        var observation = new Observation();
+        observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
+        observation.setStatus(Observation.ObservationStatus.FINAL);
+
+        Identifier identifier =
+            new Identifier()
+                .setSystem(fhirProperties.getSystems().getObservationId())
+                .setValue(
+                    String.format(
+                        "%s_%s", meldung.getTod().getAbschlussID(), todesursache.getCode()));
+        observation.addIdentifier(identifier);
+        observation.setId(computeResourceIdFromIdentifier(identifier));
+
+        // Code | 184305005 | Cause of death (observable entity)
+        var snomedCode = new CodeableConcept();
+        snomedCode
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getSnomed())
+            .setCode("184305005");
+        observation.setCode(snomedCode);
+
+        // Subject
+        observation.setSubject(patient);
+
+        // Effective | Sterbedatum
+        var todesZeitpunkt = convertObdsDatumToDateTimeType(meldung.getTod().getSterbedatum());
+        if (todesZeitpunkt.isPresent()) {
+          observation.setEffective(todesZeitpunkt.get());
+        }
+
+        // Focus | Bezugsdiagnose
+        observation.addFocus(condition);
+
+        // Value | Todesursache(n) ICD10GM
+        var todesursacheConcept = new CodeableConcept();
         var tuIcdVersion = "";
         var icd10Version = todesursache.getVersion();
         if (StringUtils.hasLength(icd10Version)) {
@@ -101,20 +112,23 @@ public class TodMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIcd10gm())
             .setCode(todesursache.getCode())
             .setVersion(tuIcdVersion);
+
+        observation.setValue(todesursacheConcept);
+
+        // Interpretation | Tod Tumorbedingt
+        if (meldung.getTod().getTodTumorbedingt() != null) {
+          var interpretation = new CodeableConcept();
+          interpretation
+              .addCoding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
+              .setCode(meldung.getTod().getTodTumorbedingt().value());
+          observation.setInterpretation(Arrays.asList(interpretation));
+        }
+
+        observationList.add(observation);
       }
-      observation.setValue(todesursacheConcept);
     }
 
-    // Interpretation | Tod Tumorbedingt
-    if (meldung.getTod().getTodTumorbedingt() != null) {
-      var interpretation = new CodeableConcept();
-      interpretation
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
-          .setCode(meldung.getTod().getTodTumorbedingt().value());
-      observation.setInterpretation(Arrays.asList(interpretation));
-    }
-
-    return observation;
+    return observationList;
   }
 }

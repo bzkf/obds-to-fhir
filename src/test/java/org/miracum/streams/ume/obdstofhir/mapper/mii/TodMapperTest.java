@@ -10,6 +10,7 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -54,11 +55,20 @@ class TodMapperTest {
             .filter(m -> m.getTod() != null)
             .findFirst()
             .get();
-    var observation = tm.map(tMeldung, subject, condition);
+    var observationList = tm.map(tMeldung, subject, condition);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(observation);
+
+    var observListString = "[";
+    for (Observation observation : observationList) {
+      var fhirJson = fhirParser.encodeResourceToString(observation);
+      observListString += fhirJson + ",\n";
+    }
+    observListString = observListString.substring(0, observListString.length() - 2);
+    observListString += "]";
+
     Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+        observListString,
+        Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }
 }
