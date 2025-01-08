@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class TodMapper extends ObdsToFhirMapper {
@@ -27,11 +28,11 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient) {
+      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient, Reference condition) {
     // Validation
     Objects.requireNonNull(meldung.getTod());
     Objects.requireNonNull(patient);
-    // Objects.requireNonNull(condition);
+    Objects.requireNonNull(condition);
 
     Validate.notBlank(meldung.getTod().getAbschlussID(), "Required ABSCHLUSS_ID is unset");
     Validate.isTrue(
@@ -39,16 +40,20 @@ public class TodMapper extends ObdsToFhirMapper {
             patient.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
-    /*
     Validate.isTrue(
       Objects.equals(
         condition.getReferenceElement().getResourceType(), Enumerations.ResourceType.CONDITION.toCode()),
       "The condition reference should point to a Condition resource");
-    */
+
 
     var observation = new Observation();
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
     observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    Identifier identifier = new Identifier()
+      .setSystem(fhirProperties.getSystems().getObservationId())
+      .setValue(meldung.getTod().getAbschlussID());
+    observation.addIdentifier(identifier);
 
     // Code | 184305005 | Cause of death (observable entity)
     var snomedCode = new CodeableConcept();
@@ -64,23 +69,35 @@ public class TodMapper extends ObdsToFhirMapper {
       observation.setEffective(todesZeitpunkt.get());
     }
 
-    /*
     // Focus | Bezugsdiagnose
-    var focusList = new ArrayList<Reference>();
-    focusList.add(condition);
-    observation.setFocus(focusList);
-    */
+    observation.addFocus(condition);
 
     // Value | Todesursache(n) ICD10GM
     if (meldung.getTod().getMengeTodesursachen() != null) {
       var todesursacheConcept = new CodeableConcept();
       for (AllgemeinICDTyp todesursache :
           meldung.getTod().getMengeTodesursachen().getTodesursacheICD()) {
+
+        var tuIcdVersion = "";
+        var icd10Version = todesursache.getVersion();
+        if (StringUtils.hasLength(icd10Version)) {
+          var matcher = icdVersionPattern.matcher(icd10Version);
+          if (matcher.matches()) {
+            tuIcdVersion = matcher.group("versionYear");
+          } else {
+            LOG.warn(
+              "Todesursachen_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
+              icdVersionPattern.pattern(),
+              icd10Version);
+          }
+        } else {
+          LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+        }
         todesursacheConcept
             .addCoding()
             .setSystem(fhirProperties.getSystems().getIcd10gm())
             .setCode(todesursache.getCode())
-            .setVersion(todesursache.getVersion());
+            .setVersion(tuIcdVersion);
       }
       observation.setValue(todesursacheConcept);
     }

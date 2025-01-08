@@ -3,6 +3,10 @@
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
   },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-id",
+    "value": "161"
+  } ],
   "status": "final",
   "code": {
     "coding": [ {
@@ -13,15 +17,18 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
   "effectiveDateTime": "2022-08-01",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
-      "version": "10 2020 GM",
+      "version": "2020",
       "code": "C50.9"
     }, {
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
-      "version": "10 2020 GM",
+      "version": "2020",
       "code": "T57.3"
     } ]
   },

@@ -48,15 +48,16 @@ class TodMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
+    var condition = new Reference("Condition/any");
     var tMeldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getTod() != null)
             .findFirst()
             .get();
-    var procedure = tm.map(tMeldung, subject);
+    var observation = tm.map(tMeldung, subject, condition);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(procedure);
+    var fhirJson = fhirParser.encodeResourceToString(observation);
     Approvals.verify(
         fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }
