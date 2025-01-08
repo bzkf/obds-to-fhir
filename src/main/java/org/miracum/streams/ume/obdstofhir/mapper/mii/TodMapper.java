@@ -28,7 +28,9 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient, Reference condition) {
+      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      Reference patient,
+      Reference condition) {
     // Validation
     Objects.requireNonNull(meldung.getTod());
     Objects.requireNonNull(patient);
@@ -41,18 +43,19 @@ public class TodMapper extends ObdsToFhirMapper {
             Enumerations.ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
     Validate.isTrue(
-      Objects.equals(
-        condition.getReferenceElement().getResourceType(), Enumerations.ResourceType.CONDITION.toCode()),
-      "The condition reference should point to a Condition resource");
-
+        Objects.equals(
+            condition.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.CONDITION.toCode()),
+        "The condition reference should point to a Condition resource");
 
     var observation = new Observation();
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
-    Identifier identifier = new Identifier()
-      .setSystem(fhirProperties.getSystems().getObservationId())
-      .setValue(meldung.getTod().getAbschlussID());
+    Identifier identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getObservationId())
+            .setValue(meldung.getTod().getAbschlussID());
     observation.addIdentifier(identifier);
 
     // Code | 184305005 | Cause of death (observable entity)
@@ -86,9 +89,9 @@ public class TodMapper extends ObdsToFhirMapper {
             tuIcdVersion = matcher.group("versionYear");
           } else {
             LOG.warn(
-              "Todesursachen_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
-              icdVersionPattern.pattern(),
-              icd10Version);
+                "Todesursachen_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
+                icdVersionPattern.pattern(),
+                icd10Version);
           }
         } else {
           LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
