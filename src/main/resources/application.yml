@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.3
+  version: 3.0.0-beta.4
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -72,6 +72,8 @@ fhir:
     mii-cs-onko-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation"
     mii-cs-onko-systemische-therapie-art: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-therapie-grund-ende: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"
+    mii-cs-onko-tod-interpretation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod"
+    mii-cs-onko-tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
     atcWho: "http://www.whocc.no/atc"
     mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
@@ -94,6 +96,7 @@ fhir:
     mii-pr-onko-systemische-therapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie"
     mii-pr-medication-statement: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
     mii-pr-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog"
+    mii-pr-onko-tod: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
