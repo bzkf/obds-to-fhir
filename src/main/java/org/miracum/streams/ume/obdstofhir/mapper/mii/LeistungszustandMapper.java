@@ -99,9 +99,6 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
                 + "Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)");
         break;
       case U:
-        value.setCode("U");
-        value.setDisplay("Unbekannt");
-        break;
       default:
         value.setCode("U");
         value.setDisplay("Unbekannt");
