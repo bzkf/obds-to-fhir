@@ -39,7 +39,8 @@ class TodMapperTest extends MapperTest {
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getTod() != null)
             .findFirst()
-            .get();
+            .get()
+            .getTod();
 
     var observations = tm.map(tMeldung, subject, condition);
 

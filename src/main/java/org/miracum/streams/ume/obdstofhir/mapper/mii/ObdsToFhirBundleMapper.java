@@ -1,17 +1,21 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
+import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ObdsToFhirBundleMapper {
+public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
@@ -19,21 +23,36 @@ public class ObdsToFhirBundleMapper {
   private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final SystemischeTherapieMedicationStatementMapper
       systemischeTherapieMedicationStatementMapper;
+  private final TodMapper todMapper;
+  private LeistungszustandMapper leistungszustandMapper;
 
   public ObdsToFhirBundleMapper(
+      FhirProperties fhirProperties,
       PatientMapper patientMapper,
       ConditionMapper conditionMapper,
       SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper,
       SystemischeTherapieMedicationStatementMapper systemischeTherapieMedicationStatementMapper,
-      StrahlentherapieMapper strahlentherapieMapper) {
+      StrahlentherapieMapper strahlentherapieMapper,
+      TodMapper todMapper,
+      LeistungszustandMapper leistungszustandMapper) {
+    super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
     this.systemischeTherapieProcedureMapper = systemischeTherapieProcedureMapper;
     this.systemischeTherapieMedicationStatementMapper =
         systemischeTherapieMedicationStatementMapper;
     this.strahlentherapieMapper = strahlentherapieMapper;
+    this.todMapper = todMapper;
+    this.leistungszustandMapper = leistungszustandMapper;
   }
 
+  /**
+   * Maps OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each patient in
+   * the OBDS data, creates a transaction bundle containing all their associated medical records.
+   *
+   * @param obds The OBDS data structure containing patient and medical information
+   * @return List of FHIR Bundles, one for each patient in the input OBDS data
+   */
   public List<Bundle> map(OBDS obds) {
 
     var bundles = new ArrayList<Bundle>();
@@ -45,6 +64,9 @@ public class ObdsToFhirBundleMapper {
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
       // Patient
+      // XXX: this assumes that the "meldungen" contains every single Meldung for the patient
+      //      e.g. in case of Folgepakete, this might not be the case. The main Problem is
+      //      the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = new Reference("Patient/" + patient.getId());
       addEntryToBundle(bundle, patient);
@@ -56,6 +78,14 @@ public class ObdsToFhirBundleMapper {
         if (meldung.getDiagnose() != null) {
           var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
           addEntryToBundle(bundle, condition);
+
+          var conditionReference = new Reference("Condition/" + condition.getId());
+
+          if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
+            var leistungszustand =
+                leistungszustandMapper.map(meldung, patientReference, conditionReference);
+            addEntryToBundle(bundle, leistungszustand);
+          }
         }
 
         // Systemtherapie
@@ -83,6 +113,16 @@ public class ObdsToFhirBundleMapper {
           var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
           addEntryToBundle(bundle, stProcedure);
         }
+
+        // Tod
+        if (meldung.getTod() != null) {
+          var diagnosisReference = createPrimaryDiagnosisReference(meldung.getTumorzuordnung());
+          var deathObservations =
+              todMapper.map(meldung.getTod(), patientReference, diagnosisReference);
+          for (var resource : deathObservations) {
+            addEntryToBundle(bundle, resource);
+          }
+        }
       }
 
       bundles.add(bundle);
@@ -95,5 +135,16 @@ public class ObdsToFhirBundleMapper {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
     bundle.addEntry().setResource(resource).getRequest().setMethod(HTTPVerb.PUT).setUrl(url);
     return bundle;
+  }
+
+  private Reference createPrimaryDiagnosisReference(TumorzuordnungTyp tumorzuordnung) {
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getConditionId())
+            .setValue(tumorzuordnung.getTumorID());
+
+    var conditionId = computeResourceIdFromIdentifier(identifier);
+
+    return new Reference("Condition/" + conditionId);
   }
 }

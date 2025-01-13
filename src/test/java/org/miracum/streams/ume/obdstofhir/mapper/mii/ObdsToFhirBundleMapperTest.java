@@ -27,6 +27,8 @@ import org.springframework.boot.test.context.SpringBootTest;
       SystemischeTherapieProcedureMapper.class,
       SystemischeTherapieMedicationStatementMapper.class,
       StrahlentherapieMapper.class,
+      TodMapper.class,
+      LeistungszustandMapper.class,
     })
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest {
