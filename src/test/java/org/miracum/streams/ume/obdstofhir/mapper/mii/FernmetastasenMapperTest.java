@@ -9,7 +9,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.approvaltests.Approvals;
+import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,8 +51,10 @@ public class FernmetastasenMapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
-
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
+    var diagnose = new Reference("Condition/Primärdiagnose");
+    List<Reference> diagnosen = new ArrayList<>();
+    diagnosen.add(diagnose);
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnosen);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 

@@ -23,15 +23,20 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient) {
+      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, List<Reference> diagnosen) {
 
     Objects.requireNonNull(meldungen);
     Objects.requireNonNull(meldungen.getMeldung());
     Objects.requireNonNull(patient);
+    Objects.requireNonNull(diagnosen);
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
+    Validate.isTrue(
+      Objects.equals(
+        diagnosen.getFirst().getReferenceElement().getResourceType(), ResourceType.CONDITION.toCode()),
+      "The diagnose reference should point to a Condition resource");
 
     var result = new ArrayList<Observation>();
     // alle Meldungen
@@ -63,7 +68,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
                 .setValue(typ + "_" + id);
             observation.addIdentifier(identifier);
             id++;
-            observation.setId("id");
+            observation.setId(computeResourceIdFromIdentifier(identifier));
             // Meta-Daten
             observation
                 .getMeta()
@@ -75,8 +80,9 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
                     new Coding(fhirProperties.getSystems().getSnomed(), "385421009", "")));
             // Subject
             observation.setSubject(patient);
+            // Fokus
+            observation.setFocus(diagnosen);
             // Datum
-
             var effective =
                 new DateTimeType(
                     fernmetastase.getDiagnosedatum().getValue().toGregorianCalendar().getTime());

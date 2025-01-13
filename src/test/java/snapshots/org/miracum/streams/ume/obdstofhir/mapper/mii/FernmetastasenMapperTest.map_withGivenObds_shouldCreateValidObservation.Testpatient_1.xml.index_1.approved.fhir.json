@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "01751d79e0e068a52dbe0619413670cbbf1dba8518da7d200d06c569450b66f9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
   },
@@ -17,6 +18,9 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
   "effectiveDateTime": "2021-06-01",
   "valueCodeableConcept": {
     "coding": [ {
