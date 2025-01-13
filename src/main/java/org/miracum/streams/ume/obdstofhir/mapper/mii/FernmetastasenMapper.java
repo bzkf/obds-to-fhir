@@ -63,6 +63,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
                 .setValue(typ + "_" + id);
             observation.addIdentifier(identifier);
             id++;
+            observation.setId("id");
             // Meta-Daten
             observation
                 .getMeta()
@@ -75,6 +76,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
             // Subject
             observation.setSubject(patient);
             // Datum
+
             var effective =
                 new DateTimeType(
                     fernmetastase.getDiagnosedatum().getValue().toGregorianCalendar().getTime());
