@@ -132,4 +132,3 @@ public class TodMapper extends ObdsToFhirMapper {
     return observationList;
   }
 }
-
