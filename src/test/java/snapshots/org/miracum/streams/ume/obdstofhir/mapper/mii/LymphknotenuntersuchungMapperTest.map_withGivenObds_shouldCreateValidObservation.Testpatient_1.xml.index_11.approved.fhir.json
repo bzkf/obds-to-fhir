@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "d0bcfa8a23b41c9f12b0ec2265a0bdc80ea7c3c6b81622b30d28ede5d9043f3c",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten" ]
   },

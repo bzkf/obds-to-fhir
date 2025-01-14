@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "a9ad5110baad5cd5d5ba373b347ea74818aa8899bbc00e906a52e488e2f574ae",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten" ]
   },

@@ -128,6 +128,9 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
             .setValue(identifierValue);
     observation.addIdentifier(identifier);
 
+    // Id
+    observation.setId(computeResourceIdFromIdentifier(identifier));
+
     // Meta
     observation.getMeta().addProfile(profileUrl);
 

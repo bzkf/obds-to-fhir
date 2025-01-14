@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "3c7a32d931b0826c46b0aadcfecfc638f841c2903416fb4a5e651956ac95ffdf",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-sentinel-lymphknoten" ]
   },

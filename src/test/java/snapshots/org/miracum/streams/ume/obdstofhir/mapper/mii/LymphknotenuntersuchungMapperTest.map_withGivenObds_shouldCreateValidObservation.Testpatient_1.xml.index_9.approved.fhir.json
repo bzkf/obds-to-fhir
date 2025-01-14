@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "f9fb8adb157ee314ebb3abbfe80ba1174764e70c54fec8cdd79c1c5897605f48",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
   },
