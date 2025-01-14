@@ -1,5 +1,6 @@
 {
   "resourceType": "Specimen",
+  "id": "ae7c48028dc89cdd5b4accd5e83a6fe8db4f68d40f42b7494889f1844f49079b",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
   },

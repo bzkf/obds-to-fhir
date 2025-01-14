@@ -59,7 +59,8 @@ public class SpecimenMapper extends ObdsToFhirMapper {
           .setSystem(fhirProperties.getSystems().getSpecimenId())
           .setValue(histo.getHistologieID());
       specimen.addIdentifier(identifier);
-
+      // Id
+      specimen.setId(computeResourceIdFromIdentifier(identifier));
       // Meta
       specimen.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSpecimen());
 
