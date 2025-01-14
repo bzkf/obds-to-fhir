@@ -1,0 +1,40 @@
+{
+  "resourceType": "Observation",
+  "id": "4d5e5848caf4c5c2e960b813d83c17aed7fd14ec0faa8668db7b00df95528359",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+    "value": "522_untersucht"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "21894-1"
+    }, {
+      "system": "http://snomed.info/sct",
+      "code": "444025001"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Diagnose_Primärtumor"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueQuantity": {
+    "value": 10,
+    "unit": "#",
+    "system": "http://unitsofmeasure.org",
+    "code": "1"
+  }
+}
