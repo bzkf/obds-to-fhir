@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.6
+  version: 3.0.0-beta.7
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -34,6 +34,7 @@ fhir:
     systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-procedure-id"
     systemische-therapie-medication-statement-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id"
     allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id"
+    fernmetastasen-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/fernmetastasen-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -73,6 +74,7 @@ fhir:
     mii-cs-onko-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation"
     mii-cs-onko-systemische-therapie-art: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-therapie-grund-ende: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"
+    mii-cs-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen"
     mii-cs-onko-tod-interpretation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod"
     mii-cs-onko-tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
@@ -94,6 +96,7 @@ fhir:
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie"
+    mii-pr-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen"
     mii-pr-onko-systemische-therapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie"
     mii-pr-medication-statement: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement"
     mii-pr-onko-specimen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen"

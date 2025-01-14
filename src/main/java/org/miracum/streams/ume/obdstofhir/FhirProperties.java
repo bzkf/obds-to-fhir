@@ -38,6 +38,7 @@ public class FhirProperties {
     private String observationId;
     private String procedureId;
     private String medicationStatementId;
+    private String fernmetastasenId;
     private String specimenId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
@@ -89,6 +90,7 @@ public class FhirProperties {
     private String icdo3MorphologieOid;
     private String atcBfarm;
     private String atcWho;
+    private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
 
@@ -109,6 +111,7 @@ public class FhirProperties {
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
+    private String miiPrOnkoFernmetastasen;
     private String miiPrMedicationStatement;
     private String miiPrOnkoAllgemeinerLeistungszustandEcog;
     private String miiPrOnkoTod;
