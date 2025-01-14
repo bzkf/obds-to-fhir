@@ -1,0 +1,20 @@
+{
+  "resourceType": "Specimen",
+  "id": "ad4b122c2df5025505010afee92111e127e89d717e074e5b871d492999909a20",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+    "value": "523"
+  } ],
+  "accessionIdentifier": {
+    "value": "X/654987/1"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "collection": {
+    "collectedDateTime": "2021-06-01"
+  }
+}

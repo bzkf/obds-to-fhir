@@ -39,6 +39,7 @@ public class FhirProperties {
     private String procedureId;
     private String medicationStatementId;
     private String fernmetastasenId;
+    private String specimenId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
     private String loinc;
@@ -120,6 +121,7 @@ public class FhirProperties {
     private String miiPrOnkoAnzahlUntersuchteSentinelLymphknoten;
     private String miiPrOnkoAllgemeinerLeistungszustandEcog;
     private String miiPrOnkoTod;
+    private String miiPrOnkoSpecimen;
   }
 
   @Data
