@@ -1,35 +1,24 @@
 {
-  "resourceType": "Bundle",
-  "type": "transaction",
-  "entry": [ {
-    "fullUrl": "MedicationStatement/e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "11_1_Innere.1_Bicalutamid_fa96"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/any"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Bicalutamid"
-      },
-      "subject": {
-        "reference": "Patient/any"
-      },
-      "effectivePeriod": {
-        "start": "2021-11-08"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa"
-    }
-  } ]
+  "resourceType": "MedicationStatement",
+  "id": "e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+    "value": "11_1_Innere.1_Bicalutamid_fa96"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/any"
+  } ],
+  "status": "active",
+  "medicationCodeableConcept": {
+    "text": "Bicalutamid"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "effectivePeriod": {
+    "start": "2021-11-08"
+  }
 }
