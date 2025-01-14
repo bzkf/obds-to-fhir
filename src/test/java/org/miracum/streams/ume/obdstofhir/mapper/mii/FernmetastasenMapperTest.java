@@ -11,9 +11,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.approvaltests.Approvals;
-import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;

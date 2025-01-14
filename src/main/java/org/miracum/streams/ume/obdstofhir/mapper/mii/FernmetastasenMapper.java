@@ -23,7 +23,9 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, List<Reference> diagnosen) {
+      OBDS.MengePatient.Patient.MengeMeldung meldungen,
+      Reference patient,
+      List<Reference> diagnosen) {
 
     Objects.requireNonNull(meldungen);
     Objects.requireNonNull(meldungen.getMeldung());
@@ -34,9 +36,10 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
             patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
     Validate.isTrue(
-      Objects.equals(
-        diagnosen.getFirst().getReferenceElement().getResourceType(), ResourceType.CONDITION.toCode()),
-      "The diagnose reference should point to a Condition resource");
+        Objects.equals(
+            diagnosen.getFirst().getReferenceElement().getResourceType(),
+            ResourceType.CONDITION.toCode()),
+        "The diagnose reference should point to a Condition resource");
 
     var result = new ArrayList<Observation>();
     // alle Meldungen
