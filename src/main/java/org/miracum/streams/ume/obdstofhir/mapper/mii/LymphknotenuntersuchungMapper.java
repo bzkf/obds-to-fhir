@@ -1,0 +1,172 @@
+package org.miracum.streams.ume.obdstofhir.mapper.mii;
+
+import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import de.basisdatensatz.obds.v3.*;
+import de.basisdatensatz.obds.v3.OBDS;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.r4.model.*;
+import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
+
+  private static final Logger LOG = LoggerFactory.getLogger(LymphknotenuntersuchungMapper.class);
+  private Reference patientReference;
+  private Reference diagnoseReference;
+
+  public LymphknotenuntersuchungMapper(FhirProperties fhirProperties) {
+    super(fhirProperties);
+  }
+
+  public List<Observation> map(
+      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference diagnose) {
+    Objects.requireNonNull(meldungen, "Meldungen must not be null");
+    Objects.requireNonNull(patient, "Reference to Patient must not be null");
+    Objects.requireNonNull(diagnose, "Reference to Primärdiagnose must not be null");
+    Validate.isTrue(
+        Objects.equals(
+            patient.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.PATIENT.toCode()),
+        "The patient reference should point to a Patient resource");
+    Validate.isTrue(
+        Objects.equals(
+            diagnose.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.CONDITION.toCode()),
+        "The diagnose reference should point to a Condition resource");
+
+    this.patientReference = patient;
+    this.diagnoseReference = diagnose;
+    var result = new ArrayList<Observation>();
+
+    // Collect histologieTyp from Diagnose, Verlauf, OP, Pathologie
+    var histologie = new ArrayList<HistologieTyp>();
+    for (var meldung : meldungen.getMeldung()) {
+      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
+        histologie.add(meldung.getDiagnose().getHistologie());
+      }
+      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
+        histologie.add(meldung.getVerlauf().getHistologie());
+      }
+      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
+        histologie.add(meldung.getOP().getHistologie());
+      }
+      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
+        histologie.add(meldung.getPathologie().getHistologie());
+      }
+    }
+    // Create Obserations
+    for (var histo : histologie) {
+      if (histo == null
+          || histo.getLKBefallen() == null
+          || histo.getLKUntersucht() == null
+          || histo.getSentinelLKBefallen() == null
+          || histo.getSentinelLKUntersucht() == null) {
+        continue;
+      }
+      var effectiveDate =
+          new DateTimeType(
+              histo.getTumorHistologiedatum().getValue().toGregorianCalendar().getTime());
+      effectiveDate.setPrecision(TemporalPrecisionEnum.DAY);
+
+      result.add(
+          createObservation(
+              histo.getHistologieID() + "_befallen",
+              fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneLymphknoten(),
+              "21893-3",
+              "443527007",
+              effectiveDate,
+              histo.getLKBefallen().intValue()));
+
+      result.add(
+          createObservation(
+              histo.getHistologieID() + "_untersucht",
+              fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteLymphknoten(),
+              "21894-1",
+              "444025001",
+              effectiveDate,
+              histo.getLKUntersucht().intValue()));
+
+      result.add(
+          createObservation(
+              histo.getHistologieID() + "_befallen_sentinel",
+              fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
+              "92832-5",
+              "1264491009",
+              effectiveDate,
+              histo.getSentinelLKBefallen().intValue()));
+
+      result.add(
+          createObservation(
+              histo.getHistologieID() + "_untersucht_sentinel",
+              fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
+              "85347-3",
+              "444411008",
+              effectiveDate,
+              histo.getSentinelLKUntersucht().intValue()));
+    }
+    return result;
+  }
+
+  private Observation createObservation(
+      String identifierValue,
+      String profileUrl,
+      String loincCode,
+      String snomedCode,
+      DateTimeType effectiveDate,
+      Integer valueQuantity) {
+    Observation observation = new Observation();
+
+    // Identifier
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+            .setValue(identifierValue);
+    observation.addIdentifier(identifier);
+
+    // Id
+    observation.setId(computeResourceIdFromIdentifier(identifier));
+
+    // Meta
+    observation.getMeta().addProfile(profileUrl);
+
+    // Status
+    observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    // Category
+    var laboratory =
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
+    observation.setCategory(List.of(laboratory));
+
+    // Code
+    var code =
+        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), loincCode, ""));
+    code.addCoding(new Coding(fhirProperties.getSystems().getSnomed(), snomedCode, ""));
+    observation.setCode(code);
+
+    // Subject
+    observation.setSubject(patientReference);
+
+    // focus
+    observation.addFocus(diagnoseReference);
+
+    // Effective Date
+    observation.setEffective(effectiveDate);
+
+    // Value
+    var quantity =
+        new Quantity()
+            .setCode("1")
+            .setSystem(fhirProperties.getSystems().getUcum())
+            .setValue(valueQuantity)
+            .setUnit("#");
+    observation.setValue(quantity);
+
+    return observation;
+  }
+}
