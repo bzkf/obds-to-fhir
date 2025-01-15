@@ -38,6 +38,7 @@ public class FhirProperties {
     private String conditionId;
     private String observationId;
     private String procedureId;
+    private String operationProcedureId;
     private String medicationStatementId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
@@ -77,6 +78,7 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieApplikationsart;
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
+    private String miiCsOnkoOperationResidualstatus;
     private String strahlentherapieProcedureId;
     private String systemischeTherapieProcedureId;
     private String systemischeTherapieMedicationStatementId;

@@ -1,6 +1,6 @@
 {
   "resourceType": "Procedure",
-  "id": "ddcf44413769cbe066132c1bc81e9ec84aee234c7352e0d183735dc2267d8825",
+  "id": "cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
   },
@@ -14,7 +14,7 @@
     }
   } ],
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/procedure-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
     "value": "3015-870"
   } ],
   "status": "completed",
@@ -38,5 +38,11 @@
   "performedDateTime": "2020-03-05",
   "reasonReference": [ {
     "reference": "Condition/any"
-  } ]
+  } ],
+  "outcome": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+      "code": "R0"
+    } ]
+  }
 }

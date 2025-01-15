@@ -39,7 +39,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       // to do: brauch ich hier die patid? dann muss ich meine Parameter nochmal überdenken weil im
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getProcedureId())
+              .setSystem(fhirProperties.getSystems().getOperationProcedureId())
               .setValue(op.getOPID() + opsCode.getCode());
       procedure.addIdentifier(identifier);
       procedure.setId(
@@ -127,6 +127,15 @@ public class OperationMapper extends ObdsToFhirMapper {
               .setValue(intention);
 
       procedure.addExtension(intentionExtens);
+
+      // outcome
+      var outcome = new CodeableConcept();
+      outcome
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
+          .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+
+      procedure.setOutcome(outcome);
 
       // add procedure to procedure list here
       procedureList.add(procedure);
