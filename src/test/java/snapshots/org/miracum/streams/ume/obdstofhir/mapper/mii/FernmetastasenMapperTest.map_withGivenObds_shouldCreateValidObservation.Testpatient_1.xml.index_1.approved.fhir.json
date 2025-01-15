@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605",
+  "id": "01751d79e0e068a52dbe0619413670cbbf1dba8518da7d200d06c569450b66f9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetatasen-id",
     "value": "Verlauf_0"
   } ],
   "status": "final",

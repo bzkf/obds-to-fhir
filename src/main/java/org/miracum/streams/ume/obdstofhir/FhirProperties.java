@@ -93,8 +93,7 @@ public class FhirProperties {
     private String observationHistologieId;
     private String observationCategory;
     private String miiCsOnkoGrading;
-    private String observationHistologieId;
-    private String observationCategory;
+
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
