@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "576850075a4b74efbf2735eac96a6a874741fb794e6d53b3a862c4191d69cf94",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
   },
