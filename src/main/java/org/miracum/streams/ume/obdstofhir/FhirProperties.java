@@ -125,6 +125,7 @@ public class FhirProperties {
     private String miiPrOnkoAllgemeinerLeistungszustandEcog;
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
+    private String miiPrOnkoHistologieIcdo3;
   }
 
   @Data
