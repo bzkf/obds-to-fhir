@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.9
+  version: 3.0.0-beta.10
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -81,8 +81,10 @@ fhir:
     mii-cs-onko-tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
     atcWho: "http://www.whocc.no/atc"
-    mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
     observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
+    mii-cs-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading"
+    mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
+
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -96,6 +98,7 @@ fhir:
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
     histoDiagnosticReport: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund"
+    miiPrOnkoGrading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading"
     # MII
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
@@ -110,6 +113,7 @@ fhir:
     mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten"
     mii-pr-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog"
     mii-pr-onko-tod: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
+    mii-pr-onko-histologie-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
