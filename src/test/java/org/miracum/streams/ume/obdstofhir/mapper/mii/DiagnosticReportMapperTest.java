@@ -48,8 +48,9 @@ class DiagnosticReportMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
+    var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
 
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     for (int i = 0; i < list.size(); i++) {

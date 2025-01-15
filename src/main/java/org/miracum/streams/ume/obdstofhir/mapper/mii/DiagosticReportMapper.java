@@ -25,7 +25,7 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
   }
 
   public List<DiagnosticReport> map(
-    OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient) {
+    OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference tumorkonferenz) {
     Objects.requireNonNull(meldungen, "Meldungen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Validate.isTrue(
@@ -38,8 +38,19 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
     var diagnosticReport = new DiagnosticReport();
     for (var meldung : meldungen.getMeldung()) {
       if (meldung.getPathologie() != null && meldung.getPathologie().getBefundtext() != null) {
-        // DiagnosticReport füllen (evt. ID setzen, basedOb nicht befüllbar?)
+        // DiagnosticReport füllen (basedOb nicht befüllbar?)
+        // Identifier
+        var identifier =
+          new Identifier()
+            .setSystem(fhirProperties.getSystems().getMeldungId())
+            .setValue(meldung.getMeldungID());
+          // Id
+        diagnosticReport.setId(computeResourceIdFromIdentifier(identifier));
 
+        //basedOn Tumorkonferenz
+        if(!tumorkonferenz.isEmpty()) {
+          diagnosticReport.addBasedOn(tumorkonferenz);
+        }
         //Meta
         diagnosticReport.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoBefund());
 
