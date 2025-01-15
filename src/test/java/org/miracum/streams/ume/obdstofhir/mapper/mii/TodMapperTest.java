@@ -21,17 +21,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class DiagnosticReportMapperTest {
-  private static DiagosticReportMapper sut;
+class TodMapperTest {
+  private static TodMapper tm;
 
   @BeforeAll
-  static void beforeAll(@Autowired FhirProperties fhirProperties) {
-    sut = new DiagosticReportMapper(fhirProperties);
+  static void beforeEach(@Autowired FhirProperties fhirProps) {
+    tm = new TodMapper(fhirProps);
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidDiagnosticReport(String sourceFile) throws IOException {
+  @CsvSource({"Testpatient_1.xml"})
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -48,13 +48,19 @@ class DiagnosticReportMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
+    var condition = new Reference("Condition/any");
+    var tMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getTod() != null)
+            .findFirst()
+            .get();
 
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz);
+    var observations = tm.map(tMeldung, subject, condition);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    for (int i = 0; i < list.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(list.get(i));
+
+    for (int i = 0; i < observations.size(); i++) {
+      var fhirJson = fhirParser.encodeResourceToString(observations.get(i));
       Approvals.verify(
           fhirJson,
           Approvals.NAMES

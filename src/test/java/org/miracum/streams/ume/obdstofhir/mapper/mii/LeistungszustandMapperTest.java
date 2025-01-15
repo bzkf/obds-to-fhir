@@ -1,6 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,46 +22,47 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class DiagnosticReportMapperTest {
-  private static DiagosticReportMapper sut;
+class LeistungszustandMapperTest {
+
+  private static LeistungszustandMapper sut;
 
   @BeforeAll
-  static void beforeAll(@Autowired FhirProperties fhirProperties) {
-    sut = new DiagosticReportMapper(fhirProperties);
+  static void beforeEach(@Autowired FhirProperties fhirProps) {
+    sut = new LeistungszustandMapper(fhirProps);
   }
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidDiagnosticReport(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidConditionResource(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
     final var xmlMapper =
         XmlMapper.builder()
             .defaultUseWrapper(false)
+            .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .build();
 
+    assert resource != null;
     final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+    var conMeldungOptional =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getDiagnose() != null)
+            .findFirst();
+    assert conMeldungOptional.isPresent();
+    var conMeldung = conMeldungOptional.get();
 
-    var subject = new Reference("Patient/any");
-    var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
-
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz);
+    final var leistungszustand =
+        sut.map(conMeldung, new Reference("Patient/1"), new Reference("Condition/Primärdiagnose"));
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    for (int i = 0; i < list.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(list.get(i));
-      Approvals.verify(
-          fhirJson,
-          Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
-              .forFile()
-              .withExtension(".fhir.json"));
-    }
+    var fhirJson = fhirParser.encodeResourceToString(leistungszustand);
+    Approvals.verify(
+        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
   }
 }

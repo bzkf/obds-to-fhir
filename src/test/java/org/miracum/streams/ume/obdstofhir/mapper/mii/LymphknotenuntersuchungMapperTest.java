@@ -21,17 +21,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class DiagnosticReportMapperTest {
-  private static DiagosticReportMapper sut;
+public class LymphknotenuntersuchungMapperTest {
+
+  private static LymphknotenuntersuchungMapper sut;
 
   @BeforeAll
-  static void beforeAll(@Autowired FhirProperties fhirProperties) {
-    sut = new DiagosticReportMapper(fhirProperties);
+  static void beforeAll(@Autowired FhirProperties fhirProps) {
+    sut = new LymphknotenuntersuchungMapper(fhirProps);
   }
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidDiagnosticReport(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -48,9 +49,8 @@ class DiagnosticReportMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
-
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz);
+    var diagnose = new Reference("Condition/Diagnose_Primärtumor");
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnose);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     for (int i = 0; i < list.size(); i++) {
