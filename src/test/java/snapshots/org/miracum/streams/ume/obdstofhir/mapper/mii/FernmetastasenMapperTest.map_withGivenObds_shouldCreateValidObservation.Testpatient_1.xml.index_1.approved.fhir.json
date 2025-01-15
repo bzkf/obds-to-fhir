@@ -1,0 +1,31 @@
+{
+  "resourceType": "Observation",
+  "id": "4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+    "value": "Verlauf_0"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "385421009"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-06-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen",
+      "code": "BRA"
+    } ]
+  }
+}

@@ -38,7 +38,10 @@ public class FhirProperties {
     private String observationId;
     private String procedureId;
     private String medicationStatementId;
+    private String fernmetastasenId;
+    private String specimenId;
     private String observationCategorySystem;
+    private String allgemeinerLeistungszustandEcogId;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -81,6 +84,8 @@ public class FhirProperties {
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
     private String miiCsTherapieGrundEnde;
+    private String miiCsOnkoTodInterpretation;
+    private String miiCsOnkoTodObservationId;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
     private String atcBfarm;
@@ -88,6 +93,10 @@ public class FhirProperties {
     private String observationHistologieId;
     private String observationCategory;
     private String miiCsOnkoGrading;
+    private String observationHistologieId;
+    private String observationCategory;
+    private String miiCsOnkoFernmetastasen;
+    private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
 
   @Data
@@ -107,8 +116,16 @@ public class FhirProperties {
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
+    private String miiPrOnkoFernmetastasen;
     private String miiPrMedicationStatement;
     private String miiPrOnkoGrading;
+    private String miiPrOnkoAnzahlBefalleneLymphknoten;
+    private String miiPrOnkoAnzahlBefalleneSentinelLymphknoten;
+    private String miiPrOnkoAnzahlUntersuchteLymphknoten;
+    private String miiPrOnkoAnzahlUntersuchteSentinelLymphknoten;
+    private String miiPrOnkoAllgemeinerLeistungszustandEcog;
+    private String miiPrOnkoTod;
+    private String miiPrOnkoSpecimen;
   }
 
   @Data

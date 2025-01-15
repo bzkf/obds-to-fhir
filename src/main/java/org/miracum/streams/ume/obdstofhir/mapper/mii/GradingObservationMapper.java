@@ -68,6 +68,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
               .setValue(histo.getHistologieID() + "_Grading");
       observation.addIdentifier(identifier);
 
+      // Id
+      observation.setId(computeResourceIdFromIdentifier(identifier));
+
       // Status
       observation.setStatus(Observation.ObservationStatus.FINAL);
 
