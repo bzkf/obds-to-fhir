@@ -18,6 +18,7 @@ fhir:
     mii-ex-onko-strahlentherapie-bestrahlung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"
     mii-ex-onko-histology-morphology-behavior-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3"
     mii-ex-onko-systemische-therapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"
+    mii-ex-onko-op-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
   systems:
     patientId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/patient-id"
@@ -25,6 +26,7 @@ fhir:
     conditionId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/primaerdiagnose-id"
     observationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-id"
     procedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/procedure-id"
+    operationProcedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/operation-procedure-id"
     medicationStatementId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/medication-statement-id"
     specimenId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/specimen-id"
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
@@ -74,6 +76,7 @@ fhir:
     mii-cs-onko-strahlentherapie-zielgebiet: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet"
     mii-cs-onko-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation"
     mii-cs-onko-systemische-therapie-art: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
+    mii-cs-onko-operation-residualstatus: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus"
     mii-cs-therapie-grund-ende: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"
     mii-cs-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen"
     mii-cs-onko-tod-interpretation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod"
@@ -99,6 +102,7 @@ fhir:
     miiPrOnkoGrading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading"
     # MII
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
+    mii-pr-onko-operation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie"
     mii-pr-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen"
