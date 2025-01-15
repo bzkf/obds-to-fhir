@@ -30,7 +30,7 @@ class DiagnosticReportMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({"Testpatient_Patho.xml", "Testpatient_Patho2.xml"})
   void map_withGivenObds_shouldCreateValidDiagnosticReport(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -49,8 +49,9 @@ class DiagnosticReportMapperTest {
 
     var subject = new Reference("Patient/any");
     var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
+    var specimen = new Reference("Specimen/Onko");
 
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz);
+    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz, specimen);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
     for (int i = 0; i < list.size(); i++) {

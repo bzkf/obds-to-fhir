@@ -1,0 +1,25 @@
+{
+  "resourceType": "DiagnosticReport",
+  "id": "4c14587f59bfd52b7d9a137e5539d5641dffa6ec477591bc8746bb3f1c58e679",
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/meldung-id",
+    "value": "PAT_70102"
+  } ],
+  "basedOn": [ {
+    "reference": "CarePlan/Tumorkonferenz"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "22034-3"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "specimen": [ {
+    "reference": "Specimen/Onko"
+  } ],
+  "conclusion": "Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+}

@@ -25,7 +25,8 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
   public List<DiagnosticReport> map(
       OBDS.MengePatient.Patient.MengeMeldung meldungen,
       Reference patient,
-      Reference tumorkonferenz) {
+      Reference tumorkonferenz,
+      Reference specimen) {
     Objects.requireNonNull(meldungen, "Meldungen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Validate.isTrue(
@@ -35,15 +36,19 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
         "The subject reference should point to a Patient resource");
 
     var result = new ArrayList<DiagnosticReport>();
-    var diagnosticReport = new DiagnosticReport();
+
     for (var meldung : meldungen.getMeldung()) {
       if (meldung.getPathologie() != null && meldung.getPathologie().getBefundtext() != null) {
-        // DiagnosticReport füllen (basedOb nicht befüllbar?)
+        // DiagnosticReport füllen
+        var diagnosticReport = new DiagnosticReport();
         // Identifier
+        List<Identifier> identifiers = new ArrayList<>();
         var identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getMeldungId())
                 .setValue(meldung.getMeldungID());
+        identifiers.add(identifier);
+        diagnosticReport.setIdentifier(identifiers);
         // Id
         diagnosticReport.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -65,8 +70,13 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
         // Subject
         diagnosticReport.setSubject(patient);
 
+        // Specimen
+        diagnosticReport.addSpecimen(specimen);
+
         // conclusion
         diagnosticReport.setConclusion(meldung.getPathologie().getBefundtext());
+
+        result.add(diagnosticReport);
       }
     }
     return result;
