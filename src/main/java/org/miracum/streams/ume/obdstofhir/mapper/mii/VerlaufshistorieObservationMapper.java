@@ -83,6 +83,8 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
               .setSystem(fhirProperties.getSystems().getObservationHistologieId())
               .setValue(histo.getHistologieID() + "_ICDO3");
       observation.addIdentifier(identifier);
+      // Id
+      observation.setId(computeResourceIdFromIdentifier(identifier));
 
       // Status
       observation.setStatus(Observation.ObservationStatus.FINAL);

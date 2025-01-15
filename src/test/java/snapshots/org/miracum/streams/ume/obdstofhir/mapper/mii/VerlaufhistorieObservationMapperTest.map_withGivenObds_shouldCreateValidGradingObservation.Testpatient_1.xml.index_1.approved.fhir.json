@@ -1,5 +1,6 @@
 {
   "resourceType": "Observation",
+  "id": "c43c7ef905820c989c4c7dacadb501c0e5a3bbb2fb7d5cb903492d37a73d7090",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
   },
