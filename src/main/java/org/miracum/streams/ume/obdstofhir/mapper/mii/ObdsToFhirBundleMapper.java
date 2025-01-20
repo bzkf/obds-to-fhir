@@ -72,7 +72,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       //      the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = new Reference("Patient/" + patient.getId());
-      addEntryToBundle(bundle, patient);
+      addResourceToBundle(bundle, patient);
 
       bundle.setId(patient.getId());
 
@@ -80,14 +80,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Diagnose
         if (meldung.getDiagnose() != null) {
           var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
-          addEntryToBundle(bundle, condition);
+          addResourceToBundle(bundle, condition);
 
           var conditionReference = new Reference("Condition/" + condition.getId());
 
           if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
             var leistungszustand =
                 leistungszustandMapper.map(meldung, patientReference, conditionReference);
-            addEntryToBundle(bundle, leistungszustand);
+            addResourceToBundle(bundle, leistungszustand);
           }
         }
 
@@ -96,7 +96,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var syst = meldung.getSYST();
 
           var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
-          addEntryToBundle(bundle, systProcedure);
+          addResourceToBundle(bundle, systProcedure);
 
           var procedureReference = new Reference("Procedure/" + systProcedure.getId());
 
@@ -106,7 +106,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     syst, patientReference, procedureReference);
 
             for (var resource : systMedicationStatements) {
-              addEntryToBundle(bundle, resource);
+              addResourceToBundle(bundle, resource);
             }
           }
         }
@@ -114,7 +114,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Strahlenterhapie
         if (meldung.getST() != null) {
           var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
-          addEntryToBundle(bundle, stProcedure);
+          addResourceToBundle(bundle, stProcedure);
         }
 
         var primaryConditionReference =
@@ -125,7 +125,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var deathObservations =
               todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
           for (var resource : deathObservations) {
-            addEntryToBundle(bundle, resource);
+            addResourceToBundle(bundle, resource);
           }
         }
 
@@ -133,7 +133,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (meldung.getOP() != null) {
           var operations =
               operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
-          addEntriesToBundle(bundle, operations);
+          addResourcesToBundle(bundle, operations);
         }
       }
 
@@ -143,16 +143,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return bundles;
   }
 
-  private static Bundle addEntriesToBundle(Bundle bundle, List<? extends Resource> resources) {
+  private static Bundle addResourcesToBundle(Bundle bundle, List<? extends Resource> resources) {
     for (var resource : resources) {
-      addEntryToBundle(bundle, resource);
+      addResourceToBundle(bundle, resource);
     }
     return bundle;
   }
 
-  private static Bundle addEntryToBundle(Bundle bundle, Resource resource) {
+  private static Bundle addResourceToBundle(Bundle bundle, Resource resource) {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
-    bundle.addEntry().setResource(resource).getRequest().setMethod(HTTPVerb.PUT).setUrl(url);
+    bundle
+        .addEntry()
+        .setFullUrl(url)
+        .setResource(resource)
+        .getRequest()
+        .setMethod(HTTPVerb.PUT)
+        .setUrl(url);
     return bundle;
   }
 

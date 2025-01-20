@@ -41,7 +41,19 @@ class ObdsToFhirBundleMapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml"})
+  @CsvSource({
+    "Testpatient_1.xml",
+    "Testpatient_2.xml",
+    "Testpatient_3.xml",
+    "Testpatient_CLL.xml",
+    "Testpatient_leer.xml",
+    "Testpatient_Mamma.xml",
+    "Testpatient_Prostata.xml",
+    "Testpatient_Rektum.xml",
+    "Testpatientin_Cervix.xml",
+    "Testperson_CervixC53.xml",
+    "Testperson_Cervixinsitu.xml"
+  })
   void map_withGivenObds_shouldCreateBundleMatchingSnapshot(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();

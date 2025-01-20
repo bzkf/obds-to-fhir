@@ -3,6 +3,7 @@
   "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
   "type": "transaction",
   "entry": [ {
+    "fullUrl": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
     "resource": {
       "resourceType": "Patient",
       "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
@@ -38,6 +39,7 @@
       "url": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
     }
   }, {
+    "fullUrl": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356",
     "resource": {
       "resourceType": "Condition",
       "id": "9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356",
@@ -99,6 +101,7 @@
       "url": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
     }
   }, {
+    "fullUrl": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
     "resource": {
       "resourceType": "Observation",
       "id": "6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
@@ -136,6 +139,7 @@
       "url": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
     }
   }, {
+    "fullUrl": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
     "resource": {
       "resourceType": "Procedure",
       "id": "cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
@@ -189,6 +193,7 @@
       "url": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52"
     }
   }, {
+    "fullUrl": "Procedure/977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4",
     "resource": {
       "resourceType": "Procedure",
       "id": "977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4",
@@ -242,6 +247,7 @@
       "url": "Procedure/977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4"
     }
   }, {
+    "fullUrl": "Procedure/bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559",
     "resource": {
       "resourceType": "Procedure",
       "id": "bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559",
@@ -324,6 +330,7 @@
       "url": "Procedure/bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559"
     }
   }, {
+    "fullUrl": "Procedure/8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf",
     "resource": {
       "resourceType": "Procedure",
       "id": "8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf",
@@ -388,6 +395,7 @@
       "url": "Procedure/8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf"
     }
   }, {
+    "fullUrl": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978",
@@ -421,6 +429,7 @@
       "url": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978"
     }
   }, {
+    "fullUrl": "Observation/cbc4593c9af41236a6be7702dc0d63747819059028e1f7a9ee46384a368045eb",
     "resource": {
       "resourceType": "Observation",
       "id": "cbc4593c9af41236a6be7702dc0d63747819059028e1f7a9ee46384a368045eb",
@@ -464,6 +473,7 @@
       "url": "Observation/cbc4593c9af41236a6be7702dc0d63747819059028e1f7a9ee46384a368045eb"
     }
   }, {
+    "fullUrl": "Observation/8170fbf5aebdce7c20b3f7c634b1367c621664782d28d4c57593e4d8d048c8cd",
     "resource": {
       "resourceType": "Observation",
       "id": "8170fbf5aebdce7c20b3f7c634b1367c621664782d28d4c57593e4d8d048c8cd",
@@ -507,6 +517,7 @@
       "url": "Observation/8170fbf5aebdce7c20b3f7c634b1367c621664782d28d4c57593e4d8d048c8cd"
     }
   }, {
+    "fullUrl": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335",
     "resource": {
       "resourceType": "Condition",
       "id": "5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335",
@@ -568,6 +579,7 @@
       "url": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335"
     }
   }, {
+    "fullUrl": "Observation/7d6cfaae048e593bc9538124062743dc6c1fd2c433854ace4a41fed8a2d5b9a8",
     "resource": {
       "resourceType": "Observation",
       "id": "7d6cfaae048e593bc9538124062743dc6c1fd2c433854ace4a41fed8a2d5b9a8",
@@ -605,6 +617,7 @@
       "url": "Observation/7d6cfaae048e593bc9538124062743dc6c1fd2c433854ace4a41fed8a2d5b9a8"
     }
   }, {
+    "fullUrl": "Procedure/ed5b745ca4c7e7fbc6c581157a677b46028f7fbea03623571edd2440d993b760",
     "resource": {
       "resourceType": "Procedure",
       "id": "ed5b745ca4c7e7fbc6c581157a677b46028f7fbea03623571edd2440d993b760",
@@ -658,6 +671,7 @@
       "url": "Procedure/ed5b745ca4c7e7fbc6c581157a677b46028f7fbea03623571edd2440d993b760"
     }
   }, {
+    "fullUrl": "Condition/a9b49e6ae910db956adf674338ec65dff97a2d4c07c1f0449c154b90782b49d9",
     "resource": {
       "resourceType": "Condition",
       "id": "a9b49e6ae910db956adf674338ec65dff97a2d4c07c1f0449c154b90782b49d9",
@@ -719,6 +733,7 @@
       "url": "Condition/a9b49e6ae910db956adf674338ec65dff97a2d4c07c1f0449c154b90782b49d9"
     }
   }, {
+    "fullUrl": "Observation/9faa00bb7f854297a496a607f353b5e62d1e0b1b8f92a5d3d7abb2a0c045d23e",
     "resource": {
       "resourceType": "Observation",
       "id": "9faa00bb7f854297a496a607f353b5e62d1e0b1b8f92a5d3d7abb2a0c045d23e",
@@ -756,6 +771,7 @@
       "url": "Observation/9faa00bb7f854297a496a607f353b5e62d1e0b1b8f92a5d3d7abb2a0c045d23e"
     }
   }, {
+    "fullUrl": "Procedure/1b566748e4b3f7c304f866b98ba11696eb2cb16ee4f8627bb187ecbcee4b46b0",
     "resource": {
       "resourceType": "Procedure",
       "id": "1b566748e4b3f7c304f866b98ba11696eb2cb16ee4f8627bb187ecbcee4b46b0",

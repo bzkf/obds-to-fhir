@@ -122,14 +122,17 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       procedure.addExtension(intentionExtens);
 
-      // outcome
-      var outcome = new CodeableConcept();
-      outcome
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
-          .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+      if (op.getResidualstatus() != null
+          && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
+        // outcome
+        var outcome = new CodeableConcept();
+        outcome
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
+            .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
 
-      procedure.setOutcome(outcome);
+        procedure.setOutcome(outcome);
+      }
 
       // add procedure to procedure list here
       procedureList.add(procedure);
