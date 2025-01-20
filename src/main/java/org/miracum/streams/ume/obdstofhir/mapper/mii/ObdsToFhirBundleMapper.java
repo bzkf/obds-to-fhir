@@ -24,7 +24,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final SystemischeTherapieMedicationStatementMapper
       systemischeTherapieMedicationStatementMapper;
   private final TodMapper todMapper;
-  private LeistungszustandMapper leistungszustandMapper;
+  private final LeistungszustandMapper leistungszustandMapper;
+  private final OperationMapper operationMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -34,7 +35,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       SystemischeTherapieMedicationStatementMapper systemischeTherapieMedicationStatementMapper,
       StrahlentherapieMapper strahlentherapieMapper,
       TodMapper todMapper,
-      LeistungszustandMapper leistungszustandMapper) {
+      LeistungszustandMapper leistungszustandMapper,
+      OperationMapper operationMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -44,6 +46,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.strahlentherapieMapper = strahlentherapieMapper;
     this.todMapper = todMapper;
     this.leistungszustandMapper = leistungszustandMapper;
+    this.operationMapper = operationMapper;
   }
 
   /**
@@ -114,14 +117,23 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           addEntryToBundle(bundle, stProcedure);
         }
 
+        var primaryConditionReference =
+            createPrimaryConditionReference(meldung.getTumorzuordnung());
+
         // Tod
         if (meldung.getTod() != null) {
-          var diagnosisReference = createPrimaryDiagnosisReference(meldung.getTumorzuordnung());
           var deathObservations =
-              todMapper.map(meldung.getTod(), patientReference, diagnosisReference);
+              todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
           for (var resource : deathObservations) {
             addEntryToBundle(bundle, resource);
           }
+        }
+
+        // Operation
+        if (meldung.getOP() != null) {
+          var operations =
+              operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
+          addEntriesToBundle(bundle, operations);
         }
       }
 
@@ -131,13 +143,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return bundles;
   }
 
+  private static Bundle addEntriesToBundle(Bundle bundle, List<? extends Resource> resources) {
+    for (var resource : resources) {
+      addEntryToBundle(bundle, resource);
+    }
+    return bundle;
+  }
+
   private static Bundle addEntryToBundle(Bundle bundle, Resource resource) {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
     bundle.addEntry().setResource(resource).getRequest().setMethod(HTTPVerb.PUT).setUrl(url);
     return bundle;
   }
 
-  private Reference createPrimaryDiagnosisReference(TumorzuordnungTyp tumorzuordnung) {
+  private Reference createPrimaryConditionReference(TumorzuordnungTyp tumorzuordnung) {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getConditionId())
