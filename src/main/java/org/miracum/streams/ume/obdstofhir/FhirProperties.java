@@ -41,6 +41,7 @@ public class FhirProperties {
     private String operationProcedureId;
     private String medicationStatementId;
     private String fernmetastasenId;
+    private String residualstatusObservationId;
     private String specimenId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
@@ -86,6 +87,7 @@ public class FhirProperties {
     private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
+    private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String miiCsOnkoTodInterpretation;
     private String miiCsOnkoTodObservationId;

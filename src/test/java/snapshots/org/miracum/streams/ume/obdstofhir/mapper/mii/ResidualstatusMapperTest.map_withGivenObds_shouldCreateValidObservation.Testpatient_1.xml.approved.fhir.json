@@ -1,0 +1,28 @@
+{
+  "resourceType": "Observation",
+  "id": "daa3a29e56fbbdcdf2d899040e8a515eb5ae62414b7e1478d79d0b499469bbcc",
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/residualstatus-observation-id",
+    "value": "301"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "84892-9"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Diagnose_Primärtumor"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+      "code": "R2"
+    } ]
+  }
+}
