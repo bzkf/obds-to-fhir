@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       TodMapper.class,
       LeistungszustandMapper.class,
       OperationMapper.class,
+      ResidualstatusMapper.class,
     })
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest {

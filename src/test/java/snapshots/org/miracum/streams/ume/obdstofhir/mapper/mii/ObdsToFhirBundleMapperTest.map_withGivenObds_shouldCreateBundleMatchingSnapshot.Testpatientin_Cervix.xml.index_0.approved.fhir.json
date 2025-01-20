@@ -191,5 +191,39 @@
       "method": "PUT",
       "url": "Procedure/e05a1e24b4ff9a0191bf1ec8ac695cfb0aa7b3556765aa36b9f58d3275704541"
     }
+  }, {
+    "fullUrl": "Observation/4039fb1c7eb636f48eb37893b683752a6f41e7e05dffc8b12bb3fe8a336d5008",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4039fb1c7eb636f48eb37893b683752a6f41e7e05dffc8b12bb3fe8a336d5008",
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/residualstatus-observation-id",
+        "value": "29"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "84892-9"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "effectiveDateTime": "2022-10-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+          "code": "R0"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4039fb1c7eb636f48eb37893b683752a6f41e7e05dffc8b12bb3fe8a336d5008"
+    }
   } ]
 }

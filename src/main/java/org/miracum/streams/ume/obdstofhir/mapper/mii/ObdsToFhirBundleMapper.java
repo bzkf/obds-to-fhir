@@ -26,6 +26,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TodMapper todMapper;
   private final LeistungszustandMapper leistungszustandMapper;
   private final OperationMapper operationMapper;
+  private final ResidualstatusMapper residualstatusMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -36,7 +37,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       StrahlentherapieMapper strahlentherapieMapper,
       TodMapper todMapper,
       LeistungszustandMapper leistungszustandMapper,
-      OperationMapper operationMapper) {
+      OperationMapper operationMapper,
+      ResidualstatusMapper residualstatusMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -47,6 +49,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.todMapper = todMapper;
     this.leistungszustandMapper = leistungszustandMapper;
     this.operationMapper = operationMapper;
+    this.residualstatusMapper = residualstatusMapper;
   }
 
   /**
@@ -134,6 +137,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var operations =
               operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
           addResourcesToBundle(bundle, operations);
+
+          var residualstatus =
+              residualstatusMapper.map(
+                  meldung.getOP(), patientReference, primaryConditionReference);
+          addResourceToBundle(bundle, residualstatus);
         }
       }
 
