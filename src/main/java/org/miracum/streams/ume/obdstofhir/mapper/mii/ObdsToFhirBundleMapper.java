@@ -138,10 +138,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
           addResourcesToBundle(bundle, operations);
 
-          var residualstatus =
-              residualstatusMapper.map(
-                  meldung.getOP(), patientReference, primaryConditionReference);
-          addResourceToBundle(bundle, residualstatus);
+          if (meldung.getOP().getResidualstatus() != null
+              && meldung.getOP().getResidualstatus().getGesamtbeurteilungResidualstatus() != null) {
+            var residualstatus =
+                residualstatusMapper.map(
+                    meldung.getOP(), patientReference, primaryConditionReference);
+            addResourceToBundle(bundle, residualstatus);
+          }
         }
       }
 

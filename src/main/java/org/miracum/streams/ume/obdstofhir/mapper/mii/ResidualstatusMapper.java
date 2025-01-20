@@ -28,6 +28,9 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     var rs = op.getResidualstatus();
     Objects.requireNonNull(rs, "Residualstatus must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
+    Objects.requireNonNull(
+        rs.getGesamtbeurteilungResidualstatus(),
+        "GesamtbeurteilungResidualstatus must not be null");
 
     Validate.isTrue(
         Objects.equals(
