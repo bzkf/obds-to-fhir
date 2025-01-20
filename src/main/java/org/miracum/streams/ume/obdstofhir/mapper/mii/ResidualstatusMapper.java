@@ -1,10 +1,12 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import de.basisdatensatz.obds.v3.ResidualstatusTyp;
+import de.basisdatensatz.obds.v3.OPTyp;
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -20,7 +22,10 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Observation map(ResidualstatusTyp rs, Reference patient) {
+  public Observation map(OPTyp op, Reference patient) {
+    Objects.requireNonNull(op, "OP must not be null");
+
+    var rs = op.getResidualstatus();
     Objects.requireNonNull(rs, "Residualstatus must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
 
@@ -31,8 +36,19 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
 
+    // Identifiers
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getResidualstatusObservationId())
+            .setValue(op.getOPID());
+    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setIdentifier(List.of(identifier));
+
     // Subject
     observation.setSubject(patient);
+
+    // Datum
+    convertObdsDatumToDateTimeType(op.getDatum()).ifPresent(observation::setEffective);
 
     // Gesamtbeurteilung des Residualstatus
     var value = new CodeableConcept();

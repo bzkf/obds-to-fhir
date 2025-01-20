@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import java.io.IOException;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
@@ -31,7 +32,7 @@ class ResidualstatusMapperTest {
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -50,11 +51,11 @@ class ResidualstatusMapperTest {
     var subject = new Reference("Patient/any");
     obdsPatient.getMengeMeldung().getMeldung().stream()
         .filter(m -> m.getOP() != null && m.getOP().getResidualstatus() != null)
-        .map(m -> m.getOP().getResidualstatus())
+        .map(Meldung::getOP)
         .findFirst()
         .ifPresent(
-            rs -> {
-              var procedure = sut.map(rs, subject);
+            op -> {
+              var procedure = sut.map(op, subject);
 
               var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
               var fhirJson = fhirParser.encodeResourceToString(procedure);
