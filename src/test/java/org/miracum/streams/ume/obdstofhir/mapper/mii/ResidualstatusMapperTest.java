@@ -49,13 +49,14 @@ class ResidualstatusMapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
+    var focus = new Reference("Condition/Diagnose_Primärtumor");
     obdsPatient.getMengeMeldung().getMeldung().stream()
         .filter(m -> m.getOP() != null && m.getOP().getResidualstatus() != null)
         .map(Meldung::getOP)
         .findFirst()
         .ifPresent(
             op -> {
-              var procedure = sut.map(op, subject);
+              var procedure = sut.map(op, subject, focus);
 
               var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
               var fhirJson = fhirParser.encodeResourceToString(procedure);

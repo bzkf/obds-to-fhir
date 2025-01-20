@@ -15,6 +15,9 @@
   "subject": {
     "reference": "Patient/any"
   },
+  "focus": [ {
+    "reference": "Condition/Diagnose_Primärtumor"
+  } ],
   "effectiveDateTime": "2020-03-05",
   "valueCodeableConcept": {
     "coding": [ {

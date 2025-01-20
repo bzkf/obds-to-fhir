@@ -22,7 +22,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Observation map(OPTyp op, Reference patient) {
+  public Observation map(OPTyp op, Reference patient, Reference focus) {
     Objects.requireNonNull(op, "OP must not be null");
 
     var rs = op.getResidualstatus();
@@ -46,6 +46,9 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
 
     // Subject
     observation.setSubject(patient);
+
+    // Focus
+    observation.addFocus(focus);
 
     // Datum
     convertObdsDatumToDateTimeType(op.getDatum()).ifPresent(observation::setEffective);
