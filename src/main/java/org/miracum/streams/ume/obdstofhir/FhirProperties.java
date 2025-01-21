@@ -23,6 +23,7 @@ public class FhirProperties {
     private String sysTheraProto;
     private String dataAbsentReason;
     private String genderAmtlich;
+    private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
@@ -37,8 +38,10 @@ public class FhirProperties {
     private String conditionId;
     private String observationId;
     private String procedureId;
+    private String operationProcedureId;
     private String medicationStatementId;
     private String fernmetastasenId;
+    private String residualstatusObservationId;
     private String specimenId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
@@ -78,11 +81,13 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieApplikationsart;
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
+    private String miiCsOnkoOperationResidualstatus;
     private String strahlentherapieProcedureId;
     private String systemischeTherapieProcedureId;
     private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
+    private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String miiCsOnkoTodInterpretation;
     private String miiCsOnkoTodObservationId;
@@ -114,6 +119,7 @@ public class FhirProperties {
     private String miiPatientPseudonymisiert;
     private String deathObservation;
     private String miiPrOnkoDiagnosePrimaertumor;
+    private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
     private String miiPrOnkoFernmetastasen;
