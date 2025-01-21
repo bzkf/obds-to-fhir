@@ -122,7 +122,6 @@ jobs:
           # start by first installing the Strimzi and Prometheus operators
           helm upgrade --install \
             --set "stream-processors.enabled=false" \
-            --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
             --wait \
             --timeout=10m \
             obds-to-fhir-test \
