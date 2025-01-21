@@ -11,7 +11,7 @@ permissions: read-all
 jobs:
   validate-fhir-resource:
     name: Validate FHIR resources
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container: ghcr.io/miracum/ig-build-tools:v2.1.6@sha256:26bc1eaf0a259e8c16d0eeeb8622c7aecaa45d41e39f158696f9aec90b142596
     steps:
       - name: Checkout code
