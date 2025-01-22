@@ -105,6 +105,7 @@ public abstract class Verification {
       this.resource = resource;
     }
 
+    @Override
     public SingleVerification<T> matches(String sourceFile) {
       var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
       var fhirJson = fhirParser.encodeResourceToString(resource);
@@ -131,6 +132,7 @@ public abstract class Verification {
       return this;
     }
 
+    @Override
     public ListVerification<T> matches(String sourceFile) {
       for (int i = 0; i < resources.size(); i++) {
         assertThat(resources.get(i)).isNotNull();
