@@ -1,6 +1,8 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.SYSTTyp;
+import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeType;
@@ -13,6 +15,8 @@ import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.lookup.obds.OPSTherapietypLookup;
+import org.miracum.streams.ume.obdstofhir.lookup.obds.SnomedCtTherapietypLookup;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +27,8 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
+
+  private static final String SNOMED_CT_SYST_CATEGORY = "18629005";
 
   public SystemischeTherapieProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -78,21 +84,43 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     }
 
     var code = new CodeableConcept();
-    // Always add absent OPS
-    code.addCoding().setSystem(fhirProperties.getSystems().getOps()).setCodeElement(dataAbsentCode);
+    if (null != syst.getTherapieart()
+        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
+            .contains(syst.getTherapieart())) {
+      code.addCoding()
+          .setSystem(fhirProperties.getSystems().getSnomed())
+          .setCode(SnomedCtTherapietypLookup.lookupCode(syst.getTherapieart()));
+    } else if (null != syst.getTherapieart()
+        && null != OPSTherapietypLookup.lookupCode(syst.getTherapieart())) {
+      code.addCoding()
+          .setSystem(fhirProperties.getSystems().getOps())
+          .setCode(OPSTherapietypLookup.lookupCode(syst.getTherapieart()));
+    } else {
+      code.addCoding()
+          .setSystem(fhirProperties.getSystems().getOps())
+          .setCodeElement(dataAbsentCode);
+    }
     if (null != syst.getTherapieart()) {
       code.addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
           .setCode(syst.getTherapieart().value());
     }
-
     procedure.setCode(code);
 
     var category = new CodeableConcept();
-    category
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getSnomed())
-        .setCodeElement(dataAbsentCode);
+    if (null == syst.getTherapieart()
+        || List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
+            .contains(syst.getTherapieart())) {
+      category
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getSnomed())
+          .setCodeElement(dataAbsentCode);
+    } else {
+      category
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getSnomed())
+          .setCode(SNOMED_CT_SYST_CATEGORY);
+    }
     procedure.setCategory(category);
 
     var intention = new CodeableConcept();
