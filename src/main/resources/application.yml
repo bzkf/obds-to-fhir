@@ -23,8 +23,8 @@ fhir:
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
   systems:
+    # local systems with prefix {fhir.default.baseSystemUrl}
     patientId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/patient-id"
-    identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
     conditionId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/primaerdiagnose-id"
     observationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-id"
     procedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/procedure-id"
@@ -34,7 +34,6 @@ fhir:
     studienteilnahmeId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/studienteilnahme-id"
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
     observationVerlaufId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-verlauf-id"
-    observationCategorySystem: "http://hl7.org/fhir/observation-category"
     gleason-score-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/psa-observation-id"
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/strahlentherapie-procedure-id"
@@ -48,6 +47,11 @@ fhir:
     nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     grading-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/grading-observation-id"
+    tnmGroupingObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tmn-grouping-observation-id"
+
+    # external systems
+    identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
+    observationCategorySystem: "http://hl7.org/fhir/observation-category"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -147,6 +151,8 @@ fhir:
     mii-pr-onko-nebenwirkung-adverse-event: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event"
     mii-pr-onko-verlauf: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf"
     mii-pr-onko-tumorkonferenz: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz"
+    mii-pr-onko-tnm-klassifikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation"
+
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

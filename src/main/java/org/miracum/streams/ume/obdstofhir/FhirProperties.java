@@ -36,7 +36,6 @@ public class FhirProperties {
   @Data
   public static class FhirSystems {
     private String patientId;
-    private String identifierType;
     private String conditionId;
     private String observationId;
     private String procedureId;
@@ -46,10 +45,13 @@ public class FhirProperties {
     private String residualstatusObservationId;
     private String specimenId;
     private String studienteilnahmeId;
-    private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
     private String genetischeVarianteId;
     private String tumorkonferenzId;
+    private String tnmGroupingObservationId;
+
+    private String identifierType;
+    private String observationCategorySystem;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -160,6 +162,8 @@ public class FhirProperties {
     private String miiPrOnkoNebenwirkungAdverseEvent;
     private String miiPrOnkoVerlauf;
     private String miiPrOnkoTumorkonferenz;
+
+    private String miiPrOnkoTnmKlassifikation;
   }
 
   @Data
