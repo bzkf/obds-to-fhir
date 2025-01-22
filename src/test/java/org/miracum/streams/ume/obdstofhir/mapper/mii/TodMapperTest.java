@@ -43,6 +43,6 @@ class TodMapperTest extends MapperTest {
 
     var observations = tm.map(tMeldung, subject, condition);
 
-    verifyEach(observations, sourceFile);
+    verifyAll(observations, sourceFile);
   }
 }

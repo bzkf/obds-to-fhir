@@ -38,6 +38,6 @@ class GradingObservationMapperTest extends MapperTest {
     var diagnose = new Reference("Condition/Primärdiagnose");
     final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnose);
 
-    verifyEach(list, sourceFile);
+    verifyAll(list, sourceFile);
   }
 }

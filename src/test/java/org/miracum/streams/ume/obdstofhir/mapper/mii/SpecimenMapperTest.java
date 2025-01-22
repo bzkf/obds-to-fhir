@@ -36,6 +36,6 @@ class SpecimenMapperTest extends MapperTest {
 
     final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
 
-    verifyEach(list, sourceFile);
+    verifyAll(list, sourceFile);
   }
 }

@@ -57,6 +57,6 @@ class OperationMapperTest extends MapperTest {
     LOG.info("Length of resultResources {}", resultResources.size());
     LOG.info("Number of OPS codes: {}", opMeldung);
 
-    verifyEach(resultResources, sourceFile);
+    verifyAll(resultResources, sourceFile);
   }
 }

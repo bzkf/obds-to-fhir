@@ -38,6 +38,6 @@ class LymphknotenuntersuchungMapperTest extends MapperTest {
     var diagnose = new Reference("Condition/Diagnose_Primärtumor");
     final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnose);
 
-    verifyEach(list, sourceFile);
+    verifyAll(list, sourceFile);
   }
 }

@@ -40,6 +40,6 @@ class FernmetastasenMapperTest extends MapperTest {
     diagnosen.add(diagnose);
     final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnosen);
 
-    verifyEach(list, sourceFile);
+    verifyAll(list, sourceFile);
   }
 }

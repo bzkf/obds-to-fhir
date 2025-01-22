@@ -49,7 +49,7 @@ public abstract class MapperTest {
    * @param resources The Fhir resources to be verified
    * @param sourceFile The approved source file
    */
-  protected static <T extends IBaseResource> void verifyEach(List<T> resources, String sourceFile) {
+  protected static <T extends IBaseResource> void verifyAll(List<T> resources, String sourceFile) {
     for (int i = 0; i < resources.size(); i++) {
       assertThat(resources.get(i)).isNotNull();
       var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
