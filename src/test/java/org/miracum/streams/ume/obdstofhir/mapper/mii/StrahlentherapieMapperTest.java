@@ -2,10 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,9 +41,6 @@ class StrahlentherapieMapperTest extends MapperTest {
             .get();
     var procedure = sut.map(stMeldung.getST(), subject);
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(procedure);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+    verify(procedure, sourceFile);
   }
 }

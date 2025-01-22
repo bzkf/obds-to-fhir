@@ -2,10 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,16 +43,6 @@ class TodMapperTest extends MapperTest {
 
     var observations = tm.map(tMeldung, subject, condition);
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-
-    for (int i = 0; i < observations.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(observations.get(i));
-      Approvals.verify(
-          fhirJson,
-          Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
-              .forFile()
-              .withExtension(".fhir.json"));
-    }
+    verifyAll(observations, sourceFile);
   }
 }

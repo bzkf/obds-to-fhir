@@ -2,12 +2,10 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,16 +40,6 @@ class FernmetastasenMapperTest extends MapperTest {
     diagnosen.add(diagnose);
     final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnosen);
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-
-    for (int i = 0; i < list.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(list.get(i));
-      Approvals.verify(
-          fhirJson,
-          Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
-              .forFile()
-              .withExtension(".fhir.json"));
-    }
+    verifyAll(list, sourceFile);
   }
 }

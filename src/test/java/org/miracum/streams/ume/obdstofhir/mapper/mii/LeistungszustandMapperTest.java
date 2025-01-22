@@ -2,10 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,9 +44,6 @@ class LeistungszustandMapperTest extends MapperTest {
     final var leistungszustand =
         sut.map(conMeldung, new Reference("Patient/1"), new Reference("Condition/Primärdiagnose"));
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(leistungszustand);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+    verify(leistungszustand, sourceFile);
   }
 }

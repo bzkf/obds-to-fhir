@@ -2,10 +2,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -42,9 +40,6 @@ class PatientMapperTest extends MapperTest {
 
     final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    var fhirJson = fhirParser.encodeResourceToString(patient);
-    Approvals.verify(
-        fhirJson, Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+    verify(patient, sourceFile);
   }
 }
