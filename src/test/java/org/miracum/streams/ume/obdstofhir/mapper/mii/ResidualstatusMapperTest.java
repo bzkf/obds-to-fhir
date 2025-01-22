@@ -2,11 +2,9 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import java.io.IOException;
-import org.approvaltests.Approvals;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,11 +44,7 @@ class ResidualstatusMapperTest extends MapperTest {
             op -> {
               var procedure = sut.map(op, subject, focus);
 
-              var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-              var fhirJson = fhirParser.encodeResourceToString(procedure);
-              Approvals.verify(
-                  fhirJson,
-                  Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+              verify(procedure, sourceFile);
             });
   }
 }
