@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.miracum.streams.ume.obdstofhir.Verification.verifyThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
@@ -43,6 +44,6 @@ class ConditionMapperTest extends MapperTest {
 
     final var condition = sut.map(conMeldung, new Reference("Patient/1"), obds.getMeldedatum());
 
-    verify(condition, sourceFile);
+    verifyThat(condition).matches(sourceFile);
   }
 }

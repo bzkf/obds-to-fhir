@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.miracum.streams.ume.obdstofhir.Verification.verifyThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
@@ -43,8 +44,6 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
             .get();
     var list = sut.map(systMeldung.getSYST(), patient, procedure);
 
-    assertThat(list).hasSize(1);
-
-    verify(list.get(0), sourceFile);
+    verifyThat(list).hasSize(1).and().nthMatches(0, sourceFile);
   }
 }

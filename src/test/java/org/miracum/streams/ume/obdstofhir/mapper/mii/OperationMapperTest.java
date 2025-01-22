@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.miracum.streams.ume.obdstofhir.Verification.verifyThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
@@ -53,10 +54,9 @@ class OperationMapperTest extends MapperTest {
     // Map and get the list of procedures
     final var resultResources = sut.map(opMeldung.getOP(), subject, condition);
 
-    assertThat(resultResources).isNotEmpty();
     LOG.info("Length of resultResources {}", resultResources.size());
     LOG.info("Number of OPS codes: {}", opMeldung);
 
-    verifyAll(resultResources, sourceFile);
+    verifyThat(resultResources).isNotEmpty().and().matches(sourceFile);
   }
 }
