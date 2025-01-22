@@ -101,7 +101,7 @@ public class FhirProperties {
 
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
-    private String meldungId;
+    private String histologiebefundDiagnosticReportId;
   }
 
   @Data

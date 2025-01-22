@@ -13,12 +13,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DiagosticReportMapper extends ObdsToFhirMapper {
+public class HistologiebefundMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
 
-  public DiagosticReportMapper(FhirProperties fhirProperties) {
+  public HistologiebefundMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
@@ -45,7 +45,7 @@ public class DiagosticReportMapper extends ObdsToFhirMapper {
         List<Identifier> identifiers = new ArrayList<>();
         var identifier =
             new Identifier()
-                .setSystem(fhirProperties.getSystems().getMeldungId())
+                .setSystem(fhirProperties.getSystems().getHistologiebefundDiagnosticReportId())
                 .setValue(meldung.getMeldungID());
         identifiers.add(identifier);
         diagnosticReport.setIdentifier(identifiers);

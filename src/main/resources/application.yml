@@ -39,7 +39,7 @@ fhir:
     allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id"
     fernmetastasen-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/fernmetastasen-id"
     residualstatusObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/residualstatus-observation-id"
-    meldungId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/meldung-id"
+    histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"

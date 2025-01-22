@@ -1,8 +1,8 @@
 {
   "resourceType": "DiagnosticReport",
-  "id": "30fd6583231cf778a1c70a9b3bc580ccd911b1558e86b73ba8b0388687ac5986",
+  "id": "dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b",
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/meldung-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
     "value": "PAT_70101"
   } ],
   "basedOn": [ {
