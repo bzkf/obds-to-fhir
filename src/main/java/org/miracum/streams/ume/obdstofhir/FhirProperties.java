@@ -33,8 +33,8 @@ public class FhirProperties {
 
   @Data
   public static class FhirSystems {
+    // local systems
     private String patientId;
-    private String identifierType;
     private String conditionId;
     private String observationId;
     private String procedureId;
@@ -43,8 +43,12 @@ public class FhirProperties {
     private String fernmetastasenId;
     private String residualstatusObservationId;
     private String specimenId;
-    private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
+    private String tnmGroupingObservationId;
+
+    // external systems
+    private String identifierType;
+    private String observationCategorySystem;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -98,7 +102,6 @@ public class FhirProperties {
     private String observationHistologieId;
     private String observationCategory;
     private String miiCsOnkoGrading;
-
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
   }
@@ -132,6 +135,8 @@ public class FhirProperties {
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
+
+    private String miiPrOnkoTnmKlassifikation;
   }
 
   @Data
