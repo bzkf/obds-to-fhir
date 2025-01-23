@@ -39,6 +39,7 @@ fhir:
     allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id"
     fernmetastasen-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/fernmetastasen-id"
     residualstatusObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/residualstatus-observation-id"
+    histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -101,6 +102,7 @@ fhir:
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
+    histoDiagnosticReport: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund"
     miiPrOnkoGrading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading"
     # MII
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
