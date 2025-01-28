@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StrahlentherapieMapper extends ObdsToFhirMapper {
+
   private static final Logger LOG = LoggerFactory.getLogger(StrahlentherapieMapper.class);
 
   public StrahlentherapieMapper(FhirProperties fhirProperties) {
@@ -28,19 +29,24 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
   }
 
   public Procedure map(STTyp st, Reference subject) {
+    // Input Validation
     Objects.requireNonNull(st);
     Objects.requireNonNull(subject);
 
     Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
     Validate.isTrue(
-        Objects.equals(
-            subject.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
+      Objects.equals(
+        subject.getReferenceElement().getResourceType(),
+        ResourceType.PATIENT.toCode()
+        ),
         "The subject reference should point to a Patient resource");
 
+    // init resource type and add fhir profile
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
 
-    // TODO: can we be sure that this ST-ID is globally unqiue across all STs? -
+    // Mapping
+    // TODO: can we be sure that this ST-ID is globally unique across all STs? -
     // if not we may instead need to construct the ID from the patient-id + others.
     var identifier =
         new Identifier()
@@ -49,7 +55,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     procedure.addIdentifier(identifier);
     procedure.setId(computeResourceIdFromIdentifier(identifier));
 
-    // Status
+    // Status 1..1
     if (st.getMeldeanlass() == STTyp.Meldeanlass.BEHANDLUNGSENDE) {
       procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
     } else {
@@ -58,9 +64,13 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     procedure.setSubject(subject);
 
+    // Code 1..1
+    // ASK: how to know I should use dataAbsentReason?
     var dataAbsentExtension =
         new Extension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+            fhirProperties.getExtensions().getDataAbsentReason(),
+            new CodeType("unknown")
+        );
     var dataAbsentCode = new CodeType();
     dataAbsentCode.addExtension(dataAbsentExtension);
 
@@ -68,15 +78,20 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     code.addCoding().setSystem(fhirProperties.getSystems().getOps()).setCodeElement(dataAbsentCode);
     procedure.setCode(code);
 
-    var category =
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getSnomed(), "277132007", "Therapeutic procedure"));
+    // Category 0..1
+    var category = new CodeableConcept(
+      new Coding(
+        fhirProperties.getSystems().getSnomed(),
+        "277132007",
+        "Therapeutic procedure"
+      )
+    );
     procedure.setCategory(category);
 
     var dataAbsentConcept = new CodeableConcept();
     dataAbsentConcept.addExtension(dataAbsentExtension);
-
+    st.
+    // Performed[x] 1..1
     var performedStart = new DateTimeType();
     performedStart.addExtension(dataAbsentExtension);
     var performed = new Period().setStartElement(performedStart);
@@ -85,14 +100,19 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     // for now, all required extensions are filled with sample values from
     // https://simplifier.net/guide/mii-ig-modul-onkologie-2024-de/MIIIGModulOnkologie/TechnischeImplementierung/FHIR-Profile/Strahlentherapie/Strahlentherapie-Procedure.page.md?version=current
 
+    // ---Extensions---
+    // Intention
     var intention = new CodeableConcept();
     intention
         .addCoding()
         .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-        .setCode("P");
+        .setCode("P"); //ASK: why "P" (palliativ?)
     procedure.addExtension(
-        fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieIntention(), intention);
+      fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieIntention(),
+      intention
+    );
 
+    // Bestrahlung
     var bestrahlung =
         new Extension(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlung());
 
@@ -134,4 +154,5 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     return procedure;
   }
+
 }
