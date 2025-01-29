@@ -20,9 +20,6 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   List<Observation> observationList = new ArrayList<>();
-  List<Reference> clinicalObservations = new ArrayList<>();
-  List<Reference> pathologicObservations = new ArrayList<>();
-  List<Reference> genericObservations = new ArrayList<>();
 
   public List<Observation> map(
       OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
@@ -31,7 +28,6 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     Objects.requireNonNull(meldung);
 
-    // TODO could be in the mapper that calls all the services?  ---
     Objects.requireNonNull(patient);
     Validate.isTrue(
         Objects.equals(
@@ -40,50 +36,80 @@ public class TNMMapper extends ObdsToFhirMapper {
         "The subject reference should point to a Patient resource");
     // ---------------------------------------------------------------
 
-    // there can be multiple occurences for TNM in one meldung
+    // there can be multiple occurrences for TNM in one meldung
     if (meldung.getDiagnose() != null) {
       if (meldung.getDiagnose().getCTNM() != null) {
-        createObservations(meldung.getDiagnose().getCTNM(), "c");
+        mapClinicalObservations(
+            meldung.getDiagnose().getCTNM(), meldung.getMeldungID(), patient, condition);
       }
       if (meldung.getDiagnose().getPTNM() != null) {
-        createObservations(meldung.getDiagnose().getPTNM(), "p");
+        mapPathologicalObservations(
+            meldung.getDiagnose().getPTNM(), meldung.getMeldungID(), patient, condition);
       }
     }
+
     if (meldung.getOP() != null && meldung.getOP().getTNM() != null) {
-      createObservations(meldung.getOP().getTNM(), "");
+      mapGenericObservations(meldung.getOP().getTNM(), meldung.getMeldungID(), patient, condition);
     }
+
     if (meldung.getPathologie() != null) {
       if (meldung.getPathologie().getCTNM() != null) {
-        createObservations(meldung.getPathologie().getCTNM(), "c");
+        mapClinicalObservations(
+            meldung.getPathologie().getCTNM(), meldung.getMeldungID(), patient, condition);
       }
       if (meldung.getPathologie().getPTNM() != null) {
-        createObservations(meldung.getPathologie().getPTNM(), "p");
+        mapPathologicalObservations(
+            meldung.getPathologie().getPTNM(), meldung.getMeldungID(), patient, condition);
       }
     }
+
     if (meldung.getVerlauf() != null && meldung.getVerlauf().getTNM() != null) {
-      createObservations(meldung.getVerlauf().getTNM(), "");
+      mapGenericObservations(
+          meldung.getVerlauf().getTNM(), meldung.getMeldungID(), patient, condition);
     }
 
-    // this is used to group the different TNM resources
-    var groupingObservationClinical =
-        createTNMGroupingObservation(meldung, "clinical", clinicalObservations, patient, condition);
-    var groupingObservationPathologic =
-        createTNMGroupingObservation(
-            meldung, "pathologic", pathologicObservations, patient, condition);
-    var groupingObservationGeneric =
-        createTNMGroupingObservation(meldung, "generic", genericObservations, patient, condition);
-
-    //    observationList.add(groupingObservationClinical);
-    //    observationList.add(groupingObservationPathologic);
-    //    observationList.add(groupingObservationGeneric);
     return observationList;
   }
 
-  private void createObservations(TNMTyp tnmTyp, String prefix) {
+  private void mapClinicalObservations(
+      TNMTyp ctnm, String meldungId, Reference patient, Reference condition) {
+    var clinicalObservationRefs = createObservations(ctnm, "c");
+    var groupingObservationClinical =
+        createTNMGroupingObservation(
+            ctnm, meldungId, "clinical", clinicalObservationRefs, patient, condition);
+    observationList.add(groupingObservationClinical);
+  }
+
+  private void mapPathologicalObservations(
+      TNMTyp ptnm, String meldungId, Reference patient, Reference condition) {
+    var pathologicObservationRefs = createObservations(ptnm, "p");
+    var groupingObservationPathologic =
+        createTNMGroupingObservation(
+            ptnm, meldungId, "pathologic", pathologicObservationRefs, patient, condition);
+    observationList.add(groupingObservationPathologic);
+  }
+
+  private void mapGenericObservations(
+      TNMTyp tnm, String meldungId, Reference patient, Reference condition) {
+    var genericObservationRefs = createObservations(tnm, "");
+    var groupingObservationGeneric =
+        createTNMGroupingObservation(
+            tnm, meldungId, "generic", genericObservationRefs, patient, condition);
+    observationList.add(groupingObservationGeneric);
+  }
+
+  private List<Reference> createObservations(TNMTyp tnmTyp, String prefix) {
+
+    List<Reference> memberObservations = new ArrayList<>();
+
+    //    if (tnmTyp.get) {
+    //
+    //    }
 
     // check and if information is available create obs
 
     //    createTNMTObservation();
+    //    observationList.add();
     //    createTNMNObservation();
     //    createTNMMObservation();
     //    createTNMaObservation();
@@ -95,12 +121,14 @@ public class TNMMapper extends ObdsToFhirMapper {
     //    createTNMVObservation();
     //    createTNMyObservation();
 
+    return memberObservations;
   }
 
-  private void createTNMTObservation(TNMTyp tnmTyp) {}
+//  private void createTNMTObservation(TNMTyp tnmTyp) {}
 
   private Observation createTNMGroupingObservation(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      TNMTyp tnm,
+      String meldungsId,
       String observationType,
       List<Reference> memberObservations,
       Reference patient,
@@ -115,8 +143,8 @@ public class TNMMapper extends ObdsToFhirMapper {
         new Identifier()
             // Todo Benennung deutsch oder englisch?
             .setSystem(fhirProperties.getSystems().getTnmGroupingObservationId())
-            // TODO what would be suitable?
-            .setValue("TNM-" + meldung.getMeldungID());
+            // TODO what would be suitable? could also be TNM_ID
+            .setValue("TNM-" + meldungsId);
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -131,17 +159,25 @@ public class TNMMapper extends ObdsToFhirMapper {
     observation.setCode(getGroupingObservationCode(observationType));
 
     // tnm version
-    //    observation.setMethod();
+    observation.setMethod(getObservationMethod(tnm));
 
-    // TODO
-    //    observation.setEffective();
+    var dateOptional = convertObdsDatumToDateTimeType(tnm.getDatum());
+    dateOptional.ifPresent(observation::setEffective);
 
-    //  TODO UICC-Staging kodiert, dass von den untergeordneten TNM-Beobachtungen abgeleitet ist
-    //    observation.setValue();
+    observation.setValue(getObservationValueUiccStadium(tnm.getUICCStadium()));
 
     observation.setHasMember(memberObservations);
 
     return observation;
+  }
+
+  private CodeableConcept getObservationMethod(TNMTyp tnm) {
+    var method =
+        new Coding()
+            .setCode(tnm.getVersion())
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTnmVersion());
+    // optional: .setDisplay
+    return new CodeableConcept(method);
   }
 
   private CodeableConcept getGroupingObservationCode(String observationType) {
@@ -163,5 +199,45 @@ public class TNMMapper extends ObdsToFhirMapper {
         break;
     }
     return new CodeableConcept(groupingObservationCode);
+  }
+
+  private CodeableConcept getObservationValueUiccStadium(String uiccStadium) {
+
+    var coding = new Coding().setSystem(fhirProperties.getSystems().getTnmUicc());
+
+    return switch (uiccStadium) {
+      case "okk" -> new CodeableConcept(coding.setCode("okk").setDisplay("Stadium X"));
+      case "0" -> new CodeableConcept(coding.setCode("0").setDisplay("Stadium 0"));
+      case "0a" -> new CodeableConcept(coding.setCode("0a").setDisplay("Stadium 0a"));
+      case "0is" -> new CodeableConcept(coding.setCode("0is").setDisplay("Stadium 0is"));
+      case "I" -> new CodeableConcept(coding.setCode("I").setDisplay("Stadium I"));
+      case "IA1" -> new CodeableConcept(coding.setCode("IA1").setDisplay("Stadium IA1"));
+      case "IA2" -> new CodeableConcept(coding.setCode("IA2").setDisplay("Stadium IA2"));
+      case "IA3" -> new CodeableConcept(coding.setCode("IA3").setDisplay("Stadium IA3"));
+      case "IB" -> new CodeableConcept(coding.setCode("IB").setDisplay("Stadium IB"));
+      case "IB1" -> new CodeableConcept(coding.setCode("IB1").setDisplay("Stadium IB1"));
+      case "IB2" -> new CodeableConcept(coding.setCode("IB2").setDisplay("Stadium IB2"));
+      case "IC" -> new CodeableConcept(coding.setCode("IC").setDisplay("Stadium IC"));
+      case "IS" -> new CodeableConcept(coding.setCode("IS").setDisplay("Stadium IS"));
+      case "II" -> new CodeableConcept(coding.setCode("II").setDisplay("Stadium II"));
+      case "IIA" -> new CodeableConcept(coding.setCode("IIA").setDisplay("Stadium IIA"));
+      case "IIA1" -> new CodeableConcept(coding.setCode("IIA1").setDisplay("Stadium IIA1"));
+      case "IIA2" -> new CodeableConcept(coding.setCode("IIA2").setDisplay("Stadium IIA2"));
+      case "IIB" -> new CodeableConcept(coding.setCode("IIB").setDisplay("Stadium IIB"));
+      case "IIC" -> new CodeableConcept(coding.setCode("IIC").setDisplay("Stadium IIC"));
+      case "III" -> new CodeableConcept(coding.setCode("III").setDisplay("Stadium III"));
+      case "IIIA" -> new CodeableConcept(coding.setCode("IIIA").setDisplay("Stadium IIIA"));
+      case "IIIA1" -> new CodeableConcept(coding.setCode("IIIA1").setDisplay("Stadium IIIA1"));
+      case "IIIA2" -> new CodeableConcept(coding.setCode("IIIA2").setDisplay("Stadium IIIA2"));
+      case "IIIB" -> new CodeableConcept(coding.setCode("IIIB").setDisplay("Stadium IIIB"));
+      case "IIIC" -> new CodeableConcept(coding.setCode("IIIC").setDisplay("Stadium IIIC"));
+      case "IIIC1" -> new CodeableConcept(coding.setCode("IIIC1").setDisplay("Stadium IIIC1"));
+      case "IIIC2" -> new CodeableConcept(coding.setCode("IIIC2").setDisplay("Stadium IIIC2"));
+      case "IV" -> new CodeableConcept(coding.setCode("IV").setDisplay("Stadium IV"));
+      case "IVA" -> new CodeableConcept(coding.setCode("IVA").setDisplay("Stadium IVA"));
+      case "IVB" -> new CodeableConcept(coding.setCode("IVB").setDisplay("Stadium IVB"));
+      case "IVC" -> new CodeableConcept(coding.setCode("IVC").setDisplay("Stadium IVC"));
+      default -> new CodeableConcept(coding.setCode("unknown").setDisplay("Unknown Stage"));
+    };
   }
 }

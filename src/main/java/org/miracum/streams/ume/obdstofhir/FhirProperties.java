@@ -104,6 +104,8 @@ public class FhirProperties {
     private String miiCsOnkoGrading;
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
+    private String miiCsOnkoTnmVersion;
+    private String tnmUicc;
   }
 
   @Data
