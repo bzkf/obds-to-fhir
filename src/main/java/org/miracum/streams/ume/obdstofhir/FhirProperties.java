@@ -35,6 +35,7 @@ public class FhirProperties {
 
   @Data
   public static class FhirSystems {
+    // local systems
     private String patientId;
     private String conditionId;
     private String observationId;
@@ -125,6 +126,8 @@ public class FhirProperties {
     private String miiCsOnkoTherapieTyp;
     private String miiCsOnkoTherapieabweichung;
     private String gradingObservationId;
+    private String miiCsOnkoTnmVersion;
+    private String tnmUicc;
   }
 
   @Data
