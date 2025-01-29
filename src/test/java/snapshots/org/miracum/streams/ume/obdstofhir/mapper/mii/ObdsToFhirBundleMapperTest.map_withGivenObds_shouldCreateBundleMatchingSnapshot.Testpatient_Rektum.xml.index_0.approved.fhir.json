@@ -304,23 +304,13 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "code": "18629005"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "code": "8-54"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
