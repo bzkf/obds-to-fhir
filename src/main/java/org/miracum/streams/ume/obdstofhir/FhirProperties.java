@@ -97,6 +97,7 @@ public class FhirProperties {
     private String atcWho;
     private String observationHistologieId;
     private String observationCategory;
+    private String miiCsOnkoStudienteilnahme;
     private String miiCsOnkoGrading;
 
     private String miiCsOnkoFernmetastasen;
@@ -134,6 +135,7 @@ public class FhirProperties {
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
+    private String miiPrOnkoStudienteilnahme;
   }
 
   @Data
