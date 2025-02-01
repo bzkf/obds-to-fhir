@@ -138,12 +138,12 @@ fhir:
         enabled: false
 spring:
   profiles:
-    active: ${ACTIVE_PROFILE:default}
+    active: ${ACTIVE_PROFILE:patient}
   application:
     name: obds-to-fhir
   cloud:
     function:
-      definition: getMeldungExportObdsProcessor
+      definition: ${ACTIVE_PROCESSORS:getMeldungExportObdsProcessor;getMeldungExportObdsV3Processor}
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
@@ -168,6 +168,12 @@ spring:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-4:
           destination: fhir.obds.Patient${YEAR_LIMITATION_SUFFIX:}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportObdsV3Processor-in-0:
+          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
+        getMeldungExportObdsV3Processor-out-0:
+          destination: fhir.obds.bundles${YEAR_LIMITATION_SUFFIX:}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
@@ -209,6 +215,14 @@ spring:
                 configuration:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportObdsProcessor-out-4:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getMeldungExportObdsV3Processor-in-0:
+              consumer:
+                application-id: obds-meldung-exp-v3-processor${YEAR_LIMITATION_SUFFIX:}
+            getMeldungExportObdsV3Processor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
