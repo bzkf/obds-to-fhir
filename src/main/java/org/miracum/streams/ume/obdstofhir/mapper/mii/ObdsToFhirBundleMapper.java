@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
@@ -12,10 +13,14 @@ import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
+
+  @Value("${spring.profiles.active}")
+  private String profile;
 
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
@@ -75,8 +80,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       //      the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = new Reference("Patient/" + patient.getId());
-      addResourceToBundle(bundle, patient);
 
+      // only add patient resource to bundle if active profile is set to patient
+      if (Objects.equals(profile, "patient")) {
+        addResourceToBundle(bundle, patient);
+      }
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
