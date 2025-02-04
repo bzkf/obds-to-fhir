@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
@@ -19,8 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
-  @Value("${spring.profiles.active}")
-  private String profile;
+  @Value("${fhir.createPatientResources}")
+  private boolean createPatientResources;
 
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
@@ -61,104 +60,107 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
    * Maps OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each patient in
    * the OBDS data, creates a transaction bundle containing all their associated medical records.
    *
-   * @param obds The OBDS data structure containing patient and medical information
+   * @param groupedObds List of OBDS data structure containing patient and medical information
    * @return List of FHIR Bundles, one for each patient in the input OBDS data
    */
-  public List<Bundle> map(OBDS obds) {
+  public List<Bundle> map(List<OBDS> groupedObds) {
 
     var bundles = new ArrayList<Bundle>();
 
-    for (var obdsPatient : obds.getMengePatient().getPatient()) {
-      var bundle = new Bundle();
-      bundle.setType(BundleType.TRANSACTION);
+    for (OBDS obds : groupedObds) {
 
-      var meldungen = obdsPatient.getMengeMeldung().getMeldung();
+      for (var obdsPatient : obds.getMengePatient().getPatient()) {
+        var bundle = new Bundle();
+        bundle.setType(BundleType.TRANSACTION);
 
-      // Patient
-      // XXX: this assumes that the "meldungen" contains every single Meldung for the patient
-      //      e.g. in case of Folgepakete, this might not be the case. The main Problem is
-      //      the Patient.deceased information which is not present in every single Paket.
-      var patient = patientMapper.map(obdsPatient, meldungen);
-      var patientReference = new Reference("Patient/" + patient.getId());
+        var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
-      // only add patient resource to bundle if active profile is set to patient
-      if (Objects.equals(profile, "patient")) {
-        addResourceToBundle(bundle, patient);
-      }
-      bundle.setId(patient.getId());
+        // Patient
+        // XXX: this assumes that the "meldungen" contains every single Meldung for the patient
+        //      e.g. in case of Folgepakete, this might not be the case. The main Problem is
+        //      the Patient.deceased information which is not present in every single Paket.
+        var patient = patientMapper.map(obdsPatient, meldungen);
+        var patientReference = new Reference("Patient/" + patient.getId());
 
-      for (var meldung : meldungen) {
-        // Diagnose
-        if (meldung.getDiagnose() != null) {
-          var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
-          addResourceToBundle(bundle, condition);
-
-          var conditionReference = new Reference("Condition/" + condition.getId());
-
-          if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
-            var leistungszustand =
-                leistungszustandMapper.map(meldung, patientReference, conditionReference);
-            addResourceToBundle(bundle, leistungszustand);
-          }
+        // only add patient resource to bundle if active profile is set to patient
+        if (createPatientResources) {
+          addResourceToBundle(bundle, patient);
         }
+        bundle.setId(patient.getId());
 
-        // Systemtherapie
-        if (meldung.getSYST() != null) {
-          var syst = meldung.getSYST();
+        for (var meldung : meldungen) {
+          // Diagnose
+          if (meldung.getDiagnose() != null) {
+            var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
+            addResourceToBundle(bundle, condition);
 
-          var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
-          addResourceToBundle(bundle, systProcedure);
+            var conditionReference = new Reference("Condition/" + condition.getId());
 
-          var procedureReference = new Reference("Procedure/" + systProcedure.getId());
+            if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
+              var leistungszustand =
+                  leistungszustandMapper.map(meldung, patientReference, conditionReference);
+              addResourceToBundle(bundle, leistungszustand);
+            }
+          }
 
-          if (syst.getMengeSubstanz() != null) {
-            var systMedicationStatements =
-                systemischeTherapieMedicationStatementMapper.map(
-                    syst, patientReference, procedureReference);
+          // Systemtherapie
+          if (meldung.getSYST() != null) {
+            var syst = meldung.getSYST();
 
-            for (var resource : systMedicationStatements) {
+            var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
+            addResourceToBundle(bundle, systProcedure);
+
+            var procedureReference = new Reference("Procedure/" + systProcedure.getId());
+
+            if (syst.getMengeSubstanz() != null) {
+              var systMedicationStatements =
+                  systemischeTherapieMedicationStatementMapper.map(
+                      syst, patientReference, procedureReference);
+
+              for (var resource : systMedicationStatements) {
+                addResourceToBundle(bundle, resource);
+              }
+            }
+          }
+
+          // Strahlenterhapie
+          if (meldung.getST() != null) {
+            var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
+            addResourceToBundle(bundle, stProcedure);
+          }
+
+          var primaryConditionReference =
+              createPrimaryConditionReference(meldung.getTumorzuordnung());
+
+          // Tod
+          if (meldung.getTod() != null) {
+            var deathObservations =
+                todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
+            for (var resource : deathObservations) {
               addResourceToBundle(bundle, resource);
+            }
+          }
+
+          // Operation
+          if (meldung.getOP() != null) {
+            var operations =
+                operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
+            addResourcesToBundle(bundle, operations);
+
+            if (meldung.getOP().getResidualstatus() != null
+                && meldung.getOP().getResidualstatus().getGesamtbeurteilungResidualstatus()
+                    != null) {
+              var residualstatus =
+                  residualstatusMapper.map(
+                      meldung.getOP(), patientReference, primaryConditionReference);
+              addResourceToBundle(bundle, residualstatus);
             }
           }
         }
 
-        // Strahlenterhapie
-        if (meldung.getST() != null) {
-          var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
-          addResourceToBundle(bundle, stProcedure);
-        }
-
-        var primaryConditionReference =
-            createPrimaryConditionReference(meldung.getTumorzuordnung());
-
-        // Tod
-        if (meldung.getTod() != null) {
-          var deathObservations =
-              todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
-          for (var resource : deathObservations) {
-            addResourceToBundle(bundle, resource);
-          }
-        }
-
-        // Operation
-        if (meldung.getOP() != null) {
-          var operations =
-              operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
-          addResourcesToBundle(bundle, operations);
-
-          if (meldung.getOP().getResidualstatus() != null
-              && meldung.getOP().getResidualstatus().getGesamtbeurteilungResidualstatus() != null) {
-            var residualstatus =
-                residualstatusMapper.map(
-                    meldung.getOP(), patientReference, primaryConditionReference);
-            addResourceToBundle(bundle, residualstatus);
-          }
-        }
+        bundles.add(bundle);
       }
-
-      bundles.add(bundle);
     }
-
     return bundles;
   }
 

@@ -404,6 +404,8 @@ public class ADT_GEKID implements Serializable {
             @Data
             public static class ST {
 
+              @JsonProperty private Meldeanlass Meldeanlass;
+
               @JsonProperty private String ST_ID;
               @JsonProperty private String ST_Intention;
               @JsonProperty private String ST_Stellung_OP;
@@ -451,6 +453,8 @@ public class ADT_GEKID implements Serializable {
 
             @Data
             public static class SYST {
+
+              @JsonProperty private Meldeanlass Meldeanlass;
 
               @JsonProperty private String SYST_ID;
               @JsonProperty private String SYST_Intention;

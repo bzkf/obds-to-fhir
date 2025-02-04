@@ -4,6 +4,7 @@ app:
   patient-id-pattern: "[^0]\\d{8}"
 
 fhir:
+  createPatientResources: ${CREATE_PATIENT_FHIR_RESOURCES:true}
   default:
     baseSystemUrl: "https://bzkf.github.io"
   extensions:
@@ -138,7 +139,7 @@ fhir:
         enabled: false
 spring:
   profiles:
-    active: ${ACTIVE_PROFILE:patient}
+    active: ${ACTIVE_PROFILE:default}
   application:
     name: obds-to-fhir
   cloud:
