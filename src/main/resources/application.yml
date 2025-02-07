@@ -50,6 +50,9 @@ fhir:
     tnmGroupingObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tmn-grouping-observation-id"
     tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-grouping-observation-id"
     tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+    tnm-n-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+    tnm-m-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+
 
 
     # external systems
@@ -162,6 +165,7 @@ fhir:
     mii-pr-onko-tnm-n-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie"
     mii-ex-onko-tnm-itc-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix"
     mii-ex-onko-tnm-sn-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix"
+    mii-pr-onko-tnm-m-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie"
 
 
   display:

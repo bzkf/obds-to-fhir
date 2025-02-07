@@ -51,6 +51,8 @@ public class FhirProperties {
     private String tumorkonferenzId;
     private String tnmGroupingObservationId;
     private String tnmTKategorieObservationId;
+    private String tnmNKategorieObservationId;
+    private String tnmMKategorieObservationId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -174,6 +176,7 @@ public class FhirProperties {
     private String miiPrOnkoTnmNKategorie;
     private String miiExOnkoTnmItcSuffix;
     private String miiExOnkoTnmSnSuffix;
+    private String miiPrOnkoTnmMKategorie;
   }
 
   @Data
