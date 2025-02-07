@@ -48,6 +48,9 @@ fhir:
     tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     grading-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/grading-observation-id"
     tnmGroupingObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tmn-grouping-observation-id"
+    tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-grouping-observation-id"
+    tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+
 
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -154,6 +157,9 @@ fhir:
     mii-pr-onko-verlauf: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf"
     mii-pr-onko-tumorkonferenz: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz"
     mii-pr-onko-tnm-klassifikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation"
+    mii-pr-onko-tnm-t-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie"
+    mii-ex-onko-tnm-cp-praefix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix"
+
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"

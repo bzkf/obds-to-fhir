@@ -50,6 +50,7 @@ public class FhirProperties {
     private String genetischeVarianteId;
     private String tumorkonferenzId;
     private String tnmGroupingObservationId;
+    private String tnmTKategorieObservationId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -144,6 +145,7 @@ public class FhirProperties {
     private String systMedStatement;
     private String miiPatientPseudonymisiert;
     private String deathObservation;
+
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
@@ -167,6 +169,8 @@ public class FhirProperties {
     private String miiPrOnkoTumorkonferenz;
 
     private String miiPrOnkoTnmKlassifikation;
+    private String miiPrOnkoTnmTKategorie;
+    private String miiExOnkoTnmCpPraefix;
   }
 
   @Data

@@ -1,0 +1,42 @@
+{
+  "resourceType": "Observation",
+  "id": "7925dbb0761b2096785e95ce967907be58248b3b106e675aa1cdcb4dddeed92d",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+    "value": "482"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "399588009",
+      "display": "Pathologic TNM stage grouping"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.uicc.org/resources/tnm",
+      "code": "IV",
+      "display": "Stadium IV"
+    } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+      "code": "8"
+    } ]
+  },
+  "hasMember": [ {
+    "reference": "Observation/c7711829419474b14326c9791073575a8fdee44dcf5c4585e5cbe51407c32fcd"
+  } ]
+}

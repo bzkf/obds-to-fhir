@@ -26,7 +26,8 @@ class TNMMapperTest extends MapperTest {
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidConditionResource(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidObservationResource(String sourceFile)
+      throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
