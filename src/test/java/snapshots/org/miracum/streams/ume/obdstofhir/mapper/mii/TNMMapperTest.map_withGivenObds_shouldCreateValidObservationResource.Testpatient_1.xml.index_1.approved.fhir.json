@@ -1,19 +1,28 @@
 {
   "resourceType": "Observation",
-  "id": "0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72",
+  "id": "338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-    "value": "481"
+    "system": "481_N",
+    "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
   } ],
   "status": "final",
   "code": {
+    "extension": [ {
+      "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "c"
+        } ]
+      }
+    } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "399537006",
-      "display": "Clinical TNM stage grouping"
+      "code": "399534004",
+      "display": "cN category (observable entity)"
     } ]
   },
   "subject": {
@@ -26,8 +35,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "IV",
-      "display": "Stadium IV"
+      "code": "1"
     } ]
   },
   "method": {
@@ -35,8 +43,5 @@
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
       "code": "8"
     } ]
-  },
-  "hasMember": [ {
-    "reference": "Observation/46bf2ba927c9a5394f2c919e94418266036de3ef1c99245ba22b7668fd59d753"
-  } ]
+  }
 }

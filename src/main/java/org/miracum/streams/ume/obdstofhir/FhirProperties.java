@@ -46,6 +46,8 @@ public class FhirProperties {
     private String allgemeinerLeistungszustandEcogId;
     private String tnmGroupingObservationId;
     private String tnmTKategorieObservationId;
+    private String tnmNKategorieObservationId;
+    private String tnmMKategorieObservationId;
 
     // external systems
     private String identifierType;
@@ -145,6 +147,7 @@ public class FhirProperties {
     private String miiPrOnkoTnmNKategorie;
     private String miiExOnkoTnmItcSuffix;
     private String miiExOnkoTnmSnSuffix;
+    private String miiPrOnkoTnmMKategorie;
   }
 
   @Data

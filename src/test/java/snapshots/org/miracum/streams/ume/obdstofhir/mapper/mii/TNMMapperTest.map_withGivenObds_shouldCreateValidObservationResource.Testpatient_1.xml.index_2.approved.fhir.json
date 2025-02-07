@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "c7711829419474b14326c9791073575a8fdee44dcf5c4585e5cbe51407c32fcd",
+  "id": "0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
-    "value": "482_T"
+    "system": "481_M",
+    "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
   } ],
   "status": "final",
   "code": {
@@ -15,14 +15,14 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "p"
+          "code": "c"
         } ]
       }
     } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "384625004",
-      "display": "pT category (observable entity)"
+      "code": "399387003",
+      "display": "cM category (observable entity)"
     } ]
   },
   "subject": {
@@ -31,11 +31,11 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2020-03-05",
+  "effectiveDateTime": "2020-03-01",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "2"
+      "code": "1"
     } ]
   },
   "method": {

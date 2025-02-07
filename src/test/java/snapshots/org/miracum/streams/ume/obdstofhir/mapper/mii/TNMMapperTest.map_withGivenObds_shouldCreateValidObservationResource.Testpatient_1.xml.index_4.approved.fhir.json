@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "b44a844c7982d2c0655f6b8250d40e94694eea2e06f64ebaaa0ae8f36b3970cc",
+  "id": "aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
-    "value": "482_N"
+    "system": "482_T",
+    "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
   } ],
   "status": "final",
   "code": {
@@ -21,8 +21,8 @@
     } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "371494008",
-      "display": "pN category (observable entity)"
+      "code": "384625004",
+      "display": "pT category (observable entity)"
     } ]
   },
   "subject": {
@@ -35,7 +35,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "1"
+      "code": "2"
     } ]
   },
   "method": {

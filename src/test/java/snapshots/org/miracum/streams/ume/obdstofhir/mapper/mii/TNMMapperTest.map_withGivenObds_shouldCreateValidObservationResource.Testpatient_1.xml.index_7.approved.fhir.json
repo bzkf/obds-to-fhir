@@ -1,19 +1,19 @@
 {
   "resourceType": "Observation",
-  "id": "0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72",
+  "id": "7925dbb0761b2096785e95ce967907be58248b3b106e675aa1cdcb4dddeed92d",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-    "value": "481"
+    "value": "482"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "399537006",
-      "display": "Clinical TNM stage grouping"
+      "code": "399588009",
+      "display": "Pathologic TNM stage grouping"
     } ]
   },
   "subject": {
@@ -22,7 +22,7 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2020-03-01",
+  "effectiveDateTime": "2020-03-05",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
@@ -37,10 +37,10 @@
     } ]
   },
   "hasMember": [ {
-    "reference": "Observation/40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90"
+    "reference": "Observation/aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f"
   }, {
-    "reference": "Observation/338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1"
+    "reference": "Observation/b62f438eee9a5349e92801825ce3acd90658ea9ac28ab76e40fa4afaf1b6ae71"
   }, {
-    "reference": "Observation/0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68"
+    "reference": "Observation/660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256"
   } ]
 }
