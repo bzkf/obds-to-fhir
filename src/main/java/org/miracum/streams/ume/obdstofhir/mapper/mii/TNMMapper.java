@@ -6,11 +6,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.springframework.stereotype.Service;
+
+// Identifier
+// gruppierungs-obs: TNM_ID
+// member-obs: TNM_ID + "_" + Typ z.B. T
+
+// class clinical/pathologic/.. nur bei gruppierungs obs gesetzt
 
 @Service
 public class TNMMapper extends ObdsToFhirMapper {
@@ -26,6 +33,8 @@ public class TNMMapper extends ObdsToFhirMapper {
       Reference patient,
       Reference condition) {
 
+    observationList.clear();
+
     Objects.requireNonNull(meldung);
 
     Objects.requireNonNull(patient);
@@ -36,80 +45,74 @@ public class TNMMapper extends ObdsToFhirMapper {
         "The subject reference should point to a Patient resource");
     // ---------------------------------------------------------------
 
-    // there can be multiple occurrences for TNM in one meldung
+    // there can be multiple occurrences for TNM in a Meldung
     if (meldung.getDiagnose() != null) {
       if (meldung.getDiagnose().getCTNM() != null) {
-        mapClinicalObservations(
-            meldung.getDiagnose().getCTNM(), meldung.getMeldungID(), patient, condition);
+        mapClinicalObservations(meldung.getDiagnose().getCTNM(), patient, condition);
       }
       if (meldung.getDiagnose().getPTNM() != null) {
-        mapPathologicalObservations(
-            meldung.getDiagnose().getPTNM(), meldung.getMeldungID(), patient, condition);
+        mapPathologicalObservations(meldung.getDiagnose().getPTNM(), patient, condition);
       }
     }
 
     if (meldung.getOP() != null && meldung.getOP().getTNM() != null) {
-      mapGenericObservations(meldung.getOP().getTNM(), meldung.getMeldungID(), patient, condition);
+      mapGenericObservations(meldung.getOP().getTNM(), patient, condition);
     }
 
     if (meldung.getPathologie() != null) {
       if (meldung.getPathologie().getCTNM() != null) {
-        mapClinicalObservations(
-            meldung.getPathologie().getCTNM(), meldung.getMeldungID(), patient, condition);
+        mapClinicalObservations(meldung.getPathologie().getCTNM(), patient, condition);
       }
       if (meldung.getPathologie().getPTNM() != null) {
-        mapPathologicalObservations(
-            meldung.getPathologie().getPTNM(), meldung.getMeldungID(), patient, condition);
+        mapPathologicalObservations(meldung.getPathologie().getPTNM(), patient, condition);
       }
     }
 
     if (meldung.getVerlauf() != null && meldung.getVerlauf().getTNM() != null) {
-      mapGenericObservations(
-          meldung.getVerlauf().getTNM(), meldung.getMeldungID(), patient, condition);
+      mapGenericObservations(meldung.getVerlauf().getTNM(), patient, condition);
     }
 
     return observationList;
   }
 
-  private void mapClinicalObservations(
-      TNMTyp ctnm, String meldungId, Reference patient, Reference condition) {
-    var clinicalObservationRefs = createObservations(ctnm, "c");
+  private void mapClinicalObservations(TNMTyp ctnm, Reference patient, Reference condition) {
+    var clinicalObservationRefs = createObservations(ctnm, "c", patient, condition);
     var groupingObservationClinical =
-        createTNMGroupingObservation(
-            ctnm, meldungId, "clinical", clinicalObservationRefs, patient, condition);
+        createTNMGroupingObservation(ctnm, "clinical", clinicalObservationRefs, patient, condition);
     observationList.add(groupingObservationClinical);
   }
 
-  private void mapPathologicalObservations(
-      TNMTyp ptnm, String meldungId, Reference patient, Reference condition) {
-    var pathologicObservationRefs = createObservations(ptnm, "p");
+  private void mapPathologicalObservations(TNMTyp ptnm, Reference patient, Reference condition) {
+    var pathologicObservationRefs = createObservations(ptnm, "p", patient, condition);
     var groupingObservationPathologic =
         createTNMGroupingObservation(
-            ptnm, meldungId, "pathologic", pathologicObservationRefs, patient, condition);
+            ptnm, "pathologic", pathologicObservationRefs, patient, condition);
     observationList.add(groupingObservationPathologic);
   }
 
-  private void mapGenericObservations(
-      TNMTyp tnm, String meldungId, Reference patient, Reference condition) {
-    var genericObservationRefs = createObservations(tnm, "");
+  private void mapGenericObservations(TNMTyp tnm, Reference patient, Reference condition) {
+    var genericObservationRefs = createObservations(tnm, "", patient, condition);
     var groupingObservationGeneric =
-        createTNMGroupingObservation(
-            tnm, meldungId, "generic", genericObservationRefs, patient, condition);
+        createTNMGroupingObservation(tnm, "generic", genericObservationRefs, patient, condition);
     observationList.add(groupingObservationGeneric);
   }
 
-  private List<Reference> createObservations(TNMTyp tnmTyp, String prefix) {
+  private List<Reference> createObservations(
+      TNMTyp tnmTyp, String prefix, Reference patient, Reference condition) {
 
-    List<Reference> memberObservations = new ArrayList<>();
+    List<Reference> memberObservationReferences = new ArrayList<>();
 
-    //    if (tnmTyp.get) {
-    //
-    //    }
+    // todo use the prefix c or p from the grouping observation?
 
-    // check and if information is available create obs
+    if (tnmTyp.getT() != null) {
+      var tnmBaseResource =
+          createTNMBaseResource(tnmTyp.getVersion(), tnmTyp.getDatum(), patient, condition);
+      var tKategorieObservation = addTKategorieSpecificAttributes(tnmBaseResource, tnmTyp);
+      observationList.add(tKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + tKategorieObservation.getId()));
+    }
 
-    //    createTNMTObservation();
-    //    observationList.add();
     //    createTNMNObservation();
     //    createTNMMObservation();
     //    createTNMaObservation();
@@ -121,14 +124,75 @@ public class TNMMapper extends ObdsToFhirMapper {
     //    createTNMVObservation();
     //    createTNMyObservation();
 
-    return memberObservations;
+    return memberObservationReferences;
   }
 
-//  private void createTNMTObservation(TNMTyp tnmTyp) {}
+  private Observation createTNMBaseResource(
+      String tnmVersion, XMLGregorianCalendar datum, Reference patient, Reference condition) {
+    var observation = new Observation();
+
+    observation.setSubject(patient);
+    observation.setFocus(Collections.singletonList(condition));
+    observation.setStatus(Observation.ObservationStatus.FINAL);
+    observation.setMethod(getObservationMethod(tnmVersion));
+    var dateOptional = convertObdsDatumToDateTimeType(datum);
+    dateOptional.ifPresent(observation::setEffective);
+
+    return observation;
+  }
+
+  private Observation addTKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
+
+    observation.setMeta(
+        new Meta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie()));
+
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getTnmTKategorieObservationId())
+            .setValue(tnmTyp.getID() + "_T");
+    observation.addIdentifier(identifier);
+    observation.setId(computeResourceIdFromIdentifier(identifier));
+
+    observation.setCode(createKategorieTCode(tnmTyp.getCPUPraefixT()));
+
+    observation.setValue(
+        new CodeableConcept(
+            new Coding()
+                .setCode(tnmTyp.getT())
+                .setSystem(fhirProperties.getSystems().getTnmUicc())));
+
+    return observation;
+  }
+
+  private CodeableConcept createKategorieTCode(String cpuPraefixT) {
+
+    var extension = new Extension().setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmCpPraefix());
+    extension.setValue(
+        new CodeableConcept(
+            new Coding().setCode(cpuPraefixT).setSystem(fhirProperties.getSystems().getTnmUicc())));
+
+    var codeCoding = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    switch (cpuPraefixT) {
+      case "c":
+        codeCoding.setCode("399504009").setDisplay("cT category (observable entity)");
+        break;
+      case "p":
+        codeCoding.setCode("384625004").setDisplay("pT category (observable entity)");
+        break;
+      default:
+        codeCoding.setCode("78873005").setDisplay("T category (observable entity)");
+        break;
+    }
+
+    var codeableConcept = new CodeableConcept();
+    codeableConcept.setCoding(Collections.singletonList(codeCoding));
+    codeableConcept.setExtension(Collections.singletonList(extension));
+
+    return codeableConcept;
+  }
 
   private Observation createTNMGroupingObservation(
       TNMTyp tnm,
-      String meldungsId,
       String observationType,
       List<Reference> memberObservations,
       Reference patient,
@@ -141,25 +205,21 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var identifier =
         new Identifier()
-            // Todo Benennung deutsch oder englisch?
             .setSystem(fhirProperties.getSystems().getTnmGroupingObservationId())
-            // TODO what would be suitable? could also be TNM_ID
-            .setValue("TNM-" + meldungsId);
+            .setValue(tnm.getID());
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
     observation.setSubject(patient);
     //    observation.setEncounter();
-    observation.setFocus(
-        Collections.singletonList(condition)); // TODO only set focus for the member-conditions?
+    observation.setFocus(Collections.singletonList(condition));
 
-    // if meldeanlass = statusänderung -> amend ; else -> final ?
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     observation.setCode(getGroupingObservationCode(observationType));
 
     // tnm version
-    observation.setMethod(getObservationMethod(tnm));
+    observation.setMethod(getObservationMethod(tnm.getVersion()));
 
     var dateOptional = convertObdsDatumToDateTimeType(tnm.getDatum());
     dateOptional.ifPresent(observation::setEffective);
@@ -171,12 +231,12 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observation;
   }
 
-  private CodeableConcept getObservationMethod(TNMTyp tnm) {
+  private CodeableConcept getObservationMethod(String tnmVersion) {
     var method =
         new Coding()
-            .setCode(tnm.getVersion())
+            .setCode(tnmVersion)
             .setSystem(fhirProperties.getSystems().getMiiCsOnkoTnmVersion());
-    // optional: .setDisplay
+
     return new CodeableConcept(method);
   }
 

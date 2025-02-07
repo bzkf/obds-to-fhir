@@ -38,7 +38,9 @@ fhir:
     allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id"
     fernmetastasen-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/fernmetastasen-id"
     residualstatusObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/residualstatus-observation-id"
-    tnmGroupingObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tmn-grouping-observation-id"
+    tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-grouping-observation-id"
+    tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+
 
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -125,6 +127,9 @@ fhir:
     mii-pr-onko-tod: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
     mii-pr-onko-histologie-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3"
     mii-pr-onko-tnm-klassifikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation"
+    mii-pr-onko-tnm-t-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie"
+    mii-ex-onko-tnm-cp-praefix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix"
+
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"

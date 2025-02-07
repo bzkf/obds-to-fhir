@@ -45,6 +45,7 @@ public class FhirProperties {
     private String specimenId;
     private String allgemeinerLeistungszustandEcogId;
     private String tnmGroupingObservationId;
+    private String tnmTKategorieObservationId;
 
     // external systems
     private String identifierType;
@@ -122,6 +123,7 @@ public class FhirProperties {
     private String systMedStatement;
     private String miiPatientPseudonymisiert;
     private String deathObservation;
+
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
@@ -137,8 +139,9 @@ public class FhirProperties {
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
-
     private String miiPrOnkoTnmKlassifikation;
+    private String miiPrOnkoTnmTKategorie;
+    private String miiExOnkoTnmCpPraefix;
   }
 
   @Data
