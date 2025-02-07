@@ -75,18 +75,18 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observationList;
   }
 
-  private void mapClinicalObservations(TNMTyp ctnm, Reference patient, Reference condition) {
-    var clinicalObservationRefs = createObservations(ctnm, "c", patient, condition);
+  private void mapClinicalObservations(TNMTyp cTnm, Reference patient, Reference condition) {
+    var clinicalObservationRefs = createObservations(cTnm, "c", patient, condition);
     var groupingObservationClinical =
-        createTNMGroupingObservation(ctnm, "clinical", clinicalObservationRefs, patient, condition);
+        createTNMGroupingObservation(cTnm, "clinical", clinicalObservationRefs, patient, condition);
     observationList.add(groupingObservationClinical);
   }
 
-  private void mapPathologicalObservations(TNMTyp ptnm, Reference patient, Reference condition) {
-    var pathologicObservationRefs = createObservations(ptnm, "p", patient, condition);
+  private void mapPathologicalObservations(TNMTyp pTnm, Reference patient, Reference condition) {
+    var pathologicObservationRefs = createObservations(pTnm, "p", patient, condition);
     var groupingObservationPathologic =
         createTNMGroupingObservation(
-            ptnm, "pathologic", pathologicObservationRefs, patient, condition);
+            pTnm, "pathologic", pathologicObservationRefs, patient, condition);
     observationList.add(groupingObservationPathologic);
   }
 
@@ -102,8 +102,6 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     List<Reference> memberObservationReferences = new ArrayList<>();
 
-    // todo use the prefix c or p from the grouping observation?
-
     if (tnmTyp.getT() != null) {
       var tnmBaseResource =
           createTNMBaseResource(tnmTyp.getVersion(), tnmTyp.getDatum(), patient, condition);
@@ -113,16 +111,32 @@ public class TNMMapper extends ObdsToFhirMapper {
           new Reference("Observation/" + tKategorieObservation.getId()));
     }
 
-    //    createTNMNObservation();
-    //    createTNMMObservation();
-    //    createTNMaObservation();
-    //    createTNMmObservation();
-    //    createTNMLObservation();
-    //    createTNMPnObservation();
-    //    createTNMrObservation();
-    //    createTNMSObservation();
-    //    createTNMVObservation();
-    //    createTNMyObservation();
+    if (tnmTyp.getN() != null) {
+      var tnmBaseResource =
+          createTNMBaseResource(tnmTyp.getVersion(), tnmTyp.getDatum(), patient, condition);
+      var nKategorieObservation = addNKategorieSpecificAttributes(tnmBaseResource, tnmTyp);
+      observationList.add(nKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + nKategorieObservation.getId()));
+    }
+
+//    if (tnmTyp.getM() != null) {}
+//
+//    if (tnmTyp.getASymbol() != null) {}
+//
+//    if (tnmTyp.getMSymbol() != null) {}
+//
+//    if (tnmTyp.getL() != null) {}
+//
+//    if (tnmTyp.getPn() != null) {}
+//
+//    if (tnmTyp.getRSymbol() != null) {}
+//
+//    if (tnmTyp.getS() != null) {}
+//
+//    if (tnmTyp.getV() != null) {}
+//
+//    if (tnmTyp.getYSymbol() != null) {}
 
     return memberObservationReferences;
   }
@@ -153,7 +167,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
-    observation.setCode(createKategorieTCode(tnmTyp.getCPUPraefixT()));
+    observation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
 
     observation.setValue(
         new CodeableConcept(
@@ -164,7 +178,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observation;
   }
 
-  private CodeableConcept createKategorieTCode(String cpuPraefixT) {
+  private CodeableConcept createTKategorieCode(String cpuPraefixT) {
 
     var extension = new Extension().setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmCpPraefix());
     extension.setValue(
@@ -182,12 +196,87 @@ public class TNMMapper extends ObdsToFhirMapper {
       default:
         codeCoding.setCode("78873005").setDisplay("T category (observable entity)");
         break;
+        // the xml specifies: Das Weglassen des Prefix wird als "c" interpretiert but this differs
+        // from the IG
     }
 
     var codeableConcept = new CodeableConcept();
     codeableConcept.setCoding(Collections.singletonList(codeCoding));
     codeableConcept.setExtension(Collections.singletonList(extension));
 
+    return codeableConcept;
+  }
+
+  private Observation addNKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
+
+    observation.setMeta(
+        new Meta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie()));
+
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getTnmTKategorieObservationId())
+            .setValue(tnmTyp.getID() + "_N");
+    observation.addIdentifier(identifier);
+    observation.setId(computeResourceIdFromIdentifier(identifier));
+
+    observation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
+
+    observation.setValue(createNKategorieValue(tnmTyp.getN()));
+
+    return observation;
+  }
+
+  private CodeableConcept createNKategorieCode(String cpuPraefixN) {
+
+    var extension = new Extension().setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmCpPraefix());
+    extension.setValue(
+        new CodeableConcept(
+            new Coding().setCode(cpuPraefixN).setSystem(fhirProperties.getSystems().getTnmUicc())));
+
+    var codeCoding = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    switch (cpuPraefixN) {
+      case "c":
+        codeCoding.setCode("399534004").setDisplay("cN category (observable entity)");
+        break;
+      case "p":
+        codeCoding.setCode("371494008").setDisplay("pN category (observable entity)");
+        break;
+      default:
+        codeCoding.setCode("277206009").setDisplay("N category (observable entity)");
+        break;
+    }
+
+    var codeableConcept = new CodeableConcept();
+    codeableConcept.setCoding(Collections.singletonList(codeCoding));
+    codeableConcept.setExtension(Collections.singletonList(extension));
+
+    return codeableConcept;
+  }
+
+  private CodeableConcept createNKategorieValue(String nValue) {
+
+    var codeableConcept =
+        new CodeableConcept(
+            new Coding().setCode(nValue).setSystem(fhirProperties.getSystems().getTnmUicc()));
+
+    //    if(){
+    //      codeableConcept.addExtension(
+    //        new Extension()
+    //          .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
+    //          .setValue(
+    //            new CodeableConcept(
+    //              new Coding().setCode("i-").setSystem(fhirProperties.getSystems().getTnmUicc())))
+    //      );
+    //
+    //      if(){
+    //        codeableConcept.addExtension(
+    //          new Extension()
+    //            .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmSnSuffix())
+    //            .setValue(
+    //              new CodeableConcept(
+    //                new
+    // Coding().setCode("sn").setSystem(fhirProperties.getSystems().getTnmUicc())))
+    //        );
     return codeableConcept;
   }
 
