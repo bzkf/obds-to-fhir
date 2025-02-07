@@ -171,6 +171,9 @@ public class FhirProperties {
     private String miiPrOnkoTnmKlassifikation;
     private String miiPrOnkoTnmTKategorie;
     private String miiExOnkoTnmCpPraefix;
+    private String miiPrOnkoTnmNKategorie;
+    private String miiExOnkoTnmItcSuffix;
+    private String miiExOnkoTnmSnSuffix;
   }
 
   @Data
