@@ -11,6 +11,7 @@
   "actuality": "actual",
   "event": {
     "coding": [ {
+      "system": "https://www.meddra.org ",
       "version": "5.0",
       "code": "26356258"
     } ]
@@ -26,7 +27,7 @@
   },
   "suspectEntity": [ {
     "instance": {
-      "reference": "Patient/any"
+      "reference": "Procedure_MedicationStatement/any"
     }
   } ]
 }

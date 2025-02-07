@@ -22,7 +22,9 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
   }
 
   public List<AdverseEvent> map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung, Reference patient, Reference suspectedEntity) {
+      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      Reference patient,
+      Reference suspectedEntity) {
 
     Objects.requireNonNull(meldung, "meldung must not be null");
     Objects.requireNonNull(patient, "Reference must not be null");
@@ -35,7 +37,10 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         && st.getNebenwirkungen().getMengeNebenwirkung() != null) {
       result.addAll(
           createAdverseEvent(
-              meldung.getST().getNebenwirkungen(), meldung.getST().getSTID(), patient, suspectedEntity));
+              meldung.getST().getNebenwirkungen(),
+              meldung.getST().getSTID(),
+              patient,
+              suspectedEntity));
     }
 
     if (syst != null
@@ -43,7 +48,10 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         && syst.getNebenwirkungen().getMengeNebenwirkung() != null) {
       result.addAll(
           createAdverseEvent(
-              meldung.getSYST().getNebenwirkungen(), meldung.getSYST().getSYSTID(), patient, suspectedEntity));
+              meldung.getSYST().getNebenwirkungen(),
+              meldung.getSYST().getSYSTID(),
+              patient,
+              suspectedEntity));
     }
     return result;
   }
