@@ -10,7 +10,6 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +17,6 @@ public class OperationMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(OperationMapper.class);
 
-  @Autowired
   public OperationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -35,16 +33,12 @@ public class OperationMapper extends ObdsToFhirMapper {
     for (var opsCode : op.getMengeOPS().getOPS()) {
       var procedure = new Procedure();
 
-      // identifier, meta
-      // to do: brauch ich hier die patid? dann muss ich meine Parameter nochmal überdenken weil im
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getOperationProcedureId())
               .setValue(op.getOPID() + opsCode.getCode());
       procedure.addIdentifier(identifier);
-      procedure.setId(
-          computeResourceIdFromIdentifier(
-              identifier)); // das hier macht den Hash vom identifier.value
+      procedure.setId(computeResourceIdFromIdentifier(identifier));
 
       procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
 
@@ -128,14 +122,17 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       procedure.addExtension(intentionExtens);
 
-      // outcome
-      var outcome = new CodeableConcept();
-      outcome
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
-          .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+      if (op.getResidualstatus() != null
+          && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
+        // outcome
+        var outcome = new CodeableConcept();
+        outcome
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
+            .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
 
-      procedure.setOutcome(outcome);
+        procedure.setOutcome(outcome);
+      }
 
       // add procedure to procedure list here
       procedureList.add(procedure);

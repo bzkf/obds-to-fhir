@@ -1,7 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
-import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.TodTyp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,6 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,21 +23,17 @@ public class TodMapper extends ObdsToFhirMapper {
   private static final Pattern icdVersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
-  @Autowired
   public TodMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
-  public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
-      Reference patient,
-      Reference condition) {
+  public List<Observation> map(TodTyp tod, Reference patient, Reference condition) {
     // Validation
-    Objects.requireNonNull(meldung.getTod());
+    Objects.requireNonNull(tod);
     Objects.requireNonNull(patient);
     Objects.requireNonNull(condition);
 
-    Validate.notBlank(meldung.getTod().getAbschlussID(), "Required ABSCHLUSS_ID is unset");
+    Validate.notBlank(tod.getAbschlussID(), "Required ABSCHLUSS_ID is unset");
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(),
@@ -52,10 +47,9 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var observationList = new ArrayList<Observation>();
 
-    if (meldung.getTod().getMengeTodesursachen() != null) {
+    if (tod.getMengeTodesursachen() != null) {
 
-      for (AllgemeinICDTyp todesursache :
-          meldung.getTod().getMengeTodesursachen().getTodesursacheICD()) {
+      for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
         var observation = new Observation();
         observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
@@ -64,9 +58,7 @@ public class TodMapper extends ObdsToFhirMapper {
         Identifier identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodObservationId())
-                .setValue(
-                    String.format(
-                        "%s_%s", meldung.getTod().getAbschlussID(), todesursache.getCode()));
+                .setValue(String.format("%s_%s", tod.getAbschlussID(), todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -82,7 +74,7 @@ public class TodMapper extends ObdsToFhirMapper {
         observation.setSubject(patient);
 
         // Effective | Sterbedatum
-        var todesZeitpunkt = convertObdsDatumToDateTimeType(meldung.getTod().getSterbedatum());
+        var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum());
         if (todesZeitpunkt.isPresent()) {
           observation.setEffective(todesZeitpunkt.get());
         }
@@ -116,12 +108,12 @@ public class TodMapper extends ObdsToFhirMapper {
         observation.setValue(todesursacheConcept);
 
         // Interpretation | Tod Tumorbedingt
-        if (meldung.getTod().getTodTumorbedingt() != null) {
+        if (tod.getTodTumorbedingt() != null) {
           var interpretation = new CodeableConcept();
           interpretation
               .addCoding()
               .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
-              .setCode(meldung.getTod().getTodTumorbedingt().value());
+              .setCode(tod.getTodTumorbedingt().value());
           observation.setInterpretation(Arrays.asList(interpretation));
         }
 
