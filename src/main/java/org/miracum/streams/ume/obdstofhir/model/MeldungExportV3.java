@@ -1,13 +1,12 @@
 package org.miracum.streams.ume.obdstofhir.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.basisdatensatz.obds.v3.OBDS;
-import java.util.Map;
 import lombok.*;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Serializer;
 
 @Data
 @AllArgsConstructor
@@ -16,30 +15,24 @@ import lombok.*;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 public class MeldungExportV3 extends OnkoResource {
 
-  @EqualsAndHashCode.Include String id;
+  @EqualsAndHashCode.Include
+  @JsonProperty("ID")
+  String id;
 
-  @EqualsAndHashCode.Include String referenz_nummer;
+  @EqualsAndHashCode.Include
+  @JsonProperty("REFERENZ_NUMMER")
+  String referenz_nummer;
 
-  @EqualsAndHashCode.Include String lkr_meldung;
+  @EqualsAndHashCode.Include
+  @JsonProperty("LKR_MELDUNG")
+  String lkr_meldung;
 
-  @EqualsAndHashCode.Include Integer versionsnummer;
+  @EqualsAndHashCode.Include
+  @JsonProperty("VERSIONSNUMMER")
+  Integer versionsnummer;
 
+  @JsonProperty("XML_DATEN")
+  @JsonDeserialize(using = Obdsv3Deserializer.class)
+  @JsonSerialize(using = Obdsv3Serializer.class)
   OBDS obds;
-
-  @JsonProperty("payload")
-  public void getPayload(Map<String, Object> payload) {
-    this.id = getString(payload, "ID");
-    this.referenz_nummer = getString(payload, "REFERENZ_NUMMER");
-    this.lkr_meldung = getString(payload, "LKR_MELDUNG");
-    this.versionsnummer = getInt(payload, "VERSIONSNUMMER");
-
-    XmlMapper xmlMapper = new XmlMapper();
-    xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    xmlMapper.registerModule(new Jdk8Module());
-    try {
-      this.obds = xmlMapper.readValue(getString(payload, "XML_DATEN"), OBDS.class);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
-    }
-  }
 }
