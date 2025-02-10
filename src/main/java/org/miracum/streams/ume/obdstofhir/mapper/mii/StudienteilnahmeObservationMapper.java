@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -88,7 +89,8 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
 
       // Subject
       observation.setSubject(patient);
-      observation.setFocus(diagnose);
+      observation.addFocus(diagnose);
+
       // Effective Date
       var date =
           new DateTimeType(
