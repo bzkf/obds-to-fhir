@@ -17,16 +17,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
-  private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
+  private final FernmetastasenMapper fernmetastasenMapper;
+  private final GradingObservationMapper gradingObservationMapper;
+  private final HistologiebefundMapper histologiebefundMapper;
+  private final LeistungszustandMapper leistungszustandMapper;
+  private final LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper;
+  private final OperationMapper operationMapper;
+  private final PatientMapper patientMapper;
+  private final ResidualstatusMapper residualstatusMapper;
+  private final SpecimenMapper specimenMapper;
   private final StrahlentherapieMapper strahlentherapieMapper;
-  private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final SystemischeTherapieMedicationStatementMapper
       systemischeTherapieMedicationStatementMapper;
+  private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final TodMapper todMapper;
-  private final LeistungszustandMapper leistungszustandMapper;
-  private final OperationMapper operationMapper;
-  private final ResidualstatusMapper residualstatusMapper;
+  private final VerlaufshistorieObservationMapper verlaufshistorieObservationMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -38,7 +44,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TodMapper todMapper,
       LeistungszustandMapper leistungszustandMapper,
       OperationMapper operationMapper,
-      ResidualstatusMapper residualstatusMapper) {
+      ResidualstatusMapper residualstatusMapper,
+      FernmetastasenMapper fernmetastasenMapper,
+      GradingObservationMapper gradingObservationMapper,
+      HistologiebefundMapper histologiebefundMapper,
+      LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper,
+      SpecimenMapper specimenMapper,
+      VerlaufshistorieObservationMapper verlaufshistorieObservationMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -50,6 +62,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.leistungszustandMapper = leistungszustandMapper;
     this.operationMapper = operationMapper;
     this.residualstatusMapper = residualstatusMapper;
+    this.fernmetastasenMapper = fernmetastasenMapper;
+    this.gradingObservationMapper = gradingObservationMapper;
+    this.histologiebefundMapper = histologiebefundMapper;
+    this.lymphknotenuntersuchungMapper = lymphknotenuntersuchungMapper;
+    this.specimenMapper = specimenMapper;
+    this.verlaufshistorieObservationMapper = verlaufshistorieObservationMapper;
   }
 
   /**
@@ -80,18 +98,41 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
+        // - GradingObservationMapper
+        // - lymphknotenuntersuchungMapper
+        // - specimenMapper
+        // - verlaufshistorieObservationMapper
+
+        var primaryConditionReference =
+            createPrimaryConditionReference(meldung.getTumorzuordnung());
+
         // Diagnose
         if (meldung.getDiagnose() != null) {
           var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
           addResourceToBundle(bundle, condition);
 
-          var conditionReference = new Reference("Condition/" + condition.getId());
-
           if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
             var leistungszustand =
-                leistungszustandMapper.map(meldung, patientReference, conditionReference);
+                leistungszustandMapper.map(meldung, patientReference, primaryConditionReference);
             addResourceToBundle(bundle, leistungszustand);
           }
+
+          if (meldung.getDiagnose().getMengeFM() != null
+              && meldung.getDiagnose().getMengeFM().getFernmetastase() != null) {
+            var diagnoseFM =
+                fernmetastasenMapper.map(
+                    meldung.getDiagnose(), patientReference, primaryConditionReference);
+            addResourcesToBundle(bundle, diagnoseFM);
+          }
+        }
+
+        if (meldung.getVerlauf() != null
+            && meldung.getVerlauf().getMengeFM() != null
+            && meldung.getVerlauf().getMengeFM().getFernmetastase() != null) {
+          var verlaufFM =
+              fernmetastasenMapper.map(
+                  meldung.getVerlauf(), patientReference, primaryConditionReference);
+          addResourcesToBundle(bundle, verlaufFM);
         }
 
         // Systemtherapie
@@ -120,9 +161,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           addResourceToBundle(bundle, stProcedure);
         }
 
-        var primaryConditionReference =
-            createPrimaryConditionReference(meldung.getTumorzuordnung());
-
         // Tod
         if (meldung.getTod() != null) {
           var deathObservations =
@@ -145,6 +183,16 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     meldung.getOP(), patientReference, primaryConditionReference);
             addResourceToBundle(bundle, residualstatus);
           }
+        }
+
+        if (meldung.getPathologie() != null) {
+          // TODO: change specimenMapper to accept PathologieTyp and use the created Specimen as a
+          // reference for the histologiebefundMapper
+          // var specimen = specimenMapper.map(null, null)
+          var report =
+              histologiebefundMapper.map(
+                  meldung.getPathologie(), meldung.getMeldungID(), patientReference, null, null);
+          addResourceToBundle(bundle, report);
         }
       }
 
