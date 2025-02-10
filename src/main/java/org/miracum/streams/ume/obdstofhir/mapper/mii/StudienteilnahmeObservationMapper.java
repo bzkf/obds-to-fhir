@@ -83,12 +83,12 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
           new CodeableConcept(
               new Coding(
                   fhirProperties.getSystems().getSnomed(),
-                  "70709491003 ",
+                  "70709491003",
                   "Enrollment in clinical trial (procedure)")));
 
       // Subject
       observation.setSubject(patient);
-
+      observation.setFocus(diagnose);
       // Effective Date
       var date =
           new DateTimeType(
