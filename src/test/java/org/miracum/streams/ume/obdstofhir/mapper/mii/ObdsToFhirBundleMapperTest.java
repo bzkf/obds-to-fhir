@@ -9,6 +9,8 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -70,8 +72,10 @@ class ObdsToFhirBundleMapperTest {
             .build();
 
     final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
+    final List<OBDS> obdsList = new ArrayList<>();
+    obdsList.add(obds);
 
-    final var bundles = sut.map(obds);
+    final var bundles = sut.map(obdsList);
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
