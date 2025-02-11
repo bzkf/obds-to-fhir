@@ -38,6 +38,7 @@ import org.miracum.streams.ume.obdstofhir.serde.MeldungExportV3Serde;
 import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -59,6 +60,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       Obdsv3Deserializer.class,
       JsonSerializer.class
     })
+@EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {
 
   @Autowired private Obdsv3Processor processor;
