@@ -90,10 +90,13 @@ public class PatientMapper extends ObdsToFhirMapper {
               .sorted(Comparator.comparing(r -> r.getTod().getSterbedatum().toGregorianCalendar()))
               .toList()
               .getLast();
-      var deceased =
-          new DateTimeType(latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
-      deceased.setPrecision(TemporalPrecisionEnum.DAY);
-      patient.setDeceased(deceased);
+      if (latestReport.getTod() != null && latestReport.getTod().getSterbedatum() != null) {
+        var deceased =
+            new DateTimeType(
+                latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
+        deceased.setPrecision(TemporalPrecisionEnum.DAY);
+        patient.setDeceased(deceased);
+      }
     }
 
     // address

@@ -144,6 +144,31 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       for (MeldungExportListV3 meldungExportList : meldungExportListList) {
         OBDS obds = new OBDS();
 
+        obds.setMengePatient(new OBDS.MengePatient());
+        obds.getMengePatient().getPatient().add(new OBDS.MengePatient.Patient());
+        obds.getMengePatient()
+            .getPatient()
+            .get(0)
+            .setMengeMeldung(new OBDS.MengePatient.Patient.MengeMeldung());
+
+        // Patient
+        var stammdatenPatient =
+            meldungExportList.get(0).getObds().getMengePatient().getPatient().getFirst();
+        obds.getMengePatient()
+            .getPatient()
+            .get(0)
+            .setPatientenStammdaten(stammdatenPatient.getPatientenStammdaten());
+        obds.getMengePatient().getPatient().get(0).setPatientID(stammdatenPatient.getPatientID());
+
+        // Meldedatum
+        var maxMeldeDatum =
+            meldungExportList.stream()
+                .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
+                .get()
+                .getObds()
+                .getMeldedatum();
+        obds.setMeldedatum(maxMeldeDatum);
+
         meldungExportList.stream()
             .map(MeldungExportV3::getObds)
             .map(OBDS::getMengePatient)
@@ -154,76 +179,75 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
             .filter(Objects::nonNull)
             .flatMap(List::stream)
-            .findFirst()
+            .findFirst() // Assumption always only one Meldung in MengeMeldung
             .ifPresent(
                 meldung -> {
-                  obds.getMengePatient()
-                      .getPatient()
-                      .get(0)
-                      .getMengeMeldung()
-                      .getMeldung()
-                      .get(0)
-                      .setDiagnose(meldung.getDiagnose());
-                  obds.getMengePatient()
-                      .getPatient()
-                      .get(0)
-                      .getMengeMeldung()
-                      .getMeldung()
-                      .get(0)
-                      .setOP(meldung.getOP());
-                  obds.getMengePatient()
-                      .getPatient()
-                      .get(0)
-                      .getMengeMeldung()
-                      .getMeldung()
-                      .get(0)
-                      .setTod(meldung.getTod());
+                  if (meldung.getDiagnose() != null
+                      || meldung.getOP() != null
+                      || meldung.getTod() != null) {
+                    obds.getMengePatient()
+                        .getPatient()
+                        .get(0)
+                        .getMengeMeldung()
+                        .getMeldung()
+                        .add(meldung);
+                  }
                 });
 
         // Systemtherapie
-        obds.getMengePatient()
-            .getPatient()
-            .get(0)
-            .getMengeMeldung()
-            .getMeldung()
-            .get(0)
-            .setSYST(
-                selectByMeldeanlass(
-                    meldungExportList,
-                    Meldeanlass.BEHANDLUNGSENDE,
-                    Meldeanlass.BEHANDLUNGSBEGINN,
-                    this::extractSYST,
-                    (SYSTTyp s) -> s.getMeldeanlass().toString()));
+        var systMeldung =
+            selectByMeldeanlass(
+                meldungExportList,
+                Meldeanlass.BEHANDLUNGSENDE,
+                Meldeanlass.BEHANDLUNGSBEGINN,
+                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getSYST,
+                syst ->
+                    ((SYSTTyp) syst).getMeldeanlass() == null
+                        ? null
+                        : ((SYSTTyp) syst).getMeldeanlass().toString());
+        if (systMeldung != null) {
+          obds.getMengePatient()
+              .getPatient()
+              .get(0)
+              .getMengeMeldung()
+              .getMeldung()
+              .add(systMeldung);
+        }
 
         // Strahlentherapie
-        obds.getMengePatient()
-            .getPatient()
-            .get(0)
-            .getMengeMeldung()
-            .getMeldung()
-            .get(0)
-            .setST(
-                selectByMeldeanlass(
-                    meldungExportList,
-                    Meldeanlass.BEHANDLUNGSENDE,
-                    Meldeanlass.BEHANDLUNGSBEGINN,
-                    this::extractST,
-                    (STTyp s) -> s.getMeldeanlass().toString()));
+        var stMeldung =
+            selectByMeldeanlass(
+                meldungExportList,
+                Meldeanlass.BEHANDLUNGSENDE,
+                Meldeanlass.BEHANDLUNGSBEGINN,
+                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getST,
+                st ->
+                    ((STTyp) st).getMeldeanlass() == null
+                        ? null
+                        : ((STTyp) st).getMeldeanlass().toString());
+        if (stMeldung != null) {
+          obds.getMengePatient().getPatient().get(0).getMengeMeldung().getMeldung().add(stMeldung);
+        }
 
         // Verlauf
-        obds.getMengePatient()
-            .getPatient()
-            .get(0)
-            .getMengeMeldung()
-            .getMeldung()
-            .get(0)
-            .setVerlauf(
-                selectByMeldeanlass(
-                    meldungExportList,
-                    Meldeanlass.STATUSAENDERUNG,
-                    Meldeanlass.STATUSMELDUNG,
-                    this::extractVerlauf,
-                    VerlaufTyp::getMeldeanlass));
+        var verlaufMeldung =
+            selectByMeldeanlass(
+                meldungExportList,
+                Meldeanlass.STATUSAENDERUNG,
+                Meldeanlass.STATUSMELDUNG,
+                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getVerlauf,
+                verlauf ->
+                    ((VerlaufTyp) verlauf).getMeldeanlass() == null
+                        ? null
+                        : ((VerlaufTyp) verlauf).getMeldeanlass());
+        if (verlaufMeldung != null) {
+          obds.getMengePatient()
+              .getPatient()
+              .get(0)
+              .getMengeMeldung()
+              .getMeldung()
+              .add(verlaufMeldung);
+        }
 
         tumorObds.add(obds);
       }
@@ -232,43 +256,42 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     };
   }
 
-  private <T> T selectByMeldeanlass(
+  private OBDS.MengePatient.Patient.MengeMeldung.Meldung selectByMeldeanlass(
       List<MeldungExportV3> meldungList,
       Meldeanlass primary,
       Meldeanlass secondary,
-      Function<MeldungExportV3, T> extractor,
-      Function<T, String> meldeanlassExtractor) {
+      Function<OBDS.MengePatient.Patient.MengeMeldung.Meldung, ?>
+          fieldExtractor, // Extracts SYST, ST, or Verlauf
+      Function<Object, String> meldeanlassExtractor // Extracts Meldeanlass from the extracted type
+      ) {
     return meldungList.stream()
-        .map(extractor)
+        .map(this::extractMeldung)
         .filter(Objects::nonNull)
-        .filter(meldung -> meldeanlassExtractor.apply(meldung).equals(primary.toString()))
+        .filter(
+            meldung -> {
+              Object field = fieldExtractor.apply(meldung);
+              return field != null
+                  && Objects.equals(meldeanlassExtractor.apply(field), primary.toString());
+            })
         .findFirst()
         .or(
             () ->
                 meldungList.stream()
-                    .map(extractor)
+                    .map(this::extractMeldung)
                     .filter(Objects::nonNull)
                     .filter(
-                        meldung -> meldeanlassExtractor.apply(meldung).equals(secondary.toString()))
+                        meldung -> {
+                          Object field = fieldExtractor.apply(meldung);
+                          return field != null
+                              && Objects.equals(
+                                  meldeanlassExtractor.apply(field), secondary.toString());
+                        })
                     .findFirst())
         .orElse(null);
   }
 
-  private SYSTTyp extractSYST(MeldungExportV3 meldungExport) {
-    return extractField(meldungExport, OBDS.MengePatient.Patient.MengeMeldung.Meldung::getSYST);
-  }
-
-  private STTyp extractST(MeldungExportV3 meldungExport) {
-    return extractField(meldungExport, OBDS.MengePatient.Patient.MengeMeldung.Meldung::getST);
-  }
-
-  private VerlaufTyp extractVerlauf(MeldungExportV3 meldungExport) {
-    return extractField(meldungExport, OBDS.MengePatient.Patient.MengeMeldung.Meldung::getVerlauf);
-  }
-
-  private <T> T extractField(
-      MeldungExportV3 meldungExport,
-      Function<OBDS.MengePatient.Patient.MengeMeldung.Meldung, T> fieldExtractor) {
+  private OBDS.MengePatient.Patient.MengeMeldung.Meldung extractMeldung(
+      MeldungExportV3 meldungExport) {
     return Optional.ofNullable(meldungExport.getObds())
         .map(OBDS::getMengePatient)
         .map(OBDS.MengePatient::getPatient)
@@ -276,7 +299,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         .map(OBDS.MengePatient.Patient::getMengeMeldung)
         .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
         .flatMap(meldungen -> meldungen.stream().findFirst())
-        .map(fieldExtractor)
         .orElse(null);
   }
 
