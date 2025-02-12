@@ -80,7 +80,7 @@ class ObdsToFhirBundleMapperTest {
       Approvals.verify(
           fhirJson,
           Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
+              .withParameters("/bundle", sourceFile, "index_" + i)
               .forFile()
               .withExtension(".fhir.json"));
     }
