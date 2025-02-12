@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
@@ -19,6 +20,7 @@ public class Obdsv3Deserializer extends JsonDeserializer<OBDS> {
             .defaultUseWrapper(false)
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
+            .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
             .build();
   }
 
