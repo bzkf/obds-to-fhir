@@ -1,10 +1,10 @@
-from pathlib import Path
-from pathling import PathlingContext, Expression as exp
 import os
+from pathlib import Path
+
 import great_expectations as gx
-from great_expectations.checkpoint import (
-    UpdateDataDocsAction,
-)
+from great_expectations.checkpoint import UpdateDataDocsAction
+from pathling import Expression as exp
+from pathling import PathlingContext
 
 pc = PathlingContext.create(enable_extensions=True)
 
