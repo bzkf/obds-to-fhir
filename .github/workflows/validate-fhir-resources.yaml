@@ -58,6 +58,7 @@ jobs:
 
       - name: Restore FHIR package dependencies
         run: |
+          fhir config inflate ValueSets
           fhir restore
 
       - name: Validate generated FHIR resources
