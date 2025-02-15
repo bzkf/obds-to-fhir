@@ -14,7 +14,9 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FernmetastasenMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(FernmetastasenMapper.class);
 
