@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.Specimen;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -34,7 +36,25 @@ class SpecimenMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
 
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject);
+    var list = new ArrayList<Specimen>();
+
+    for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
+      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
+        list.add(sut.map(meldung.getDiagnose().getHistologie(), subject));
+      }
+
+      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
+        list.add(sut.map(meldung.getVerlauf().getHistologie(), subject));
+      }
+
+      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
+        list.add(sut.map(meldung.getOP().getHistologie(), subject));
+      }
+
+      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
+        list.add(sut.map(meldung.getPathologie().getHistologie(), subject));
+      }
+    }
 
     verifyAll(list, sourceFile);
   }

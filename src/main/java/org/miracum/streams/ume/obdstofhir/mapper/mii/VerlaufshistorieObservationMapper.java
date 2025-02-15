@@ -1,8 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.HistologieTyp;
-import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,11 +23,8 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen,
-      Reference patient,
-      Reference specimen,
-      Reference diagnose) {
-    Objects.requireNonNull(meldungen, "Meldungen must not be null");
+      HistologieTyp histologie, Reference patient, Reference specimen, Reference diagnose) {
+    Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(specimen, "Reference to Specimen must not be null");
     Objects.requireNonNull(specimen, "Reference to Condition must not be null");
@@ -49,29 +44,9 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
             Enumerations.ResourceType.CONDITION.toCode()),
         "The condition reference should point to a Condition resource");
 
-    var result = new ArrayList<Observation>();
+    var observations = new ArrayList<Observation>();
 
-    // Collect histologieTyp from Diagnose, Verlauf, OP, Pathologie
-    var histologie = new ArrayList<HistologieTyp>();
-    for (var meldung : meldungen.getMeldung()) {
-      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        histologie.add(meldung.getDiagnose().getHistologie());
-      }
-      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        histologie.add(meldung.getVerlauf().getHistologie());
-      }
-      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        histologie.add(meldung.getOP().getHistologie());
-      }
-      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        histologie.add(meldung.getPathologie().getHistologie());
-      }
-    }
-
-    for (var histo : histologie) {
-      if (histo == null) {
-        continue;
-      }
+    for (var morph : histologie.getMorphologieICDO()) {
       var observation = new Observation();
 
       // Meta
@@ -81,7 +56,7 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getObservationHistologieId())
-              .setValue(histo.getHistologieID() + "_ICDO3");
+              .setValue(histologie.getHistologieID() + "_ICDO3_" + morph.getCode());
       observation.addIdentifier(identifier);
       // Id
       observation.setId(computeResourceIdFromIdentifier(identifier));
@@ -101,28 +76,23 @@ public class VerlaufshistorieObservationMapper extends ObdsToFhirMapper {
       observation.addFocus(diagnose);
 
       // effective
-      var date =
-          new DateTimeType(
-              histo.getTumorHistologiedatum().getValue().toGregorianCalendar().getTime());
-      date.setPrecision(TemporalPrecisionEnum.DAY);
+      var date = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
       observation.setEffective(date);
-
-      // value
-      var morph = histo.getMorphologieICDO().getFirst();
-      var value =
-          new CodeableConcept(
-              new Coding(
-                      fhirProperties.getSystems().getIcdo3Morphologie(),
-                      morph.getCode(),
-                      histo.getMorphologieFreitext())
-                  .setVersion(morph.getVersion()));
-      observation.setValue(value);
 
       // specimen
       observation.setSpecimen(specimen);
 
-      result.add(observation);
+      var coding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+              .setCode(morph.getCode())
+              .setVersion(morph.getVersion());
+      var value = new CodeableConcept(coding).setText(histologie.getMorphologieFreitext());
+      observation.setValue(value);
+
+      observations.add(observation);
     }
-    return result;
+
+    return observations;
   }
 }

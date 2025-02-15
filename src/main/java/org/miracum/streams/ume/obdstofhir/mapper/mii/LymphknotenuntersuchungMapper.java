@@ -1,8 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.*;
-import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +21,8 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference diagnose) {
-    Objects.requireNonNull(meldungen, "Meldungen must not be null");
+  public List<Observation> map(HistologieTyp histologie, Reference patient, Reference diagnose) {
+    Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(diagnose, "Reference to Primärdiagnose must not be null");
     Validate.isTrue(
@@ -43,71 +40,50 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     this.diagnoseReference = diagnose;
     var result = new ArrayList<Observation>();
 
-    // Collect histologieTyp from Diagnose, Verlauf, OP, Pathologie
-    var histologie = new ArrayList<HistologieTyp>();
-    for (var meldung : meldungen.getMeldung()) {
-      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        histologie.add(meldung.getDiagnose().getHistologie());
-      }
-      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        histologie.add(meldung.getVerlauf().getHistologie());
-      }
-      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        histologie.add(meldung.getOP().getHistologie());
-      }
-      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        histologie.add(meldung.getPathologie().getHistologie());
-      }
-    }
-    // Create Obserations
-    for (var histo : histologie) {
-      if (histo == null
-          || histo.getLKBefallen() == null
-          || histo.getLKUntersucht() == null
-          || histo.getSentinelLKBefallen() == null
-          || histo.getSentinelLKUntersucht() == null) {
-        continue;
-      }
-      var effectiveDate =
-          new DateTimeType(
-              histo.getTumorHistologiedatum().getValue().toGregorianCalendar().getTime());
-      effectiveDate.setPrecision(TemporalPrecisionEnum.DAY);
+    var effectiveDate = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
 
+    if (histologie.getLKBefallen() != null) {
       result.add(
           createObservation(
-              histo.getHistologieID() + "_befallen",
+              histologie.getHistologieID() + "_befallen",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneLymphknoten(),
               "21893-3",
               "443527007",
               effectiveDate,
-              histo.getLKBefallen().intValue()));
+              histologie.getLKBefallen().intValue()));
+    }
 
+    if (histologie.getLKUntersucht() != null) {
       result.add(
           createObservation(
-              histo.getHistologieID() + "_untersucht",
+              histologie.getHistologieID() + "_untersucht",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteLymphknoten(),
               "21894-1",
               "444025001",
               effectiveDate,
-              histo.getLKUntersucht().intValue()));
+              histologie.getLKUntersucht().intValue()));
+    }
 
+    if (histologie.getSentinelLKBefallen() != null) {
       result.add(
           createObservation(
-              histo.getHistologieID() + "_befallen_sentinel",
+              histologie.getHistologieID() + "_befallen_sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
               "92832-5",
               "1264491009",
               effectiveDate,
-              histo.getSentinelLKBefallen().intValue()));
+              histologie.getSentinelLKBefallen().intValue()));
+    }
 
+    if (histologie.getSentinelLKUntersucht() != null) {
       result.add(
           createObservation(
-              histo.getHistologieID() + "_untersucht_sentinel",
+              histologie.getHistologieID() + "_untersucht_sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
               "85347-3",
               "444411008",
               effectiveDate,
-              histo.getSentinelLKUntersucht().intValue()));
+              histologie.getSentinelLKUntersucht().intValue()));
     }
     return result;
   }

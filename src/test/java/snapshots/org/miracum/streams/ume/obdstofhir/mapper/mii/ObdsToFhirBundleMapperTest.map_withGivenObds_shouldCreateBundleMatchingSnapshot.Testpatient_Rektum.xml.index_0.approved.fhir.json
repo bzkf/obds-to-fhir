@@ -138,6 +138,120 @@
       "url": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0"
     }
   }, {
+    "fullUrl": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "258"
+      } ],
+      "accessionIdentifier": {
+        "value": "E/2020/20543"
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "collection": {
+        "collectedDateTime": "2020-08-02"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397"
+    }
+  }, {
+    "fullUrl": "Observation/105cff8b5f5b8f5789b30b06ede08be6d6f61ee3d7f9d66410976cea405f1a65",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "105cff8b5f5b8f5789b30b06ede08be6d6f61ee3d7f9d66410976cea405f1a65",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "258_ICDO3_8140/3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "31",
+          "code": "8140/3"
+        } ],
+        "text": "Adenokarzinom o.n.A."
+      },
+      "specimen": {
+        "reference": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/105cff8b5f5b8f5789b30b06ede08be6d6f61ee3d7f9d66410976cea405f1a65"
+    }
+  }, {
+    "fullUrl": "Observation/2b13760f5043debd8c0b94692c80b1f929074b337d88cca72c6072f2f69f065e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "2b13760f5043debd8c0b94692c80b1f929074b337d88cca72c6072f2f69f065e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "258_Grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "2"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/2b13760f5043debd8c0b94692c80b1f929074b337d88cca72c6072f2f69f065e"
+    }
+  }, {
     "fullUrl": "Procedure/8fdf15fcb5aa74bc961258cdb94fa024d96d29751130268e18e1127617dcec01",
     "resource": {
       "resourceType": "Procedure",
@@ -278,6 +392,209 @@
     "request": {
       "method": "PUT",
       "url": "Observation/a30af108fe299ccd35464232c6f48499d73f2bf2fb6be244a50531850ededcb7"
+    }
+  }, {
+    "fullUrl": "Specimen/4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "259"
+      } ],
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "collection": {
+        "collectedDateTime": "2020-08-31"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c"
+    }
+  }, {
+    "fullUrl": "Observation/b7a19ce7392a787c372d943646a09975be3dc6de1fe72e239cc6bd64c3b11bb9",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b7a19ce7392a787c372d943646a09975be3dc6de1fe72e239cc6bd64c3b11bb9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "259_ICDO3_8140/3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "31",
+          "code": "8140/3"
+        } ],
+        "text": "Adenokarzinom o.n.A."
+      },
+      "specimen": {
+        "reference": "Specimen/4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b7a19ce7392a787c372d943646a09975be3dc6de1fe72e239cc6bd64c3b11bb9"
+    }
+  }, {
+    "fullUrl": "Observation/9b7c4f7d20e8a4b63807643f06502c40b8ff2930892bf9bd844968552cf0c2e9",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "9b7c4f7d20e8a4b63807643f06502c40b8ff2930892bf9bd844968552cf0c2e9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "259_Grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/9b7c4f7d20e8a4b63807643f06502c40b8ff2930892bf9bd844968552cf0c2e9"
+    }
+  }, {
+    "fullUrl": "Observation/68ebc4629774846eab4388c7641be172e0012a3124231b085f01e9b3d1dedbac",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "68ebc4629774846eab4388c7641be172e0012a3124231b085f01e9b3d1dedbac",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "259_befallen"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21893-3"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "443527007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueQuantity": {
+        "value": 0,
+        "unit": "#",
+        "system": "http://unitsofmeasure.org",
+        "code": "1"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/68ebc4629774846eab4388c7641be172e0012a3124231b085f01e9b3d1dedbac"
+    }
+  }, {
+    "fullUrl": "Observation/93aa3e8d751339e6ac409291373cc170572f46fa31123cd245f6880ba7f9d3a6",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "93aa3e8d751339e6ac409291373cc170572f46fa31123cd245f6880ba7f9d3a6",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "259_untersucht"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "21894-1"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "444025001"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "focus": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueQuantity": {
+        "value": 14,
+        "unit": "#",
+        "system": "http://unitsofmeasure.org",
+        "code": "1"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/93aa3e8d751339e6ac409291373cc170572f46fa31123cd245f6880ba7f9d3a6"
     }
   }, {
     "fullUrl": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",

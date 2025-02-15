@@ -58,7 +58,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
     diagnosticReport.setId(computeResourceIdFromIdentifier(identifier));
 
     // basedOn Tumorkonferenz
-    if (!tumorkonferenz.isEmpty()) {
+    if (tumorkonferenz != null) {
       diagnosticReport.addBasedOn(tumorkonferenz);
     }
     // Meta
