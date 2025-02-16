@@ -3,6 +3,7 @@ from pathlib import Path
 
 import great_expectations as gx
 from great_expectations.checkpoint import UpdateDataDocsAction
+from loguru import logger
 from pathling import Expression as exp
 from pathling import PathlingContext
 
@@ -133,3 +134,9 @@ gx_context.build_data_docs()
 
 # Run the Checkpoint
 validation_results = checkpoint.run(batch_parameters=batch_parameters)
+
+logger.info(validation_results.describe())
+
+if not validation_results.success:
+    logger.error("Validation run failed!")
+    os._exit(1)
