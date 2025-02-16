@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
+import com.spun.util.introspection.Caller;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.approvaltests.Approvals;
@@ -75,12 +76,18 @@ class ObdsToFhirBundleMapperTest {
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
+    var caller = Caller.get(0);
+    var methodName = caller.getMethodName();
+    var className = this.getClass().getSimpleName();
+
     for (int i = 0; i < bundles.size(); i++) {
       var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
       Approvals.verify(
           fhirJson,
           Approvals.NAMES
-              .withParameters("/bundle", sourceFile, "index_" + i)
+              .withParameters("")
+              .forFile()
+              .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
               .forFile()
               .withExtension(".fhir.json"));
     }
