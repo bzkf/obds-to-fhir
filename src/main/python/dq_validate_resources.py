@@ -26,7 +26,8 @@ result = data.extract(
         exp("gender", "gender"),
         exp("birthDate", "birth_date"),
         exp(
-            "reverseResolve(Condition.subject).code.coding.where(system='http://fhir.de/CodeSystem/bfarm/icd-10-gm').code",
+            "reverseResolve(Condition.subject).code.coding"
+            + ".where(system='http://fhir.de/CodeSystem/bfarm/icd-10-gm').code",
             "icd_code",
         ),
         exp(
@@ -89,7 +90,8 @@ validation_definition = gx_context.validation_definitions.add_or_update(
 validation_definitions = [gx_context.validation_definitions.get(definition_name)]
 
 # Check points:  Checkpoint executes one or more Validation Definitions
-# performs a set of Actions based on the Validation Results each Validation Definition returns.
+# performs a set of Actions based on the Validation Results each
+# Validation Definition returns.
 
 action_list = [
     # This Action updates the Data Docs static website with the Validation
