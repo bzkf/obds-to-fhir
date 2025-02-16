@@ -94,11 +94,11 @@ fluent_datasources:
     assets:
       patients_and_conditions:
         type: dataframe
-        id: 316d01ed-9135-48f5-ad35-234efaa2536a
+        id: 6505ad82-7325-4e9e-bf55-9b7a85966728
         batch_metadata: {}
         batch_definitions:
           all_rows:
-            id: ce2f7b1e-9284-413d-b81c-6dd1500f0c88
+            id: 6db6a592-f83b-4fad-bf3d-7e23ef45f8c6
             partitioner:
 analytics_enabled:
 data_context_id: 0c5dfac4-ad5a-4e04-ac0f-4bf43440e4cc
