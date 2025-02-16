@@ -70,7 +70,3 @@ node_modules/
 src/generated/
 
 .approval_tests_temp/
-
-fhir_data_docs/
-
-gx/

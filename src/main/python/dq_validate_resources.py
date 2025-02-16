@@ -13,7 +13,7 @@ HERE = Path(os.path.abspath(os.path.dirname(__file__)))
 snapshots_dir = (
     HERE
     / "../../test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii"
-    / "ObdsToFhirBundleMapperTest.map_withGivenObds_shouldCreateBundleMatchingSnapshot./"
+    / "ObdsToFhirBundleMapperTest/"
 ).as_posix()
 
 data = pc.read.bundles(snapshots_dir, ["Patient", "Condition"])
@@ -113,17 +113,16 @@ gx_context.checkpoints.add_or_update(checkpoint)
 # Step 8: Build Data Docs
 # Create and build Data Docs before running the Checkpoint
 
-# Define an absolute path for the Data Docs directory
-base_directory_path = os.path.abspath("./fhir_data_docs")
 # Add Data Docs Site
 site_name = "my_data_docs_site"
+base_directory = "uncommitted/data_docs/local_site/"
 gx_context.update_data_docs_site(
     site_name=site_name,
     site_config={
         "class_name": "SiteBuilder",
         "store_backend": {
             "class_name": "TupleFilesystemStoreBackend",
-            "base_directory": base_directory_path,  # Use absolute path here
+            "base_directory": base_directory,
         },
         "site_index_builder": {"class_name": "DefaultSiteIndexBuilder"},
     },
