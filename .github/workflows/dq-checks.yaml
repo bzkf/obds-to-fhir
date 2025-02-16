@@ -1,4 +1,4 @@
-name: validate-fhir-resources
+name: DQ Checks
 
 on:
   pull_request:
