@@ -32,14 +32,16 @@ class NebenwirkungMapperTest extends MapperTest {
     final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
-    var suspectedEntity = new Reference("Procedure_MedicationStatement/any");
-    var meldung =
+    var suspectedEntity = new Reference("Procedure/any");
+    var nebenwirkung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
-            .filter(m -> m.getSYST() != null || m.getST() != null)
+            .filter(m -> m.getSYST() != null)
             .findFirst()
-            .get();
+            .get()
+            .getSYST()
+            .getNebenwirkungen();
 
-    final var list = sut.map(meldung, subject, suspectedEntity);
+    final var list = sut.map(nebenwirkung, subject, suspectedEntity);
 
     verifyAll(list, sourceFile);
   }
