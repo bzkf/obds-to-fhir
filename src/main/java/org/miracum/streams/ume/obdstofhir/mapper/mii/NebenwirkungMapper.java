@@ -21,23 +21,29 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
   }
 
   public List<AdverseEvent> map(
-      NebenwirkungTyp nebenwirkung, Reference patient, Reference suspectedEntity) {
+      NebenwirkungTyp nebenwirkung,
+      Reference patient,
+      Reference suspectedEntity,
+      String sourceElementId) {
 
     Objects.requireNonNull(nebenwirkung, "Nebenwirkung must not be null");
     Objects.requireNonNull(patient, "Reference must not be null");
 
     var result = new ArrayList<AdverseEvent>();
     if (nebenwirkung.getMengeNebenwirkung() != null) {
-      result.addAll(createAdverseEvent(nebenwirkung, patient, suspectedEntity));
+      result.addAll(createAdverseEvent(nebenwirkung, patient, suspectedEntity, sourceElementId));
     }
     if (nebenwirkung.getGradMaximal2OderUnbekannt() != null) {
-      result.add(createAdverseEventMax2(nebenwirkung, patient, suspectedEntity));
+      result.add(createAdverseEventMax2(nebenwirkung, patient, suspectedEntity, sourceElementId));
     }
     return result;
   }
 
   public List<AdverseEvent> createAdverseEvent(
-      NebenwirkungTyp nebenwirkung, Reference patient, Reference suspectedEntity) {
+      NebenwirkungTyp nebenwirkung,
+      Reference patient,
+      Reference suspectedEntity,
+      String sourceElementId) {
 
     var adverseEvents = new ArrayList<AdverseEvent>();
     if (nebenwirkung.getMengeNebenwirkung() != null) {
@@ -47,7 +53,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         var identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getNebenwirkungAdverseEventId())
-                .setValue("mii-pr-onko-nebenwirkung" + "_" + i);
+                .setValue("mii-pr-onko-nebenwirkung_" + sourceElementId + "_" + i);
         adverseEvent.setIdentifier(identifier);
         adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
         // event
@@ -87,13 +93,16 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
   }
 
   public AdverseEvent createAdverseEventMax2(
-      NebenwirkungTyp nebenwirkung, Reference patient, Reference suspectedEntity) {
+      NebenwirkungTyp nebenwirkung,
+      Reference patient,
+      Reference suspectedEntity,
+      String sourceElementId) {
     var adverseEvent = createAdverseEventBase(patient, suspectedEntity);
     //  Identifier and Id
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getNebenwirkungAdverseEventId())
-            .setValue("mii-pr-onko-nebenwirkung" + "Grad_maximal_2");
+            .setValue("mii-pr-onko-nebenwirkung_" + sourceElementId + "Grad_maximal_2_unbekannt");
     adverseEvent.setIdentifier(identifier);
     adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
     // event

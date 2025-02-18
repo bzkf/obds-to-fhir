@@ -40,8 +40,9 @@ class NebenwirkungMapperTest extends MapperTest {
             .get()
             .getSYST()
             .getNebenwirkungen();
+    var sourceElementId = "SystId_01";
 
-    final var list = sut.map(nebenwirkung, subject, suspectedEntity);
+    final var list = sut.map(nebenwirkung, subject, suspectedEntity, sourceElementId);
 
     verifyAll(list, sourceFile);
   }
