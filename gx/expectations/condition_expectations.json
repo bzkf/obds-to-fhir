@@ -1,0 +1,20 @@
+{
+  "expectations": [
+    {
+      "id": "f27f92e8-12e7-4bbc-9e3a-61c7f5b41a6e",
+      "kwargs": {
+        "column_A": "condition_recorded_date",
+        "column_B": "birth_date",
+        "or_equal": true
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    }
+  ],
+  "id": "5cb3622f-1abc-401f-9d25-1aafd11e2525",
+  "meta": {
+    "great_expectations_version": "1.3.5"
+  },
+  "name": "condition_expectations",
+  "notes": null
+}

@@ -1,2 +1,3 @@
 src/test/java/snapshots/**
 tests/k8s/**/templates
+gx/**/*.json
