@@ -95,6 +95,7 @@ public class Obdsv3ProcessorTest {
       // get records from output topic
       var outputRecords = outputTopic.readRecordsToList();
 
+      Bundle bundle = (Bundle) outputRecords.getFirst().getValue();
       // assert coding exists
       assertThat(outputRecords).isNotEmpty();
     }

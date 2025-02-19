@@ -112,10 +112,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         .getObds()
         .getMengePatient()
         .getPatient()
-        .get(0)
+        .getFirst()
         .getMengeMeldung()
         .getMeldung()
-        .get(0)
+        .getFirst()
         .getMeldungID();
   }
 
@@ -124,16 +124,16 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         .getObds()
         .getMengePatient()
         .getPatient()
-        .get(0)
+        .getFirst()
         .getMengeMeldung()
         .getMeldung()
-        .get(0)
+        .getFirst()
         .getTumorzuordnung()
         .getTumorID();
   }
 
   public static String getPatIdFromMeldung(MeldungExportV3 meldung) {
-    return meldung.getObds().getMengePatient().getPatient().get(0).getPatientID();
+    return meldung.getObds().getMengePatient().getPatient().getFirst().getPatientID();
   }
 
   public ValueMapper<List<MeldungExportListV3>, List<Bundle>>
@@ -144,31 +144,35 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       for (MeldungExportListV3 meldungExportList : meldungExportListList) {
         OBDS obds = new OBDS();
 
+        // init obds
         obds.setMengePatient(new OBDS.MengePatient());
         obds.getMengePatient().getPatient().add(new OBDS.MengePatient.Patient());
         obds.getMengePatient()
             .getPatient()
-            .get(0)
+            .getFirst()
             .setMengeMeldung(new OBDS.MengePatient.Patient.MengeMeldung());
 
-        // Patient
-        var stammdatenPatient =
-            meldungExportList.get(0).getObds().getMengePatient().getPatient().getFirst();
-        obds.getMengePatient()
-            .getPatient()
-            .get(0)
-            .setPatientenStammdaten(stammdatenPatient.getPatientenStammdaten());
-        obds.getMengePatient().getPatient().get(0).setPatientID(stammdatenPatient.getPatientID());
-
         // Meldedatum
-        var maxMeldeDatum =
+        var latestReportingByReportingDate =
             meldungExportList.stream()
                 .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
                 .get()
-                .getObds()
-                .getMeldedatum();
-        obds.setMeldedatum(maxMeldeDatum);
+                .getObds();
+        obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
 
+        // Patient -- set latest known patient master data by reporting date
+        var latestReportingStammdatenPatient =
+            latestReportingByReportingDate.getMengePatient().getPatient().getFirst();
+        obds.getMengePatient()
+            .getPatient()
+            .getFirst()
+            .setPatientenStammdaten(latestReportingStammdatenPatient.getPatientenStammdaten());
+        obds.getMengePatient()
+            .getPatient()
+            .getFirst()
+            .setPatientID(latestReportingStammdatenPatient.getPatientID());
+
+        // Diagnose, OP, Tod
         meldungExportList.stream()
             .map(MeldungExportV3::getObds)
             .map(OBDS::getMengePatient)
@@ -208,7 +212,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         if (systMeldung != null) {
           obds.getMengePatient()
               .getPatient()
-              .get(0)
+              .getFirst()
               .getMengeMeldung()
               .getMeldung()
               .add(systMeldung);
@@ -226,7 +230,12 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                         ? null
                         : ((STTyp) st).getMeldeanlass().toString());
         if (stMeldung != null) {
-          obds.getMengePatient().getPatient().get(0).getMengeMeldung().getMeldung().add(stMeldung);
+          obds.getMengePatient()
+              .getPatient()
+              .getFirst()
+              .getMengeMeldung()
+              .getMeldung()
+              .add(stMeldung);
         }
 
         // Verlauf
@@ -243,7 +252,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         if (verlaufMeldung != null) {
           obds.getMengePatient()
               .getPatient()
-              .get(0)
+              .getFirst()
               .getMengeMeldung()
               .getMeldung()
               .add(verlaufMeldung);
