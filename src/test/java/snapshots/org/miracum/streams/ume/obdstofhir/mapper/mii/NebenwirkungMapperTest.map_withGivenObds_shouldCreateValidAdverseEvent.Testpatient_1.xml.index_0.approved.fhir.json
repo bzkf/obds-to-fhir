@@ -1,0 +1,33 @@
+{
+  "resourceType": "AdverseEvent",
+  "id": "827fc91e49b0961bc35b27fafe6aab818f20cf7d51892316c8da95427741c6fc",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+  },
+  "identifier": {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id",
+    "value": "mii-pr-onko-nebenwirkung_SystId_01_0"
+  },
+  "actuality": "actual",
+  "event": {
+    "coding": [ {
+      "system": "https://www.meddra.org",
+      "version": "Sonstige",
+      "display": "Schüttelfrost"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "seriousness": {
+    "coding": [ {
+      "system": "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system",
+      "code": "5"
+    } ]
+  },
+  "suspectEntity": [ {
+    "instance": {
+      "reference": "Procedure/any"
+    }
+  } ]
+}

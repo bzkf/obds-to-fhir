@@ -102,6 +102,9 @@ public class FhirProperties {
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
     private String histologiebefundDiagnosticReportId;
+    private String nebenwirkungAdverseEventId;
+    private String miiVsOnkoNebenwirkungCtcaeGrad;
+    private String meddra;
   }
 
   @Data
@@ -134,6 +137,7 @@ public class FhirProperties {
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
+    private String miiPrOnkoNebenwirkungAdverseEvent;
   }
 
   @Data
