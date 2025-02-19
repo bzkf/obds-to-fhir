@@ -9,11 +9,6 @@
     "value": "mii-pr-onko-nebenwirkung_SystId_01Grad_maximal_2_unbekannt"
   },
   "actuality": "actual",
-  "event": {
-    "coding": [ {
-      "system": "https://www.meddra.org"
-    } ]
-  },
   "subject": {
     "reference": "Patient/any"
   },

@@ -105,11 +105,6 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
             .setValue("mii-pr-onko-nebenwirkung_" + sourceElementId + "Grad_maximal_2_unbekannt");
     adverseEvent.setIdentifier(identifier);
     adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
-    // event
-    var code =
-        new CodeableConcept(
-            new Coding().setSystem(fhirProperties.getSystems().getMeddra()).setCode(""));
-    adverseEvent.setEvent(code);
     // seriousness
     var seriousness =
         new CodeableConcept(
