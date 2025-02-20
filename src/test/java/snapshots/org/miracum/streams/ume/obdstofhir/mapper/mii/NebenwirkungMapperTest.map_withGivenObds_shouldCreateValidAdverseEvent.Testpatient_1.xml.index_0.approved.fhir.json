@@ -21,7 +21,7 @@
   },
   "seriousness": {
     "coding": [ {
-      "system": "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system",
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
       "code": "5"
     } ]
   },
