@@ -103,7 +103,7 @@ public class FhirProperties {
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
     private String histologiebefundDiagnosticReportId;
     private String nebenwirkungAdverseEventId;
-    private String miiVsOnkoNebenwirkungCtcaeGrad;
+    private String miiCsOnkoNebenwirkungCtcaeGrad;
     private String meddra;
   }
 

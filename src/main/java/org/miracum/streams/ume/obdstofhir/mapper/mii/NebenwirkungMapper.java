@@ -9,13 +9,11 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class NebenwirkungMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(NebenwirkungMapper.class);
 
-  @Autowired
   public NebenwirkungMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -82,7 +80,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         var seriousness =
             new CodeableConcept(
                 new Coding()
-                    .setSystem(fhirProperties.getSystems().getCtcaeGrading())
+                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoNebenwirkungCtcaeGrad())
                     .setCode(nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getGrad())
                     .setDisplay(""));
         adverseEvent.setSeriousness(seriousness);
@@ -109,7 +107,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     var seriousness =
         new CodeableConcept(
             new Coding()
-                .setSystem(fhirProperties.getSystems().getCtcaeGrading())
+                .setSystem(fhirProperties.getSystems().getMiiCsOnkoNebenwirkungCtcaeGrad())
                 .setCode(nebenwirkung.getGradMaximal2OderUnbekannt())
                 .setDisplay(""));
     adverseEvent.setSeriousness(seriousness);
