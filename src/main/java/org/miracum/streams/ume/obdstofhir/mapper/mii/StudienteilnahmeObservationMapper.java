@@ -3,7 +3,6 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -41,13 +40,6 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
             Enumerations.ResourceType.CONDITION.toCode()),
         "The diagnose reference should point to a Condition resource");
 
-    // TODO: Im Falle einer pharmakologischen Studie SOLLTE am besten eine Referenz zu einer
-    // Procedure /
-    //  Systemischen Therapie bestehen, entweder über Observation.partOf = Reference
-    // (SystemischeTherapie),
-    //  Observation.basedOn = Reference (MedicationRequest); oder Procedure.basedOn.
-    //  Außerdem fehlen noch Informationen über die genaue Studie (Organisation, StudienID etc).
-
     // Instantiate the Observation base resources
     var observations = new ArrayList<Observation>();
 
@@ -63,7 +55,6 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
       // Meta
       observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStudienteilnahme());
 
-      // TODO: no identifier present in sample data. Should we create one like this?
       // Identifier
       var identifier =
           new Identifier()
@@ -72,10 +63,6 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
 
-      // TODO: How to decide which status to choose? FINAL taken from example at the end of the
-      // simplifier guideline
-      //  registered | preliminary | final | amended + are valid values in guideline, but docs says:
-      // Ja, Nein, Unbekannt
       // Status
       observation.setStatus(Observation.ObservationStatus.FINAL);
 
@@ -84,7 +71,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
           new CodeableConcept(
               new Coding(
                   fhirProperties.getSystems().getSnomed(),
-                  "70709491003",
+                  "709491003",
                   "Enrollment in clinical trial (procedure)")));
 
       // Subject
@@ -105,7 +92,6 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
       observation.setEffective(date);
 
       // Value
-      // TODO: No value present in sample data / which code to set?
       observation.setValue(
           new CodeableConcept(
               new Coding(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme(), "J", "Ja")));
