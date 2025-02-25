@@ -550,6 +550,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c"
       }
     },
     "request": {
@@ -596,6 +599,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/4ee866e5d38ec92b3a65985eb10ad3c56ad5fdb4306b802e01240c388a88de1c"
       }
     },
     "request": {

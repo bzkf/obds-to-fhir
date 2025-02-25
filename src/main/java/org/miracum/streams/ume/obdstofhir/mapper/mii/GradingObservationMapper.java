@@ -28,6 +28,11 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Validate.isTrue(
         Objects.equals(
+            diagnose.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.CONDITION.toCode()),
+        "The diagnose reference should point to a Condition resource");
+    Validate.isTrue(
+        Objects.equals(
             patient.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");

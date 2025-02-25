@@ -448,6 +448,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/260ee9c6e60cb4b3bfc1973fd3a671e66b0f16e015502fab46b91ba79e08bf80"
       }
     },
     "request": {
@@ -494,6 +497,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/260ee9c6e60cb4b3bfc1973fd3a671e66b0f16e015502fab46b91ba79e08bf80"
       }
     },
     "request": {

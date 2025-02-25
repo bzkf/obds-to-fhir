@@ -36,5 +36,8 @@
     "unit": "#",
     "system": "http://unitsofmeasure.org",
     "code": "1"
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   }
 }

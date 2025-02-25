@@ -143,7 +143,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var lymphknotenuntersuchungen =
                 lymphknotenuntersuchungMapper.map(
-                    histologie, patientReference, primaryConditionReference);
+                    histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
         }
@@ -180,7 +180,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var lymphknotenuntersuchungen =
                 lymphknotenuntersuchungMapper.map(
-                    histologie, patientReference, primaryConditionReference);
+                    histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
         }
@@ -255,7 +255,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var lymphknotenuntersuchungen =
                 lymphknotenuntersuchungMapper.map(
-                    histologie, patientReference, primaryConditionReference);
+                    histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
         }
@@ -286,7 +286,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var lymphknotenuntersuchungen =
                 lymphknotenuntersuchungMapper.map(
-                    histologie, patientReference, primaryConditionReference);
+                    histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
 

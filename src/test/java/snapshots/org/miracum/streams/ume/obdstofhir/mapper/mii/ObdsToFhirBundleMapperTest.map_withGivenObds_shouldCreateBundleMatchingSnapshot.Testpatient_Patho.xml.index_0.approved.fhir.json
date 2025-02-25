@@ -194,6 +194,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
       }
     },
     "request": {
@@ -240,6 +243,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
       }
     },
     "request": {
@@ -286,6 +292,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
       }
     },
     "request": {
@@ -332,6 +341,9 @@
         "unit": "#",
         "system": "http://unitsofmeasure.org",
         "code": "1"
+      },
+      "specimen": {
+        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
       }
     },
     "request": {

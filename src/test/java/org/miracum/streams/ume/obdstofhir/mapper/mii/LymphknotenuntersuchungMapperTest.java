@@ -38,23 +38,24 @@ class LymphknotenuntersuchungMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
     var diagnose = new Reference("Condition/Primärdiagnose");
+    var specimen = new Reference("Specimen/any");
     var list = new ArrayList<Observation>();
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getDiagnose().getHistologie(), subject, diagnose));
+        list.addAll(sut.map(meldung.getDiagnose().getHistologie(), subject, diagnose, specimen));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getVerlauf().getHistologie(), subject, diagnose));
+        list.addAll(sut.map(meldung.getVerlauf().getHistologie(), subject, diagnose, specimen));
       }
 
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getOP().getHistologie(), subject, diagnose));
+        list.addAll(sut.map(meldung.getOP().getHistologie(), subject, diagnose, specimen));
       }
 
       if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getPathologie().getHistologie(), subject, diagnose));
+        list.addAll(sut.map(meldung.getPathologie().getHistologie(), subject, diagnose, specimen));
       }
     }
 

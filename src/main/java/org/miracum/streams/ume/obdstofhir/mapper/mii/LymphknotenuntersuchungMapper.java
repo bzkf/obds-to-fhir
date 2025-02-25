@@ -16,17 +16,16 @@ import org.springframework.stereotype.Service;
 public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(LymphknotenuntersuchungMapper.class);
-  private Reference patientReference;
-  private Reference diagnoseReference;
 
   public LymphknotenuntersuchungMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
-  public List<Observation> map(HistologieTyp histologie, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      HistologieTyp histologie, Reference patient, Reference diagnosis, Reference specimen) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Objects.requireNonNull(diagnose, "Reference to Primärdiagnose must not be null");
+    Objects.requireNonNull(diagnosis, "Reference to Primärdiagnose must not be null");
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(),
@@ -34,12 +33,15 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
         "The patient reference should point to a Patient resource");
     Validate.isTrue(
         Objects.equals(
-            diagnose.getReferenceElement().getResourceType(),
+            diagnosis.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.CONDITION.toCode()),
         "The diagnose reference should point to a Condition resource");
+    Validate.isTrue(
+        Objects.equals(
+            specimen.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.SPECIMEN.toCode()),
+        "The specimen reference should point to a Specimen resource");
 
-    this.patientReference = patient;
-    this.diagnoseReference = diagnose;
     var result = new ArrayList<Observation>();
 
     var effectiveDate = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
@@ -52,7 +54,10 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               "21893-3",
               "443527007",
               effectiveDate,
-              histologie.getLKBefallen().intValue()));
+              histologie.getLKBefallen().intValue(),
+              patient,
+              diagnosis,
+              specimen));
     }
 
     if (histologie.getLKUntersucht() != null) {
@@ -63,7 +68,10 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               "21894-1",
               "444025001",
               effectiveDate,
-              histologie.getLKUntersucht().intValue()));
+              histologie.getLKUntersucht().intValue(),
+              patient,
+              diagnosis,
+              specimen));
     }
 
     if (histologie.getSentinelLKBefallen() != null) {
@@ -74,7 +82,10 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               "92832-5",
               "1264491009",
               effectiveDate,
-              histologie.getSentinelLKBefallen().intValue()));
+              histologie.getSentinelLKBefallen().intValue(),
+              patient,
+              diagnosis,
+              specimen));
     }
 
     if (histologie.getSentinelLKUntersucht() != null) {
@@ -85,7 +96,10 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
               "85347-3",
               "444411008",
               effectiveDate,
-              histologie.getSentinelLKUntersucht().intValue()));
+              histologie.getSentinelLKUntersucht().intValue(),
+              patient,
+              diagnosis,
+              specimen));
     }
     return result;
   }
@@ -96,7 +110,10 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       String loincCode,
       String snomedCode,
       DateTimeType effectiveDate,
-      Integer valueQuantity) {
+      Integer valueQuantity,
+      Reference patientReference,
+      Reference diagnosisReference,
+      Reference specimenReference) {
     Observation observation = new Observation();
 
     // Identifier
@@ -131,10 +148,12 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     observation.setSubject(patientReference);
 
     // focus
-    observation.addFocus(diagnoseReference);
+    observation.addFocus(diagnosisReference);
 
     // Effective Date
     observation.setEffective(effectiveDate);
+
+    observation.setSpecimen(specimenReference);
 
     // Value
     var quantity =
