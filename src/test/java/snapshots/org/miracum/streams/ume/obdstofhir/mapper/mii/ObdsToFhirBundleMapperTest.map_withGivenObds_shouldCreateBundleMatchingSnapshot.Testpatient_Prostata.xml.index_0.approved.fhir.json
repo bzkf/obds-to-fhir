@@ -399,6 +399,9 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
           "code": "T"
         } ]
+      },
+      "specimen": {
+        "reference": "Specimen/260ee9c6e60cb4b3bfc1973fd3a671e66b0f16e015502fab46b91ba79e08bf80"
       }
     },
     "request": {
@@ -705,6 +708,9 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
           "code": "T"
         } ]
+      },
+      "specimen": {
+        "reference": "Specimen/35f6eb71938cb4443e61bcb09fd51d291354c3230ec55e6e6b0d934830013046"
       }
     },
     "request": {

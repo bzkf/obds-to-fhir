@@ -99,11 +99,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
-        // - GradingObservationMapper
-        // - lymphknotenuntersuchungMapper
-        // - specimenMapper
-        // - verlaufshistorieObservationMapper
-
         var primaryConditionReference =
             createPrimaryConditionReference(meldung.getTumorzuordnung());
 
@@ -142,7 +137,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference);
+                      histologie, patientReference, primaryConditionReference, specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -179,7 +174,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference);
+                      histologie, patientReference, primaryConditionReference, specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -254,7 +249,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference);
+                      histologie, patientReference, primaryConditionReference, specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -285,7 +280,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference);
+                      histologie, patientReference, primaryConditionReference, specimenReference);
               addToBundle(bundle, grading);
             }
 

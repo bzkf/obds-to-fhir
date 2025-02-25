@@ -19,16 +19,23 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Observation map(HistologieTyp histologie, Reference patient, Reference diagnose) {
+  public Observation map(
+      HistologieTyp histologie, Reference patient, Reference diagnose, Reference specimen) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     Objects.requireNonNull(histologie.getGrading(), "Grading must not be null");
     Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
+    Objects.requireNonNull(specimen, "Reference to Specimen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
+    Validate.isTrue(
+        Objects.equals(
+            specimen.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.SPECIMEN.toCode()),
+        "The specimen reference should point to a Specimen resource");
 
     // TODO: sollte grading nicht auch auf das specimen verweisen?
     var observation = new Observation();
@@ -66,6 +73,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     // focus
     observation.addFocus(diagnose);
+
+    // specimen
+    observation.setSpecimen(specimen);
 
     // effective
     var date = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
