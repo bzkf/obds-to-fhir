@@ -34,11 +34,20 @@ class StudienteilnahmeObservationMapperTest extends MapperTest {
     final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
-
     var subject = new Reference("Patient/any");
     var diagnose = new Reference("Condition/Primärdiagnose");
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnose);
 
-    verifyAll(list, sourceFile);
+    var modulAllgemeinOptional =
+      obdsPatient.getMengeMeldung().getMeldung().stream()
+        .filter(m -> m.getDiagnose() != null)
+        .filter(m -> m.getDiagnose().getModulAllgemein() != null)
+        .findFirst();
+
+    if (modulAllgemeinOptional.isPresent()) {
+      var modulAllgemein = modulAllgemeinOptional.get().getDiagnose().getModulAllgemein();
+      var meldungsID = "10_1_DI_1";
+      var observation = sut.map(modulAllgemein, subject, diagnose, meldungsID);
+      verify(observation, sourceFile);
+    }
   }
 }
