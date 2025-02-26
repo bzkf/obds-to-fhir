@@ -5,16 +5,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GleasonScoreMapper extends ObdsToFhirMapper {
+  private static final Logger LOG = LoggerFactory.getLogger(GleasonScoreMapper.class);
 
   private static final Pattern GLEASON_SCORE_PATTERN = Pattern.compile("^(\\d{1,2})[ab]?$");
-  private static final String GLEASON_SCORE_7_SNOMED = "57403001";
   private static final Map<String, String> GLEASON_SCORE_TO_SNOMED =
       Map.ofEntries(
           Map.entry("2", "49878003"),
@@ -22,9 +25,9 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
           Map.entry("4", "18430005"),
           Map.entry("5", "74013009"),
           Map.entry("6", "84556003"),
-          Map.entry("7", GLEASON_SCORE_7_SNOMED),
-          Map.entry("7a", GLEASON_SCORE_7_SNOMED),
-          Map.entry("7b", GLEASON_SCORE_7_SNOMED),
+          Map.entry("7", "57403001"),
+          Map.entry("7a", "57403001"),
+          Map.entry("7b", "57403001"),
           Map.entry("8", "33013007"),
           Map.entry("9", "58925000"),
           Map.entry("10", "24514009"));
@@ -50,7 +53,6 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
             condition.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.CONDITION.toCode()),
         "The condition reference should point to a Condition resource");
-    Validate.notBlank(modulProstata.getGleasonScore().getScoreErgebnis());
 
     var observation = new Observation();
 
@@ -75,7 +77,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
             new Coding()
                 .setSystem(fhirProperties.getSystems().getSnomed())
                 .setCode("385377005")
-                .setDisplay("Gleason grade finding for prostatic cancer")));
+                .setDisplay("Gleason grade finding for prostatic cancer (finding)")));
 
     if (modulProstata.getAnlassGleasonScore() != null) {
       var coding =
@@ -97,10 +99,33 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     }
 
     var scoreErgebnis = modulProstata.getGleasonScore().getScoreErgebnis();
+    if (Strings.isBlank(scoreErgebnis)) {
+      LOG.warn(
+          "Gleason score ergebnis is missing. "
+              + "Attempting to reconstruct from the primary and secondary patterns.");
 
-    var scoreSnomed = GLEASON_SCORE_TO_SNOMED.get(scoreErgebnis);
-    var scoreCoding =
-        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode(scoreSnomed);
+      var gradPrimaer = modulProstata.getGleasonScore().getGradPrimaer();
+      var gradSekundaer = modulProstata.getGleasonScore().getGradSekundaer();
+      Validate.notBlank(gradPrimaer);
+      Validate.notBlank(gradSekundaer);
+
+      var totalGrade = Integer.parseInt(gradPrimaer) + Integer.parseInt(gradSekundaer);
+
+      scoreErgebnis = String.valueOf(totalGrade);
+
+      LOG.debug(
+          "Reconstructed Gleason score ergebnis: {} + {} = {}",
+          gradPrimaer,
+          gradSekundaer,
+          scoreErgebnis);
+    }
+
+    if (scoreErgebnis.matches("7[ab]")) {
+      LOG.warn(
+          "Gleason score 7a and 7b are currently both mapped to "
+              + "the same SNOMED code ('7') and no primary/secondary pattern is set. "
+              + "If this is undesirable, please create an issue on the project repository.");
+    }
 
     var matcher = GLEASON_SCORE_PATTERN.matcher(scoreErgebnis);
     if (!matcher.find()) {
@@ -109,13 +134,41 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
               "Gleason score %s doesn't match the pattern %s",
               scoreErgebnis, GLEASON_SCORE_PATTERN.pattern()));
     }
+
+    var scoreSnomed = GLEASON_SCORE_TO_SNOMED.get(scoreErgebnis);
+    var scoreCoding =
+        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode(scoreSnomed);
+
     var gleasonScoreNumeric = matcher.group(1);
     scoreCoding.addExtension(
         fhirProperties.getExtensions().getOrdinalValue(), new IntegerType(gleasonScoreNumeric));
 
-    observation.setValue(new CodeableConcept(scoreCoding));
+    var concept = new CodeableConcept(scoreCoding).setText(scoreErgebnis);
+    observation.setValue(concept);
 
-    // TODO: component for primary/secondary score if set
+    if (modulProstata.getGleasonScore().getGradPrimaer() != null) {
+      var coding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSnomed())
+              .setCode("384994009")
+              .setDisplay("Primary Gleason pattern");
+      observation
+          .addComponent()
+          .setCode(new CodeableConcept(coding))
+          .setValue(new IntegerType(modulProstata.getGleasonScore().getGradPrimaer()));
+    }
+
+    if (modulProstata.getGleasonScore().getGradSekundaer() != null) {
+      var coding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSnomed())
+              .setCode("384995005")
+              .setDisplay("Secondary Gleason pattern");
+      observation
+          .addComponent()
+          .setCode(new CodeableConcept(coding))
+          .setValue(new IntegerType(modulProstata.getGleasonScore().getGradSekundaer()));
+    }
 
     return observation;
   }

@@ -26,8 +26,9 @@ class GleasonScoreMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_Prostata.xml"})
-  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
+  @CsvSource({"Testpatient_Prostata.xml", "Testpatient_Prostata_Kein_Ergebnis.xml"})
+  void map_withGivenObds_shouldCreateValidGleasonScoreObservation(String sourceFile)
+      throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
