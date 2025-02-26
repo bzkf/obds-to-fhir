@@ -23,7 +23,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      ModulAllgemeinTyp modulAllgemein, Reference patient, Reference diagnose) {
+      ModulAllgemeinTyp modulAllgemein, Reference patient, Reference diagnose, String MeldungsID) {
     // Validation
     Objects.requireNonNull(modulAllgemein, "Meldungen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
@@ -45,6 +45,14 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
 
     // Meta
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStudienteilnahme());
+
+    // Identifier
+    var identifier =
+      new Identifier()
+        .setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme())
+        .setValue(MeldungsID + "_Studienteilnahme");
+    observation.addIdentifier(identifier);
+    observation.setId(computeResourceIdFromIdentifier(identifier));
 
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);
