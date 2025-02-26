@@ -17,18 +17,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class VerlaufshistorieObservationMapperTest extends MapperTest {
+class VerlaufshistologieObservationMapperTest extends MapperTest {
 
-  private static VerlaufshistorieObservationMapper sut;
+  private static VerlaufshistologieObservationMapper sut;
 
   @BeforeAll
   static void beforeAll(@Autowired FhirProperties fhirProps) {
-    sut = new VerlaufshistorieObservationMapper(fhirProps);
+    sut = new VerlaufshistologieObservationMapper(fhirProps);
   }
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidGradingObservation(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidVerlaufshistologieObservation(String sourceFile)
+      throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 

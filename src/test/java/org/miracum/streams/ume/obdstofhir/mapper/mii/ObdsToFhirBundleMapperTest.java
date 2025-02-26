@@ -30,7 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       GradingObservationMapper.class,
       LymphknotenuntersuchungMapper.class,
       SpecimenMapper.class,
-      VerlaufshistorieObservationMapper.class,
+      VerlaufshistologieObservationMapper.class,
     })
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest extends MapperTest {

@@ -33,7 +33,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       systemischeTherapieMedicationStatementMapper;
   private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final TodMapper todMapper;
-  private final VerlaufshistorieObservationMapper verlaufshistorieObservationMapper;
+  private final VerlaufshistologieObservationMapper verlaufshistologieObservationMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -51,7 +51,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       HistologiebefundMapper histologiebefundMapper,
       LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper,
       SpecimenMapper specimenMapper,
-      VerlaufshistorieObservationMapper verlaufshistorieObservationMapper) {
+      VerlaufshistologieObservationMapper verlaufshistologieObservationMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -68,7 +68,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.histologiebefundMapper = histologiebefundMapper;
     this.lymphknotenuntersuchungMapper = lymphknotenuntersuchungMapper;
     this.specimenMapper = specimenMapper;
-    this.verlaufshistorieObservationMapper = verlaufshistorieObservationMapper;
+    this.verlaufshistologieObservationMapper = verlaufshistologieObservationMapper;
   }
 
   /**
@@ -128,11 +128,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var specimenReference = createReferenceFromResource(specimen);
 
-            var verlaufsHistorie =
-                verlaufshistorieObservationMapper.map(
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
                     histologie, patientReference, specimenReference, primaryConditionReference);
 
-            addToBundle(bundle, verlaufsHistorie);
+            addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
@@ -165,11 +165,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var specimenReference = createReferenceFromResource(specimen);
 
-            var verlaufsHistorie =
-                verlaufshistorieObservationMapper.map(
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
                     histologie, patientReference, specimenReference, primaryConditionReference);
 
-            addToBundle(bundle, verlaufsHistorie);
+            addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
@@ -240,11 +240,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var specimenReference = createReferenceFromResource(specimen);
 
-            var verlaufsHistorie =
-                verlaufshistorieObservationMapper.map(
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
                     histologie, patientReference, specimenReference, primaryConditionReference);
 
-            addToBundle(bundle, verlaufsHistorie);
+            addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
@@ -271,11 +271,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             specimenReference = createReferenceFromResource(specimen);
 
-            var verlaufsHistorie =
-                verlaufshistorieObservationMapper.map(
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
                     histologie, patientReference, specimenReference, primaryConditionReference);
 
-            addToBundle(bundle, verlaufsHistorie);
+            addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
