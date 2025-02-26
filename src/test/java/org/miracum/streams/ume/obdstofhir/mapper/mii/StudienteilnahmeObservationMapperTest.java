@@ -38,10 +38,10 @@ class StudienteilnahmeObservationMapperTest extends MapperTest {
     var diagnose = new Reference("Condition/Primärdiagnose");
 
     var modulAllgemeinOptional =
-      obdsPatient.getMengeMeldung().getMeldung().stream()
-        .filter(m -> m.getDiagnose() != null)
-        .filter(m -> m.getDiagnose().getModulAllgemein() != null)
-        .findFirst();
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getDiagnose() != null)
+            .filter(m -> m.getDiagnose().getModulAllgemein() != null)
+            .findFirst();
 
     if (modulAllgemeinOptional.isPresent()) {
       var modulAllgemein = modulAllgemeinOptional.get().getDiagnose().getModulAllgemein();

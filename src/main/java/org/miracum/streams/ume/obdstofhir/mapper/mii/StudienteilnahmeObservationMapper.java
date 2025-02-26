@@ -2,7 +2,6 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
-import java.util.ArrayList;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -48,9 +47,9 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
 
     // Identifier
     var identifier =
-      new Identifier()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme())
-        .setValue(MeldungsID + "_Studienteilnahme");
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme())
+            .setValue(MeldungsID + "_Studienteilnahme");
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -72,11 +71,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     // Effective Date
     var date =
         new DateTimeType(
-            modulAllgemein
-                .getStudienteilnahme()
-                .getDatum()
-                .toGregorianCalendar()
-                .getTime());
+            modulAllgemein.getStudienteilnahme().getDatum().toGregorianCalendar().getTime());
     date.setPrecision(TemporalPrecisionEnum.DAY);
     observation.setEffective(date);
 
