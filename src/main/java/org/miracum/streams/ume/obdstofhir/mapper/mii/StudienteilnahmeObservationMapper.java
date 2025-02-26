@@ -1,7 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import java.util.ArrayList;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -22,10 +22,10 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public ArrayList<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference diagnose) {
+  public Observation map(
+      ModulAllgemeinTyp modulAllgemein, Reference patient, Reference diagnose) {
     // Validation
-    Objects.requireNonNull(meldungen, "Meldungen must not be null");
+    Objects.requireNonNull(modulAllgemein, "Meldungen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
 
@@ -41,64 +41,42 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
         "The diagnose reference should point to a Condition resource");
 
     // Instantiate the Observation base resources
-    var observations = new ArrayList<Observation>();
+    var observation = new Observation();
 
-    for (var meldung : meldungen.getMeldung()) {
-      if (meldung.getDiagnose() == null
-          || meldung.getDiagnose().getModulAllgemein() == null
-          || meldung.getDiagnose().getModulAllgemein().getStudienteilnahme() == null) {
-        continue;
-      }
+    // Meta
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStudienteilnahme());
 
-      var observation = new Observation();
+    // Status
+    observation.setStatus(Observation.ObservationStatus.FINAL);
 
-      // Meta
-      observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStudienteilnahme());
+    // Code
+    observation.setCode(
+        new CodeableConcept(
+            new Coding(
+                fhirProperties.getSystems().getSnomed(),
+                "709491003",
+                "Enrollment in clinical trial (procedure)")));
 
-      // Identifier
-      var identifier =
-          new Identifier()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme())
-              .setValue(meldung.getMeldungID() + "_Studienteilnahme");
-      observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+    // Subject
+    observation.setSubject(patient);
+    observation.addFocus(diagnose);
 
-      // Status
-      observation.setStatus(Observation.ObservationStatus.FINAL);
+    // Effective Date
+    var date =
+        new DateTimeType(
+            modulAllgemein
+                .getStudienteilnahme()
+                .getDatum()
+                .toGregorianCalendar()
+                .getTime());
+    date.setPrecision(TemporalPrecisionEnum.DAY);
+    observation.setEffective(date);
 
-      // Code
-      observation.setCode(
-          new CodeableConcept(
-              new Coding(
-                  fhirProperties.getSystems().getSnomed(),
-                  "709491003",
-                  "Enrollment in clinical trial (procedure)")));
+    // Value
+    observation.setValue(
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme(), "J", "Ja")));
 
-      // Subject
-      observation.setSubject(patient);
-      observation.addFocus(diagnose);
-
-      // Effective Date
-      var date =
-          new DateTimeType(
-              meldung
-                  .getDiagnose()
-                  .getModulAllgemein()
-                  .getStudienteilnahme()
-                  .getDatum()
-                  .toGregorianCalendar()
-                  .getTime());
-      date.setPrecision(TemporalPrecisionEnum.DAY);
-      observation.setEffective(date);
-
-      // Value
-      observation.setValue(
-          new CodeableConcept(
-              new Coding(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme(), "J", "Ja")));
-
-      observations.add(observation);
-    }
-
-    return observations;
+    return observation;
   }
 }
