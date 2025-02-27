@@ -1,0 +1,40 @@
+{
+  "resourceType": "Observation",
+  "id": "0532aa1bd5faedf73aea24919b1d107bb7613c21c9d88bb172d736051d31537c",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+    "value": "PathologieW0"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "69548-6"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
+  "effectiveDateTime": "2020-01-13",
+  "interpretation": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
+      "code": "W"
+    } ]
+  } ],
+  "note": [ {
+    "text": "KRAS"
+  } ]
+}
