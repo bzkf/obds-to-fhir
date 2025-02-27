@@ -34,7 +34,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     carePlan.addIdentifier(identifier);
     carePlan.setId(computeResourceIdFromIdentifier(identifier));
     // Status
-    if (tk.getMeldeanlass() == "behandlunsende") {
+    if (tk.getMeldeanlass().equals("behandlunsende")) {
       carePlan.setStatus(CarePlan.CarePlanStatus.COMPLETED);
     } else {
       carePlan.setStatus(CarePlan.CarePlanStatus.ACTIVE);
