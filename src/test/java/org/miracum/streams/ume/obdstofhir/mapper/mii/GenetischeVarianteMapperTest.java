@@ -50,10 +50,7 @@ class GenetischeVarianteMapperTest extends MapperTest {
 
     var resultResources = new ArrayList<Observation>();
 
-    var meldungList =
-        obdsPatient
-            .getMengeMeldung()
-            .getMeldung();
+    var meldungList = obdsPatient.getMengeMeldung().getMeldung();
     assertThat(meldungList).isNotNull();
 
     for (var meldung : meldungList) {
