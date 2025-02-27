@@ -25,7 +25,7 @@ class TumorkonferenzMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_CLL.xml", "Testpatient_Prostata.xml"})
   void map_withGivenObds_shouldCreateValidCarePlan(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();

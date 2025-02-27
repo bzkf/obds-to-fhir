@@ -1,1 +1,3 @@
 C:\Users\user\obds-to-fhir\build\spotless\spotlessJava\src\test\java\snapshots\org\miracum\streams\ume\obdstofhir\mapper\mii\TumorkonferenzMapperTest.map_withGivenObds_shouldCreateValidCarePlan.Testpatient_1.xml.approved.fhir.json
+C:\Users\user\obds-to-fhir\build\spotless\spotlessJava\src\test\java\snapshots\org\miracum\streams\ume\obdstofhir\mapper\mii\TumorkonferenzMapperTest.map_withGivenObds_shouldCreateValidCarePlan.Testpatient_CLL.xml.approved.fhir.json
+C:\Users\user\obds-to-fhir\build\spotless\spotlessJava\src\test\java\snapshots\org\miracum\streams\ume\obdstofhir\mapper\mii\TumorkonferenzMapperTest.map_withGivenObds_shouldCreateValidCarePlan.Testpatient_Prostata.xml.approved.fhir.json
