@@ -1,25 +1,25 @@
 {
   "resourceType": "CarePlan",
-  "id": "de837ddc8136a570462599dd3ebd48b399ac53849e2946f482ba33dfb292ec56",
+  "id": "893ccaf0f99449d7ca78315b47ef45b1c8cbdc393d61ce34eaf9cbb71d7f89d9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
-    "value": "Tumorkonferenz_221"
+    "value": "Tumorkonferenz_112"
   } ],
   "status": "active",
   "intent": "plan",
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-      "code": "postth"
+      "code": "praeth"
     } ]
   } ],
   "subject": {
     "reference": "Patient/any"
   },
-  "created": "2020-10-20T00:00:00+02:00",
+  "created": "2020-05-25T00:00:00+02:00",
   "addresses": [ {
     "reference": "Condition/any"
   } ],
@@ -28,14 +28,17 @@
       "code": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
+          "code": "OP"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "ST"
         } ]
       },
       "status": "completed",
       "statusReason": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-          "code": "J"
+          "code": "U"
         } ]
       }
     }
