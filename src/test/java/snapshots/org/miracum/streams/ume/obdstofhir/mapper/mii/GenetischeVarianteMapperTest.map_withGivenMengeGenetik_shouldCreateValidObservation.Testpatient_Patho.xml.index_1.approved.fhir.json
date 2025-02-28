@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "15464f543d2f12ed5d8be2ff5bb13be7422e6eb7573132ed309c70162d0d4d9c",
+  "id": "775f8a840ac8130756c0b865c66951d04022b98e99f1c6629a2fcbcd03348d3d",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
-    "value": "Pathologie1"
+    "value": "GenetischeAusprägung-PathologiePAT_701011"
   } ],
   "status": "final",
   "category": [ {
@@ -28,6 +28,14 @@
     "reference": "Condition/any"
   } ],
   "effectiveDateTime": "2022-08-05",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "LA9633-4",
+      "display": "Present"
+    } ],
+    "text": "Translation"
+  },
   "interpretation": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung"

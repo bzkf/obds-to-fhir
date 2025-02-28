@@ -27,31 +27,48 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(DiagnoseTyp diagnoseTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      DiagnoseTyp diagnoseTyp, Reference patient, Reference diagnose, String meldungsID) {
     return createObservations(
-        diagnoseTyp.getMengeGenetik().getGenetischeVariante(), "Diagnose", patient, diagnose);
+        diagnoseTyp.getMengeGenetik().getGenetischeVariante(),
+        "Diagnose",
+        patient,
+        diagnose,
+        meldungsID);
   }
 
-  public List<Observation> map(OPTyp opTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      OPTyp opTyp, Reference patient, Reference diagnose, String meldungsID) {
     return createObservations(
-        opTyp.getMengeGenetik().getGenetischeVariante(), "OP", patient, diagnose);
+        opTyp.getMengeGenetik().getGenetischeVariante(), "OP", patient, diagnose, meldungsID);
   }
 
-  public List<Observation> map(VerlaufTyp verlaufTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      VerlaufTyp verlaufTyp, Reference patient, Reference diagnose, String meldungsID) {
     return createObservations(
-        verlaufTyp.getMengeGenetik().getGenetischeVariante(), "Verlauf", patient, diagnose);
+        verlaufTyp.getMengeGenetik().getGenetischeVariante(),
+        "Verlauf",
+        patient,
+        diagnose,
+        meldungsID);
   }
 
-  public List<Observation> map(PathologieTyp pathologieTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      PathologieTyp pathologieTyp, Reference patient, Reference diagnose, String meldungsID) {
     return createObservations(
-        pathologieTyp.getMengeGenetik().getGenetischeVariante(), "Pathologie", patient, diagnose);
+        pathologieTyp.getMengeGenetik().getGenetischeVariante(),
+        "Pathologie",
+        patient,
+        diagnose,
+        meldungsID);
   }
 
   private List<Observation> createObservations(
       List<MengeGenetikTyp.GenetischeVariante> genetischeVarianteList,
       String source,
       Reference patient,
-      Reference condition) {
+      Reference condition,
+      String meldungsID) {
 
     Objects.requireNonNull(genetischeVarianteList, "genetischeVarianteList must not be null");
     Objects.requireNonNull(patient, "Reference must not be null");
@@ -66,12 +83,16 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       var observation = new Observation();
 
       // identifier, meta
-      // to do: identifier anpassen, es gibt kein GenetischeVariante_ID - was ist hier sinnvoll?
       String value;
       if (genetischeVariante.getAuspraegung() != null) {
-        value = source + genetischeVariante.getAuspraegung().value() + i;
+        value =
+            "GenetischeAusprägung-"
+                + source
+                + meldungsID
+                + genetischeVariante.getAuspraegung().value()
+                + i;
       } else {
-        value = source + i;
+        value = "GenetischeAusprägung-" + source + meldungsID + i;
       }
 
       var identifier =
@@ -132,7 +153,6 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       }
 
       // Genetische Variante Ausprägung = interpretation
-      // to do: was ist hier mit genetischeVariante.getSonstigeAuspraegung())
       CodeableConcept interpretationCodeableConcept = new CodeableConcept();
       Coding coding =
           new Coding()
@@ -146,10 +166,22 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
       observation.setInterpretation(Collections.singletonList(interpretationCodeableConcept));
 
-      // Genetische Variante Name = note
-      Annotation codedAnnotation = new Annotation().setText(genetischeVariante.getBezeichnung());
+      // Sonstige Ausprägung = Observation.value[x].text
+      if (genetischeVariante.getSonstigeAuspraegung() != null) {
+        CodeableConcept valueCodeableConcept = new CodeableConcept();
+        Coding codingValue = new Coding();
+        codingValue.setSystem("http://loinc.org");
+        codingValue.setCode("LA9633-4");
+        codingValue.setDisplay("Present");
 
-      observation.setNote(Collections.singletonList(codedAnnotation));
+        valueCodeableConcept.addCoding(codingValue);
+        valueCodeableConcept.setText(genetischeVariante.getSonstigeAuspraegung());
+
+        observation.setValue(valueCodeableConcept);
+      }
+
+      // Genetische Variante Name = note
+      observation.addNote().setText(genetischeVariante.getBezeichnung());
 
       // add observation to observationList here
       observationList.add(observation);

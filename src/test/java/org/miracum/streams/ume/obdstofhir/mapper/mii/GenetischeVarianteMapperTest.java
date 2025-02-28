@@ -57,7 +57,8 @@ class GenetischeVarianteMapperTest extends MapperTest {
       if (meldung.getDiagnose() != null
           && meldung.getDiagnose().getMengeGenetik() != null
           && meldung.getDiagnose().getMengeGenetik().getGenetischeVariante() != null) {
-        var observations = sut.map(meldung.getDiagnose(), subject, condition);
+        var observations =
+            sut.map(meldung.getDiagnose(), subject, condition, meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -66,7 +67,8 @@ class GenetischeVarianteMapperTest extends MapperTest {
       if (meldung.getVerlauf() != null
           && meldung.getVerlauf().getMengeGenetik() != null
           && meldung.getVerlauf().getMengeGenetik().getGenetischeVariante() != null) {
-        var observations = sut.map(meldung.getVerlauf(), subject, condition);
+        var observations =
+            sut.map(meldung.getVerlauf(), subject, condition, meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -75,7 +77,8 @@ class GenetischeVarianteMapperTest extends MapperTest {
       if (meldung.getPathologie() != null
           && meldung.getPathologie().getMengeGenetik() != null
           && meldung.getPathologie().getMengeGenetik().getGenetischeVariante() != null) {
-        var observations = sut.map(meldung.getPathologie(), subject, condition);
+        var observations =
+            sut.map(meldung.getPathologie(), subject, condition, meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -84,7 +87,7 @@ class GenetischeVarianteMapperTest extends MapperTest {
       if (meldung.getOP() != null
           && meldung.getOP().getMengeGenetik() != null
           && meldung.getOP().getMengeGenetik().getGenetischeVariante() != null) {
-        var observations = sut.map(meldung.getOP(), subject, condition);
+        var observations = sut.map(meldung.getOP(), subject, condition, meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
