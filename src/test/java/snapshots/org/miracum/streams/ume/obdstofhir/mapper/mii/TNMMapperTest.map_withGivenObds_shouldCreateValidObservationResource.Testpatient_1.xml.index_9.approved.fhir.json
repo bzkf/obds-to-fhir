@@ -1,28 +1,18 @@
 {
   "resourceType": "Observation",
-  "id": "660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256",
+  "id": "e03c11887698e5583b4233a0df0d3f2521891c9df4412266172db18f9e19d2bd",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie" ]
   },
   "identifier": [ {
-    "system": "482_M",
+    "system": "482_L",
     "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
   } ],
   "status": "final",
   "code": {
-    "extension": [ {
-      "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.uicc.org/resources/tnm",
-          "code": "p"
-        } ]
-      }
-    } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "371497001",
-      "display": "pM category (observable entity)"
+      "code": "395715009"
     } ]
   },
   "subject": {
@@ -35,7 +25,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "1"
+      "code": "LX"
     } ]
   },
   "method": {

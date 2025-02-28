@@ -166,6 +166,17 @@ fhir:
     mii-ex-onko-tnm-itc-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix"
     mii-ex-onko-tnm-sn-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix"
     mii-pr-onko-tnm-m-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie"
+    mii-pr-onko-tnm-a-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-a-symbol"
+    mii-pr-onko-tnm-m-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol"
+    mii-pr-onko-tnm-l-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie"
+    mii-pr-onko-tnm-pn-kategorie: "	https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie"
+    mii-pr-onko-tnm-r-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-r-symbol"
+    mii-pr-onko-tnm-s-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-s-kategorie"
+    mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie"
+    mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol"
+
+
+
 
 
   display:

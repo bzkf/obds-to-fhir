@@ -177,6 +177,14 @@ public class FhirProperties {
     private String miiExOnkoTnmItcSuffix;
     private String miiExOnkoTnmSnSuffix;
     private String miiPrOnkoTnmMKategorie;
+    private String miiPrOnkoTnmASymbol;
+    private String miiPrOnkoTnmMSymbol;
+    private String miiPrOnkoTnmLKategorie;
+    private String miiPrOnkoTnmPnKategorie;
+    private String miiPrOnkoTnmRSymbol;
+    private String miiPrOnkoTnmSKategorie;
+    private String miiPrOnkoTnmVKategorie;
+    private String miiPrOnkoTnmYSymbol;
   }
 
   @Data
