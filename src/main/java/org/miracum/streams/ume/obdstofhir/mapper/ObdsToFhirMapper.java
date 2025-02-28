@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
@@ -304,5 +305,26 @@ public abstract class ObdsToFhirMapper {
     var date = new DateTimeType(obdsDatum.toGregorianCalendar().getTime());
     date.setPrecision(TemporalPrecisionEnum.DAY);
     return Optional.of(date);
+  }
+
+  /**
+   * Default implementation of reference validation. This does not check the existance of the
+   * referenced resource!
+   *
+   * @param reference The reference to be validated
+   * @param resourceType The required resource type of the reference
+   * @return Will return `true` if reference is usable
+   * @throws NullPointerException if reference is null
+   * @throws IllegalArgumentException if reference is not of required reesource type.
+   */
+  public static boolean verifyReference(Reference reference, Enumerations.ResourceType resourceType)
+      throws NullPointerException, IllegalArgumentException {
+    Objects.requireNonNull(
+        reference, String.format("Reference to %s must not be null", resourceType.toString()));
+    Validate.isTrue(
+        Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toCode()),
+        String.format("The reference should point to a %s resource", resourceType.toString()));
+
+    return true;
   }
 }

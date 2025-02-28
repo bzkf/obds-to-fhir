@@ -19,8 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper
-    implements Mapper<SYSTTyp, Procedure> {
+public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);

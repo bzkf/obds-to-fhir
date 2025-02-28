@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class ConditionMapper extends ObdsToFhirMapper
-    implements Mapper<OBDS.MengePatient.Patient.MengeMeldung.Meldung, Condition> {
+public class ConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
   private static final Pattern icdVersionPattern =

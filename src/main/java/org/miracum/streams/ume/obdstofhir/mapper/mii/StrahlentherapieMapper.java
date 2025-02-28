@@ -18,7 +18,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StrahlentherapieMapper extends ObdsToFhirMapper implements Mapper<STTyp, Procedure> {
+public class StrahlentherapieMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(StrahlentherapieMapper.class);
 
   public StrahlentherapieMapper(FhirProperties fhirProperties) {

@@ -23,8 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
-public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper
-    implements Mapper<SYSTTyp, Bundle> {
+public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
