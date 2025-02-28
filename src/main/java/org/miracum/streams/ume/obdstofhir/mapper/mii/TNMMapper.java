@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -147,21 +148,146 @@ public class TNMMapper extends ObdsToFhirMapper {
           new Reference("Observation/" + mKategorieObservation.getId()));
     }
 
-    //    if (tnmTyp.getASymbol() != null) {}
-    //
-    //    if (tnmTyp.getMSymbol() != null) {}
-    //
-    //    if (tnmTyp.getL() != null) {}
-    //
-    //    if (tnmTyp.getPn() != null) {}
-    //
-    //    if (tnmTyp.getRSymbol() != null) {}
-    //
-    //    if (tnmTyp.getS() != null) {}
-    //
-    //    if (tnmTyp.getV() != null) {}
-    //
-    //    if (tnmTyp.getYSymbol() != null) {}
+    if (tnmTyp.getASymbol() != null) {
+      String identifierValue = tnmTyp.getID() + "_a";
+      var aSymbolObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      aSymbolObservation.setCode(getCodeableConceptLoinc("101660-9"));
+      aSymbolObservation.setValue(getCodeableConceptSnomed("421426001"));
+      observationList.add(aSymbolObservation);
+      memberObservationReferences.add(new Reference("Observation/" + aSymbolObservation.getId()));
+    }
+
+    // TODO check auf erlaubte werte?  code: m 2-10
+    if (tnmTyp.getMSymbol() != null) {
+      String identifierValue = tnmTyp.getID() + "_m";
+      var mSymbolObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      mSymbolObservation.setCode(getCodeableConceptLoinc("42030-7"));
+      mSymbolObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
+      observationList.add(mSymbolObservation);
+      memberObservationReferences.add(new Reference("Observation/" + mSymbolObservation.getId()));
+    }
+
+    if (tnmTyp.getL() != null) {
+      String identifierValue = tnmTyp.getID() + "_L";
+      var lKategorieObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      lKategorieObservation.setCode(getCodeableConceptSnomed("395715009"));
+      lKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getL()));
+      observationList.add(lKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + lKategorieObservation.getId()));
+    }
+
+    if (tnmTyp.getPn() != null) {
+      String identifierValue = tnmTyp.getID() + "_Pn";
+      var pnKategorieObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      pnKategorieObservation.setCode(getCodeableConceptSnomed("371513001"));
+      pnKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getPn()));
+      observationList.add(pnKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + pnKategorieObservation.getId()));
+    }
+
+    if (tnmTyp.getRSymbol() != null) {
+      String identifierValue = tnmTyp.getID() + "_r";
+      var rSymbolObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      rSymbolObservation.setCode(getCodeableConceptLoinc("101659-1"));
+      rSymbolObservation.setValue(getCodeableConceptSnomed("421188008"));
+      observationList.add(rSymbolObservation);
+      memberObservationReferences.add(new Reference("Observation/" + rSymbolObservation.getId()));
+    }
+
+    if (tnmTyp.getS() != null) {
+      String identifierValue = tnmTyp.getID() + "_S";
+      var sKategorieObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      sKategorieObservation.setCode(getCodeableConceptSnomed("399424006"));
+      sKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getS()));
+      observationList.add(sKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + sKategorieObservation.getId()));
+    }
+
+    if (tnmTyp.getV() != null) {
+      String identifierValue = tnmTyp.getID() + "_V";
+      var vKategorieObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      vKategorieObservation.setCode(getCodeableConceptSnomed("371493002"));
+      vKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getV()));
+      observationList.add(vKategorieObservation);
+      memberObservationReferences.add(
+          new Reference("Observation/" + vKategorieObservation.getId()));
+    }
+
+    if (tnmTyp.getYSymbol() != null) {
+      String identifierValue = tnmTyp.getID() + "_y";
+      var ySymbolObservation =
+          createTNMBaseResource(
+              fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
+              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              identifierValue,
+              tnmTyp.getVersion(),
+              tnmTyp.getDatum(),
+              patient,
+              condition);
+      ySymbolObservation.setCode(getCodeableConceptLoinc("101658-3"));
+      ySymbolObservation.setValue(getCodeableConceptSnomed("421755005"));
+      observationList.add(ySymbolObservation);
+      memberObservationReferences.add(new Reference("Observation/" + ySymbolObservation.getId()));
+    }
 
     return memberObservationReferences;
   }
@@ -196,11 +322,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     observation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
 
-    observation.setValue(
-        new CodeableConcept(
-            new Coding()
-                .setCode(tnmTyp.getT())
-                .setSystem(fhirProperties.getSystems().getTnmUicc())));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
 
     return observation;
   }
@@ -235,7 +357,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     observation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
 
-    observation.setValue(createNKategorieValue(tnmTyp.getN()));
+    observation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
 
     return observation;
   }
@@ -264,38 +386,11 @@ public class TNMMapper extends ObdsToFhirMapper {
     return codeableConcept;
   }
 
-  private CodeableConcept createNKategorieValue(String nValue) {
-
-    var codeableConcept =
-        new CodeableConcept(
-            new Coding().setCode(nValue).setSystem(fhirProperties.getSystems().getTnmUicc()));
-
-    //    if(){
-    //      codeableConcept.addExtension(
-    //        new Extension()
-    //          .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
-    //          .setValue(
-    //            new CodeableConcept(
-    //              new Coding().setCode("i-").setSystem(fhirProperties.getSystems().getTnmUicc())))
-    //      );
-    //
-    //      if(){
-    //        codeableConcept.addExtension(
-    //          new Extension()
-    //            .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmSnSuffix())
-    //            .setValue(
-    //              new CodeableConcept(
-    //                new
-    // Coding().setCode("sn").setSystem(fhirProperties.getSystems().getTnmUicc())))
-    //        );
-    return codeableConcept;
-  }
-
   private Observation addMKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
 
     observation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
 
-    observation.setValue(createMKategorieValue(tnmTyp.getM()));
+    observation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
 
     return observation;
   }
@@ -324,21 +419,81 @@ public class TNMMapper extends ObdsToFhirMapper {
     return codeableConcept;
   }
 
-  private CodeableConcept createMKategorieValue(String mValue) {
+  protected CodeableConcept createValueWithItcSnSuffixExtension(String inputValue) {
+
+    //  suffixes = {"i-", "i+", "sn"};
+    var suffixPattern = "\\(?(\\Qi-\\E|\\Qi+\\E|\\Qsn\\E)\\)?";
+    var pattern = Pattern.compile(suffixPattern);
+    var matcher = pattern.matcher(inputValue.trim());
+
+    List<String> extractedSuffixes = new ArrayList<>();
+    int firstSuffixIndex = -1;
+
+    while (matcher.find()) {
+      extractedSuffixes.add(matcher.group(1));
+      if (firstSuffixIndex == -1) firstSuffixIndex = matcher.start();
+    }
+
+    var processedValue =
+        (firstSuffixIndex != -1)
+            ? inputValue.substring(0, firstSuffixIndex).trim()
+            : inputValue.trim();
 
     var codeableConcept =
         new CodeableConcept(
-            new Coding().setCode(mValue).setSystem(fhirProperties.getSystems().getTnmUicc()));
+            new Coding()
+                .setCode(processedValue)
+                .setSystem(fhirProperties.getSystems().getTnmUicc()));
 
-    //    if(){
-    //      codeableConcept.addExtension(
-    //        new Extension()
-    //          .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
-    //          .setValue(
-    //            new CodeableConcept(
-    //              new Coding().setCode("i-").setSystem(fhirProperties.getSystems().getTnmUicc())))
-    //      );
+    if (extractedSuffixes.contains("sn")) {
+      codeableConcept.addExtension(
+          new Extension()
+              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmSnSuffix())
+              .setValue(
+                  new CodeableConcept(
+                      new Coding()
+                          .setCode("sn")
+                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+    }
+    if (extractedSuffixes.contains("i+")) {
+      codeableConcept.addExtension(
+          new Extension()
+              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
+              .setValue(
+                  new CodeableConcept(
+                      new Coding()
+                          .setCode("i+")
+                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+    }
+    if (extractedSuffixes.contains("i-")) {
+      codeableConcept.addExtension(
+          new Extension()
+              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
+              .setValue(
+                  new CodeableConcept(
+                      new Coding()
+                          .setCode("i-")
+                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+    }
+
     return codeableConcept;
+  }
+
+  private CodeableConcept getCodeableConceptSnomed(String snomedCode) {
+
+    return new CodeableConcept(
+        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode(snomedCode));
+  }
+
+  private CodeableConcept getCodeableConceptTnmUicc(String tnmValue) {
+
+    return new CodeableConcept(
+        new Coding().setSystem(fhirProperties.getSystems().getTnmUicc()).setCode(tnmValue));
+  }
+
+  private CodeableConcept getCodeableConceptLoinc(String loincCode) {
+    return new CodeableConcept(
+        new Coding().setSystem(fhirProperties.getSystems().getLoinc()).setCode(loincCode));
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {
