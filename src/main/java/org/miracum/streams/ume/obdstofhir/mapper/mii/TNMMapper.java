@@ -99,7 +99,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     if (tnmTyp.getT() != null) {
       String identifierValue = tnmTyp.getID() + "_T";
-      var tnmBaseResource =
+      var tKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
               fhirProperties.getSystems().getTnmTKategorieObservationId(),
@@ -108,7 +108,8 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               condition);
-      var tKategorieObservation = addTKategorieSpecificAttributes(tnmBaseResource, tnmTyp);
+      tKategorieObservation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
+      tKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
       observationList.add(tKategorieObservation);
       memberObservationReferences.add(
           new Reference("Observation/" + tKategorieObservation.getId()));
@@ -116,7 +117,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     if (tnmTyp.getN() != null) {
       String identifierValue = tnmTyp.getID() + "_N";
-      var tnmBaseResource =
+      var nKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
               fhirProperties.getSystems().getTnmNKategorieObservationId(),
@@ -125,7 +126,8 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               condition);
-      var nKategorieObservation = addNKategorieSpecificAttributes(tnmBaseResource, tnmTyp);
+      nKategorieObservation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
+      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
       observationList.add(nKategorieObservation);
       memberObservationReferences.add(
           new Reference("Observation/" + nKategorieObservation.getId()));
@@ -133,7 +135,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     if (tnmTyp.getM() != null) {
       String identifierValue = tnmTyp.getID() + "_M";
-      var tnmBaseResource =
+      var mKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
               fhirProperties.getSystems().getTnmMKategorieObservationId(),
@@ -142,7 +144,8 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               condition);
-      var mKategorieObservation = addMKategorieSpecificAttributes(tnmBaseResource, tnmTyp);
+      mKategorieObservation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
+      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
       observationList.add(mKategorieObservation);
       memberObservationReferences.add(
           new Reference("Observation/" + mKategorieObservation.getId()));
@@ -153,7 +156,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var aSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmASymbolObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -165,13 +168,12 @@ public class TNMMapper extends ObdsToFhirMapper {
       memberObservationReferences.add(new Reference("Observation/" + aSymbolObservation.getId()));
     }
 
-    // TODO check auf erlaubte werte?  code: m 2-10
     if (tnmTyp.getMSymbol() != null) {
       String identifierValue = tnmTyp.getID() + "_m";
       var mSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmMSymbolObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -188,7 +190,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var lKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmLKategorieObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -206,7 +208,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var pnKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmPnKategorieObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -224,7 +226,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var rSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmRSymbolObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -241,7 +243,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var sKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmSKategorieObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -259,7 +261,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var vKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmVKategorieObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -277,7 +279,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var ySymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getTnmYSymbolObservationId(),
               identifierValue,
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
@@ -318,15 +320,6 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observation;
   }
 
-  private Observation addTKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
-
-    observation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
-
-    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
-
-    return observation;
-  }
-
   private CodeableConcept createTKategorieCode(String cpuPraefixT) {
 
     var extension = getCpPraefixExtension(cpuPraefixT);
@@ -342,8 +335,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       default:
         codeCoding.setCode("78873005").setDisplay("T category (observable entity)");
         break;
-        // the xml specifies: Das Weglassen des Prefix wird als "c" interpretiert but this differs
-        // from the IG
+        // xml specifies: Das Weglassen des Prefix wird als "c" interpretiert - differs from IG
     }
 
     var codeableConcept = new CodeableConcept();
@@ -351,15 +343,6 @@ public class TNMMapper extends ObdsToFhirMapper {
     codeableConcept.setExtension(Collections.singletonList(extension));
 
     return codeableConcept;
-  }
-
-  private Observation addNKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
-
-    observation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
-
-    observation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
-
-    return observation;
   }
 
   private CodeableConcept createNKategorieCode(String cpuPraefixN) {
@@ -384,15 +367,6 @@ public class TNMMapper extends ObdsToFhirMapper {
     codeableConcept.setExtension(Collections.singletonList(extension));
 
     return codeableConcept;
-  }
-
-  private Observation addMKategorieSpecificAttributes(Observation observation, TNMTyp tnmTyp) {
-
-    observation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
-
-    observation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
-
-    return observation;
   }
 
   private CodeableConcept createMKategorieCode(String cpuPraefixM) {
@@ -524,14 +498,13 @@ public class TNMMapper extends ObdsToFhirMapper {
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
     observation.setSubject(patient);
-    //    observation.setEncounter();
+
     observation.setFocus(Collections.singletonList(condition));
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     observation.setCode(getGroupingObservationCode(observationType));
 
-    // tnm version
     observation.setMethod(getObservationMethod(tnm.getVersion()));
 
     var dateOptional = convertObdsDatumToDateTimeType(tnm.getDatum());

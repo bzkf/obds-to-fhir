@@ -48,6 +48,14 @@ public class FhirProperties {
     private String tnmTKategorieObservationId;
     private String tnmNKategorieObservationId;
     private String tnmMKategorieObservationId;
+    private String tnmLKategorieObservationId;
+    private String tnmPnKategorieObservationId;
+    private String tnmSKategorieObservationId;
+    private String tnmVKategorieObservationId;
+    private String tnmASymbolObservationId;
+    private String tnmMSymbolObservationId;
+    private String tnmRSymbolObservationId;
+    private String tnmYSymbolObservationId;
 
     // external systems
     private String identifierType;
