@@ -52,7 +52,14 @@ fhir:
     tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
     tnm-n-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
     tnm-m-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
-
+    tnm-l-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-l-kategorie-observation-id"
+    tnm-pn-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id"
+    tnm-s-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-s-kategorie-observation-id"
+    tnm-v-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-v-kategorie-observation-id"
+    tnm-a-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-a-symbol-observation-id"
+    tnm-m-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+    tnm-r-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-r-symbol-observation-id"
+    tnm-y-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-y-symbol-observation-id"
 
 
     # external systems
@@ -174,9 +181,6 @@ fhir:
     mii-pr-onko-tnm-s-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-s-kategorie"
     mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie"
     mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol"
-
-
-
 
 
   display:
