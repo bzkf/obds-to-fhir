@@ -2,14 +2,10 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import org.approvaltests.Approvals;
+import java.util.ArrayList;
+import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class HistologiebefundMapperTest {
+class HistologiebefundMapperTest extends MapperTest {
   private static HistologiebefundMapper sut;
 
   @BeforeAll
@@ -35,15 +31,7 @@ class HistologiebefundMapperTest {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
-    final var xmlMapper =
-        XmlMapper.builder()
-            .defaultUseWrapper(false)
-            .addModule(new JakartaXmlBindAnnotationModule())
-            .addModule(new Jdk8Module())
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .build();
-
-    final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
@@ -51,17 +39,20 @@ class HistologiebefundMapperTest {
     var tumorkonferenz = new Reference("CarePlan/Tumorkonferenz");
     var specimen = new Reference("Specimen/Onko");
 
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, tumorkonferenz, specimen);
+    var list = new ArrayList<DiagnosticReport>();
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-    for (int i = 0; i < list.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(list.get(i));
-      Approvals.verify(
-          fhirJson,
-          Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
-              .forFile()
-              .withExtension(".fhir.json"));
+    for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
+      if (meldung.getPathologie() != null) {
+        list.add(
+            sut.map(
+                meldung.getPathologie(),
+                meldung.getMeldungID(),
+                subject,
+                tumorkonferenz,
+                specimen));
+      }
     }
+
+    verifyAll(list, sourceFile);
   }
 }
