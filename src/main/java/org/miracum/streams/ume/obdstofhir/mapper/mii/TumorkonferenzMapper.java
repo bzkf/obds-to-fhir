@@ -63,22 +63,26 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
       for (String typ :
           tk.getTherapieempfehlung().getMengeTypTherapieempfehlung().getTypTherapieempfehlung()) {
 
-        //CarePlan.CarePlanActivityComponent activityComponent = new CarePlan.CarePlanActivityComponent();
-        CodeableConcept therapieEmpfehlungen = new CodeableConcept(new Coding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieTyp())
-          .setCode(typ));
-        CarePlan.CarePlanActivityDetailComponent cpadc = new CarePlan.CarePlanActivityDetailComponent();
+        // CarePlan.CarePlanActivityComponent activityComponent = new
+        // CarePlan.CarePlanActivityComponent();
+        CodeableConcept therapieEmpfehlungen =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieTyp())
+                    .setCode(typ));
+        CarePlan.CarePlanActivityDetailComponent cpadc =
+            new CarePlan.CarePlanActivityDetailComponent();
         cpadc.setCode(therapieEmpfehlungen);
-      // detail.Status
-      cpadc.setStatus(CarePlan.CarePlanActivityStatus.COMPLETED);
-      // detail.StatusReason
-      cpadc.setStatusReason(
-          new CodeableConcept(
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieabweichung())
-                  .setCode(tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())));
-      // add Activity.Detail
-      carePlan.addActivity().setDetail(cpadc);
+        // detail.Status
+        cpadc.setStatus(CarePlan.CarePlanActivityStatus.COMPLETED);
+        // detail.StatusReason
+        cpadc.setStatusReason(
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieabweichung())
+                    .setCode(tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())));
+        // add Activity.Detail
+        carePlan.addActivity().setDetail(cpadc);
       }
     }
     return carePlan;
