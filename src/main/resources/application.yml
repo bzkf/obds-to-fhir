@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.15
+  version: 3.0.0-beta.21
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -55,6 +55,8 @@ fhir:
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
+    histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id"
+    nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -106,6 +108,8 @@ fhir:
     mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
     mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
     tnm-uicc: "https://www.uicc.org/resources/tnm"
+    mii-cs-onko-nebenwirkung-ctcae-grad: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad"
+    meddra: "https://www.meddra.org"
 
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
@@ -119,6 +123,7 @@ fhir:
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
+    histoDiagnosticReport: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund"
     miiPrOnkoGrading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading"
     # MII
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
@@ -151,8 +156,7 @@ fhir:
     mii-pr-onko-tnm-s-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-s-kategorie"
     mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie"
     mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol"
-
-
+    mii-pr-onko-nebenwirkung-adverse-event: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

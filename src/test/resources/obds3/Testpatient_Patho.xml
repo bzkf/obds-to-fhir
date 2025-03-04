@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="7" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="40">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>107815772</IKNR>
+          <GKV_Versichertennummer>A023456789</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Laborarium</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>Freifrau</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Mikroskopia</Vornamen>
+        <Geburtsname>Analysia</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Objektivia</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1980-01-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Musterstr.</Strasse>
+          <Hausnummer>666</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>98765</PLZ>
+          <Ort>Pathmdorf</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="PAT_70101">
+          <Meldebegruendung>D</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="401">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2019 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2019-10-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8500/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Pathologie>
+            <Primaertumor_Diagnosetext>Mamma-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C50.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Brust</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="269">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2022-08-05</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H000520-22</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8500/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Invasives duktales Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>3</Grading>
+              <LK_untersucht>6</LK_untersucht>
+              <LK_befallen>3</LK_befallen>
+              <Sentinel_LK_untersucht>2</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <Menge_FM>
+              <Fernmetastase>
+                <Diagnosedatum Datumsgenauigkeit="E">2022-08-05</Diagnosedatum>
+                <Lokalisation>PUL</Lokalisation>
+              </Fernmetastase>
+            </Menge_FM>
+            <pTNM ID="256">
+              <Datum>2022-08-05</Datum>
+              <Version>8</Version>
+              <y_Symbol>y</y_Symbol>
+              <r_Symbol>r</r_Symbol>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>4a</T>
+              <m_Symbol>m</m_Symbol>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>1a</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>L1</L>
+              <V>V1</V>
+              <Pn>Pn0</Pn>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </pTNM>
+            <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2022-08-05</Datum>
+                <Bezeichnung>BRCA 1</Bezeichnung>
+                <Auspraegung>M</Auspraegung>
+              </Genetische_Variante>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2022-08-05</Datum>
+                <Bezeichnung>BRCA 2</Bezeichnung>
+                <Sonstige_Auspraegung>Translation</Sonstige_Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Einsender>
+              <strukturiert>
+                <Titel>Dr.</Titel>
+                <Vornamen>Ernst</Vornamen>
+                <Nachname>Müller</Nachname>
+                <Einrichtung>Praxis 1</Einrichtung>
+                <Abteilung>Testabteilung</Abteilung>
+                <Strasse>Weg</Strasse>
+                <Hausnummer>1</Hausnummer>
+                <Land>DE</Land>
+                <PLZ>12345</PLZ>
+                <Ort>Fulda</Ort>
+              </strukturiert>
+              <Ident_Nummern>
+                <LANR>100000615</LANR>
+                <BSNR>420000000</BSNR>
+              </Ident_Nummern>
+            </Einsender>
+            <Befundtext>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</Befundtext>
+            <Modul_Mamma>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>85</TumorgroesseInvasiv>
+            </Modul_Mamma>
+          </Pathologie>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="PAT_70103">
+          <Meldebegruendung>D</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="402">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-01-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Pathologie>
+            <Primaertumor_Diagnosetext>Rektum</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C20.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Rektum o.n.A.</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-01-13</Datum>
+                <Bezeichnung>KRAS</Bezeichnung>
+                <Auspraegung>W</Auspraegung>
+              </Genetische_Variante>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-01-13</Datum>
+                <Bezeichnung>NRAS</Bezeichnung>
+                <Sonstige_Auspraegung>foo</Sonstige_Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Einsender>
+              <unstrukturiert>
+                <Adresse1>Dr. Ernst Müller Krankhaus Abteilung 1, Krankenhausstraße 1, DE 12345 Gießen</Adresse1>
+              </unstrukturiert>
+              <Ident_Nummern>
+                <IKNR>260600000</IKNR>
+              </Ident_Nummern>
+            </Einsender>
+            <Befundtext>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem veleum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel willum lunombro dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</Befundtext>
+            <Modul_Darm>
+              <RektumAbstandAboralerResektionsrand>15</RektumAbstandAboralerResektionsrand>
+              <RektumAbstandCircResektionsebene>5</RektumAbstandCircResektionsebene>
+              <RektumQualitaetTME>P</RektumQualitaetTME>
+            </Modul_Darm>
+          </Pathologie>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="PAT_70104">
+          <Meldebegruendung>D</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="403">
+            <Primaertumor_ICD>
+              <Code>C43.6</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-01-01</Diagnosedatum>
+            <Seitenlokalisation>L</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Pathologie>
+            <Primaertumor_Diagnosetext>Malignes Melanom</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C44.6</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Haut am Oberarm</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="270">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2020-01-01</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H000123-22</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8720/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Malignes Melanom o.n.A.</Morphologie_Freitext>
+              <Grading>U</Grading>
+            </Histologie>
+            <Einsender>
+              <unstrukturiert>
+                <Adresse1>Prof Max Mustermann</Adresse1>
+                <Adresse2>Praxis 1</Adresse2>
+                <Adresse3>Testabteilung 3</Adresse3>
+                <Adresse4>Hinter dem Knick 1</Adresse4>
+                <Adresse5>12345 Hannover</Adresse5>
+                <Adresse6>Deutschland</Adresse6>
+              </unstrukturiert>
+              <Ident_Nummern>
+                <LANR>100000621</LANR>
+                <BSNR>421000000</BSNR>
+              </Ident_Nummern>
+            </Einsender>
+            <Befundtext>Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Et harumd und lookum like Greek to me, dereud facilis est er expedit distinct.</Befundtext>
+            <Modul_Malignes_Melanom>
+              <Sicherheitsabstand_Primaertumor>10</Sicherheitsabstand_Primaertumor>
+              <Tumordicke>1.4</Tumordicke>
+              <Ulzeration>J</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </Pathologie>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

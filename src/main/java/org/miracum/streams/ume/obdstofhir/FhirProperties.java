@@ -117,6 +117,10 @@ public class FhirProperties {
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
     private String miiCsOnkoTnmVersion;
     private String tnmUicc;
+    private String histologiebefundDiagnosticReportId;
+    private String nebenwirkungAdverseEventId;
+    private String miiCsOnkoNebenwirkungCtcaeGrad;
+    private String meddra;
   }
 
   @Data
@@ -140,6 +144,7 @@ public class FhirProperties {
     private String miiPrOnkoSystemischeTherapie;
     private String miiPrOnkoFernmetastasen;
     private String miiPrMedicationStatement;
+    private String miiPrOnkoBefund;
     private String miiPrOnkoGrading;
     private String miiPrOnkoAnzahlBefalleneLymphknoten;
     private String miiPrOnkoAnzahlBefalleneSentinelLymphknoten;
@@ -164,6 +169,7 @@ public class FhirProperties {
     private String miiPrOnkoTnmSKategorie;
     private String miiPrOnkoTnmVKategorie;
     private String miiPrOnkoTnmYSymbol;
+    private String miiPrOnkoNebenwirkungAdverseEvent;
   }
 
   @Data

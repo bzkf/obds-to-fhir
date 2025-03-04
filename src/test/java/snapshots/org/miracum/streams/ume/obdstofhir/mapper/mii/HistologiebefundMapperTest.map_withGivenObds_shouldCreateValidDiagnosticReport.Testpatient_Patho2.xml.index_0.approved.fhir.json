@@ -1,0 +1,25 @@
+{
+  "resourceType": "DiagnosticReport",
+  "id": "46563ac340ea2b1b5d8d0fb87517bf2e97870675437e7ab6ea3c87c53386e3db",
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
+    "value": "PAT_70102"
+  } ],
+  "basedOn": [ {
+    "reference": "CarePlan/Tumorkonferenz"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "22034-3"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "specimen": [ {
+    "reference": "Specimen/Onko"
+  } ],
+  "conclusion": "Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+}

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.2.xsd">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-09-02</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="70">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>107815772</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Pulmonaria</Nachname>
+        <Vornamen>Lobaria</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1963-04-23</Geburtsdatum>
+        <Adresse>
+          <Strasse>Musterstr.</Strasse>
+          <Hausnummer>666</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>46395</PLZ>
+          <Ort>Pulmdorf</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="VER_70110">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="701">
+            <Primaertumor_ICD>
+              <Code>C34.3</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>L</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8551/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="328">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2019-09-18</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>K</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>P</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="AB_70121">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="701">
+            <Primaertumor_ICD>
+              <Code>C34.3</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>L</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8551/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tod Abschluss_ID="140">
+            <Sterbedatum>2023-09-01</Sterbedatum>
+            <Tod_tumorbedingt>J</Tod_tumorbedingt>
+            <Menge_Todesursachen>
+              <Todesursache_ICD>
+                <Code>C34.9</Code>
+                <Version>10 2020 GM</Version>
+              </Todesursache_ICD>
+            </Menge_Todesursachen>
+          </Tod>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

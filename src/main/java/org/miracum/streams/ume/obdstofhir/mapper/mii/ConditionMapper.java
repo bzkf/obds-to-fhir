@@ -94,15 +94,19 @@ public class ConditionMapper extends ObdsToFhirMapper {
     CodeableConcept code = new CodeableConcept().addCoding(icd);
     condition.setCode(code);
 
-    var morphologie = new CodeableConcept();
-    morphologie
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-        .setCode(tumorzuordnung.getMorphologieICDO().getCode())
-        .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+    if (tumorzuordnung.getMorphologieICDO() != null
+        && tumorzuordnung.getMorphologieICDO().getCode() != null) {
+      var morphologie = new CodeableConcept();
+      morphologie
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+          .setCode(tumorzuordnung.getMorphologieICDO().getCode())
+          .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
 
-    condition.addExtension(
-        fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
+      condition.addExtension(
+          fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
+          morphologie);
+    }
 
     List<CodeableConcept> bodySite = new ArrayList<>();
 

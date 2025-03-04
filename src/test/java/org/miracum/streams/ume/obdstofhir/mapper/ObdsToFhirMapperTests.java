@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.DateTimeType;
+import org.hl7.fhir.r4.model.Enumerations;
+import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -223,5 +225,36 @@ class ObdsToFhirMapperTests {
     var actual = ObdsToFhirMapper.convertObdsDatumToDateType(datum);
 
     assertThat(actual.asStringValue()).isEqualTo(expected);
+  }
+
+  @Test
+  void shouldVerifyReference() {
+    var reference = new Reference("Patient/any");
+    var actual = ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.PATIENT);
+    assertThat(actual).isTrue();
+  }
+
+  @Test
+  void shouldNotVerifyReferenceForOtherType() {
+    var reference = new Reference("Patient/any");
+    var excpetion =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+              ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.CONDITION);
+            });
+    assertThat(excpetion).hasMessage("The reference should point to a CONDITION resource");
+  }
+
+  @Test
+  void shouldNotVerifyReferenceForNull() {
+    Reference reference = null;
+    var excpetion =
+        assertThrows(
+            NullPointerException.class,
+            () -> {
+              ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.CONDITION);
+            });
+    assertThat(excpetion).hasMessage("Reference to a CONDITION resource must not be null");
   }
 }

@@ -1,4 +1,4 @@
-FROM docker.io/library/gradle:8.10.0-jdk21@sha256:8b2b86662dbd50d001f6c4de895ba76c049131c8423d61137e1da464fcf11468 AS build
+FROM docker.io/library/gradle:8.12.1-jdk21@sha256:e86257f53c3daf9c3f91a18cd247e47ca2da54a899048d392e9499f1a142593a AS build
 WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle . .
@@ -15,7 +15,7 @@ WORKDIR /test
 COPY --from=build /home/gradle/project/build/reports/ .
 ENTRYPOINT [ "true" ]
 
-FROM docker.io/library/debian:12.6-slim@sha256:2ccc7e39b0a6f504d252f807da1fc4b5bcd838e83e4dec3e2f57b2a4a64e7214 AS jemalloc
+FROM docker.io/library/debian:12.9-slim@sha256:40b107342c492725bc7aacbe93a49945445191ae364184a6d24fedb28172f6f7 AS jemalloc
 # hadolint ignore=DL3008
 RUN <<EOF
 set -e

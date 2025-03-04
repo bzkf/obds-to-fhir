@@ -13,7 +13,9 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ResidualstatusMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ResidualstatusMapper.class);
@@ -28,6 +30,9 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     var rs = op.getResidualstatus();
     Objects.requireNonNull(rs, "Residualstatus must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
+    Objects.requireNonNull(
+        rs.getGesamtbeurteilungResidualstatus(),
+        "GesamtbeurteilungResidualstatus must not be null");
 
     Validate.isTrue(
         Objects.equals(

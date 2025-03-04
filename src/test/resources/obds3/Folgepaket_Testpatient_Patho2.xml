@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="8" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="41">
+      <Patienten_Stammdaten>
+        <Versichertendaten_PKV>
+          <IKNR>168100008</IKNR>
+          <PKV_Versichertennummer>as123</PKV_Versichertennummer>
+          <Beihilfetraeger>Heilfürsorge der Bundespolizei</Beihilfetraeger>
+        </Versichertendaten_PKV>
+        <Nachname>Laboratium</Nachname>
+        <Vornamen>Mikroskopio</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1980-01-02</Geburtsdatum>
+        <Adresse>
+          <Strasse>Musterstr.</Strasse>
+          <Hausnummer>666</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>98765</PLZ>
+          <Ort>Pathmdorf</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="PAT_70102">
+          <Meldebegruendung>D</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="411">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-07-08</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Pathologie>
+            <Primaertumor_Diagnosetext>Prostata-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C61.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Prostata</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="272">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2021-07-08</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H00012345-21</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8140/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Adenokarzinom</Morphologie_Freitext>
+              <Grading>T</Grading>
+            </Histologie>
+            <Einsender>
+              <unstrukturiert>
+                <Adresse1>Testeinsender</Adresse1>
+              </unstrukturiert>
+            </Einsender>
+            <Befundtext>Geänderter Text zur Korrekturprüfung.</Befundtext>
+            <Modul_Prostata>
+              <GleasonScore>
+                <GradPrimaer>5</GradPrimaer>
+                <GradSekundaer>5</GradSekundaer>
+                <ScoreErgebnis>10</ScoreErgebnis>
+              </GleasonScore>
+              <AnlassGleasonScore>O</AnlassGleasonScore>
+              <DatumStanzen>2021-08-01</DatumStanzen>
+              <AnzahlStanzen>21</AnzahlStanzen>
+              <AnzahlPosStanzen>19</AnzahlPosStanzen>
+              <CaBefallStanze>
+                <Prozentzahl>90</Prozentzahl>
+              </CaBefallStanze>
+            </Modul_Prostata>
+          </Pathologie>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>
