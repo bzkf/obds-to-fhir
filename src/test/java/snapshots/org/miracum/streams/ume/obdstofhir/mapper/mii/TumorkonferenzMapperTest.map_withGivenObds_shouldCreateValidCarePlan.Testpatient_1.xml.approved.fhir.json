@@ -8,8 +8,8 @@
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
     "value": "Tumorkonferenz_221"
   } ],
-  "status": "active",
-  "intent": "plan",
+  "status": "completed",
+  "intent": "proposal",
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
@@ -19,7 +19,7 @@
   "subject": {
     "reference": "Patient/any"
   },
-  "created": "2020-10-20T00:00:00+02:00",
+  "created": "2020-10-20",
   "addresses": [ {
     "reference": "Condition/any"
   } ],

@@ -9,7 +9,7 @@
     "value": "Tumorkonferenz_112"
   } ],
   "status": "active",
-  "intent": "plan",
+  "intent": "proposal",
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
@@ -19,7 +19,7 @@
   "subject": {
     "reference": "Patient/any"
   },
-  "created": "2020-05-25T00:00:00+02:00",
+  "created": "2020-05-25",
   "addresses": [ {
     "reference": "Condition/any"
   } ],
@@ -29,7 +29,20 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "OP"
-        }, {
+        } ]
+      },
+      "status": "completed",
+      "statusReason": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
+          "code": "U"
+        } ]
+      }
+    }
+  }, {
+    "detail": {
+      "code": {
+        "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "ST"
         } ]

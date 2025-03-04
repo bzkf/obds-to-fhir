@@ -57,5 +57,8 @@
         <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
             <jaxb:typesafeEnumClass name="EndeGrund" />
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Tumorkonferenz_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
+        </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>

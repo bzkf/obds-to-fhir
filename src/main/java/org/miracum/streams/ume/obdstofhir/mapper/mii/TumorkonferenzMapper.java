@@ -34,13 +34,13 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     carePlan.addIdentifier(identifier);
     carePlan.setId(computeResourceIdFromIdentifier(identifier));
     // Status
-    if (tk.getMeldeanlass().equals("behandlunsende")) {
+    if (tk.getMeldeanlass().equals(TumorkonferenzTyp.Meldeanlass.BEHANDLUNGSENDE)) {
       carePlan.setStatus(CarePlan.CarePlanStatus.COMPLETED);
     } else {
       carePlan.setStatus(CarePlan.CarePlanStatus.ACTIVE);
     }
     // intent
-    carePlan.setIntent(CarePlan.CarePlanIntent.PLAN);
+    carePlan.setIntent(CarePlan.CarePlanIntent.PROPOSAL);
     // category
     CodeableConcept codeableConcept =
         new CodeableConcept(
@@ -51,26 +51,24 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     // subject
     carePlan.setSubject(patient);
     // created
-    carePlan.setCreated(tk.getDatum().getValue().toGregorianCalendar().getTime());
+    carePlan.setCreatedElement(convertObdsDatumToDateTimeType(tk.getDatum()));
     // addresses
-    ArrayList<Reference> adresse = new ArrayList<Reference>();
+    ArrayList<Reference> adresse = new ArrayList<>();
     adresse.add(primaerDiagnose);
     carePlan.setAddresses(adresse);
+
     // activity - detail
     //  detail.code
-    CarePlan.CarePlanActivityDetailComponent cpadc = new CarePlan.CarePlanActivityDetailComponent();
-    CodeableConcept therapieEmpfehlungen = new CodeableConcept();
     if (tk.getTherapieempfehlung() != null) {
       for (String typ :
           tk.getTherapieempfehlung().getMengeTypTherapieempfehlung().getTypTherapieempfehlung()) {
-        Coding code =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieTyp())
-                .setCode(typ);
-        therapieEmpfehlungen.addCoding(code);
-      }
-      cpadc.setCode(therapieEmpfehlungen);
 
+        //CarePlan.CarePlanActivityComponent activityComponent = new CarePlan.CarePlanActivityComponent();
+        CodeableConcept therapieEmpfehlungen = new CodeableConcept(new Coding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieTyp())
+          .setCode(typ));
+        CarePlan.CarePlanActivityDetailComponent cpadc = new CarePlan.CarePlanActivityDetailComponent();
+        cpadc.setCode(therapieEmpfehlungen);
       // detail.Status
       cpadc.setStatus(CarePlan.CarePlanActivityStatus.COMPLETED);
       // detail.StatusReason
@@ -79,9 +77,10 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieabweichung())
                   .setCode(tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())));
+      // add Activity.Detail
+      carePlan.addActivity().setDetail(cpadc);
+      }
     }
-    // add Activity.Detail
-    carePlan.addActivity().setDetail(cpadc);
     return carePlan;
   }
 }
