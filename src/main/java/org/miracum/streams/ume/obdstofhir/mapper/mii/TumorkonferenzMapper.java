@@ -40,7 +40,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
       carePlan.setStatus(CarePlan.CarePlanStatus.ACTIVE);
     }
     // intent
-    carePlan.setIntent(CarePlan.CarePlanIntent.PROPOSAL);
+    carePlan.setIntent(CarePlan.CarePlanIntent.PLAN);
     // category
     CodeableConcept codeableConcept =
         new CodeableConcept(
