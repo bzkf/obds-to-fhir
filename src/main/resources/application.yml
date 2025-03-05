@@ -40,6 +40,7 @@ fhir:
     fernmetastasen-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/fernmetastasen-id"
     residualstatusObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/residualstatus-observation-id"
     histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id"
+    genetische-variante-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/genetische-variante-id"
     nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
@@ -90,6 +91,7 @@ fhir:
     observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
     mii-cs-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading"
     mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
+    mii-cs-onko-genetische-variante-auspraegung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung"
     mii-cs-onko-nebenwirkung-ctcae-grad: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad"
     meddra: "https://www.meddra.org"
 
@@ -123,6 +125,7 @@ fhir:
     mii-pr-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog"
     mii-pr-onko-tod: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
     mii-pr-onko-histologie-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3"
+    miiPrOnkoGenetischeVariante: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante"
     mii-pr-onko-nebenwirkung-adverse-event: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
