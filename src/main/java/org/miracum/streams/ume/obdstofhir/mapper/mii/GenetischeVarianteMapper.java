@@ -170,7 +170,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       if (genetischeVariante.getSonstigeAuspraegung() != null) {
         CodeableConcept valueCodeableConcept = new CodeableConcept();
         Coding codingValue = new Coding();
-        codingValue.setSystem("http://loinc.org");
+        codingValue.setSystem(fhirProperties.getSystems().getLoinc());
         codingValue.setCode("LA9633-4");
         codingValue.setDisplay("Present");
 
