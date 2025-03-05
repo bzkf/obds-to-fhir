@@ -138,6 +138,123 @@
       "url": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4"
     }
   }, {
+    "fullUrl": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "280"
+      } ],
+      "accessionIdentifier": {
+        "value": "H111/2017"
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "collection": {
+        "collectedDateTime": "2017-07-02"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+    }
+  }, {
+    "fullUrl": "Observation/52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "280_ICDO3_8461/3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "focus": [ {
+        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "32",
+          "code": "8461/3"
+        } ],
+        "text": "Seröses papilläres Oberflächenkarzinom"
+      },
+      "specimen": {
+        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137"
+    }
+  }, {
+    "fullUrl": "Observation/dbff0c561dbc7fa3afaf059f6282c95e2a113c47774237fdaeafd177728f2cd0",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "dbff0c561dbc7fa3afaf059f6282c95e2a113c47774237fdaeafd177728f2cd0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "280_Grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "focus": [ {
+        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/dbff0c561dbc7fa3afaf059f6282c95e2a113c47774237fdaeafd177728f2cd0"
+    }
+  }, {
     "fullUrl": "Procedure/e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359",
     "resource": {
       "resourceType": "Procedure",

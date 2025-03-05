@@ -61,5 +61,17 @@ public abstract class MapperTest {
               .forFile()
               .withExtension(".fhir.json"));
     }
+
+    // var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
+    // var labeller = NamerFactory.useMultipleFiles();
+
+    // for (var resource : resources) {
+    //   assertThat(resource).isNotNull();
+    //   var fhirJson = fhirParser.encodeResourceToString(resource);
+    //   Approvals.verify(
+    //       fhirJson,
+    //       Approvals.NAMES.withParameters(sourceFile).forFile().withExtension(".fhir.json"));
+    //   labeller.next();
+    // }
   }
 }

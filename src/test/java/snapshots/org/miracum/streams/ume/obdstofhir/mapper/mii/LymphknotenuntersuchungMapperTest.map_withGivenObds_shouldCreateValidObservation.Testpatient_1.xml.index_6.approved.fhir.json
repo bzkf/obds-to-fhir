@@ -28,7 +28,7 @@
     "reference": "Patient/any"
   },
   "focus": [ {
-    "reference": "Condition/Diagnose_Primärtumor"
+    "reference": "Condition/Primärdiagnose"
   } ],
   "effectiveDateTime": "2020-03-05",
   "valueQuantity": {
@@ -36,5 +36,8 @@
     "unit": "#",
     "system": "http://unitsofmeasure.org",
     "code": "1"
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   }
 }

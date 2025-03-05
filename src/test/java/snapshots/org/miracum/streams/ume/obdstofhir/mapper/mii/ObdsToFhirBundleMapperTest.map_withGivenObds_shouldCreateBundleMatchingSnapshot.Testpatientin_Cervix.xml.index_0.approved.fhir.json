@@ -138,6 +138,123 @@
       "url": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62"
     }
   }, {
+    "fullUrl": "Specimen/ce77359a50c9005ab6053fa70782271998c8310b83965837f65b5b0a5cece9bc",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "ce77359a50c9005ab6053fa70782271998c8310b83965837f65b5b0a5cece9bc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "53"
+      } ],
+      "accessionIdentifier": {
+        "value": "X/98765/1"
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "collection": {
+        "collectedDateTime": "2022-10-03"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/ce77359a50c9005ab6053fa70782271998c8310b83965837f65b5b0a5cece9bc"
+    }
+  }, {
+    "fullUrl": "Observation/5f34e681144389211d768c6f07c30be1d6fabaadac362ebcdb2958a84dc4fe77",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "5f34e681144389211d768c6f07c30be1d6fabaadac362ebcdb2958a84dc4fe77",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "53_ICDO3_8077/2"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "effectiveDateTime": "2022-10-03",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "33",
+          "code": "8077/2"
+        } ],
+        "text": "Zervikale intraepitheliale Neoplasie Grad 3"
+      },
+      "specimen": {
+        "reference": "Specimen/ce77359a50c9005ab6053fa70782271998c8310b83965837f65b5b0a5cece9bc"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/5f34e681144389211d768c6f07c30be1d6fabaadac362ebcdb2958a84dc4fe77"
+    }
+  }, {
+    "fullUrl": "Observation/ae8f4febfa633f443934a256299033dfde268dbf33d3730e5a65c03e381c0d00",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "ae8f4febfa633f443934a256299033dfde268dbf33d3730e5a65c03e381c0d00",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "53_Grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "effectiveDateTime": "2022-10-03",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/ce77359a50c9005ab6053fa70782271998c8310b83965837f65b5b0a5cece9bc"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/ae8f4febfa633f443934a256299033dfde268dbf33d3730e5a65c03e381c0d00"
+    }
+  }, {
     "fullUrl": "Procedure/e05a1e24b4ff9a0191bf1ec8ac695cfb0aa7b3556765aa36b9f58d3275704541",
     "resource": {
       "resourceType": "Procedure",
@@ -224,6 +341,123 @@
     "request": {
       "method": "PUT",
       "url": "Observation/4039fb1c7eb636f48eb37893b683752a6f41e7e05dffc8b12bb3fe8a336d5008"
+    }
+  }, {
+    "fullUrl": "Specimen/39e80b46672060468b9f2ad9dcf91c0438a1211a87cbafcdb664ac536183a277",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "39e80b46672060468b9f2ad9dcf91c0438a1211a87cbafcdb664ac536183a277",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "54"
+      } ],
+      "accessionIdentifier": {
+        "value": "X/98765/2"
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "collection": {
+        "collectedDateTime": "2022-10-16"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/39e80b46672060468b9f2ad9dcf91c0438a1211a87cbafcdb664ac536183a277"
+    }
+  }, {
+    "fullUrl": "Observation/e4bc2109c891a7b71f6de755285cd2cb64feac6ced012a0b20c38cae1c9afa03",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e4bc2109c891a7b71f6de755285cd2cb64feac6ced012a0b20c38cae1c9afa03",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "54_ICDO3_8077/2"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "effectiveDateTime": "2022-10-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "33",
+          "code": "8077/2"
+        } ],
+        "text": "Zervikale intraepitheliale Neoplasie Grad 3"
+      },
+      "specimen": {
+        "reference": "Specimen/39e80b46672060468b9f2ad9dcf91c0438a1211a87cbafcdb664ac536183a277"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e4bc2109c891a7b71f6de755285cd2cb64feac6ced012a0b20c38cae1c9afa03"
+    }
+  }, {
+    "fullUrl": "Observation/495dee2f1c341325d6bfc90f841c9fa7b138840b569dbe42915f2623dd227871",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "495dee2f1c341325d6bfc90f841c9fa7b138840b569dbe42915f2623dd227871",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "54_Grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "effectiveDateTime": "2022-10-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/39e80b46672060468b9f2ad9dcf91c0438a1211a87cbafcdb664ac536183a277"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/495dee2f1c341325d6bfc90f841c9fa7b138840b569dbe42915f2623dd227871"
     }
   } ]
 }

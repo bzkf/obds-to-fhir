@@ -67,3 +67,5 @@ node_modules/
 
 # generated code
 src/generated/
+
+.approval_tests_temp
