@@ -258,6 +258,21 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
               .add(verlaufMeldung);
         }
 
+        // Tumorzuordnung
+        var latestReportingTumorzuordnung =
+            latestReportingStammdatenPatient
+                .getMengeMeldung()
+                .getMeldung()
+                .getFirst()
+                .getTumorzuordnung();
+        obds.getMengePatient()
+            .getPatient()
+            .getFirst()
+            .getMengeMeldung()
+            .getMeldung()
+            .getFirst()
+            .setTumorzuordnung(latestReportingTumorzuordnung);
+
         tumorObds.add(obds);
       }
 

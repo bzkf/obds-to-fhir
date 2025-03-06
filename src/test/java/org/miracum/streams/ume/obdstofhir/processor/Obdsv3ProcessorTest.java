@@ -2,9 +2,13 @@ package org.miracum.streams.ume.obdstofhir.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Function;
 import org.apache.kafka.common.serialization.Serdes;
@@ -18,6 +22,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Condition;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
@@ -63,45 +68,94 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {
 
+  static final String INPUT_TOPIC_NAME = "meldung-obds";
+  static final String OUTPUT_TOPIC_NAME = "onko-fhir";
+
+  private static final FhirContext ctx = FhirContext.forR4();
+
   @Autowired private Obdsv3Processor processor;
 
   @Autowired private Obdsv3Deserializer obdsDeserializer;
 
-  @Value("classpath:obds3/test1.xml")
-  Resource testObds;
+  @Value("classpath:obds3/*.xml")
+  private Resource[] obdsResources;
+
+  public Resource getResourceByName(String filename) {
+    return Arrays.stream(obdsResources)
+        .filter(resource -> Objects.equals(resource.getFilename(), filename))
+        .findFirst()
+        .orElseThrow(
+            () -> new IllegalArgumentException("Test OBDS resource not found: " + filename));
+  }
 
   @Test
   void getMeldungExportObdsV3Processor_mapsToBundle() throws IOException {
-
-    var inputTopicName = "meldung-obds";
-    var outputTopicName = "onko-fhir";
-
     try (var driver =
-        buildStream(processor.getMeldungExportObdsV3Processor(), inputTopicName, outputTopicName)) {
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(
-              inputTopicName, new StringSerializer(), new JsonSerializer<MeldungExportV3>());
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
-              outputTopicName, new StringDeserializer(), new KafkaFhirDeserializer());
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
-      // get test data
-      var meldung = getTestObds(testObds);
+      // pipe test data
+      inputTopic.pipeInput(
+          "test", buildMeldungExport(getResourceByName("test1.xml"), "1", "12356789", "123", 1));
 
-      // create input record
-      inputTopic.pipeInput("test", meldung);
-
-      // get records from output topic
-      var outputRecords = outputTopic.readRecordsToList();
-
-      Bundle bundle = (Bundle) outputRecords.getFirst().getValue();
-      // assert coding exists
-      assertThat(outputRecords).isNotEmpty();
+      assertThat(outputTopic.readRecordsToList()).isNotEmpty();
     }
   }
 
-  TopologyTestDriver buildStream(
+  @Test
+  public void testVersionsnummerPrioritization() throws IOException {
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+
+      var inputTopic =
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      // pipe test data
+      inputTopic.pipeInput(
+          "key1",
+          buildMeldungExport(getResourceByName("Priopatient_1.xml"), "1", "12356789", "123", 1));
+      inputTopic.pipeInput(
+          "key2",
+          buildMeldungExport(getResourceByName("Priopatient_2.xml"), "2", "12356789", "123", 3));
+      inputTopic.pipeInput(
+          "key3",
+          buildMeldungExport(getResourceByName("Priopatient_3.xml"), "3", "12356789", "123", 2));
+
+      var outputRecords = outputTopic.readKeyValuesToList();
+      assertThat(outputRecords).hasSize(3);
+
+      var kafkaKeys = outputRecords.stream().map(record -> record.key).distinct().toList();
+      assertThat(kafkaKeys).hasSize(1); // Ensure all records have the same key
+
+      var conditions =
+          outputRecords.stream()
+              .map(
+                  record ->
+                      BundleUtil.toListOfResourcesOfType(
+                              ctx, (Bundle) record.value, Condition.class)
+                          .getFirst()
+                          .getCode()
+                          .getCoding()
+                          .getFirst()
+                          .getCode())
+              .toList();
+
+      // validate prioritization
+      assertThat(conditions).containsExactly("C50.9", "C61", "C61");
+    }
+  }
+
+  private TopologyTestDriver buildStream(
       Function<KTable<String, MeldungExportV3>, KStream<String, Bundle>> processor,
       String inputTopic,
       String outputTopic) {
@@ -120,12 +174,16 @@ public class Obdsv3ProcessorTest {
     return new TopologyTestDriver(builder.build(), props);
   }
 
-  private MeldungExportV3 getTestObds(Resource testObds) throws IOException {
-
+  private MeldungExportV3 buildMeldungExport(
+      Resource xmlObds, String id, String refNummer, String lkrMeldung, int versionsnummer)
+      throws IOException {
     var meldung =
         new JSONObject()
-            .put("ID", "42")
-            .put("XML_DATEN", testObds.getContentAsString(StandardCharsets.UTF_8))
+            .put("ID", id)
+            .put("REFERENZ_NUMMER", refNummer)
+            .put("LKR_MELDUNG", lkrMeldung)
+            .put("VERSIONSNUMMER", versionsnummer)
+            .put("XML_DATEN", xmlObds.getContentAsString(StandardCharsets.UTF_8))
             .toString();
 
     var mapper = new ObjectMapper();
