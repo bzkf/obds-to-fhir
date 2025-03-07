@@ -126,4 +126,31 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
     assertThatThrownBy(() -> sut.map(params, patReference, "test"))
         .isInstanceOf(IllegalArgumentException.class);
   }
+
+  @ParameterizedTest
+  @CsvSource({"3,4,7", "4,3,7", "3,3,6", "4,4,8", "5,3,8", "3,5,8"})
+  void map_withScoresFromPrimaryAndSecondaryPattern_shouldBeEqualToTheirSum(
+      String primary, String secondary, Integer expectedTotal) {
+
+    var gleasonScore = new GleasonScore();
+    gleasonScore.setGleasonGradPrimaer(primary);
+    gleasonScore.setGleasonGradSekundaer(secondary);
+    var modulProstata = new Modul_Prostata();
+
+    modulProstata.setGleasonScore(Optional.of(gleasonScore));
+
+    var params =
+        new ModulProstataMappingParams(
+            Meldeanlass.BEHANDLUNGSENDE,
+            modulProstata,
+            "pid-1",
+            "op-id-1",
+            new DateTimeType("2000-01-01T00:00:00"),
+            new DateTimeType("2001-01-01T00:00:00"));
+
+    var patReference = getPatientReference("pid-1");
+    var observation = sut.map(params, patReference, "test");
+
+    assertThat(observation.getValueIntegerType().getValue()).isEqualTo(expectedTotal);
+  }
 }
