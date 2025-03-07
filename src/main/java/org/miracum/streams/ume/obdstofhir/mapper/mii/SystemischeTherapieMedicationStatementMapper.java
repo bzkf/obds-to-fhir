@@ -26,7 +26,7 @@ import org.springframework.util.StringUtils;
 public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
-      LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
+      LoggerFactory.getLogger(SystemischeTherapieMedicationStatementMapper.class);
 
   public SystemischeTherapieMedicationStatementMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
