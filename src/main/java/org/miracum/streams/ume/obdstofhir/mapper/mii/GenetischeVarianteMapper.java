@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(OperationMapper.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GenetischeVarianteMapper.class);
 
   @Autowired
   public GenetischeVarianteMapper(FhirProperties fhirProperties) {
