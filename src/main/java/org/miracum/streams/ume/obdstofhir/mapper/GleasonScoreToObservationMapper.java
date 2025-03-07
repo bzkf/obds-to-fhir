@@ -12,11 +12,15 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsObservationMapper.ModulProstataMappingParams;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.AnlassGleasonScore;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
+
+  private static final Logger LOG = LoggerFactory.getLogger(GleasonScoreToObservationMapper.class);
 
   // we currently ignore the 7a/7b difference. We could map it when using
   // valueCodeableConcept with https://loinc.org/94734-1
@@ -35,12 +39,27 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
       throw new IllegalArgumentException("Modul_Prostata_GleasonScore is unset.");
     }
 
-    // TODO: per https://basisdatensatz.de/xml/ADT_GEKID_v2.2.3.xsd komplexer typ aus
-    // GleasonGradPrimaer + GleasonGradSekundaer = GleasonScoreErgebnis. vollständig implementieren!
-    var gleasonScoreErgebnis = modulProstata.getGleasonScore().get().getGleasonScoreErgebnis();
+    var gleasonScore = modulProstata.getGleasonScore().get();
+
+    var gleasonScoreErgebnis = gleasonScore.getGleasonScoreErgebnis();
 
     if (!StringUtils.hasText(gleasonScoreErgebnis)) {
-      throw new IllegalArgumentException("GleasonScoreErgebnis is null or empty");
+      LOG.warn(
+          "Gleason score ergebnis is missing. "
+              + "Attempting to reconstruct from the primary and secondary patterns.");
+
+      var gradPrimaer = gleasonScore.getGleasonGradPrimaer();
+      var gradSekundaer = gleasonScore.getGleasonGradSekundaer();
+
+      var totalGrade = Integer.parseInt(gradPrimaer) + Integer.parseInt(gradSekundaer);
+
+      gleasonScoreErgebnis = String.valueOf(totalGrade);
+
+      LOG.debug(
+          "Reconstructed Gleason score ergebnis: {} + {} = {}",
+          gradPrimaer,
+          gradSekundaer,
+          gleasonScoreErgebnis);
     }
 
     var gleasonScoreObservation = new Observation();
