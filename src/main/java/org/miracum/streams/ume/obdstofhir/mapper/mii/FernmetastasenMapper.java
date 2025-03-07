@@ -3,11 +3,10 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.MengeFMTyp.Fernmetastase;
+import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -24,28 +23,31 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(VerlaufTyp verlaufTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      VerlaufTyp verlaufTyp, String meldungId, Reference patient, Reference diagnose) {
     return createObservations(
-        verlaufTyp.getMengeFM().getFernmetastase(), "Verlauf", patient, diagnose);
+        verlaufTyp.getMengeFM().getFernmetastase(), meldungId + "-Verlauf", patient, diagnose);
   }
 
-  public List<Observation> map(DiagnoseTyp diagnoseTyp, Reference patient, Reference diagnose) {
+  public List<Observation> map(
+      DiagnoseTyp diagnoseTyp, String meldungId, Reference patient, Reference diagnose) {
     return createObservations(
-        diagnoseTyp.getMengeFM().getFernmetastase(), "Diagnose", patient, diagnose);
+        diagnoseTyp.getMengeFM().getFernmetastase(), meldungId + "-Diagnose", patient, diagnose);
+  }
+
+  public List<Observation> map(
+      PathologieTyp pathologieTyp, String meldungId, Reference patient, Reference diagnose) {
+    return createObservations(
+        pathologieTyp.getMengeFM().getFernmetastase(),
+        meldungId + "-Pathologie",
+        patient,
+        diagnose);
   }
 
   private List<Observation> createObservations(
       List<Fernmetastase> fernmetastasen, String source, Reference patient, Reference diagnose) {
-    Objects.requireNonNull(patient);
-    Objects.requireNonNull(diagnose);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            diagnose.getReferenceElement().getResourceType(), ResourceType.CONDITION.toCode()),
-        "The diagnose reference should point to a Condition resource");
+    verifyReference(patient, ResourceType.PATIENT);
+    verifyReference(diagnose, ResourceType.CONDITION);
 
     var result = new ArrayList<Observation>();
     for (int i = 0; i < fernmetastasen.size(); i++) {
@@ -56,7 +58,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       var identifier = new Identifier();
       identifier
           .setSystem(fhirProperties.getSystems().getFernmetastasenId())
-          .setValue(source + "_" + i);
+          .setValue(source + "-" + i);
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
       // Meta-Daten
