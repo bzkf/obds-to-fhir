@@ -64,3 +64,5 @@ package-lock.json
 tests/k8s/**/charts
 
 node_modules/
+
+.approval_tests_temp/
