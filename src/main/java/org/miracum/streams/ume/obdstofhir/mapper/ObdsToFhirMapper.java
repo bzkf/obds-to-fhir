@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -110,18 +111,22 @@ public abstract class ObdsToFhirMapper {
 
   public static List<MeldungExport> prioritiseLatestMeldungExports(
       MeldungExportList meldungExports, List<Meldeanlass> priorityOrder, List<Meldeanlass> filter) {
-    var meldungen = meldungExports.getElements();
 
-    var meldungExportMap = new HashMap<String, MeldungExport>();
+    var meldungen = meldungExports.getElements();
+    var meldungExportMap = new ConcurrentHashMap<String, MeldungExport>();
+
     // meldeanlass bleibt in LKR Meldung immer gleich
     for (var meldung : meldungen) {
       if (filter == null || filter.contains(getReportingReasonFromAdt(meldung))) {
         var lkrId = getReportingIdFromAdt(meldung);
-        var currentMeldungVersion = meldungExportMap.get(lkrId);
-        if (currentMeldungVersion == null
-            || meldung.getVersionsnummer() > currentMeldungVersion.getVersionsnummer()) {
-          meldungExportMap.put(lkrId, meldung);
-        }
+
+        meldungExportMap.merge(
+            lkrId,
+            meldung,
+            (existing, newMeldung) ->
+                newMeldung.getVersionsnummer() > existing.getVersionsnummer()
+                    ? newMeldung
+                    : existing);
       }
     }
 
