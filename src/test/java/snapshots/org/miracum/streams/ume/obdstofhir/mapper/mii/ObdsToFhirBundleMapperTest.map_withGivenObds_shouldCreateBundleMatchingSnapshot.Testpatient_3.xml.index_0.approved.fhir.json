@@ -341,23 +341,22 @@
       "url": "MedicationStatement/da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7"
     }
   }, {
-    "fullUrl": "Observation/4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1",
+    "fullUrl": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
     "resource": {
       "resourceType": "Observation",
-      "id": "4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1",
+      "id": "e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "1.2.3"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-12_1_VE_1"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "396432002",
-          "display": "Status of regression of tumor (observable entity)"
+          "code": "423740007"
         } ]
       },
       "subject": {
@@ -369,61 +368,15 @@
       "effectiveDateTime": "2018-06-02",
       "valueCodeableConcept": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-          "code": "P",
-          "display": "Progression"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "2",
+          "display": "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)"
         } ]
-      },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "277062004",
-            "display": "Status des Residualtumors"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-            "code": "K",
-            "display": "kein Tumor nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399656008",
-            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-            "code": "K",
-            "display": "kein Lymphknotenbefall nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399608002",
-            "display": "Status of distant metastasis (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-            "code": "R",
-            "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
-          } ]
-        }
-      } ]
+      }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1"
+      "url": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122"
     }
   }, {
     "fullUrl": "Procedure/eb50819015978eaa445c1a6553dfee33010b305162808c044e7a667293050216",

@@ -793,23 +793,22 @@
       "url": "MedicationStatement/a4445c220a40c4227211dc0210f96be8fbfdd3080a0b23f258589e4b376dd8de"
     }
   }, {
-    "fullUrl": "Observation/dcf2f38da5f7af9085fc27236981774c5b29241dc14128f9cf186a1e9f53eba4",
+    "fullUrl": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d",
     "resource": {
       "resourceType": "Observation",
-      "id": "dcf2f38da5f7af9085fc27236981774c5b29241dc14128f9cf186a1e9f53eba4",
+      "id": "a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "195"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-VER_17105"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "396432002",
-          "display": "Status of regression of tumor (observable entity)"
+          "code": "423740007"
         } ]
       },
       "subject": {
@@ -821,61 +820,15 @@
       "effectiveDateTime": "2020-08-05",
       "valueCodeableConcept": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-          "code": "V",
-          "display": "Vollremission"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "1",
+          "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
         } ]
-      },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "277062004",
-            "display": "Status des Residualtumors"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-            "code": "K",
-            "display": "kein Tumor nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399656008",
-            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-            "code": "K",
-            "display": "kein Lymphknotenbefall nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399608002",
-            "display": "Status of distant metastasis (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-            "code": "K",
-            "display": "keine Fernmetastasen nachweisbar"
-          } ]
-        }
-      } ]
+      }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/dcf2f38da5f7af9085fc27236981774c5b29241dc14128f9cf186a1e9f53eba4"
+      "url": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d"
     }
   }, {
     "fullUrl": "Observation/855d162733724763587320167d7b27cd6d2afa3d2c1d60b3e2b4b1fa08cb9695",

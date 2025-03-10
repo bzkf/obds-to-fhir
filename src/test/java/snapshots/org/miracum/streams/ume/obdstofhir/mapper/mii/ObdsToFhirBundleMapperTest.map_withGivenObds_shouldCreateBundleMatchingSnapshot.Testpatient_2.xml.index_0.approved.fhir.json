@@ -444,23 +444,22 @@
       "url": "MedicationStatement/e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa"
     }
   }, {
-    "fullUrl": "Observation/39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0",
+    "fullUrl": "Observation/b025f75c3b12ce095ccce95e1512174ca609d8cb2eac70487d315bc39aab4420",
     "resource": {
       "resourceType": "Observation",
-      "id": "39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0",
+      "id": "b025f75c3b12ce095ccce95e1512174ca609d8cb2eac70487d315bc39aab4420",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "164"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-11_1_VE_1"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "396432002",
-          "display": "Status of regression of tumor (observable entity)"
+          "code": "423740007"
         } ]
       },
       "subject": {
@@ -472,127 +471,15 @@
       "effectiveDateTime": "2022-01-20",
       "valueCodeableConcept": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-          "code": "Y",
-          "display": "Rezidiv"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "1",
+          "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
         } ]
-      },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "277062004",
-            "display": "Status des Residualtumors"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-            "code": "R",
-            "display": "Lokalrezidiv"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399656008",
-            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-            "code": "K",
-            "display": "kein Lymphknotenbefall nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "399608002",
-            "display": "Status of distant metastasis (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-            "code": "K",
-            "display": "keine Fernmetastasen nachweisbar"
-          } ]
-        }
-      } ]
+      }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0"
-    }
-  }, {
-    "fullUrl": "Observation/313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78",
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
-        "value": "gleason-score-11_1_VE_1"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "code": "385377005",
-          "display": "Gleason grade finding for prostatic cancer (finding)"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
-      },
-      "focus": [ {
-        "reference": "Condition/a31f38c3b6c0d35e6f228a50ba288b814250c774b8dc89cf5ae36455eb6d1ea8"
-      } ],
-      "effectiveDateTime": "2022-01-20",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-            "valueInteger": 7
-          } ],
-          "system": "http://snomed.info/sct",
-          "code": "57403001"
-        } ],
-        "text": "7"
-      },
-      "method": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "code": "86273004",
-          "display": "Biopsy (procedure)"
-        } ]
-      },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "384994009",
-            "display": "Primary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 3
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "code": "384995005",
-            "display": "Secondary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 4
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78"
+      "url": "Observation/b025f75c3b12ce095ccce95e1512174ca609d8cb2eac70487d315bc39aab4420"
     }
   }, {
     "fullUrl": "Procedure/e998689be497ac35683749735bcbbe54733da906c44adbcdf346dace830f95ba",
@@ -911,26 +798,25 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/315f257cb8574f3a140853abdcca4fe76b050085fccb7a4a7d122037729a71b7"
+      "url": "Observation/c16f736b48dfdb081da9a076ff9c27f658e8d10b6bb84af6e7419a4aded0465b"
     }
   }, {
-    "fullUrl": "Observation/8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2",
+    "fullUrl": "Observation/c791988cc651bdc32dec4fa206d3cc3176eee42aa825ab695257d86a9d8ae8d6",
     "resource": {
       "resourceType": "Observation",
-      "id": "8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2",
+      "id": "c791988cc651bdc32dec4fa206d3cc3176eee42aa825ab695257d86a9d8ae8d6",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "1.1.1"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-11_2_VE_1"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "396432002",
-          "display": "Status of regression of tumor (observable entity)"
+          "code": "423740007"
         } ]
       },
       "subject": {
@@ -942,15 +828,15 @@
       "effectiveDateTime": "2020-07-18",
       "valueCodeableConcept": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-          "code": "K",
-          "display": "keine Änderung"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "0",
+          "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
         } ]
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2"
+      "url": "Observation/c791988cc651bdc32dec4fa206d3cc3176eee42aa825ab695257d86a9d8ae8d6"
     }
   } ]
 }

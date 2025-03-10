@@ -42,7 +42,12 @@ class LeistungszustandMapperTest extends MapperTest {
     var conMeldung = conMeldungOptional.get();
 
     final var leistungszustand =
-        sut.map(conMeldung, new Reference("Patient/1"), new Reference("Condition/Primärdiagnose"));
+        sut.map(
+            conMeldung.getDiagnose().getAllgemeinerLeistungszustand(),
+            conMeldung.getMeldungID(),
+            conMeldung.getTumorzuordnung().getDiagnosedatum(),
+            new Reference("Patient/1"),
+            new Reference("Condition/Primärdiagnose"));
 
     verify(leistungszustand, sourceFile);
   }
