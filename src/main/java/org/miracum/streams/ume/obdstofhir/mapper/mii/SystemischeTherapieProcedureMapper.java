@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Extension;
@@ -130,6 +131,15 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
         .setCode(syst.getIntention()); // Direct mapping from oBDS value
     procedure.addExtension(
         fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieIntention(), intention);
+
+    var stellungZurOp =
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieStellungzurop())
+            .setCode(syst.getStellungOP());
+    procedure
+        .addExtension()
+        .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieStellungzurop())
+        .setValue(new CodeableConcept(stellungZurOp));
 
     if (null != syst.getEndeGrund()) {
       var outcome = new CodeableConcept();
