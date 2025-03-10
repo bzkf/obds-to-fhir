@@ -244,8 +244,6 @@ public class Obdsv3ProcessorTest {
         try {
           var meldung = getTestObdsFromString(i, r);
 
-          // create input record
-          // inputTopic.pipeInput(String.valueOf(i),meldung);
           topicInputList.add(new KeyValue<>(String.valueOf(i), meldung));
         } catch (IOException e) {
           throw new RuntimeException(e);
@@ -289,10 +287,11 @@ public class Obdsv3ProcessorTest {
         "Testpatient_Tumorkonferenz1.xml:BEHANDLUNGSBEGINN",
       },
       delimiter = ':')
-  void testTumorkonferenz(String xmlResourceName, String expectedMeldeAnlass) throws IOException {
+  void testTumorkonferenz(String inputXmlResourceName, String expectedMeldeAnlass)
+      throws IOException {
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
-        buildMeldungExport(getResourceByName(xmlResourceName), "1", "12356789", "123", 1));
+        buildMeldungExport(getResourceByName(inputXmlResourceName), "1", "12356789", "123", 1));
 
     var result = processor.getTumorKonferenzmeldung(meldungExportListV3);
     assertThat(
