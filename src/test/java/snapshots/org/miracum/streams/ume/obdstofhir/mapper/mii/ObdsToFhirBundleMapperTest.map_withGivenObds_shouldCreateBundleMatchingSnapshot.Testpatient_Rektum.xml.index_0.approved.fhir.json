@@ -624,6 +624,14 @@
             "code": "K"
           } ]
         }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
+          } ]
+        }
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
@@ -759,7 +767,15 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "P"
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
           } ]
         }
       }, {
@@ -769,15 +785,7 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "P-ST"
-            } ]
-          }
-        }, {
-          "url": "Strahlenart",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-              "code": "UH"
+              "code": "PRCN"
             } ]
           }
         }, {
@@ -785,7 +793,15 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "3.4"
+              "code": "5.1.+"
+            } ]
+          }
+        }, {
+          "url": "Zielgebiet_Lateralitaet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "B"
             } ]
           }
         } ]
@@ -798,32 +814,27 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "277132007",
-          "display": "Therapeutic procedure"
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
         } ]
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "performedPeriod": {
-        "_start": {
-          "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-            "valueCode": "unknown"
-          } ]
-        }
-      }
+        "start": "2020-10-05"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      } ]
     },
     "request": {
       "method": "PUT",

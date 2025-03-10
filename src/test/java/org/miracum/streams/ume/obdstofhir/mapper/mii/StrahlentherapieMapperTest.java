@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
+import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +26,12 @@ class StrahlentherapieMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({
+    "Testpatient_1.xml",
+    "Testpatient_2.xml",
+    "Testpatient_3.xml",
+    "Testpatient_Mamma.xml"
+  })
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -34,13 +41,15 @@ class StrahlentherapieMapperTest extends MapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    var stMeldung =
-        obdsPatient.getMengeMeldung().getMeldung().stream()
-            .filter(m -> m.getST() != null)
-            .findFirst()
-            .get();
-    var procedure = sut.map(stMeldung.getST(), subject);
+    var condition = new Reference("Condition/any");
+    var list = new ArrayList<Procedure>();
 
-    verify(procedure, sourceFile);
+    for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
+      if (meldung.getST() != null) {
+        list.add(sut.map(meldung.getST(), subject, condition));
+      }
+    }
+
+    verifyAll(list, sourceFile);
   }
 }
