@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.processor;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.*;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
+import org.jetbrains.annotations.Nullable;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
@@ -273,11 +275,49 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .getFirst()
             .setTumorzuordnung(latestReportingTumorzuordnung);
 
+        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungExportList);
+        if (tumorKonferenzMeldung != null) {
+          obds.getMengePatient()
+              .getPatient()
+              .getFirst()
+              .getMengeMeldung()
+              .getMeldung()
+              .add(tumorKonferenzMeldung);
+        }
         tumorObds.add(obds);
       }
 
       return obdsToFhirBundleMapper.map(tumorObds);
     };
+  }
+
+  @Nullable
+  protected static Meldung getTumorKonferenzmeldung(MeldungExportListV3 meldungExportList) {
+    Meldung tumorKonferenzMeldung = null;
+    var tumorkonferenzen =
+        meldungExportList.stream()
+            .map(a -> a.getObds())
+            .map(a -> a.getMengePatient())
+            .map(a -> a.getPatient().getFirst())
+            .flatMap(
+                a ->
+                    a.getMengeMeldung().getMeldung().stream()
+                        .filter(t -> t.getTumorkonferenz() != null))
+            .toList();
+
+    if (tumorkonferenzen.size() > 0) {
+      var ende =
+          tumorkonferenzen.stream()
+              .filter(
+                  a ->
+                      a.getTumorkonferenz()
+                          .getMeldeanlass()
+                          .equals(Meldeanlass.BEHANDLUNGSENDE.toString()))
+              .findAny();
+
+      tumorKonferenzMeldung = ende.orElse(tumorkonferenzen.getFirst());
+    }
+    return tumorKonferenzMeldung;
   }
 
   private OBDS.MengePatient.Patient.MengeMeldung.Meldung selectByMeldeanlass(

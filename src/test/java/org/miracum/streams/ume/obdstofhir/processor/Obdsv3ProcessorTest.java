@@ -5,9 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.function.Function;
@@ -15,14 +20,18 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serdes.StringSerde;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.TopologyTestDriver;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.test.TestRecord;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
@@ -38,6 +47,8 @@ import org.miracum.streams.ume.obdstofhir.mapper.mii.StrahlentherapieMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.SystemischeTherapieMedicationStatementMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.SystemischeTherapieProcedureMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.TodMapper;
+import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportV3Serde;
 import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
@@ -188,5 +199,137 @@ public class Obdsv3ProcessorTest {
 
     var mapper = new ObjectMapper();
     return mapper.readValue(meldung, MeldungExportV3.class);
+  }
+
+  private MeldungExportV3 getTestObdsFromString(int id, String testObds) throws IOException {
+
+    var meldung =
+        new JSONObject().put("ID", String.valueOf(id)).put("XML_DATEN", testObds).toString();
+
+    var mapper = new ObjectMapper();
+    return mapper.readValue(meldung, MeldungExportV3.class);
+  }
+
+  @Test
+  void getMeldungExportObdsV3Processor_MultiInputToBundle() throws IOException {
+
+    var inputTopicName = "meldung-obds";
+    var outputTopicName = "onko-fhir";
+
+    try (var driver =
+        buildStream(processor.getMeldungExportObdsV3Processor(), inputTopicName, outputTopicName)) {
+
+      var inputTopic =
+          driver.createInputTopic(
+              inputTopicName, new StringSerializer(), new JsonSerializer<MeldungExportV3>());
+      var outputTopic =
+          driver.createOutputTopic(
+              outputTopicName, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      List<KeyValue<String, MeldungExportV3>> topicInputList = new ArrayList<>();
+
+      List<String> inputNames = List.of("Testpatient_1.xml", "Testpatient_2.xml");
+      var inputFiles =
+          new File("src/test/resources/obds3")
+              .listFiles(
+                  (dir, name) -> {
+                    if (name != null && (name.startsWith("N/A") && name.endsWith(".xml"))
+                        || inputNames.contains(name)) return true;
+                    return false;
+                  });
+      for (int i = 0; i < inputFiles.length; i++) {
+
+        var r = fetchFile(inputFiles[i]);
+
+        try {
+          var meldung = getTestObdsFromString(i, r);
+
+          // create input record
+          // inputTopic.pipeInput(String.valueOf(i),meldung);
+          topicInputList.add(new KeyValue<>(String.valueOf(i), meldung));
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+      }
+
+      inputTopic.pipeKeyValueList(topicInputList);
+
+      // get records from output topic
+      var outputRecords = outputTopic.readRecordsToList();
+
+      Bundle bundle = (Bundle) outputRecords.getFirst().getValue();
+
+      // assert coding exists
+      assertThat(outputRecords).isNotEmpty();
+      assertThat(
+              bundle.getEntry().stream()
+                  .filter(a -> a.getResource().getResourceType() != ResourceType.Patient)
+                  .count())
+          .as("result should contain more than a Patient resource")
+          .isGreaterThan(0);
+    }
+  }
+
+  public static String fetchFile(File file) {
+    String read = null;
+    try {
+
+      InputStream in = new FileInputStream(file);
+      read = new String(in.readAllBytes());
+    } catch (IOException e) {
+
+    }
+    return read;
+  }
+
+  @Test
+  void getMeldungExportObdsV3Processor_mapsTumorkonferenz() throws IOException {
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+
+      var inputTopic =
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      // pipe test data
+      inputTopic.pipeInput(
+          "test",
+          buildMeldungExport(getResourceByName("Testpatient_1.xml"), "1", "12356789", "123", 1));
+
+      final List<TestRecord<String, IBaseResource>> actual = outputTopic.readRecordsToList();
+      assertThat(actual).isNotEmpty();
+    }
+  }
+
+  @Test
+  void testTumorkonferenz() throws IOException {
+    final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
+    meldungExportListV3.add(
+        buildMeldungExport(
+            getResourceByName("Testpatient_Tumorkonferenz2.xml"), "1", "12356789", "123", 1));
+
+    var result = processor.getTumorKonferenzmeldung(meldungExportListV3);
+    assertThat(
+            result
+                .getTumorkonferenz()
+                .getMeldeanlass()
+                .equals(Meldeanlass.BEHANDLUNGSENDE.toString()))
+        .isTrue();
+
+    meldungExportListV3.clear();
+    meldungExportListV3.add(
+        buildMeldungExport(
+            getResourceByName("Testpatient_Tumorkonferenz1.xml"), "1", "12356789", "123", 1));
+
+    result = processor.getTumorKonferenzmeldung(meldungExportListV3);
+    assertThat(
+            result
+                .getTumorkonferenz()
+                .getMeldeanlass()
+                .equals(Meldeanlass.BEHANDLUNGSBEGINN.toString()))
+        .isTrue();
   }
 }
