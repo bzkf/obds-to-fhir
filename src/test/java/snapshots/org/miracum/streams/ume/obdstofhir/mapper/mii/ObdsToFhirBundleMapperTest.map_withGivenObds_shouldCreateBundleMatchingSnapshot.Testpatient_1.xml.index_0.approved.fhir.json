@@ -1153,6 +1153,44 @@
       "url": "Observation/4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605"
     }
   }, {
+    "fullUrl": "Observation/1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-10_1_VE-1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "4",
+          "display": "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b"
+    }
+  }, {
     "fullUrl": "Specimen/ad4b122c2df5025505010afee92111e127e89d717e074e5b871d492999909a20",
     "resource": {
       "resourceType": "Specimen",
@@ -1466,6 +1504,44 @@
       "url": "Observation/d0bcfa8a23b41c9f12b0ec2265a0bdc80ea7c3c6b81622b30d28ede5d9043f3c"
     }
   }, {
+    "fullUrl": "Observation/571d00c58bfaa0b922814f1f2bfb644f5b7788958b4cdb9e5b00e802fb5135ad",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "571d00c58bfaa0b922814f1f2bfb644f5b7788958b4cdb9e5b00e802fb5135ad",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-10_1_VE-2"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-12-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "4",
+          "display": "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/571d00c58bfaa0b922814f1f2bfb644f5b7788958b4cdb9e5b00e802fb5135ad"
+    }
+  }, {
     "fullUrl": "Observation/cbc4593c9af41236a6be7702dc0d63747819059028e1f7a9ee46384a368045eb",
     "resource": {
       "resourceType": "Observation",
@@ -1742,6 +1818,44 @@
       "url": "Observation/fbe8bd4ee5604df9f3149618851a9935bbee3e95bc4cdeac769ab12fff143e2f"
     }
   }, {
+    "fullUrl": "Observation/b7fd0086edb8da26c6576729a470599486aac33de3dd0cd1a8396aafd4d2964a",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b7fd0086edb8da26c6576729a470599486aac33de3dd0cd1a8396aafd4d2964a",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-10_2_VE_1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335"
+      } ],
+      "effectiveDateTime": "2020-12-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "0",
+          "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b7fd0086edb8da26c6576729a470599486aac33de3dd0cd1a8396aafd4d2964a"
+    }
+  }, {
     "fullUrl": "Condition/a9b49e6ae910db956adf674338ec65dff97a2d4c07c1f0449c154b90782b49d9",
     "resource": {
       "resourceType": "Condition",
@@ -1840,6 +1954,44 @@
     "request": {
       "method": "PUT",
       "url": "Observation/9faa00bb7f854297a496a607f353b5e62d1e0b1b8f92a5d3d7abb2a0c045d23e"
+    }
+  }, {
+    "fullUrl": "Observation/9f15623e280f9fd3ded3abf724026c23236dae872fa38a1534be56a9b8517cfa",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "9f15623e280f9fd3ded3abf724026c23236dae872fa38a1534be56a9b8517cfa",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-10_3_VE_1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/a9b49e6ae910db956adf674338ec65dff97a2d4c07c1f0449c154b90782b49d9"
+      } ],
+      "effectiveDateTime": "2021-12-15",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "0",
+          "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/9f15623e280f9fd3ded3abf724026c23236dae872fa38a1534be56a9b8517cfa"
     }
   }, {
     "fullUrl": "Procedure/1b566748e4b3f7c304f866b98ba11696eb2cb16ee4f8627bb187ecbcee4b46b0",
