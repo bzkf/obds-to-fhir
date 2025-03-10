@@ -27,13 +27,13 @@ import org.apache.kafka.streams.TopologyTestDriver;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.test.TestRecord;
-import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -282,54 +282,24 @@ public class Obdsv3ProcessorTest {
     return read;
   }
 
-  @Test
-  void getMeldungExportObdsV3Processor_mapsTumorkonferenz() throws IOException {
-    try (var driver =
-        buildStream(
-            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
-
-      var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
-      var outputTopic =
-          driver.createOutputTopic(
-              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
-
-      // pipe test data
-      inputTopic.pipeInput(
-          "test",
-          buildMeldungExport(getResourceByName("Testpatient_1.xml"), "1", "12356789", "123", 1));
-
-      final List<TestRecord<String, IBaseResource>> actual = outputTopic.readRecordsToList();
-      assertThat(actual).isNotEmpty();
-    }
-  }
-
-  @Test
-  void testTumorkonferenz() throws IOException {
+  @ParameterizedTest
+  @CsvSource(
+      value = {
+        "Testpatient_Tumorkonferenz2.xml:BEHANDLUNGSENDE",
+        "Testpatient_Tumorkonferenz1.xml:BEHANDLUNGSBEGINN",
+      },
+      delimiter = ':')
+  void testTumorkonferenz(String xmlResourceName, String expectedMeldeAnlass) throws IOException {
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName("Testpatient_Tumorkonferenz2.xml"), "1", "12356789", "123", 1));
+        buildMeldungExport(getResourceByName(xmlResourceName), "1", "12356789", "123", 1));
 
     var result = processor.getTumorKonferenzmeldung(meldungExportListV3);
     assertThat(
             result
                 .getTumorkonferenz()
                 .getMeldeanlass()
-                .equals(Meldeanlass.BEHANDLUNGSENDE.toString()))
-        .isTrue();
-
-    meldungExportListV3.clear();
-    meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName("Testpatient_Tumorkonferenz1.xml"), "1", "12356789", "123", 1));
-
-    result = processor.getTumorKonferenzmeldung(meldungExportListV3);
-    assertThat(
-            result
-                .getTumorkonferenz()
-                .getMeldeanlass()
-                .equals(Meldeanlass.BEHANDLUNGSBEGINN.toString()))
+                .equals(Meldeanlass.valueOf(expectedMeldeAnlass).toString()))
         .isTrue();
   }
 }
