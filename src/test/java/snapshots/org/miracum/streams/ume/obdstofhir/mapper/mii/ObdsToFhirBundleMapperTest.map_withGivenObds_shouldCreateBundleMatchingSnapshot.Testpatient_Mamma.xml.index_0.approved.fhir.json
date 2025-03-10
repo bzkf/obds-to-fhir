@@ -1183,7 +1183,15 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "P"
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
           } ]
         }
       }, {
@@ -1193,15 +1201,7 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "P-ST"
-            } ]
-          }
-        }, {
-          "url": "Strahlenart",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-              "code": "UH"
+              "code": "PRCN"
             } ]
           }
         }, {
@@ -1209,7 +1209,39 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "3.4"
+              "code": "3.1.+"
+            } ]
+          }
+        }, {
+          "url": "Zielgebiet_Lateralitaet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "R"
+            } ]
+          }
+        }, {
+          "url": "Gesamtdosis",
+          "valueQuantity": {
+            "value": 58.8,
+            "unit": "Gy",
+            "system": "http://unitsofmeasure.org",
+            "code": "Gy"
+          }
+        }, {
+          "url": "Einzeldosis",
+          "valueQuantity": {
+            "value": 1.8,
+            "unit": "Gy",
+            "system": "http://unitsofmeasure.org",
+            "code": "Gy"
+          }
+        }, {
+          "url": "Boost",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
+              "code": "SIB"
             } ]
           }
         } ]
@@ -1222,31 +1254,33 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "277132007",
-          "display": "Therapeutic procedure"
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
         } ]
       },
       "subject": {
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
       },
       "performedPeriod": {
-        "_start": {
-          "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-            "valueCode": "unknown"
-          } ]
-        }
+        "start": "2020-06-12",
+        "end": "2020-07-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/257c056341e9015dfdd7d15cab0a7414b348796b2b01813101078b451af692c6"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
+          "code": "E"
+        } ]
       }
     },
     "request": {
@@ -1267,6 +1301,14 @@
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
           } ]
         }
       } ],
@@ -1345,6 +1387,14 @@
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
           } ]
         }
       } ],

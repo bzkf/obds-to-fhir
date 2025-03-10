@@ -207,7 +207,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
         // Strahlenterhapie
         if (meldung.getST() != null) {
-          var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
+          var stProcedure =
+              strahlentherapieMapper.map(
+                  meldung.getST(), patientReference, primaryConditionReference);
           addToBundle(bundle, stProcedure);
         }
 
