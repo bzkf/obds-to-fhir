@@ -2,11 +2,14 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.BoostTyp;
 import de.basisdatensatz.obds.v3.STTyp;
+import de.basisdatensatz.obds.v3.STTyp.MengeBestrahlung.Bestrahlung;
 import de.basisdatensatz.obds.v3.STTyp.MengeBestrahlung.Bestrahlung.Applikationsart;
 import de.basisdatensatz.obds.v3.StrahlendosisTyp;
 import de.basisdatensatz.obds.v3.ZielgebietTyp;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -117,6 +120,10 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     procedure.addReasonReference(condition);
 
+    var performed =
+        computeTreatmentPeriodFromAllBestrahlung(st.getMengeBestrahlung().getBestrahlung());
+    procedure.setPerformed(performed);
+
     var allMetabolic =
         st.getMengeBestrahlung().getBestrahlung().stream()
             .allMatch(b -> b.getApplikationsart().getMetabolisch() != null);
@@ -170,37 +177,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       procedure.setOutcome(new CodeableConcept(outcome));
     }
 
-    // find the smallest begin date...
-    var earliestBestrahlungBeginn =
-        st.getMengeBestrahlung().getBestrahlung().stream()
-            .map(x -> x.getBeginn())
-            .filter(Objects::nonNull)
-            .min(Comparator.comparing(e -> e.toGregorianCalendar()));
-
-    // ... and the largest end date
-    var latestBestrahlungEnde =
-        st.getMengeBestrahlung().getBestrahlung().stream()
-            .map(x -> x.getEnde())
-            .filter(Objects::nonNull)
-            .max(Comparator.comparing(e -> e.toGregorianCalendar()));
-
-    var performed = new Period();
-    if (earliestBestrahlungBeginn.isPresent()) {
-      var earliest = convertObdsDatumToDateTimeType(earliestBestrahlungBeginn.get());
-      if (earliest.isPresent()) {
-        performed.setStartElement(earliest.get());
-      }
-    }
-
-    if (latestBestrahlungEnde.isPresent()) {
-      var latest = convertObdsDatumToDateTimeType(latestBestrahlungEnde.get());
-      if (latest.isPresent()) {
-        performed.setEndElement(latest.get());
-      }
-    }
-
-    procedure.setPerformed(performed);
-
     var intention =
         new Coding()
             .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
@@ -220,114 +196,153 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
         .setValue(new CodeableConcept(stellungZurOp));
 
     for (var bestrahlung : st.getMengeBestrahlung().getBestrahlung()) {
-      var bestrahlungExtension =
-          new Extension(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlung());
-
-      var data = getBestrahlungsData(bestrahlung.getApplikationsart());
-
-      if (data == null) {
-        LOG.warn("Unable to extract Bestrahlung data. Likely Malformed Applikationsart element.");
-        continue;
+      var bestrahlungExtension = createBestrahlungExtension(bestrahlung);
+      if (bestrahlungExtension.isPresent()) {
+        procedure.addExtension(bestrahlungExtension.get());
       }
-
-      // per profile, Applikationsart, Strahlenart, and Zielgebiet must be set
-      var applikationsartCode = data.applikationsart();
-      if (applikationsartCode != null) {
-        var applikationsart =
-            new Coding()
-                .setSystem(
-                    fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
-                .setCode(applikationsartCode.getCode());
-        bestrahlungExtension.addExtension("Applikationsart", new CodeableConcept(applikationsart));
-      }
-
-      var strahlenartCode = data.strahlenart();
-      if (strahlenartCode != null) {
-        var value =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieStrahlenart())
-                .setCode(strahlenartCode);
-        bestrahlungExtension.addExtension("Strahlenart", new CodeableConcept(value));
-      }
-
-      var zielgebietCode = data.zielgebiet();
-      if (zielgebietCode != null) {
-        var value =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieZielgebiet())
-                .setCode(zielgebietCode);
-        bestrahlungExtension.addExtension("Zielgebiet", new CodeableConcept(value));
-      }
-
-      var zielgebietLateralitaetCode = data.seiteZielgebiet();
-      if (zielgebietLateralitaetCode != null) {
-        var value =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
-                .setCode(zielgebietLateralitaetCode);
-        bestrahlungExtension.addExtension("Zielgebiet_Lateralitaet", new CodeableConcept(value));
-      }
-
-      var gesamtdosis = data.gesamtdosis();
-      if (gesamtdosis != null) {
-        var value =
-            new Quantity()
-                .setUnit(gesamtdosis.getEinheit())
-                .setValue(gesamtdosis.getDosis())
-                .setSystem(fhirProperties.getSystems().getUcum())
-                .setCode(gesamtdosis.getEinheit());
-        bestrahlungExtension.addExtension("Gesamtdosis", value);
-      }
-
-      var einzeldosis = data.einzeldosis();
-      if (einzeldosis != null) {
-        var value =
-            new Quantity()
-                .setUnit(einzeldosis.getEinheit())
-                .setValue(einzeldosis.getDosis())
-                .setSystem(fhirProperties.getSystems().getUcum())
-                .setCode(einzeldosis.getEinheit());
-        bestrahlungExtension.addExtension("Einzeldosis", value);
-      }
-
-      var boost = data.boost();
-      if (boost != null) {
-        var value =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieBoost())
-                .setCode(boost.value());
-        bestrahlungExtension.addExtension("Boost", new CodeableConcept(value));
-      }
-
-      // extra handling for metabolisch, quite ugly, should instead be moved to a
-      // "StrahlentherapieBestrahlung"-based type hierarchy
-      if (bestrahlung.getApplikationsart().getMetabolisch() != null) {
-        var metabolisch = bestrahlung.getApplikationsart().getMetabolisch();
-        if (metabolisch.getEinzeldosis() != null) {
-          var value =
-              new Quantity()
-                  .setUnit(metabolisch.getEinzeldosis().getEinheit())
-                  .setValue(metabolisch.getEinzeldosis().getDosis())
-                  .setSystem(fhirProperties.getSystems().getUcum())
-                  .setCode(metabolisch.getEinzeldosis().getEinheit());
-          bestrahlungExtension.addExtension("Einzeldosis", value);
-        }
-
-        if (metabolisch.getGesamtdosis() != null) {
-          var value =
-              new Quantity()
-                  .setUnit(metabolisch.getGesamtdosis().getEinheit())
-                  .setValue(metabolisch.getGesamtdosis().getDosis())
-                  .setSystem(fhirProperties.getSystems().getUcum())
-                  .setCode(metabolisch.getGesamtdosis().getEinheit());
-          bestrahlungExtension.addExtension("Gesamtdosis", value);
-        }
-      }
-
-      procedure.addExtension(bestrahlungExtension);
     }
 
     return procedure;
+  }
+
+  private Period computeTreatmentPeriodFromAllBestrahlung(List<Bestrahlung> bestrahlungen) {
+    // find the smallest begin date...
+    var earliestBestrahlungBeginn =
+        bestrahlungen.stream()
+            .map(x -> x.getBeginn())
+            .filter(Objects::nonNull)
+            .min(Comparator.comparing(e -> e.toGregorianCalendar()));
+
+    // ... and the largest end date
+    var latestBestrahlungEnde =
+        bestrahlungen.stream()
+            .map(x -> x.getEnde())
+            .filter(Objects::nonNull)
+            .max(Comparator.comparing(e -> e.toGregorianCalendar()));
+
+    var performed = new Period();
+    if (earliestBestrahlungBeginn.isPresent()) {
+      var earliest = convertObdsDatumToDateTimeType(earliestBestrahlungBeginn.get());
+      if (earliest.isPresent()) {
+        performed.setStartElement(earliest.get());
+      }
+    }
+
+    if (latestBestrahlungEnde.isPresent()) {
+      var latest = convertObdsDatumToDateTimeType(latestBestrahlungEnde.get());
+      if (latest.isPresent()) {
+        performed.setEndElement(latest.get());
+      }
+    }
+
+    return performed;
+  }
+
+  private Optional<Extension> createBestrahlungExtension(Bestrahlung bestrahlung) {
+    var bestrahlungExtension =
+        new Extension(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlung());
+
+    var data = getBestrahlungsData(bestrahlung.getApplikationsart());
+
+    if (data == null) {
+      LOG.warn("Unable to extract Bestrahlung data. Likely Malformed Applikationsart element.");
+      return Optional.empty();
+    }
+
+    // per profile, Applikationsart, Strahlenart, and Zielgebiet must be set
+    var applikationsartCode = data.applikationsart();
+    if (applikationsartCode != null) {
+      var applikationsart =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
+              .setCode(applikationsartCode.getCode());
+      bestrahlungExtension.addExtension("Applikationsart", new CodeableConcept(applikationsart));
+    }
+
+    var strahlenartCode = data.strahlenart();
+    if (strahlenartCode != null) {
+      var value =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieStrahlenart())
+              .setCode(strahlenartCode);
+      bestrahlungExtension.addExtension("Strahlenart", new CodeableConcept(value));
+    }
+
+    var zielgebietCode = data.zielgebiet();
+    if (zielgebietCode != null) {
+      var value =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieZielgebiet())
+              .setCode(zielgebietCode);
+      bestrahlungExtension.addExtension("Zielgebiet", new CodeableConcept(value));
+    }
+
+    var zielgebietLateralitaetCode = data.seiteZielgebiet();
+    if (zielgebietLateralitaetCode != null) {
+      var value =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
+              .setCode(zielgebietLateralitaetCode);
+      bestrahlungExtension.addExtension("Zielgebiet_Lateralitaet", new CodeableConcept(value));
+    }
+
+    var gesamtdosis = data.gesamtdosis();
+    if (gesamtdosis != null) {
+      var value =
+          new Quantity()
+              .setUnit(gesamtdosis.getEinheit())
+              .setValue(gesamtdosis.getDosis())
+              .setSystem(fhirProperties.getSystems().getUcum())
+              .setCode(gesamtdosis.getEinheit());
+      bestrahlungExtension.addExtension("Gesamtdosis", value);
+    }
+
+    var einzeldosis = data.einzeldosis();
+    if (einzeldosis != null) {
+      var value =
+          new Quantity()
+              .setUnit(einzeldosis.getEinheit())
+              .setValue(einzeldosis.getDosis())
+              .setSystem(fhirProperties.getSystems().getUcum())
+              .setCode(einzeldosis.getEinheit());
+      bestrahlungExtension.addExtension("Einzeldosis", value);
+    }
+
+    var boost = data.boost();
+    if (boost != null) {
+      var value =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieBoost())
+              .setCode(boost.value());
+      bestrahlungExtension.addExtension("Boost", new CodeableConcept(value));
+    }
+
+    // extra handling for metabolisch, quite ugly, should instead be moved to a
+    // "StrahlentherapieBestrahlung"-based type hierarchy
+    if (bestrahlung.getApplikationsart().getMetabolisch() != null) {
+      var metabolisch = bestrahlung.getApplikationsart().getMetabolisch();
+      if (metabolisch.getEinzeldosis() != null) {
+        var value =
+            new Quantity()
+                .setUnit(metabolisch.getEinzeldosis().getEinheit())
+                .setValue(metabolisch.getEinzeldosis().getDosis())
+                .setSystem(fhirProperties.getSystems().getUcum())
+                .setCode(metabolisch.getEinzeldosis().getEinheit());
+        bestrahlungExtension.addExtension("Einzeldosis", value);
+      }
+
+      if (metabolisch.getGesamtdosis() != null) {
+        var value =
+            new Quantity()
+                .setUnit(metabolisch.getGesamtdosis().getEinheit())
+                .setValue(metabolisch.getGesamtdosis().getDosis())
+                .setSystem(fhirProperties.getSystems().getUcum())
+                .setCode(metabolisch.getGesamtdosis().getEinheit());
+        bestrahlungExtension.addExtension("Gesamtdosis", value);
+      }
+    }
+
+    return Optional.of(bestrahlungExtension);
   }
 
   private static StrahlentherapieBestrahlung getBestrahlungsData(Applikationsart applikationsart) {
