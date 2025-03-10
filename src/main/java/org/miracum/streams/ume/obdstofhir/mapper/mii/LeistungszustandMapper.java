@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.util.Collections;
+import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
@@ -44,6 +45,8 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
       Reference patient,
       Reference condition) {
 
+    Objects.requireNonNull(allgemeinerLeistungszustand);
+    Objects.requireNonNull(meldungsId);
     verifyReference(patient, ResourceType.PATIENT);
     verifyReference(condition, ResourceType.CONDITION);
 
