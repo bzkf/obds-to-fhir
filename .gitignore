@@ -3,6 +3,7 @@ HELP.md
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+.~lock.*
 
 ### STS ###
 .apt_generated
@@ -67,3 +68,4 @@ node_modules/
 
 # generated code
 src/generated/
+
