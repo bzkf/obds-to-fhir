@@ -140,12 +140,12 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     var gesamtbeurteilung = verlauf.getGesamtbeurteilungTumorstatus();
     if (gesamtbeurteilung != null) {
       var value = VerlaufGesamtbeurteilung.fromCode(gesamtbeurteilung);
-        observation.setValue(
-            new CodeableConcept(
-                new Coding(
-                    fhirProperties.getSystems().getMiiCsOnkoVerlaufGesamtbeurteilung(),
-                    value.getCode(),
-                    value.getDisplay())));
+      observation.setValue(
+          new CodeableConcept(
+              new Coding(
+                  fhirProperties.getSystems().getMiiCsOnkoVerlaufGesamtbeurteilung(),
+                  value.getCode(),
+                  value.getDisplay())));
     }
 
     return observation;
