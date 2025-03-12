@@ -45,6 +45,7 @@ public class FhirProperties {
     private String specimenId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
+    private String genetischeVarianteId;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -99,10 +100,10 @@ public class FhirProperties {
     private String observationCategory;
     private String miiCsOnkoStudienteilnahme;
     private String miiCsOnkoGrading;
-
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
     private String histologiebefundDiagnosticReportId;
+    private String miiCsOnkoGenetischeVarianteAuspraegung;
     private String nebenwirkungAdverseEventId;
     private String miiCsOnkoNebenwirkungCtcaeGrad;
     private String meddra;
@@ -139,6 +140,7 @@ public class FhirProperties {
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
     private String miiPrOnkoStudienteilnahme;
+    private String miiPrOnkoGenetischeVariante;
     private String miiPrOnkoNebenwirkungAdverseEvent;
   }
 

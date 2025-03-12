@@ -57,5 +57,8 @@
         <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
             <jaxb:typesafeEnumClass name="EndeGrund" />
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Menge_Genetik_Typ']//xs:element[@name='Genetische_Variante']//xs:element[@name='Auspraegung']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="GenetischeVarianteAuspraegung" />
+        </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>
