@@ -1,9 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "2ad9a912b97acf68e4edb9c71099fd0353f85fba37ad05044a31b2a838bbb37d",
+  "id": "2912682794362ebd3d675b9244d964243d34afbe25d86e9836c16b32224f923a",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
   },
+  "identifier": [ {
+    "value": "1.2.3"
+  } ],
   "status": "final",
   "code": {
     "coding": [ {
@@ -18,12 +21,12 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2021-06-01",
+  "effectiveDateTime": "2018-06-02",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-      "code": "Y",
-      "display": "Rezidiv"
+      "code": "P",
+      "display": "Progression"
     } ]
   },
   "component": [ {
@@ -31,14 +34,14 @@
       "coding": [ {
         "system": "http://snomed.info/sct",
         "code": "277062004",
-        "display": "Status des Residualtumors"
+        "display": "Residual tumour status"
       } ]
     },
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-        "code": "R",
-        "display": "Lokalrezidiv"
+        "code": "K",
+        "display": "kein Tumor nachweisbar"
       } ]
     }
   }, {
@@ -52,8 +55,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-        "code": "R",
-        "display": "neu aufgetretenes Lymphknotenrezidiv"
+        "code": "K",
+        "display": "kein Lymphknotenbefall nachweisbar"
       } ]
     }
   }, {

@@ -48,7 +48,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
         new Identifier()
             .setSystem(fhirProperties.getSystems().getObservationVerlaufId())
             .setValue(verlauf.getVerlaufID());
-    observation.addIdentifier();
+    observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
     // Status
@@ -76,68 +76,77 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
 
     // Components
     // Tumorstatus Primärtumor
-    var tumorstatusPrimaertumor =
-        TumorstatusPrimaertumor.fromCode(verlauf.getVerlaufLokalerTumorstatus());
-    observation.addComponent(
-        new Observation.ObservationComponentComponent()
-            .setCode(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getSnomed(),
-                        "277062004",
-                        "Status des Residualtumors")))
-            .setValue(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getMiiCsOnkoVerlaufPrimaertumor(),
-                        tumorstatusPrimaertumor.getCode(),
-                        tumorstatusPrimaertumor.getDisplay()))));
+    var verlaufLokalerTumorstatus = verlauf.getVerlaufLokalerTumorstatus();
+    if (verlaufLokalerTumorstatus != null) {
+      var tumorstatusPrimaertumor = TumorstatusPrimaertumor.fromCode(verlaufLokalerTumorstatus);
+      observation.addComponent(
+          new Observation.ObservationComponentComponent()
+              .setCode(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getSnomed(),
+                          "277062004",
+                          "Residual tumour status")))
+              .setValue(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getMiiCsOnkoVerlaufPrimaertumor(),
+                          tumorstatusPrimaertumor.getCode(),
+                          tumorstatusPrimaertumor.getDisplay()))));
+    }
 
     // Tumorstatus Lymphknoten
-    var tumorstatusLymphknoten =
-        TumorstatusLymphknoten.fromCode(verlauf.getVerlaufTumorstatusLymphknoten());
-    observation.addComponent(
-        new Observation.ObservationComponentComponent()
-            .setCode(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getSnomed(),
-                        "399656008",
-                        "Status of tumor metastasis to regional lymph nodes (observable entity)")))
-            .setValue(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getMiiCsOnkoVerlaufLymphknoten(),
-                        tumorstatusLymphknoten.getCode(),
-                        tumorstatusLymphknoten.getDisplay()))));
+    var verlaufTumorstatusLymphknoten = verlauf.getVerlaufTumorstatusLymphknoten();
+    if (verlaufTumorstatusLymphknoten != null) {
+      var tumorstatusLymphknoten = TumorstatusLymphknoten.fromCode(verlaufTumorstatusLymphknoten);
+      observation.addComponent(
+          new Observation.ObservationComponentComponent()
+              .setCode(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getSnomed(),
+                          "399656008",
+                          "Status of tumor metastasis to regional lymph nodes (observable entity)")))
+              .setValue(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getMiiCsOnkoVerlaufLymphknoten(),
+                          tumorstatusLymphknoten.getCode(),
+                          tumorstatusLymphknoten.getDisplay()))));
+    }
 
     // Tumorstatus Fernmetastasen
-    var tumorstatusFernmetastasen =
-        TumorstatusFernmetastasen.fromCode(verlauf.getVerlaufTumorstatusFernmetastasen());
-    observation.addComponent(
-        new Observation.ObservationComponentComponent()
-            .setCode(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getSnomed(),
-                        "399608002",
-                        "Status of distant metastasis (observable entity)")))
-            .setValue(
-                new CodeableConcept(
-                    new Coding(
-                        fhirProperties.getSystems().getMiiCsOnkoVerlaufFernmetastasen(),
-                        tumorstatusFernmetastasen.getCode(),
-                        tumorstatusFernmetastasen.getDisplay()))));
+    var verlaufTumorstatusFernmetastasen = verlauf.getVerlaufTumorstatusFernmetastasen();
+    if (verlaufTumorstatusFernmetastasen != null) {
+      var tumorstatusFernmetastasen =
+          TumorstatusFernmetastasen.fromCode(verlaufTumorstatusFernmetastasen);
+      observation.addComponent(
+          new Observation.ObservationComponentComponent()
+              .setCode(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getSnomed(),
+                          "399608002",
+                          "Status of distant metastasis (observable entity)")))
+              .setValue(
+                  new CodeableConcept(
+                      new Coding(
+                          fhirProperties.getSystems().getMiiCsOnkoVerlaufFernmetastasen(),
+                          tumorstatusFernmetastasen.getCode(),
+                          tumorstatusFernmetastasen.getDisplay()))));
+    }
 
     // Value
-    VerlaufGesamtbeurteilung value =
-        VerlaufGesamtbeurteilung.fromCode(verlauf.getGesamtbeurteilungTumorstatus());
-    observation.setValue(
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getMiiCsOnkoVerlaufGesamtbeurteilung(),
-                value.getCode(),
-                value.getDisplay())));
+    var gesamtbeurteilung = verlauf.getGesamtbeurteilungTumorstatus();
+    if (gesamtbeurteilung != null) {
+      var value = VerlaufGesamtbeurteilung.fromCode(gesamtbeurteilung);
+        observation.setValue(
+            new CodeableConcept(
+                new Coding(
+                    fhirProperties.getSystems().getMiiCsOnkoVerlaufGesamtbeurteilung(),
+                    value.getCode(),
+                    value.getDisplay())));
+    }
 
     return observation;
   }

@@ -1,0 +1,78 @@
+{
+  "resourceType": "Observation",
+  "id": "677cd6a17bfcb93722e5c7f7341e2b54c168c22111f03dc0a0e78226a46bba25",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+  },
+  "identifier": [ {
+    "value": "344"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "396432002",
+      "display": "Status of regression of tumor (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-12-15",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+      "code": "P",
+      "display": "Progression"
+    } ]
+  },
+  "component": [ {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "277062004",
+        "display": "Residual tumour status"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
+        "code": "P",
+        "display": "Tumorreste (Residualtumor) Progress"
+      } ]
+    }
+  }, {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "399656008",
+        "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
+        "code": "K",
+        "display": "kein Lymphknotenbefall nachweisbar"
+      } ]
+    }
+  }, {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "399608002",
+        "display": "Status of distant metastasis (observable entity)"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
+        "code": "K",
+        "display": "keine Fernmetastasen nachweisbar"
+      } ]
+    }
+  } ]
+}

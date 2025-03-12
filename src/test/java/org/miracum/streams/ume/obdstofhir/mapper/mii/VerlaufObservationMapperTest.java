@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,15 +37,19 @@ class VerlaufObservationMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
     var condition = new Reference("Condition/Primärdiagnose");
-    var verlaufOptional =
+    var meldungCollection =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getVerlauf() != null)
-            .findFirst(); // TODO: does this limit tests to only one element of Verlauf?
+            .toList();
 
-    if (verlaufOptional.isPresent()) {
-      var verlauf = verlaufOptional.get().getVerlauf();
+    var observations = new ArrayList<Observation>();
+    for (var meldung : meldungCollection) {
+      var verlauf = meldung.getVerlauf();
       var observation = sut.map(verlauf, subject, condition);
-      verify(observation, sourceFile);
+      observations.add(observation);
     }
+
+    assertThat(observations).isNotEmpty();
+    verifyAll(observations, sourceFile);
   }
 }

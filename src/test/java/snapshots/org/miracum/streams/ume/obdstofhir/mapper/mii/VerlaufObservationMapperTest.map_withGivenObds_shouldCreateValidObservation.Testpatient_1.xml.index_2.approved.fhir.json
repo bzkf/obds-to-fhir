@@ -1,9 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "2912682794362ebd3d675b9244d964243d34afbe25d86e9836c16b32224f923a",
+  "id": "93276f6f6478e31408d5e35c0dc2e5d378ccea46346f6a6dad59163900b13df4",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
   },
+  "identifier": [ {
+    "value": "343"
+  } ],
   "status": "final",
   "code": {
     "coding": [ {
@@ -18,7 +21,7 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2018-06-02",
+  "effectiveDateTime": "2020-12-01",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
@@ -31,14 +34,14 @@
       "coding": [ {
         "system": "http://snomed.info/sct",
         "code": "277062004",
-        "display": "Status des Residualtumors"
+        "display": "Residual tumour status"
       } ]
     },
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-        "code": "K",
-        "display": "kein Tumor nachweisbar"
+        "code": "P",
+        "display": "Tumorreste (Residualtumor) Progress"
       } ]
     }
   }, {
@@ -67,8 +70,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-        "code": "R",
-        "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
+        "code": "K",
+        "display": "keine Fernmetastasen nachweisbar"
       } ]
     }
   } ]

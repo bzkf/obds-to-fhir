@@ -1,9 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "d2e87dec0901c3de9b134651eeccbc6d6816117e1c379575ee87ee0a3b0bebc9",
+  "id": "2ad9a912b97acf68e4edb9c71099fd0353f85fba37ad05044a31b2a838bbb37d",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
   },
+  "identifier": [ {
+    "value": "341"
+  } ],
   "status": "final",
   "code": {
     "coding": [ {
@@ -18,7 +21,7 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2022-01-20",
+  "effectiveDateTime": "2021-06-01",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
@@ -31,7 +34,7 @@
       "coding": [ {
         "system": "http://snomed.info/sct",
         "code": "277062004",
-        "display": "Status des Residualtumors"
+        "display": "Residual tumour status"
       } ]
     },
     "valueCodeableConcept": {
@@ -52,8 +55,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-        "code": "K",
-        "display": "kein Lymphknotenbefall nachweisbar"
+        "code": "R",
+        "display": "neu aufgetretenes Lymphknotenrezidiv"
       } ]
     }
   }, {
@@ -67,8 +70,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-        "code": "K",
-        "display": "keine Fernmetastasen nachweisbar"
+        "code": "R",
+        "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
       } ]
     }
   } ]
