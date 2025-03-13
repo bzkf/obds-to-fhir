@@ -33,6 +33,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       VerlaufshistologieObservationMapper.class,
       StudienteilnahmeObservationMapper.class,
       VerlaufObservationMapper.class,
+      GenetischeVarianteMapper.class,
     })
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest extends MapperTest {

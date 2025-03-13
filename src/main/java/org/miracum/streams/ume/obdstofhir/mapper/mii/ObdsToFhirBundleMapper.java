@@ -36,6 +36,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final VerlaufshistologieObservationMapper verlaufshistologieObservationMapper;
   private final StudienteilnahmeObservationMapper studienteilnahmeObservationMapper;
   private final VerlaufObservationMapper verlaufObservationMapper;
+  private final GenetischeVarianteMapper genetischeVarianteMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -55,7 +56,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       SpecimenMapper specimenMapper,
       VerlaufshistologieObservationMapper verlaufshistologieObservationMapper,
       StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
-      VerlaufObservationMapper verlaufObservationMapper) {
+      VerlaufObservationMapper verlaufObservationMapper,
+      GenetischeVarianteMapper genetischeVarianteMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -75,6 +77,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.verlaufshistologieObservationMapper = verlaufshistologieObservationMapper;
     this.studienteilnahmeObservationMapper = studienteilnahmeObservationMapper;
     this.verlaufObservationMapper = verlaufObservationMapper;
+    this.genetischeVarianteMapper = genetischeVarianteMapper;
   }
 
   /**
@@ -166,6 +169,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               addToBundle(bundle, studienteilnahmeObservation);
             }
           }
+
+          if (diagnose.getMengeGenetik() != null
+              && diagnose.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    diagnose, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
+          }
         }
 
         // Verlauf
@@ -220,6 +231,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       meldung.getMeldungID());
               addToBundle(bundle, studienteilnahmeObservation);
             }
+          }
+
+          if (verlauf.getMengeGenetik() != null
+              && verlauf.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    verlauf, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
           }
         }
 
@@ -336,6 +355,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               addToBundle(bundle, studienteilnahmeObservation);
             }
           }
+
+          if (op.getMengeGenetik() != null
+              && op.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    op, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
+          }
         }
 
         // Pathologie
@@ -367,6 +394,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 lymphknotenuntersuchungMapper.map(
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (pathologie.getMengeGenetik() != null
+              && pathologie.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    pathologie,
+                    patientReference,
+                    primaryConditionReference,
+                    meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
           }
 
           // TODO: Tumorkonferenz reference needed here
