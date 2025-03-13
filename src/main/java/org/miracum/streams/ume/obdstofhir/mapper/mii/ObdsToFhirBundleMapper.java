@@ -171,6 +171,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Verlauf
         if (meldung.getVerlauf() != null) {
           var verlauf = meldung.getVerlauf();
+
+          var verlaufsObservation =
+              verlaufObservationMapper.map(verlauf, patientReference, primaryConditionReference);
+          addToBundle(bundle, verlaufsObservation);
+
           if (verlauf.getMengeFM() != null && verlauf.getMengeFM().getFernmetastase() != null) {
             var verlaufFM =
                 fernmetastasenMapper.map(

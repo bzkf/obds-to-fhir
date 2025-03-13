@@ -564,6 +564,45 @@
       "url": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7"
     }
   }, {
+    "fullUrl": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+        "value": "158"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "focus": [ {
+        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      } ],
+      "effectiveDateTime": "2020-07-18",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "P",
+          "display": "Progression"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150"
+    }
+  }, {
     "fullUrl": "Observation/30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776",
     "resource": {
       "resourceType": "Observation",
