@@ -34,6 +34,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final TodMapper todMapper;
   private final VerlaufshistologieObservationMapper verlaufshistologieObservationMapper;
+  private final StudienteilnahmeObservationMapper studienteilnahmeObservationMapper;
+  private final VerlaufObservationMapper verlaufObservationMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -51,7 +53,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       HistologiebefundMapper histologiebefundMapper,
       LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper,
       SpecimenMapper specimenMapper,
-      VerlaufshistologieObservationMapper verlaufshistologieObservationMapper) {
+      VerlaufshistologieObservationMapper verlaufshistologieObservationMapper,
+      StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
+      VerlaufObservationMapper verlaufObservationMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -69,6 +73,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.lymphknotenuntersuchungMapper = lymphknotenuntersuchungMapper;
     this.specimenMapper = specimenMapper;
     this.verlaufshistologieObservationMapper = verlaufshistologieObservationMapper;
+    this.studienteilnahmeObservationMapper = studienteilnahmeObservationMapper;
+    this.verlaufObservationMapper = verlaufObservationMapper;
   }
 
   /**
@@ -89,9 +95,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
       // Patient
-      // XXX: this assumes that the "meldungen" contains every single Meldung for the patient
-      //      e.g. in case of Folgepakete, this might not be the case. The main Problem is
-      //      the Patient.deceased information which is not present in every single Paket.
+      // XXX: this assumes that the "meldungen" contains every single Meldung for the
+      // patient
+      // e.g. in case of Folgepakete, this might not be the case. The main Problem is
+      // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = createReferenceFromResource(patient);
       addToBundle(bundle, patient);
@@ -146,6 +153,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
+
+          if (diagnose.getModulAllgemein() != null) {
+            var allgemein = diagnose.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
         }
 
         // Verlauf
@@ -183,6 +203,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
+
+          if (verlauf.getModulAllgemein() != null) {
+            var allgemein = verlauf.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
         }
 
         // Systemtherapie
@@ -203,12 +236,39 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               addToBundle(bundle, resource);
             }
           }
+
+          if (syst.getModulAllgemein() != null) {
+            var allgemein = syst.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
         }
 
         // Strahlenterhapie
         if (meldung.getST() != null) {
-          var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
+          var st = meldung.getST();
+          var stProcedure = strahlentherapieMapper.map(st, patientReference);
           addToBundle(bundle, stProcedure);
+
+          if (st.getModulAllgemein() != null) {
+            var allgemein = st.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
         }
 
         // Tod
@@ -258,8 +318,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
           }
+
+          if (op.getModulAllgemein() != null) {
+            var allgemein = op.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
         }
 
+        // Pathologie
         if (meldung.getPathologie() != null) {
           var pathologie = meldung.getPathologie();
           var specimenReference = new Reference();

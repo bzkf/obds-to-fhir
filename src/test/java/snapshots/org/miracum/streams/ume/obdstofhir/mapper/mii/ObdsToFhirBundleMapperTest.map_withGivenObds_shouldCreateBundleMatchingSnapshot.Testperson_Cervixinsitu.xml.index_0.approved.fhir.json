@@ -256,6 +256,43 @@
       "url": "Observation/275b6923b2319ff3c6d57fb71929f7f569de73baa5bcb877ef2445ef0e184a7f"
     }
   }, {
+    "fullUrl": "Observation/f188bf42ff1a143c3cf83257db96c935df093c6de96f214d7ce30c74e4ac2912",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "f188bf42ff1a143c3cf83257db96c935df093c6de96f214d7ce30c74e4ac2912",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
+        "value": "10_5_DI_1_Studienteilnahme"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "709491003",
+          "display": "Enrollment in clinical trial (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/f188bf42ff1a143c3cf83257db96c935df093c6de96f214d7ce30c74e4ac2912"
+    }
+  }, {
     "fullUrl": "Procedure/98fcfb802ebdee48a96523798110d80f165723471e708b269aaf054a6d7a4f3a",
     "resource": {
       "resourceType": "Procedure",
