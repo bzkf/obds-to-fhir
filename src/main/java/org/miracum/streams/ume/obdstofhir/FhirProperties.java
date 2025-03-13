@@ -43,6 +43,7 @@ public class FhirProperties {
     private String fernmetastasenId;
     private String residualstatusObservationId;
     private String specimenId;
+    private String studienteilnahmeId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
     private String genetischeVarianteId;

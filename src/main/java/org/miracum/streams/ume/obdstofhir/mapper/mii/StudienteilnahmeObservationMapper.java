@@ -52,7 +52,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
             .setValue(meldungsID + "_Studienteilnahme");
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
-    // why not
+
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);
 

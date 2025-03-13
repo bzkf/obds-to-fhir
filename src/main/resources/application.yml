@@ -29,6 +29,7 @@ fhir:
     operationProcedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/operation-procedure-id"
     medicationStatementId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/medication-statement-id"
     specimenId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/specimen-id"
+    studienteilnahmeId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/studienteilnahme-id"
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
     gleasonScoreObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
