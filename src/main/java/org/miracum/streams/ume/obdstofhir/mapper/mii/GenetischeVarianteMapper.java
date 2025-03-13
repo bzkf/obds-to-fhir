@@ -134,50 +134,28 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       observation.setSubject(patient);
 
       // Focus
-      observation.setFocus(Collections.singletonList(condition));
+      observation.addFocus(condition);
 
       // effective
-      var dataAbsentExtension =
-          new Extension(
-              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-      var dataAbsentCode = new CodeType();
-      dataAbsentCode.addExtension(dataAbsentExtension);
-
       var dateTime = convertObdsDatumToDateTimeType(genetischeVariante.getDatum());
       if (dateTime.isPresent()) {
         observation.setEffective(dateTime.get());
-      } else {
-        var performed = new DateTimeType();
-        performed.addExtension(dataAbsentExtension);
-        observation.setEffective(performed);
       }
 
       // Genetische Variante Ausprägung = interpretation
-      CodeableConcept interpretationCodeableConcept = new CodeableConcept();
-      Coding coding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoGenetischeVarianteAuspraegung());
 
       if (genetischeVariante.getAuspraegung() != null) {
-        coding.setCode(genetischeVariante.getAuspraegung().value());
-      }
-
-      interpretationCodeableConcept.addCoding(coding);
-
-      observation.setInterpretation(Collections.singletonList(interpretationCodeableConcept));
-
-      // Sonstige Ausprägung = Observation.value[x].text
-      if (genetischeVariante.getSonstigeAuspraegung() != null) {
-        CodeableConcept valueCodeableConcept = new CodeableConcept();
-        Coding codingValue = new Coding();
-        codingValue.setSystem(fhirProperties.getSystems().getLoinc());
-        codingValue.setCode("LA9633-4");
-        codingValue.setDisplay("Present");
-
-        valueCodeableConcept.addCoding(codingValue);
-        valueCodeableConcept.setText(genetischeVariante.getSonstigeAuspraegung());
-
-        observation.setValue(valueCodeableConcept);
+        var coding =
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getMiiCsOnkoGenetischeVarianteAuspraegung())
+                .setCode(genetischeVariante.getAuspraegung().value());
+        var interpretationCodeableConcept = new CodeableConcept(coding);
+        observation.addInterpretation(interpretationCodeableConcept);
+      } else if (genetischeVariante.getSonstigeAuspraegung() != null) {
+        var sonstige = new CodeableConcept().setText(genetischeVariante.getSonstigeAuspraegung());
+        observation.setInterpretation(List.of(sonstige));
+      } else {
+        LOG.warn("Neither Auspraegung nor Sonstige_Auspraegung are set.");
       }
 
       // Genetische Variante Name = note
