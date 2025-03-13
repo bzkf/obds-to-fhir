@@ -1,10 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "ce752cc915c4b0913bf8cc6fb6e9640402b70822f898f90c0a3aabd647274923",
+  "id": "819f7208b884155dc6722e070d39a269ff47c1ac0a37e5fd96b84c9cbbbbea1c",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
   },
   "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
     "value": "342"
   } ],
   "status": "final",
@@ -34,7 +35,7 @@
       "coding": [ {
         "system": "http://snomed.info/sct",
         "code": "277062004",
-        "display": "Residual tumour status"
+        "display": "Status des Residualtumors"
       } ]
     },
     "valueCodeableConcept": {

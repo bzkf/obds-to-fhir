@@ -86,7 +86,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                       new Coding(
                           fhirProperties.getSystems().getSnomed(),
                           "277062004",
-                          "Residual tumour status")))
+                          "Status des Residualtumors")))
               .setValue(
                   new CodeableConcept(
                       new Coding(
