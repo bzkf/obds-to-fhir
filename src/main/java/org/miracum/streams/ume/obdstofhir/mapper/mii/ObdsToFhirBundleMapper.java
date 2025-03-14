@@ -37,6 +37,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final StudienteilnahmeObservationMapper studienteilnahmeObservationMapper;
   private final VerlaufObservationMapper verlaufObservationMapper;
   private final GenetischeVarianteMapper genetischeVarianteMapper;
+  private final TumorkonferenzMapper tumorkonferenzMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -57,7 +58,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       VerlaufshistologieObservationMapper verlaufshistologieObservationMapper,
       StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
       VerlaufObservationMapper verlaufObservationMapper,
-      GenetischeVarianteMapper genetischeVarianteMapper) {
+      GenetischeVarianteMapper genetischeVarianteMapper,
+      TumorkonferenzMapper tumorkonferenzMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -78,6 +80,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.studienteilnahmeObservationMapper = studienteilnahmeObservationMapper;
     this.verlaufObservationMapper = verlaufObservationMapper;
     this.genetischeVarianteMapper = genetischeVarianteMapper;
+    this.tumorkonferenzMapper = tumorkonferenzMapper;
   }
 
   /**
@@ -407,7 +410,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
-          // TODO: Tumorkonferenz reference needed here
+          // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz
+          // the histologiebefund is based on. Unless every befund is always a
+          // result of a conference. So maybe remove the reference entirely.
           var report =
               histologiebefundMapper.map(
                   meldung.getPathologie(),
@@ -417,6 +422,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   specimenReference);
 
           addToBundle(bundle, report);
+        }
+
+        if (meldung.getTumorkonferenz() != null) {
+          var tumorkonferenz = meldung.getTumorkonferenz();
+          var carePlan =
+              tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
+          addToBundle(bundle, carePlan);
         }
       }
 

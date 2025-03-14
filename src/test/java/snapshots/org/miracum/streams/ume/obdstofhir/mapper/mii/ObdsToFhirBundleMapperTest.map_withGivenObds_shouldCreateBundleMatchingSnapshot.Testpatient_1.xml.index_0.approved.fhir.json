@@ -1248,6 +1248,55 @@
       "url": "MedicationStatement/050a031e5a9043c28c565c6b60550c3d34cd059bc2f24c195cdb807f099cd978"
     }
   }, {
+    "fullUrl": "CarePlan/de837ddc8136a570462599dd3ebd48b399ac53849e2946f482ba33dfb292ec56",
+    "resource": {
+      "resourceType": "CarePlan",
+      "id": "de837ddc8136a570462599dd3ebd48b399ac53849e2946f482ba33dfb292ec56",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+        "value": "Tumorkonferenz_221"
+      } ],
+      "status": "completed",
+      "intent": "plan",
+      "category": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+          "code": "postth"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "created": "2020-10-20",
+      "addresses": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "activity": [ {
+        "detail": {
+          "code": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+              "code": "CH"
+            } ]
+          },
+          "status": "cancelled",
+          "statusReason": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
+              "code": "J"
+            } ]
+          }
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "CarePlan/de837ddc8136a570462599dd3ebd48b399ac53849e2946f482ba33dfb292ec56"
+    }
+  }, {
     "fullUrl": "Observation/c94ca17474b02eea799c245af612201dda49e75fcdbcaf86e73cdb139cb53cf7",
     "resource": {
       "resourceType": "Observation",
