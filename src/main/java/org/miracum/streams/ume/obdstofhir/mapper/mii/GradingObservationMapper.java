@@ -1,10 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.HistologieTyp;
-import de.basisdatensatz.obds.v3.OBDS;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -23,92 +19,80 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung meldungen, Reference patient, Reference diagnose) {
-    Objects.requireNonNull(meldungen, "Meldungen must not be null");
+  public Observation map(
+      HistologieTyp histologie, Reference patient, Reference diagnose, Reference specimen) {
+    Objects.requireNonNull(histologie, "HistologieTyp must not be null");
+    Objects.requireNonNull(histologie.getGrading(), "Grading must not be null");
     Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
+    Objects.requireNonNull(specimen, "Reference to Specimen must not be null");
     Objects.requireNonNull(patient, "Reference to Patient must not be null");
+    Validate.isTrue(
+        Objects.equals(
+            diagnose.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.CONDITION.toCode()),
+        "The diagnose reference should point to a Condition resource");
     Validate.isTrue(
         Objects.equals(
             patient.getReferenceElement().getResourceType(),
             Enumerations.ResourceType.PATIENT.toCode()),
         "The subject reference should point to a Patient resource");
+    Validate.isTrue(
+        Objects.equals(
+            specimen.getReferenceElement().getResourceType(),
+            Enumerations.ResourceType.SPECIMEN.toCode()),
+        "The specimen reference should point to a Specimen resource");
 
-    var result = new ArrayList<Observation>();
+    // TODO: sollte grading nicht auch auf das specimen verweisen?
+    var observation = new Observation();
+    // Meta
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
 
-    // Collect histologieTyp from Diagnose, Verlauf, OP, Pathologie
-    var histologie = new ArrayList<HistologieTyp>();
-    for (var meldung : meldungen.getMeldung()) {
-      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        histologie.add(meldung.getDiagnose().getHistologie());
-      }
-      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        histologie.add(meldung.getVerlauf().getHistologie());
-      }
-      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        histologie.add(meldung.getOP().getHistologie());
-      }
-      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        histologie.add(meldung.getPathologie().getHistologie());
-      }
-    }
+    // Identifer
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+            .setValue(histologie.getHistologieID() + "_Grading");
+    observation.addIdentifier(identifier);
 
-    for (var histo : histologie) {
-      if (histo == null || histo.getGrading() == null) {
-        continue;
-      }
-      var observation = new Observation();
-      // Meta
-      observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
+    // Id
+    observation.setId(computeResourceIdFromIdentifier(identifier));
 
-      // Identifer
-      var identifier =
-          new Identifier()
-              .setSystem(fhirProperties.getSystems().getObservationHistologieId())
-              .setValue(histo.getHistologieID() + "_Grading");
-      observation.addIdentifier(identifier);
+    // Status
+    observation.setStatus(Observation.ObservationStatus.FINAL);
 
-      // Id
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+    // category
+    var laboratory =
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
+    observation.addCategory(laboratory);
 
-      // Status
-      observation.setStatus(Observation.ObservationStatus.FINAL);
+    // code
+    var code =
+        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "33732-9", ""));
+    var coding = new Coding(fhirProperties.getSystems().getSnomed(), "371469007", "");
+    code.addCoding(coding);
+    observation.setCode(code);
 
-      // category
-      var laboratory =
-          new CodeableConcept(
-              new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
-      observation.addCategory(laboratory);
+    // subject
+    observation.setSubject(patient);
 
-      // code
-      var code =
-          new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "33732-9", ""));
-      var coding = new Coding(fhirProperties.getSystems().getSnomed(), "371469007", "");
-      code.addCoding(coding);
-      observation.setCode(code);
+    // focus
+    observation.addFocus(diagnose);
 
-      // subject
-      observation.setSubject(patient);
+    // specimen
+    observation.setSpecimen(specimen);
 
-      // focus
-      observation.addFocus(diagnose);
+    // effective
+    var date = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
+    observation.setEffective(date);
 
-      // effective
-      var date =
-          new DateTimeType(
-              histo.getTumorHistologiedatum().getValue().toGregorianCalendar().getTime());
-      date.setPrecision(TemporalPrecisionEnum.DAY);
-      observation.setEffective(date);
+    // value
+    var value =
+        new CodeableConcept(
+            new Coding(
+                fhirProperties.getSystems().getMiiCsOnkoGrading(), histologie.getGrading(), ""));
+    observation.setValue(value);
 
-      // value
-      var value =
-          new CodeableConcept(
-              new Coding(
-                  fhirProperties.getSystems().getMiiCsOnkoGrading(), histo.getGrading(), ""));
-      observation.setValue(value);
-
-      result.add(observation);
-    }
-    return result;
+    return observation;
   }
 }

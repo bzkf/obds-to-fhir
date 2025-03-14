@@ -36,5 +36,8 @@
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
       "code": "2"
     } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   }
 }

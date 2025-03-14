@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,9 +36,18 @@ class FernmetastasenMapperTest extends MapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
     var diagnose = new Reference("Condition/Primärdiagnose");
-    List<Reference> diagnosen = new ArrayList<>();
-    diagnosen.add(diagnose);
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, diagnosen);
+
+    var list = new ArrayList<Observation>();
+
+    for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
+      if (meldung.getDiagnose() != null && meldung.getDiagnose().getMengeFM() != null) {
+        list.addAll(sut.map(meldung.getDiagnose(), subject, diagnose));
+      }
+
+      if (meldung.getVerlauf() != null && meldung.getVerlauf().getMengeFM() != null) {
+        list.addAll(sut.map(meldung.getVerlauf(), subject, diagnose));
+      }
+    }
 
     verifyAll(list, sourceFile);
   }
