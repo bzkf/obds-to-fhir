@@ -29,6 +29,7 @@ public class FhirProperties {
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
     private String miiExOnkoSystemischeTherapieIntention;
     private String conditionAssertedDate;
+    private String ordinalValue;
   }
 
   @Data
