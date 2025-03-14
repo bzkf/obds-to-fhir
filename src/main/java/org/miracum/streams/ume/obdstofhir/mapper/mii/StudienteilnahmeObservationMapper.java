@@ -68,17 +68,25 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
     observation.addFocus(diagnose);
 
-    // Effective Date
-    var date =
-        new DateTimeType(
-            modulAllgemein.getStudienteilnahme().getDatum().toGregorianCalendar().getTime());
-    date.setPrecision(TemporalPrecisionEnum.DAY);
-    observation.setEffective(date);
+    var coding = new Coding().setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme());
+
+    if (modulAllgemein.getStudienteilnahme().getDatum() != null) {
+      // Effective Date
+      var date =
+          new DateTimeType(
+              modulAllgemein.getStudienteilnahme().getDatum().toGregorianCalendar().getTime());
+      date.setPrecision(TemporalPrecisionEnum.DAY);
+      observation.setEffective(date);
+
+      // always yes, if the date is set
+      coding.setCode("J").setDisplay("Ja");
+    } else {
+      // either no or unknown depending on the data
+      coding.setCode(modulAllgemein.getStudienteilnahme().getNU().value());
+    }
 
     // Value
-    observation.setValue(
-        new CodeableConcept(
-            new Coding(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme(), "J", "Ja")));
+    observation.setValue(new CodeableConcept(coding));
 
     return observation;
   }

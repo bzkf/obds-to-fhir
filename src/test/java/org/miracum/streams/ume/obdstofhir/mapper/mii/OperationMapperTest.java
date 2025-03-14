@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import java.util.TimeZone;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,7 +24,6 @@ class OperationMapperTest extends MapperTest {
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
     sut = new OperationMapper(fhirProps);
   }
 
