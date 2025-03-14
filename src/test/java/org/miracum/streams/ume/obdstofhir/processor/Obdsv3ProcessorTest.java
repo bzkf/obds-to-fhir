@@ -12,9 +12,11 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serdes.StringSerde;
@@ -228,7 +230,12 @@ public class Obdsv3ProcessorTest {
 
       List<KeyValue<String, MeldungExportV3>> topicInputList = new ArrayList<>();
 
-      List<String> inputNames = List.of("Testpatient_1.xml", "Testpatient_2.xml");
+      List<String> inputNames =
+          List.of(
+              "GroupSequence01.xml",
+              "GroupSequence02.xml",
+              "GroupSequence03.xml",
+              "GroupSequence04.xml");
       var inputFiles =
           new File("src/test/resources/obds3")
               .listFiles(
@@ -253,9 +260,16 @@ public class Obdsv3ProcessorTest {
       inputTopic.pipeKeyValueList(topicInputList);
 
       // get records from output topic
-      var outputRecords = outputTopic.readRecordsToList();
+      var outputRecords = outputTopic.readKeyValuesToList();
 
-      Bundle bundle = (Bundle) outputRecords.getFirst().getValue();
+      // get bundle with more than one entry
+      Bundle bundle =
+          (Bundle)
+              outputRecords.stream()
+                  .filter(a -> ((Bundle) a.value).getEntry().size() > 1)
+                  .findAny()
+                  .get()
+                  .value;
 
       // assert coding exists
       assertThat(outputRecords).isNotEmpty();
@@ -265,6 +279,19 @@ public class Obdsv3ProcessorTest {
                   .count())
           .as("result should contain more than a Patient resource")
           .isGreaterThan(0);
+
+      var keys = outputRecords.stream().map(entry -> entry.key).toList();
+
+      var kafkaMessageKeys = new HashSet<>();
+      AtomicInteger dulpicateKeyCount = new AtomicInteger();
+      keys.forEach(
+          keyInTopic -> {
+            if (!kafkaMessageKeys.add(keyInTopic)) {
+              dulpicateKeyCount.getAndIncrement();
+            }
+            ;
+          });
+      assertThat(dulpicateKeyCount.get()).isLessThan(2);
     }
   }
 

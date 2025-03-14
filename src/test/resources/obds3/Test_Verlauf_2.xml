@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2" >
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
   <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
     <Bezeichnung>Test Absender</Bezeichnung>
     <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
@@ -35,9 +35,9 @@
         </Adresse>
       </Patienten_Stammdaten>
       <Menge_Meldung>
-        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_KO-2">
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_VE-2">
           <Meldebegruendung>I</Meldebegruendung>
-          <Eigene_Leistung>J</Eigene_Leistung>
+          <Eigene_Leistung>N</Eigene_Leistung>
           <Tumorzuordnung Tumor_ID="101">
             <Primaertumor_ICD>
               <Code>C50.9</Code>
@@ -50,17 +50,15 @@
               <Version>33</Version>
             </Morphologie_ICD_O>
           </Tumorzuordnung>
-          <Tumorkonferenz Tumorkonferenz_ID="221">
-            <Meldeanlass>behandlungsende</Meldeanlass>
-            <Datum Datumsgenauigkeit="E">2020-10-20</Datum>
-            <Typ>postth</Typ>
-            <Therapieempfehlung>
-              <Menge_Typ_Therapieempfehlung>
-                <Typ_Therapieempfehlung>CH</Typ_Therapieempfehlung>
-              </Menge_Typ_Therapieempfehlung>
-              <Abweichung_Patientenwunsch>J</Abweichung_Patientenwunsch>
-            </Therapieempfehlung>
-          </Tumorkonferenz>
+          <Verlauf Verlauf_ID="342">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-12-02</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>K</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>N</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>N</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>X</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>10%</Allgemeiner_Leistungszustand>
+          </Verlauf>
         </Meldung>
       </Menge_Meldung>
     </Patient>

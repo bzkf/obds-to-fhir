@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2" >
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
   <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
     <Bezeichnung>Test Absender</Bezeichnung>
     <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
@@ -35,7 +35,7 @@
         </Adresse>
       </Patienten_Stammdaten>
       <Menge_Meldung>
-        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_KO-2">
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_VE-1">
           <Meldebegruendung>I</Meldebegruendung>
           <Eigene_Leistung>J</Eigene_Leistung>
           <Tumorzuordnung Tumor_ID="101">
@@ -50,17 +50,64 @@
               <Version>33</Version>
             </Morphologie_ICD_O>
           </Tumorzuordnung>
-          <Tumorkonferenz Tumorkonferenz_ID="221">
-            <Meldeanlass>behandlungsende</Meldeanlass>
-            <Datum Datumsgenauigkeit="E">2020-10-20</Datum>
-            <Typ>postth</Typ>
-            <Therapieempfehlung>
-              <Menge_Typ_Therapieempfehlung>
-                <Typ_Therapieempfehlung>CH</Typ_Therapieempfehlung>
-              </Menge_Typ_Therapieempfehlung>
-              <Abweichung_Patientenwunsch>J</Abweichung_Patientenwunsch>
-            </Therapieempfehlung>
-          </Tumorkonferenz>
+          <Verlauf Verlauf_ID="341">
+            <Meldeanlass>statusmeldung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-06-01</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>Y</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>R</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>R</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>R</Verlauf_Tumorstatus_Fernmetastasen>
+            <Menge_FM>
+              <Fernmetastase>
+                <Diagnosedatum Datumsgenauigkeit="E">2021-06-01</Diagnosedatum>
+                <Lokalisation>BRA</Lokalisation>
+              </Fernmetastase>
+            </Menge_FM>
+            <Histologie Histologie_ID="523">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2021-06-01</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/654987/1</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8010/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>2</Grading>
+              <LK_untersucht>5</LK_untersucht>
+              <LK_befallen>5</LK_befallen>
+              <Sentinel_LK_untersucht>1</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <TNM ID="484">
+              <Datum>2021-06-01</Datum>
+              <Version>8</Version>
+              <r_Symbol>r</r_Symbol>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>3</T>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>3</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>L1</L>
+              <V>V2</V>
+              <Pn>Pn1</Pn>
+              <UICC_Stadium>IIIA</UICC_Stadium>
+            </TNM>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2021-06-01</Datum>
+                <Bezeichnung>BLUB</Bezeichnung>
+                <Auspraegung>W</Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Allgemeiner_Leistungszustand>20%</Allgemeiner_Leistungszustand>
+            <Modul_Mamma>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>18</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>0</TumorgroesseDCIS>
+            </Modul_Mamma>
+          </Verlauf>
         </Meldung>
       </Menge_Meldung>
     </Patient>

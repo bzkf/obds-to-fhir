@@ -260,6 +260,16 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
               .add(verlaufMeldung);
         }
 
+        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungExportList);
+        if (tumorKonferenzMeldung != null) {
+          obds.getMengePatient()
+              .getPatient()
+              .getFirst()
+              .getMengeMeldung()
+              .getMeldung()
+              .add(tumorKonferenzMeldung);
+        }
+
         // Tumorzuordnung
         var latestReportingTumorzuordnung =
             latestReportingStammdatenPatient
@@ -274,16 +284,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .getMeldung()
             .getFirst()
             .setTumorzuordnung(latestReportingTumorzuordnung);
-
-        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungExportList);
-        if (tumorKonferenzMeldung != null) {
-          obds.getMengePatient()
-              .getPatient()
-              .getFirst()
-              .getMengeMeldung()
-              .getMeldung()
-              .add(tumorKonferenzMeldung);
-        }
         tumorObds.add(obds);
       }
 
@@ -292,31 +292,19 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   }
 
   @Nullable
-  protected static Meldung getTumorKonferenzmeldung(MeldungExportListV3 meldungExportList) {
-    Meldung tumorKonferenzMeldung = null;
-    var tumorkonferenzen =
-        meldungExportList.stream()
-            .map(a -> a.getObds())
-            .map(a -> a.getMengePatient())
-            .map(a -> a.getPatient().getFirst())
-            .flatMap(
-                a ->
-                    a.getMengeMeldung().getMeldung().stream()
-                        .filter(t -> t.getTumorkonferenz() != null))
-            .toList();
+  protected Meldung getTumorKonferenzmeldung(MeldungExportListV3 meldungExportList) {
 
-    if (tumorkonferenzen.size() > 0) {
-      var ende =
-          tumorkonferenzen.stream()
-              .filter(
-                  a ->
-                      a.getTumorkonferenz()
-                          .getMeldeanlass()
-                          .equals(Meldeanlass.BEHANDLUNGSENDE.toString()))
-              .findAny();
+    var tumorKonferenzMeldung =
+        selectByMeldeanlass(
+            meldungExportList,
+            Meldeanlass.BEHANDLUNGSENDE,
+            Meldeanlass.BEHANDLUNGSBEGINN,
+            OBDS.MengePatient.Patient.MengeMeldung.Meldung::getTumorkonferenz,
+            item ->
+                ((TumorkonferenzTyp) item).getMeldeanlass() == null
+                    ? null
+                    : ((TumorkonferenzTyp) item).getMeldeanlass());
 
-      tumorKonferenzMeldung = ende.orElse(tumorkonferenzen.getFirst());
-    }
     return tumorKonferenzMeldung;
   }
 
@@ -375,12 +363,17 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
           String.format(
               "A patient bundle contains %d patient resources instead of 1", patients.size()));
     }
-    if (conditions.size() != 1) {
-      throw new RuntimeException(
-          String.format(
-              "A patient bundle contains %d condition resources instead of 1", conditions.size()));
-    }
     var patient = patients.getFirst();
+
+    if (conditions.size() < 1) {
+      /*
+      in rare cases we could encounter a data slice without a condition.
+      then we create a bundle without a condition ID.
+      NOTE: if we should encounter more than one tumor for this patient, we could override a fhir bundle due same kafka key, since we miss condition discriminante.
+      */
+      return String.format("%s/%s", patient.getResourceType(), patient.getId());
+    }
+
     var condition = conditions.getFirst();
     return String.format(
         "%s/%s - %s/%s",
