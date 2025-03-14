@@ -47,6 +47,7 @@ public class FhirProperties {
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
     private String genetischeVarianteId;
+    private String tumorkonferenzId;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -102,6 +103,7 @@ public class FhirProperties {
     private String miiCsOnkoStudienteilnahme;
     private String observationVerlaufId;
     private String miiCsOnkoGrading;
+    private String miiCsOnkoTherapieplanungTyp;
     private String miiCsOnkoVerlaufPrimaertumor;
     private String miiCsOnkoVerlaufLymphknoten;
     private String miiCsOnkoVerlaufFernmetastasen;
@@ -113,6 +115,8 @@ public class FhirProperties {
     private String nebenwirkungAdverseEventId;
     private String miiCsOnkoNebenwirkungCtcaeGrad;
     private String meddra;
+    private String miiCsOnkoTherapieTyp;
+    private String miiCsOnkoTherapieabweichung;
   }
 
   @Data
@@ -149,6 +153,7 @@ public class FhirProperties {
     private String miiPrOnkoGenetischeVariante;
     private String miiPrOnkoNebenwirkungAdverseEvent;
     private String miiPrOnkoVerlauf;
+    private String miiPrOnkoTumorkonferenz;
   }
 
   @Data

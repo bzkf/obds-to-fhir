@@ -4,6 +4,9 @@
         <jaxb:bindings node="//xs:element[@name='Geschlecht']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Geschlecht" />
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:simpleType[@name='JNU_Typ']">
+            <jaxb:typesafeEnumClass name="JNU" />
+        </jaxb:bindings>
         <jaxb:bindings node="//xs:complexType[@name='Datum_Tag_oder_Monat_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatGenau" />
         </jaxb:bindings>
@@ -56,6 +59,9 @@
         </jaxb:bindings>
         <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
             <jaxb:typesafeEnumClass name="EndeGrund" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Tumorkonferenz_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
         </jaxb:bindings>
         <jaxb:bindings node="//xs:complexType[@name='Menge_Genetik_Typ']//xs:element[@name='Genetische_Variante']//xs:element[@name='Auspraegung']/xs:simpleType">
             <jaxb:typesafeEnumClass name="GenetischeVarianteAuspraegung" />
