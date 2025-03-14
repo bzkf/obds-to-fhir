@@ -1,0 +1,79 @@
+{
+  "resourceType": "Observation",
+  "id": "c94ca17474b02eea799c245af612201dda49e75fcdbcaf86e73cdb139cb53cf7",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+    "value": "341"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "396432002",
+      "display": "Status of regression of tumor (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-06-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+      "code": "Y",
+      "display": "Rezidiv"
+    } ]
+  },
+  "component": [ {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "277062004",
+        "display": "Status des Residualtumors"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
+        "code": "R",
+        "display": "Lokalrezidiv"
+      } ]
+    }
+  }, {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "399656008",
+        "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
+        "code": "R",
+        "display": "neu aufgetretenes Lymphknotenrezidiv"
+      } ]
+    }
+  }, {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "399608002",
+        "display": "Status of distant metastasis (observable entity)"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
+        "code": "R",
+        "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
+      } ]
+    }
+  } ]
+}

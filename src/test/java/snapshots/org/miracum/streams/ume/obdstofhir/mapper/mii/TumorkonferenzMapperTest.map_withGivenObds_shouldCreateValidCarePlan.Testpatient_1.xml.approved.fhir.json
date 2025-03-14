@@ -1,0 +1,43 @@
+{
+  "resourceType": "CarePlan",
+  "id": "de837ddc8136a570462599dd3ebd48b399ac53849e2946f482ba33dfb292ec56",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+    "value": "Tumorkonferenz_221"
+  } ],
+  "status": "completed",
+  "intent": "plan",
+  "category": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+      "code": "postth"
+    } ]
+  } ],
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "created": "2020-10-20",
+  "addresses": [ {
+    "reference": "Condition/any"
+  } ],
+  "activity": [ {
+    "detail": {
+      "code": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "CH"
+        } ]
+      },
+      "status": "cancelled",
+      "statusReason": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
+          "code": "J"
+        } ]
+      }
+    }
+  } ]
+}
