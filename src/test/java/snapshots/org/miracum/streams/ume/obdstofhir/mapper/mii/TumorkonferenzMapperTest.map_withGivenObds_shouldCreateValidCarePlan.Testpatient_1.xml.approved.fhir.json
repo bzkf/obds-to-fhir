@@ -9,7 +9,7 @@
     "value": "Tumorkonferenz_221"
   } ],
   "status": "completed",
-  "intent": "proposal",
+  "intent": "plan",
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
@@ -31,7 +31,7 @@
           "code": "CH"
         } ]
       },
-      "status": "completed",
+      "status": "cancelled",
       "statusReason": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",

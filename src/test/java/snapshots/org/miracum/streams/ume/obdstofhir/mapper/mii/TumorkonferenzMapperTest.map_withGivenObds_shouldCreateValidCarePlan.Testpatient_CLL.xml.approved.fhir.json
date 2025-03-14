@@ -9,7 +9,7 @@
     "value": "Tumorkonferenz_111"
   } ],
   "status": "active",
-  "intent": "proposal",
+  "intent": "plan",
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
