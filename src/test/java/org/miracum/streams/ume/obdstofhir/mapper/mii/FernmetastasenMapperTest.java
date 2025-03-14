@@ -41,11 +41,15 @@ class FernmetastasenMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getMengeFM() != null) {
-        list.addAll(sut.map(meldung.getDiagnose(), subject, diagnose));
+        list.addAll(sut.map(meldung.getDiagnose(), meldung.getMeldungID(), subject, diagnose));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getMengeFM() != null) {
-        list.addAll(sut.map(meldung.getVerlauf(), subject, diagnose));
+        list.addAll(sut.map(meldung.getVerlauf(), meldung.getMeldungID(), subject, diagnose));
+      }
+
+      if (meldung.getPathologie() != null && meldung.getPathologie().getMengeFM() != null) {
+        list.addAll(sut.map(meldung.getPathologie(), meldung.getMeldungID(), subject, diagnose));
       }
     }
 
