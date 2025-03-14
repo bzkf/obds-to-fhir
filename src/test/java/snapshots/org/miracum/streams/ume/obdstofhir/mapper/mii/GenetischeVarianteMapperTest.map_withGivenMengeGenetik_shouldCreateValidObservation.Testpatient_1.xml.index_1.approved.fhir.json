@@ -29,6 +29,10 @@
   } ],
   "effectiveDateTime": "2020-03-01",
   "interpretation": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
+      "code": "S"
+    } ],
     "text": "Translation"
   } ],
   "note": [ {

@@ -144,19 +144,22 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
       // Genetische Variante Ausprägung = interpretation
 
+      var coding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoGenetischeVarianteAuspraegung());
+      var interpretationCodeableConcept = new CodeableConcept(coding);
       if (genetischeVariante.getAuspraegung() != null) {
-        var coding =
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoGenetischeVarianteAuspraegung())
-                .setCode(genetischeVariante.getAuspraegung().value());
-        var interpretationCodeableConcept = new CodeableConcept(coding);
-        observation.addInterpretation(interpretationCodeableConcept);
+        coding.setCode(genetischeVariante.getAuspraegung().value());
       } else if (genetischeVariante.getSonstigeAuspraegung() != null) {
-        var sonstige = new CodeableConcept().setText(genetischeVariante.getSonstigeAuspraegung());
-        observation.setInterpretation(List.of(sonstige));
+        coding.setCode("S");
+        interpretationCodeableConcept.setText(genetischeVariante.getSonstigeAuspraegung());
       } else {
+        // this resets the concept so no incomplete codings are shown.
+        interpretationCodeableConcept = new CodeableConcept();
         LOG.warn("Neither Auspraegung nor Sonstige_Auspraegung are set.");
       }
+
+      observation.addInterpretation(interpretationCodeableConcept);
 
       // Genetische Variante Name = note
       observation.addNote().setText(genetischeVariante.getBezeichnung());
