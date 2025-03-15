@@ -251,6 +251,7 @@ spring:
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
       compression-type: gzip
+      value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
 
 logging:
   pattern:
@@ -272,3 +273,14 @@ management:
       enabled: true
     readinessstate:
       enabled: true
+
+obds:
+  process-from-directory:
+    enabled: false
+    path: ""
+    output-to-kafka:
+      enabled: false
+      topic: ""
+    output-to-directory:
+      enabled: false
+      path: ""
