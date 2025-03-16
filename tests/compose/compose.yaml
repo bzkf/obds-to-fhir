@@ -1,0 +1,47 @@
+services:
+  kafka:
+    image: docker.io/apache/kafka-native:3.9.0@sha256:c20b97f0a3990771f52bf7855ccb9ae82ac683a357a101482ba349dfb2ae0cdb
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    privileged: false
+    ipc: none
+    security_opt:
+      - "no-new-privileges:true"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+
+  obds-to-fhir:
+    image: ghcr.io/bzkf/obds-to-fhir:${OBDS_TO_FHIR_VERSION:?}
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    privileged: false
+    ipc: none
+    security_opt:
+      - "no-new-privileges:true"
+    user: "65532:65532"
+    read_only: true
+    # 2GiB, world-writeable, for Kafka Streams state store
+    tmpfs: /tmp:rw,exec,size=2147483648,mode=1777
+    environment:
+      SECURITY_PROTOCOL: PLAINTEXT
+      BOOTSTRAP_SERVERS: kafka:9092
+      FHIR_OUTPUT_TOPIC_PARTITION_COUNT: "1"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_MINPARTITIONCOUNT: "1"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_AUTOADDPARTITIONS: "true"
+      NUM_STREAM_THREADS: "1"
+    depends_on:
+      kafka:
+        condition: service_started

@@ -1,0 +1,9 @@
+services:
+  obds-to-fhir:
+    restart: no
+    user: "${USER_ID:-65532}:${GROUP_ID:-65532}"
+    environment:
+      SPRING_PROFILES_ACTIVE: "process-from-directory"
+    volumes:
+      - $PWD/src/test/resources/obds3/:/opt/obds-to-fhir/obds-input/:ro
+      - $PWD/tests/compose/fhir-output:/opt/obds-to-fhir/fhir-output:rw
