@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -112,6 +113,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
+        MDC.put("meldungId", meldung.getMeldungID());
+        MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
+
         var primaryConditionReference =
             createPrimaryConditionReference(meldung.getTumorzuordnung());
 
@@ -433,6 +437,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
 
       bundles.add(bundle);
+      MDC.clear();
     }
 
     return bundles;
