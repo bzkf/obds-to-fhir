@@ -168,16 +168,16 @@
       "url": "Observation/cd118ca3e3a3ee2412cfba5bb69e74fb72396a9b815308c08b41f8c747b200e2"
     }
   }, {
-    "fullUrl": "Observation/4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605",
+    "fullUrl": "Observation/7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30",
     "resource": {
       "resourceType": "Observation",
-      "id": "4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605",
+      "id": "7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
-        "value": "Verlauf_0"
+        "value": "VER_60102-Verlauf-0"
       } ],
       "status": "final",
       "code": {
@@ -202,19 +202,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/4d91f4e5eca532dc6a54892fd1fe68f48725d12fc37dba2d13217c4483a12605"
+      "url": "Observation/7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30"
     }
   }, {
-    "fullUrl": "Observation/3ce6529ef47209775e80ed550d4867f7ebbb2134d55ae9bdc9b343edb58b9b70",
+    "fullUrl": "Observation/ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528",
     "resource": {
       "resourceType": "Observation",
-      "id": "3ce6529ef47209775e80ed550d4867f7ebbb2134d55ae9bdc9b343edb58b9b70",
+      "id": "ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
-        "value": "Verlauf_1"
+        "value": "VER_60102-Verlauf-1"
       } ],
       "status": "final",
       "code": {
@@ -239,7 +239,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/3ce6529ef47209775e80ed550d4867f7ebbb2134d55ae9bdc9b343edb58b9b70"
+      "url": "Observation/ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528"
     }
   }, {
     "fullUrl": "Specimen/1d79688586bf4aab850a2f43b7b573f1f2c381a288a0996809df83bc94b6b6b3",
