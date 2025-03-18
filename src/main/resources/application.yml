@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.26
+  version: 3.0.0-beta.27
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -247,6 +247,10 @@ spring:
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
       compression-type: gzip
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
 
 management:
   endpoint:
