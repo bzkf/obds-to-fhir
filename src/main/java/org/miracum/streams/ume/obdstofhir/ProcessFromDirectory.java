@@ -74,7 +74,7 @@ public class ProcessFromDirectory {
           }
 
           if (config.outputToDirectory().enabled()) {
-            var filename = "bundle-" + bundle.getId() + ".fhir.json";
+            var filename = file.getFileName() + "-bundle-" + bundle.getId() + ".fhir.json";
             var outputPath = Path.of(config.outputToDirectory().path(), filename);
 
             var bundleJson =
