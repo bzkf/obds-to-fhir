@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.24
+  version: 3.0.0-beta.27
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -30,7 +30,9 @@ fhir:
     operationProcedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/operation-procedure-id"
     medicationStatementId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/medication-statement-id"
     specimenId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/specimen-id"
+    studienteilnahmeId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/studienteilnahme-id"
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
+    observationVerlaufId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-verlauf-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
     gleasonScoreObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/psa-observation-id"
@@ -94,10 +96,19 @@ fhir:
     atcWho: "http://www.whocc.no/atc"
     observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
     mii-cs-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading"
+    mii-cs-onko-verlauf-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor"
+    mii-cs-onko-verlauf-lymphknoten: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten"
+    mii-cs-onko-verlauf-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen"
+    mii-cs-onko-verlauf-gesamtbeurteilung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung"
     mii-cs-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
+    mii-cs-onko-studienteilnahme: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme"
     mii-cs-onko-genetische-variante-auspraegung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung"
     mii-cs-onko-nebenwirkung-ctcae-grad: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad"
     meddra: "https://www.meddra.org"
+    tumorkonferenz-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tumorkonferenz-id"
+    mii-cs-onko-therapieplanung-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ"
+    mii-cs-onko-therapie-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
+    mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
 
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
@@ -129,8 +140,11 @@ fhir:
     mii-pr-onko-allgemeiner-leistungszustand-ecog: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog"
     mii-pr-onko-tod: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
     mii-pr-onko-histologie-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3"
+    mii-pr-onko-studienteilnahme: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme"
     miiPrOnkoGenetischeVariante: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante"
     mii-pr-onko-nebenwirkung-adverse-event: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event"
+    mii-pr-onko-verlauf: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf"
+    mii-pr-onko-tumorkonferenz: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -237,6 +251,10 @@ spring:
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
       compression-type: gzip
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
 
 management:
   endpoint:

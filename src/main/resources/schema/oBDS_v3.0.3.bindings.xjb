@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jaxb:bindings jaxb:version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<jaxb:bindings jaxb:version="3.0" xmlns:jaxb="https://jakarta.ee/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <jaxb:bindings schemaLocation="oBDS_v3.0.3.xsd">
         <jaxb:bindings node="//xs:element[@name='Geschlecht']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Geschlecht" />
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='Datum_Tag_oder_Monat_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
+        <jaxb:bindings node="//xs:simpleType[@name='JNU_Typ']">
+            <jaxb:typesafeEnumClass name="JNU" />
+        </jaxb:bindings>
+        <jaxb:bindings
+            node="//xs:complexType[@name='Datum_Tag_oder_Monat_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatGenau" />
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='Datum_Tag_oder_Monat_oder_Jahr_oder_nicht_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
+        <jaxb:bindings
+            node="//xs:complexType[@name='Datum_Tag_oder_Monat_oder_Jahr_oder_nicht_genau_Typ']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau" />
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='Diagnose_Typ']//xs:element[@name='Diagnosesicherung']/xs:simpleType">
-            <jaxb:typesafeEnumClass name="DiagnoseTypDiagnosesicherung" >
+        <jaxb:bindings
+            node="//xs:complexType[@name='Diagnose_Typ']//xs:element[@name='Diagnosesicherung']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="DiagnoseTypDiagnosesicherung">
                 <jaxb:typesafeEnumMember value="1" name="DS_1" />
                 <jaxb:typesafeEnumMember value="2" name="DS_2" />
                 <jaxb:typesafeEnumMember value="4" name="DS_4" />
@@ -25,8 +32,8 @@
                 <jaxb:typesafeEnumMember value="9" name="DS_9" />
             </jaxb:typesafeEnumClass>
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:simpleType[@name='Allgemeiner_Leistungszustand_Typ']" >
-            <jaxb:typesafeEnumClass name="AllgemeinerLeistungszustand" >
+        <jaxb:bindings node="//xs:simpleType[@name='Allgemeiner_Leistungszustand_Typ']">
+            <jaxb:typesafeEnumClass name="AllgemeinerLeistungszustand">
                 <jaxb:typesafeEnumMember value="0" name="ECOG_0" />
                 <jaxb:typesafeEnumMember value="1" name="ECOG_1" />
                 <jaxb:typesafeEnumMember value="2" name="ECOG_2" />
@@ -45,20 +52,31 @@
                 <jaxb:typesafeEnumMember value="100%" name="KARNOFSKY_100" />
             </jaxb:typesafeEnumClass>
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='ST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+        <jaxb:bindings
+            node="//xs:complexType[@name='ST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Meldeanlass" />
         </jaxb:bindings>
-                <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+        <jaxb:bindings
+            node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Meldeanlass" />
         </jaxb:bindings>
         <jaxb:bindings node="//xs:element[@name='Therapieart']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Therapieart" />
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
+        <jaxb:bindings
+            node="//xs:complexType[@name='SYST_Typ']//xs:element[@name='Ende_Grund']/xs:simpleType">
             <jaxb:typesafeEnumClass name="EndeGrund" />
         </jaxb:bindings>
-        <jaxb:bindings node="//xs:complexType[@name='Menge_Genetik_Typ']//xs:element[@name='Genetische_Variante']//xs:element[@name='Auspraegung']/xs:simpleType">
+        <jaxb:bindings node="//xs:complexType[@name='Tumorkonferenz_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
+        </jaxb:bindings>
+        <jaxb:bindings
+            node="//xs:complexType[@name='Menge_Genetik_Typ']//xs:element[@name='Genetische_Variante']//xs:element[@name='Auspraegung']/xs:simpleType">
             <jaxb:typesafeEnumClass name="GenetischeVarianteAuspraegung" />
+        </jaxb:bindings>
+        <jaxb:bindings
+            node="//xs:complexType[@name='Datum_NU_Typ']//xs:element[@name='NU']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="NeinOderUnbekannt" />
         </jaxb:bindings>
     </jaxb:bindings>
 </jaxb:bindings>

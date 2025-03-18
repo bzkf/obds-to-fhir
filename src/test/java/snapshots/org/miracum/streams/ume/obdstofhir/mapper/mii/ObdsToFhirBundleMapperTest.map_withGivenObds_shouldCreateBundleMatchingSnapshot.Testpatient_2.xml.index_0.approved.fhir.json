@@ -312,6 +312,91 @@
       "url": "MedicationStatement/e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa"
     }
   }, {
+    "fullUrl": "Observation/39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+        "value": "164"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/a31f38c3b6c0d35e6f228a50ba288b814250c774b8dc89cf5ae36455eb6d1ea8"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "Y",
+          "display": "Rezidiv"
+        } ]
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "277062004",
+            "display": "Status des Residualtumors"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
+            "code": "R",
+            "display": "Lokalrezidiv"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "399656008",
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
+            "code": "K",
+            "display": "kein Lymphknotenbefall nachweisbar"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "399608002",
+            "display": "Status of distant metastasis (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
+            "code": "K",
+            "display": "keine Fernmetastasen nachweisbar"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0"
+    }
+  }, {
     "fullUrl": "Procedure/e998689be497ac35683749735bcbbe54733da906c44adbcdf346dace830f95ba",
     "resource": {
       "resourceType": "Procedure",
@@ -629,6 +714,45 @@
     "request": {
       "method": "PUT",
       "url": "Observation/c16f736b48dfdb081da9a076ff9c27f658e8d10b6bb84af6e7419a4aded0465b"
+    }
+  }, {
+    "fullUrl": "Observation/8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+        "value": "1.1.1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/781b35a7a67a782459e38993bcfcebb068ac97e8bdf214c2e21cac917bb88eff"
+      } ],
+      "effectiveDateTime": "2020-07-18",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "K",
+          "display": "keine Änderung"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/8e36940edeb2ac508c4b510c16e1bcb7012a7a59a92c586abd2d44fd912e7fa2"
     }
   } ]
 }
