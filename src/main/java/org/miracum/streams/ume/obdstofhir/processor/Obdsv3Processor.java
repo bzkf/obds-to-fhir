@@ -185,15 +185,14 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
             .filter(Objects::nonNull)
             .flatMap(List::stream)
-            .findFirst() // Assumption always only one Meldung in MengeMeldung
-            .ifPresent(
+            .forEach(
                 meldung -> {
                   if (meldung.getDiagnose() != null
                       || meldung.getOP() != null
                       || meldung.getTod() != null) {
                     obds.getMengePatient()
                         .getPatient()
-                        .get(0)
+                        .getFirst()
                         .getMengeMeldung()
                         .getMeldung()
                         .add(meldung);
@@ -365,7 +364,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     }
     var patient = patients.getFirst();
 
-    if (conditions.size() < 1) {
+    if (conditions.isEmpty()) {
       /*
       in rare cases we could encounter a data slice without a condition.
       then we create a bundle without a condition ID.

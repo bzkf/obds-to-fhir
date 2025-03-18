@@ -244,7 +244,7 @@ public class Obdsv3ProcessorTest {
                         || inputNames.contains(name)) return true;
                     return false;
                   });
-      for (int i = 0; i < inputFiles.length; i++) {
+      for (int i = 0; i < Objects.requireNonNull(inputFiles).length; i++) {
 
         var r = fetchFile(inputFiles[i]);
 
@@ -286,7 +286,8 @@ public class Obdsv3ProcessorTest {
       AtomicInteger dulpicateKeyCount = new AtomicInteger();
       keys.forEach(
           keyInTopic -> {
-            if (!kafkaMessageKeys.add(keyInTopic)) {
+            if (kafkaMessageKeys.add(keyInTopic)) {
+              System.out.println("key: " + keyInTopic);
               dulpicateKeyCount.getAndIncrement();
             }
             ;
