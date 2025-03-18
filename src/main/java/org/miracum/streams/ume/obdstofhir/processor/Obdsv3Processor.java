@@ -210,14 +210,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     ((SYSTTyp) syst).getMeldeanlass() == null
                         ? null
                         : ((SYSTTyp) syst).getMeldeanlass().toString());
-        if (systMeldung != null) {
-          obds.getMengePatient()
-              .getPatient()
-              .getFirst()
-              .getMengeMeldung()
-              .getMeldung()
-              .add(systMeldung);
-        }
+        addMeldung(systMeldung, obds);
 
         // Strahlentherapie
         var stMeldung =
@@ -230,14 +223,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     ((STTyp) st).getMeldeanlass() == null
                         ? null
                         : ((STTyp) st).getMeldeanlass().toString());
-        if (stMeldung != null) {
-          obds.getMengePatient()
-              .getPatient()
-              .getFirst()
-              .getMengeMeldung()
-              .getMeldung()
-              .add(stMeldung);
-        }
+        addMeldung(stMeldung, obds);
 
         // Verlauf
         var verlaufMeldung =
@@ -250,24 +236,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     ((VerlaufTyp) verlauf).getMeldeanlass() == null
                         ? null
                         : ((VerlaufTyp) verlauf).getMeldeanlass());
-        if (verlaufMeldung != null) {
-          obds.getMengePatient()
-              .getPatient()
-              .getFirst()
-              .getMengeMeldung()
-              .getMeldung()
-              .add(verlaufMeldung);
-        }
+        addMeldung(verlaufMeldung, obds);
 
         final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungExportList);
-        if (tumorKonferenzMeldung != null) {
-          obds.getMengePatient()
-              .getPatient()
-              .getFirst()
-              .getMengeMeldung()
-              .getMeldung()
-              .add(tumorKonferenzMeldung);
-        }
+        addMeldung(tumorKonferenzMeldung, obds);
 
         // Tumorzuordnung
         var latestReportingTumorzuordnung =
@@ -288,6 +260,12 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
       return obdsToFhirBundleMapper.map(tumorObds);
     };
+  }
+
+  private static void addMeldung(Meldung meldung, OBDS obds) {
+    if (meldung != null) {
+      obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung().add(meldung);
+    }
   }
 
   @Nullable
