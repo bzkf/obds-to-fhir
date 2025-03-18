@@ -225,7 +225,7 @@ public abstract class ObdsToFhirMapper {
     }
 
     // if already in FHIR format 'yyyy-MM-dd' e.g. if it is in oBDS 3.x format
-    if (obdsDate.matches("^(18|19|20)\\d\\d-((0\\d)|(1[0-2]))-([0-2]\\d)|(3[01])$")) {
+    if (obdsDate.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
       // 2022-00-00 -> 2022-07-01
       // 2022-04-00 -> 2022-04-15
       if (obdsDate.matches("^\\d{4}-00-00$")) {
