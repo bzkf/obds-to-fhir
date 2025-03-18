@@ -254,12 +254,19 @@ public abstract class ObdsToFhirMapper {
     return null != value && value.matches("[A-Z]\\d{2}(\\.\\d{1,2})?");
   }
 
-  public static DateType convertObdsDatumToDateType(
+  public static Optional<DateType> convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    if (obdsDatum == null) {
+      return Optional.empty();
+    }
     var dateTimeType = convertObdsDatumToDateTimeType(obdsDatum);
-    var dateType = new DateType(dateTimeType.getValue());
-    dateType.setPrecision(dateTimeType.getPrecision());
-    return dateType;
+    if (dateTimeType.isEmpty()) {
+      return Optional.empty();
+    }
+
+    var dateType = new DateType(dateTimeType.get().getValue());
+    dateType.setPrecision(dateTimeType.get().getPrecision());
+    return Optional.of(dateType);
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
@@ -282,8 +289,12 @@ public abstract class ObdsToFhirMapper {
     return Optional.of(date);
   }
 
-  public static DateTimeType convertObdsDatumToDateTimeType(
+  public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
+    if (obdsDatum == null || obdsDatum.getValue() == null) {
+      return Optional.empty();
+    }
+
     var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
     switch (obdsDatum.getDatumsgenauigkeit()) {
         // exakt (entspricht taggenau)
@@ -306,7 +317,7 @@ public abstract class ObdsToFhirMapper {
                 + "Defaulting to most granular 'year' precision.");
         break;
     }
-    return date;
+    return Optional.of(date);
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(

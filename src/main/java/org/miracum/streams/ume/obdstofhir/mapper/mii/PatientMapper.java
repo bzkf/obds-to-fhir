@@ -10,7 +10,6 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +19,6 @@ public class PatientMapper extends ObdsToFhirMapper {
   private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
       genderMap;
 
-  @Autowired
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
 
@@ -71,11 +69,8 @@ public class PatientMapper extends ObdsToFhirMapper {
     patient.setGender(
         genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
 
-    if (obdsPatient.getPatientenStammdaten().getGeburtsdatum().getValue() != null) {
-      var birthdate =
-          convertObdsDatumToDateType(obdsPatient.getPatientenStammdaten().getGeburtsdatum());
-      patient.setBirthDateElement(birthdate);
-    }
+    convertObdsDatumToDateType(obdsPatient.getPatientenStammdaten().getGeburtsdatum())
+        .ifPresent(patient::setBirthDateElement);
 
     // check if any of the meldungen reported death
     var deathReports = meldungen.stream().filter(m -> m.getTod() != null).toList();

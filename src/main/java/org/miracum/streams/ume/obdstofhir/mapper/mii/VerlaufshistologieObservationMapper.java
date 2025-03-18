@@ -76,8 +76,8 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       observation.addFocus(diagnose);
 
       // effective
-      var date = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
-      observation.setEffective(date);
+      convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
+          .ifPresent(observation::setEffective);
 
       // specimen
       observation.setSpecimen(specimen);
