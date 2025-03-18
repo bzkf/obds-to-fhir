@@ -134,7 +134,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
           if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
             var diagnoseFM =
-                fernmetastasenMapper.map(diagnose, patientReference, primaryConditionReference);
+                fernmetastasenMapper.map(
+                    diagnose, meldung.getMeldungID(), patientReference, primaryConditionReference);
             addToBundle(bundle, diagnoseFM);
           }
 
@@ -197,7 +198,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           if (verlauf.getMengeFM() != null && verlauf.getMengeFM().getFernmetastase() != null) {
             var verlaufFM =
                 fernmetastasenMapper.map(
-                    meldung.getVerlauf(), patientReference, primaryConditionReference);
+                    verlauf, meldung.getMeldungID(), patientReference, primaryConditionReference);
             addToBundle(bundle, verlaufFM);
           }
 
@@ -401,6 +402,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 lymphknotenuntersuchungMapper.map(
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (pathologie.getMengeFM() != null
+              && pathologie.getMengeFM().getFernmetastase() != null) {
+            var pathologieFM =
+                fernmetastasenMapper.map(
+                    pathologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
+            addToBundle(bundle, pathologieFM);
           }
 
           if (pathologie.getMengeGenetik() != null
