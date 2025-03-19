@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.processor;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.*;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import java.util.*;
 import java.util.function.Function;
@@ -13,6 +14,7 @@ import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -140,126 +142,170 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   public ValueMapper<List<MeldungExportListV3>, List<Bundle>>
       getMeldungExportListToBundleListMapper() {
-    return meldungExportListList -> {
+    return meldungGroupedByPatientIdAndTumorId -> {
       List<OBDS> tumorObds = new ArrayList<>();
 
-      for (MeldungExportListV3 meldungExportList : meldungExportListList) {
-        OBDS obds = new OBDS();
-
-        // init obds
-        obds.setMengePatient(new OBDS.MengePatient());
-        obds.getMengePatient().getPatient().add(new OBDS.MengePatient.Patient());
-        obds.getMengePatient()
-            .getPatient()
-            .getFirst()
-            .setMengeMeldung(new OBDS.MengePatient.Patient.MengeMeldung());
+      for (MeldungExportListV3 meldungsOfPatientAndTumor : meldungGroupedByPatientIdAndTumorId) {
+        final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
 
         // Meldedatum
         var latestReportingByReportingDate =
-            meldungExportList.stream()
+            meldungsOfPatientAndTumor.stream()
                 .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
                 .get()
                 .getObds();
         obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
 
-        // Patient -- set latest known patient master data by reporting date
-        var latestReportingStammdatenPatient =
-            latestReportingByReportingDate.getMengePatient().getPatient().getFirst();
-        obds.getMengePatient()
-            .getPatient()
-            .getFirst()
-            .setPatientenStammdaten(latestReportingStammdatenPatient.getPatientenStammdaten());
-        obds.getMengePatient()
-            .getPatient()
-            .getFirst()
-            .setPatientID(latestReportingStammdatenPatient.getPatientID());
+        final var latestReportedPatientData =
+            setLatestReportedPatientData(latestReportingByReportingDate, obds);
 
         // Diagnose, OP, Tod
-        meldungExportList.stream()
-            .map(MeldungExportV3::getObds)
-            .map(OBDS::getMengePatient)
-            .map(OBDS.MengePatient::getPatient)
-            .filter(Objects::nonNull)
-            .flatMap(List::stream)
-            .map(OBDS.MengePatient.Patient::getMengeMeldung)
-            .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
-            .filter(Objects::nonNull)
-            .flatMap(List::stream)
-            .forEach(
-                meldung -> {
-                  if (meldung.getDiagnose() != null
-                      || meldung.getOP() != null
-                      || meldung.getTod() != null) {
-                    obds.getMengePatient()
-                        .getPatient()
-                        .getFirst()
-                        .getMengeMeldung()
-                        .getMeldung()
-                        .add(meldung);
-                  }
-                });
+        tryAddDiagnoseOpTodMeldung(meldungsOfPatientAndTumor, obds);
 
         // Systemtherapie
-        var systMeldung =
-            selectByMeldeanlass(
-                meldungExportList,
-                Meldeanlass.BEHANDLUNGSENDE,
-                Meldeanlass.BEHANDLUNGSBEGINN,
-                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getSYST,
-                syst ->
-                    ((SYSTTyp) syst).getMeldeanlass() == null
-                        ? null
-                        : ((SYSTTyp) syst).getMeldeanlass().toString());
+        final var systMeldung = getSystemtherapieMeldung(meldungsOfPatientAndTumor);
         addMeldung(systMeldung, obds);
 
         // Strahlentherapie
-        var stMeldung =
-            selectByMeldeanlass(
-                meldungExportList,
-                Meldeanlass.BEHANDLUNGSENDE,
-                Meldeanlass.BEHANDLUNGSBEGINN,
-                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getST,
-                st ->
-                    ((STTyp) st).getMeldeanlass() == null
-                        ? null
-                        : ((STTyp) st).getMeldeanlass().toString());
+        final var stMeldung = getStrahlentherapieMeldung(meldungsOfPatientAndTumor);
         addMeldung(stMeldung, obds);
 
         // Verlauf
-        var verlaufMeldung =
-            selectByMeldeanlass(
-                meldungExportList,
-                Meldeanlass.STATUSAENDERUNG,
-                Meldeanlass.STATUSMELDUNG,
-                OBDS.MengePatient.Patient.MengeMeldung.Meldung::getVerlauf,
-                verlauf ->
-                    ((VerlaufTyp) verlauf).getMeldeanlass() == null
-                        ? null
-                        : ((VerlaufTyp) verlauf).getMeldeanlass());
+        final var verlaufMeldung = getVerlaufMeldung(meldungsOfPatientAndTumor);
         addMeldung(verlaufMeldung, obds);
 
-        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungExportList);
+        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungsOfPatientAndTumor);
         addMeldung(tumorKonferenzMeldung, obds);
 
         // Tumorzuordnung
-        var latestReportingTumorzuordnung =
-            latestReportingStammdatenPatient
-                .getMengeMeldung()
-                .getMeldung()
-                .getFirst()
-                .getTumorzuordnung();
-        obds.getMengePatient()
-            .getPatient()
-            .getFirst()
-            .getMengeMeldung()
-            .getMeldung()
-            .getFirst()
-            .setTumorzuordnung(latestReportingTumorzuordnung);
+        ensureTumorIdAtMeldung(latestReportedPatientData, obds);
         tumorObds.add(obds);
       }
 
       return obdsToFhirBundleMapper.map(tumorObds);
     };
+  }
+
+  protected static void tryAddDiagnoseOpTodMeldung(
+      MeldungExportListV3 meldungExportList, OBDS obds) {
+    meldungExportList.stream()
+        .map(MeldungExportV3::getObds)
+        .map(OBDS::getMengePatient)
+        .map(MengePatient::getPatient)
+        .filter(Objects::nonNull)
+        .flatMap(List::stream)
+        .map(MengePatient.Patient::getMengeMeldung)
+        .map(MengePatient.Patient.MengeMeldung::getMeldung)
+        .filter(Objects::nonNull)
+        .flatMap(List::stream)
+        .forEach(
+            meldung -> {
+              if (meldung.getDiagnose() != null
+                  || meldung.getOP() != null
+                  || meldung.getTod() != null) {
+                obds.getMengePatient()
+                    .getPatient()
+                    .getFirst()
+                    .getMengeMeldung()
+                    .getMeldung()
+                    .add(meldung);
+              }
+            });
+  }
+
+  /**
+   * Patient -- set latest known patient master data by reporting date
+   *
+   * @param latestReportingByReportingDate input data source
+   * @param obds target data opbject
+   * @return Patient last reported
+   */
+  protected static @NotNull MengePatient.Patient setLatestReportedPatientData(
+      OBDS latestReportingByReportingDate, OBDS obds) {
+    var latestReportingStammdatenPatient =
+        latestReportingByReportingDate.getMengePatient().getPatient().getFirst();
+    obds.getMengePatient()
+        .getPatient()
+        .getFirst()
+        .setPatientenStammdaten(latestReportingStammdatenPatient.getPatientenStammdaten());
+    obds.getMengePatient()
+        .getPatient()
+        .getFirst()
+        .setPatientID(latestReportingStammdatenPatient.getPatientID());
+    return latestReportingStammdatenPatient;
+  }
+
+  @NotNull
+  protected static OBDS getObdsWithPatientMengeAndMeldungInitialized() {
+    OBDS obds = new OBDS();
+
+    // init obds
+    obds.setMengePatient(new MengePatient());
+    obds.getMengePatient().getPatient().add(new MengePatient.Patient());
+    obds.getMengePatient()
+        .getPatient()
+        .getFirst()
+        .setMengeMeldung(new MengePatient.Patient.MengeMeldung());
+    return obds;
+  }
+
+  protected Meldung getSystemtherapieMeldung(MeldungExportListV3 meldungExportList) {
+    var systMeldung =
+        selectByMeldeanlass(
+            meldungExportList,
+            Meldeanlass.BEHANDLUNGSENDE,
+            Meldeanlass.BEHANDLUNGSBEGINN,
+            Meldung::getSYST,
+            syst ->
+                ((SYSTTyp) syst).getMeldeanlass() == null
+                    ? null
+                    : ((SYSTTyp) syst).getMeldeanlass().toString());
+    return systMeldung;
+  }
+
+  protected Meldung getStrahlentherapieMeldung(MeldungExportListV3 meldungExportList) {
+    var stMeldung =
+        selectByMeldeanlass(
+            meldungExportList,
+            Meldeanlass.BEHANDLUNGSENDE,
+            Meldeanlass.BEHANDLUNGSBEGINN,
+            Meldung::getST,
+            st ->
+                ((STTyp) st).getMeldeanlass() == null
+                    ? null
+                    : ((STTyp) st).getMeldeanlass().toString());
+    return stMeldung;
+  }
+
+  protected static void ensureTumorIdAtMeldung(
+      MengePatient.Patient latestReportingStammdatenPatient, OBDS obds) {
+    var latestReportingTumorzuordnung =
+        latestReportingStammdatenPatient
+            .getMengeMeldung()
+            .getMeldung()
+            .getFirst()
+            .getTumorzuordnung();
+    obds.getMengePatient()
+        .getPatient()
+        .getFirst()
+        .getMengeMeldung()
+        .getMeldung()
+        .getFirst()
+        .setTumorzuordnung(latestReportingTumorzuordnung);
+  }
+
+  protected Meldung getVerlaufMeldung(MeldungExportListV3 meldungExportList) {
+    var verlaufMeldung =
+        selectByMeldeanlass(
+            meldungExportList,
+            Meldeanlass.STATUSAENDERUNG,
+            Meldeanlass.STATUSMELDUNG,
+            Meldung::getVerlauf,
+            verlauf ->
+                ((VerlaufTyp) verlauf).getMeldeanlass() == null
+                    ? null
+                    : ((VerlaufTyp) verlauf).getMeldeanlass());
+    return verlaufMeldung;
   }
 
   private static void addMeldung(Meldung meldung, OBDS obds) {
