@@ -109,7 +109,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .values());
   }
 
-  public static String getReportingIdFromAdt(MeldungExportV3 meldung) {
+  public static String getReportingIdFromObds(MeldungExportV3 meldung) {
     return meldung
         .getObds()
         .getMengePatient()
