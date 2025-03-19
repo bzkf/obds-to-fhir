@@ -177,8 +177,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungsOfPatientAndTumor);
         addMeldung(tumorKonferenzMeldung, obds);
 
-        // Tumorzuordnung
-        ensureTumorIdAtMeldung(latestReportedPatientData, obds);
         tumorObds.add(obds);
       }
 
@@ -270,23 +268,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     ? null
                     : ((STTyp) st).getMeldeanlass().toString());
     return stMeldung;
-  }
-
-  protected static void ensureTumorIdAtMeldung(
-      MengePatient.Patient latestReportingStammdatenPatient, OBDS obds) {
-    var latestReportingTumorzuordnung =
-        latestReportingStammdatenPatient
-            .getMengeMeldung()
-            .getMeldung()
-            .getFirst()
-            .getTumorzuordnung();
-    obds.getMengePatient()
-        .getPatient()
-        .getFirst()
-        .getMengeMeldung()
-        .getMeldung()
-        .getFirst()
-        .setTumorzuordnung(latestReportingTumorzuordnung);
   }
 
   protected Meldung getVerlaufMeldung(MeldungExportListV3 meldungExportList) {
