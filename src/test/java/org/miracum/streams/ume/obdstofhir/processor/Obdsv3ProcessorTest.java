@@ -290,7 +290,6 @@ public class Obdsv3ProcessorTest {
               System.out.println("key: " + keyInTopic);
               dulpicateKeyCount.getAndIncrement();
             }
-            ;
           });
       assertThat(dulpicateKeyCount.get()).isLessThan(2);
     }

@@ -188,24 +188,24 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   protected static void tryAddDiagnoseOpTodMeldung(
       MeldungExportListV3 meldungExportList, OBDS obds) {
-      meldungExportList.stream()
-          .map(MeldungExportV3::getObds)
-          .map(OBDS::getMengePatient)
-          .map(OBDS.MengePatient::getPatient)
-          .filter(Objects::nonNull)
-          .flatMap(List::stream)
-          .map(OBDS.MengePatient.Patient::getMengeMeldung)
-          .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
-          .filter(Objects::nonNull)
-          .flatMap(List::stream)
-          .forEach(
-              meldung -> {
-                  if (meldung.getDiagnose() != null
-                      || meldung.getOP() != null
-                      || meldung.getTod() != null) {
-                      addMeldung(meldung, obds);
-                  }
-              });
+    meldungExportList.stream()
+        .map(MeldungExportV3::getObds)
+        .map(OBDS::getMengePatient)
+        .map(OBDS.MengePatient::getPatient)
+        .filter(Objects::nonNull)
+        .flatMap(List::stream)
+        .map(OBDS.MengePatient.Patient::getMengeMeldung)
+        .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
+        .filter(Objects::nonNull)
+        .flatMap(List::stream)
+        .forEach(
+            meldung -> {
+              if (meldung.getDiagnose() != null
+                  || meldung.getOP() != null
+                  || meldung.getTod() != null) {
+                addMeldung(meldung, obds);
+              }
+            });
   }
 
   /**
