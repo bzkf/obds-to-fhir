@@ -82,9 +82,16 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // specimen
     observation.setSpecimen(specimen);
 
-    // effective
+    // effective is 1..1
     convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
-        .ifPresent(observation::setEffective);
+        .ifPresentOrElse(
+            observation::setEffective,
+            () -> {
+              var absentDateTime = new DateTimeType();
+              absentDateTime.addExtension(
+                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              observation.setEffective(absentDateTime);
+            });
 
     // value
     var value =
