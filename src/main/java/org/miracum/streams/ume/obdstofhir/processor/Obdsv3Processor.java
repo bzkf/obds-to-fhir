@@ -83,7 +83,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return meldungExportList.stream()
         .collect(
             Collectors.groupingBy(
-                Obdsv3Processor::getReportingIdFromAdt,
+                Obdsv3Processor::getReportingIdFromObds,
                 Collectors.collectingAndThen(
                     Collectors.maxBy(Comparator.comparingInt(MeldungExportV3::getVersionsnummer)),
                     optionalMeldung -> optionalMeldung.map(List::of).orElse(List.of()))))
@@ -190,12 +190,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                   if (meldung.getDiagnose() != null
                       || meldung.getOP() != null
                       || meldung.getTod() != null) {
-                    obds.getMengePatient()
-                        .getPatient()
-                        .getFirst()
-                        .getMengeMeldung()
-                        .getMeldung()
-                        .add(meldung);
+                    addMeldung(meldung, obds);
                   }
                 });
 
@@ -272,7 +267,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   }
 
   private OBDS.MengePatient.Patient.MengeMeldung.Meldung selectByMeldeanlass(
-      List<MeldungExportV3> meldungList,
+      MeldungExportListV3 meldungList,
       Meldeanlass primary,
       Meldeanlass secondary,
       Function<OBDS.MengePatient.Patient.MengeMeldung.Meldung, ?>
