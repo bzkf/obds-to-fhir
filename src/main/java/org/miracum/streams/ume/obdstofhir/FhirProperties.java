@@ -121,6 +121,7 @@ public class FhirProperties {
     private String meddra;
     private String miiCsOnkoTherapieTyp;
     private String miiCsOnkoTherapieabweichung;
+    private String gradingObservationId;
   }
 
   @Data

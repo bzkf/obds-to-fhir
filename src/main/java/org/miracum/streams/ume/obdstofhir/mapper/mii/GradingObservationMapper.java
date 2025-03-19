@@ -50,7 +50,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // Identifer
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+            .setSystem(fhirProperties.getSystems().getGradingObservationId())
             .setValue(histologie.getHistologieID() + "_Grading");
     observation.addIdentifier(identifier);
 

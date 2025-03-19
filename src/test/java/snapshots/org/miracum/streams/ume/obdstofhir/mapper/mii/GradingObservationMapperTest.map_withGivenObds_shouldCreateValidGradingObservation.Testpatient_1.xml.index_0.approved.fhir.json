@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "360801228505b1bb4346b56eefd4e20f1ea17be7125d34f55fc6912a6d708d3a",
+  "id": "318d327c522ffbb3bd935c40ae3c25228e07f97dcc0f7788d5c69384abf62aee",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
     "value": "521_Grading"
   } ],
   "status": "final",

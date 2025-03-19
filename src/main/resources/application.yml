@@ -46,6 +46,7 @@ fhir:
     genetische-variante-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/genetische-variante-id"
     nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
+    grading-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/grading-observation-id"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
