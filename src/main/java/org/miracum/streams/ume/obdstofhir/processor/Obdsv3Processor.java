@@ -85,7 +85,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return meldungExportList.stream()
         .collect(
             Collectors.groupingBy(
-                Obdsv3Processor::getReportingIdFromAdt,
+                Obdsv3Processor::getReportingIdFromObds,
                 Collectors.collectingAndThen(
                     Collectors.maxBy(Comparator.comparingInt(MeldungExportV3::getVersionsnummer)),
                     optionalMeldung -> optionalMeldung.map(List::of).orElse(List.of()))))
@@ -111,7 +111,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             .values());
   }
 
-  public static String getReportingIdFromAdt(MeldungExportV3 meldung) {
+  public static String getReportingIdFromObds(MeldungExportV3 meldung) {
     return meldung
         .getObds()
         .getMengePatient()
@@ -188,29 +188,24 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   protected static void tryAddDiagnoseOpTodMeldung(
       MeldungExportListV3 meldungExportList, OBDS obds) {
-    meldungExportList.stream()
-        .map(MeldungExportV3::getObds)
-        .map(OBDS::getMengePatient)
-        .map(MengePatient::getPatient)
-        .filter(Objects::nonNull)
-        .flatMap(List::stream)
-        .map(MengePatient.Patient::getMengeMeldung)
-        .map(MengePatient.Patient.MengeMeldung::getMeldung)
-        .filter(Objects::nonNull)
-        .flatMap(List::stream)
-        .forEach(
-            meldung -> {
-              if (meldung.getDiagnose() != null
-                  || meldung.getOP() != null
-                  || meldung.getTod() != null) {
-                obds.getMengePatient()
-                    .getPatient()
-                    .getFirst()
-                    .getMengeMeldung()
-                    .getMeldung()
-                    .add(meldung);
-              }
-            });
+      meldungExportList.stream()
+          .map(MeldungExportV3::getObds)
+          .map(OBDS::getMengePatient)
+          .map(OBDS.MengePatient::getPatient)
+          .filter(Objects::nonNull)
+          .flatMap(List::stream)
+          .map(OBDS.MengePatient.Patient::getMengeMeldung)
+          .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
+          .filter(Objects::nonNull)
+          .flatMap(List::stream)
+          .forEach(
+              meldung -> {
+                  if (meldung.getDiagnose() != null
+                      || meldung.getOP() != null
+                      || meldung.getTod() != null) {
+                      addMeldung(meldung, obds);
+                  }
+              });
   }
 
   /**
@@ -332,7 +327,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   }
 
   private OBDS.MengePatient.Patient.MengeMeldung.Meldung selectByMeldeanlass(
-      List<MeldungExportV3> meldungList,
+      MeldungExportListV3 meldungList,
       Meldeanlass primary,
       Meldeanlass secondary,
       Function<OBDS.MengePatient.Patient.MengeMeldung.Meldung, ?>
