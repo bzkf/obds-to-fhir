@@ -270,6 +270,14 @@
             "code": "P"
           } ]
         }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "O"
+          } ]
+        }
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
@@ -434,13 +442,21 @@
           } ]
         }
       }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "O"
+          } ]
+        }
+      }, {
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung",
         "extension": [ {
           "url": "Applikationsart",
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "P-ST"
+              "code": "PRCN-ST4D"
             } ]
           }
         }, {
@@ -448,7 +464,7 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-              "code": "UH"
+              "code": "NE"
             } ]
           }
         }, {
@@ -456,7 +472,31 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "3.4"
+              "code": "1.1."
+            } ]
+          }
+        }, {
+          "url": "Zielgebiet_Lateralitaet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "T"
+            } ]
+          }
+        }, {
+          "url": "Einzeldosis",
+          "valueQuantity": {
+            "value": 3,
+            "unit": "Gy",
+            "system": "http://unitsofmeasure.org",
+            "code": "Gy"
+          }
+        }, {
+          "url": "Boost",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
+              "code": "J"
             } ]
           }
         } ]
@@ -469,32 +509,27 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "277132007",
-          "display": "Therapeutic procedure"
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
         } ]
       },
       "subject": {
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "performedPeriod": {
-        "_start": {
-          "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-            "valueCode": "unknown"
-          } ]
-        }
-      }
+        "start": "2018-06-06"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+      } ]
     },
     "request": {
       "method": "PUT",

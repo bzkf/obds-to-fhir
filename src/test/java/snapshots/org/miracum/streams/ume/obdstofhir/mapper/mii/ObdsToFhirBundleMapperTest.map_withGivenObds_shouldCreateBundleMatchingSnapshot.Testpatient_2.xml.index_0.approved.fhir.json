@@ -241,6 +241,14 @@
             "code": "K"
           } ]
         }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "O"
+          } ]
+        }
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
@@ -401,7 +409,15 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "P"
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "O"
           } ]
         }
       }, {
@@ -411,7 +427,7 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "P-ST"
+              "code": "PRCN-ST4D"
             } ]
           }
         }, {
@@ -419,7 +435,7 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-              "code": "UH"
+              "code": "NE"
             } ]
           }
         }, {
@@ -427,8 +443,24 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "3.4"
+              "code": "5.4.-"
             } ]
+          }
+        }, {
+          "url": "Zielgebiet_Lateralitaet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "T"
+            } ]
+          }
+        }, {
+          "url": "Einzeldosis",
+          "valueQuantity": {
+            "value": 1.8,
+            "unit": "Gy",
+            "system": "http://unitsofmeasure.org",
+            "code": "Gy"
           }
         } ]
       } ],
@@ -440,32 +472,27 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "277132007",
-          "display": "Therapeutic procedure"
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          }
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
         } ]
       },
       "subject": {
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "performedPeriod": {
-        "_start": {
-          "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-            "valueCode": "unknown"
-          } ]
-        }
-      }
+        "start": "2022-03-01"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/a31f38c3b6c0d35e6f228a50ba288b814250c774b8dc89cf5ae36455eb6d1ea8"
+      } ]
     },
     "request": {
       "method": "PUT",
