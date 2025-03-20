@@ -3,37 +3,36 @@
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/bzkf/obds-to-fhir/badge)](https://scorecard.dev/viewer/?uri=github.com/bzkf/obds-to-fhir)
 [![SLSA 3](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev)
 
-This project contains a Kafka Stream processor that creates FHIR resources from Onkostar oBDS-XML data and writes them to a FHIR Topic.
+This project maps [oBDS XML reports](https://www.basisdatensatz.de/basisdatensatz) to FHIR® resources conforming to the [Medizininformatik Initiative - Modul Onkologie](https://simplifier.net/guide/mii-ig-modul-onkologie-2024-de?version=current) profiles.
+
+## Getting Started
+
+Prerequisites:
+
+- Container Runtime (Docker >= v28.0.1, containerd >= v1.7.25, Podman >= v5.4.1)
+- Plugin to run [Compose files](https://www.compose-spec.io/) (docker compose, nerdctl, podman-compose)
+
+Obds-to-fhir can be configured to either read oBDS XMLs from a filesystem directory or from an ONKOSTAR database table.
+
+### Reading oBDS XML from a directory
+
+> [!NOTE]
+> This requires the oBDS XMLs to be in version 3 format.
+
+A configuration profile called `process-from-directory` exists, which configures the application to read oBDS XMLs from
+a directory called `/opt/obds-to-fhir/obds-input` inside the container, map them to FHIR resources and write the output
+bundles to both `/opt/obds-to-fhir/fhir-output` and a Kafka topic called `fhir.obds`: [application-process-from-directory.yml](src/main/resources/application-process-from-directory.yml).
+
+See [compose.yaml](tests/compose/compose.yaml) and [compose.process-from-directory.yaml](tests/compose/compose.process-from-directory.yaml)
+for an example configuration used as part of the integration tests.
+
+### Reading oBDS XML from an ONKOSTAR database
+
+<!--TODO-->
 
 ## Used FHIR profiles
 
 See [package.json](package.json) for a list of used packages and their versions.
-
-### Observations
-
-- Histologie (<https://simplifier.net/oncology/histologie>)
-- Grading (<https://simplifier.net/oncology/grading>)
-- TNMc (<https://simplifier.net/oncology/tnmc>)
-- TNMp (<https://simplifier.net/oncology/tnmp>)
-- Fernmetastasen (<https://simplifier.net/oncology/fernmetastasen-duplicate-2>)
-- Tod Ursache (<https://simplifier.net/oncology/todursache>)
-
-### Condition
-
-- Primärdiagnose (<https://simplifier.net/oncology/primaerdiagnose>)
-
-### Procedure
-
-- Operation (<https://simplifier.net/oncology/operation>)
-- Strahlentherapie (<https://simplifier.net/oncology/strahlentherapie>)
-
-### MedicationStatement
-
-- Systemtherapie (<https://simplifier.net/oncology/systemtherapie>)
-
-### Patient
-
-- Patient (<https://simplifier.net/medizininformatikinitiative-modulperson>)
 
 ## Dev
 

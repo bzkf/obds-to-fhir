@@ -50,7 +50,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // Identifer
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+            .setSystem(fhirProperties.getSystems().getGradingObservationId())
             .setValue(histologie.getHistologieID() + "_Grading");
     observation.addIdentifier(identifier);
 
@@ -82,9 +82,16 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // specimen
     observation.setSpecimen(specimen);
 
-    // effective
-    var date = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
-    observation.setEffective(date);
+    // effective is 1..1
+    convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
+        .ifPresentOrElse(
+            observation::setEffective,
+            () -> {
+              var absentDateTime = new DateTimeType();
+              absentDateTime.addExtension(
+                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              observation.setEffective(absentDateTime);
+            });
 
     // value
     var value =

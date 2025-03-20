@@ -224,7 +224,8 @@ class ObdsToFhirMapperTests {
 
     var actual = ObdsToFhirMapper.convertObdsDatumToDateType(datum);
 
-    assertThat(actual.asStringValue()).isEqualTo(expected);
+    assertThat(actual).isPresent();
+    assertThat(actual.get().asStringValue()).isEqualTo(expected);
   }
 
   @Test

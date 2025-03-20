@@ -1,6 +1,5 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.*;
 import org.apache.commons.lang3.Validate;
@@ -50,11 +49,12 @@ public class SpecimenMapper extends ObdsToFhirMapper {
     specimen.setSubject(patient);
 
     // Specimen.collection.collected[x] = Tumor Histologiedatum
-    var date =
-        new DateTimeType(
-            histologie.getTumorHistologiedatum().getValue().toGregorianCalendar().getTime());
-    date.setPrecision(TemporalPrecisionEnum.DAY);
-    specimen.setCollection(new Specimen.SpecimenCollectionComponent().setCollected(date));
+    convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
+        .ifPresent(
+            date ->
+                specimen.setCollection(
+                    new Specimen.SpecimenCollectionComponent().setCollected(date)));
+
     return specimen;
   }
 }

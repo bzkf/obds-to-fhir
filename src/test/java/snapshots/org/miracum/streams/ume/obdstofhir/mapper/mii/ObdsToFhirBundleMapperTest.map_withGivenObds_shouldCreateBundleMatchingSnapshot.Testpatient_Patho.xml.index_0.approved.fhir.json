@@ -106,15 +106,15 @@
       "url": "Observation/1a3ac3570b92e29785d725277d0a2a3162543b7c32f54c14cc991a885bdb3637"
     }
   }, {
-    "fullUrl": "Observation/187f82f4223ecde45117d996bde6cdba06ebe014b1701b096d3a94f3e6a55f79",
+    "fullUrl": "Observation/36dd58484e6839119345a05965570b7d493bcc3ee5e9bc38faae933d9c37b906",
     "resource": {
       "resourceType": "Observation",
-      "id": "187f82f4223ecde45117d996bde6cdba06ebe014b1701b096d3a94f3e6a55f79",
+      "id": "36dd58484e6839119345a05965570b7d493bcc3ee5e9bc38faae933d9c37b906",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
         "value": "269_Grading"
       } ],
       "status": "final",
@@ -152,7 +152,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/187f82f4223ecde45117d996bde6cdba06ebe014b1701b096d3a94f3e6a55f79"
+      "url": "Observation/36dd58484e6839119345a05965570b7d493bcc3ee5e9bc38faae933d9c37b906"
     }
   }, {
     "fullUrl": "Observation/ae9e3f9f85a322a386aeff9865ec655a895363dce01ef7b3c0bbe18f62f0a0d5",
@@ -695,15 +695,15 @@
       "url": "Observation/00aec8ed6caf4a60ceb7d87ec1704d2df125f558a8811c21b0079905ee0d828a"
     }
   }, {
-    "fullUrl": "Observation/525a5aaa8f76f191cf7a89ae82928487c45728d7fb50c4eb80b5aa9007d71546",
+    "fullUrl": "Observation/772459bb426b47a39357c8cfdffa8f14dbd57a3cf48e059cd8f49d45bb1ec857",
     "resource": {
       "resourceType": "Observation",
-      "id": "525a5aaa8f76f191cf7a89ae82928487c45728d7fb50c4eb80b5aa9007d71546",
+      "id": "772459bb426b47a39357c8cfdffa8f14dbd57a3cf48e059cd8f49d45bb1ec857",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
         "value": "270_Grading"
       } ],
       "status": "final",
@@ -741,7 +741,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/525a5aaa8f76f191cf7a89ae82928487c45728d7fb50c4eb80b5aa9007d71546"
+      "url": "Observation/772459bb426b47a39357c8cfdffa8f14dbd57a3cf48e059cd8f49d45bb1ec857"
     }
   }, {
     "fullUrl": "DiagnosticReport/0ab8291007f01a691b1499f4ee01ececd2e1cee22737198aeabc408e4afb45bb",

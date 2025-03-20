@@ -106,15 +106,15 @@
       "url": "Observation/7882d2a8b0a2ae98627ac04bb0bd00dafe5faa4c9f817fa1f65d9ec85a94115c"
     }
   }, {
-    "fullUrl": "Observation/e4d95f80a03a68f276812ceeb0b142f0682c4b2817405814d8e1f6ae6c423d18",
+    "fullUrl": "Observation/44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34",
     "resource": {
       "resourceType": "Observation",
-      "id": "e4d95f80a03a68f276812ceeb0b142f0682c4b2817405814d8e1f6ae6c423d18",
+      "id": "44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
         "value": "271_Grading"
       } ],
       "status": "final",
@@ -152,7 +152,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/e4d95f80a03a68f276812ceeb0b142f0682c4b2817405814d8e1f6ae6c423d18"
+      "url": "Observation/44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34"
     }
   }, {
     "fullUrl": "DiagnosticReport/46563ac340ea2b1b5d8d0fb87517bf2e97870675437e7ab6ea3c87c53386e3db",

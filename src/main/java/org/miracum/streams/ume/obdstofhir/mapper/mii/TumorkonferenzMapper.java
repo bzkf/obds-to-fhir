@@ -54,7 +54,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     // subject
     carePlan.setSubject(patient);
     // created
-    carePlan.setCreatedElement(convertObdsDatumToDateTimeType(tk.getDatum()));
+    convertObdsDatumToDateTimeType(tk.getDatum()).ifPresent(carePlan::setCreatedElement);
     // addresses
     ArrayList<Reference> adresse = new ArrayList<>();
     adresse.add(primaerDiagnose);

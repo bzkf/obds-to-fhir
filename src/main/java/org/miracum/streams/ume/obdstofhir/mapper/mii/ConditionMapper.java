@@ -130,9 +130,11 @@ public class ConditionMapper extends ObdsToFhirMapper {
     }
     condition.setBodySite(bodySite);
 
-    var diagnoseDatum = convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum());
-    condition.addExtension(
-        fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum);
+    convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
+        .ifPresent(
+            diagnoseDatum ->
+                condition.addExtension(
+                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum));
 
     var recorded = new DateTimeType(meldeDatum.toGregorianCalendar().getTime());
     recorded.setPrecision(TemporalPrecisionEnum.DAY);
