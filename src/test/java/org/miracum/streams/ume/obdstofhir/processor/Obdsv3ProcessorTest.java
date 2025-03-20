@@ -31,6 +31,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -328,5 +329,70 @@ public class Obdsv3ProcessorTest {
                 .getMeldeanlass()
                 .equals(Meldeanlass.valueOf(expectedMeldeAnlass).toString()))
         .isTrue();
+  }
+
+  @Test
+  public void testMultipleStMeldungen() throws IOException {
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+
+      var inputTopic =
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      // pipe test data
+      inputTopic.pipeInput(
+          "key1", buildMeldungExport(getResourceByName("Test_ST_1.xml"), "1", "12356789", "1", 1));
+      inputTopic.pipeInput(
+          "key2", buildMeldungExport(getResourceByName("Test_ST_2.xml"), "2", "12356789", "2", 1));
+      inputTopic.pipeInput(
+          "key3",
+          buildMeldungExport(getResourceByName("Test_ST_2_2.xml"), "3", "12356789", "3", 1));
+
+      var outputRecords = outputTopic.readKeyValuesToList();
+      assertThat(outputRecords).hasSize(3);
+
+      var outputBundles = outputRecords.stream().map(entry -> entry.value).toList();
+      var firstMessageBundleOutput = (Bundle) outputBundles.getFirst();
+      var secondMessageBundleOutput = (Bundle) outputBundles.get(1);
+      var finalMessageBundleOutput = (Bundle) outputBundles.getLast();
+
+      // Patient + ST_1-Procedure behandlungsende
+      assertThat(firstMessageBundleOutput.getEntry()).hasSize(2);
+      var st1status =
+          BundleUtil.toListOfResourcesOfType(ctx, firstMessageBundleOutput, Procedure.class)
+              .getFirst()
+              .getStatus();
+      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
+
+      // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
+      assertThat(secondMessageBundleOutput.getEntry()).hasSize(3);
+      st1status =
+          BundleUtil.toListOfResourcesOfType(ctx, secondMessageBundleOutput, Procedure.class)
+              .getFirst()
+              .getStatus();
+      var st2status =
+          BundleUtil.toListOfResourcesOfType(ctx, secondMessageBundleOutput, Procedure.class)
+              .get(1)
+              .getStatus();
+      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
+      assertThat(st2status).isEqualTo(Procedure.ProcedureStatus.INPROGRESS);
+
+      // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsende
+      assertThat(finalMessageBundleOutput.getEntry()).hasSize(3);
+      st1status =
+          BundleUtil.toListOfResourcesOfType(ctx, finalMessageBundleOutput, Procedure.class)
+              .getFirst()
+              .getStatus();
+      st2status =
+          BundleUtil.toListOfResourcesOfType(ctx, finalMessageBundleOutput, Procedure.class)
+              .get(1)
+              .getStatus();
+      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
+      assertThat(st2status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
+    }
   }
 }
