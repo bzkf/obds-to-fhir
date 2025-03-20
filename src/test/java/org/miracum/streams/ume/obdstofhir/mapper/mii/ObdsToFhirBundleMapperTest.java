@@ -35,6 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       VerlaufObservationMapper.class,
       GenetischeVarianteMapper.class,
       TumorkonferenzMapper.class,
+      GleasonScoreMapper.class,
     })
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest extends MapperTest {
