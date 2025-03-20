@@ -14,6 +14,8 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,42 +44,23 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      ModulProstataTyp modulProstata,
-      String meldungId,
-      Reference patient,
-      Reference condition,
-      XMLGregorianCalendar opDate) {
-    Validate.isTrue(
-        modulProstata.getAnlassGleasonScore() == AnlassGleasonScoreTyp.O,
-        "Attempt to map with an OP date, but the Anlass Gleason Score is not O.");
-
-    var observation = map(modulProstata, meldungId, patient, condition);
-    if (observation.hasEffective()) {
-      LOG.warn("Overwriting already present effective date with OP date.");
-    }
-
-    convertObdsDatumToDateTimeType(opDate).ifPresent(observation::setEffective);
-
-    return observation;
+      @NonNull ModulProstataTyp modulProstata,
+      @NonNull String meldungId,
+      @NonNull Reference patient,
+      @NonNull Reference condition) {
+    return map(modulProstata, meldungId, patient, condition, null);
   }
 
   public Observation map(
-      ModulProstataTyp modulProstata, String meldungId, Reference patient, Reference condition) {
-    Objects.requireNonNull(modulProstata);
+      @NonNull ModulProstataTyp modulProstata,
+      @NonNull String meldungId,
+      @NonNull Reference patient,
+      @NonNull Reference condition,
+      @Nullable XMLGregorianCalendar opDate) {
     Objects.requireNonNull(modulProstata.getGleasonScore());
-    Objects.requireNonNull(meldungId);
-    Objects.requireNonNull(patient);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Objects.requireNonNull(condition);
-    Validate.isTrue(
-        Objects.equals(
-            condition.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The condition reference should point to a Condition resource");
+
+    verifyReference(patient, Enumerations.ResourceType.PATIENT);
+    verifyReference(condition, Enumerations.ResourceType.CONDITION);
 
     var observation = new Observation();
 
@@ -97,8 +80,16 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
-    convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
-        .ifPresent(observation::setEffective);
+    if (opDate != null) {
+      if (modulProstata.getAnlassGleasonScore() != AnlassGleasonScoreTyp.O) {
+        LOG.warn("Mapping with a given OP date, but the Anlass Gleason Score is not O.");
+      }
+
+      convertObdsDatumToDateTimeType(opDate).ifPresent(observation::setEffective);
+    } else {
+      convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
+          .ifPresent(observation::setEffective);
+    }
 
     observation.setCode(
         new CodeableConcept(
