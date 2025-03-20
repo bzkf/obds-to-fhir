@@ -22,10 +22,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serdes.StringSerde;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.streams.KeyValue;
-import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
-import org.apache.kafka.streams.TopologyTestDriver;
+import org.apache.kafka.streams.*;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
@@ -82,13 +79,11 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {
 
-  static final String INPUT_TOPIC_NAME = "meldung-obds";
-  static final String OUTPUT_TOPIC_NAME = "onko-fhir";
-
+  private static final String INPUT_TOPIC_NAME = "meldung-obds";
+  private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
   private static final FhirContext ctx = FhirContext.forR4();
 
   @Autowired private Obdsv3Processor processor;
-
   @Autowired private Obdsv3Deserializer obdsDeserializer;
 
   @Value("classpath:obds3/*.xml")
@@ -102,8 +97,19 @@ public class Obdsv3ProcessorTest {
             () -> new IllegalArgumentException("Test OBDS resource not found: " + filename));
   }
 
+  private void pipeInput(
+      TestInputTopic<String, Object> inputTopic,
+      String key,
+      String resourceName,
+      String lkrnum,
+      int versnum)
+      throws IOException {
+    inputTopic.pipeInput(
+        key, buildMeldungExport(getResourceByName(resourceName), key, "12356789", lkrnum, versnum));
+  }
+
   @Test
-  void getMeldungExportObdsV3Processor_mapsToBundle() throws IOException {
+  void testMeldungExportObdsV3Processor_MapsToBundle() throws IOException {
     try (var driver =
         buildStream(
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
@@ -115,8 +121,7 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput(
-          "test", buildMeldungExport(getResourceByName("test1.xml"), "1", "12356789", "123", 1));
+      pipeInput(inputTopic, "key1", "test1.xml", "123", 1);
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
     }
@@ -135,15 +140,9 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput(
-          "key1",
-          buildMeldungExport(getResourceByName("Priopatient_1.xml"), "1", "12356789", "123", 1));
-      inputTopic.pipeInput(
-          "key2",
-          buildMeldungExport(getResourceByName("Priopatient_2.xml"), "2", "12356789", "123", 3));
-      inputTopic.pipeInput(
-          "key3",
-          buildMeldungExport(getResourceByName("Priopatient_3.xml"), "3", "12356789", "123", 2));
+      pipeInput(inputTopic, "key1", "Priopatient_1.xml", "123", 1);
+      pipeInput(inputTopic, "key2", "Priopatient_2.xml", "123", 3);
+      pipeInput(inputTopic, "key3", "Priopatient_3.xml", "123", 2);
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
@@ -344,55 +343,40 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput(
-          "key1", buildMeldungExport(getResourceByName("Test_ST_1.xml"), "1", "12356789", "1", 1));
-      inputTopic.pipeInput(
-          "key2", buildMeldungExport(getResourceByName("Test_ST_2.xml"), "2", "12356789", "2", 1));
-      inputTopic.pipeInput(
-          "key3",
-          buildMeldungExport(getResourceByName("Test_ST_2_2.xml"), "3", "12356789", "3", 1));
+      pipeInput(inputTopic, "key1", "Test_ST_1.xml", "1", 1);
+      pipeInput(inputTopic, "key2", "Test_ST_2.xml", "2", 1);
+      pipeInput(inputTopic, "key3", "Test_ST_2_2.xml", "3", 1);
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
 
-      var outputBundles = outputRecords.stream().map(entry -> entry.value).toList();
-      var firstMessageBundleOutput = (Bundle) outputBundles.getFirst();
-      var secondMessageBundleOutput = (Bundle) outputBundles.get(1);
-      var finalMessageBundleOutput = (Bundle) outputBundles.getLast();
-
       // Patient + ST_1-Procedure behandlungsende
-      assertThat(firstMessageBundleOutput.getEntry()).hasSize(2);
-      var st1status =
-          BundleUtil.toListOfResourcesOfType(ctx, firstMessageBundleOutput, Procedure.class)
-              .getFirst()
-              .getStatus();
-      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
-
+      validateMultiStBundle(
+          (Bundle) outputRecords.getFirst().value, 2, Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
-      assertThat(secondMessageBundleOutput.getEntry()).hasSize(3);
-      st1status =
-          BundleUtil.toListOfResourcesOfType(ctx, secondMessageBundleOutput, Procedure.class)
-              .getFirst()
-              .getStatus();
-      var st2status =
-          BundleUtil.toListOfResourcesOfType(ctx, secondMessageBundleOutput, Procedure.class)
-              .get(1)
-              .getStatus();
-      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
-      assertThat(st2status).isEqualTo(Procedure.ProcedureStatus.INPROGRESS);
-
-      // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsende
-      assertThat(finalMessageBundleOutput.getEntry()).hasSize(3);
-      st1status =
-          BundleUtil.toListOfResourcesOfType(ctx, finalMessageBundleOutput, Procedure.class)
-              .getFirst()
-              .getStatus();
-      st2status =
-          BundleUtil.toListOfResourcesOfType(ctx, finalMessageBundleOutput, Procedure.class)
-              .get(1)
-              .getStatus();
-      assertThat(st1status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
-      assertThat(st2status).isEqualTo(Procedure.ProcedureStatus.COMPLETED);
+      validateMultiStBundle(
+          (Bundle) outputRecords.get(1).value,
+          3,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.INPROGRESS);
+      // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
+      validateMultiStBundle(
+          (Bundle) outputRecords.getLast().value,
+          3,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED);
     }
+  }
+
+  private void validateMultiStBundle(
+      Bundle bundle, int expectedSize, Procedure.ProcedureStatus... expectedStatuses) {
+    assertThat(bundle.getEntry()).hasSize(expectedSize);
+
+    var procedureStatuses =
+        BundleUtil.toListOfResourcesOfType(ctx, bundle, Procedure.class).stream()
+            .map(Procedure::getStatus)
+            .toList();
+
+    assertThat(procedureStatuses).containsExactly(expectedStatuses);
   }
 }
