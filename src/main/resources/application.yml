@@ -21,6 +21,7 @@ fhir:
     mii-ex-onko-systemische-therapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"
     mii-ex-onko-op-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+    ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
   systems:
     patientId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/patient-id"
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -34,7 +35,7 @@ fhir:
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
     observationVerlaufId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-verlauf-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
-    gleasonScoreObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
+    gleason-score-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/psa-observation-id"
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/strahlentherapie-procedure-id"
     systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/systemische-therapie-procedure-id"

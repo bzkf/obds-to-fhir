@@ -1,0 +1,59 @@
+{
+  "resourceType": "Observation",
+  "id": "36a33df5231dcb1b597e02f82ebad5844bc7b7cea22ba76657d6b74e52e53617",
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
+    "value": "gleason-score-OP_80105"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "385377005",
+      "display": "Gleason grade finding for prostatic cancer (finding)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+        "valueInteger": 7
+      } ],
+      "system": "http://snomed.info/sct",
+      "code": "57403001"
+    } ],
+    "text": "7"
+  },
+  "method": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "65801008",
+      "display": "Excision (procedure)"
+    } ]
+  },
+  "component": [ {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "384994009",
+        "display": "Primary Gleason pattern"
+      } ]
+    },
+    "valueInteger": 3
+  }, {
+    "code": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "code": "384995005",
+        "display": "Secondary Gleason pattern"
+      } ]
+    },
+    "valueInteger": 4
+  } ]
+}
