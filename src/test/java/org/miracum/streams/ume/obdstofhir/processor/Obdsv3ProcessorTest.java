@@ -320,9 +320,10 @@ public class Obdsv3ProcessorTest {
     meldungExportListV3.add(
         buildMeldungExport(getResourceByName(inputXmlResourceName), "1", "12356789", "123", 1));
 
-    var result = processor.getTumorKonferenzmeldung(meldungExportListV3);
+    var result = processor.getTumorKonferenzmeldungen(meldungExportListV3);
     assertThat(
             result
+                .getFirst()
                 .getTumorkonferenz()
                 .getMeldeanlass()
                 .equals(Meldeanlass.valueOf(expectedMeldeAnlass).toString()))

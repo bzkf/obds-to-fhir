@@ -15,7 +15,6 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
@@ -143,45 +142,45 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   public ValueMapper<List<MeldungExportListV3>, List<Bundle>>
       getMeldungExportListToBundleListMapper() {
     return meldungGroupedByPatientIdAndTumorId -> {
-      List<OBDS> tumorObds = new ArrayList<>();
-
-      for (MeldungExportListV3 meldungsOfPatientAndTumor : meldungGroupedByPatientIdAndTumorId) {
-        final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
-
-        // Meldedatum
-        var latestReportingByReportingDate =
-            meldungsOfPatientAndTumor.stream()
-                .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
-                .get()
-                .getObds();
-        obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
-
-        final var latestReportedPatientData =
-            setLatestReportedPatientData(latestReportingByReportingDate, obds);
-
-        // Diagnose, OP, Tod
-        tryAddDiagnoseOpTodMeldung(meldungsOfPatientAndTumor, obds);
-
-        // Systemtherapie
-        final var systMeldung = getSystemtherapieMeldung(meldungsOfPatientAndTumor);
-        addMeldung(systMeldung, obds);
-
-        // Strahlentherapie
-        final var stMeldung = getStrahlentherapieMeldung(meldungsOfPatientAndTumor);
-        addMeldung(stMeldung, obds);
-
-        // Verlauf
-        final var verlaufMeldung = getVerlaufMeldung(meldungsOfPatientAndTumor);
-        addMeldung(verlaufMeldung, obds);
-
-        final Meldung tumorKonferenzMeldung = getTumorKonferenzmeldung(meldungsOfPatientAndTumor);
-        addMeldung(tumorKonferenzMeldung, obds);
-
-        tumorObds.add(obds);
-      }
+      List<OBDS> tumorObds =
+          meldungGroupedByPatientIdAndTumorId.stream()
+              .map(this::processMeldungGroup)
+              .collect(Collectors.toList());
 
       return obdsToFhirBundleMapper.map(tumorObds);
     };
+  }
+
+  private OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {
+    final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
+
+    // Meldedatum
+    var latestReportingByReportingDate =
+        meldungsOfPatientAndTumor.stream()
+            .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
+            .get()
+            .getObds();
+    obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
+
+    // Patstammdaten
+    setLatestReportedPatientData(latestReportingByReportingDate, obds);
+
+    // Diagnose, OP, Tod
+    tryAddDiagnoseOpTodMeldung(meldungsOfPatientAndTumor, obds);
+
+    // Systemtherapie
+    getSystemtherapieMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
+
+    // Strahlentherapie
+    getStrahlentherapieMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
+
+    // Verlauf
+    getVerlaufMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
+
+    // Tumorkonferenz
+    getTumorKonferenzmeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
+
+    return obds;
   }
 
   protected static void tryAddDiagnoseOpTodMeldung(
@@ -213,7 +212,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
    * @param obds target data opbject
    * @return Patient last reported
    */
-  protected static @NotNull MengePatient.Patient setLatestReportedPatientData(
+  protected static void setLatestReportedPatientData(
       OBDS latestReportingByReportingDate, OBDS obds) {
     var latestReportingStammdatenPatient =
         latestReportingByReportingDate.getMengePatient().getPatient().getFirst();
@@ -225,7 +224,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         .getPatient()
         .getFirst()
         .setPatientID(latestReportingStammdatenPatient.getPatientID());
-    return latestReportingStammdatenPatient;
   }
 
   @NotNull
@@ -242,46 +240,56 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return obds;
   }
 
-  protected Meldung getSystemtherapieMeldung(MeldungExportListV3 meldungExportList) {
-    var systMeldung =
-        selectByMeldeanlass(
-            meldungExportList,
-            Meldeanlass.BEHANDLUNGSENDE,
-            Meldeanlass.BEHANDLUNGSBEGINN,
-            Meldung::getSYST,
-            syst ->
-                ((SYSTTyp) syst).getMeldeanlass() == null
-                    ? null
-                    : ((SYSTTyp) syst).getMeldeanlass().toString());
-    return systMeldung;
+  protected List<Meldung> getSystemtherapieMeldungen(MeldungExportListV3 meldungExportList) {
+    return selectMultipleByMeldeanlass(
+        meldungExportList,
+        Meldeanlass.BEHANDLUNGSENDE,
+        Meldeanlass.BEHANDLUNGSBEGINN,
+        Meldung::getSYST,
+        syst -> ((SYSTTyp) syst).getSYSTID(), // Identify unique SYST instances
+        syst ->
+            ((SYSTTyp) syst).getMeldeanlass() == null
+                ? null
+                : ((SYSTTyp) syst).getMeldeanlass().toString());
   }
 
-  protected Meldung getStrahlentherapieMeldung(MeldungExportListV3 meldungExportList) {
-    var stMeldung =
-        selectByMeldeanlass(
-            meldungExportList,
-            Meldeanlass.BEHANDLUNGSENDE,
-            Meldeanlass.BEHANDLUNGSBEGINN,
-            Meldung::getST,
-            st ->
-                ((STTyp) st).getMeldeanlass() == null
-                    ? null
-                    : ((STTyp) st).getMeldeanlass().toString());
-    return stMeldung;
+  protected List<Meldung> getStrahlentherapieMeldungen(MeldungExportListV3 meldungExportList) {
+    return selectMultipleByMeldeanlass(
+        meldungExportList,
+        Meldeanlass.BEHANDLUNGSENDE,
+        Meldeanlass.BEHANDLUNGSBEGINN,
+        Meldung::getST,
+        st -> ((STTyp) st).getSTID(), // Identify unique ST instances
+        st ->
+            ((STTyp) st).getMeldeanlass() == null
+                ? null
+                : ((STTyp) st).getMeldeanlass().toString());
   }
 
-  protected Meldung getVerlaufMeldung(MeldungExportListV3 meldungExportList) {
-    var verlaufMeldung =
-        selectByMeldeanlass(
-            meldungExportList,
-            Meldeanlass.STATUSAENDERUNG,
-            Meldeanlass.STATUSMELDUNG,
-            Meldung::getVerlauf,
-            verlauf ->
-                ((VerlaufTyp) verlauf).getMeldeanlass() == null
-                    ? null
-                    : ((VerlaufTyp) verlauf).getMeldeanlass());
-    return verlaufMeldung;
+  protected List<Meldung> getVerlaufMeldungen(MeldungExportListV3 meldungExportList) {
+    return selectMultipleByMeldeanlass(
+        meldungExportList,
+        Meldeanlass.STATUSAENDERUNG,
+        Meldeanlass.STATUSMELDUNG,
+        Meldung::getVerlauf,
+        verlauf -> ((VerlaufTyp) verlauf).getVerlaufID(), // Identify unique Verlauf instances
+        verlauf ->
+            ((VerlaufTyp) verlauf).getMeldeanlass() == null
+                ? null
+                : ((VerlaufTyp) verlauf).getMeldeanlass());
+  }
+
+  protected List<Meldung> getTumorKonferenzmeldungen(MeldungExportListV3 meldungExportList) {
+    return selectMultipleByMeldeanlass(
+        meldungExportList,
+        Meldeanlass.BEHANDLUNGSENDE,
+        Meldeanlass.BEHANDLUNGSBEGINN,
+        Meldung::getTumorkonferenz,
+        tumorkonferenz -> ((TumorkonferenzTyp) tumorkonferenz).getTumorkonferenzID(),
+        tumorkonferenz ->
+            ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass() == null
+                ? null
+                : ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass());
   }
 
   private static void addMeldung(Meldung meldung, OBDS obds) {
@@ -290,55 +298,46 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     }
   }
 
-  @Nullable
-  protected Meldung getTumorKonferenzmeldung(MeldungExportListV3 meldungExportList) {
-
-    var tumorKonferenzMeldung =
-        selectByMeldeanlass(
-            meldungExportList,
-            Meldeanlass.BEHANDLUNGSENDE,
-            Meldeanlass.BEHANDLUNGSBEGINN,
-            OBDS.MengePatient.Patient.MengeMeldung.Meldung::getTumorkonferenz,
-            item ->
-                ((TumorkonferenzTyp) item).getMeldeanlass() == null
-                    ? null
-                    : ((TumorkonferenzTyp) item).getMeldeanlass());
-
-    return tumorKonferenzMeldung;
-  }
-
-  private OBDS.MengePatient.Patient.MengeMeldung.Meldung selectByMeldeanlass(
+  private List<Meldung> selectMultipleByMeldeanlass(
       MeldungExportListV3 meldungList,
       Meldeanlass primary,
       Meldeanlass secondary,
-      Function<OBDS.MengePatient.Patient.MengeMeldung.Meldung, ?>
-          fieldExtractor, // Extracts SYST, ST, or Verlauf
+      Function<Meldung, ?> fieldExtractor, // Extracts SYST, ST, or Verlauf
+      Function<Object, String> idExtractor, // Extracts unique ID
       Function<Object, String> meldeanlassExtractor // Extracts Meldeanlass from the extracted type
       ) {
     return meldungList.stream()
         .map(this::extractMeldung)
         .filter(Objects::nonNull)
-        .filter(
-            meldung -> {
-              Object field = fieldExtractor.apply(meldung);
-              return field != null
-                  && Objects.equals(meldeanlassExtractor.apply(field), primary.toString());
-            })
-        .findFirst()
-        .or(
-            () ->
-                meldungList.stream()
-                    .map(this::extractMeldung)
-                    .filter(Objects::nonNull)
-                    .filter(
-                        meldung -> {
-                          Object field = fieldExtractor.apply(meldung);
-                          return field != null
-                              && Objects.equals(
-                                  meldeanlassExtractor.apply(field), secondary.toString());
-                        })
-                    .findFirst())
-        .orElse(null);
+        .filter(meldung -> fieldExtractor.apply(meldung) != null) // Ensure the field exists
+        .collect(
+            Collectors.groupingBy(
+                meldung -> {
+                  Object field = fieldExtractor.apply(meldung);
+                  return field != null ? idExtractor.apply(field) : null; // Extract unique ID
+                },
+                Collectors.toList()))
+        .values()
+        .stream()
+        .map(
+            meldungen ->
+                meldungen.stream()
+                    .sorted(
+                        Comparator.comparing(
+                            m -> {
+                              String meldeanlass =
+                                  meldeanlassExtractor.apply(fieldExtractor.apply(m));
+                              if (Objects.equals(meldeanlass, primary.toString()))
+                                return 0; // Highest priority
+                              if (Objects.equals(meldeanlass, secondary.toString()))
+                                return 1; // Fallback
+                              return 2; // Otherwise ignore
+                            }))
+                    .findFirst() // Take only one per group (either primary or secondary)
+                    .orElse(null) // If neither primary nor secondary exists, return null
+            )
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
   }
 
   private OBDS.MengePatient.Patient.MengeMeldung.Meldung extractMeldung(
