@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
@@ -23,14 +24,25 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
+  private final FernmetastasenMapper fernmetastasenMapper;
+  private final GradingObservationMapper gradingObservationMapper;
+  private final HistologiebefundMapper histologiebefundMapper;
+  private final LeistungszustandMapper leistungszustandMapper;
+  private final LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper;
+  private final OperationMapper operationMapper;
+  private final PatientMapper patientMapper;
+  private final ResidualstatusMapper residualstatusMapper;
+  private final SpecimenMapper specimenMapper;
   private final StrahlentherapieMapper strahlentherapieMapper;
-  private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final SystemischeTherapieMedicationStatementMapper
       systemischeTherapieMedicationStatementMapper;
+  private final SystemischeTherapieProcedureMapper systemischeTherapieProcedureMapper;
   private final TodMapper todMapper;
-  private final LeistungszustandMapper leistungszustandMapper;
-  private final OperationMapper operationMapper;
-  private final ResidualstatusMapper residualstatusMapper;
+  private final VerlaufshistologieObservationMapper verlaufshistologieObservationMapper;
+  private final StudienteilnahmeObservationMapper studienteilnahmeObservationMapper;
+  private final VerlaufObservationMapper verlaufObservationMapper;
+  private final GenetischeVarianteMapper genetischeVarianteMapper;
+  private final TumorkonferenzMapper tumorkonferenzMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -42,7 +54,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TodMapper todMapper,
       LeistungszustandMapper leistungszustandMapper,
       OperationMapper operationMapper,
-      ResidualstatusMapper residualstatusMapper) {
+      ResidualstatusMapper residualstatusMapper,
+      FernmetastasenMapper fernmetastasenMapper,
+      GradingObservationMapper gradingObservationMapper,
+      HistologiebefundMapper histologiebefundMapper,
+      LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper,
+      SpecimenMapper specimenMapper,
+      VerlaufshistologieObservationMapper verlaufshistologieObservationMapper,
+      StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
+      VerlaufObservationMapper verlaufObservationMapper,
+      GenetischeVarianteMapper genetischeVarianteMapper,
+      TumorkonferenzMapper tumorkonferenzMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -54,6 +76,16 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.leistungszustandMapper = leistungszustandMapper;
     this.operationMapper = operationMapper;
     this.residualstatusMapper = residualstatusMapper;
+    this.fernmetastasenMapper = fernmetastasenMapper;
+    this.gradingObservationMapper = gradingObservationMapper;
+    this.histologiebefundMapper = histologiebefundMapper;
+    this.lymphknotenuntersuchungMapper = lymphknotenuntersuchungMapper;
+    this.specimenMapper = specimenMapper;
+    this.verlaufshistologieObservationMapper = verlaufshistologieObservationMapper;
+    this.studienteilnahmeObservationMapper = studienteilnahmeObservationMapper;
+    this.verlaufObservationMapper = verlaufObservationMapper;
+    this.genetischeVarianteMapper = genetischeVarianteMapper;
+    this.tumorkonferenzMapper = tumorkonferenzMapper;
   }
 
   /**
@@ -91,9 +123,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
       // Patient
-      // XXX: this assumes that the "meldungen" contains every single Meldung for the patient
-      //      e.g. in case of Folgepakete, this might not be the case. The main Problem is
-      //      the Patient.deceased information which is not present in every single Paket.
+      // XXX: this assumes that the "meldungen" contains every single Meldung for the
+      // patient
+      // e.g. in case of Folgepakete, this might not be the case. The main Problem is
+      // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
       var patientReference = new Reference("Patient/" + patient.getId());
 
@@ -104,17 +137,140 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
+        MDC.put("meldungId", meldung.getMeldungID());
+        MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
+
+        var primaryConditionReference =
+            createPrimaryConditionReference(meldung.getTumorzuordnung());
+
         // Diagnose
         if (meldung.getDiagnose() != null) {
           var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
-          addResourceToBundle(bundle, condition);
+          addToBundle(bundle, condition);
 
-          var conditionReference = new Reference("Condition/" + condition.getId());
+          var diagnose = meldung.getDiagnose();
 
-          if (meldung.getDiagnose().getAllgemeinerLeistungszustand() != null) {
+          if (diagnose.getAllgemeinerLeistungszustand() != null) {
             var leistungszustand =
-                leistungszustandMapper.map(meldung, patientReference, conditionReference);
-            addResourceToBundle(bundle, leistungszustand);
+                leistungszustandMapper.map(meldung, patientReference, primaryConditionReference);
+            addToBundle(bundle, leistungszustand);
+          }
+
+          if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
+            var diagnoseFM =
+                fernmetastasenMapper.map(
+                    diagnose, meldung.getMeldungID(), patientReference, primaryConditionReference);
+            addToBundle(bundle, diagnoseFM);
+          }
+
+          if (diagnose.getHistologie() != null) {
+            var histologie = diagnose.getHistologie();
+            var specimen = specimenMapper.map(histologie, patientReference);
+            addToBundle(bundle, specimen);
+
+            var specimenReference = createReferenceFromResource(specimen);
+
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
+                    histologie, patientReference, specimenReference, primaryConditionReference);
+
+            addToBundle(bundle, verlaufsHistologie);
+
+            if (histologie.getGrading() != null) {
+              var grading =
+                  gradingObservationMapper.map(
+                      histologie, patientReference, primaryConditionReference, specimenReference);
+              addToBundle(bundle, grading);
+            }
+
+            var lymphknotenuntersuchungen =
+                lymphknotenuntersuchungMapper.map(
+                    histologie, patientReference, primaryConditionReference, specimenReference);
+            addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (diagnose.getModulAllgemein() != null) {
+            var allgemein = diagnose.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
+
+          if (diagnose.getMengeGenetik() != null
+              && diagnose.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    diagnose, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
+          }
+        }
+
+        // Verlauf
+        if (meldung.getVerlauf() != null) {
+          var verlauf = meldung.getVerlauf();
+
+          var verlaufsObservation =
+              verlaufObservationMapper.map(verlauf, patientReference, primaryConditionReference);
+          addToBundle(bundle, verlaufsObservation);
+
+          if (verlauf.getMengeFM() != null && verlauf.getMengeFM().getFernmetastase() != null) {
+            var verlaufFM =
+                fernmetastasenMapper.map(
+                    verlauf, meldung.getMeldungID(), patientReference, primaryConditionReference);
+            addToBundle(bundle, verlaufFM);
+          }
+
+          if (verlauf.getHistologie() != null) {
+            var histologie = verlauf.getHistologie();
+            var specimen = specimenMapper.map(verlauf.getHistologie(), patientReference);
+            addToBundle(bundle, specimen);
+
+            var specimenReference = createReferenceFromResource(specimen);
+
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
+                    histologie, patientReference, specimenReference, primaryConditionReference);
+
+            addToBundle(bundle, verlaufsHistologie);
+
+            if (histologie.getGrading() != null) {
+              var grading =
+                  gradingObservationMapper.map(
+                      histologie, patientReference, primaryConditionReference, specimenReference);
+              addToBundle(bundle, grading);
+            }
+
+            var lymphknotenuntersuchungen =
+                lymphknotenuntersuchungMapper.map(
+                    histologie, patientReference, primaryConditionReference, specimenReference);
+            addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (verlauf.getModulAllgemein() != null) {
+            var allgemein = verlauf.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
+
+          if (verlauf.getMengeGenetik() != null
+              && verlauf.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    verlauf, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
           }
         }
 
@@ -123,9 +279,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var syst = meldung.getSYST();
 
           var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
-          addResourceToBundle(bundle, systProcedure);
+          addToBundle(bundle, systProcedure);
 
-          var procedureReference = new Reference("Procedure/" + systProcedure.getId());
+          var procedureReference = createReferenceFromResource(systProcedure);
 
           if (syst.getMengeSubstanz() != null) {
             var systMedicationStatements =
@@ -133,58 +289,204 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     syst, patientReference, procedureReference);
 
             for (var resource : systMedicationStatements) {
-              addResourceToBundle(bundle, resource);
+              addToBundle(bundle, resource);
+            }
+          }
+
+          if (syst.getModulAllgemein() != null) {
+            var allgemein = syst.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
             }
           }
         }
 
         // Strahlenterhapie
         if (meldung.getST() != null) {
-          var stProcedure = strahlentherapieMapper.map(meldung.getST(), patientReference);
-          addResourceToBundle(bundle, stProcedure);
-        }
+          var st = meldung.getST();
+          var stProcedure =
+              strahlentherapieMapper.map(st, patientReference, primaryConditionReference);
+          addToBundle(bundle, stProcedure);
 
-        var primaryConditionReference =
-            createPrimaryConditionReference(meldung.getTumorzuordnung());
+          if (st.getModulAllgemein() != null) {
+            var allgemein = st.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
+        }
 
         // Tod
         if (meldung.getTod() != null) {
           var deathObservations =
               todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
           for (var resource : deathObservations) {
-            addResourceToBundle(bundle, resource);
+            addToBundle(bundle, resource);
           }
         }
 
         // Operation
         if (meldung.getOP() != null) {
-          var operations =
-              operationMapper.map(meldung.getOP(), patientReference, primaryConditionReference);
-          addResourcesToBundle(bundle, operations);
+          var op = meldung.getOP();
+          var operations = operationMapper.map(op, patientReference, primaryConditionReference);
+          addToBundle(bundle, operations);
 
-          if (meldung.getOP().getResidualstatus() != null
-              && meldung.getOP().getResidualstatus().getGesamtbeurteilungResidualstatus() != null) {
+          if (op.getResidualstatus() != null
+              && op.getResidualstatus().getGesamtbeurteilungResidualstatus() != null) {
             var residualstatus =
-                residualstatusMapper.map(
-                    meldung.getOP(), patientReference, primaryConditionReference);
-            addResourceToBundle(bundle, residualstatus);
+                residualstatusMapper.map(op, patientReference, primaryConditionReference);
+            addToBundle(bundle, residualstatus);
           }
+
+          if (op.getHistologie() != null) {
+            var histologie = op.getHistologie();
+            var specimen = specimenMapper.map(op.getHistologie(), patientReference);
+            addToBundle(bundle, specimen);
+
+            var specimenReference = createReferenceFromResource(specimen);
+
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
+                    histologie, patientReference, specimenReference, primaryConditionReference);
+
+            addToBundle(bundle, verlaufsHistologie);
+
+            if (histologie.getGrading() != null) {
+              var grading =
+                  gradingObservationMapper.map(
+                      histologie, patientReference, primaryConditionReference, specimenReference);
+              addToBundle(bundle, grading);
+            }
+
+            var lymphknotenuntersuchungen =
+                lymphknotenuntersuchungMapper.map(
+                    histologie, patientReference, primaryConditionReference, specimenReference);
+            addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (op.getModulAllgemein() != null) {
+            var allgemein = op.getModulAllgemein();
+            if (allgemein.getStudienteilnahme() != null) {
+              var studienteilnahmeObservation =
+                  studienteilnahmeObservationMapper.map(
+                      allgemein,
+                      patientReference,
+                      primaryConditionReference,
+                      meldung.getMeldungID());
+              addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
+
+          if (op.getMengeGenetik() != null
+              && op.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    op, patientReference, primaryConditionReference, meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
+          }
+        }
+
+        // Pathologie
+        if (meldung.getPathologie() != null) {
+          var pathologie = meldung.getPathologie();
+          var specimenReference = new Reference();
+
+          if (pathologie.getHistologie() != null) {
+            var histologie = pathologie.getHistologie();
+            var specimen = specimenMapper.map(pathologie.getHistologie(), patientReference);
+            addToBundle(bundle, specimen);
+
+            specimenReference = createReferenceFromResource(specimen);
+
+            var verlaufsHistologie =
+                verlaufshistologieObservationMapper.map(
+                    histologie, patientReference, specimenReference, primaryConditionReference);
+
+            addToBundle(bundle, verlaufsHistologie);
+
+            if (histologie.getGrading() != null) {
+              var grading =
+                  gradingObservationMapper.map(
+                      histologie, patientReference, primaryConditionReference, specimenReference);
+              addToBundle(bundle, grading);
+            }
+
+            var lymphknotenuntersuchungen =
+                lymphknotenuntersuchungMapper.map(
+                    histologie, patientReference, primaryConditionReference, specimenReference);
+            addToBundle(bundle, lymphknotenuntersuchungen);
+          }
+
+          if (pathologie.getMengeFM() != null
+              && pathologie.getMengeFM().getFernmetastase() != null) {
+            var pathologieFM =
+                fernmetastasenMapper.map(
+                    pathologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
+            addToBundle(bundle, pathologieFM);
+          }
+
+          if (pathologie.getMengeGenetik() != null
+              && pathologie.getMengeGenetik().getGenetischeVariante() != null) {
+            var genetischeVarianten =
+                genetischeVarianteMapper.map(
+                    pathologie,
+                    patientReference,
+                    primaryConditionReference,
+                    meldung.getMeldungID());
+            addToBundle(bundle, genetischeVarianten);
+          }
+
+          // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz
+          // the histologiebefund is based on. Unless every befund is always a
+          // result of a conference. So maybe remove the reference entirely.
+          var report =
+              histologiebefundMapper.map(
+                  meldung.getPathologie(),
+                  meldung.getMeldungID(),
+                  patientReference,
+                  null,
+                  specimenReference);
+
+          addToBundle(bundle, report);
+        }
+
+        if (meldung.getTumorkonferenz() != null) {
+          var tumorkonferenz = meldung.getTumorkonferenz();
+          var carePlan =
+              tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
+          addToBundle(bundle, carePlan);
         }
       }
 
       bundles.add(bundle);
+      MDC.clear();
     }
     return bundles;
   }
 
-  private static Bundle addResourcesToBundle(Bundle bundle, List<? extends Resource> resources) {
+  private static Bundle addToBundle(Bundle bundle, List<? extends Resource> resources) {
     for (var resource : resources) {
-      addResourceToBundle(bundle, resource);
+      addToBundle(bundle, resource);
     }
     return bundle;
   }
 
-  private static Bundle addResourceToBundle(Bundle bundle, Resource resource) {
+  private static Bundle addToBundle(Bundle bundle, Resource resource) {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
     bundle
         .addEntry()
@@ -205,5 +507,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var conditionId = computeResourceIdFromIdentifier(identifier);
 
     return new Reference("Condition/" + conditionId);
+  }
+
+  private Reference createReferenceFromResource(Resource resource) {
+    Objects.requireNonNull(resource.getId());
+    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }

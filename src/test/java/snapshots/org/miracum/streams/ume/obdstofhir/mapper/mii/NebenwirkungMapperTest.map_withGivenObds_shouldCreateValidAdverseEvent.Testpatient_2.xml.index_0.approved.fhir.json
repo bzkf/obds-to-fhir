@@ -1,0 +1,26 @@
+{
+  "resourceType": "AdverseEvent",
+  "id": "3f5276a2fd37f0a9440812b07ecc33b52a790b98915e17e98884d8893ad5e77f",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+  },
+  "identifier": {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id",
+    "value": "mii-pr-onko-nebenwirkung_SystId_01Grad_maximal_2_unbekannt"
+  },
+  "actuality": "actual",
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "seriousness": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+      "code": "U"
+    } ]
+  },
+  "suspectEntity": [ {
+    "instance": {
+      "reference": "Procedure/any"
+    }
+  } ]
+}

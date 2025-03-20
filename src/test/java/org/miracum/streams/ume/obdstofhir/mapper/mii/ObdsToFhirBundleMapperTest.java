@@ -2,11 +2,6 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,9 +28,19 @@ import org.springframework.boot.test.context.SpringBootTest;
       LeistungszustandMapper.class,
       OperationMapper.class,
       ResidualstatusMapper.class,
+      HistologiebefundMapper.class,
+      FernmetastasenMapper.class,
+      GradingObservationMapper.class,
+      LymphknotenuntersuchungMapper.class,
+      SpecimenMapper.class,
+      VerlaufshistologieObservationMapper.class,
+      StudienteilnahmeObservationMapper.class,
+      VerlaufObservationMapper.class,
+      GenetischeVarianteMapper.class,
+      TumorkonferenzMapper.class,
     })
 @EnableConfigurationProperties
-class ObdsToFhirBundleMapperTest {
+class ObdsToFhirBundleMapperTest extends MapperTest {
   private static ObdsToFhirBundleMapper sut;
 
   @BeforeAll
@@ -52,6 +57,8 @@ class ObdsToFhirBundleMapperTest {
     "Testpatient_leer.xml",
     "Testpatient_Mamma.xml",
     "Testpatient_Prostata.xml",
+    "Testpatient_Patho.xml",
+    "Testpatient_Patho2.xml",
     "Testpatient_Rektum.xml",
     "Testpatientin_Cervix.xml",
     "Testperson_CervixC53.xml",
@@ -77,16 +84,6 @@ class ObdsToFhirBundleMapperTest {
 
     final var bundles = sut.map(obdsList);
 
-    var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
-
-    for (int i = 0; i < bundles.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
-      Approvals.verify(
-          fhirJson,
-          Approvals.NAMES
-              .withParameters(sourceFile, "index_" + i)
-              .forFile()
-              .withExtension(".fhir.json"));
-    }
+    verifyAll(bundles, sourceFile);
   }
 }

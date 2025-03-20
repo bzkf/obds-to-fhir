@@ -15,29 +15,34 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class VerlaufhistorieObservationMapperTest extends MapperTest {
-
-  private static VerlaufshistorieObservationMapper sut;
+class NebenwirkungMapperTest extends MapperTest {
+  private static NebenwirkungMapper sut;
 
   @BeforeAll
   static void beforeAll(@Autowired FhirProperties fhirProps) {
-    sut = new VerlaufshistorieObservationMapper(fhirProps);
+    sut = new NebenwirkungMapper(fhirProps);
   }
 
   @ParameterizedTest
   @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
-  void map_withGivenObds_shouldCreateValidGradingObservation(String sourceFile) throws IOException {
+  void map_withGivenObds_shouldCreateValidAdverseEvent(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
     final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
-
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
-
     var subject = new Reference("Patient/any");
-    var specimen = new Reference("Specimen/Onko");
-    var diagnose = new Reference("Condition/Primärdiagnose");
-    final var list = sut.map(obdsPatient.getMengeMeldung(), subject, specimen, diagnose);
+    var suspectedEntity = new Reference("Procedure/any");
+    var nebenwirkung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getSYST() != null)
+            .findFirst()
+            .get()
+            .getSYST()
+            .getNebenwirkungen();
+    var sourceElementId = "SystId_01";
+
+    final var list = sut.map(nebenwirkung, subject, suspectedEntity, sourceElementId);
 
     verifyAll(list, sourceFile);
   }

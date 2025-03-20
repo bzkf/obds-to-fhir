@@ -25,10 +25,12 @@ public class FhirProperties {
     private String genderAmtlich;
     private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
+    private String miiExOnkoStrahlentherapieStellungzurop;
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
     private String miiExOnkoSystemischeTherapieIntention;
     private String conditionAssertedDate;
+    private String ordinalValue;
   }
 
   @Data
@@ -43,8 +45,11 @@ public class FhirProperties {
     private String fernmetastasenId;
     private String residualstatusObservationId;
     private String specimenId;
+    private String studienteilnahmeId;
     private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
+    private String genetischeVarianteId;
+    private String tumorkonferenzId;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -75,12 +80,15 @@ public class FhirProperties {
     private String genderAmtlichDe;
     private String gleasonScoreObservationId;
     private String psaObservationId;
+    private String todObservationId;
     private String ucum;
     private String miiCsOnkoIntention;
     private String miiCsOnkoPrimaertumorDiagnosesicherung;
     private String miiCsOnkoStrahlentherapieApplikationsart;
     private String miiCsOnkoStrahlentherapieStrahlenart;
     private String miiCsOnkoStrahlentherapieZielgebiet;
+    private String miiCsOnkoTherapieStellungzurop;
+    private String miiCsOnkoStrahlentherapieBoost;
     private String miiCsOnkoOperationResidualstatus;
     private String strahlentherapieProcedureId;
     private String systemischeTherapieProcedureId;
@@ -90,18 +98,30 @@ public class FhirProperties {
     private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String miiCsOnkoTodInterpretation;
-    private String miiCsOnkoTodObservationId;
+    private String miiCsOnkoTherapieEndeGrund;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
     private String atcBfarm;
     private String atcWho;
     private String observationHistologieId;
     private String observationCategory;
+    private String miiCsOnkoStudienteilnahme;
+    private String observationVerlaufId;
     private String miiCsOnkoGrading;
-
+    private String miiCsOnkoTherapieplanungTyp;
+    private String miiCsOnkoVerlaufPrimaertumor;
+    private String miiCsOnkoVerlaufLymphknoten;
+    private String miiCsOnkoVerlaufFernmetastasen;
+    private String miiCsOnkoVerlaufGesamtbeurteilung;
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
     private String histologiebefundDiagnosticReportId;
+    private String miiCsOnkoGenetischeVarianteAuspraegung;
+    private String nebenwirkungAdverseEventId;
+    private String miiCsOnkoNebenwirkungCtcaeGrad;
+    private String meddra;
+    private String miiCsOnkoTherapieTyp;
+    private String miiCsOnkoTherapieabweichung;
   }
 
   @Data
@@ -134,6 +154,11 @@ public class FhirProperties {
     private String miiPrOnkoTod;
     private String miiPrOnkoSpecimen;
     private String miiPrOnkoHistologieIcdo3;
+    private String miiPrOnkoStudienteilnahme;
+    private String miiPrOnkoGenetischeVariante;
+    private String miiPrOnkoNebenwirkungAdverseEvent;
+    private String miiPrOnkoVerlauf;
+    private String miiPrOnkoTumorkonferenz;
   }
 
   @Data
