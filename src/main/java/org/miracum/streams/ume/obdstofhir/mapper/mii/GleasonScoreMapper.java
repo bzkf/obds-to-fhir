@@ -1,16 +1,21 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
+import de.basisdatensatz.obds.v3.AnlassGleasonScoreTyp;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +23,8 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(GleasonScoreMapper.class);
 
   private static final Pattern GLEASON_SCORE_PATTERN = Pattern.compile("^(\\d{1,2})[ab]?$");
+  private static final Pattern GLEASON_SCORE_7_SUFFIX_PATTERN =
+      Pattern.compile("^7(?<suffix>[ab])$");
   private static final Map<String, String> GLEASON_SCORE_TO_SNOMED =
       Map.ofEntries(
           Map.entry("2", "49878003"),
@@ -37,22 +44,23 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      ModulProstataTyp modulProstata, String meldungId, Reference patient, Reference condition) {
-    Objects.requireNonNull(modulProstata);
+      @NonNull ModulProstataTyp modulProstata,
+      @NonNull String meldungId,
+      @NonNull Reference patient,
+      @NonNull Reference condition) {
+    return map(modulProstata, meldungId, patient, condition, null);
+  }
+
+  public Observation map(
+      @NonNull ModulProstataTyp modulProstata,
+      @NonNull String meldungId,
+      @NonNull Reference patient,
+      @NonNull Reference condition,
+      @Nullable XMLGregorianCalendar opDate) {
     Objects.requireNonNull(modulProstata.getGleasonScore());
-    Objects.requireNonNull(meldungId);
-    Objects.requireNonNull(patient);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Objects.requireNonNull(condition);
-    Validate.isTrue(
-        Objects.equals(
-            condition.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The condition reference should point to a Condition resource");
+
+    verifyReference(patient, Enumerations.ResourceType.PATIENT);
+    verifyReference(condition, Enumerations.ResourceType.CONDITION);
 
     var observation = new Observation();
 
@@ -71,6 +79,17 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.addFocus(condition);
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    if (opDate != null) {
+      if (modulProstata.getAnlassGleasonScore() != AnlassGleasonScoreTyp.O) {
+        LOG.warn("Mapping with a given OP date, but the Anlass Gleason Score is not O.");
+      }
+
+      convertObdsDatumToDateTimeType(opDate).ifPresent(observation::setEffective);
+    } else {
+      convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
+          .ifPresent(observation::setEffective);
+    }
 
     observation.setCode(
         new CodeableConcept(
@@ -113,6 +132,12 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
       scoreErgebnis = String.valueOf(totalGrade);
 
+      if (gradPrimaer.equals("3") && gradSekundaer.equals("4")) {
+        scoreErgebnis += "a";
+      } else if (gradPrimaer.equals("4") && gradSekundaer.equals("3")) {
+        scoreErgebnis += "b";
+      }
+
       LOG.debug(
           "Reconstructed Gleason score ergebnis: {} + {} = {}",
           gradPrimaer,
@@ -120,11 +145,19 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
           scoreErgebnis);
     }
 
-    if (scoreErgebnis.matches("7[ab]")) {
-      LOG.warn(
-          "Gleason score 7a and 7b are currently both mapped to "
-              + "the same SNOMED code ('7') and no primary/secondary pattern is set. "
-              + "If this is undesirable, please create an issue on the project repository.");
+    String gradPrimaerDerived = null;
+    String gradSekundaerDerived = null;
+
+    var score7Matcher = GLEASON_SCORE_7_SUFFIX_PATTERN.matcher(scoreErgebnis);
+    if (score7Matcher.matches()) {
+      var suffix = score7Matcher.group("suffix");
+      if (suffix.equals("a")) {
+        gradPrimaerDerived = "3";
+        gradSekundaerDerived = "4";
+      } else if (suffix.equals("b")) {
+        gradPrimaerDerived = "4";
+        gradSekundaerDerived = "3";
+      }
     }
 
     var matcher = GLEASON_SCORE_PATTERN.matcher(scoreErgebnis);
@@ -146,30 +179,39 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     var concept = new CodeableConcept(scoreCoding).setText(scoreErgebnis);
     observation.setValue(concept);
 
-    if (modulProstata.getGleasonScore().getGradPrimaer() != null) {
-      var coding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSnomed())
-              .setCode("384994009")
-              .setDisplay("Primary Gleason pattern");
-      observation
-          .addComponent()
-          .setCode(new CodeableConcept(coding))
-          .setValue(new IntegerType(modulProstata.getGleasonScore().getGradPrimaer()));
+    if (modulProstata.getGleasonScore().getGradPrimaer() != null || gradPrimaerDerived != null) {
+      var value =
+          modulProstata.getGleasonScore().getGradPrimaer() != null
+              ? modulProstata.getGleasonScore().getGradPrimaer()
+              : gradPrimaerDerived;
+
+      var component = createGleasonScoreComponent(value, "384994009", "Primary Gleason pattern");
+      observation.addComponent(component);
     }
 
-    if (modulProstata.getGleasonScore().getGradSekundaer() != null) {
-      var coding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSnomed())
-              .setCode("384995005")
-              .setDisplay("Secondary Gleason pattern");
-      observation
-          .addComponent()
-          .setCode(new CodeableConcept(coding))
-          .setValue(new IntegerType(modulProstata.getGleasonScore().getGradSekundaer()));
+    if (modulProstata.getGleasonScore().getGradSekundaer() != null
+        || gradSekundaerDerived != null) {
+      var value =
+          modulProstata.getGleasonScore().getGradSekundaer() != null
+              ? modulProstata.getGleasonScore().getGradSekundaer()
+              : gradSekundaerDerived;
+
+      var component = createGleasonScoreComponent(value, "384995005", "Secondary Gleason pattern");
+      observation.addComponent(component);
     }
 
     return observation;
+  }
+
+  private ObservationComponentComponent createGleasonScoreComponent(
+      String value, String code, String display) {
+    var coding =
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getSnomed())
+            .setCode(code)
+            .setDisplay(display);
+    return new ObservationComponentComponent()
+        .setCode(new CodeableConcept(coding))
+        .setValue(new IntegerType(value));
   }
 }
