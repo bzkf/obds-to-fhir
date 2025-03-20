@@ -14,6 +14,7 @@ import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +41,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private GleasonScoreMapper gleasonScoreMapper;
+
+  @Value("${fhir.mappings.modul.prostata.enabled}")
+  private boolean isModulProstataMappingEnabled;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -189,7 +193,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
-          if (diagnose.getModulProstata() != null) {
+          if (diagnose.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = diagnose.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -265,7 +269,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
-          if (verlauf.getModulProstata() != null) {
+          if (verlauf.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = verlauf.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -402,7 +406,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
-          if (op.getModulProstata() != null) {
+          if (op.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = op.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -470,7 +474,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
-          if (pathologie.getModulProstata() != null) {
+          if (pathologie.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = pathologie.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =

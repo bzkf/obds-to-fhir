@@ -36,7 +36,8 @@ import org.springframework.boot.test.context.SpringBootTest;
       GenetischeVarianteMapper.class,
       TumorkonferenzMapper.class,
       GleasonScoreMapper.class,
-    })
+    },
+    properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties
 class ObdsToFhirBundleMapperTest extends MapperTest {
   private static ObdsToFhirBundleMapper sut;
