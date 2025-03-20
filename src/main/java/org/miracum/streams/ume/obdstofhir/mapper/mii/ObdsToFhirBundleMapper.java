@@ -46,6 +46,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TNMMapper tnmMapper;
   private GleasonScoreMapper gleasonScoreMapper;
 
+  @Value("${fhir.mappings.modul.prostata.enabled}")
+  private boolean isModulProstataMappingEnabled;
+
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
       PatientMapper patientMapper,
@@ -229,7 +232,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, pathologicTNMObservations);
           }
 
-          if (diagnose.getModulProstata() != null) {
+          if (diagnose.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = diagnose.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -311,7 +314,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     verlauf.getTNM(), "generic", patientReference, primaryConditionReference);
             addToBundle(bundle, tnmObservations);
           }
-          if (verlauf.getModulProstata() != null) {
+
+          if (verlauf.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = verlauf.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -453,7 +457,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 tnmMapper.map(op.getTNM(), "generic", patientReference, primaryConditionReference);
             addToBundle(bundle, tnmObservations);
           }
-          if (op.getModulProstata() != null) {
+
+          if (op.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = op.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
@@ -536,7 +541,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
           }
-          if (pathologie.getModulProstata() != null) {
+
+          if (pathologie.getModulProstata() != null && isModulProstataMappingEnabled) {
             var modulProstata = pathologie.getModulProstata();
             if (modulProstata.getGleasonScore() != null) {
               var gleasonScore =
