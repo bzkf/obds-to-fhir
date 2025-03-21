@@ -18,10 +18,17 @@ import org.miracum.streams.ume.obdstofhir.model.MeldungExportList;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListSerde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportSerde;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty(
+    value = "obds.process-from-directory.enabled",
+    havingValue = "false",
+    matchIfMissing = true)
+@Configuration
 public class ObdsProcessor extends ObdsToFhirMapper {
 
   private static final FhirContext ctx = FhirContext.forR4();

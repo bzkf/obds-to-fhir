@@ -1,0 +1,10 @@
+obds:
+  process-from-directory:
+    enabled: true
+    path: "/opt/obds-to-fhir/obds-input"
+    output-to-kafka:
+      enabled: true
+      topic: "fhir.obds"
+    output-to-directory:
+      enabled: true
+      path: "/opt/obds-to-fhir/fhir-output"

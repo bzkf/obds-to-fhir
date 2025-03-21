@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -109,7 +110,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       String profileUrl,
       String loincCode,
       String snomedCode,
-      DateTimeType effectiveDate,
+      Optional<DateTimeType> effectiveDate,
       Integer valueQuantity,
       Reference patientReference,
       Reference diagnosisReference,
@@ -151,7 +152,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     observation.addFocus(diagnosisReference);
 
     // Effective Date
-    observation.setEffective(effectiveDate);
+    effectiveDate.ifPresent(observation::setEffective);
 
     observation.setSpecimen(specimenReference);
 
