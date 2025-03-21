@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
-  @Value("${fhir.createPatientResources}")
+  @Value("${fhir.mappings.createPatientResources.enabled}")
   private boolean createPatientResources;
 
   private final PatientMapper patientMapper;

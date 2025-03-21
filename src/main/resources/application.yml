@@ -4,7 +4,6 @@ app:
   patient-id-pattern: "[^0]\\d{8}"
 
 fhir:
-  createPatientResources: ${CREATE_PATIENT_FHIR_RESOURCES:true}
   default:
     baseSystemUrl: "https://bzkf.github.io"
   extensions:
@@ -164,6 +163,8 @@ fhir:
     modul:
       prostata:
         enabled: false
+    createPatientResources:
+      enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}
