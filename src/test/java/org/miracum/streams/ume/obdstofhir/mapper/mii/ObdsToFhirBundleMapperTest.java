@@ -4,9 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -68,21 +65,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
-    final var xmlMapper =
-        XmlMapper.builder()
-            .defaultUseWrapper(false)
-            .addModule(new JakartaXmlBindAnnotationModule())
-            .addModule(new Jdk8Module())
-            // added because the Testpatient_*.xml contain the `xsi:schemaLocation` attribute which
-            // isn't code-generated
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .build();
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
-    final var obds = xmlMapper.readValue(resource.openStream(), OBDS.class);
-    final List<OBDS> obdsList = new ArrayList<>();
-    obdsList.add(obds);
-
-    final var bundles = sut.map(obdsList);
+    final var bundles = sut.map(obds);
 
     verifyAll(bundles, sourceFile);
   }

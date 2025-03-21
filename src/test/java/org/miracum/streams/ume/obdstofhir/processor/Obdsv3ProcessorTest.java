@@ -30,6 +30,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,16 +38,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.ConditionMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.LeistungszustandMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.OperationMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.PatientMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.ResidualstatusMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.StrahlentherapieMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.SystemischeTherapieMedicationStatementMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.SystemischeTherapieProcedureMapper;
-import org.miracum.streams.ume.obdstofhir.mapper.mii.TodMapper;
+import org.miracum.streams.ume.obdstofhir.mapper.mii.*;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
@@ -74,7 +66,17 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       OperationMapper.class,
       ResidualstatusMapper.class,
       Obdsv3Deserializer.class,
-      JsonSerializer.class
+      JsonSerializer.class,
+      FernmetastasenMapper.class,
+      GradingObservationMapper.class,
+      HistologiebefundMapper.class,
+      LymphknotenuntersuchungMapper.class,
+      SpecimenMapper.class,
+      VerlaufshistologieObservationMapper.class,
+      StudienteilnahmeObservationMapper.class,
+      VerlaufObservationMapper.class,
+      GenetischeVarianteMapper.class,
+      TumorkonferenzMapper.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {
@@ -103,7 +105,7 @@ public class Obdsv3ProcessorTest {
       String resourceName,
       String lkrnum,
       int versnum)
-      throws IOException {
+      throws IOException, JSONException {
     inputTopic.pipeInput(
         key, buildMeldungExport(getResourceByName(resourceName), key, "12356789", lkrnum, versnum));
   }
@@ -124,6 +126,8 @@ public class Obdsv3ProcessorTest {
       pipeInput(inputTopic, "key1", "test1.xml", "123", 1);
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -165,6 +169,8 @@ public class Obdsv3ProcessorTest {
 
       // validate prioritization
       assertThat(conditions).containsExactly("C50.9", "C61", "C61");
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -189,7 +195,7 @@ public class Obdsv3ProcessorTest {
 
   private MeldungExportV3 buildMeldungExport(
       Resource xmlObds, String id, String refNummer, String lkrMeldung, int versionsnummer)
-      throws IOException {
+      throws IOException, JSONException {
     var meldung =
         new JSONObject()
             .put("ID", id)
@@ -203,7 +209,8 @@ public class Obdsv3ProcessorTest {
     return mapper.readValue(meldung, MeldungExportV3.class);
   }
 
-  private MeldungExportV3 getTestObdsFromString(int id, String testObds) throws IOException {
+  private MeldungExportV3 getTestObdsFromString(int id, String testObds)
+      throws IOException, JSONException {
 
     var meldung =
         new JSONObject().put("ID", String.valueOf(id)).put("XML_DATEN", testObds).toString();
@@ -252,7 +259,7 @@ public class Obdsv3ProcessorTest {
           var meldung = getTestObdsFromString(i, r);
 
           topicInputList.add(new KeyValue<>(String.valueOf(i), meldung));
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
           throw new RuntimeException(e);
         }
       }
@@ -315,19 +322,14 @@ public class Obdsv3ProcessorTest {
       },
       delimiter = ':')
   void testTumorkonferenz(String inputXmlResourceName, String expectedMeldeAnlass)
-      throws IOException {
+      throws IOException, JSONException {
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
         buildMeldungExport(getResourceByName(inputXmlResourceName), "1", "12356789", "123", 1));
 
     var result = processor.getTumorKonferenzmeldungen(meldungExportListV3);
-    assertThat(
-            result
-                .getFirst()
-                .getTumorkonferenz()
-                .getMeldeanlass()
-                .equals(Meldeanlass.valueOf(expectedMeldeAnlass).toString()))
-        .isTrue();
+    assertThat(result.getFirst().getTumorkonferenz().getMeldeanlass().toString())
+        .isEqualTo(Meldeanlass.valueOf(expectedMeldeAnlass).toString().toUpperCase());
   }
 
   @Test
@@ -365,6 +367,8 @@ public class Obdsv3ProcessorTest {
           3,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
     }
   }
 

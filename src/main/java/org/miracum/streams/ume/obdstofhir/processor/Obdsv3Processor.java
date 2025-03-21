@@ -5,6 +5,7 @@ import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import jakarta.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,7 +15,6 @@ import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
-import org.jetbrains.annotations.NotNull;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
@@ -289,7 +289,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         tumorkonferenz ->
             ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass() == null
                 ? null
-                : ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass());
+                : ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass().toString());
   }
 
   private static void addMeldung(Meldung meldung, OBDS obds) {

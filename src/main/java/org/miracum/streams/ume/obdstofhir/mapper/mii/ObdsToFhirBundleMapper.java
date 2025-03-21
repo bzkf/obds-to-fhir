@@ -13,6 +13,7 @@ import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final LeistungszustandMapper leistungszustandMapper;
   private final LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper;
   private final OperationMapper operationMapper;
-  private final PatientMapper patientMapper;
   private final ResidualstatusMapper residualstatusMapper;
   private final SpecimenMapper specimenMapper;
   private final StrahlentherapieMapper strahlentherapieMapper;
@@ -132,7 +132,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       // only add patient resource to bundle if active profile is set to patient
       if (createPatientResources) {
-        addResourceToBundle(bundle, patient);
+        addToBundle(bundle, patient);
       }
       bundle.setId(patient.getId());
 
