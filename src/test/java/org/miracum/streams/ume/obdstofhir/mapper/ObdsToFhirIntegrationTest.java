@@ -11,15 +11,15 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @Import({ObdsTestMapper.class})
-@MockBean(FhirProperties.class)
+@MockitoBean(types = {FhirProperties.class})
 public class ObdsToFhirIntegrationTest {
 
   ObdsTestMapper mapper;

@@ -14,11 +14,16 @@ import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
+  @Value("${fhir.mappings.createPatientResources.enabled}")
+  private boolean createPatientResources;
+
+  private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
   private final FernmetastasenMapper fernmetastasenMapper;
   private final GradingObservationMapper gradingObservationMapper;
@@ -26,7 +31,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final LeistungszustandMapper leistungszustandMapper;
   private final LymphknotenuntersuchungMapper lymphknotenuntersuchungMapper;
   private final OperationMapper operationMapper;
-  private final PatientMapper patientMapper;
   private final ResidualstatusMapper residualstatusMapper;
   private final SpecimenMapper specimenMapper;
   private final StrahlentherapieMapper strahlentherapieMapper;
@@ -85,10 +89,27 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   }
 
   /**
-   * Maps OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each patient in
-   * the OBDS data, creates a transaction bundle containing all their associated medical records.
+   * Maps a list of OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles.
    *
-   * @param obds The OBDS data structure containing patient and medical information
+   * @param groupedObds List of OBDS data structure containing patient and medical information
+   * @return List of FHIR Bundles, one for each patient in the input OBDS data
+   */
+  public List<Bundle> map(List<OBDS> groupedObds) {
+
+    var bundles = new ArrayList<Bundle>();
+
+    for (OBDS obds : groupedObds) {
+      bundles.addAll(map(obds));
+    }
+    return bundles;
+  }
+
+  /**
+   * Maps a single OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each
+   * patient in the OBDS data, creates a transaction bundle containing all their associated medical
+   * records.
+   *
+   * @param obds Single OBDS data structure containing patient and medical information
    * @return List of FHIR Bundles, one for each patient in the input OBDS data
    */
   public List<Bundle> map(OBDS obds) {
@@ -107,9 +128,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       // e.g. in case of Folgepakete, this might not be the case. The main Problem is
       // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
-      var patientReference = createReferenceFromResource(patient);
-      addToBundle(bundle, patient);
+      var patientReference = new Reference("Patient/" + patient.getId());
 
+      // only add patient resource to bundle if active profile is set to patient
+      if (createPatientResources) {
+        addToBundle(bundle, patient);
+      }
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {
@@ -452,7 +476,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       bundles.add(bundle);
       MDC.clear();
     }
-
     return bundles;
   }
 
