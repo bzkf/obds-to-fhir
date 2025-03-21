@@ -5,15 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -221,50 +216,21 @@ public class Obdsv3ProcessorTest {
 
   @Test
   void getMeldungExportObdsV3Processor_MultiInputToBundle() throws IOException {
-
-    var inputTopicName = "meldung-obds";
-    var outputTopicName = "onko-fhir";
-
     try (var driver =
-        buildStream(processor.getMeldungExportObdsV3Processor(), inputTopicName, outputTopicName)) {
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(
-              inputTopicName, new StringSerializer(), new JsonSerializer<MeldungExportV3>());
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
-              outputTopicName, new StringDeserializer(), new KafkaFhirDeserializer());
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
-      List<KeyValue<String, MeldungExportV3>> topicInputList = new ArrayList<>();
-
-      List<String> inputNames =
-          List.of(
-              "GroupSequence01.xml",
-              "GroupSequence02.xml",
-              "GroupSequence03.xml",
-              "GroupSequence04.xml");
-      var inputFiles =
-          new File("src/test/resources/obds3")
-              .listFiles(
-                  (dir, name) -> {
-                    if (name != null && (name.startsWith("N/A") && name.endsWith(".xml"))
-                        || inputNames.contains(name)) return true;
-                    return false;
-                  });
-      for (int i = 0; i < Objects.requireNonNull(inputFiles).length; i++) {
-
-        var r = fetchFile(inputFiles[i]);
-
-        try {
-          var meldung = getTestObdsFromString(i, r);
-
-          topicInputList.add(new KeyValue<>(String.valueOf(i), meldung));
-        } catch (IOException | JSONException e) {
-          throw new RuntimeException(e);
-        }
-      }
-
-      inputTopic.pipeKeyValueList(topicInputList);
+      // pipe test data
+      pipeInput(inputTopic, "key1", "GroupSequence01.xml", "123", 1);
+      pipeInput(inputTopic, "key2", "GroupSequence02.xml", "124", 1);
+      pipeInput(inputTopic, "key3", "GroupSequence03.xml", "125", 1);
+      pipeInput(inputTopic, "key4", "GroupSequence04.xml", "126", 1);
 
       // get records from output topic
       var outputRecords = outputTopic.readKeyValuesToList();
@@ -294,24 +260,14 @@ public class Obdsv3ProcessorTest {
       keys.forEach(
           keyInTopic -> {
             if (kafkaMessageKeys.add(keyInTopic)) {
-              System.out.println("key: " + keyInTopic);
               dulpicateKeyCount.getAndIncrement();
             }
           });
       assertThat(dulpicateKeyCount.get()).isLessThan(2);
+
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
     }
-  }
-
-  public static String fetchFile(File file) {
-    String read = null;
-    try {
-
-      InputStream in = new FileInputStream(file);
-      read = new String(in.readAllBytes());
-    } catch (IOException e) {
-
-    }
-    return read;
   }
 
   @ParameterizedTest
