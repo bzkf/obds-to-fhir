@@ -5,11 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -338,5 +340,45 @@ public class Obdsv3ProcessorTest {
             .toList();
 
     assertThat(procedureStatuses).containsExactly(expectedStatuses);
+  }
+
+  @Test
+  void testMultiSystTherapieIds() throws IOException, JSONException {
+    final String description =
+        "Es wurden 2 Systemtherapie mit unterschiedlicher Id durchgeführt. "
+            + "Daher auch 2 Meldungen erwartet";
+
+    final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
+    meldungExportListV3.add(
+        buildMeldungExport(getResourceByName("Test_SysT_0.xml"), "1", "12356789", "123", 1));
+    meldungExportListV3.add(
+        buildMeldungExport(getResourceByName("Test_SysT_1.xml"), "2", "12356789", "124", 1));
+    meldungExportListV3.add(
+        buildMeldungExport(getResourceByName("Test_SysT_2.xml"), "3", "12356789", "125", 1));
+    var result = processor.getSystemtherapieMeldungen(meldungExportListV3);
+
+    assertThat(result).as(description).isNotNull();
+    assertThat(result.size()).as(description).isEqualTo(2);
+    final Optional<Meldung> firstMeldung_Id1 =
+        result.stream()
+            .filter(meldung -> "101_IN-1".equals(meldung.getSYST().getSYSTID()))
+            .findAny();
+    assertThat(firstMeldung_Id1)
+        .as("Meldung zu SystemTherapie mit ID 101_IN-1 muss vorhanden sein.")
+        .isNotEmpty();
+    assertThat(firstMeldung_Id1.get().getSYST().getMeldeanlass().name())
+        .as(
+            "Meldeanlass 'behandlungsende' wird Meldung mit Meldeanlass 'behandlungsbeginn' vorgezogen.")
+        .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
+
+    final Optional<Meldung> secondMeldung_Id1 =
+        result.stream()
+            .filter(meldung -> "101_IN-2".equals(meldung.getSYST().getSYSTID()))
+            .findAny();
+    assertThat(secondMeldung_Id1)
+        .as("Meldung zu SystemTherapie mit ID 101_IN-2 muss vorhanden sein.")
+        .isNotEmpty();
+    assertThat(firstMeldung_Id1.get().getSYST().getMeldeanlass().name())
+        .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
   }
 }

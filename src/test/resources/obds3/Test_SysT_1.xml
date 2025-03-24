@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-09-19</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="10">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lator</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Wendy</Vornamen>
+        <Geburtsname>Müller</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Meier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Hier</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_IN-2">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="101_IN-1">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>P</Intention>
+            <Stellung_OP>S</Stellung_OP>
+            <Therapieart>IM</Therapieart>
+            <Protokoll>Atezolizumab Immuntherapie</Protokoll>
+            <Beginn Datumsgenauigkeit="T">2021-11-08</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <ATC>
+                  <Code>L01FF05</Code>
+                  <Version>2020</Version>
+                </ATC>
+              </Substanz>
+            </Menge_Substanz>
+            <Ende_Grund>V</Ende_Grund>
+            <Ende>2022-10-15</Ende>
+            <Nebenwirkungen>
+              <Menge_Nebenwirkung>
+                <Nebenwirkung>
+                  <Art>
+                    <Bezeichnung>Schüttelfrost</Bezeichnung>
+                  </Art>
+                  <Grad>5</Grad>
+                  <Version>Sonstige</Version>
+                </Nebenwirkung>
+              </Menge_Nebenwirkung>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+    <Melder ID="9876_#Aa/m">
+      <Ident_Nummern>
+        <LANR>123456789</LANR>
+        <BSNR>987654321</BSNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Praxis</KH_Abt_Station_Praxis>
+      <Arztname>Hippokrates</Arztname>
+      <Anschrift>Kos Str. 1</Anschrift>
+      <PLZ>98765</PLZ>
+      <Ort>Kos</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Hippokrates</Kontoinhaber>
+      <BIC>98765432198</BIC>
+      <IBAN>DE41500105172332627618</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>
