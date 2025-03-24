@@ -327,9 +327,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                             m -> {
                               String meldeanlass =
                                   meldeanlassExtractor.apply(fieldExtractor.apply(m));
-                              if (Objects.equals(meldeanlass, primary.toString()))
+                              if (Objects.equals(meldeanlass, primary.name()))
                                 return 0; // Highest priority
-                              if (Objects.equals(meldeanlass, secondary.toString()))
+                              if (Objects.equals(meldeanlass, secondary.name()))
                                 return 1; // Fallback
                               return 2; // Otherwise ignore
                             }))

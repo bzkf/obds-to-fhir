@@ -35,7 +35,7 @@
         </Adresse>
       </Patienten_Stammdaten>
       <Menge_Meldung>
-        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_IN-2">
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_IN-23">
           <Meldebegruendung>I</Meldebegruendung>
           <Eigene_Leistung>J</Eigene_Leistung>
           <Tumorzuordnung Tumor_ID="101">
