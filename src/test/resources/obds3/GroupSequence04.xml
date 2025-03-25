@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+    <Absender Absender_ID="12345/12345" Software_ID="ONKOSTAR" Software_Version="2.13.0" Installations_ID="2">
+        <Bezeichnung>CCC</Bezeichnung>
+        <Ansprechpartner>Dr. Absender</Ansprechpartner>
+        <Anschrift>musterstrasse 1, 123456 Musterstadt</Anschrift>
+    </Absender>
+    <Meldedatum>2024-11-30</Meldedatum>
+    <Menge_Patient>
+        <Patient Patient_ID="9876543">
+            <Patienten_Stammdaten>
+                <Versichertendaten_GKV>
+                    <IKNR>222333444</IKNR>
+                    <GKV_Versichertennummer>X121212121</GKV_Versichertennummer>
+                </Versichertendaten_GKV>
+                <Nachname>Musterfrau</Nachname>
+                <Vornamen>Maxi</Vornamen>
+                <Geschlecht>W</Geschlecht>
+                <Geburtsdatum Datumsgenauigkeit="E">1960-01-16</Geburtsdatum>
+                <Adresse>
+                    <Strasse>Musterweg 11</Strasse>
+                    <Land>DE</Land>
+                    <PLZ>12345</PLZ>
+                    <Ort>Musterstadt</Ort>
+                </Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung Meldung_ID="0001B5E5-222222/22222" Melder_ID="222222/22222">
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD>
+                            <Code>C43.5</Code>
+                            <Version>10 2023 GM</Version>
+                        </Primaertumor_ICD>
+                        <Diagnosedatum Datumsgenauigkeit="E">2023-10-20</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                        <Morphologie_ICD_O>
+                            <Code>8720/3</Code>
+                            <Version>33</Version>
+                        </Morphologie_ICD_O>
+                    </Tumorzuordnung>
+                    <OP OP_ID="1277663">
+                        <Intention>P</Intention>
+                        <Datum>2024-01-07</Datum>
+                        <Menge_OPS>
+                            <OPS>
+                                <Code>5-98c.1</Code>
+                                <Version>2023</Version>
+                            </OPS>
+                            <OPS>
+                                <Code>5-322.h4</Code>
+                                <Version>2023</Version>
+                            </OPS>
+                        </Menge_OPS>
+                        <Histologie Histologie_ID="3365191">
+                            <Tumor_Histologiedatum Datumsgenauigkeit="E">2024-01-07</Tumor_Histologiedatum>
+                            <Histologie_EinsendeNr>NXP_H/2024/4548.100</Histologie_EinsendeNr>
+                            <Morphologie_ICD_O>
+                                <Code>8720/3</Code>
+                                <Version>33</Version>
+                            </Morphologie_ICD_O>
+                            <Grading>T</Grading>
+                        </Histologie>
+                        <TNM ID="4444888c">
+                            <Datum>2024-02-09</Datum>
+                            <Version>8</Version>
+                            <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+                            <T>X</T>
+                            <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+                            <N>1b</N>
+                            <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+                            <M>1b</M>
+                        </TNM>
+                        <Residualstatus>
+                            <Lokale_Beurteilung_Residualstatus>RX</Lokale_Beurteilung_Residualstatus>
+                        </Residualstatus>
+                        <Komplikationen>
+                            <Komplikation_nein_oder_unbekannt>N</Komplikation_nein_oder_unbekannt>
+                        </Komplikationen>
+                        <Menge_Operateur>
+                            <Operateur>
+                                <Nachname>OP_Nachname</Nachname>
+                                <Vornamen>OP_Vorname</Vornamen>
+                                <Hauptoperateur>J</Hauptoperateur>
+                            </Operateur>
+                            <Operateur>
+                                <Nachname>OP_Nachname2</Nachname>
+                                <Vornamen>OP_Vorname2</Vornamen>
+                                <Hauptoperateur>N</Hauptoperateur>
+                            </Operateur>
+                        </Menge_Operateur>
+                        <Modul_Allgemein>
+                            <Studienteilnahme>
+                                <NU>N</NU>
+                            </Studienteilnahme>
+                        </Modul_Allgemein>
+                    </OP>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+    <Menge_Melder>
+        <Melder ID="222222/22222">
+            <KH_Abt_Station_Praxis>CCC</KH_Abt_Station_Praxis>
+            <Anschrift>Musterstrasse 1</Anschrift>
+            <PLZ>12345</PLZ>
+            <Ort>Musterstadt</Ort>
+        </Melder>
+    </Menge_Melder>
+</oBDS>
