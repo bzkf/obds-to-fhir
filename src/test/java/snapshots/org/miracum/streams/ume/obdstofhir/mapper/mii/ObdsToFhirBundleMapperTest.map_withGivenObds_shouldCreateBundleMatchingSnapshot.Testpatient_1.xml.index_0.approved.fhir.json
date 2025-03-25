@@ -621,6 +621,653 @@
       "url": "Observation/424786f78b63744c5ad5efd4ef1e677a7cdf5e0de615e942ab931682d54eeb7c"
     }
   }, {
+    "fullUrl": "Observation/40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "481_T",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "c"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399504009",
+          "display": "cT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "2"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90"
+    }
+  }, {
+    "fullUrl": "Observation/338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "481_N",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "c"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399534004",
+          "display": "cN category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1"
+    }
+  }, {
+    "fullUrl": "Observation/0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "481_M",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "c"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399387003",
+          "display": "cM category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68"
+    }
+  }, {
+    "fullUrl": "Observation/1aadefe669ae38b49c8825f068ebad1dc27f79e8681a3e2aba0ad6b78afcb1f3",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1aadefe669ae38b49c8825f068ebad1dc27f79e8681a3e2aba0ad6b78afcb1f3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+      },
+      "identifier": [ {
+        "system": "481_m",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "42030-7"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "m"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1aadefe669ae38b49c8825f068ebad1dc27f79e8681a3e2aba0ad6b78afcb1f3"
+    }
+  }, {
+    "fullUrl": "Observation/0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "481"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399537006",
+          "display": "Clinical TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "IV",
+          "display": "Stadium IV"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90"
+      }, {
+        "reference": "Observation/338dac74cde8cdba1bfc4d1bda1f3bc92c1cd67ac4fea568f9a71026db3f84f1"
+      }, {
+        "reference": "Observation/0be73bd9a5137d84772e46e2f83b02f5ad5d9a66de1146440bf15e45c65efd68"
+      }, {
+        "reference": "Observation/1aadefe669ae38b49c8825f068ebad1dc27f79e8681a3e2aba0ad6b78afcb1f3"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72"
+    }
+  }, {
+    "fullUrl": "Observation/aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_T",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "384625004",
+          "display": "pT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "2"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f"
+    }
+  }, {
+    "fullUrl": "Observation/b62f438eee9a5349e92801825ce3acd90658ea9ac28ab76e40fa4afaf1b6ae71",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b62f438eee9a5349e92801825ce3acd90658ea9ac28ab76e40fa4afaf1b6ae71",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_N",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371494008",
+          "display": "pN category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b62f438eee9a5349e92801825ce3acd90658ea9ac28ab76e40fa4afaf1b6ae71"
+    }
+  }, {
+    "fullUrl": "Observation/660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_M",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371497001",
+          "display": "pM category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256"
+    }
+  }, {
+    "fullUrl": "Observation/a989355244d956a0d3562e40ab119befa2acdaf36be7fead971c3efdad03dd84",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a989355244d956a0d3562e40ab119befa2acdaf36be7fead971c3efdad03dd84",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+      },
+      "identifier": [ {
+        "system": "482_m",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "42030-7"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "3"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a989355244d956a0d3562e40ab119befa2acdaf36be7fead971c3efdad03dd84"
+    }
+  }, {
+    "fullUrl": "Observation/d8304bad7f664c22c37c3109749c50fab38979a9fb353bad9d536c6764a126bf",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "d8304bad7f664c22c37c3109749c50fab38979a9fb353bad9d536c6764a126bf",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_L",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-l-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "395715009"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "LX"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/d8304bad7f664c22c37c3109749c50fab38979a9fb353bad9d536c6764a126bf"
+    }
+  }, {
+    "fullUrl": "Observation/959f29df3df9f19b54a38319069d1591b30750b2a0ba7f86b0989596256ddcf4",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "959f29df3df9f19b54a38319069d1591b30750b2a0ba7f86b0989596256ddcf4",
+      "meta": {
+        "profile": [ "\thttps://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_Pn",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371513001"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "PnX"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/959f29df3df9f19b54a38319069d1591b30750b2a0ba7f86b0989596256ddcf4"
+    }
+  }, {
+    "fullUrl": "Observation/888742c41a2f9259da8bd4187ae8a9e917c4f323d7ab2bfc7e2577ce499c28f0",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "888742c41a2f9259da8bd4187ae8a9e917c4f323d7ab2bfc7e2577ce499c28f0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "482_V",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-v-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371493002"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "VX"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/888742c41a2f9259da8bd4187ae8a9e917c4f323d7ab2bfc7e2577ce499c28f0"
+    }
+  }, {
+    "fullUrl": "Observation/7925dbb0761b2096785e95ce967907be58248b3b106e675aa1cdcb4dddeed92d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7925dbb0761b2096785e95ce967907be58248b3b106e675aa1cdcb4dddeed92d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "482"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399588009",
+          "display": "Pathologic TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "IV",
+          "display": "Stadium IV"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/aa3c5bb85d49e9ef61d09d3bd69ac6dbaccd202ce0d9c582ddf68367172ec89f"
+      }, {
+        "reference": "Observation/b62f438eee9a5349e92801825ce3acd90658ea9ac28ab76e40fa4afaf1b6ae71"
+      }, {
+        "reference": "Observation/660cb62aa766833529222617ba146e1287af7bbc68d51d3216441d518d02b256"
+      }, {
+        "reference": "Observation/a989355244d956a0d3562e40ab119befa2acdaf36be7fead971c3efdad03dd84"
+      }, {
+        "reference": "Observation/d8304bad7f664c22c37c3109749c50fab38979a9fb353bad9d536c6764a126bf"
+      }, {
+        "reference": "Observation/959f29df3df9f19b54a38319069d1591b30750b2a0ba7f86b0989596256ddcf4"
+      }, {
+        "reference": "Observation/888742c41a2f9259da8bd4187ae8a9e917c4f323d7ab2bfc7e2577ce499c28f0"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7925dbb0761b2096785e95ce967907be58248b3b106e675aa1cdcb4dddeed92d"
+    }
+  }, {
     "fullUrl": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
     "resource": {
       "resourceType": "Procedure",
@@ -1074,6 +1721,397 @@
     "request": {
       "method": "PUT",
       "url": "Observation/9c2af727f1c18780ed2a5547fab8a1bd1f358cab563a4f0a057b0449a0890827"
+    }
+  }, {
+    "fullUrl": "Observation/18833e9071cdfe54875ad2727a4b1a07d4e44af439fa7fbc9cf0d1b97a45b36f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "18833e9071cdfe54875ad2727a4b1a07d4e44af439fa7fbc9cf0d1b97a45b36f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_T",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "384625004",
+          "display": "pT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "2"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/18833e9071cdfe54875ad2727a4b1a07d4e44af439fa7fbc9cf0d1b97a45b36f"
+    }
+  }, {
+    "fullUrl": "Observation/e297c3596a1c1fe70a61f16414b821f26933a47154fe66a71a1b338e318976fe",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e297c3596a1c1fe70a61f16414b821f26933a47154fe66a71a1b338e318976fe",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_N",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371494008",
+          "display": "pN category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e297c3596a1c1fe70a61f16414b821f26933a47154fe66a71a1b338e318976fe"
+    }
+  }, {
+    "fullUrl": "Observation/141256179066bd2fdb860081341da138cba450ca75e02fe01b418b96ceaadc2d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "141256179066bd2fdb860081341da138cba450ca75e02fe01b418b96ceaadc2d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_M",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371497001",
+          "display": "pM category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/141256179066bd2fdb860081341da138cba450ca75e02fe01b418b96ceaadc2d"
+    }
+  }, {
+    "fullUrl": "Observation/dd23874b17afcc4bd6b809f9190c4bad75c82fe6d16ff3ce9ba6b647f85b9ad7",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "dd23874b17afcc4bd6b809f9190c4bad75c82fe6d16ff3ce9ba6b647f85b9ad7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+      },
+      "identifier": [ {
+        "system": "483_m",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "42030-7"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "3"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/dd23874b17afcc4bd6b809f9190c4bad75c82fe6d16ff3ce9ba6b647f85b9ad7"
+    }
+  }, {
+    "fullUrl": "Observation/defe367e7da345afcfc192d55aa8445c9896296062d08fe21a480418abb60f8e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "defe367e7da345afcfc192d55aa8445c9896296062d08fe21a480418abb60f8e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_L",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-l-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "395715009"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "L0"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/defe367e7da345afcfc192d55aa8445c9896296062d08fe21a480418abb60f8e"
+    }
+  }, {
+    "fullUrl": "Observation/2537ef2ec8004a796f6f7da0c3065fab88674ca0ed83656f329cd60d257dfbcc",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "2537ef2ec8004a796f6f7da0c3065fab88674ca0ed83656f329cd60d257dfbcc",
+      "meta": {
+        "profile": [ "\thttps://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_Pn",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371513001"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "Pn0"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/2537ef2ec8004a796f6f7da0c3065fab88674ca0ed83656f329cd60d257dfbcc"
+    }
+  }, {
+    "fullUrl": "Observation/d2a73f9778544fd5e408c8de56592194732760addff4c5d549decf669998bffe",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "d2a73f9778544fd5e408c8de56592194732760addff4c5d549decf669998bffe",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "483_V",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-v-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371493002"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "V0"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/d2a73f9778544fd5e408c8de56592194732760addff4c5d549decf669998bffe"
+    }
+  }, {
+    "fullUrl": "Observation/a298575458f69b4c9484a1a7b78a15f8bbf75ec2d1fa84952746707b1a344b13",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a298575458f69b4c9484a1a7b78a15f8bbf75ec2d1fa84952746707b1a344b13",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "483"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399588009",
+          "display": "TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2020-03-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "IV",
+          "display": "Stadium IV"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/18833e9071cdfe54875ad2727a4b1a07d4e44af439fa7fbc9cf0d1b97a45b36f"
+      }, {
+        "reference": "Observation/e297c3596a1c1fe70a61f16414b821f26933a47154fe66a71a1b338e318976fe"
+      }, {
+        "reference": "Observation/141256179066bd2fdb860081341da138cba450ca75e02fe01b418b96ceaadc2d"
+      }, {
+        "reference": "Observation/dd23874b17afcc4bd6b809f9190c4bad75c82fe6d16ff3ce9ba6b647f85b9ad7"
+      }, {
+        "reference": "Observation/defe367e7da345afcfc192d55aa8445c9896296062d08fe21a480418abb60f8e"
+      }, {
+        "reference": "Observation/2537ef2ec8004a796f6f7da0c3065fab88674ca0ed83656f329cd60d257dfbcc"
+      }, {
+        "reference": "Observation/d2a73f9778544fd5e408c8de56592194732760addff4c5d549decf669998bffe"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a298575458f69b4c9484a1a7b78a15f8bbf75ec2d1fa84952746707b1a344b13"
     }
   }, {
     "fullUrl": "Procedure/bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559",
@@ -1981,6 +3019,397 @@
       "url": "Observation/c2b66e38ce481e6162bba6a98bb9be630b0a27f1d5c20c9f7254fca1e20bb75e"
     }
   }, {
+    "fullUrl": "Observation/f6e4263bbf47d91ae771930e83e3ecf706038f631708f19c42b7a5aa43bf27e2",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "f6e4263bbf47d91ae771930e83e3ecf706038f631708f19c42b7a5aa43bf27e2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_T",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "384625004",
+          "display": "pT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "3"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/f6e4263bbf47d91ae771930e83e3ecf706038f631708f19c42b7a5aa43bf27e2"
+    }
+  }, {
+    "fullUrl": "Observation/18214e56826bb7ac64c90c1d16183f364888750ad4645ced640ec98fdeaf9542",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "18214e56826bb7ac64c90c1d16183f364888750ad4645ced640ec98fdeaf9542",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_N",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371494008",
+          "display": "pN category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "3"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/18214e56826bb7ac64c90c1d16183f364888750ad4645ced640ec98fdeaf9542"
+    }
+  }, {
+    "fullUrl": "Observation/e74365c15da8180218957604e48aac83a1278d454bd8d491108d8a511c3e90aa",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e74365c15da8180218957604e48aac83a1278d454bd8d491108d8a511c3e90aa",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_M",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371497001",
+          "display": "pM category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e74365c15da8180218957604e48aac83a1278d454bd8d491108d8a511c3e90aa"
+    }
+  }, {
+    "fullUrl": "Observation/aa3c45d537129ff86d9664f9764c20cf0ac249d7cb7fd678544dc62660ddad8e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "aa3c45d537129ff86d9664f9764c20cf0ac249d7cb7fd678544dc62660ddad8e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_L",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-l-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "395715009"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "L1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/aa3c45d537129ff86d9664f9764c20cf0ac249d7cb7fd678544dc62660ddad8e"
+    }
+  }, {
+    "fullUrl": "Observation/7cfc9db76a4fa027be44edc89be4943b84c67c2334c50e4685993f7e6faac276",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7cfc9db76a4fa027be44edc89be4943b84c67c2334c50e4685993f7e6faac276",
+      "meta": {
+        "profile": [ "\thttps://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_Pn",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371513001"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "Pn1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7cfc9db76a4fa027be44edc89be4943b84c67c2334c50e4685993f7e6faac276"
+    }
+  }, {
+    "fullUrl": "Observation/15e9737016346052cf1d0ff778fd4a10dcb0397f1d1a14a92112e07025a1659e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "15e9737016346052cf1d0ff778fd4a10dcb0397f1d1a14a92112e07025a1659e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-r-symbol" ]
+      },
+      "identifier": [ {
+        "system": "484_r",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-r-symbol-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "101659-1"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "421188008"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/15e9737016346052cf1d0ff778fd4a10dcb0397f1d1a14a92112e07025a1659e"
+    }
+  }, {
+    "fullUrl": "Observation/6296fd206eddd07af923793bd8ecdb69f426b0db9c7f7a5fde684ea925058d85",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "6296fd206eddd07af923793bd8ecdb69f426b0db9c7f7a5fde684ea925058d85",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "484_V",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-v-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "371493002"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "V2"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/6296fd206eddd07af923793bd8ecdb69f426b0db9c7f7a5fde684ea925058d85"
+    }
+  }, {
+    "fullUrl": "Observation/f85b82a87a4e42b6d9d73d33e2f14f5f3d1025d81311d491a3ca2a4c0f5d25e5",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "f85b82a87a4e42b6d9d73d33e2f14f5f3d1025d81311d491a3ca2a4c0f5d25e5",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "484"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399588009",
+          "display": "TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/9896edd80f6833ea17fbb2c5ad5ca42caa1d02f41baea875f4a390be3b372356"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "IIIA",
+          "display": "Stadium IIIA"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/f6e4263bbf47d91ae771930e83e3ecf706038f631708f19c42b7a5aa43bf27e2"
+      }, {
+        "reference": "Observation/18214e56826bb7ac64c90c1d16183f364888750ad4645ced640ec98fdeaf9542"
+      }, {
+        "reference": "Observation/e74365c15da8180218957604e48aac83a1278d454bd8d491108d8a511c3e90aa"
+      }, {
+        "reference": "Observation/aa3c45d537129ff86d9664f9764c20cf0ac249d7cb7fd678544dc62660ddad8e"
+      }, {
+        "reference": "Observation/7cfc9db76a4fa027be44edc89be4943b84c67c2334c50e4685993f7e6faac276"
+      }, {
+        "reference": "Observation/15e9737016346052cf1d0ff778fd4a10dcb0397f1d1a14a92112e07025a1659e"
+      }, {
+        "reference": "Observation/6296fd206eddd07af923793bd8ecdb69f426b0db9c7f7a5fde684ea925058d85"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/f85b82a87a4e42b6d9d73d33e2f14f5f3d1025d81311d491a3ca2a4c0f5d25e5"
+    }
+  }, {
     "fullUrl": "Observation/819f7208b884155dc6722e070d39a269ff47c1ac0a37e5fd96b84c9cbbbbea1c",
     "resource": {
       "resourceType": "Observation",
@@ -2340,6 +3769,145 @@
     "request": {
       "method": "PUT",
       "url": "Observation/fbe8bd4ee5604df9f3149618851a9935bbee3e95bc4cdeac769ab12fff143e2f"
+    }
+  }, {
+    "fullUrl": "Observation/9eb57ec5d8ab449172733a268f8417ca67ec7afa98fe7e2744ed7bbad22ac4cd",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "9eb57ec5d8ab449172733a268f8417ca67ec7afa98fe7e2744ed7bbad22ac4cd",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "485_T",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "384625004",
+          "display": "pT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "1"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/9eb57ec5d8ab449172733a268f8417ca67ec7afa98fe7e2744ed7bbad22ac4cd"
+    }
+  }, {
+    "fullUrl": "Observation/69a0ab7e9f4b7e247f817a1b84ae13e87a83fa9d8e3f53af6315e8bff08a7d3d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "69a0ab7e9f4b7e247f817a1b84ae13e87a83fa9d8e3f53af6315e8bff08a7d3d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol" ]
+      },
+      "identifier": [ {
+        "system": "485_y",
+        "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-y-symbol-observation-id"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "101658-3"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "421755005"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/69a0ab7e9f4b7e247f817a1b84ae13e87a83fa9d8e3f53af6315e8bff08a7d3d"
+    }
+  }, {
+    "fullUrl": "Observation/bf16262583af010dc5d2ed95374c0fb38e0d51b5deab9cf0537bb2c127e837e5",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "bf16262583af010dc5d2ed95374c0fb38e0d51b5deab9cf0537bb2c127e837e5",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "485"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "399588009",
+          "display": "TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/5236d8328066567b90c671091d739dc044ae00f4f9e73a5d1e6c81ed9049f335"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/9eb57ec5d8ab449172733a268f8417ca67ec7afa98fe7e2744ed7bbad22ac4cd"
+      }, {
+        "reference": "Observation/69a0ab7e9f4b7e247f817a1b84ae13e87a83fa9d8e3f53af6315e8bff08a7d3d"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/bf16262583af010dc5d2ed95374c0fb38e0d51b5deab9cf0537bb2c127e837e5"
     }
   }, {
     "fullUrl": "Observation/2deb0a1e6805021aac11dd0b28bdf526422e844358c49879ab31a3e807c37e1e",

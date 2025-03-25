@@ -4,7 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,8 +47,60 @@ class TNMMapperTest extends MapperTest {
     assert conMeldungOptional.isPresent();
     var conMeldung = conMeldungOptional.get();
 
-    final var tnmObservations =
-        sut.map(conMeldung, new Reference("Patient/1"), new Reference("Condition/Primärdiagnose"));
+    final var tnmObservations = new ArrayList<Observation>();
+
+    if (conMeldung.getDiagnose() != null) {
+      if (conMeldung.getDiagnose().getCTNM() != null) {
+        tnmObservations.addAll(
+            sut.map(
+                conMeldung.getDiagnose().getCTNM(),
+                "clinical",
+                new Reference("Patient/1"),
+                new Reference("Condition/Primärdiagnose")));
+      }
+      if (conMeldung.getDiagnose().getPTNM() != null) {
+        tnmObservations.addAll(
+            sut.map(
+                conMeldung.getDiagnose().getPTNM(),
+                "pathologic",
+                new Reference("Patient/1"),
+                new Reference("Condition/Primärdiagnose")));
+      }
+    }
+    if (conMeldung.getVerlauf() != null && conMeldung.getVerlauf().getTNM() != null) {
+      tnmObservations.addAll(
+          sut.map(
+              conMeldung.getVerlauf().getTNM(),
+              "generic",
+              new Reference("Patient/1"),
+              new Reference("Condition/Primärdiagnose")));
+    }
+    if (conMeldung.getOP() != null && conMeldung.getOP().getTNM() != null) {
+      tnmObservations.addAll(
+          sut.map(
+              conMeldung.getOP().getTNM(),
+              "generic",
+              new Reference("Patient/1"),
+              new Reference("Condition/Primärdiagnose")));
+    }
+    if (conMeldung.getPathologie() != null) {
+      if (conMeldung.getPathologie().getCTNM() != null) {
+        tnmObservations.addAll(
+            sut.map(
+                conMeldung.getPathologie().getCTNM(),
+                "clinical",
+                new Reference("Patient/1"),
+                new Reference("Condition/Primärdiagnose")));
+      }
+      if (conMeldung.getPathologie().getPTNM() != null) {
+        tnmObservations.addAll(
+            sut.map(
+                conMeldung.getPathologie().getPTNM(),
+                "pathologic",
+                new Reference("Patient/1"),
+                new Reference("Condition/Primärdiagnose")));
+      }
+    }
 
     verifyAll(tnmObservations, sourceFile);
   }
