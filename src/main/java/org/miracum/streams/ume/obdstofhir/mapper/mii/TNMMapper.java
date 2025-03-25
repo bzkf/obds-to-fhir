@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -29,46 +28,43 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   public List<Observation> map(
       OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
-      Reference patient,
+      Reference subject,
       Reference condition) {
 
     observationList.clear();
 
     Objects.requireNonNull(meldung);
+//    Objects.requireNonNull(st);
+//    Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
 
-    Objects.requireNonNull(patient);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    // ---------------------------------------------------------------
+    verifyReference(subject, Enumerations.ResourceType.PATIENT);
+    verifyReference(condition, Enumerations.ResourceType.CONDITION);
 
     // there can be multiple occurrences for TNM in a Meldung
     if (meldung.getDiagnose() != null) {
       if (meldung.getDiagnose().getCTNM() != null) {
-        mapClinicalObservations(meldung.getDiagnose().getCTNM(), patient, condition);
+        mapClinicalObservations(meldung.getDiagnose().getCTNM(), subject, condition);
       }
       if (meldung.getDiagnose().getPTNM() != null) {
-        mapPathologicalObservations(meldung.getDiagnose().getPTNM(), patient, condition);
+        mapPathologicalObservations(meldung.getDiagnose().getPTNM(), subject, condition);
       }
     }
 
     if (meldung.getOP() != null && meldung.getOP().getTNM() != null) {
-      mapGenericObservations(meldung.getOP().getTNM(), patient, condition);
+      mapGenericObservations(meldung.getOP().getTNM(), subject, condition);
     }
 
     if (meldung.getPathologie() != null) {
       if (meldung.getPathologie().getCTNM() != null) {
-        mapClinicalObservations(meldung.getPathologie().getCTNM(), patient, condition);
+        mapClinicalObservations(meldung.getPathologie().getCTNM(), subject, condition);
       }
       if (meldung.getPathologie().getPTNM() != null) {
-        mapPathologicalObservations(meldung.getPathologie().getPTNM(), patient, condition);
+        mapPathologicalObservations(meldung.getPathologie().getPTNM(), subject, condition);
       }
     }
 
     if (meldung.getVerlauf() != null && meldung.getVerlauf().getTNM() != null) {
-      mapGenericObservations(meldung.getVerlauf().getTNM(), patient, condition);
+      mapGenericObservations(meldung.getVerlauf().getTNM(), subject, condition);
     }
 
     return observationList;
