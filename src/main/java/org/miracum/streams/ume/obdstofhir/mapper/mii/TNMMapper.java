@@ -1,6 +1,5 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TNMTyp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -24,78 +24,32 @@ public class TNMMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  List<Observation> observationList = new ArrayList<>();
-
   public List<Observation> map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
-      Reference subject,
-      Reference condition) {
+      TNMTyp tnm, String tnmType, Reference patientReference, Reference primaryConditionReference) {
 
-    observationList.clear();
+    Objects.requireNonNull(tnm);
+    Validate.notBlank(tnm.getID(), "Required TNM_ID is unset");
 
-    Objects.requireNonNull(meldung);
-//    Objects.requireNonNull(st);
-//    Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
+    verifyReference(patientReference, Enumerations.ResourceType.PATIENT);
+    verifyReference(primaryConditionReference, Enumerations.ResourceType.CONDITION);
 
-    verifyReference(subject, Enumerations.ResourceType.PATIENT);
-    verifyReference(condition, Enumerations.ResourceType.CONDITION);
+    var memberObservations = createObservations(tnm, patientReference, primaryConditionReference);
+    var observationList = new ArrayList<>(memberObservations);
 
-    // there can be multiple occurrences for TNM in a Meldung
-    if (meldung.getDiagnose() != null) {
-      if (meldung.getDiagnose().getCTNM() != null) {
-        mapClinicalObservations(meldung.getDiagnose().getCTNM(), subject, condition);
-      }
-      if (meldung.getDiagnose().getPTNM() != null) {
-        mapPathologicalObservations(meldung.getDiagnose().getPTNM(), subject, condition);
-      }
-    }
+    var memberObservationReferences = createObservationReferences(memberObservations);
 
-    if (meldung.getOP() != null && meldung.getOP().getTNM() != null) {
-      mapGenericObservations(meldung.getOP().getTNM(), subject, condition);
-    }
-
-    if (meldung.getPathologie() != null) {
-      if (meldung.getPathologie().getCTNM() != null) {
-        mapClinicalObservations(meldung.getPathologie().getCTNM(), subject, condition);
-      }
-      if (meldung.getPathologie().getPTNM() != null) {
-        mapPathologicalObservations(meldung.getPathologie().getPTNM(), subject, condition);
-      }
-    }
-
-    if (meldung.getVerlauf() != null && meldung.getVerlauf().getTNM() != null) {
-      mapGenericObservations(meldung.getVerlauf().getTNM(), subject, condition);
-    }
+    var groupingObservation =
+        createTNMGroupingObservation(
+            tnm, tnmType, memberObservationReferences, patientReference, primaryConditionReference);
+    observationList.add(groupingObservation);
 
     return observationList;
   }
 
-  private void mapClinicalObservations(TNMTyp cTnm, Reference patient, Reference condition) {
-    var clinicalObservationRefs = createObservations(cTnm, patient, condition);
-    var groupingObservationClinical =
-        createTNMGroupingObservation(cTnm, "clinical", clinicalObservationRefs, patient, condition);
-    observationList.add(groupingObservationClinical);
-  }
+  private List<Observation> createObservations(
+      TNMTyp tnmTyp, Reference patient, Reference primaryConditionReference) {
 
-  private void mapPathologicalObservations(TNMTyp pTnm, Reference patient, Reference condition) {
-    var pathologicObservationRefs = createObservations(pTnm, patient, condition);
-    var groupingObservationPathologic =
-        createTNMGroupingObservation(
-            pTnm, "pathologic", pathologicObservationRefs, patient, condition);
-    observationList.add(groupingObservationPathologic);
-  }
-
-  private void mapGenericObservations(TNMTyp tnm, Reference patient, Reference condition) {
-    var genericObservationRefs = createObservations(tnm, patient, condition);
-    var groupingObservationGeneric =
-        createTNMGroupingObservation(tnm, "generic", genericObservationRefs, patient, condition);
-    observationList.add(groupingObservationGeneric);
-  }
-
-  private List<Reference> createObservations(
-      TNMTyp tnmTyp, Reference patient, Reference condition) {
-
-    List<Reference> memberObservationReferences = new ArrayList<>();
+    var memberObservationList = new ArrayList<Observation>();
 
     if (tnmTyp.getT() != null) {
       String identifierValue = tnmTyp.getID() + "_T";
@@ -107,12 +61,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       tKategorieObservation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
       tKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
-      observationList.add(tKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + tKategorieObservation.getId()));
+      memberObservationList.add(tKategorieObservation);
     }
 
     if (tnmTyp.getN() != null) {
@@ -125,12 +77,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       nKategorieObservation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
       nKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
-      observationList.add(nKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + nKategorieObservation.getId()));
+      memberObservationList.add(nKategorieObservation);
     }
 
     if (tnmTyp.getM() != null) {
@@ -143,12 +93,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       mKategorieObservation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
       mKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
-      observationList.add(mKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + mKategorieObservation.getId()));
+      memberObservationList.add(mKategorieObservation);
     }
 
     if (tnmTyp.getASymbol() != null) {
@@ -161,11 +109,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       aSymbolObservation.setCode(getCodeableConceptLoinc("101660-9"));
       aSymbolObservation.setValue(getCodeableConceptSnomed("421426001"));
-      observationList.add(aSymbolObservation);
-      memberObservationReferences.add(new Reference("Observation/" + aSymbolObservation.getId()));
+      memberObservationList.add(aSymbolObservation);
     }
 
     if (tnmTyp.getMSymbol() != null) {
@@ -178,11 +125,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       mSymbolObservation.setCode(getCodeableConceptLoinc("42030-7"));
       mSymbolObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
-      observationList.add(mSymbolObservation);
-      memberObservationReferences.add(new Reference("Observation/" + mSymbolObservation.getId()));
+      memberObservationList.add(mSymbolObservation);
     }
 
     if (tnmTyp.getL() != null) {
@@ -195,12 +141,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       lKategorieObservation.setCode(getCodeableConceptSnomed("395715009"));
       lKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getL()));
-      observationList.add(lKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + lKategorieObservation.getId()));
+      memberObservationList.add(lKategorieObservation);
     }
 
     if (tnmTyp.getPn() != null) {
@@ -213,12 +157,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       pnKategorieObservation.setCode(getCodeableConceptSnomed("371513001"));
       pnKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getPn()));
-      observationList.add(pnKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + pnKategorieObservation.getId()));
+      memberObservationList.add(pnKategorieObservation);
     }
 
     if (tnmTyp.getRSymbol() != null) {
@@ -231,11 +173,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       rSymbolObservation.setCode(getCodeableConceptLoinc("101659-1"));
       rSymbolObservation.setValue(getCodeableConceptSnomed("421188008"));
-      observationList.add(rSymbolObservation);
-      memberObservationReferences.add(new Reference("Observation/" + rSymbolObservation.getId()));
+      memberObservationList.add(rSymbolObservation);
     }
 
     if (tnmTyp.getS() != null) {
@@ -248,12 +189,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       sKategorieObservation.setCode(getCodeableConceptSnomed("399424006"));
       sKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getS()));
-      observationList.add(sKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + sKategorieObservation.getId()));
+      memberObservationList.add(sKategorieObservation);
     }
 
     if (tnmTyp.getV() != null) {
@@ -266,12 +205,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       vKategorieObservation.setCode(getCodeableConceptSnomed("371493002"));
       vKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getV()));
-      observationList.add(vKategorieObservation);
-      memberObservationReferences.add(
-          new Reference("Observation/" + vKategorieObservation.getId()));
+      memberObservationList.add(vKategorieObservation);
     }
 
     if (tnmTyp.getYSymbol() != null) {
@@ -284,14 +221,24 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
-              condition);
+              primaryConditionReference);
       ySymbolObservation.setCode(getCodeableConceptLoinc("101658-3"));
       ySymbolObservation.setValue(getCodeableConceptSnomed("421755005"));
-      observationList.add(ySymbolObservation);
-      memberObservationReferences.add(new Reference("Observation/" + ySymbolObservation.getId()));
+      memberObservationList.add(ySymbolObservation);
     }
 
-    return memberObservationReferences;
+    return memberObservationList;
+  }
+
+  private List<Reference> createObservationReferences(List<Observation> observations) {
+
+    var observationReferences = new ArrayList<Reference>();
+
+    for (Observation observation : observations) {
+      observationReferences.add(new Reference("Observation/" + observation.getId()));
+    }
+
+    return observationReferences;
   }
 
   private Observation createTNMBaseResource(
@@ -301,7 +248,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String tnmVersion,
       XMLGregorianCalendar datum,
       Reference patient,
-      Reference condition) {
+      Reference primaryConditionReference) {
     var observation = new Observation();
 
     observation.setMeta(new Meta().addProfile(profile));
@@ -311,7 +258,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
     observation.setSubject(patient);
-    observation.setFocus(Collections.singletonList(condition));
+    observation.setFocus(Collections.singletonList(primaryConditionReference));
     observation.setStatus(Observation.ObservationStatus.FINAL);
     observation.setMethod(getObservationMethod(tnmVersion));
     var dateOptional = convertObdsDatumToDateTimeType(datum);
@@ -485,7 +432,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String observationType,
       List<Reference> memberObservations,
       Reference patient,
-      Reference condition) {
+      Reference primaryConditionReference) {
 
     var observation = new Observation();
 
@@ -501,7 +448,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     observation.setSubject(patient);
 
-    observation.setFocus(Collections.singletonList(condition));
+    observation.setFocus(Collections.singletonList(primaryConditionReference));
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
