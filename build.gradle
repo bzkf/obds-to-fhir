@@ -67,6 +67,7 @@ dependencies {
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
 	testImplementation "com.approvaltests:approvaltests:24.16.0"
+	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 }
 
 dependencyManagement {
