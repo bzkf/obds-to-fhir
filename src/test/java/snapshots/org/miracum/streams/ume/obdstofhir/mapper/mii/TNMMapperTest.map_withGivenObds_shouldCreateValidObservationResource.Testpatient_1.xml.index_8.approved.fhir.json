@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "a989355244d956a0d3562e40ab119befa2acdaf36be7fead971c3efdad03dd84",
+  "id": "555ffffdde68d950b3770e5d0a09a43b090175d2cc3a72ccaa30cdb2ea1304b6",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
   },
   "identifier": [ {
-    "system": "482_m",
-    "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
+    "value": "482_m"
   } ],
   "status": "final",
   "code": {

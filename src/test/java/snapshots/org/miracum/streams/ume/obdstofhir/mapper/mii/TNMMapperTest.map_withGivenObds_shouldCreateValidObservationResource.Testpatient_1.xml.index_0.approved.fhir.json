@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "40ace011f43a456edf37434b613e30d849edb1510e616a67bc8d6c6b216afb90",
+  "id": "46bf2ba927c9a5394f2c919e94418266036de3ef1c99245ba22b7668fd59d753",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
   },
   "identifier": [ {
-    "system": "481_T",
-    "value": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
+    "value": "481_T"
   } ],
   "status": "final",
   "code": {
