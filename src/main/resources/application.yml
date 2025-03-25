@@ -47,7 +47,6 @@ fhir:
     nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     grading-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/grading-observation-id"
-    tnmGroupingObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tmn-grouping-observation-id"
     tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-grouping-observation-id"
     tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
     tnm-n-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
