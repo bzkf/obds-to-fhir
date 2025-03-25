@@ -55,27 +55,47 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         adverseEvent.setIdentifier(identifier);
         adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
         // event
-        var code =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getMeddra())
-                    .setCode(
-                        nebenwirkung
-                            .getMengeNebenwirkung()
-                            .getNebenwirkung()
-                            .get(i)
-                            .getArt()
-                            .getMedDRACode())
-                    .setDisplay(
-                        nebenwirkung
-                            .getMengeNebenwirkung()
-                            .getNebenwirkung()
-                            .get(i)
-                            .getArt()
-                            .getBezeichnung())
-                    .setVersion(
-                        nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getVersion()));
-        adverseEvent.setEvent(code);
+        var code = new CodeableConcept();
+
+        if (nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getArt().getMedDRACode()
+            == null) {
+          code.addExtension()
+              .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+              .setValue(new CodeType("unknown"));
+          adverseEvent.setEvent(code);
+          adverseEvent
+              .getEvent()
+              .setText(
+                  nebenwirkung
+                      .getMengeNebenwirkung()
+                      .getNebenwirkung()
+                      .get(i)
+                      .getArt()
+                      .getBezeichnung());
+        } else {
+
+          code.addCoding(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getMeddra())
+                  .setCode(
+                      nebenwirkung
+                          .getMengeNebenwirkung()
+                          .getNebenwirkung()
+                          .get(i)
+                          .getArt()
+                          .getMedDRACode())
+                  .setDisplay(
+                      nebenwirkung
+                          .getMengeNebenwirkung()
+                          .getNebenwirkung()
+                          .get(i)
+                          .getArt()
+                          .getBezeichnung())
+                  .setVersion(
+                      nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getVersion()));
+          adverseEvent.setEvent(code);
+        }
+
         // seriousness
         var seriousness =
             new CodeableConcept(
