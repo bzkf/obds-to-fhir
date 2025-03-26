@@ -21,6 +21,9 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven {
+		url('https://git.dnpm.dev/api/packages/public-snapshots/maven')
+	}
 }
 
 ext {
@@ -55,6 +58,9 @@ dependencies {
 	// <https://github.com/FasterXML/jackson-modules-java8>
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
 	implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+
+	// OBDS2 to OBDS3
+	implementation "dev.pcvolkmer.onco:obds2-to-obds3:0.1.0-SNAPSHOT"
 
 	// JAXB code generation
 	xsd2java "com.sun.xml.bind:jaxb-xjc:4.0.5"
