@@ -35,8 +35,8 @@ public class FhirProperties {
 
   @Data
   public static class FhirSystems {
+    // local systems
     private String patientId;
-    private String identifierType;
     private String conditionId;
     private String observationId;
     private String procedureId;
@@ -46,10 +46,24 @@ public class FhirProperties {
     private String residualstatusObservationId;
     private String specimenId;
     private String studienteilnahmeId;
-    private String observationCategorySystem;
     private String allgemeinerLeistungszustandEcogId;
     private String genetischeVarianteId;
     private String tumorkonferenzId;
+    private String tnmGroupingObservationId;
+    private String tnmTKategorieObservationId;
+    private String tnmNKategorieObservationId;
+    private String tnmMKategorieObservationId;
+    private String tnmLKategorieObservationId;
+    private String tnmPnKategorieObservationId;
+    private String tnmSKategorieObservationId;
+    private String tnmVKategorieObservationId;
+    private String tnmASymbolObservationId;
+    private String tnmMSymbolObservationId;
+    private String tnmRSymbolObservationId;
+    private String tnmYSymbolObservationId;
+
+    private String identifierType;
+    private String observationCategorySystem;
     private String loinc;
     private String icdo3Morphologie;
     private String gradingDktk;
@@ -123,6 +137,8 @@ public class FhirProperties {
     private String miiCsOnkoTherapieTyp;
     private String miiCsOnkoTherapieabweichung;
     private String gradingObservationId;
+    private String miiCsOnkoTnmVersion;
+    private String tnmUicc;
   }
 
   @Data
@@ -139,6 +155,7 @@ public class FhirProperties {
     private String systMedStatement;
     private String miiPatientPseudonymisiert;
     private String deathObservation;
+
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
@@ -160,6 +177,22 @@ public class FhirProperties {
     private String miiPrOnkoNebenwirkungAdverseEvent;
     private String miiPrOnkoVerlauf;
     private String miiPrOnkoTumorkonferenz;
+
+    private String miiPrOnkoTnmKlassifikation;
+    private String miiPrOnkoTnmTKategorie;
+    private String miiExOnkoTnmCpPraefix;
+    private String miiPrOnkoTnmNKategorie;
+    private String miiExOnkoTnmItcSuffix;
+    private String miiExOnkoTnmSnSuffix;
+    private String miiPrOnkoTnmMKategorie;
+    private String miiPrOnkoTnmASymbol;
+    private String miiPrOnkoTnmMSymbol;
+    private String miiPrOnkoTnmLKategorie;
+    private String miiPrOnkoTnmPnKategorie;
+    private String miiPrOnkoTnmRSymbol;
+    private String miiPrOnkoTnmSKategorie;
+    private String miiPrOnkoTnmVKategorie;
+    private String miiPrOnkoTnmYSymbol;
   }
 
   @Data

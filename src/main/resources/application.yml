@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.32
+  version: 3.0.0-beta.33
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -23,8 +23,8 @@ fhir:
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
   systems:
+    # local systems with prefix {fhir.default.baseSystemUrl}
     patientId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/patient-id"
-    identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
     conditionId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/primaerdiagnose-id"
     observationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-id"
     procedureId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/procedure-id"
@@ -34,7 +34,6 @@ fhir:
     studienteilnahmeId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/studienteilnahme-id"
     observationHistologieId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-histologie-id"
     observationVerlaufId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/observation-verlauf-id"
-    observationCategorySystem: "http://hl7.org/fhir/observation-category"
     gleason-score-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/psa-observation-id"
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/strahlentherapie-procedure-id"
@@ -48,6 +47,23 @@ fhir:
     nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/nebenwirkung-adverseEvent-id"
     tod-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tod-observation-id"
     grading-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/grading-observation-id"
+    tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-grouping-observation-id"
+    tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id"
+    tnm-n-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id"
+    tnm-m-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id"
+    tnm-l-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-l-kategorie-observation-id"
+    tnm-pn-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id"
+    tnm-s-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-s-kategorie-observation-id"
+    tnm-v-kategorie-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-v-kategorie-observation-id"
+    tnm-a-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-a-symbol-observation-id"
+    tnm-m-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-m-symbol-observation-id"
+    tnm-r-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-r-symbol-observation-id"
+    tnm-y-symbol-observation-id: "${fhir.default.baseSystemUrl}/obds-to-fhir/identifiers/tnm-y-symbol-observation-id"
+
+
+    # external systems
+    identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
+    observationCategorySystem: "http://hl7.org/fhir/observation-category"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
@@ -111,6 +127,8 @@ fhir:
     mii-cs-onko-therapieplanung-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ"
     mii-cs-onko-therapie-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
+    mii-cs-onko-tnm-version: 3.0.0-beta.33
+    tnm-uicc: "https://www.uicc.org/resources/tnm"
 
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
@@ -147,6 +165,23 @@ fhir:
     mii-pr-onko-nebenwirkung-adverse-event: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event"
     mii-pr-onko-verlauf: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf"
     mii-pr-onko-tumorkonferenz: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz"
+    mii-pr-onko-tnm-klassifikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation"
+    mii-pr-onko-tnm-t-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie"
+    mii-ex-onko-tnm-cp-praefix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix"
+    mii-pr-onko-tnm-n-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie"
+    mii-ex-onko-tnm-itc-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix"
+    mii-ex-onko-tnm-sn-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix"
+    mii-pr-onko-tnm-m-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie"
+    mii-pr-onko-tnm-a-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-a-symbol"
+    mii-pr-onko-tnm-m-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol"
+    mii-pr-onko-tnm-l-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-l-kategorie"
+    mii-pr-onko-tnm-pn-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie"
+    mii-pr-onko-tnm-r-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-r-symbol"
+    mii-pr-onko-tnm-s-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-s-kategorie"
+    mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie"
+    mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol"
+
+
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

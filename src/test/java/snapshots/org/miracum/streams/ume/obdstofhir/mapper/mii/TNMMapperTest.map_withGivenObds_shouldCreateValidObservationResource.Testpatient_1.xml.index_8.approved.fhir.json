@@ -1,0 +1,37 @@
+{
+  "resourceType": "Observation",
+  "id": "555ffffdde68d950b3770e5d0a09a43b090175d2cc3a72ccaa30cdb2ea1304b6",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
+    "value": "482_m"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "code": "42030-7"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.uicc.org/resources/tnm",
+      "code": "3"
+    } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+      "code": "8"
+    } ]
+  }
+}
