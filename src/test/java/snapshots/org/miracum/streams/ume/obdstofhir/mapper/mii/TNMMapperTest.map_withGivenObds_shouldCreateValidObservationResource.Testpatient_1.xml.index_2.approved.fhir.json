@@ -1,0 +1,47 @@
+{
+  "resourceType": "Observation",
+  "id": "632fdb9d900d442f0faf84f7f9b8c40cc4556d7d9eebb38959c75515315a03ba",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id",
+    "value": "481_M"
+  } ],
+  "status": "final",
+  "code": {
+    "extension": [ {
+      "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "c"
+        } ]
+      }
+    } ],
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "399387003",
+      "display": "cM category (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.uicc.org/resources/tnm",
+      "code": "1"
+    } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+      "code": "8"
+    } ]
+  }
+}

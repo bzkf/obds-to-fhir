@@ -43,6 +43,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final VerlaufObservationMapper verlaufObservationMapper;
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
+  private final TNMMapper tnmMapper;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -64,7 +65,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
       VerlaufObservationMapper verlaufObservationMapper,
       GenetischeVarianteMapper genetischeVarianteMapper,
-      TumorkonferenzMapper tumorkonferenzMapper) {
+      TumorkonferenzMapper tumorkonferenzMapper,
+      TNMMapper tnmMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -86,6 +88,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.verlaufObservationMapper = verlaufObservationMapper;
     this.genetischeVarianteMapper = genetischeVarianteMapper;
     this.tumorkonferenzMapper = tumorkonferenzMapper;
+    this.tnmMapper = tnmMapper;
   }
 
   /**
@@ -209,6 +212,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     diagnose, patientReference, primaryConditionReference, meldung.getMeldungID());
             addToBundle(bundle, genetischeVarianten);
           }
+
+          if (diagnose.getCTNM() != null) {
+            var clinicalTNMObservations =
+                tnmMapper.map(
+                    diagnose.getCTNM(), "clinical", patientReference, primaryConditionReference);
+            addToBundle(bundle, clinicalTNMObservations);
+          }
+          if (diagnose.getPTNM() != null) {
+            var pathologicTNMObservations =
+                tnmMapper.map(
+                    diagnose.getPTNM(), "pathologic", patientReference, primaryConditionReference);
+            addToBundle(bundle, pathologicTNMObservations);
+          }
         }
 
         // Verlauf
@@ -271,6 +287,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 genetischeVarianteMapper.map(
                     verlauf, patientReference, primaryConditionReference, meldung.getMeldungID());
             addToBundle(bundle, genetischeVarianten);
+          }
+
+          if (verlauf.getTNM() != null) {
+            var tnmObservations =
+                tnmMapper.map(
+                    verlauf.getTNM(), "generic", patientReference, primaryConditionReference);
+            addToBundle(bundle, tnmObservations);
           }
         }
 
@@ -396,6 +419,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     op, patientReference, primaryConditionReference, meldung.getMeldungID());
             addToBundle(bundle, genetischeVarianten);
           }
+
+          if (op.getTNM() != null) {
+            var tnmObservations =
+                tnmMapper.map(op.getTNM(), "generic", patientReference, primaryConditionReference);
+            addToBundle(bundle, tnmObservations);
+          }
         }
 
         // Pathologie
@@ -451,6 +480,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, genetischeVarianten);
           }
 
+          if (pathologie.getCTNM() != null) {
+            var clinicalTNMObservations =
+                tnmMapper.map(
+                    pathologie.getCTNM(), "clinical", patientReference, primaryConditionReference);
+            addToBundle(bundle, clinicalTNMObservations);
+          }
+          if (pathologie.getPTNM() != null) {
+            var pathologicTNMObservations =
+                tnmMapper.map(
+                    pathologie.getPTNM(),
+                    "pathologic",
+                    patientReference,
+                    primaryConditionReference);
+            addToBundle(bundle, pathologicTNMObservations);
+          }
+
           // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz
           // the histologiebefund is based on. Unless every befund is always a
           // result of a conference. So maybe remove the reference entirely.
@@ -465,6 +510,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           addToBundle(bundle, report);
         }
 
+        // Tumorkonferenz
         if (meldung.getTumorkonferenz() != null) {
           var tumorkonferenz = meldung.getTumorkonferenz();
           var carePlan =
