@@ -35,7 +35,7 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
       Reference patient,
       Reference condition) {
     var date = convertObdsDatumToDateTimeType(datum);
-    return map(allgemeinerLeistungszustand, meldungsId, date, patient, condition);
+    return map(allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
   }
 
   public Observation map(

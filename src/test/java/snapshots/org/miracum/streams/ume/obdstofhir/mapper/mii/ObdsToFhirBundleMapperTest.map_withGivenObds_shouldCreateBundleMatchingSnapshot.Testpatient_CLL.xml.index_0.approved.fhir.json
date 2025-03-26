@@ -543,6 +543,82 @@
       "url": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134"
     }
   }, {
+    "fullUrl": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
+        "value": "30_Inner_2_Studienteilnahme"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "709491003",
+          "display": "Enrollment in clinical trial (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "focus": [ {
+        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7"
+    }
+  }, {
+    "fullUrl": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+        "value": "158"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "focus": [ {
+        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      } ],
+      "effectiveDateTime": "2020-07-18",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "P",
+          "display": "Progression"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150"
+    }
+  }, {
     "fullUrl": "Observation/cc4dd4a4b721a37b7fe09749609bfc409f12816af087e11a9ef12ac37c18aa8f",
     "resource": {
       "resourceType": "Observation",
@@ -579,6 +655,75 @@
     "request": {
       "method": "PUT",
       "url": "Observation/cc4dd4a4b721a37b7fe09749609bfc409f12816af087e11a9ef12ac37c18aa8f"
+    }
+  }, {
+    "fullUrl": "Observation/30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
+        "value": "30_Verlauf_1_Studienteilnahme"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "709491003",
+          "display": "Enrollment in clinical trial (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "focus": [ {
+        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776"
+    }
+  }, {
+    "fullUrl": "CarePlan/b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c",
+    "resource": {
+      "resourceType": "CarePlan",
+      "id": "b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+        "value": "Tumorkonferenz_111"
+      } ],
+      "status": "active",
+      "intent": "plan",
+      "category": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+          "code": "praeth"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "created": "2020-08-17",
+      "addresses": [ {
+        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "CarePlan/b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c"
     }
   } ]
 }
