@@ -74,10 +74,11 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       VerlaufObservationMapper.class,
       GenetischeVarianteMapper.class,
       TumorkonferenzMapper.class,
-      TNMMapper.class
+      TNMMapper.class,
+      GleasonScoreMapper.class,
     })
-@EnableConfigurationProperties(value = {FhirProperties.class})
-public class Obdsv3ProcessorTest {
+    @EnableConfigurationProperties(value = {FhirProperties.class})
+  public class Obdsv3ProcessorTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
