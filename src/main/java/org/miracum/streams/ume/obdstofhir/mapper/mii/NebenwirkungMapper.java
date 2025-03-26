@@ -56,43 +56,21 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
         // event
         var code = new CodeableConcept();
-
-        if (nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getArt().getMedDRACode()
-            == null) {
+        var nb = nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i);
+        if (nb.getArt().getMedDRACode() == null) {
           code.addExtension()
               .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
               .setValue(new CodeType("unknown"));
           adverseEvent.setEvent(code);
-          adverseEvent
-              .getEvent()
-              .setText(
-                  nebenwirkung
-                      .getMengeNebenwirkung()
-                      .getNebenwirkung()
-                      .get(i)
-                      .getArt()
-                      .getBezeichnung());
+          adverseEvent.getEvent().setText(nb.getArt().getBezeichnung());
         } else {
 
           code.addCoding(
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMeddra())
-                  .setCode(
-                      nebenwirkung
-                          .getMengeNebenwirkung()
-                          .getNebenwirkung()
-                          .get(i)
-                          .getArt()
-                          .getMedDRACode())
-                  .setDisplay(
-                      nebenwirkung
-                          .getMengeNebenwirkung()
-                          .getNebenwirkung()
-                          .get(i)
-                          .getArt()
-                          .getBezeichnung())
-                  .setVersion(
-                      nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getVersion()));
+                  .setCode(nb.getArt().getMedDRACode())
+                  .setDisplay(nb.getArt().getBezeichnung())
+                  .setVersion(nb.getVersion()));
           adverseEvent.setEvent(code);
         }
 
@@ -101,7 +79,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
             new CodeableConcept(
                 new Coding()
                     .setSystem(fhirProperties.getSystems().getMiiCsOnkoNebenwirkungCtcaeGrad())
-                    .setCode(nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i).getGrad())
+                    .setCode(nb.getGrad())
                     .setDisplay(""));
         adverseEvent.setSeriousness(seriousness);
         adverseEvents.add(adverseEvent);
