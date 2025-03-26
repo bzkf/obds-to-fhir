@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.32
+  version: 3.0.0-beta.33
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -127,7 +127,7 @@ fhir:
     mii-cs-onko-therapieplanung-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ"
     mii-cs-onko-therapie-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
-    mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
+    mii-cs-onko-tnm-version: 3.0.0-beta.33
     tnm-uicc: "https://www.uicc.org/resources/tnm"
 
   profiles:
