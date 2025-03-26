@@ -242,6 +242,44 @@
       "url": "Observation/ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528"
     }
   }, {
+    "fullUrl": "Observation/e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-VER_60102"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+      },
+      "focus": [ {
+        "reference": "Condition/257c056341e9015dfdd7d15cab0a7414b348796b2b01813101078b451af692c6"
+      } ],
+      "effectiveDateTime": "2021-09-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "2",
+          "display": "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11"
+    }
+  }, {
     "fullUrl": "Specimen/1d79688586bf4aab850a2f43b7b573f1f2c381a288a0996809df83bc94b6b6b3",
     "resource": {
       "resourceType": "Specimen",

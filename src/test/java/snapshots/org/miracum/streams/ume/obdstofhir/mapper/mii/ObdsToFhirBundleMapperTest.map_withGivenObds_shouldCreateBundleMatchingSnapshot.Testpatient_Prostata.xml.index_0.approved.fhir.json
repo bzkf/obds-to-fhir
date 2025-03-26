@@ -1702,5 +1702,43 @@
       "method": "PUT",
       "url": "Observation/6d49dc7db0a4d68322f3d35ba2a1150b5cd98e0b1b09834df7a23ab16f730dbe"
     }
+  }, {
+    "fullUrl": "Observation/4eccc5f8d8499c776dffe9e481c7582889e29158fe5b8061825c69f9a904d42c",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4eccc5f8d8499c776dffe9e481c7582889e29158fe5b8061825c69f9a904d42c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-VER_80107"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
+      },
+      "focus": [ {
+        "reference": "Condition/864086c778055cfdcf52915c303af7bfa4941ae6f56fb931849319046b09108d"
+      } ],
+      "effectiveDateTime": "2020-10-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "1",
+          "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4eccc5f8d8499c776dffe9e481c7582889e29158fe5b8061825c69f9a904d42c"
+    }
   } ]
 }

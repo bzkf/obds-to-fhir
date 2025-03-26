@@ -1,11 +1,12 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
-import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import java.util.Collections;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.springframework.stereotype.Service;
@@ -18,20 +19,36 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      XMLGregorianCalendar datum,
+      Reference patient,
+      Reference condition) {
+    var date = convertObdsDatumToDateTimeType(datum);
+    return map(allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
+  }
+
+  public Observation map(
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      DatumTagOderMonatOderJahrOderNichtGenauTyp datum,
+      Reference patient,
+      Reference condition) {
+    var date = convertObdsDatumToDateTimeType(datum);
+    return map(allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
+  }
+
+  public Observation map(
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      DateTimeType effective,
       Reference patient,
       Reference condition) {
 
-    Objects.requireNonNull(meldung);
-    Objects.requireNonNull(meldung.getDiagnose());
-    Objects.requireNonNull(meldung.getDiagnose().getAllgemeinerLeistungszustand());
-    Objects.requireNonNull(meldung.getMeldungID());
-    Objects.requireNonNull(patient);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+    Objects.requireNonNull(allgemeinerLeistungszustand);
+    Objects.requireNonNull(meldungsId);
+    verifyReference(patient, ResourceType.PATIENT);
+    verifyReference(condition, ResourceType.CONDITION);
 
     var observation = new Observation();
 
@@ -43,7 +60,7 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getAllgemeinerLeistungszustandEcogId())
-            .setValue("ECOG-" + meldung.getMeldungID());
+            .setValue("ECOG-" + meldungsId);
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -55,17 +72,13 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
         new CodeableConcept(
             new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("423740007")));
 
-    var dateOptional =
-        convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum().getValue());
-    dateOptional.ifPresent(observation::setEffective);
+    observation.setEffective(effective);
 
     observation.setFocus(Collections.singletonList(condition));
 
     Coding value =
         new Coding()
             .setSystem(fhirProperties.getSystems().getMiiCsOnkoAllgemeinerLeistungszustandEcog());
-    AllgemeinerLeistungszustand allgemeinerLeistungszustand =
-        meldung.getDiagnose().getAllgemeinerLeistungszustand();
     switch (allgemeinerLeistungszustand) {
       case ECOG_0, KARNOFSKY_90, KARNOFSKY_100:
         value.setCode("0");

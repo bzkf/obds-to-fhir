@@ -161,7 +161,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
           if (diagnose.getAllgemeinerLeistungszustand() != null) {
             var leistungszustand =
-                leistungszustandMapper.map(meldung, patientReference, primaryConditionReference);
+                leistungszustandMapper.map(
+                    diagnose.getAllgemeinerLeistungszustand(),
+                    meldung.getMeldungID(),
+                    meldung.getTumorzuordnung().getDiagnosedatum(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, leistungszustand);
           }
 
@@ -259,6 +264,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 fernmetastasenMapper.map(
                     verlauf, meldung.getMeldungID(), patientReference, primaryConditionReference);
             addToBundle(bundle, verlaufFM);
+          }
+
+          if (verlauf.getAllgemeinerLeistungszustand() != null) {
+            var leistungszustand =
+                leistungszustandMapper.map(
+                    verlauf.getAllgemeinerLeistungszustand(),
+                    meldung.getMeldungID(),
+                    verlauf.getUntersuchungsdatumVerlauf(),
+                    patientReference,
+                    primaryConditionReference);
+            addToBundle(bundle, leistungszustand);
           }
 
           if (verlauf.getHistologie() != null) {
