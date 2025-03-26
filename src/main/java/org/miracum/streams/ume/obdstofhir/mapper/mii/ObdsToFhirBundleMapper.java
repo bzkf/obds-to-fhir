@@ -44,6 +44,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
+  private GleasonScoreMapper gleasonScoreMapper;
+
+  @Value("${fhir.mappings.modul.prostata.enabled}")
+  private boolean isModulProstataMappingEnabled;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -66,7 +70,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       VerlaufObservationMapper verlaufObservationMapper,
       GenetischeVarianteMapper genetischeVarianteMapper,
       TumorkonferenzMapper tumorkonferenzMapper,
-      TNMMapper tnmMapper) {
+      TNMMapper tnmMapper,
+      GleasonScoreMapper gleasonScoreMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -89,6 +94,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.genetischeVarianteMapper = genetischeVarianteMapper;
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
+    this.gleasonScoreMapper = gleasonScoreMapper;
   }
 
   /**
@@ -225,6 +231,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     diagnose.getPTNM(), "pathologic", patientReference, primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
           }
+
+          if (diagnose.getModulProstata() != null && isModulProstataMappingEnabled) {
+            var modulProstata = diagnose.getModulProstata();
+            if (modulProstata.getGleasonScore() != null) {
+              var gleasonScore =
+                  gleasonScoreMapper.map(
+                      modulProstata,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, gleasonScore);
+            }
+          }
         }
 
         // Verlauf
@@ -294,6 +313,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 tnmMapper.map(
                     verlauf.getTNM(), "generic", patientReference, primaryConditionReference);
             addToBundle(bundle, tnmObservations);
+          }
+
+          if (verlauf.getModulProstata() != null && isModulProstataMappingEnabled) {
+            var modulProstata = verlauf.getModulProstata();
+            if (modulProstata.getGleasonScore() != null) {
+              var gleasonScore =
+                  gleasonScoreMapper.map(
+                      modulProstata,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, gleasonScore);
+            }
           }
         }
 
@@ -425,6 +457,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 tnmMapper.map(op.getTNM(), "generic", patientReference, primaryConditionReference);
             addToBundle(bundle, tnmObservations);
           }
+
+          if (op.getModulProstata() != null && isModulProstataMappingEnabled) {
+            var modulProstata = op.getModulProstata();
+            if (modulProstata.getGleasonScore() != null) {
+              var gleasonScore =
+                  gleasonScoreMapper.map(
+                      modulProstata,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference,
+                      op.getDatum());
+              addToBundle(bundle, gleasonScore);
+            }
+          }
         }
 
         // Pathologie
@@ -494,6 +540,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     patientReference,
                     primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
+          }
+
+          if (pathologie.getModulProstata() != null && isModulProstataMappingEnabled) {
+            var modulProstata = pathologie.getModulProstata();
+            if (modulProstata.getGleasonScore() != null) {
+              var gleasonScore =
+                  gleasonScoreMapper.map(
+                      modulProstata,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, gleasonScore);
+            }
           }
 
           // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz

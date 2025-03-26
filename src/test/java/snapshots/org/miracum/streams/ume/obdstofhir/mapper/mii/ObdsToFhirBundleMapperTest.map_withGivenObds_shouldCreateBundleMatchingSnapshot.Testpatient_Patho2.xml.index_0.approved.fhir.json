@@ -155,6 +155,72 @@
       "url": "Observation/44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34"
     }
   }, {
+    "fullUrl": "Observation/9b70bcec759c53001a07d1b7dd6058287c466c6f86b13b5cb8919a494e1ad051",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "9b70bcec759c53001a07d1b7dd6058287c466c6f86b13b5cb8919a494e1ad051",
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
+        "value": "gleason-score-PAT_70102"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "385377005",
+          "display": "Gleason grade finding for prostatic cancer (finding)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
+      },
+      "focus": [ {
+        "reference": "Condition/7f25e46a31c82b72367322e974359038f2ef57071b6c3c38ef6a99dc94691358"
+      } ],
+      "effectiveDateTime": "2021-08-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueInteger": 9
+          } ],
+          "system": "http://snomed.info/sct",
+          "code": "58925000"
+        } ],
+        "text": "9"
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "384994009",
+            "display": "Primary Gleason pattern"
+          } ]
+        },
+        "valueInteger": 4
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "code": "384995005",
+            "display": "Secondary Gleason pattern"
+          } ]
+        },
+        "valueInteger": 5
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/9b70bcec759c53001a07d1b7dd6058287c466c6f86b13b5cb8919a494e1ad051"
+    }
+  }, {
     "fullUrl": "DiagnosticReport/46563ac340ea2b1b5d8d0fb87517bf2e97870675437e7ab6ea3c87c53386e3db",
     "resource": {
       "resourceType": "DiagnosticReport",
