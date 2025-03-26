@@ -326,8 +326,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       primaryConditionReference);
               addToBundle(bundle, gleasonScore);
             }
+          }
         }
-      }
 
         // Systemtherapie
         if (meldung.getSYST() != null) {
@@ -470,8 +470,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       op.getDatum());
               addToBundle(bundle, gleasonScore);
             }
+          }
         }
-      }
 
         // Pathologie
         if (meldung.getPathologie() != null) {
