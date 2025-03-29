@@ -89,10 +89,7 @@ public class ObdsProcessor extends ObdsToFhirMapper {
                   (key, value, aggregate) -> aggregate.addElement(value),
                   (key, value, aggregate) -> aggregate.removeElement(value),
                   Materialized.with(Serdes.String(), new MeldungExportListSerde()))
-              .toStream()
-              .split(Named.as("out-"))
-              .branch((k, v) -> v != null, Branched.as("Aggregate"))
-              .noDefaultBranch();
+              .toStream();
 
       var branches = new ArrayList<KStream<String, Bundle>>();
 
@@ -100,19 +97,15 @@ public class ObdsProcessor extends ObdsToFhirMapper {
       branches.addAll(
           List.of(
               output
-                  .get("out-Aggregate")
                   .mapValues(this.getOnkoToMedicationStatementBundleMapper())
                   .filter((key, value) -> value != null),
               output
-                  .get("out-Aggregate")
                   .mapValues(this.getOnkoToObservationBundleMapper())
                   .filter((key, value) -> value != null),
               output
-                  .get("out-Aggregate")
                   .mapValues(this.getOnkoToProcedureBundleMapper())
                   .filter((key, value) -> value != null),
               output
-                  .get("out-Aggregate")
                   .leftJoin(stringOnkoObsBundles, Pair::of)
                   .mapValues(this.getOnkoToConditionBundleMapper())
                   .filter((key, value) -> value != null)));
