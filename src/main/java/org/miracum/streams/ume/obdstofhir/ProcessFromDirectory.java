@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
+import de.basisdatensatz.obds.v2.ADTGEKID;
 import de.basisdatensatz.obds.v3.OBDS;
+import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,16 +35,19 @@ public class ProcessFromDirectory {
   private ProcessFromDirectoryConfig config;
   private KafkaTemplate<String, IBaseResource> kafkaTemplate;
   private ObdsToFhirBundleMapper mapper;
+  private ObdsMapper obdsMapper;
 
   private static final FhirContext fhirContext = FhirContext.forR4();
 
   public ProcessFromDirectory(
       ProcessFromDirectoryConfig config,
       KafkaTemplate<String, IBaseResource> kafkaTemplate,
-      ObdsToFhirBundleMapper mapper) {
+      ObdsToFhirBundleMapper mapper,
+      ObdsMapper obdsMapper) {
     this.config = config;
     this.kafkaTemplate = kafkaTemplate;
     this.mapper = mapper;
+    this.obdsMapper = obdsMapper;
   }
 
   @EventListener
@@ -64,7 +69,15 @@ public class ProcessFromDirectory {
       for (var file : files) {
         LOG.info("Mapping file {}", file.getFileName());
         var obdsString = Files.readString(file);
-        final var obdsMeldung = xmlMapper.readValue(obdsString, OBDS.class);
+
+        OBDS obdsMeldung = null;
+        if (obdsString.contains("ADT_GEKID")) {
+          var adt = obdsMapper.readValue(obdsString, ADTGEKID.class);
+          obdsMeldung = obdsMapper.map(adt);
+        } else {
+          obdsMeldung = xmlMapper.readValue(obdsString, OBDS.class);
+        }
+
         final var bundles = mapper.map(obdsMeldung);
         for (var bundle : bundles) {
           LOG.info("Created FHIR bundle {}", bundle.getId());
