@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.37
+  version: 3.0.0-beta.38
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
