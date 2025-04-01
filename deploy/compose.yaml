@@ -17,7 +17,7 @@ services:
       - ./oracle/init:/docker-entrypoint-initdb.d/setup
 
   kafka:
-    image: docker.io/bitnami/kafka:3.9.0@sha256:dde3b5f4b745ced955b11003dace62feafd1a3c0f48a5fcae132be19c3b8a118
+    image: docker.io/bitnami/kafka:4.0.0@sha256:74d23b84870f47f95f85996c3fadc1221adfbc16ff8aaa23754e6d9b7097319f
     restart: unless-stopped
     cap_drop:
       - ALL
