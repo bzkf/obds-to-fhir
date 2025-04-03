@@ -62,7 +62,7 @@
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
         "valueCodeableConcept": {
           "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
             "code": "A"
           } ]
         }
@@ -175,7 +175,7 @@
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
         "valueCodeableConcept": {
           "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
             "code": "A"
           } ]
         }
@@ -1085,7 +1085,7 @@
         "coding": [ {
           "extension": [ {
             "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-            "valueInteger": 8
+            "valueDecimal": 8
           } ],
           "system": "http://snomed.info/sct",
           "code": "33013007"
@@ -1579,7 +1579,7 @@
         "coding": [ {
           "extension": [ {
             "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-            "valueInteger": 7
+            "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
           "code": "57403001"
