@@ -2,8 +2,9 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -20,38 +21,32 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      HistologieTyp histologie, Reference patient, Reference diagnose, Reference specimen) {
+      HistologieTyp histologie,
+      String meldungsId,
+      Reference patient,
+      Reference diagnose,
+      Reference specimen) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
-    Objects.requireNonNull(histologie.getGrading(), "Grading must not be null");
-    Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
-    Objects.requireNonNull(specimen, "Reference to Specimen must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Validate.isTrue(
-        Objects.equals(
-            diagnose.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The diagnose reference should point to a Condition resource");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            specimen.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.SPECIMEN.toCode()),
-        "The specimen reference should point to a Specimen resource");
+    verifyReference(patient, ResourceType.PATIENT);
+    verifyReference(diagnose, ResourceType.CONDITION);
+    verifyReference(specimen, ResourceType.SPECIMEN);
 
-    // TODO: sollte grading nicht auch auf das specimen verweisen?
     var observation = new Observation();
     // Meta
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
+
+    var identifierValue = histologie.getHistologieID();
+    if (Strings.isBlank(identifierValue)) {
+      LOG.warn(
+          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Grading Observation.");
+      identifierValue = meldungsId;
+    }
 
     // Identifer
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getGradingObservationId())
-            .setValue(histologie.getHistologieID() + "_Grading");
+            .setValue(identifierValue + "-grading");
     observation.addIdentifier(identifier);
 
     // Id

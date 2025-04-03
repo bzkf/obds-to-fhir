@@ -23,7 +23,7 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-        "valueInteger": 7
+        "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
       "code": "57403001"

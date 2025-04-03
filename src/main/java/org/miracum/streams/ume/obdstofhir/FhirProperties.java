@@ -44,6 +44,7 @@ public class FhirProperties {
     private String medicationStatementId;
     private String fernmetastasenId;
     private String residualstatusObservationId;
+    private String weitereKlassifikationObservationId;
     private String specimenId;
     private String studienteilnahmeId;
     private String allgemeinerLeistungszustandEcogId;
@@ -177,6 +178,7 @@ public class FhirProperties {
     private String miiPrOnkoNebenwirkungAdverseEvent;
     private String miiPrOnkoVerlauf;
     private String miiPrOnkoTumorkonferenz;
+    private String miiPrOnkoWeitereKlassifikationen;
 
     private String miiPrOnkoTnmKlassifikation;
     private String miiPrOnkoTnmTKategorie;
