@@ -182,7 +182,7 @@
         "coding": [ {
           "extension": [ {
             "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-            "valueInteger": 9
+            "valueDecimal": 9
           } ],
           "system": "http://snomed.info/sct",
           "code": "58925000"
