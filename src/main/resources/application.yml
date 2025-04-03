@@ -60,7 +60,7 @@ fhir:
     tnm-r-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-r-symbol-observation-id"
     tnm-y-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-y-symbol-observation-id"
     tumorkonferenz-id: "${fhir.default.baseSystemUrl}/tumorkonferenz-id"
-
+    weitere-klassifikation-observation-id: "${fhir.default.baseSystemUrl}/weitere-klassifikation-observation-id"
 
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -180,7 +180,7 @@ fhir:
     mii-pr-onko-tnm-s-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-s-kategorie"
     mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie"
     mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol"
-
+    mii-pr-onko-weitere-klassifikationen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
@@ -200,6 +200,29 @@ fhir:
         enabled: false
     createPatientResources:
       enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
+    weitere-klassifikationen:
+      WHO-Grad:
+        coding:
+          system: "${fhir.systems.snomed}"
+          code: "277460003"
+          display: "World Health Organization central nervous system tumor grading system (staging scale)"
+        mappings:
+          I:
+            system: "${fhir.systems.snomed}"
+            code: "396922003"
+            display: "World Health Organization grade I central nervous system tumor (finding)"
+          II:
+            system: "${fhir.systems.snomed}"
+            code: "396923008"
+            display: "World Health Organization grade II central nervous system tumor (finding)"
+          III:
+            system: "${fhir.systems.snomed}"
+            code: "396924002"
+            display: "World Health Organization grade III central nervous system tumor (finding)"
+          IV:
+            system: "${fhir.systems.snomed}"
+            code: "396925001"
+            display: "World Health Organization grade IV central nervous system tumor (finding)"
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}
