@@ -1,0 +1,27 @@
+{
+  "resourceType": "Observation",
+  "id": "59f5aba03328245c1b7986b7550790fc582a8bbb710ea02fb3cabe62954f1385",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+    "value": "11_2_DI-2-binet"
+  } ],
+  "status": "final",
+  "code": {
+    "text": "Binet"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2017-05-05",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "code": "A"
+    } ]
+  }
+}

@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
+import com.github.slugify.Slugify;
 import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
@@ -30,6 +31,7 @@ public abstract class ObdsToFhirMapper {
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
 
+  protected static final Slugify slugifier = Slugify.builder().build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
   @Value("${app.patient-id-pattern:[^0]\\d{8}}")
