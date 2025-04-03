@@ -12,16 +12,17 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class, WeitereKlassifikationenMappings.class})
+@SpringBootTest(classes = {FhirProperties.class})
+@EnableConfigurationProperties
 class WeitereKlassifikationMapperTest extends MapperTest {
   private static WeitereKlassifikationMapper sut;
 
   @BeforeAll
-  static void beforeEach(
-      @Autowired FhirProperties fhirProps, @Autowired WeitereKlassifikationenMappings mappings) {
-    sut = new WeitereKlassifikationMapper(fhirProps, mappings);
+  static void beforeEach(@Autowired FhirProperties fhirProps) {
+    sut = new WeitereKlassifikationMapper(fhirProps);
   }
 
   @ParameterizedTest
