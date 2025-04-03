@@ -19,10 +19,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
-
-  @Value("${fhir.mappings.createPatientResources.enabled}")
-  private boolean createPatientResources;
-
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
   private final FernmetastasenMapper fernmetastasenMapper;
@@ -44,7 +40,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
-  private GleasonScoreMapper gleasonScoreMapper;
+  private final GleasonScoreMapper gleasonScoreMapper;
+  private final WeitereKlassifikationMapper weitereKlassifikationMapper;
+
+  @Value("${fhir.mappings.createPatientResources.enabled}")
+  private boolean createPatientResources;
 
   @Value("${fhir.mappings.modul.prostata.enabled}")
   private boolean isModulProstataMappingEnabled;
@@ -71,7 +71,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       GenetischeVarianteMapper genetischeVarianteMapper,
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
-      GleasonScoreMapper gleasonScoreMapper) {
+      GleasonScoreMapper gleasonScoreMapper,
+      WeitereKlassifikationMapper weitereKlassifikationMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -95,6 +96,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
     this.gleasonScoreMapper = gleasonScoreMapper;
+    this.weitereKlassifikationMapper = weitereKlassifikationMapper;
   }
 
   /**
@@ -186,14 +188,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var verlaufsHistologie =
                 verlaufshistologieObservationMapper.map(
-                    histologie, patientReference, specimenReference, primaryConditionReference);
+                    histologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    specimenReference,
+                    primaryConditionReference);
 
             addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference, specimenReference);
+                      histologie,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference,
+                      specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -249,6 +259,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               addToBundle(bundle, gleasonScore);
             }
           }
+
+          if (diagnose.getMengeWeitereKlassifikation() != null) {
+            var weitereKlassifikation = diagnose.getMengeWeitereKlassifikation();
+            if (weitereKlassifikation.getWeitereKlassifikation() != null) {
+              var weitereKlassifikationen =
+                  weitereKlassifikationMapper.map(
+                      weitereKlassifikation,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, weitereKlassifikationen);
+            }
+          }
         }
 
         // Verlauf
@@ -286,14 +309,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var verlaufsHistologie =
                 verlaufshistologieObservationMapper.map(
-                    histologie, patientReference, specimenReference, primaryConditionReference);
+                    histologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    specimenReference,
+                    primaryConditionReference);
 
             addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference, specimenReference);
+                      histologie,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference,
+                      specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -341,6 +372,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference);
               addToBundle(bundle, gleasonScore);
+            }
+          }
+
+          if (verlauf.getMengeWeitereKlassifikation() != null) {
+            var weitereKlassifikation = verlauf.getMengeWeitereKlassifikation();
+            if (weitereKlassifikation.getWeitereKlassifikation() != null) {
+              var weitereKlassifikationen =
+                  weitereKlassifikationMapper.map(
+                      weitereKlassifikation,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, weitereKlassifikationen);
             }
           }
         }
@@ -430,14 +474,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var verlaufsHistologie =
                 verlaufshistologieObservationMapper.map(
-                    histologie, patientReference, specimenReference, primaryConditionReference);
+                    histologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    specimenReference,
+                    primaryConditionReference);
 
             addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference, specimenReference);
+                      histologie,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference,
+                      specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -503,14 +555,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var verlaufsHistologie =
                 verlaufshistologieObservationMapper.map(
-                    histologie, patientReference, specimenReference, primaryConditionReference);
+                    histologie,
+                    meldung.getMeldungID(),
+                    patientReference,
+                    specimenReference,
+                    primaryConditionReference);
 
             addToBundle(bundle, verlaufsHistologie);
 
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
-                      histologie, patientReference, primaryConditionReference, specimenReference);
+                      histologie,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference,
+                      specimenReference);
               addToBundle(bundle, grading);
             }
 
@@ -568,6 +628,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference);
               addToBundle(bundle, gleasonScore);
+            }
+          }
+
+          if (pathologie.getMengeWeitereKlassifikation() != null) {
+            var weitereKlassifikation = pathologie.getMengeWeitereKlassifikation();
+            if (weitereKlassifikation.getWeitereKlassifikation() != null) {
+              var weitereKlassifikationen =
+                  weitereKlassifikationMapper.map(
+                      weitereKlassifikation,
+                      meldung.getMeldungID(),
+                      patientReference,
+                      primaryConditionReference);
+              addToBundle(bundle, weitereKlassifikationen);
             }
           }
 
