@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "de09bcad726b1d512f8f2a49a72956e8950f82153ffbcd65846e6617f1277726",
+  "id": "1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
-    "value": "280_Grading"
+    "value": "280-grading"
   } ],
   "status": "final",
   "category": [ {

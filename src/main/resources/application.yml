@@ -200,29 +200,6 @@ fhir:
         enabled: false
     createPatientResources:
       enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
-    weitere-klassifikationen:
-      WHO-Grad:
-        coding:
-          system: "${fhir.systems.snomed}"
-          code: "277460003"
-          display: "World Health Organization central nervous system tumor grading system (staging scale)"
-        mappings:
-          I:
-            system: "${fhir.systems.snomed}"
-            code: "396922003"
-            display: "World Health Organization grade I central nervous system tumor (finding)"
-          II:
-            system: "${fhir.systems.snomed}"
-            code: "396923008"
-            display: "World Health Organization grade II central nervous system tumor (finding)"
-          III:
-            system: "${fhir.systems.snomed}"
-            code: "396924002"
-            display: "World Health Organization grade III central nervous system tumor (finding)"
-          IV:
-            system: "${fhir.systems.snomed}"
-            code: "396925001"
-            display: "World Health Organization grade IV central nervous system tumor (finding)"
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

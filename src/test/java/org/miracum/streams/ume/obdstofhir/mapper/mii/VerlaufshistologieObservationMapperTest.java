@@ -27,7 +27,7 @@ class VerlaufshistologieObservationMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml", "GroupSequence01.xml"})
   void map_withGivenObds_shouldCreateValidVerlaufshistologieObservation(String sourceFile)
       throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
@@ -45,19 +45,43 @@ class VerlaufshistologieObservationMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getDiagnose().getHistologie(), subject, specimen, diagnose));
+        list.addAll(
+            sut.map(
+                meldung.getDiagnose().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                specimen,
+                diagnose));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getVerlauf().getHistologie(), subject, specimen, diagnose));
+        list.addAll(
+            sut.map(
+                meldung.getVerlauf().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                specimen,
+                diagnose));
       }
 
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getOP().getHistologie(), subject, specimen, diagnose));
+        list.addAll(
+            sut.map(
+                meldung.getOP().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                specimen,
+                diagnose));
       }
 
       if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getPathologie().getHistologie(), subject, specimen, diagnose));
+        list.addAll(
+            sut.map(
+                meldung.getPathologie().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                specimen,
+                diagnose));
       }
     }
 

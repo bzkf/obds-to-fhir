@@ -44,19 +44,43 @@ class GradingObservationMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        list.add(sut.map(meldung.getDiagnose().getHistologie(), subject, diagnose, specimen));
+        list.add(
+            sut.map(
+                meldung.getDiagnose().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                diagnose,
+                specimen));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        list.add(sut.map(meldung.getVerlauf().getHistologie(), subject, diagnose, specimen));
+        list.add(
+            sut.map(
+                meldung.getVerlauf().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                diagnose,
+                specimen));
       }
 
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        list.add(sut.map(meldung.getOP().getHistologie(), subject, diagnose, specimen));
+        list.add(
+            sut.map(
+                meldung.getOP().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                diagnose,
+                specimen));
       }
 
       if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.add(sut.map(meldung.getPathologie().getHistologie(), subject, diagnose, specimen));
+        list.add(
+            sut.map(
+                meldung.getPathologie().getHistologie(),
+                meldung.getMeldungID(),
+                subject,
+                diagnose,
+                specimen));
       }
     }
 

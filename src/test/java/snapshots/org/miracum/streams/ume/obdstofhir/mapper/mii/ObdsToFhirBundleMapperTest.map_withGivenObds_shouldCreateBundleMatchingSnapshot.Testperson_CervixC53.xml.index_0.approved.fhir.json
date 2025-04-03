@@ -165,16 +165,16 @@
       "url": "Specimen/e509ee1edc27e2c99041802e0912eb9de4f4eb4a7fa730237a90977a4617b3f1"
     }
   }, {
-    "fullUrl": "Observation/2808c7c0372ab2779a704990c2db22e94e80cea7664af1a36af10551781e0575",
+    "fullUrl": "Observation/9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705",
     "resource": {
       "resourceType": "Observation",
-      "id": "2808c7c0372ab2779a704990c2db22e94e80cea7664af1a36af10551781e0575",
+      "id": "9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "291_ICDO3_8085/3"
+        "value": "291-ICDO3-8085/3"
       } ],
       "status": "final",
       "code": {
@@ -204,19 +204,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/2808c7c0372ab2779a704990c2db22e94e80cea7664af1a36af10551781e0575"
+      "url": "Observation/9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705"
     }
   }, {
-    "fullUrl": "Observation/b4f8637c4a820d4d8f11fe0d7a91dff07146607e250af6fa0373b0a4a2d1b5cb",
+    "fullUrl": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f",
     "resource": {
       "resourceType": "Observation",
-      "id": "b4f8637c4a820d4d8f11fe0d7a91dff07146607e250af6fa0373b0a4a2d1b5cb",
+      "id": "4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
-        "value": "291_Grading"
+        "value": "291-grading"
       } ],
       "status": "final",
       "category": [ {
@@ -253,7 +253,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/b4f8637c4a820d4d8f11fe0d7a91dff07146607e250af6fa0373b0a4a2d1b5cb"
+      "url": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f"
     }
   }, {
     "fullUrl": "Observation/5008f0425d81015299e3925b0b9b962335125a7b3ac2678d7343ee4e0850299c",

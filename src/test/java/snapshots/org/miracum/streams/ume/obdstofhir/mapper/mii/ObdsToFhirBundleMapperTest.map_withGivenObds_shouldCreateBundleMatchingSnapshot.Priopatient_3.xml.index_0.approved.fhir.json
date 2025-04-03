@@ -1,0 +1,291 @@
+{
+  "resourceType": "Bundle",
+  "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
+      },
+      "identifier": [ {
+        "type": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }, {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "PSEUDED",
+            "display": "pseudonymized"
+          } ]
+        },
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+        "value": "10"
+      } ],
+      "gender": "female",
+      "birthDate": "1950-05-01",
+      "address": [ {
+        "type": "both",
+        "postalCode": "12345",
+        "country": "DE"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+    }
+  }, {
+    "fullUrl": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "32",
+            "code": "8461/3"
+          } ]
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2017-07-02"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "value": "1"
+      } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2017",
+          "code": "C56"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "32",
+          "code": "C56.9"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "T"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "recordedDate": "2024-02-16"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed"
+    }
+  }, {
+    "fullUrl": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-10_1_DI_1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "423740007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "1",
+          "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
+    }
+  }, {
+    "fullUrl": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "value": "280"
+      } ],
+      "accessionIdentifier": {
+        "value": "H111/2017"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "collection": {
+        "collectedDateTime": "2017-07-02"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+    }
+  }, {
+    "fullUrl": "Observation/240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "value": "280-ICDO3-8461/3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "59847-4"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "32",
+          "code": "8461/3"
+        } ],
+        "text": "Seröses papilläres Oberflächenkarzinom"
+      },
+      "specimen": {
+        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3"
+    }
+  }, {
+    "fullUrl": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
+        "value": "280-grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "code": "33732-9"
+        }, {
+          "system": "http://snomed.info/sct",
+          "code": "371469007"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd"
+    }
+  }, {
+    "fullUrl": "Observation/fe533a01fff03b4eb059f57bd0fa0eb0344ad176834eeb45db4bf3d7f38265cc",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "fe533a01fff03b4eb059f57bd0fa0eb0344ad176834eeb45db4bf3d7f38265cc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "10_1_DI_1-figo"
+      } ],
+      "status": "final",
+      "code": {
+        "text": "FIGO"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/e56d0f28a00a0cc46d484dab4b458174bb9764f0c6b98f523d34f0527daccaed"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "code": "IIIB"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/fe533a01fff03b4eb059f57bd0fa0eb0344ad176834eeb45db4bf3d7f38265cc"
+    }
+  } ]
+}
