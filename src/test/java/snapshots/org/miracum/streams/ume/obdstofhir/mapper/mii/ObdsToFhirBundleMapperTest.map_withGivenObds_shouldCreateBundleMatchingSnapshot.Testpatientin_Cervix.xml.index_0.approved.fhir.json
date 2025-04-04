@@ -330,7 +330,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "is"
+          "code": "Tis"
         } ]
       },
       "method": {
@@ -383,7 +383,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "N0"
         } ]
       },
       "method": {
@@ -436,7 +436,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "M0"
         } ]
       },
       "method": {
@@ -541,7 +541,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "is"
+          "code": "Tis"
         } ]
       },
       "method": {
@@ -594,7 +594,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "N0"
         } ]
       },
       "method": {
@@ -647,7 +647,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "M0"
         } ]
       },
       "method": {
@@ -957,7 +957,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "is"
+          "code": "Tis"
         } ]
       },
       "method": {
