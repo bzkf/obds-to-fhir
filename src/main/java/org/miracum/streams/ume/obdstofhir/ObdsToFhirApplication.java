@@ -12,7 +12,7 @@ public class ObdsToFhirApplication {
 
   @Bean
   public ObdsMapper obdsMapper() {
-    return ObdsMapper.builder().ignoreUnmappable(true).build();
+    return ObdsMapper.builder().disableSchemaValidation().ignoreUnmappable(true).build();
   }
 
   public static void main(String[] args) {
