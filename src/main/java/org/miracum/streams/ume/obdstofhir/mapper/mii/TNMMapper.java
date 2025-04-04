@@ -63,7 +63,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       tKategorieObservation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
-      tKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
+      tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
       memberObservationList.add(tKategorieObservation);
     }
 
@@ -79,7 +79,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       nKategorieObservation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
-      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
+      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
       memberObservationList.add(nKategorieObservation);
     }
 
@@ -95,7 +95,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       mKategorieObservation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
-      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
+      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
       memberObservationList.add(mKategorieObservation);
     }
 
