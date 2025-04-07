@@ -76,7 +76,7 @@ jobs:
           fhir restore
 
       - name: Validate generated FHIR resources
-        continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), matrix.mapper) }}
+        continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
         env:
           MAPPER_NAME: ${{ matrix.mapper }}
         run: |
