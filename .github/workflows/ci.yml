@@ -14,7 +14,8 @@ on:
       - beta
   workflow_dispatch: {}
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   build:
