@@ -11,6 +11,17 @@ on:
 permissions:
   contents: read
 
+env:
+  MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
+    [
+      "TodMapperTest",
+      "NebenwirkungMapperTest",
+      "OperationMapperTest",
+      "StrahlentherapieMapperTest",
+      "VerlaufObservationMapperTest",
+      "ObdsToFhirBundleMapperTest"
+    ]
+
 jobs:
   extract-mapper-names:
     runs-on: ubuntu-22.04
@@ -53,18 +64,29 @@ jobs:
         id: fhir-package-cache
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
         with:
-          path: ~/.fhir/packages
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
           key: fhir-packages-${{ hashFiles('package.json') }}
+          restore-keys: |
+            fhir-packages-
 
       - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
+          fhir cache location --path
+          fhir cache list
           fhir config inflate All
           fhir restore
 
       - name: Validate generated FHIR resources
-        continue-on-error: true
+        continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
+        env:
+          MAPPER_NAME: ${{ matrix.mapper }}
         run: |
-          echo "Validating files for mapper: ${{ matrix.mapper }}"
+          fhir cache location --path
+          fhir cache list
+          echo "Validating files for mapper: ${MAPPER_NAME}"
           find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ \
-            -name "${{ matrix.mapper }}*.fhir.json" -print0 | \
+            -name "${MAPPER_NAME}*.fhir.json" -print0 | \
             xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
