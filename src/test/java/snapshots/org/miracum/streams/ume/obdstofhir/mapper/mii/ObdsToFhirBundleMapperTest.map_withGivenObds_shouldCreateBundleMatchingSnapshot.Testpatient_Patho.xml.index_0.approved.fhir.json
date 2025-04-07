@@ -519,7 +519,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "4a"
+          "code": "T4a"
         } ]
       },
       "method": {
@@ -572,7 +572,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "1a"
+          "code": "N1a"
         } ]
       },
       "method": {
@@ -625,7 +625,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "1"
+          "code": "M1"
         } ]
       },
       "method": {

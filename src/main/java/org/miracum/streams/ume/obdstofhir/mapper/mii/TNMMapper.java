@@ -63,7 +63,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       tKategorieObservation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
-      tKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getT()));
+      tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
       memberObservationList.add(tKategorieObservation);
     }
 
@@ -79,7 +79,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       nKategorieObservation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
-      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getN()));
+      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
       memberObservationList.add(nKategorieObservation);
     }
 
@@ -95,7 +95,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               patient,
               primaryConditionReference);
       mKategorieObservation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
-      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension(tnmTyp.getM()));
+      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
       memberObservationList.add(mKategorieObservation);
     }
 
@@ -460,7 +460,11 @@ public class TNMMapper extends ObdsToFhirMapper {
     dateOptional.ifPresent(observation::setEffective);
 
     if (tnm.getUICCStadium() != null) {
-      observation.setValue(getObservationValueUiccStadium(tnm.getUICCStadium()));
+      CodeableConcept observationValueUiccStadium =
+          getObservationValueUiccStadium(tnm.getUICCStadium());
+      if (observationValueUiccStadium != null) {
+        observation.setValue(observationValueUiccStadium);
+      }
     }
 
     observation.setHasMember(memberObservations);
@@ -491,7 +495,7 @@ public class TNMMapper extends ObdsToFhirMapper {
         break;
       case "generic":
       default:
-        groupingObservationCode.setCode("399588009");
+        groupingObservationCode.setCode("399390009");
         groupingObservationCode.setDisplay("TNM stage grouping");
         break;
     }
@@ -534,7 +538,10 @@ public class TNMMapper extends ObdsToFhirMapper {
       case "IVA" -> new CodeableConcept(coding.setCode("IVA").setDisplay("Stadium IVA"));
       case "IVB" -> new CodeableConcept(coding.setCode("IVB").setDisplay("Stadium IVB"));
       case "IVC" -> new CodeableConcept(coding.setCode("IVC").setDisplay("Stadium IVC"));
-      default -> new CodeableConcept(coding.setCode("unknown").setDisplay("Unknown Stage"));
+      default -> {
+        LOG.warn("unkown uicc stadium {}", uiccStadium);
+        yield null;
+      }
     };
   }
 }

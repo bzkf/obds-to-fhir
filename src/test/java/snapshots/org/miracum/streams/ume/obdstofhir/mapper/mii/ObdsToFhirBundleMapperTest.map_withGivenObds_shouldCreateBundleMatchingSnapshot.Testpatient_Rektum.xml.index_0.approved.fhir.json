@@ -293,7 +293,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "3"
+          "code": "T3"
         } ]
       },
       "method": {
@@ -346,7 +346,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "N0"
         } ]
       },
       "method": {
@@ -399,7 +399,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "M0"
         } ]
       },
       "method": {
@@ -939,7 +939,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "3"
+          "code": "T3"
         } ]
       },
       "method": {
@@ -992,7 +992,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "N0"
         } ]
       },
       "method": {
@@ -1045,7 +1045,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.uicc.org/resources/tnm",
-          "code": "0"
+          "code": "M0"
         } ]
       },
       "method": {
@@ -1247,7 +1247,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "399588009",
+          "code": "399390009",
           "display": "TNM stage grouping"
         } ]
       },
