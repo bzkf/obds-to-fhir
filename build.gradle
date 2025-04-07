@@ -38,7 +38,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2024.0.1")
-	set('hapiVersion', "7.6.1")
+	set('hapiVersion', "8.0.0")
 	jaxbTargetDir = file("src/generated/java")
 }
 
