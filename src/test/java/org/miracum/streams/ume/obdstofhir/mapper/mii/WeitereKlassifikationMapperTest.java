@@ -17,70 +17,56 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
-class VerlaufshistologieObservationMapperTest extends MapperTest {
-
-  private static VerlaufshistologieObservationMapper sut;
+class WeitereKlassifikationMapperTest extends MapperTest {
+  private static WeitereKlassifikationMapper sut;
 
   @BeforeAll
-  static void beforeAll(@Autowired FhirProperties fhirProps) {
-    sut = new VerlaufshistologieObservationMapper(fhirProps);
+  static void beforeEach(@Autowired FhirProperties fhirProps) {
+    sut = new WeitereKlassifikationMapper(fhirProps);
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml", "GroupSequence01.xml"})
-  void map_withGivenObds_shouldCreateValidVerlaufshistologieObservation(String sourceFile)
-      throws IOException {
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
     final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
-
     var subject = new Reference("Patient/any");
-    var specimen = new Reference("Specimen/Onko");
     var diagnose = new Reference("Condition/Primärdiagnose");
 
     var list = new ArrayList<Observation>();
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
-      if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
+      if (meldung.getDiagnose() != null
+          && meldung.getDiagnose().getMengeWeitereKlassifikation() != null) {
         list.addAll(
             sut.map(
-                meldung.getDiagnose().getHistologie(),
+                meldung.getDiagnose().getMengeWeitereKlassifikation(),
                 meldung.getMeldungID(),
                 subject,
-                specimen,
                 diagnose));
       }
 
-      if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
+      if (meldung.getVerlauf() != null
+          && meldung.getVerlauf().getMengeWeitereKlassifikation() != null) {
         list.addAll(
             sut.map(
-                meldung.getVerlauf().getHistologie(),
+                meldung.getVerlauf().getMengeWeitereKlassifikation(),
                 meldung.getMeldungID(),
                 subject,
-                specimen,
                 diagnose));
       }
 
-      if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
+      if (meldung.getPathologie() != null
+          && meldung.getPathologie().getMengeWeitereKlassifikation() != null) {
         list.addAll(
             sut.map(
-                meldung.getOP().getHistologie(),
+                meldung.getPathologie().getMengeWeitereKlassifikation(),
                 meldung.getMeldungID(),
                 subject,
-                specimen,
-                diagnose));
-      }
-
-      if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.addAll(
-            sut.map(
-                meldung.getPathologie().getHistologie(),
-                meldung.getMeldungID(),
-                subject,
-                specimen,
                 diagnose));
       }
     }

@@ -76,6 +76,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       TumorkonferenzMapper.class,
       TNMMapper.class,
       GleasonScoreMapper.class,
+      WeitereKlassifikationMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {

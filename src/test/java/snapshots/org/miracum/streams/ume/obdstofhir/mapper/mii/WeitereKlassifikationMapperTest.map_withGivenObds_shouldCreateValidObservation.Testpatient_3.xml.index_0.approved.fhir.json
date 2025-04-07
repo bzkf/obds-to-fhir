@@ -1,0 +1,27 @@
+{
+  "resourceType": "Observation",
+  "id": "ef4e04289c2a4f1c31a2c72619903ebd1904f397f7de67178f6497157ffa0d44",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+    "value": "12_1_DI-1-figo"
+  } ],
+  "status": "final",
+  "code": {
+    "text": "FIGO"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2017-07-02",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "code": "IIIB"
+    } ]
+  }
+}

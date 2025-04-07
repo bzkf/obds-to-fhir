@@ -174,7 +174,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
     var gleasonScoreNumeric = matcher.group(1);
     scoreCoding.addExtension(
-        fhirProperties.getExtensions().getOrdinalValue(), new IntegerType(gleasonScoreNumeric));
+        fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(gleasonScoreNumeric));
 
     var concept = new CodeableConcept(scoreCoding).setText(scoreErgebnis);
     observation.setValue(concept);

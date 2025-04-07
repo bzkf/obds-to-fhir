@@ -37,6 +37,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       TumorkonferenzMapper.class,
       TNMMapper.class,
       GleasonScoreMapper.class,
+      WeitereKlassifikationMapper.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties
@@ -62,7 +63,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     "Testpatient_Rektum.xml",
     "Testpatientin_Cervix.xml",
     "Testperson_CervixC53.xml",
-    "Testperson_Cervixinsitu.xml"
+    "Testperson_Cervixinsitu.xml",
+    "Priopatient_3.xml",
+    "GroupSequence01.xml"
   })
   void map_withGivenObds_shouldCreateBundleMatchingSnapshot(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);

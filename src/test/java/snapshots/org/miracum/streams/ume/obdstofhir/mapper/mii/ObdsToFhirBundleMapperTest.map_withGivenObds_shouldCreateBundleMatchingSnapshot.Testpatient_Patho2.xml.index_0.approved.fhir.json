@@ -64,16 +64,16 @@
       "url": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
     }
   }, {
-    "fullUrl": "Observation/7882d2a8b0a2ae98627ac04bb0bd00dafe5faa4c9f817fa1f65d9ec85a94115c",
+    "fullUrl": "Observation/8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496",
     "resource": {
       "resourceType": "Observation",
-      "id": "7882d2a8b0a2ae98627ac04bb0bd00dafe5faa4c9f817fa1f65d9ec85a94115c",
+      "id": "8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "271_ICDO3_8140/3"
+        "value": "271-ICDO3-8140/3"
       } ],
       "status": "final",
       "code": {
@@ -103,19 +103,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/7882d2a8b0a2ae98627ac04bb0bd00dafe5faa4c9f817fa1f65d9ec85a94115c"
+      "url": "Observation/8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496"
     }
   }, {
-    "fullUrl": "Observation/44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34",
+    "fullUrl": "Observation/ed51598e3ce3a0dae7d439a13d8fb202bec295a9bbae22cb36f43d9d89024291",
     "resource": {
       "resourceType": "Observation",
-      "id": "44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34",
+      "id": "ed51598e3ce3a0dae7d439a13d8fb202bec295a9bbae22cb36f43d9d89024291",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
-        "value": "271_Grading"
+        "value": "271-grading"
       } ],
       "status": "final",
       "category": [ {
@@ -152,7 +152,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/44994338a1320801af142776affeff7d9f185bb7e685ef8a4623d4115a299d34"
+      "url": "Observation/ed51598e3ce3a0dae7d439a13d8fb202bec295a9bbae22cb36f43d9d89024291"
     }
   }, {
     "fullUrl": "Observation/9b70bcec759c53001a07d1b7dd6058287c466c6f86b13b5cb8919a494e1ad051",
@@ -182,7 +182,7 @@
         "coding": [ {
           "extension": [ {
             "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-            "valueInteger": 9
+            "valueDecimal": 9
           } ],
           "system": "http://snomed.info/sct",
           "code": "58925000"

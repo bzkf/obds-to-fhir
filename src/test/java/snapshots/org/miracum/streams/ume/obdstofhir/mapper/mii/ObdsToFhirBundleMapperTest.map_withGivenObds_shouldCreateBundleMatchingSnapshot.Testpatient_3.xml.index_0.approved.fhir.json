@@ -164,16 +164,16 @@
       "url": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
     }
   }, {
-    "fullUrl": "Observation/52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137",
+    "fullUrl": "Observation/240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3",
     "resource": {
       "resourceType": "Observation",
-      "id": "52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137",
+      "id": "240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "280_ICDO3_8461/3"
+        "value": "280-ICDO3-8461/3"
       } ],
       "status": "final",
       "code": {
@@ -203,19 +203,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/52257d00c7a4f074c7405058bbb80a8d7300369fb4274e9904536a41f1905137"
+      "url": "Observation/240f120caf69415a45a8f726313446dbb68f5789cf8c98f9a2a22b0c8e5479b3"
     }
   }, {
-    "fullUrl": "Observation/de09bcad726b1d512f8f2a49a72956e8950f82153ffbcd65846e6617f1277726",
+    "fullUrl": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
     "resource": {
       "resourceType": "Observation",
-      "id": "de09bcad726b1d512f8f2a49a72956e8950f82153ffbcd65846e6617f1277726",
+      "id": "1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
-        "value": "280_Grading"
+        "value": "280-grading"
       } ],
       "status": "final",
       "category": [ {
@@ -252,7 +252,40 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/de09bcad726b1d512f8f2a49a72956e8950f82153ffbcd65846e6617f1277726"
+      "url": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd"
+    }
+  }, {
+    "fullUrl": "Observation/ef4e04289c2a4f1c31a2c72619903ebd1904f397f7de67178f6497157ffa0d44",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "ef4e04289c2a4f1c31a2c72619903ebd1904f397f7de67178f6497157ffa0d44",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "12_1_DI-1-figo"
+      } ],
+      "status": "final",
+      "code": {
+        "text": "FIGO"
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "focus": [ {
+        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "code": "IIIB"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/ef4e04289c2a4f1c31a2c72619903ebd1904f397f7de67178f6497157ffa0d44"
     }
   }, {
     "fullUrl": "Procedure/e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359",
@@ -274,7 +307,7 @@
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
         "valueCodeableConcept": {
           "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
             "code": "O"
           } ]
         }
@@ -483,7 +516,7 @@
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
         "valueCodeableConcept": {
           "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
             "code": "O"
           } ]
         }
