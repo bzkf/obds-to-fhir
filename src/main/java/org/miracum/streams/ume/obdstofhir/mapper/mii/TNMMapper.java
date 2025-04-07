@@ -461,7 +461,11 @@ public class TNMMapper extends ObdsToFhirMapper {
     dateOptional.ifPresent(observation::setEffective);
 
     if (tnm.getUICCStadium() != null) {
-      observation.setValue(getObservationValueUiccStadium(tnm.getUICCStadium()));
+      CodeableConcept observationValueUiccStadium =
+          getObservationValueUiccStadium(tnm.getUICCStadium());
+      if (observationValueUiccStadium != null) {
+        observation.setValue(observationValueUiccStadium);
+      }
     }
 
     observation.setHasMember(memberObservations);
@@ -535,7 +539,10 @@ public class TNMMapper extends ObdsToFhirMapper {
       case "IVA" -> new CodeableConcept(coding.setCode("IVA").setDisplay("Stadium IVA"));
       case "IVB" -> new CodeableConcept(coding.setCode("IVB").setDisplay("Stadium IVB"));
       case "IVC" -> new CodeableConcept(coding.setCode("IVC").setDisplay("Stadium IVC"));
-      default -> new CodeableConcept(coding.setCode("unknown").setDisplay("Unknown Stage"));
+      default -> {
+        LOG.warn("unkown uicc stadium {}", uiccStadium);
+        yield null;
+      }
     };
   }
 }
