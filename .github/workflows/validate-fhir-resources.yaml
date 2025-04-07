@@ -74,9 +74,8 @@ jobs:
       - name: Restore FHIR package dependencies
         if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
-          ls -lsa .
-          fhir cache list
           fhir cache location --path
+          fhir cache list
           fhir config inflate All
           fhir restore
 
@@ -85,9 +84,8 @@ jobs:
         env:
           MAPPER_NAME: ${{ matrix.mapper }}
         run: |
-          ls -lsa .
-          fhir cache list
           fhir cache location --path
+          fhir cache list
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
