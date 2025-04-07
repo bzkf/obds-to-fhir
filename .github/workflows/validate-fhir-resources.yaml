@@ -64,7 +64,9 @@ jobs:
         id: fhir-package-cache
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
         with:
-          path: /github/home/.fhir/packages
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
@@ -72,6 +74,7 @@ jobs:
       - name: Restore FHIR package dependencies
         if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
+          ls -lsa .
           fhir cache list
           fhir cache location --path
           fhir config inflate All
@@ -82,6 +85,7 @@ jobs:
         env:
           MAPPER_NAME: ${{ matrix.mapper }}
         run: |
+          ls -lsa .
           fhir cache list
           fhir cache location --path
           echo "Validating files for mapper: ${MAPPER_NAME}"
