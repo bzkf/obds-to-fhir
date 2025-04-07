@@ -988,7 +988,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "399588009",
+          "code": "399390009",
           "display": "TNM stage grouping"
         } ]
       },
