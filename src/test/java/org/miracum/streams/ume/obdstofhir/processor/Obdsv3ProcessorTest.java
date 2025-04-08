@@ -144,9 +144,9 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      pipeInput(inputTopic, "key1", "Priopatient_1.xml", "123", 1);
-      pipeInput(inputTopic, "key2", "Priopatient_2.xml", "123", 3);
-      pipeInput(inputTopic, "key3", "Priopatient_3.xml", "123", 2);
+      pipeInput(inputTopic, "key1", "Priopatient_1.xml", "123", 1); // gitleaks:allow
+      pipeInput(inputTopic, "key2", "Priopatient_2.xml", "123", 3); // gitleaks:allow
+      pipeInput(inputTopic, "key3", "Priopatient_3.xml", "123", 2); // gitleaks:allow
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
