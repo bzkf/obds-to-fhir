@@ -200,6 +200,13 @@ fhir:
         enabled: false
     createPatientResources:
       enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
+
+obdsv2v3:
+  mapper:
+    ignore-unmappable: false
+    fix-missing-id: true
+    disable-schema-validation: false
+
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

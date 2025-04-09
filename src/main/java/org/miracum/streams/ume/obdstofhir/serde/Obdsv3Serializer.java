@@ -6,10 +6,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
-import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 
-public class Obdsv3Serializer extends JsonSerializer<OBDS> {
+public class Obdsv3Serializer extends JsonSerializer<ObdsOrAdt> {
 
   private final XmlMapper mapper;
 
@@ -23,8 +23,17 @@ public class Obdsv3Serializer extends JsonSerializer<OBDS> {
   }
 
   @Override
-  public void serialize(OBDS value, JsonGenerator gen, SerializerProvider serializers)
+  public void serialize(ObdsOrAdt value, JsonGenerator gen, SerializerProvider serializers)
       throws IOException {
-    gen.writeString(mapper.writeValueAsString(value));
+
+    String xml = mapper.writeValueAsString(value);
+
+    if (xml.toLowerCase().contains("<adt_gekid")) {
+      gen.writeString(mapper.writeValueAsString(value.adt()));
+    } else if (xml.toLowerCase().contains("<obds")) {
+      gen.writeString(mapper.writeValueAsString(value.obds()));
+    } else {
+      throw new IOException("Unknown XML root element in serialization");
+    }
   }
 }

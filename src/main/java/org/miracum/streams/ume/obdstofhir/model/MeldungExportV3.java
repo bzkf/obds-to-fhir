@@ -34,5 +34,9 @@ public class MeldungExportV3 extends OnkoResource {
   @JsonProperty("XML_DATEN")
   @JsonDeserialize(using = Obdsv3Deserializer.class)
   @JsonSerialize(using = Obdsv3Serializer.class)
-  OBDS obds;
+  ObdsOrAdt obds_or_adt;
+
+  public OBDS getObds() {
+    return obds_or_adt.hasOBDS() ? obds_or_adt.obds() : null;
+  }
 }
