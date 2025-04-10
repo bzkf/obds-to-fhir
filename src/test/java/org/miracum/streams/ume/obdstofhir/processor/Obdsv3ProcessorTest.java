@@ -35,6 +35,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.Obdsv2v3MapperConfig;
+import org.miracum.streams.ume.obdstofhir.Obdsv2v3MapperProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.*;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
@@ -77,6 +79,8 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       TNMMapper.class,
       GleasonScoreMapper.class,
       WeitereKlassifikationMapper.class,
+      Obdsv2v3MapperConfig.class,
+      Obdsv2v3MapperProperties.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
 public class Obdsv3ProcessorTest {
@@ -91,8 +95,11 @@ public class Obdsv3ProcessorTest {
   @Value("classpath:obds3/*.xml")
   private Resource[] obdsResources;
 
-  public Resource getResourceByName(String filename) {
-    return Arrays.stream(obdsResources)
+  @Value("classpath:adt/*.xml")
+  private Resource[] adtResources;
+
+  public Resource getResourceByName(String filename, Resource[] resources) {
+    return Arrays.stream(resources)
         .filter(resource -> Objects.equals(resource.getFilename(), filename))
         .findFirst()
         .orElseThrow(
@@ -103,15 +110,18 @@ public class Obdsv3ProcessorTest {
       TestInputTopic<String, Object> inputTopic,
       String key,
       String resourceName,
+      Resource[] resources,
       String lkrnum,
       int versnum)
       throws IOException, JSONException {
     inputTopic.pipeInput(
-        key, buildMeldungExport(getResourceByName(resourceName), key, "12356789", lkrnum, versnum));
+        key,
+        buildMeldungExport(
+            getResourceByName(resourceName, resources), key, "12356789", lkrnum, versnum));
   }
 
   @Test
-  void testMeldungExportObdsV3Processor_MapsToBundle() throws IOException {
+  void testMeldungExportObdsV3Processor_MapsObdsToBundle() throws IOException {
     try (var driver =
         buildStream(
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
@@ -123,7 +133,28 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      pipeInput(inputTopic, "key1", "test1.xml", "123", 1);
+      pipeInput(inputTopic, "key1", "test1.xml", obdsResources, "123", 1);
+
+      assertThat(outputTopic.readRecordsToList()).isNotEmpty();
+    } catch (JSONException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Test
+  void testMeldungExportObdsV3Processor_MapsAdtToBundle() throws IOException {
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+
+      var inputTopic =
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      // pipe test data
+      pipeInput(inputTopic, "key1", "Testpatient_ADT_Diagnose.xml", adtResources, "123", 1);
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
     } catch (JSONException e) {
@@ -144,9 +175,9 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      pipeInput(inputTopic, "key1", "Priopatient_1.xml", "123", 1); // gitleaks:allow
-      pipeInput(inputTopic, "key2", "Priopatient_2.xml", "123", 3); // gitleaks:allow
-      pipeInput(inputTopic, "key3", "Priopatient_3.xml", "123", 2); // gitleaks:allow
+      pipeInput(inputTopic, "key1", "Priopatient_1.xml", obdsResources, "123", 1); // gitleaks:allow
+      pipeInput(inputTopic, "key2", "Priopatient_2.xml", obdsResources, "123", 3); // gitleaks:allow
+      pipeInput(inputTopic, "key3", "Priopatient_3.xml", obdsResources, "123", 2); // gitleaks:allow
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
@@ -232,10 +263,10 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      pipeInput(inputTopic, "key1", "GroupSequence01.xml", "123", 1);
-      pipeInput(inputTopic, "key2", "GroupSequence02.xml", "124", 1);
-      pipeInput(inputTopic, "key3", "GroupSequence03.xml", "125", 1);
-      pipeInput(inputTopic, "key4", "GroupSequence04.xml", "126", 1);
+      pipeInput(inputTopic, "key1", "GroupSequence01.xml", obdsResources, "123", 1);
+      pipeInput(inputTopic, "key2", "GroupSequence02.xml", obdsResources, "124", 1);
+      pipeInput(inputTopic, "key3", "GroupSequence03.xml", obdsResources, "125", 1);
+      pipeInput(inputTopic, "key4", "GroupSequence04.xml", obdsResources, "126", 1);
 
       // get records from output topic
       var outputRecords = outputTopic.readKeyValuesToList();
@@ -286,7 +317,8 @@ public class Obdsv3ProcessorTest {
       throws IOException, JSONException {
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
-        buildMeldungExport(getResourceByName(inputXmlResourceName), "1", "12356789", "123", 1));
+        buildMeldungExport(
+            getResourceByName(inputXmlResourceName, obdsResources), "1", "12356789", "123", 1));
 
     var result = processor.getTumorKonferenzmeldungen(meldungExportListV3);
     assertThat(result.getFirst().getTumorkonferenz().getMeldeanlass().name())
@@ -306,9 +338,9 @@ public class Obdsv3ProcessorTest {
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      pipeInput(inputTopic, "key1", "Test_ST_1.xml", "1", 1);
-      pipeInput(inputTopic, "key2", "Test_ST_2.xml", "2", 1);
-      pipeInput(inputTopic, "key3", "Test_ST_2_2.xml", "3", 1);
+      pipeInput(inputTopic, "key1", "Test_ST_1.xml", obdsResources, "1", 1);
+      pipeInput(inputTopic, "key2", "Test_ST_2.xml", obdsResources, "2", 1);
+      pipeInput(inputTopic, "key3", "Test_ST_2_2.xml", obdsResources, "3", 1);
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
@@ -353,11 +385,14 @@ public class Obdsv3ProcessorTest {
 
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
-        buildMeldungExport(getResourceByName("Test_SysT_0.xml"), "1", "12356789", "123", 1));
+        buildMeldungExport(
+            getResourceByName("Test_SysT_0.xml", obdsResources), "1", "12356789", "123", 1));
     meldungExportListV3.add(
-        buildMeldungExport(getResourceByName("Test_SysT_1.xml"), "2", "12356789", "124", 1));
+        buildMeldungExport(
+            getResourceByName("Test_SysT_1.xml", obdsResources), "2", "12356789", "124", 1));
     meldungExportListV3.add(
-        buildMeldungExport(getResourceByName("Test_SysT_2.xml"), "3", "12356789", "125", 1));
+        buildMeldungExport(
+            getResourceByName("Test_SysT_2.xml", obdsResources), "3", "12356789", "125", 1));
     var result = processor.getSystemtherapieMeldungen(meldungExportListV3);
 
     assertThat(result).as(description).isNotNull();
