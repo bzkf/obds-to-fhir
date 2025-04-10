@@ -36,10 +36,11 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
       return new ObdsOrAdt(null, null);
     }
 
-    if (xml.toLowerCase().contains("<adt_gekid")) {
+    if (xml.toLowerCase().contains("<adt") && xml.toLowerCase().contains("schema_version=\"2.")) {
       ADTGEKID adt = mapper.readValue(xml, ADTGEKID.class);
       return new ObdsOrAdt(null, adt);
-    } else if (xml.toLowerCase().contains("<obds")) {
+    } else if (xml.toLowerCase().contains("<obds")
+        && xml.toLowerCase().contains("schema_version=\"3.")) {
       OBDS obds = mapper.readValue(xml, OBDS.class);
       return new ObdsOrAdt(obds, null);
     } else {
