@@ -39,6 +39,8 @@ public class ProcessFromDirectory {
 
   private static final FhirContext fhirContext = FhirContext.forR4();
 
+  private ObdsMapper obdsV2ToV3Mapper;
+
   public ProcessFromDirectory(
       ProcessFromDirectoryConfig config,
       KafkaTemplate<String, IBaseResource> kafkaTemplate,
@@ -47,7 +49,7 @@ public class ProcessFromDirectory {
     this.config = config;
     this.kafkaTemplate = kafkaTemplate;
     this.mapper = mapper;
-    this.obdsMapper = obdsMapper;
+    this.obdsV2ToV3Mapper = obdsMapper;
   }
 
   @EventListener
@@ -70,15 +72,16 @@ public class ProcessFromDirectory {
         LOG.info("Mapping file {}", file.getFileName());
         var obdsString = Files.readString(file);
 
-        OBDS obdsMeldung = null;
-        if (obdsString.contains("ADT_GEKID")) {
-          var adt = obdsMapper.readValue(obdsString, ADTGEKID.class);
-          obdsMeldung = obdsMapper.map(adt);
+        OBDS obds = null;
+        if (obdsString.contains("<ADT_GEKID>")) {
+          LOG.info("Mapping ADT_GEKID to OBDS V3");
+          var adt = obdsV2ToV3Mapper.readValue(obdsString, ADTGEKID.class);
+          obds = obdsV2ToV3Mapper.map(adt);
         } else {
-          obdsMeldung = xmlMapper.readValue(obdsString, OBDS.class);
+          obds = xmlMapper.readValue(obdsString, OBDS.class);
         }
 
-        final var bundles = mapper.map(obdsMeldung);
+        final var bundles = mapper.map(obds);
         for (var bundle : bundles) {
           LOG.info("Created FHIR bundle {}", bundle.getId());
 
