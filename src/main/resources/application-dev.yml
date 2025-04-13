@@ -3,3 +3,13 @@ fhir:
     modul:
       prostata:
         enabled: true
+obds:
+  process-from-directory:
+    enabled: true
+    path: "/home/gulch/proj/github/bzkf/obds-to-fhir/src/test/resources"
+    output-to-kafka:
+      enabled: true
+      topic: "fhir.obds"
+    output-to-directory:
+      enabled: true
+      path: "/home/gulch/proj/github/bzkf/obds-to-fhir/fhir-output"
