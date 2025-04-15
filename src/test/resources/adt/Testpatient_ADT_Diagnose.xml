@@ -8,8 +8,8 @@
     <Menge_Patient>
         <Patient>
             <Patienten_Stammdaten Patient_ID="1055555888">
-                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
-                <KrankenkassenNr>10000000</KrankenkassenNr>
+                <KrankenversichertenNr>Q000000000</KrankenversichertenNr>
+                <KrankenkassenNr>100000000</KrankenkassenNr>
                 <Patienten_Nachname>Doe</Patienten_Nachname>
                 <Patienten_Vornamen>John</Patienten_Vornamen>
                 <Patienten_Geschlecht>M</Patienten_Geschlecht>
