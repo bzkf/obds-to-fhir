@@ -20,6 +20,8 @@ curl -X POST \
     "numeric.mapping": "best_fit",
     "transforms": "ValueToKey",
     "transforms.ValueToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
-    "transforms.ValueToKey.fields": "ID"
-  }
+    "transforms.ValueToKey.fields": "ID",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+      }
 }'
