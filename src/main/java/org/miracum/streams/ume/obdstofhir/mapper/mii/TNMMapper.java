@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.lang3.Validate;
+import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,34 +26,49 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      TNMTyp tnm, String tnmType, Reference patientReference, Reference primaryConditionReference) {
+      @NonNull TNMTyp tnm,
+      @NonNull String tnmType,
+      @NonNull String meldungsId,
+      Reference patientReference,
+      Reference primaryConditionReference) {
 
     Objects.requireNonNull(tnm);
-    Validate.notBlank(tnm.getID(), "Required TNM_ID is unset");
-
     verifyReference(patientReference, Enumerations.ResourceType.PATIENT);
     verifyReference(primaryConditionReference, Enumerations.ResourceType.CONDITION);
 
-    var memberObservations = createObservations(tnm, patientReference, primaryConditionReference);
+    var idBase = tnm.getID();
+    if (Strings.isBlank(idBase)) {
+      LOG.warn(
+          "TNM_ID is unset. Defaulting to Meldung_ID as the identifier for the created Observations");
+      idBase = meldungsId;
+    }
+
+    var memberObservations =
+        createObservations(tnm, idBase, patientReference, primaryConditionReference);
     var observationList = new ArrayList<>(memberObservations);
 
     var memberObservationReferences = createObservationReferences(memberObservations);
 
     var groupingObservation =
         createTNMGroupingObservation(
-            tnm, tnmType, memberObservationReferences, patientReference, primaryConditionReference);
+            tnm,
+            tnmType,
+            idBase,
+            memberObservationReferences,
+            patientReference,
+            primaryConditionReference);
     observationList.add(groupingObservation);
 
     return observationList;
   }
 
   private List<Observation> createObservations(
-      TNMTyp tnmTyp, Reference patient, Reference primaryConditionReference) {
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
 
     var memberObservationList = new ArrayList<Observation>();
 
     if (tnmTyp.getT() != null) {
-      String identifierValue = tnmTyp.getID() + "_T";
+      String identifierValue = idBase + "_T";
       var tKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
@@ -68,7 +84,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getN() != null) {
-      String identifierValue = tnmTyp.getID() + "_N";
+      String identifierValue = idBase + "_N";
       var nKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
@@ -84,7 +100,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getM() != null) {
-      String identifierValue = tnmTyp.getID() + "_M";
+      String identifierValue = idBase + "_M";
       var mKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
@@ -100,7 +116,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getASymbol() != null) {
-      String identifierValue = tnmTyp.getID() + "_a";
+      String identifierValue = idBase + "_a";
       var aSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
@@ -116,7 +132,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getMSymbol() != null) {
-      String identifierValue = tnmTyp.getID() + "_m";
+      String identifierValue = idBase + "_m";
       var mSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
@@ -132,7 +148,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getL() != null) {
-      String identifierValue = tnmTyp.getID() + "_L";
+      String identifierValue = idBase + "_L";
       var lKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
@@ -148,7 +164,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getPn() != null) {
-      String identifierValue = tnmTyp.getID() + "_Pn";
+      String identifierValue = idBase + "_Pn";
       var pnKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
@@ -164,7 +180,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getRSymbol() != null) {
-      String identifierValue = tnmTyp.getID() + "_r";
+      String identifierValue = idBase + "_r";
       var rSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
@@ -180,7 +196,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getS() != null) {
-      String identifierValue = tnmTyp.getID() + "_S";
+      String identifierValue = idBase + "_S";
       var sKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
@@ -196,7 +212,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getV() != null) {
-      String identifierValue = tnmTyp.getID() + "_V";
+      String identifierValue = idBase + "_V";
       var vKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
@@ -212,7 +228,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getYSymbol() != null) {
-      String identifierValue = tnmTyp.getID() + "_y";
+      String identifierValue = idBase + "_y";
       var ySymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
@@ -430,6 +446,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   private Observation createTNMGroupingObservation(
       TNMTyp tnm,
       String observationType,
+      String idBase,
       List<Reference> memberObservations,
       Reference patient,
       Reference primaryConditionReference) {
@@ -442,7 +459,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getTnmGroupingObservationId())
-            .setValue(tnm.getID());
+            .setValue(idBase);
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
