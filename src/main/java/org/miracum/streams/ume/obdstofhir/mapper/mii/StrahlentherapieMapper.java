@@ -44,6 +44,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     PRCN_ST4D("PRCN-ST4D"),
     PRCJ("PRCJ"),
     PRCJ_4D("PRCJ-4D"),
+    PRCJ_ST("PRCJ-ST"),
     K("K"),
     KHDR("KHDR"),
     KLDR("KLDR"),
