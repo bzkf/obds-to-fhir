@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.logging.log4j.util.Strings;
@@ -78,7 +79,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      tKategorieObservation.setCode(createTKategorieCode(tnmTyp.getCPUPraefixT()));
+
+      // Das Weglassen des Prefix wird als "c" interpretiert
+      var cpuPraefixT = Optional.ofNullable(tnmTyp.getCPUPraefixT()).orElse("c");
+      tKategorieObservation.setCode(createTKategorieCode(cpuPraefixT));
       tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
       memberObservationList.add(tKategorieObservation);
     }
@@ -94,7 +98,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      nKategorieObservation.setCode(createNKategorieCode(tnmTyp.getCPUPraefixN()));
+
+      // Das Weglassen des Prefix wird als "c" interpretiert
+      var cpuPraefixN = Optional.ofNullable(tnmTyp.getCPUPraefixN()).orElse("c");
+      nKategorieObservation.setCode(createNKategorieCode(cpuPraefixN));
       nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
       memberObservationList.add(nKategorieObservation);
     }
@@ -110,7 +117,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      mKategorieObservation.setCode(createMKategorieCode(tnmTyp.getCPUPraefixM()));
+
+      // Das Weglassen des Prefix wird als "c" interpretiert
+      var cpuPraefixM = Optional.ofNullable(tnmTyp.getCPUPraefixM()).orElse("c");
+      mKategorieObservation.setCode(createMKategorieCode(cpuPraefixM));
       mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
       memberObservationList.add(mKategorieObservation);
     }
