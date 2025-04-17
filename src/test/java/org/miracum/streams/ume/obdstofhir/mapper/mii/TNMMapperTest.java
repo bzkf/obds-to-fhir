@@ -55,6 +55,7 @@ class TNMMapperTest extends MapperTest {
             sut.map(
                 conMeldung.getDiagnose().getCTNM(),
                 "clinical",
+                conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
       }
@@ -63,6 +64,7 @@ class TNMMapperTest extends MapperTest {
             sut.map(
                 conMeldung.getDiagnose().getPTNM(),
                 "pathologic",
+                conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
       }
@@ -72,6 +74,7 @@ class TNMMapperTest extends MapperTest {
           sut.map(
               conMeldung.getVerlauf().getTNM(),
               "generic",
+              conMeldung.getMeldungID(),
               new Reference("Patient/1"),
               new Reference("Condition/Primärdiagnose")));
     }
@@ -80,6 +83,7 @@ class TNMMapperTest extends MapperTest {
           sut.map(
               conMeldung.getOP().getTNM(),
               "generic",
+              conMeldung.getMeldungID(),
               new Reference("Patient/1"),
               new Reference("Condition/Primärdiagnose")));
     }
@@ -89,6 +93,7 @@ class TNMMapperTest extends MapperTest {
             sut.map(
                 conMeldung.getPathologie().getCTNM(),
                 "clinical",
+                conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
       }
@@ -97,6 +102,7 @@ class TNMMapperTest extends MapperTest {
             sut.map(
                 conMeldung.getPathologie().getPTNM(),
                 "pathologic",
+                conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
       }

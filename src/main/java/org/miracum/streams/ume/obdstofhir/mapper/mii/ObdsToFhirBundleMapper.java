@@ -237,13 +237,21 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           if (diagnose.getCTNM() != null) {
             var clinicalTNMObservations =
                 tnmMapper.map(
-                    diagnose.getCTNM(), "clinical", patientReference, primaryConditionReference);
+                    diagnose.getCTNM(),
+                    "clinical",
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, clinicalTNMObservations);
           }
           if (diagnose.getPTNM() != null) {
             var pathologicTNMObservations =
                 tnmMapper.map(
-                    diagnose.getPTNM(), "pathologic", patientReference, primaryConditionReference);
+                    diagnose.getPTNM(),
+                    "pathologic",
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
           }
 
@@ -358,7 +366,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           if (verlauf.getTNM() != null) {
             var tnmObservations =
                 tnmMapper.map(
-                    verlauf.getTNM(), "generic", patientReference, primaryConditionReference);
+                    verlauf.getTNM(),
+                    "generic",
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, tnmObservations);
           }
 
@@ -522,7 +534,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
           if (op.getTNM() != null) {
             var tnmObservations =
-                tnmMapper.map(op.getTNM(), "generic", patientReference, primaryConditionReference);
+                tnmMapper.map(
+                    op.getTNM(),
+                    "generic",
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, tnmObservations);
           }
 
@@ -605,7 +622,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           if (pathologie.getCTNM() != null) {
             var clinicalTNMObservations =
                 tnmMapper.map(
-                    pathologie.getCTNM(), "clinical", patientReference, primaryConditionReference);
+                    pathologie.getCTNM(),
+                    "clinical",
+                    meldung.getMeldungID(),
+                    patientReference,
+                    primaryConditionReference);
             addToBundle(bundle, clinicalTNMObservations);
           }
           if (pathologie.getPTNM() != null) {
@@ -613,6 +634,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 tnmMapper.map(
                     pathologie.getPTNM(),
                     "pathologic",
+                    meldung.getMeldungID(),
                     patientReference,
                     primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
