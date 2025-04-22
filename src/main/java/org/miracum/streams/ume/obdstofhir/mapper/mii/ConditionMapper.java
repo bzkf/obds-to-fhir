@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -29,26 +29,22 @@ public class ConditionMapper extends ObdsToFhirMapper {
   }
 
   public Condition map(
-      OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
-      Reference patient,
-      XMLGregorianCalendar meldeDatum) {
-    Objects.requireNonNull(meldung);
+      @NonNull OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      @NonNull Reference patient,
+      @NonNull XMLGregorianCalendar meldeDatum,
+      @NonNull String patientId) {
     Objects.requireNonNull(meldung.getTumorzuordnung());
     Objects.requireNonNull(meldung.getDiagnose());
     Objects.requireNonNull(meldung.getMeldungID());
-    Objects.requireNonNull(patient);
-    Objects.requireNonNull(meldeDatum);
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+
+    verifyReference(patient, ResourceType.PATIENT);
 
     var condition = new Condition();
 
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getConditionId())
-            .setValue(meldung.getTumorzuordnung().getTumorID());
+            .setValue(patientId + "-" + meldung.getTumorzuordnung().getTumorID());
     condition.addIdentifier(identifier);
     condition.setId(computeResourceIdFromIdentifier(identifier));
 

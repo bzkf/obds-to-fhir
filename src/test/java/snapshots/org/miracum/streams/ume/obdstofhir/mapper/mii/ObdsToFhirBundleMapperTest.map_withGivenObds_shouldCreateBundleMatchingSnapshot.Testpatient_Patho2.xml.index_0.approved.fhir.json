@@ -86,7 +86,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/7f25e46a31c82b72367322e974359038f2ef57071b6c3c38ef6a99dc94691358"
+        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueCodeableConcept": {
@@ -137,7 +137,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/7f25e46a31c82b72367322e974359038f2ef57071b6c3c38ef6a99dc94691358"
+        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueCodeableConcept": {
@@ -175,7 +175,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/7f25e46a31c82b72367322e974359038f2ef57071b6c3c38ef6a99dc94691358"
+        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
       } ],
       "effectiveDateTime": "2021-08-01",
       "valueCodeableConcept": {

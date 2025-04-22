@@ -39,7 +39,12 @@ class ConditionMapperTest extends MapperTest {
             .findFirst()
             .get();
 
-    final var condition = sut.map(conMeldung, new Reference("Patient/1"), obds.getMeldedatum());
+    final var condition =
+        sut.map(
+            conMeldung,
+            new Reference("Patient/1"),
+            obds.getMeldedatum(),
+            obdsPatient.getPatientID());
 
     verify(condition, sourceFile);
   }

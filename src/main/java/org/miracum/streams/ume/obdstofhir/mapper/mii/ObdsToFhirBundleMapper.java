@@ -152,11 +152,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
 
         var primaryConditionReference =
-            createPrimaryConditionReference(meldung.getTumorzuordnung());
+            createPrimaryConditionReference(
+                meldung.getTumorzuordnung(), obdsPatient.getPatientID());
 
         // Diagnose
         if (meldung.getDiagnose() != null) {
-          var condition = conditionMapper.map(meldung, patientReference, obds.getMeldedatum());
+          var condition =
+              conditionMapper.map(
+                  meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
           addToBundle(bundle, condition);
 
           var diagnose = meldung.getDiagnose();
@@ -714,11 +717,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return bundle;
   }
 
-  private Reference createPrimaryConditionReference(TumorzuordnungTyp tumorzuordnung) {
+  private Reference createPrimaryConditionReference(
+      TumorzuordnungTyp tumorzuordnung, String patientId) {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getConditionId())
-            .setValue(tumorzuordnung.getTumorID());
+            .setValue(patientId + "-" + tumorzuordnung.getTumorID());
 
     var conditionId = computeResourceIdFromIdentifier(identifier);
 

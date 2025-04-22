@@ -39,10 +39,10 @@
       "url": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
     }
   }, {
-    "fullUrl": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33",
+    "fullUrl": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9",
     "resource": {
       "resourceType": "Condition",
-      "id": "9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33",
+      "id": "9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -61,7 +61,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
-        "value": "171"
+        "value": "17-171"
       } ],
       "verificationStatus": {
         "coding": [ {
@@ -98,7 +98,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+      "url": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
     }
   }, {
     "fullUrl": "Observation/d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193",
@@ -123,7 +123,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2018-02-01",
       "valueCodeableConcept": {
@@ -187,7 +187,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2018-02-01",
       "valueCodeableConcept": {
@@ -238,7 +238,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2018-02-01",
       "valueCodeableConcept": {
@@ -279,7 +279,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -325,7 +325,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-02-01",
       "valueCodeableConcept": {
@@ -378,7 +378,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-02-01",
       "valueCodeableConcept": {
@@ -431,7 +431,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-02-01",
       "valueCodeableConcept": {
@@ -475,7 +475,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-02-01",
       "valueCodeableConcept": {
@@ -544,7 +544,7 @@
       },
       "performedDateTime": "2020-03-01",
       "reasonReference": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ]
     },
     "request": {
@@ -816,7 +816,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-08-05",
       "valueCodeableConcept": {
@@ -900,7 +900,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2020-08-05",
       "valueCodeableConcept": {
@@ -938,7 +938,7 @@
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
       },
       "focus": [ {
-        "reference": "Condition/9b5cabc4facc22d2681d7b63c3986487f3646a7ad8c10f95d96db8ea5fe29c33"
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
       } ],
       "effectiveDateTime": "2023-09-01",
       "valueCodeableConcept": {
