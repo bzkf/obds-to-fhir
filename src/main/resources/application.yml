@@ -203,7 +203,7 @@ fhir:
 
 obdsv2v3:
   mapper:
-    ignore-unmappable: false
+    ignore-unmappable: true
     fix-missing-id: true
     disable-schema-validation: false
 
