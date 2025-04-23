@@ -1,10 +1,10 @@
 package org.miracum.streams.ume.obdstofhir.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
-public class MeldungExportListV3 extends ArrayList<MeldungExportV3> implements Serializable {
+public class MeldungExportListV3 extends HashSet<MeldungExportV3> implements Serializable {
 
   public MeldungExportListV3() {
     super();
