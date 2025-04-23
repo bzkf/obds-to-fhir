@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.BoostTyp;
 import de.basisdatensatz.obds.v3.STTyp;
 import de.basisdatensatz.obds.v3.STTyp.MengeBestrahlung.Bestrahlung;
 import de.basisdatensatz.obds.v3.STTyp.MengeBestrahlung.Bestrahlung.Applikationsart;
+import de.basisdatensatz.obds.v3.SeiteZielgebietTyp;
 import de.basisdatensatz.obds.v3.StrahlendosisTyp;
 import de.basisdatensatz.obds.v3.ZielgebietTyp;
 import java.util.Comparator;
@@ -43,6 +44,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     PRCN_ST4D("PRCN-ST4D"),
     PRCJ("PRCJ"),
     PRCJ_4D("PRCJ-4D"),
+    PRCJ_ST("PRCJ-ST"),
     K("K"),
     KHDR("KHDR"),
     KLDR("KLDR"),
@@ -82,7 +84,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
   private record StrahlentherapieBestrahlung(
       ApplikationsartCode applikationsart,
       String zielgebiet,
-      String seiteZielgebiet,
+      SeiteZielgebietTyp seiteZielgebiet,
       String strahlenart,
       StrahlendosisTyp einzeldosis,
       StrahlendosisTyp gesamtdosis,
@@ -277,12 +279,12 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       bestrahlungExtension.addExtension("Zielgebiet", new CodeableConcept(value));
     }
 
-    var zielgebietLateralitaetCode = data.seiteZielgebiet();
-    if (zielgebietLateralitaetCode != null) {
+    var seiteZielgebiet = data.seiteZielgebiet();
+    if (seiteZielgebiet != null) {
       var value =
           new Coding()
               .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
-              .setCode(zielgebietLateralitaetCode);
+              .setCode(seiteZielgebiet.value());
       bestrahlungExtension.addExtension("Zielgebiet_Lateralitaet", new CodeableConcept(value));
     }
 
@@ -355,7 +357,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       return new StrahlentherapieBestrahlung(
           applikationsartCode,
           getZielgebiet(applikation.getZielgebiet()),
-          applikation.getSeiteZielgebiet().value(),
+          applikation.getSeiteZielgebiet(),
           strahlenart,
           applikation.getEinzeldosis(),
           applikation.getGesamtdosis(),
@@ -369,7 +371,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       return new StrahlentherapieBestrahlung(
           applikationsartCode,
           getZielgebiet(applikation.getZielgebiet()),
-          applikation.getSeiteZielgebiet().value(),
+          applikation.getSeiteZielgebiet(),
           strahlenart,
           applikation.getEinzeldosis(),
           applikation.getGesamtdosis(),
@@ -383,7 +385,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       return new StrahlentherapieBestrahlung(
           applikationsartCode,
           getZielgebiet(applikation.getZielgebiet()),
-          applikation.getSeiteZielgebiet().value(),
+          applikation.getSeiteZielgebiet(),
           strahlenart,
           null,
           null,
@@ -395,7 +397,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       return new StrahlentherapieBestrahlung(
           applikationsartCode,
           getZielgebiet(applikation.getZielgebiet()),
-          applikation.getSeiteZielgebiet().value(),
+          applikation.getSeiteZielgebiet(),
           null,
           applikation.getEinzeldosis(),
           applikation.getGesamtdosis(),
