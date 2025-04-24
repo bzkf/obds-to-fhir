@@ -54,10 +54,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       var mapped =
           stringOnkoMeldungExpTable.mapValues(
               meldung -> {
-                var obdsOrAdt = meldung.getObds_or_adt();
+                var obdsOrAdt = meldung.getObdsOrAdt();
                 if (obdsOrAdt.hasADT() && !obdsOrAdt.hasOBDS()) {
                   var obds = obdsMapper.map(obdsOrAdt.adt());
-                  meldung.setObds_or_adt(new ObdsOrAdt(obds, obdsOrAdt.adt()));
+                  meldung.setObdsOrAdt(new ObdsOrAdt(obds, obdsOrAdt.adt()));
                 }
                 return meldung;
               });

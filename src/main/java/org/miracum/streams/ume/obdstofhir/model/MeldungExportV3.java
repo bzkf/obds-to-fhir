@@ -21,11 +21,11 @@ public class MeldungExportV3 extends OnkoResource {
 
   @EqualsAndHashCode.Include
   @JsonProperty("REFERENZ_NUMMER")
-  String referenz_nummer;
+  String referenzNummer;
 
   @EqualsAndHashCode.Include
   @JsonProperty("LKR_MELDUNG")
-  String lkr_meldung;
+  String lkrMeldung;
 
   @EqualsAndHashCode.Include
   @JsonProperty("VERSIONSNUMMER")
@@ -34,9 +34,9 @@ public class MeldungExportV3 extends OnkoResource {
   @JsonProperty("XML_DATEN")
   @JsonDeserialize(using = Obdsv3Deserializer.class)
   @JsonSerialize(using = Obdsv3Serializer.class)
-  ObdsOrAdt obds_or_adt;
+  ObdsOrAdt obdsOrAdt;
 
   public OBDS getObds() {
-    return obds_or_adt.hasOBDS() ? obds_or_adt.obds() : null;
+    return obdsOrAdt.hasOBDS() ? obdsOrAdt.obds() : null;
   }
 }
