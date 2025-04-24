@@ -56,8 +56,8 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
               meldung -> {
                 var obdsOrAdt = meldung.getObdsOrAdt();
                 if (obdsOrAdt.hasADT() && !obdsOrAdt.hasOBDS()) {
-                  var obds = obdsMapper.map(obdsOrAdt.adt());
-                  meldung.setObdsOrAdt(new ObdsOrAdt(obds, obdsOrAdt.adt()));
+                  var obds = obdsMapper.map(obdsOrAdt.getAdt());
+                  meldung.setObdsOrAdt(ObdsOrAdt.from(obds));
                 }
                 return meldung;
               });
@@ -68,20 +68,20 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
               Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
           .aggregate(
               MeldungExportListV3::new,
-              (key, value, aggregate) -> {
-                aggregate.addElement(value);
+              (key, meldung, aggregate) -> {
+                aggregate.addElement(meldung);
                 return retainLatestVersionOnly(aggregate);
               },
-              (key, value, aggregate) -> {
-                aggregate.removeElement(value);
+              (key, meldung, aggregate) -> {
+                aggregate.removeElement(meldung);
                 return retainLatestVersionOnly(aggregate);
               },
               Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
           .toStream()
           .mapValues(this::groupByTumorId)
           .flatMapValues(this.getMeldungExportListToBundleListMapper())
-          .filter((key, value) -> value != null)
-          .selectKey((key, value) -> patientBundleKeySelector(value));
+          .filter((key, bundle) -> bundle != null)
+          .selectKey((key, bundle) -> patientBundleKeySelector(bundle));
     };
   }
 

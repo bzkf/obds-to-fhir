@@ -29,10 +29,10 @@ public class Obdsv3Serializer extends JsonSerializer<ObdsOrAdt> {
     String xml = mapper.writeValueAsString(value);
 
     if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
-      gen.writeString(mapper.writeValueAsString(value.obds()));
+      gen.writeString(mapper.writeValueAsString(value.getObds()));
     } else if (xml.toLowerCase().contains("<adt")
         && xml.toLowerCase().contains("schema_version=\"2.")) {
-      gen.writeString(mapper.writeValueAsString(value.adt()));
+      gen.writeString(mapper.writeValueAsString(value.getAdt()));
     } else {
       throw new IOException("Unknown XML root element in serialization");
     }

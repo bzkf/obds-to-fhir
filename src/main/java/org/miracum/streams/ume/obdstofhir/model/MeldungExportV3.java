@@ -37,6 +37,6 @@ public class MeldungExportV3 extends OnkoResource {
   ObdsOrAdt obdsOrAdt;
 
   public OBDS getObds() {
-    return obdsOrAdt.hasOBDS() ? obdsOrAdt.obds() : null;
+    return obdsOrAdt.hasOBDS() ? obdsOrAdt.getObds() : null;
   }
 }

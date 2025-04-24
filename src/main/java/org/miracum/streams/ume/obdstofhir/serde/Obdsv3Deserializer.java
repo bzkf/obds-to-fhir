@@ -38,11 +38,11 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
 
     if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
       OBDS obds = mapper.readValue(xml, OBDS.class);
-      return new ObdsOrAdt(obds, null);
+      return ObdsOrAdt.from(obds);
     } else if (xml.toLowerCase().contains("<adt")
         && xml.toLowerCase().contains("schema_version=\"2.")) {
       ADTGEKID adt = mapper.readValue(xml, ADTGEKID.class);
-      return new ObdsOrAdt(null, adt);
+      return ObdsOrAdt.from(adt);
     } else {
       throw new IOException("Unknown XML root element in deserialization");
     }
