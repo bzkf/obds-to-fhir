@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,10 +42,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var condition = new Condition();
 
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getConditionId())
-            .setValue(patientId + "-" + meldung.getTumorzuordnung().getTumorID());
+    var identifier = buildConditionIdentifier(meldung.getTumorzuordnung(), patientId);
     condition.addIdentifier(identifier);
     condition.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -137,5 +135,11 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setRecordedDateElement(recorded);
 
     return condition;
+  }
+
+  public Identifier buildConditionIdentifier(TumorzuordnungTyp tumorzuordnung, String patientId) {
+    return new Identifier()
+        .setSystem(fhirProperties.getSystems().getConditionId())
+        .setValue(patientId + "-" + tumorzuordnung.getTumorID());
   }
 }

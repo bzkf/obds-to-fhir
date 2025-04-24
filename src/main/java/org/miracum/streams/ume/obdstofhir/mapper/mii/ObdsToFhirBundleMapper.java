@@ -8,7 +8,6 @@ import java.util.Objects;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -719,13 +718,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
   private Reference createPrimaryConditionReference(
       TumorzuordnungTyp tumorzuordnung, String patientId) {
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getConditionId())
-            .setValue(patientId + "-" + tumorzuordnung.getTumorID());
-
+    var identifier = conditionMapper.buildConditionIdentifier(tumorzuordnung, patientId);
     var conditionId = computeResourceIdFromIdentifier(identifier);
-
     return new Reference("Condition/" + conditionId);
   }
 
