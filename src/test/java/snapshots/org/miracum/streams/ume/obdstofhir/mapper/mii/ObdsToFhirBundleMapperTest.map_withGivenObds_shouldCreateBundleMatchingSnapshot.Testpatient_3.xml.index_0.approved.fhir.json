@@ -38,10 +38,10 @@
       "url": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
     }
   }, {
-    "fullUrl": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16",
+    "fullUrl": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7",
     "resource": {
       "resourceType": "Condition",
-      "id": "ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16",
+      "id": "38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
-        "value": "121"
+        "value": "12-121"
       } ],
       "verificationStatus": {
         "coding": [ {
@@ -97,7 +97,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+      "url": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
     }
   }, {
     "fullUrl": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4",
@@ -122,7 +122,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -186,7 +186,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -237,7 +237,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -274,7 +274,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -397,7 +397,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2018-06-02",
       "valueCodeableConcept": {
@@ -481,7 +481,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ],
       "effectiveDateTime": "2018-06-02",
       "valueCodeableConcept": {
@@ -599,7 +599,7 @@
         "start": "2018-06-06"
       },
       "reasonReference": [ {
-        "reference": "Condition/ada766c1f2eea7625dc4d9bac33d99d0f2a3606376cfa0798fa7c839be6f1e16"
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
       } ]
     },
     "request": {

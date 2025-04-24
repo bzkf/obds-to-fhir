@@ -38,10 +38,10 @@
       "url": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
     }
   }, {
-    "fullUrl": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510",
+    "fullUrl": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848",
     "resource": {
       "resourceType": "Condition",
-      "id": "413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510",
+      "id": "280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
-        "value": "301"
+        "value": "30-301"
       } ],
       "verificationStatus": {
         "coding": [ {
@@ -97,7 +97,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+      "url": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
     }
   }, {
     "fullUrl": "Observation/139e56223545fedbb4911f0ddddf852d9fd3459bfc9132989724318b5cbc9f7a",
@@ -122,7 +122,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2015-04-03",
       "valueCodeableConcept": {
@@ -186,7 +186,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2015-04-03",
       "valueCodeableConcept": {
@@ -237,7 +237,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2015-04-03",
       "valueCodeableConcept": {
@@ -278,7 +278,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -311,7 +311,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2018-04-03",
       "valueCodeableConcept": {
@@ -416,7 +416,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -599,7 +599,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -636,7 +636,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2020-07-18",
       "valueCodeableConcept": {
@@ -674,7 +674,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "effectiveDateTime": "2020-07-18",
       "valueCodeableConcept": {
@@ -713,7 +713,7 @@
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
       "focus": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -751,7 +751,7 @@
       },
       "created": "2020-08-17",
       "addresses": [ {
-        "reference": "Condition/413358315002752adf6281447c5ef51bc9e87334ca2c3476a04b098a42c9b510"
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
       } ]
     },
     "request": {

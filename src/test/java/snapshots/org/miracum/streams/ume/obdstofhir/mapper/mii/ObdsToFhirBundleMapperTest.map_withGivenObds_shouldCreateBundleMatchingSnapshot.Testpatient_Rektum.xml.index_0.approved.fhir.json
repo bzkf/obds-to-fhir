@@ -38,10 +38,10 @@
       "url": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
     }
   }, {
-    "fullUrl": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39",
+    "fullUrl": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a",
     "resource": {
       "resourceType": "Condition",
-      "id": "17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39",
+      "id": "caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
-        "value": "501"
+        "value": "50-501"
       } ],
       "verificationStatus": {
         "coding": [ {
@@ -97,7 +97,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+      "url": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
     }
   }, {
     "fullUrl": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0",
@@ -122,7 +122,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-02",
       "valueCodeableConcept": {
@@ -186,7 +186,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-02",
       "valueCodeableConcept": {
@@ -237,7 +237,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-02",
       "valueCodeableConcept": {
@@ -287,7 +287,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-16",
       "valueCodeableConcept": {
@@ -340,7 +340,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-16",
       "valueCodeableConcept": {
@@ -393,7 +393,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-16",
       "valueCodeableConcept": {
@@ -437,7 +437,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-16",
       "valueCodeableConcept": {
@@ -490,7 +490,7 @@
       },
       "created": "2020-08-20",
       "addresses": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "activity": [ {
         "detail": {
@@ -587,7 +587,7 @@
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "outcome": {
         "coding": [ {
@@ -641,7 +641,7 @@
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "outcome": {
         "coding": [ {
@@ -674,7 +674,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -734,7 +734,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -785,7 +785,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -834,7 +834,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueQuantity": {
@@ -883,7 +883,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueQuantity": {
@@ -933,7 +933,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -986,7 +986,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1039,7 +1039,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1082,7 +1082,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1125,7 +1125,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1168,7 +1168,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1211,7 +1211,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1255,7 +1255,7 @@
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "focus": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "effectiveDateTime": "2020-08-31",
       "valueCodeableConcept": {
@@ -1316,7 +1316,7 @@
       },
       "created": "2020-09-09",
       "addresses": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ],
       "activity": [ {
         "detail": {
@@ -1581,7 +1581,7 @@
         "start": "2020-10-05"
       },
       "reasonReference": [ {
-        "reference": "Condition/17bc83a84fc6d9a7f9df24684aae287df117609026a237d1cf8d3fe73d1a6e39"
+        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
       } ]
     },
     "request": {

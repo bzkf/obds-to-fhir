@@ -38,10 +38,10 @@
       "url": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
     }
   }, {
-    "fullUrl": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920",
+    "fullUrl": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf",
     "resource": {
       "resourceType": "Condition",
-      "id": "c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920",
+      "id": "2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
-        "value": "195"
+        "value": "19-195"
       } ],
       "verificationStatus": {
         "coding": [ {
@@ -97,7 +97,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+      "url": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
     }
   }, {
     "fullUrl": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
@@ -122,7 +122,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-02",
       "valueCodeableConcept": {
@@ -186,7 +186,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -237,7 +237,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -278,7 +278,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "valueCodeableConcept": {
         "coding": [ {
@@ -324,7 +324,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-02",
       "valueCodeableConcept": {
@@ -377,7 +377,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-02",
       "valueCodeableConcept": {
@@ -430,7 +430,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-02",
       "valueCodeableConcept": {
@@ -474,7 +474,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-02",
       "valueCodeableConcept": {
@@ -535,7 +535,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -588,7 +588,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -641,7 +641,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -685,7 +685,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-03",
       "valueCodeableConcept": {
@@ -754,7 +754,7 @@
       },
       "performedDateTime": "2022-10-16",
       "reasonReference": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "outcome": {
         "coding": [ {
@@ -787,7 +787,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-16",
       "valueCodeableConcept": {
@@ -850,7 +850,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-16",
       "valueCodeableConcept": {
@@ -901,7 +901,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-16",
       "valueCodeableConcept": {
@@ -951,7 +951,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-16",
       "valueCodeableConcept": {
@@ -995,7 +995,7 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "focus": [ {
-        "reference": "Condition/c65dc4a292a235b7490c12e7e4a869e754b1d3ef6c4f75aacfd828e92ba8e920"
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
       } ],
       "effectiveDateTime": "2022-10-16",
       "valueCodeableConcept": {
