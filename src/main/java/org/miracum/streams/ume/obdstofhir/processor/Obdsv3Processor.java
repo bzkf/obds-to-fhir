@@ -5,6 +5,7 @@ import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
 import jakarta.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
@@ -21,6 +22,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
+import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListV3Serde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportV3Serde;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +35,15 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   private final ObdsToFhirBundleMapper obdsToFhirBundleMapper;
 
+  private final ObdsMapper obdsMapper;
+
   protected Obdsv3Processor(
-      FhirProperties fhirProperties, ObdsToFhirBundleMapper obdsToFhirBundleMapper) {
+      FhirProperties fhirProperties,
+      ObdsToFhirBundleMapper obdsToFhirBundleMapper,
+      ObdsMapper obdsMapper) {
     super(fhirProperties);
     this.obdsToFhirBundleMapper = obdsToFhirBundleMapper;
+    this.obdsMapper = obdsMapper;
   }
 
   @Bean
@@ -44,32 +51,37 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       getMeldungExportObdsV3Processor() {
 
     return stringOnkoMeldungExpTable -> {
-      // return (stringOnkoMeldungExpTable) ->
-      var filtered =
-          stringOnkoMeldungExpTable
-              // only process adt v3.x.x
-              .filter((key, value) -> value.getObds().getSchemaVersion().matches("^3\\..*"));
+      var mapped =
+          stringOnkoMeldungExpTable.mapValues(
+              meldung -> {
+                var obdsOrAdt = meldung.getObdsOrAdt();
+                if (obdsOrAdt.hasADT() && !obdsOrAdt.hasOBDS()) {
+                  var obds = obdsMapper.map(obdsOrAdt.getAdt());
+                  meldung.setObdsOrAdt(ObdsOrAdt.from(obds));
+                }
+                return meldung;
+              });
 
-      return filtered
+      return mapped
           .groupBy(
               (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
               Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
           .aggregate(
               MeldungExportListV3::new,
-              (key, value, aggregate) -> {
-                aggregate.addElement(value);
+              (key, meldung, aggregate) -> {
+                aggregate.addElement(meldung);
                 return retainLatestVersionOnly(aggregate);
               },
-              (key, value, aggregate) -> {
-                aggregate.removeElement(value);
+              (key, meldung, aggregate) -> {
+                aggregate.removeElement(meldung);
                 return retainLatestVersionOnly(aggregate);
               },
               Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
           .toStream()
           .mapValues(this::groupByTumorId)
           .flatMapValues(this.getMeldungExportListToBundleListMapper())
-          .filter((key, value) -> value != null)
-          .selectKey((key, value) -> patientBundleKeySelector(value));
+          .filter((key, bundle) -> bundle != null)
+          .selectKey((key, bundle) -> patientBundleKeySelector(bundle));
     };
   }
 

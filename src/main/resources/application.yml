@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.51
+  version: 3.0.0-beta.52
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -200,6 +200,13 @@ fhir:
         enabled: false
     createPatientResources:
       enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
+
+obdsv2v3:
+  mapper:
+    ignore-unmappable: true
+    fix-missing-id: true
+    disable-schema-validation: false
+
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:default}

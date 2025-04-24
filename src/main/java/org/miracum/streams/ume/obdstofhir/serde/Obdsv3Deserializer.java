@@ -7,10 +7,12 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
+import de.basisdatensatz.obds.v2.ADTGEKID;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 
-public class Obdsv3Deserializer extends JsonDeserializer<OBDS> {
+public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
 
   private final XmlMapper mapper;
 
@@ -25,10 +27,24 @@ public class Obdsv3Deserializer extends JsonDeserializer<OBDS> {
   }
 
   @Override
-  public OBDS deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+  public ObdsOrAdt deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
       throws IOException {
 
-    var value = jsonParser.getValueAsString();
-    return mapper.readValue(value, OBDS.class);
+    String xml = jsonParser.getValueAsString();
+
+    if (xml == null || xml.trim().isEmpty()) {
+      return new ObdsOrAdt(null, null);
+    }
+
+    if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
+      OBDS obds = mapper.readValue(xml, OBDS.class);
+      return ObdsOrAdt.from(obds);
+    } else if (xml.toLowerCase().contains("<adt")
+        && xml.toLowerCase().contains("schema_version=\"2.")) {
+      ADTGEKID adt = mapper.readValue(xml, ADTGEKID.class);
+      return ObdsOrAdt.from(adt);
+    } else {
+      throw new IOException("Unknown XML root element in deserialization");
+    }
   }
 }
