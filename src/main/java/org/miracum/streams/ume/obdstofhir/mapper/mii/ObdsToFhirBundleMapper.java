@@ -48,6 +48,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.modul.prostata.enabled}")
   private boolean isModulProstataMappingEnabled;
 
+  @Value("${fhir.mappings.metaSource}")
+  private String metaSource;
+
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
       PatientMapper patientMapper,
@@ -688,6 +691,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var carePlan =
               tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
           addToBundle(bundle, carePlan);
+        }
+
+        // add meta.source to all bundle entries if metaSource is not empty
+        if (!metaSource.isEmpty()) {
+          bundle.getEntry().forEach(entry -> entry.getResource().getMeta().setSource(metaSource));
         }
       }
 
