@@ -195,6 +195,7 @@ fhir:
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
   mappings:
+    metaSource: ${META_SOURCE:}
     modul:
       prostata:
         enabled: false
