@@ -1,4 +1,4 @@
-FROM docker.io/library/gradle:8.13.0-jdk21@sha256:4e0f2ac40ef869b6835601e540565c79ce2ff52637d95c76ba556b800500be05 AS build
+FROM docker.io/library/gradle:8.13.0-jdk21@sha256:67b8c4bfd2b064e58a7307e2da1fc3881bc03ecc7a57cf61d8b570a02ebfaea2 AS build
 WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle . .
@@ -15,7 +15,7 @@ WORKDIR /test
 COPY --from=build /home/gradle/project/build/reports/ .
 ENTRYPOINT [ "true" ]
 
-FROM docker.io/library/debian:12.10-slim@sha256:1209d8fd77def86ceb6663deef7956481cc6c14a25e1e64daec12c0ceffcc19d AS jemalloc
+FROM docker.io/library/debian:12.10-slim@sha256:b1211f6d19afd012477bd34fdcabb6b663d680e0f4b0537da6e6b0fd057a3ec3 AS jemalloc
 # hadolint ignore=DL3008
 RUN <<EOF
 set -e
@@ -25,7 +25,7 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM gcr.io/distroless/java21-debian12:nonroot@sha256:8530efa8ac58f9fc512fd1f6eebec6cf72a50ba97947fb01ed977c154903e189
+FROM gcr.io/distroless/java21-debian12:nonroot@sha256:a4087689e6bda03258bf1ee4dffe2a86383bc8051eaf2fcf72bdeae5815a6e2d
 WORKDIR /opt/obds-to-fhir
 ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
 

@@ -43,7 +43,7 @@ jobs:
 
   validate-fhir-resource:
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.0@sha256:66ece7632915e53d3cc34188e6e5f148c0c0967b5862cc1f6d88a60a3fd1090b
+    container: ghcr.io/miracum/ig-build-tools:v2.2.2@sha256:af1420104cce03f02015cca27d1b2bf45e9f4d0efc954e77abbf85f967497d81
     needs:
       - extract-mapper-names
     strategy:
@@ -51,7 +51,7 @@ jobs:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 

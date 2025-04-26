@@ -12,6 +12,9 @@ on:
     branches:
       - master
       - beta
+  merge_group:
+    types:
+      - checks_requested
   workflow_dispatch: {}
 
 permissions:
@@ -19,7 +22,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@ed920798bb7e30616049c9b5f7e3d6545d93fbb0 # v1.16.8
+    uses: miracum/.github/.github/workflows/standard-build.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
     permissions:
       contents: write
       id-token: write
@@ -43,7 +46,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -59,7 +62,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Download test image
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: ${{ needs.build.outputs.image-slug }}-test
           path: /tmp
@@ -98,7 +101,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -121,7 +124,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -168,7 +171,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@c6295a65d1254861815972266d5933fd6e532bdf # v2.11.1
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -184,7 +187,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -239,7 +242,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@ed920798bb7e30616049c9b5f7e3d6545d93fbb0 # v1.16.8
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
     permissions:
       contents: read
       pull-requests: write
@@ -254,7 +257,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@ed920798bb7e30616049c9b5f7e3d6545d93fbb0 # v1.16.8
+    uses: miracum/.github/.github/workflows/standard-release.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
     needs:
       - lint
       - build
