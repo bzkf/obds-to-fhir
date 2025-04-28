@@ -265,5 +265,8 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+    with:
+      use-app-token: true
     secrets:
-      semantic-release-token: ${{ secrets.MIRACUM_BOT_SEMANTIC_RELEASE_TOKEN }}
+      app-token-app-id: ${{ secrets.RELEASER_APP_ID }}
+      app-token-private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
