@@ -46,7 +46,7 @@ This task is included in default build task. In case you want to just generate o
 
 ### Topology
 
-![Stream Topology generated via https://zz85.github.io/kafka-streams-viz/ using http://localhost:8080/actuator/kafkastreamstopology](docs/img/obds-to-fhir-topology.png)
+![Stream Topology generated via https://zz85.github.io/kafka-streams-viz/ using http://localhost:8080/actuator/kafkastreamstopology](docs/img/obds-to-fhir-topology-v3.png)
 
 ### Dev Stack
 
