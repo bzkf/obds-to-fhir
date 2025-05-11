@@ -4,11 +4,7 @@ import de.basisdatensatz.obds.v3.JNU;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import io.micrometer.common.lang.NonNull;
 import java.util.ArrayList;
-import org.hl7.fhir.r4.model.CarePlan;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -25,6 +21,9 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
 
   public CarePlan map(
       @NonNull TumorkonferenzTyp tk, @NonNull Reference patient, Reference primaerDiagnose) {
+
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(primaerDiagnose, ResourceType.Condition);
 
     CarePlan carePlan = new CarePlan();
     // Meta

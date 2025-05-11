@@ -12,9 +12,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Enumerations;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -231,7 +229,7 @@ class ObdsToFhirMapperTests {
   @Test
   void shouldVerifyReference() {
     var reference = new Reference("Patient/any");
-    var actual = ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.PATIENT);
+    var actual = ObdsToFhirMapper.verifyReference(reference, ResourceType.Patient);
     assertThat(actual).isTrue();
   }
 
@@ -242,9 +240,9 @@ class ObdsToFhirMapperTests {
         assertThrows(
             IllegalArgumentException.class,
             () -> {
-              ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.CONDITION);
+              ObdsToFhirMapper.verifyReference(reference, ResourceType.Condition);
             });
-    assertThat(excpetion).hasMessage("The reference should point to a CONDITION resource");
+    assertThat(excpetion).hasMessage("The reference should point to a Condition resource");
   }
 
   @Test
@@ -254,8 +252,8 @@ class ObdsToFhirMapperTests {
         assertThrows(
             NullPointerException.class,
             () -> {
-              ObdsToFhirMapper.verifyReference(reference, Enumerations.ResourceType.CONDITION);
+              ObdsToFhirMapper.verifyReference(reference, ResourceType.Condition);
             });
-    assertThat(excpetion).hasMessage("Reference to a CONDITION resource must not be null");
+    assertThat(excpetion).hasMessage("Reference to a Condition resource must not be null");
   }
 }

@@ -8,13 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.MedicationStatement;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -34,18 +28,10 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
   public List<MedicationStatement> map(SYSTTyp syst, Reference patient, Reference procedure) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Objects.requireNonNull(procedure, "Reference to Procedure must not be null");
 
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            procedure.getReferenceElement().getResourceType(), ResourceType.PROCEDURE.toCode()),
-        "The subject reference should point to a Procedure resource");
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(procedure, ResourceType.Procedure);
 
     var result = new ArrayList<MedicationStatement>();
 

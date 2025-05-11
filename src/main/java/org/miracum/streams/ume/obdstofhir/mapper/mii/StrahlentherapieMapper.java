@@ -14,13 +14,13 @@ import java.util.Optional;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -36,8 +36,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     P_ST("P-ST"),
     P_4D("P-4D"),
     P_ST4D("P-ST4D"),
-    // XXX: this is technically not a valid combination but present in the sample data
-    // ("Testpatient_Mamma.xml")
     PRCN("PRCN"),
     PRCN_ST("PRCN-ST"),
     PRCN_4D("PRCN-4D"),
@@ -98,8 +96,8 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     Objects.requireNonNull(st);
     Validate.notBlank(st.getSTID(), "Required ST_ID is unset");
 
-    verifyReference(subject, ResourceType.PATIENT);
-    verifyReference(condition, ResourceType.CONDITION);
+    verifyReference(subject, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());

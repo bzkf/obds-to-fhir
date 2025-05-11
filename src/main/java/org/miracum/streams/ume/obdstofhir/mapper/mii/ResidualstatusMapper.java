@@ -3,12 +3,11 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.OPTyp;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -29,15 +28,11 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
 
     var rs = op.getResidualstatus();
     Objects.requireNonNull(rs, "Residualstatus must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
     Objects.requireNonNull(
         rs.getGesamtbeurteilungResidualstatus(),
         "GesamtbeurteilungResidualstatus must not be null");
 
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+    verifyReference(patient, ResourceType.Patient);
 
     var observation = new Observation();
 
