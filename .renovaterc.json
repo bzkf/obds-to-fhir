@@ -1,0 +1,16 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>miracum/.github//renovate/default"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^src/main/resources/application.yml$/"],
+      "matchStrings": [
+        "datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^(?<version>.*)${{/if}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}https://packages.simplifier.net{{/if}}"
+    }
+  ]
+}
