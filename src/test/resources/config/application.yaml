@@ -1,0 +1,7 @@
+fhir:
+  profiles:
+    # this sets the profile versions for the tests to "". Otherwise, any update to the profile version would invalidate all snapshots.
+    versions:
+      mii-person: ""
+      mii-onkologie: ""
+      mii-medikation: ""
