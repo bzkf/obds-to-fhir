@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.Objects;
 import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -27,9 +26,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
       Reference diagnose,
       Reference specimen) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
-    verifyReference(patient, ResourceType.PATIENT);
-    verifyReference(diagnose, ResourceType.CONDITION);
-    verifyReference(specimen, ResourceType.SPECIMEN);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(diagnose, ResourceType.Condition);
+    verifyReference(specimen, ResourceType.Specimen);
 
     var observation = new Observation();
     // Meta

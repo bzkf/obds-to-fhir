@@ -342,13 +342,13 @@ public abstract class ObdsToFhirMapper {
    * @throws NullPointerException if reference is null
    * @throws IllegalArgumentException if reference is not of required reesource type.
    */
-  public static boolean verifyReference(Reference reference, Enumerations.ResourceType resourceType)
+  public static boolean verifyReference(Reference reference, ResourceType resourceType)
       throws NullPointerException, IllegalArgumentException {
     Objects.requireNonNull(
         reference,
         String.format("Reference to a %s resource must not be null", resourceType.toString()));
     Validate.isTrue(
-        Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toCode()),
+        Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toString()),
         String.format("The reference should point to a %s resource", resourceType));
 
     return true;

@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.springframework.stereotype.Service;
@@ -47,8 +46,8 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     Objects.requireNonNull(allgemeinerLeistungszustand);
     Objects.requireNonNull(meldungsId);
-    verifyReference(patient, ResourceType.PATIENT);
-    verifyReference(condition, ResourceType.CONDITION);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var observation = new Observation();
 

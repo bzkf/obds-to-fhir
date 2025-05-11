@@ -4,7 +4,6 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import java.util.Objects;
 import lombok.Getter;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -25,19 +24,8 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
 
     // Validate input
     Objects.requireNonNull(verlauf, "VerlaufTyp must not be null");
-    Objects.requireNonNull(condition, "Reference to Condition must not be null");
-
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-
-    Validate.isTrue(
-        Objects.equals(
-            condition.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The condition reference should point to a Condition resource");
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     // Create Observation
     var observation = new Observation();

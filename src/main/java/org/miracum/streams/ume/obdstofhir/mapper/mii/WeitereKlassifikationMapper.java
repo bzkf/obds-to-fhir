@@ -3,11 +3,8 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import java.util.ArrayList;
 import java.util.List;
+import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Reference;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -28,8 +25,8 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
       String meldungId,
       Reference patient,
       Reference condition) {
-    verifyReference(patient, ResourceType.PATIENT);
-    verifyReference(condition, ResourceType.CONDITION);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var observations = new ArrayList<Observation>();
 

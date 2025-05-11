@@ -3,7 +3,6 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import java.util.Objects;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -25,19 +24,8 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
       ModulAllgemeinTyp modulAllgemein, Reference patient, Reference diagnose, String meldungsID) {
     // Validation
     Objects.requireNonNull(modulAllgemein, "modulAllgemein must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Objects.requireNonNull(diagnose, "Reference to Condition must not be null");
-
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The patient reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            diagnose.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The diagnose reference should point to a Condition resource");
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(diagnose, ResourceType.Condition);
 
     // Instantiate the Observation base resources
     var observation = new Observation();

@@ -5,16 +5,7 @@ import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.r4.model.CodeType;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.DateTimeType;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
-import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Period;
-import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.obds.OPSTherapietypLookup;
 import org.miracum.streams.ume.obdstofhir.lookup.obds.SnomedCtTherapietypLookup;
@@ -37,13 +28,8 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
   public Procedure map(SYSTTyp syst, Reference subject) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
-    Objects.requireNonNull(subject, "Reference must not be null");
-
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            subject.getReferenceElement().getResourceType(), ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+    verifyReference(subject, ResourceType.Patient);
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());

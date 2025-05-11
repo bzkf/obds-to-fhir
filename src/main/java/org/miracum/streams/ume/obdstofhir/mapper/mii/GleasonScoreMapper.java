@@ -59,8 +59,8 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @Nullable XMLGregorianCalendar opDate) {
     Objects.requireNonNull(modulProstata.getGleasonScore());
 
-    verifyReference(patient, Enumerations.ResourceType.PATIENT);
-    verifyReference(condition, Enumerations.ResourceType.CONDITION);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var observation = new Observation();
 

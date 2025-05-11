@@ -5,12 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.apache.logging.log4j.util.Strings;
-import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
-import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Observation;
-import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -34,9 +29,9 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       Reference specimen,
       Reference diagnose) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
-    verifyReference(patient, ResourceType.PATIENT);
-    verifyReference(diagnose, ResourceType.CONDITION);
-    verifyReference(specimen, ResourceType.SPECIMEN);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(diagnose, ResourceType.Condition);
+    verifyReference(specimen, ResourceType.Specimen);
 
     var observations = new ArrayList<Observation>();
 

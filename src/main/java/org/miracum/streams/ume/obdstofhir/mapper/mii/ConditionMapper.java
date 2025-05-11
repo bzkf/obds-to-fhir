@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -38,7 +37,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
     Objects.requireNonNull(meldung.getDiagnose());
     Objects.requireNonNull(meldung.getMeldungID());
 
-    verifyReference(patient, ResourceType.PATIENT);
+    verifyReference(patient, ResourceType.Patient);
 
     var condition = new Condition();
 

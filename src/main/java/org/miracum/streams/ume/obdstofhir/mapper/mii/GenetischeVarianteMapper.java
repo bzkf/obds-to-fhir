@@ -8,13 +8,12 @@ import de.basisdatensatz.obds.v3.VerlaufTyp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +21,6 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(GenetischeVarianteMapper.class);
 
-  @Autowired
   public GenetischeVarianteMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -64,15 +62,13 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
   }
 
   private List<Observation> createObservations(
-      List<MengeGenetikTyp.GenetischeVariante> genetischeVarianteList,
-      String source,
-      Reference patient,
-      Reference condition,
-      String meldungsID) {
-
-    Objects.requireNonNull(genetischeVarianteList, "genetischeVarianteList must not be null");
-    Objects.requireNonNull(patient, "Reference must not be null");
-    Objects.requireNonNull(condition, "Reference must not be null");
+      @NonNull List<MengeGenetikTyp.GenetischeVariante> genetischeVarianteList,
+      @NonNull String source,
+      @NonNull Reference patient,
+      @NonNull Reference condition,
+      @NonNull String meldungsID) {
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     // create a list to hold all single Observation resources, 1 observation per
     // <Genetische_Variante> in Meldung

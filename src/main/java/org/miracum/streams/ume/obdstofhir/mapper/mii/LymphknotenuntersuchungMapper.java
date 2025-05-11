@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -25,23 +24,9 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
   public List<Observation> map(
       HistologieTyp histologie, Reference patient, Reference diagnosis, Reference specimen) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Objects.requireNonNull(diagnosis, "Reference to Primärdiagnose must not be null");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The patient reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            diagnosis.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The diagnose reference should point to a Condition resource");
-    Validate.isTrue(
-        Objects.equals(
-            specimen.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.SPECIMEN.toCode()),
-        "The specimen reference should point to a Specimen resource");
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(diagnosis, ResourceType.Condition);
+    verifyReference(specimen, ResourceType.Specimen);
 
     var result = new ArrayList<Observation>();
 
