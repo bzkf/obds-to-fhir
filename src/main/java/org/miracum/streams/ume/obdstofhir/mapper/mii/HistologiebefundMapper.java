@@ -29,12 +29,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
     Validate.notBlank(meldungsId);
     Objects.requireNonNull(pathologie, "pathologie must not be null");
     Objects.requireNonNull(pathologie.getBefundtext(), "Befundtext must not be null");
-    Objects.requireNonNull(patient, "Reference to Patient must not be null");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
+    verifyReference(patient, ResourceType.Patient);
 
     // DiagnosticReport füllen
     var diagnosticReport = new DiagnosticReport();

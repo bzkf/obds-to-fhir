@@ -30,20 +30,10 @@ public class TodMapper extends ObdsToFhirMapper {
   public List<Observation> map(TodTyp tod, Reference patient, Reference condition) {
     // Validation
     Objects.requireNonNull(tod);
-    Objects.requireNonNull(patient);
-    Objects.requireNonNull(condition);
 
     Validate.notBlank(tod.getAbschlussID(), "Required ABSCHLUSS_ID is unset");
-    Validate.isTrue(
-        Objects.equals(
-            patient.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.PATIENT.toCode()),
-        "The subject reference should point to a Patient resource");
-    Validate.isTrue(
-        Objects.equals(
-            condition.getReferenceElement().getResourceType(),
-            Enumerations.ResourceType.CONDITION.toCode()),
-        "The condition reference should point to a Condition resource");
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var observationList = new ArrayList<Observation>();
 

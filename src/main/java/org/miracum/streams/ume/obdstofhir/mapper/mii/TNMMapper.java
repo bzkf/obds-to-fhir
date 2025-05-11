@@ -34,8 +34,8 @@ public class TNMMapper extends ObdsToFhirMapper {
       Reference primaryConditionReference) {
 
     Objects.requireNonNull(tnm);
-    verifyReference(patientReference, Enumerations.ResourceType.PATIENT);
-    verifyReference(primaryConditionReference, Enumerations.ResourceType.CONDITION);
+    verifyReference(patientReference, ResourceType.Patient);
+    verifyReference(primaryConditionReference, ResourceType.Condition);
 
     var idBase = tnm.getID();
     if (Strings.isBlank(idBase)) {

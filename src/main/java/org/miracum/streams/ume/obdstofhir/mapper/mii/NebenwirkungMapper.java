@@ -25,7 +25,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
       String sourceElementId) {
 
     Objects.requireNonNull(nebenwirkung, "Nebenwirkung must not be null");
-    Objects.requireNonNull(patient, "Reference must not be null");
+    verifyReference(patient, ResourceType.Patient);
 
     var result = new ArrayList<AdverseEvent>();
     if (nebenwirkung.getMengeNebenwirkung() != null) {

@@ -24,8 +24,9 @@ public class OperationMapper extends ObdsToFhirMapper {
   public List<Procedure> map(OPTyp op, Reference subject, Reference condition) {
 
     Objects.requireNonNull(op, "OP must not be null");
-    Objects.requireNonNull(subject, "Reference must not be null");
     Validate.notBlank(op.getOPID(), "Required OP_ID is unset");
+
+    verifyReference(subject, ResourceType.Patient);
 
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();

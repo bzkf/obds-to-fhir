@@ -8,7 +8,6 @@ import de.basisdatensatz.obds.v3.VerlaufTyp;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.Enumerations.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -46,8 +45,8 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
 
   private List<Observation> createObservations(
       List<Fernmetastase> fernmetastasen, String source, Reference patient, Reference diagnose) {
-    verifyReference(patient, ResourceType.PATIENT);
-    verifyReference(diagnose, ResourceType.CONDITION);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(diagnose, ResourceType.Condition);
 
     var result = new ArrayList<Observation>();
     for (int i = 0; i < fernmetastasen.size(); i++) {
