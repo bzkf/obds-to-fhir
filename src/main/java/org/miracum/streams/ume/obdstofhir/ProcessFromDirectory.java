@@ -31,14 +31,11 @@ import org.springframework.stereotype.Service;
     matchIfMissing = false)
 public class ProcessFromDirectory {
   private static final Logger LOG = LoggerFactory.getLogger(ProcessFromDirectory.class);
+  private static final FhirContext fhirContext = FhirContext.forR4();
 
   private ProcessFromDirectoryConfig config;
   private KafkaTemplate<String, IBaseResource> kafkaTemplate;
   private ObdsToFhirBundleMapper mapper;
-  private ObdsMapper obdsMapper;
-
-  private static final FhirContext fhirContext = FhirContext.forR4();
-
   private ObdsMapper obdsV2ToV3Mapper;
 
   public ProcessFromDirectory(
