@@ -43,7 +43,7 @@ jobs:
 
   validate-fhir-resource:
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.2@sha256:af1420104cce03f02015cca27d1b2bf45e9f4d0efc954e77abbf85f967497d81
+    container: ghcr.io/miracum/ig-build-tools:v2.2.5@sha256:ef6ff050a16e9be68ff9633528c897a37ab0d66ea330464d183412a1bc34c545
     needs:
       - extract-mapper-names
     strategy:
