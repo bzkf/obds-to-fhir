@@ -1,0 +1,18 @@
+services:
+  obds-to-fhir:
+    restart: no
+    user: "${USER_ID:-65532}:${GROUP_ID:-65532}"
+    environment:
+      SPRING_PROFILES_ACTIVE: "process-from-directory"
+    volumes:
+      - type: bind
+        source: ${INPUT_DIRECTORY:?}
+        target: /opt/obds-to-fhir/obds-input
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${OUTPUT_DIRECTORY:?}
+        target: /opt/obds-to-fhir/fhir-output
+        bind:
+          create_host_path: false

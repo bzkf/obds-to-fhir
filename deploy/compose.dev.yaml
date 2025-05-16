@@ -27,7 +27,7 @@ services:
       - "no-new-privileges:true"
     environment:
       KAFKA_CFG_NODE_ID: "0"
-      KAFKA_RAFT_CLUSTER_ID: "diz-in-a-box"
+      KAFKA_RAFT_CLUSTER_ID: "obds-to-fhir"
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "0@kafka:9093"
       KAFKA_CFG_PROCESS_ROLES: "controller,broker"
       ALLOW_PLAINTEXT_LISTENER: "yes"
