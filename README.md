@@ -120,3 +120,36 @@ reset topics
 ```sh
 sh reset-topics.sh
 ```
+
+## Image signature and provenance verification
+
+Prerequisites:
+
+- [cosign](https://github.com/sigstore/cosign/releases)
+- [slsa-verifier](https://github.com/slsa-framework/slsa-verifier/releases)
+- [crane](https://github.com/google/go-containerregistry/releases)
+
+All released container images are signed using [cosign](https://github.com/sigstore/cosign) and SLSA Level 3 provenance is available for verification.
+
+```sh
+IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.55
+DIGEST=$(crane digest "${IMAGE}")
+IMAGE_DIGEST_PINNED="ghcr.io/bzkf/obds-to-fhir@${DIGEST}"
+IMAGE_TAG="${IMAGE#*:}"
+
+cosign verify \
+   --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+   --certificate-identity-regexp="https://github.com/miracum/.github/.github/workflows/standard-build.yaml@.*" \
+   --certificate-github-workflow-name="ci" \
+   --certificate-github-workflow-repository="bzkf/obds-to-fhir" \
+   --certificate-github-workflow-trigger="release" \
+   --certificate-github-workflow-ref="refs/tags/${IMAGE_TAG}" \
+   "${IMAGE_DIGEST_PINNED}"
+
+# use `beta` in `--source-branch` when verifying pre-releases
+slsa-verifier verify-image \
+    --source-uri github.com/bzkf/obds-to-fhir \
+    --source-tag ${IMAGE_TAG} \
+    --source-branch master \
+    "${IMAGE_DIGEST_PINNED}"
+```
