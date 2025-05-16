@@ -139,7 +139,7 @@ jobs:
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
           INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
-          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
           mkdir -p "${OUTPUT_DIRECTORY}"
           USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
@@ -163,6 +163,8 @@ jobs:
         if: always()
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
           docker compose \
             -f deploy/compose.yaml \
