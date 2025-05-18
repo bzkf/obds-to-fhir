@@ -70,10 +70,11 @@ public class ConditionMapper extends ObdsToFhirMapper {
             .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
 
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
+    StringType versionElement = null;
     if (StringUtils.hasText(icd10Version)) {
       var matcher = icdVersionPattern.matcher(icd10Version);
       if (matcher.matches()) {
-        icd.setVersion(matcher.group("versionYear"));
+        versionElement = new StringType(matcher.group("versionYear"));
       } else {
         LOG.warn(
             "Primaertumor_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
@@ -83,8 +84,16 @@ public class ConditionMapper extends ObdsToFhirMapper {
     } else {
       LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
     }
-    CodeableConcept code = new CodeableConcept().addCoding(icd);
-    condition.setCode(code);
+
+    if (versionElement == null) {
+      versionElement = new StringType();
+      versionElement.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+    }
+
+    icd.setVersionElement(versionElement);
+
+    condition.setCode(new CodeableConcept(icd));
 
     if (tumorzuordnung.getMorphologieICDO() != null
         && tumorzuordnung.getMorphologieICDO().getCode() != null) {
