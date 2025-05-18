@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -16,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class TNMMapper extends ObdsToFhirMapper {
@@ -38,7 +38,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     verifyReference(primaryConditionReference, ResourceType.Condition);
 
     var idBase = tnm.getID();
-    if (Strings.isBlank(idBase)) {
+    if (!StringUtils.hasText(idBase)) {
       LOG.warn(
           "TNM_ID is unset. Defaulting to Meldung_ID as the identifier for the created Observations");
       idBase = meldungsId;

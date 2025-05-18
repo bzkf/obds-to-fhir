@@ -2,13 +2,13 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.Objects;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class GradingObservationMapper extends ObdsToFhirMapper {
@@ -35,7 +35,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
 
     var identifierValue = histologie.getHistologieID();
-    if (Strings.isBlank(identifierValue)) {
+    if (!StringUtils.hasText(identifierValue)) {
       LOG.warn(
           "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Grading Observation.");
       identifierValue = meldungsId;

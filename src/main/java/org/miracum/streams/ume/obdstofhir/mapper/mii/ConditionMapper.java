@@ -64,14 +64,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
-    Coding icd =
-        new Coding(
-            fhirProperties.getSystems().getIcd10gm(),
-            tumorzuordnung.getPrimaertumorICD().getCode(),
-            "");
+    var icd =
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getIcd10gm())
+            .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
 
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
-    if (StringUtils.hasLength(icd10Version)) {
+    if (StringUtils.hasText(icd10Version)) {
       var matcher = icdVersionPattern.matcher(icd10Version);
       if (matcher.matches()) {
         icd.setVersion(matcher.group("versionYear"));
