@@ -64,7 +64,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
 
     // code patholopgy-report
     var pathologyReport =
-        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "22034-3", ""));
+        new CodeableConcept(fhirProperties.getCodings().loinc().setCode("22034-3"));
     diagnosticReport.setCode(pathologyReport);
 
     // Subject

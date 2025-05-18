@@ -12,7 +12,9 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "code": "59847-4"
+      "version": "2.80",
+      "code": "59847-4",
+      "display": "Histology and Behavior ICD-O-3 Cancer"
     } ]
   },
   "subject": {

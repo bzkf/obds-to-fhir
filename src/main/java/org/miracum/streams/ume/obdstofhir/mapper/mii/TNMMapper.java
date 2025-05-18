@@ -297,7 +297,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var extension = getCpPraefixExtension(cpuPraefixT);
 
-    var codeCoding = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    var codeCoding = fhirProperties.getCodings().snomed();
     switch (cpuPraefixT) {
       case null: // xml specifies: Das Weglassen des Prefix wird als "c" interpretiert
       case "u":
@@ -324,7 +324,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var extension = getCpPraefixExtension(cpuPraefixN);
 
-    var codeCoding = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    var codeCoding = fhirProperties.getCodings().snomed();
     switch (cpuPraefixN) {
       case "c":
         codeCoding.setCode("399534004").setDisplay("cN category (observable entity)");
@@ -348,7 +348,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var extension = getCpPraefixExtension(cpuPraefixM);
 
-    var codeCoding = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    var codeCoding = fhirProperties.getCodings().snomed();
     switch (cpuPraefixM) {
       case "c":
         codeCoding.setCode("399387003").setDisplay("cM category (observable entity)");
@@ -429,9 +429,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private CodeableConcept getCodeableConceptSnomed(String snomedCode) {
-
-    return new CodeableConcept(
-        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode(snomedCode));
+    return new CodeableConcept(fhirProperties.getCodings().snomed().setCode(snomedCode));
   }
 
   private CodeableConcept getCodeableConceptTnmUicc(String tnmValue) {
@@ -441,8 +439,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private CodeableConcept getCodeableConceptLoinc(String loincCode) {
-    return new CodeableConcept(
-        new Coding().setSystem(fhirProperties.getSystems().getLoinc()).setCode(loincCode));
+    return new CodeableConcept(fhirProperties.getCodings().loinc().setCode(loincCode));
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {
@@ -509,7 +506,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private CodeableConcept getGroupingObservationCode(String observationType) {
-    var groupingObservationCode = new Coding().setSystem(fhirProperties.getSystems().getSnomed());
+    var groupingObservationCode = fhirProperties.getCodings().snomed();
 
     switch (observationType) {
       case "clinical":

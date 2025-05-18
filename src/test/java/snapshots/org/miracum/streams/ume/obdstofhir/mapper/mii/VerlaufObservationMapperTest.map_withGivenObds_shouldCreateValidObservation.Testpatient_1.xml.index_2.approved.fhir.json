@@ -12,6 +12,7 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
       "code": "396432002",
       "display": "Status of regression of tumor (observable entity)"
     } ]
@@ -34,6 +35,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
         "code": "277062004",
         "display": "Status des Residualtumors"
       } ]
@@ -49,6 +51,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
         "code": "399656008",
         "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
       } ]
@@ -64,6 +67,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
         "code": "399608002",
         "display": "Status of distant metastasis (observable entity)"
       } ]

@@ -64,7 +64,12 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
       // Code
       var code =
-          new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "59847-4", ""));
+          new CodeableConcept(
+              fhirProperties
+                  .getCodings()
+                  .loinc()
+                  .setCode("59847-4")
+                  .setDisplay("Histology and Behavior ICD-O-3 Cancer"));
       observation.setCode(code);
 
       // subject

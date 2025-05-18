@@ -6,6 +6,16 @@ app:
 fhir:
   default:
     baseSystemUrl: "https://bzkf.github.io/obds-to-fhir/identifiers"
+  codings:
+    loinc:
+      system: "${fhir.systems.loinc}"
+      version: "2.80"
+    snomed:
+      system: "${fhir.systems.snomed}"
+      version: "http://snomed.info/sct/900000000000207008/version/20250501"
+    ops:
+      system: "${fhir.systems.ops}"
+      version: "2025"
   extensions:
     fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
     opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"

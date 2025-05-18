@@ -62,9 +62,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     // code
     var code =
-        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "33732-9", ""));
-    var coding = new Coding(fhirProperties.getSystems().getSnomed(), "371469007", "");
-    code.addCoding(coding);
+        new CodeableConcept()
+            .addCoding(fhirProperties.getCodings().loinc().setCode("33732-9"))
+            .addCoding(fhirProperties.getCodings().snomed().setCode("371469007"));
     observation.setCode(code);
 
     // subject

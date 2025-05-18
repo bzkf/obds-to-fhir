@@ -9,7 +9,9 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "code": "84892-9"
+      "version": "2.80",
+      "code": "84892-9",
+      "display": "Residual tumor classification [Type] in Cancer specimen"
     } ]
   },
   "subject": {

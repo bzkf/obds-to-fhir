@@ -62,8 +62,13 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     observation.setValue(value);
 
     // See: https://loinc.org/84892-9/
-    var code = new CodeableConcept();
-    code.addCoding().setSystem(fhirProperties.getSystems().getLoinc()).setCode("84892-9");
+    var code =
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .loinc()
+                .setCode("84892-9")
+                .setDisplay("Residual tumor classification [Type] in Cancer specimen"));
     observation.setCode(code);
 
     // Status - always final

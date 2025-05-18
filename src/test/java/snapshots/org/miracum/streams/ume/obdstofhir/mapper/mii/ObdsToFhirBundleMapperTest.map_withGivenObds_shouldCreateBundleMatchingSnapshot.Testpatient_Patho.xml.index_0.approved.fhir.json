@@ -79,7 +79,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -127,9 +129,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "33732-9"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371469007"
         } ]
       },
@@ -176,9 +180,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "443527007"
         } ]
       },
@@ -225,9 +231,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "444025001"
         } ]
       },
@@ -274,9 +282,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "92832-5"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "1264491009"
         } ]
       },
@@ -323,9 +333,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "85347-3"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "444411008"
         } ]
       },
@@ -366,7 +378,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "385421009"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385421009",
+          "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -409,6 +423,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "69548-6"
         } ]
       },
@@ -455,6 +470,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "69548-6"
         } ]
       },
@@ -505,6 +521,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -558,6 +575,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
@@ -611,6 +629,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371497001",
           "display": "pM category (observable entity)"
         } ]
@@ -655,6 +674,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "42030-7"
         } ]
       },
@@ -698,6 +718,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "395715009"
         } ]
       },
@@ -741,6 +762,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371513001"
         } ]
       },
@@ -784,6 +806,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "101659-1"
         } ]
       },
@@ -797,6 +820,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "421188008"
         } ]
       },
@@ -827,6 +851,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371493002"
         } ]
       },
@@ -870,6 +895,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "101658-3"
         } ]
       },
@@ -883,6 +909,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "421755005"
         } ]
       },
@@ -913,6 +940,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399588009",
           "display": "Pathologic TNM stage grouping"
         } ]
@@ -974,6 +1002,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "22034-3"
         } ]
       },
@@ -1011,6 +1040,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "69548-6"
         } ]
       },
@@ -1057,6 +1087,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "69548-6"
         } ]
       },
@@ -1095,6 +1126,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "22034-3"
         } ]
       },
@@ -1149,7 +1181,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -1197,9 +1231,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "33732-9"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371469007"
         } ]
       },
@@ -1237,6 +1273,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "22034-3"
         } ]
       },
