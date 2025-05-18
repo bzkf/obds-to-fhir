@@ -63,8 +63,18 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // code
     var code =
         new CodeableConcept()
-            .addCoding(fhirProperties.getCodings().loinc().setCode("33732-9"))
-            .addCoding(fhirProperties.getCodings().snomed().setCode("371469007"));
+            .addCoding(
+                fhirProperties
+                    .getCodings()
+                    .loinc()
+                    .setCode("33732-9")
+                    .setDisplay("Histology grade [Identifier] in Cancer specimen"))
+            .addCoding(
+                fhirProperties
+                    .getCodings()
+                    .snomed()
+                    .setCode("371469007")
+                    .setDisplay("Histologic grade of neoplasm (observable entity)"));
     observation.setCode(code);
 
     // subject
