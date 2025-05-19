@@ -11,7 +11,9 @@ import de.basisdatensatz.obds.v2.ADTGEKID;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
 import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
 
   private final XmlMapper mapper;
