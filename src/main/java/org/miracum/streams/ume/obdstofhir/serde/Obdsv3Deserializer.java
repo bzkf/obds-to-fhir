@@ -3,6 +3,7 @@ package org.miracum.streams.ume.obdstofhir.serde;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -25,7 +26,23 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
             .addModule(new JakartaXmlBindAnnotationModule())
             .addModule(new Jdk8Module())
             .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
+            .addHandler(new SchemaLocationPropertyHandler())
             .build();
+  }
+
+  private class SchemaLocationPropertyHandler extends DeserializationProblemHandler {
+    @Override
+    public boolean handleUnknownProperty(
+        DeserializationContext ctxt,
+        JsonParser p,
+        JsonDeserializer<?> deserializer,
+        Object beanOrClass,
+        String propertyName) {
+      if (propertyName.equals("schemaLocation")) {
+        return true; // Ignore the schemaLocation property
+      }
+      return false; // Let the default handler take care of other unknown properties
+    }
   }
 
   @Override
