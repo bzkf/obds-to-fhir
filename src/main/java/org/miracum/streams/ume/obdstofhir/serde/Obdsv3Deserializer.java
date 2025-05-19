@@ -30,7 +30,7 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
             .build();
   }
 
-  private class SchemaLocationPropertyHandler extends DeserializationProblemHandler {
+  private static class SchemaLocationPropertyHandler extends DeserializationProblemHandler {
     @Override
     public boolean handleUnknownProperty(
         DeserializationContext ctxt,
@@ -38,10 +38,9 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
         JsonDeserializer<?> deserializer,
         Object beanOrClass,
         String propertyName) {
-      if (propertyName.equals("schemaLocation")) {
-        return true; // Ignore the schemaLocation property
-      }
-      return false; // Let the default handler take care of other unknown properties
+      // returning true here means that we handled the unknown property
+      // returning false let's the default handler take care of other unknown properties
+      return propertyName.equals("schemaLocation");
     }
   }
 
