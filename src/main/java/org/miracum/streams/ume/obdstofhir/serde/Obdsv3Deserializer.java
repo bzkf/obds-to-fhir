@@ -32,6 +32,10 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
 
     String xml = jsonParser.getValueAsString();
 
+    return deserializeAsObdsOrAdt(xml);
+  }
+
+  public ObdsOrAdt deserializeAsObdsOrAdt(String xml) throws IOException {
     if (xml == null || xml.trim().isEmpty()) {
       return new ObdsOrAdt(null, null);
     }
