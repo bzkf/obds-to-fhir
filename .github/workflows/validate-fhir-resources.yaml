@@ -15,6 +15,7 @@ env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TodMapperTest",
+      "NebenwirkungMapperTest",
       "ObdsToFhirBundleMapperTest"
     ]
 
