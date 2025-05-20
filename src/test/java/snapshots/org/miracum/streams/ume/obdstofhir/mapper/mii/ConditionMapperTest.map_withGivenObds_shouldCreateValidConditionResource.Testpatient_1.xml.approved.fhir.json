@@ -48,6 +48,12 @@
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
       "code": "R"
     } ]
+  }, {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "code": "24028007",
+      "display": "Right (qualifier value)"
+    } ]
   } ],
   "subject": {
     "reference": "Patient/1"
