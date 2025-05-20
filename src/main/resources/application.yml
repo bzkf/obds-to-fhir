@@ -151,7 +151,7 @@ fhir:
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.onkologie
       mii-onkologie: "|2025.0.4"
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.medikation
-      mii-medikation: "|2025.0.4"
+      mii-medikation: "|2025.0.0"
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert${fhir.profiles.versions.mii-person}"
     mii-pr-medication-statement: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement${fhir.profiles.versions.mii-medikation}"
     mii-pr-onko-operation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation${fhir.profiles.versions.mii-onkologie}"
