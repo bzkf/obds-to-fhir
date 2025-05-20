@@ -16,6 +16,7 @@ env:
     [
       "TodMapperTest",
       "NebenwirkungMapperTest",
+      "ConditionMapperTest",
       "ObdsToFhirBundleMapperTest"
     ]
 
