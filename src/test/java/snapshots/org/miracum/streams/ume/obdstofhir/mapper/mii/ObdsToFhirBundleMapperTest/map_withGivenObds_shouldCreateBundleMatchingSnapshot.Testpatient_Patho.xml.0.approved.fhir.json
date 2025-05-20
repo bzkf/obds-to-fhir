@@ -80,6 +80,12 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "R"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "24028007",
+          "display": "Right (qualifier value)"
+        } ]
       } ],
       "subject": {
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
@@ -1121,6 +1127,12 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
+        } ]
       } ],
       "subject": {
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
@@ -1299,6 +1311,12 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "L"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "7771000",
+          "display": "Left (qualifier value)"
         } ]
       } ],
       "subject": {
