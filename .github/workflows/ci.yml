@@ -138,10 +138,15 @@ jobs:
       - name: Run obds-to-fhir
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
-          USER_ID="$(id -u)" GROUP_ID="$(id -g)" docker compose \
+          mkdir -p "${OUTPUT_DIRECTORY}"
+          USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
+            docker compose \
+            -f deploy/compose.yaml \
             -f tests/compose/compose.yaml \
-            -f tests/compose/compose.process-from-directory.yaml \
+            -f deploy/compose.process-from-directory.yaml \
             run obds-to-fhir
 
       - name: Make sure the FHIR bundles appear in the output dir
@@ -158,8 +163,13 @@ jobs:
         if: always()
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
-          docker compose -f tests/compose/compose.yaml -f tests/compose/compose.process-from-directory.yaml logs
+          docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml logs
 
   test:
     name: run k8s smoke test

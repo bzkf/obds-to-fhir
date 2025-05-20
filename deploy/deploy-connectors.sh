@@ -23,5 +23,5 @@ curl -X POST \
     "transforms.ValueToKey.fields": "ID",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": "false"
-      }
+  }
 }'

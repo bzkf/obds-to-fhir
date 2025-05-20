@@ -76,6 +76,21 @@
             ]
           },
           {
+            "files": ["README.md", "deploy/compose.yaml"],
+            "from": "ghcr.io/bzkf/obds-to-fhir:v.*",
+            "to": "ghcr.io/bzkf/obds-to-fhir:v${nextRelease.version}",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true
+              },
+              {
+                "file": "deploy/compose.yaml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
             "files": ["build.gradle"],
             "from": "version = '.*'",
             "to": "version = '${nextRelease.version}'",
@@ -103,7 +118,12 @@
     [
       "@semantic-release/git",
       {
-        "assets": ["src/main/resources/application.yml", "build.gradle"]
+        "assets": [
+          "src/main/resources/application.yml",
+          "build.gradle",
+          "README.md",
+          "deploy/compose.yaml"
+        ]
       }
     ]
   ]
