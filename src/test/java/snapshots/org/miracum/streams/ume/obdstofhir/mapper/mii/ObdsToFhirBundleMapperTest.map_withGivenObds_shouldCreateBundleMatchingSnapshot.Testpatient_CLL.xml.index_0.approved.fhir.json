@@ -89,6 +89,12 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
+        } ]
       } ],
       "subject": {
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"

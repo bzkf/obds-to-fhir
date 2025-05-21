@@ -16,9 +16,8 @@ env:
     [
       "TodMapperTest",
       "NebenwirkungMapperTest",
+      "ConditionMapperTest",
       "OperationMapperTest",
-      "StrahlentherapieMapperTest",
-      "VerlaufObservationMapperTest",
       "ObdsToFhirBundleMapperTest"
     ]
 

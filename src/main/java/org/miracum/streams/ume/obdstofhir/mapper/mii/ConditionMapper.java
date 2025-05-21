@@ -2,9 +2,9 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -23,9 +23,31 @@ public class ConditionMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
   private static final Pattern icdVersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+  private final HashMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
   public ConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
+
+    var snomed = fhirProperties.getSystems().getSnomed();
+    seitenlokalisationToSnomedLookup =
+        new HashMap<>() {
+          {
+            put(SeitenlokalisationTyp.L, new Coding(snomed, "7771000", "Left (qualifier value)"));
+            put(SeitenlokalisationTyp.R, new Coding(snomed, "24028007", "Right (qualifier value)"));
+            put(
+                SeitenlokalisationTyp.B,
+                new Coding(snomed, "51440002", "Right and left (qualifier value)"));
+            put(
+                SeitenlokalisationTyp.M,
+                new Coding(snomed, "260528009", "Median (qualifier value)"));
+            put(
+                SeitenlokalisationTyp.T,
+                new Coding(snomed, "385432009", "Not applicable (qualifier value)"));
+            put(
+                SeitenlokalisationTyp.U,
+                new Coding(snomed, "261665006", "Unknown (qualifier value)"));
+          }
+        };
   }
 
   public Condition map(
@@ -101,8 +123,6 @@ public class ConditionMapper extends ObdsToFhirMapper {
           morphologie);
     }
 
-    List<CodeableConcept> bodySite = new ArrayList<>();
-
     if (meldung.getDiagnose().getPrimaertumorTopographieICDO() != null) {
       CodeableConcept topographie =
           new CodeableConcept(
@@ -110,7 +130,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
                   .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
                   .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
                   .setVersion(meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
-      bodySite.add(topographie);
+      condition.addBodySite(topographie);
     }
 
     if (tumorzuordnung.getSeitenlokalisation() != null) {
@@ -119,9 +139,18 @@ public class ConditionMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
                   .setCode(tumorzuordnung.getSeitenlokalisation().value()));
-      bodySite.add(seitenlokalisation);
+      condition.addBodySite(seitenlokalisation);
+
+      var snomedBodySite =
+          seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());
+      if (snomedBodySite != null) {
+        condition.addBodySite(new CodeableConcept(snomedBodySite));
+      } else {
+        LOG.warn(
+            "Seitenlokalisation {} not found in lookup table. No Snomed code will be added.",
+            tumorzuordnung.getSeitenlokalisation());
+      }
     }
-    condition.setBodySite(bodySite);
 
     convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
         .ifPresent(
