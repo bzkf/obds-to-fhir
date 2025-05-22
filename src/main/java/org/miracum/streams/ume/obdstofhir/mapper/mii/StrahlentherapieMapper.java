@@ -133,17 +133,18 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     if (allMetabolic) {
       var category =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSnomed())
+          fhirProperties
+              .getCodings()
+              .snomed()
               .setCode("399315003")
               .setDisplay("Radionuclide therapy (procedure)");
       procedure.setCategory(new CodeableConcept(category));
 
       var code =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getOps())
+          fhirProperties
+              .getCodings()
+              .ops()
               .setCode("8-53")
-              .setVersion("2025")
               .setDisplay("Nuklearmedizinische Therapie");
       procedure.setCode(new CodeableConcept(code));
     } else {
@@ -154,18 +155,14 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       }
 
       var category =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSnomed())
+          fhirProperties
+              .getCodings()
+              .snomed()
               .setCode("1287742003")
               .setDisplay("Radiotherapy (procedure)");
       procedure.setCategory(new CodeableConcept(category));
 
-      var code =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getOps())
-              .setCode("8-52")
-              .setVersion("2025")
-              .setDisplay("Strahlentherapie");
+      var code = fhirProperties.getCodings().ops().setCode("8-52").setDisplay("Strahlentherapie");
       procedure.setCode(new CodeableConcept(code));
     }
 

@@ -12,7 +12,9 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "184305005"
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "184305005",
+      "display": "Cause of death (observable entity)"
     } ]
   },
   "subject": {

@@ -9,6 +9,7 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
       "code": "385377005",
       "display": "Gleason grade finding for prostatic cancer (finding)"
     } ]
@@ -27,6 +28,7 @@
         "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
       "code": "57403001"
     } ],
     "text": "7b"
@@ -34,6 +36,7 @@
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
@@ -42,6 +45,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
         "code": "384994009",
         "display": "Primary Gleason pattern"
       } ]
@@ -51,6 +55,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
         "code": "384995005",
         "display": "Secondary Gleason pattern"
       } ]

@@ -126,8 +126,9 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
     // Code
     var code =
-        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), loincCode, ""));
-    code.addCoding(new Coding(fhirProperties.getSystems().getSnomed(), snomedCode, ""));
+        new CodeableConcept()
+            .addCoding(fhirProperties.getCodings().loinc().setCode(loincCode))
+            .addCoding(fhirProperties.getCodings().snomed().setCode(snomedCode));
     observation.setCode(code);
 
     // Subject

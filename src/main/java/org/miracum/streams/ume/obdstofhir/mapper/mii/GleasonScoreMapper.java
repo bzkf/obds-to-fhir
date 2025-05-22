@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationComponentComponent;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class GleasonScoreMapper extends ObdsToFhirMapper {
@@ -93,8 +93,9 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
     observation.setCode(
         new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getSnomed())
+            fhirProperties
+                .getCodings()
+                .snomed()
                 .setCode("385377005")
                 .setDisplay("Gleason grade finding for prostatic cancer (finding)")));
 
@@ -102,23 +103,30 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       var coding =
           switch (modulProstata.getAnlassGleasonScore()) {
             case O ->
-                new Coding(
-                    fhirProperties.getSystems().getSnomed(), "65801008", "Excision (procedure)");
+                fhirProperties
+                    .getCodings()
+                    .snomed()
+                    .setCode("65801008")
+                    .setDisplay("Excision (procedure)");
             case S ->
-                new Coding(
-                    fhirProperties.getSystems().getSnomed(), "86273004", "Biopsy (procedure)");
+                fhirProperties
+                    .getCodings()
+                    .snomed()
+                    .setCode("86273004")
+                    .setDisplay("Biopsy (procedure)");
             case U ->
-                new Coding(
-                    fhirProperties.getSystems().getSnomed(),
-                    "261665006",
-                    "Unknown (qualifier value)");
+                fhirProperties
+                    .getCodings()
+                    .snomed()
+                    .setCode("261665006")
+                    .setDisplay("Unknown (qualifier value)");
           };
 
       observation.setMethod(new CodeableConcept(coding));
     }
 
     var scoreErgebnis = modulProstata.getGleasonScore().getScoreErgebnis();
-    if (Strings.isBlank(scoreErgebnis)) {
+    if (!StringUtils.hasText(scoreErgebnis)) {
       LOG.warn(
           "Gleason score ergebnis is missing. "
               + "Attempting to reconstruct from the primary and secondary patterns.");
@@ -169,8 +177,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     }
 
     var scoreSnomed = GLEASON_SCORE_TO_SNOMED.get(scoreErgebnis);
-    var scoreCoding =
-        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode(scoreSnomed);
+    var scoreCoding = fhirProperties.getCodings().snomed().setCode(scoreSnomed);
 
     var gleasonScoreNumeric = matcher.group(1);
     scoreCoding.addExtension(
@@ -205,11 +212,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
   private ObservationComponentComponent createGleasonScoreComponent(
       String value, String code, String display) {
-    var coding =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getSnomed())
-            .setCode(code)
-            .setDisplay(display);
+    var coding = fhirProperties.getCodings().snomed().setCode(code).setDisplay(display);
     return new ObservationComponentComponent()
         .setCode(new CodeableConcept(coding))
         .setValue(new IntegerType(value));

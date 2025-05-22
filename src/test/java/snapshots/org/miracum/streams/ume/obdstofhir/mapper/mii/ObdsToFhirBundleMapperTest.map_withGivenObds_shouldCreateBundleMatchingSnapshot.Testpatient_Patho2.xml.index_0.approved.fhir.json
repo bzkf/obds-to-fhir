@@ -79,7 +79,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -127,10 +129,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -167,6 +173,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "385377005",
           "display": "Gleason grade finding for prostatic cancer (finding)"
         } ]
@@ -185,6 +192,7 @@
             "valueDecimal": 9
           } ],
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "58925000"
         } ],
         "text": "9"
@@ -192,6 +200,7 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "65801008",
           "display": "Excision (procedure)"
         } ]
@@ -200,6 +209,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384994009",
             "display": "Primary Gleason pattern"
           } ]
@@ -209,6 +219,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384995005",
             "display": "Secondary Gleason pattern"
           } ]
@@ -233,7 +244,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "22034-3"
+          "version": "2.80",
+          "code": "22034-3",
+          "display": "Pathology report Cancer Narrative"
         } ]
       },
       "subject": {

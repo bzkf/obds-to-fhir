@@ -115,7 +115,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -179,7 +181,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -227,10 +231,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -270,6 +278,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -316,6 +325,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399504009",
           "display": "cT category (observable entity)"
         } ]
@@ -369,6 +379,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -422,6 +433,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -466,6 +478,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399537006",
           "display": "Clinical TNM stage grouping"
         } ]
@@ -527,6 +540,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -580,6 +594,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -633,6 +648,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -677,6 +693,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399588009",
           "display": "Pathologic TNM stage grouping"
         } ]
@@ -738,6 +755,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -780,7 +798,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "84892-9"
+          "version": "2.80",
+          "code": "84892-9",
+          "display": "Residual tumor classification [Type] in Cancer specimen"
         } ]
       },
       "subject": {
@@ -843,7 +863,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -891,10 +913,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -943,6 +969,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -987,6 +1014,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399390009",
           "display": "TNM stage grouping"
         } ]

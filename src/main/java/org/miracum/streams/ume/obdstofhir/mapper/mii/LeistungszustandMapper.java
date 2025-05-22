@@ -69,7 +69,12 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     observation.setCode(
         new CodeableConcept(
-            new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("423740007")));
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("423740007")
+                .setDisplay(
+                    "Eastern Cooperative Oncology Group performance status (observable entity)")));
 
     observation.setEffective(effective);
 

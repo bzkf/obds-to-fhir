@@ -12,7 +12,9 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "code": "385421009"
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "385421009",
+      "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
     } ]
   },
   "subject": {

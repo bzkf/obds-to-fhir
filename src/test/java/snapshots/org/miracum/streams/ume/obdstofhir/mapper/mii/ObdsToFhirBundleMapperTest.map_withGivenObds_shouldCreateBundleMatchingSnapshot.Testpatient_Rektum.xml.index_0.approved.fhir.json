@@ -115,7 +115,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -179,7 +181,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -227,10 +231,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -279,6 +287,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399504009",
           "display": "cT category (observable entity)"
         } ]
@@ -332,6 +341,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -385,6 +395,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -429,6 +440,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399537006",
           "display": "Clinical TNM stage grouping"
         } ]
@@ -571,6 +583,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -625,6 +638,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -667,7 +681,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "84892-9"
+          "version": "2.80",
+          "code": "84892-9",
+          "display": "Residual tumor classification [Type] in Cancer specimen"
         } ]
       },
       "subject": {
@@ -727,7 +743,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -775,10 +793,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -824,9 +846,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "443527007"
         } ]
       },
@@ -873,9 +897,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "444025001"
         } ]
       },
@@ -925,6 +951,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -978,6 +1005,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
@@ -1031,6 +1059,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -1075,6 +1104,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "42030-7"
         } ]
       },
@@ -1118,6 +1148,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "395715009"
         } ]
       },
@@ -1161,6 +1192,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371513001"
         } ]
       },
@@ -1204,6 +1236,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371493002"
         } ]
       },
@@ -1247,6 +1280,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399390009",
           "display": "TNM stage grouping"
         } ]
@@ -1389,12 +1423,14 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "18629005"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2025",
           "code": "8-54"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
@@ -1562,6 +1598,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]

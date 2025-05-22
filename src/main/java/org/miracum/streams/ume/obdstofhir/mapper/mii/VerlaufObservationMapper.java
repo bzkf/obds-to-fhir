@@ -47,10 +47,11 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     // Code
     observation.setCode(
         new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getSnomed(),
-                "396432002",
-                "Status of regression of tumor (observable entity)")));
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("396432002")
+                .setDisplay("Status of regression of tumor (observable entity)")));
 
     // Subject
     observation.setSubject(patient);
@@ -73,10 +74,11 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
           new Observation.ObservationComponentComponent()
               .setCode(
                   new CodeableConcept(
-                      new Coding(
-                          fhirProperties.getSystems().getSnomed(),
-                          "277062004",
-                          "Status des Residualtumors")))
+                      fhirProperties
+                          .getCodings()
+                          .snomed()
+                          .setCode("277062004")
+                          .setDisplay("Status des Residualtumors")))
               .setValue(
                   new CodeableConcept(
                       new Coding(
@@ -93,10 +95,12 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
           new Observation.ObservationComponentComponent()
               .setCode(
                   new CodeableConcept(
-                      new Coding(
-                          fhirProperties.getSystems().getSnomed(),
-                          "399656008",
-                          "Status of tumor metastasis to regional lymph nodes (observable entity)")))
+                      fhirProperties
+                          .getCodings()
+                          .snomed()
+                          .setCode("399656008")
+                          .setDisplay(
+                              "Status of tumor metastasis to regional lymph nodes (observable entity)")))
               .setValue(
                   new CodeableConcept(
                       new Coding(
@@ -114,10 +118,11 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
           new Observation.ObservationComponentComponent()
               .setCode(
                   new CodeableConcept(
-                      new Coding(
-                          fhirProperties.getSystems().getSnomed(),
-                          "399608002",
-                          "Status of distant metastasis (observable entity)")))
+                      fhirProperties
+                          .getCodings()
+                          .snomed()
+                          .setCode("399608002")
+                          .setDisplay("Status of distant metastasis (observable entity)")))
               .setValue(
                   new CodeableConcept(
                       new Coding(

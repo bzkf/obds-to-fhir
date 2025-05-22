@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir;
 
 import lombok.Data;
+import org.hl7.fhir.r4.model.Coding;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,6 +14,22 @@ public class FhirProperties {
   private FhirDisplay display;
   private FhirProfiles profiles;
   private FhirUrl url;
+  private Codings codings;
+
+  public static record Codings(Coding loinc, Coding snomed, Coding ops) {
+    public Coding loinc() {
+      // return a fresh copy, otherwise the original instance will be modified
+      return loinc.copy();
+    }
+
+    public Coding snomed() {
+      return snomed.copy();
+    }
+
+    public Coding ops() {
+      return ops.copy();
+    }
+  }
 
   @Data
   public static class FhirExtensions {

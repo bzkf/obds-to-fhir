@@ -66,7 +66,12 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       // Code
       observation.setCode(
           new CodeableConcept(
-              new Coding(fhirProperties.getSystems().getSnomed(), "385421009", "")));
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("385421009")
+                  .setDisplay(
+                      "Anatomic location of metastatic spread of malignant neoplasm (observable entity)")));
       // Subject
       observation.setSubject(patient);
       // Fokus

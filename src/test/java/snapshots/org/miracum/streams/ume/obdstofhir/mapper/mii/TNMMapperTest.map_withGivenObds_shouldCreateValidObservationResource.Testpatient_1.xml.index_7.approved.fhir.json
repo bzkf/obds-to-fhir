@@ -21,6 +21,7 @@
     } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
       "code": "371497001",
       "display": "pM category (observable entity)"
     } ]

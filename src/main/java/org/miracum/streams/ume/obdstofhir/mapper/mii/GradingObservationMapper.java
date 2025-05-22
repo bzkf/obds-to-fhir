@@ -2,13 +2,13 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.Objects;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class GradingObservationMapper extends ObdsToFhirMapper {
@@ -35,7 +35,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
 
     var identifierValue = histologie.getHistologieID();
-    if (Strings.isBlank(identifierValue)) {
+    if (!StringUtils.hasText(identifierValue)) {
       LOG.warn(
           "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Grading Observation.");
       identifierValue = meldungsId;
@@ -62,9 +62,19 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     // code
     var code =
-        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "33732-9", ""));
-    var coding = new Coding(fhirProperties.getSystems().getSnomed(), "371469007", "");
-    code.addCoding(coding);
+        new CodeableConcept()
+            .addCoding(
+                fhirProperties
+                    .getCodings()
+                    .loinc()
+                    .setCode("33732-9")
+                    .setDisplay("Histology grade [Identifier] in Cancer specimen"))
+            .addCoding(
+                fhirProperties
+                    .getCodings()
+                    .snomed()
+                    .setCode("371469007")
+                    .setDisplay("Histologic grade of neoplasm (observable entity)"));
     observation.setCode(code);
 
     // subject
