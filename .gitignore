@@ -70,3 +70,5 @@ node_modules/
 src/generated/
 
 .approval_tests_temp
+
+gx/**/*.json
