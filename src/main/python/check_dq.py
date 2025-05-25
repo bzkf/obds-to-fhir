@@ -1,14 +1,14 @@
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import great_expectations as gx
+import pandas as pd
 from great_expectations.checkpoint import UpdateDataDocsAction
 from loguru import logger
-import pandas as pd
 from pathling import Expression as exp
 from pathling import PathlingContext
-from pyspark.sql.functions import concat, lit, col
+from pyspark.sql.functions import concat, lit
 
 pc = PathlingContext.create(enable_extensions=True)
 
@@ -36,21 +36,26 @@ patients = data.extract(
 
 patients.show(truncate=False)
 
+ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+ASSERTED_DATE_EXTENSION = (
+    "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+)
+
 conditions = data.extract(
     "Condition",
     columns=[
         exp("id", "condition_id"),
         exp(
-            "code.coding.where(system='http://fhir.de/CodeSystem/bfarm/icd-10-gm').code",
+            f"code.coding.where(system='{ICD_10_GM_SYSTEM}').code",
             "icd_code",
         ),
         exp(
-            "code.coding.where(system='http://fhir.de/CodeSystem/bfarm/icd-10-gm').version",
+            "code.coding.where(system='{ICD_10_GM_SYSTEM}').version",
             "icd_version",
         ),
         exp("subject.reference", "subject_reference"),
         exp(
-            "extension('http://hl7.org/fhir/StructureDefinition/condition-assertedDate').valueDateTime",
+            f"extension('{ASSERTED_DATE_EXTENSION}').valueDateTime",
             "asserted_date",
         ),
         exp("recordedDate", "recorded_date"),
@@ -200,7 +205,8 @@ site_config = {
 
 # this only has to be done once, after that the site is persisted to the file system.
 # and otherwise you also get:
-# InvalidKeyError: Data Docs Site `obds_to_fhir_data_docs_site` already exists in the Data Context.
+# InvalidKeyError: Data Docs Site `obds_to_fhir_data_docs_site` already exists
+# in the Data Context.
 # gx_context.add_data_docs_site(site_name=site_name, site_config=site_config)
 
 gx_context.update_data_docs_site(
