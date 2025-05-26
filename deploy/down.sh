@@ -1,2 +1,2 @@
 #!/bin/sh
-docker compose down -v
+docker compose -f compose.dev.yaml down -v

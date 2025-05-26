@@ -7,34 +7,72 @@ This project maps [oBDS XML reports](https://www.basisdatensatz.de/basisdatensat
 
 ## Getting Started
 
+### Kubernetes
+
+To deploy to Kubernetes, we recommend the [stream-processors](https://github.com/miracum/charts/tree/master/charts/stream-processors) Helm chart.
+See the [values.yaml](tests/k8s/values.yaml) as a reference. Of course, using a basic Deployment or StatefulSet manifest works just as well.
+
+### Compose
+
 Prerequisites:
 
 - Container Runtime (Docker >= v28.0.1, containerd >= v1.7.25, Podman >= v5.4.1)
-- Plugin to run [Compose files](https://www.compose-spec.io/) (docker compose, nerdctl, podman-compose)
+- Plugin to run [Compose files](https://www.compose-spec.io/), i.e. docker compose, nerdctl, or podman-compose.
 
-Obds-to-fhir can be configured to either read oBDS XMLs from a filesystem directory or from an ONKOSTAR database table.
+Obds-to-fhir can be configured to either read oBDS XMLs from a filesystem directory or from an ONKOSTAR database table by leveraging [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html).
 
-### Reading oBDS XML from a directory
+#### Reading oBDS XML from a directory
 
 > [!NOTE]
-> This requires the oBDS XMLs to be in version 3 format.
+> This assumes that one oBDS XML in the input folder contains all individual `Meldungen` of a single patient.
+> This is necessary because in order to correctly set `Patient.deceased` in the FHIR resource,
+> all `Meldungen` have to be processed and checked for the ones of type `Tod` when creating the Bundle.
 
 A configuration profile called `process-from-directory` exists, which configures the application to read oBDS XMLs from
 a directory called `/opt/obds-to-fhir/obds-input` inside the container, map them to FHIR resources and write the output
 bundles to both `/opt/obds-to-fhir/fhir-output` and a Kafka topic called `fhir.obds`: [application-process-from-directory.yml](src/main/resources/application-process-from-directory.yml).
 
-See [compose.yaml](tests/compose/compose.yaml) and [compose.process-from-directory.yaml](tests/compose/compose.process-from-directory.yaml)
-for an example configuration used as part of the integration tests.
+Here's how you can run the application this way:
 
-### Reading oBDS XML from an ONKOSTAR database
+```sh
+mkdir fhir-output/
 
-<!--TODO-->
+INPUT_DIRECTORY="../src/test/resources/obds3/" \
+OUTPUT_DIRECTORY="../fhir-output" \
+USER_ID="$(id -u)" \
+GROUP_ID="$(id -g)" \
+docker compose -f deploy/compose.yaml -f deploy/compose.process-from-directory.yaml run obds-to-fhir
+
+docker compose -f deploy/compose.yaml down -v
+```
+
+this uses the [../src/test/resources/obds3/](src/test/resources/obds3/) folder as an input (the paths are relative to the [deploy/](deploy/) directory)
+and the previously created `fhir-output/` folder as the output. To correctly set the owning user of the created files on the host filesystem,
+the `UID` and `GID` of the container are overriden to the current user's.
+
+At the same time, the created bundles are also written to the `fhir.obds` topic in Kafka. You can then, for example,
+use [fhir-to-server](https://github.com/miracum/kafka-fhir-to-server) to send the resources to a FHIR server.
+
+#### Reading oBDS XML from an ONKOSTAR database
+
+To continuously process new oBDS XML from an ONKOSTAR database, you can use [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html)
+to first load this table data into Kafka and then have the `obds-to-fhir` application process the messages. This allows for continuous processing as opposed to the
+folder-based one-off execution.
+
+See the [compose.dev.yaml](deploy/compose.dev.yaml) as an example for a full deployment, including Kafka, an Oracle database, and Kafka Connect.
+
+The [image used to deploy Kafka Connect](https://github.com/miracum/util-images/blob/master/images/cricketeerone-kafka-connect/Dockerfile) includes
+the dependencies necessary to connect to MySQL, MariaDB, or an Oracle databases. Once the service is running, you can configure the Connect task using
+[deploy-connectors.sh](deploy/deploy-connectors.sh). Once it is running, XML data from the database is send to Kafka by running the query every 5 seconds.
+
+You can see all available configuration options for the connector [here](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/source_config_options.html).
+There's also some more details on the setup at <https://github.com/bzkf/onco-analytics-on-fhir/tree/master/docker-compose#7-enable-kafka-connect-and-the-connector>.
 
 ## Used FHIR profiles
 
 See [package.json](package.json) for a list of used packages and their versions.
 
-## Dev
+## Development
 
 ### oBDS v3 code generation
 
@@ -65,7 +103,7 @@ dc up:
 sh up.sh
 ```
 
-dc down (except of Oracle database)
+dc down
 
 ```sh
 sh down.sh
@@ -81,4 +119,37 @@ reset topics
 
 ```sh
 sh reset-topics.sh
+```
+
+## Image signature and provenance verification
+
+Prerequisites:
+
+- [cosign](https://github.com/sigstore/cosign/releases)
+- [slsa-verifier](https://github.com/slsa-framework/slsa-verifier/releases)
+- [crane](https://github.com/google/go-containerregistry/releases)
+
+All released container images are signed using [cosign](https://github.com/sigstore/cosign) and SLSA Level 3 provenance is available for verification.
+
+```sh
+IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.57
+DIGEST=$(crane digest "${IMAGE}")
+IMAGE_DIGEST_PINNED="ghcr.io/bzkf/obds-to-fhir@${DIGEST}"
+IMAGE_TAG="${IMAGE#*:}"
+
+cosign verify \
+   --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+   --certificate-identity-regexp="https://github.com/miracum/.github/.github/workflows/standard-build.yaml@.*" \
+   --certificate-github-workflow-name="ci" \
+   --certificate-github-workflow-repository="bzkf/obds-to-fhir" \
+   --certificate-github-workflow-trigger="release" \
+   --certificate-github-workflow-ref="refs/tags/${IMAGE_TAG}" \
+   "${IMAGE_DIGEST_PINNED}"
+
+# use `beta` in `--source-branch` when verifying pre-releases
+slsa-verifier verify-image \
+    --source-uri github.com/bzkf/obds-to-fhir \
+    --source-tag ${IMAGE_TAG} \
+    --source-branch master \
+    "${IMAGE_DIGEST_PINNED}"
 ```
