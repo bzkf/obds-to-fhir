@@ -1,10 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -34,30 +31,26 @@ public class ConditionMapper extends ObdsToFhirMapper {
       @NonNull XMLGregorianCalendar meldeDatum,
       @NonNull String patientId) {
     Objects.requireNonNull(meldung.getTumorzuordnung());
-    Objects.requireNonNull(meldung.getDiagnose());
     Objects.requireNonNull(meldung.getMeldungID());
 
     verifyReference(patient, ResourceType.Patient);
 
     var condition = new Condition();
 
+    if (meldung.getDiagnose() == null) {
+      LOG.debug(
+          "Diagnose is null for Meldung. Only the Tumorzuordnung will be used to create the Condition.");
+      var tag =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getSnomed())
+              .setCode("255599008")
+              .setDisplay("Incomplete (qualifier value)");
+      condition.getMeta().addTag(tag);
+    }
+
     var identifier = buildConditionIdentifier(meldung.getTumorzuordnung(), patientId);
     condition.addIdentifier(identifier);
     condition.setId(computeResourceIdFromIdentifier(identifier));
-
-    if (meldung.getDiagnose().getDiagnosesicherung() != null) {
-      Coding verStatus =
-          new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
-      Coding diagnosesicherung =
-          new Coding(
-              fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
-              meldung.getDiagnose().getDiagnosesicherung().value(),
-              "");
-
-      CodeableConcept verificationStatus = new CodeableConcept();
-      verificationStatus.addCoding(verStatus).addCoding(diagnosesicherung);
-      condition.setVerificationStatus(verificationStatus);
-    }
 
     condition.setSubject(patient);
     condition.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoDiagnosePrimaertumor());
@@ -109,16 +102,34 @@ public class ConditionMapper extends ObdsToFhirMapper {
           morphologie);
     }
 
-    List<CodeableConcept> bodySite = new ArrayList<>();
+    // icd-o topography and diagnosis verification status are only available for Diagnosemeldungen.
+    if (meldung.getDiagnose() != null) {
+      var diagnoseMeldung = meldung.getDiagnose();
 
-    if (meldung.getDiagnose().getPrimaertumorTopographieICDO() != null) {
-      CodeableConcept topographie =
-          new CodeableConcept(
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-                  .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
-                  .setVersion(meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
-      bodySite.add(topographie);
+      if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
+        CodeableConcept topographie =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+                    .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
+                    .setVersion(
+                        meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
+        condition.addBodySite(topographie);
+      }
+
+      if (diagnoseMeldung.getDiagnosesicherung() != null) {
+        Coding verStatus =
+            new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
+        Coding diagnosesicherung =
+            new Coding(
+                fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
+                meldung.getDiagnose().getDiagnosesicherung().value(),
+                "");
+
+        CodeableConcept verificationStatus = new CodeableConcept();
+        verificationStatus.addCoding(verStatus).addCoding(diagnosesicherung);
+        condition.setVerificationStatus(verificationStatus);
+      }
     }
 
     if (tumorzuordnung.getSeitenlokalisation() != null) {
@@ -127,9 +138,8 @@ public class ConditionMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
                   .setCode(tumorzuordnung.getSeitenlokalisation().value()));
-      bodySite.add(seitenlokalisation);
+      condition.addBodySite(seitenlokalisation);
     }
-    condition.setBodySite(bodySite);
 
     convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
         .ifPresent(
@@ -137,14 +147,22 @@ public class ConditionMapper extends ObdsToFhirMapper {
                 condition.addExtension(
                     fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum));
 
-    var recorded = new DateTimeType(meldeDatum.toGregorianCalendar().getTime());
-    recorded.setPrecision(TemporalPrecisionEnum.DAY);
-    condition.setRecordedDateElement(recorded);
+    // recordedDate is 1..1, so we need to set it even if the date is absent.
+    convertObdsDatumToDateTimeType(meldeDatum)
+        .ifPresentOrElse(
+            condition::setRecordedDateElement,
+            () -> {
+              LOG.warn("MeldeDatum is unset. Setting data absent extension.");
+              var absentDateTime = new DateTimeType();
+              absentDateTime.addExtension(
+                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              condition.setRecordedDateElement(absentDateTime);
+            });
 
     return condition;
   }
 
-  public Identifier buildConditionIdentifier(TumorzuordnungTyp tumorzuordnung, String patientId) {
+  private Identifier buildConditionIdentifier(TumorzuordnungTyp tumorzuordnung, String patientId) {
     return new Identifier()
         .setSystem(fhirProperties.getSystems().getConditionId())
         .setValue(patientId + "-" + tumorzuordnung.getTumorID());

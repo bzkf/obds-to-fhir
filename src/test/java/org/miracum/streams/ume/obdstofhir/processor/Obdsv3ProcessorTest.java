@@ -347,17 +347,17 @@ public class Obdsv3ProcessorTest {
 
       // Patient + ST_1-Procedure behandlungsende
       validateMultiStBundle(
-          (Bundle) outputRecords.getFirst().value, 2, Procedure.ProcedureStatus.COMPLETED);
+          (Bundle) outputRecords.getFirst().value, 3, Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.get(1).value,
-          3,
+          4,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.INPROGRESS);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.getLast().value,
-          3,
+          4,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
     } catch (JSONException e) {

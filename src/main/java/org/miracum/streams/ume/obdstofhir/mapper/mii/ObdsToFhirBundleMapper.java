@@ -1,7 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OBDS;
-import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,14 +9,19 @@ import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
+  private static final Logger LOG = LoggerFactory.getLogger(ObdsToFhirBundleMapper.class);
+
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
   private final FernmetastasenMapper fernmetastasenMapper;
@@ -149,21 +153,34 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
       bundle.setId(patient.getId());
 
+      // Meldungen are ordered in a way such that the Meldungen with the Diagnose element present
+      // are always the last ones in the list, thus overriding any incomplete resources that were
+      // constructed from just the Tumorzuordung
+      // Overriding happens based on the Resource ID in `addToBundle`.
+      meldungen.sort(
+          (a, b) -> {
+            var aHasDiagnose = a.getDiagnose() != null;
+            var bHasDiagnose = b.getDiagnose() != null;
+            if (aHasDiagnose == bHasDiagnose) {
+              return 0;
+            }
+            return aHasDiagnose ? 1 : -1;
+          });
+
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
 
-        var primaryConditionReference =
-            createPrimaryConditionReference(
-                meldung.getTumorzuordnung(), obdsPatient.getPatientID());
-
         // Diagnose
-        if (meldung.getDiagnose() != null) {
-          var condition =
-              conditionMapper.map(
-                  meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
-          addToBundle(bundle, condition);
+        // this _always_ creates a Condition resource, even if just the Tumorzuordnung is known
+        var condition =
+            conditionMapper.map(
+                meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
+        addToBundle(bundle, condition);
 
+        var primaryConditionReference = createReferenceFromResource(condition);
+
+        if (meldung.getDiagnose() != null) {
           var diagnose = meldung.getDiagnose();
 
           if (diagnose.getAllgemeinerLeistungszustand() != null) {
@@ -705,30 +722,46 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return bundles;
   }
 
-  private static Bundle addToBundle(Bundle bundle, List<? extends Resource> resources) {
+  private Bundle addToBundle(Bundle bundle, List<? extends Resource> resources) {
     for (var resource : resources) {
       addToBundle(bundle, resource);
     }
     return bundle;
   }
 
-  private static Bundle addToBundle(Bundle bundle, Resource resource) {
+  private Bundle addToBundle(Bundle bundle, Resource resource) {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
-    bundle
-        .addEntry()
-        .setFullUrl(url)
-        .setResource(resource)
-        .getRequest()
-        .setMethod(HTTPVerb.PUT)
-        .setUrl(url);
-    return bundle;
-  }
+    // if a resource entry already exists, it will be replaced.
+    // this should only be necessary for the Condition resource,
+    // which can be created from the TumorzuordnungTyp present in all kinds of Meldungen.
+    var duplicateEntries =
+        bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(url)).toList();
 
-  private Reference createPrimaryConditionReference(
-      TumorzuordnungTyp tumorzuordnung, String patientId) {
-    var identifier = conditionMapper.buildConditionIdentifier(tumorzuordnung, patientId);
-    var conditionId = computeResourceIdFromIdentifier(identifier);
-    return new Reference("Condition/" + conditionId);
+    if (duplicateEntries.size() > 1) {
+      throw new IllegalStateException("Multiple entries found in bundle matching URL: " + url);
+    }
+
+    if (!duplicateEntries.isEmpty()) {
+      var duplicateEntry = duplicateEntries.getFirst();
+      if (duplicateEntry.getResource().getResourceType() != ResourceType.Condition) {
+        LOG.warn(
+            "Duplicate entry found in bundle for resource type {} with URL {}. "
+                + "This should only happen for Condition resources.",
+            resource.getResourceType(),
+            url);
+      }
+
+      duplicateEntry.setResource(resource);
+    } else {
+      bundle
+          .addEntry()
+          .setFullUrl(url)
+          .setResource(resource)
+          .getRequest()
+          .setMethod(HTTPVerb.PUT)
+          .setUrl(url);
+    }
+    return bundle;
   }
 
   private Reference createReferenceFromResource(Resource resource) {

@@ -38,6 +38,58 @@
       "url": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
     }
   }, {
+    "fullUrl": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
+        "tag": [ {
+          "system": "http://snomed.info/sct",
+          "code": "255599008",
+          "display": "Incomplete (qualifier value)"
+        } ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "33",
+            "code": "8500/3"
+          } ]
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2019-10-01"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "value": "40-401"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2019",
+          "code": "C50.9"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "R"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+      },
+      "recordedDate": "2024-02-16"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+    }
+  }, {
     "fullUrl": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16",
     "resource": {
       "resourceType": "Specimen",
@@ -1024,6 +1076,58 @@
       "url": "DiagnosticReport/dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b"
     }
   }, {
+    "fullUrl": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
+        "tag": [ {
+          "system": "http://snomed.info/sct",
+          "code": "255599008",
+          "display": "Incomplete (qualifier value)"
+        } ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "33",
+            "code": "8010/3"
+          } ]
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2020-01-01"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "value": "40-402"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2020",
+          "code": "C20"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "T"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+      },
+      "recordedDate": "2024-02-16"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5"
+    }
+  }, {
     "fullUrl": "Observation/7a68d8b2b6218a2b7308f67d87130d03faeec17cc979952a7ae18b5b3117973c",
     "resource": {
       "resourceType": "Observation",
@@ -1146,6 +1250,58 @@
     "request": {
       "method": "PUT",
       "url": "DiagnosticReport/1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2"
+    }
+  }, {
+    "fullUrl": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
+        "tag": [ {
+          "system": "http://snomed.info/sct",
+          "code": "255599008",
+          "display": "Incomplete (qualifier value)"
+        } ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "33",
+            "code": "8720/3"
+          } ]
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2020-01-01"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "value": "40-403"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2020",
+          "code": "C43.6"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "L"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+      },
+      "recordedDate": "2024-02-16"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1"
     }
   }, {
     "fullUrl": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1",
