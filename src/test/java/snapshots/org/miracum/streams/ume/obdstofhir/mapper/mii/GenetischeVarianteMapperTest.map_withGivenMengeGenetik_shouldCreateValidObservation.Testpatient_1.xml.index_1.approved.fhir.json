@@ -19,7 +19,8 @@
     "coding": [ {
       "system": "http://loinc.org",
       "version": "2.80",
-      "code": "69548-6"
+      "code": "69548-6",
+      "display": "Genetic variant assessment"
     } ]
   },
   "subject": {
