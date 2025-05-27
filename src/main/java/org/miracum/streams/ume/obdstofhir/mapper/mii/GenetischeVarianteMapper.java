@@ -109,7 +109,13 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
       // code
       CodeableConcept codeCodeableConcept =
-          new CodeableConcept().addCoding(fhirProperties.getCodings().loinc().setCode("69548-6"));
+          new CodeableConcept()
+              .addCoding(
+                  fhirProperties
+                      .getCodings()
+                      .loinc()
+                      .setCode("69548-6")
+                      .setDisplay("Genetic variant assessment"));
 
       observation.setCode(codeCodeableConcept);
 
