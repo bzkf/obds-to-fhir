@@ -72,7 +72,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
     var code = new CodeableConcept();
     if (null != syst.getTherapieart()
-        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
+        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS, Therapieart.SO)
             .contains(syst.getTherapieart())) {
       code.addCoding(
           fhirProperties
