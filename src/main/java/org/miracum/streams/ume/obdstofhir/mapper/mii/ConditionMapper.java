@@ -73,7 +73,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
     StringType versionElement = null;
     if (StringUtils.hasText(icd10Version)) {
       var matcher = icdVersionPattern.matcher(icd10Version);
-      if (matcher.matches()) {
+      if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
         versionElement = new StringType(matcher.group("versionYear"));
       } else {
         LOG.warn(
