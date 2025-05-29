@@ -1,5 +1,5 @@
 app:
-  version: 3.0.0-beta.57
+  version: 3.0.0-beta.58
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
@@ -9,13 +9,13 @@ fhir:
   codings:
     loinc:
       system: "${fhir.systems.loinc}"
-      version: "2.80"
+  version: 3.0.0-beta.58
     snomed:
       system: "${fhir.systems.snomed}"
-      version: "http://snomed.info/sct/900000000000207008/version/20250501"
+  version: 3.0.0-beta.58
     ops:
       system: "${fhir.systems.ops}"
-      version: "2025"
+  version: 3.0.0-beta.58
   extensions:
     fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
     opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
