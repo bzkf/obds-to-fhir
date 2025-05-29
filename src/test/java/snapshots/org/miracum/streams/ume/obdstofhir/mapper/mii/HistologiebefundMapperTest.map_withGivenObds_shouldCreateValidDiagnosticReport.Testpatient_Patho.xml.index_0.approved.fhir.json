@@ -12,7 +12,9 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "code": "22034-3"
+      "version": "2.80",
+      "code": "22034-3",
+      "display": "Pathology report Cancer Narrative"
     } ]
   },
   "subject": {

@@ -4,13 +4,13 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
@@ -42,7 +42,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoHistologieIcdo3());
 
       var identifierValue = histologie.getHistologieID();
-      if (Strings.isBlank(identifierValue)) {
+      if (!StringUtils.hasText(identifierValue)) {
         LOG.warn(
             "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Verlaufshistologie Observation.");
         identifierValue = meldungsId;
@@ -64,7 +64,12 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
       // Code
       var code =
-          new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "59847-4", ""));
+          new CodeableConcept(
+              fhirProperties
+                  .getCodings()
+                  .loinc()
+                  .setCode("59847-4")
+                  .setDisplay("Histology and Behavior ICD-O-3 Cancer"));
       observation.setCode(code);
 
       // subject

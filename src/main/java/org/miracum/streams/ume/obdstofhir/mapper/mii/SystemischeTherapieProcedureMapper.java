@@ -72,43 +72,46 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
     var code = new CodeableConcept();
     if (null != syst.getTherapieart()
-        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
+        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS, Therapieart.SO)
             .contains(syst.getTherapieart())) {
-      code.addCoding()
-          .setSystem(fhirProperties.getSystems().getSnomed())
-          .setCode(SnomedCtTherapietypLookup.lookupCode(syst.getTherapieart()));
+      code.addCoding(
+          fhirProperties
+              .getCodings()
+              .snomed()
+              .setCode(SnomedCtTherapietypLookup.lookupCode(syst.getTherapieart())));
     } else if (null != syst.getTherapieart()
         && null != OPSTherapietypLookup.lookupCode(syst.getTherapieart())) {
-      code.addCoding()
-          .setSystem(fhirProperties.getSystems().getOps())
-          .setCode(OPSTherapietypLookup.lookupCode(syst.getTherapieart()));
+      code.addCoding(
+          fhirProperties
+              .getCodings()
+              .ops()
+              .setCode(OPSTherapietypLookup.lookupCode(syst.getTherapieart())));
     } else {
-      code.addCoding()
-          .setSystem(fhirProperties.getSystems().getOps())
-          .setCodeElement(dataAbsentCode);
+      LOG.warn("Unknown, unset or unsupported Therapieart: {}", syst.getTherapieart());
+      code.addCoding(fhirProperties.getCodings().ops().setCodeElement(dataAbsentCode));
     }
+
     if (null != syst.getTherapieart()) {
       code.addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
           .setCode(syst.getTherapieart().value());
     }
+
     procedure.setCode(code);
 
-    var category = new CodeableConcept();
-    if (null == syst.getTherapieart()
-        || List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
+    /*
+     * Kategorie als SNOMED - Code
+     * Kategorie für Systemische Therapien 18629005 | Administration of drug or medicament (procedure)
+     * Kategorie für Abwartende Therapien : keine (kein geeignetes Parent-Konzept, Suche direkt über Kodierung empfohlen)
+     */
+    if (syst.getTherapieart() != null
+        && !List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
             .contains(syst.getTherapieart())) {
-      category
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getSnomed())
-          .setCodeElement(dataAbsentCode);
-    } else {
-      category
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getSnomed())
-          .setCode(SNOMED_CT_SYST_CATEGORY);
+      var category = fhirProperties.getCodings().snomed().setCode(SNOMED_CT_SYST_CATEGORY);
+      // category is optional, so it's fine to keep it unset if no appropriate snomed code is found
+      // for the therapy type
+      procedure.setCategory(new CodeableConcept(category));
     }
-    procedure.setCategory(category);
 
     var intention = new CodeableConcept();
     intention

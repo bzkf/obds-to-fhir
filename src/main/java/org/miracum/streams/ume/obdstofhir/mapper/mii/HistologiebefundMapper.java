@@ -3,13 +3,13 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.PathologieTyp;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.util.Strings;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class HistologiebefundMapper extends ObdsToFhirMapper {
@@ -36,7 +36,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
 
     var identifierValue = pathologie.getBefundID();
 
-    if (Strings.isBlank(identifierValue)) {
+    if (!StringUtils.hasText(identifierValue)) {
       LOG.warn(
           "Befund_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologiebefund.");
 
@@ -64,7 +64,12 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
 
     // code patholopgy-report
     var pathologyReport =
-        new CodeableConcept(new Coding(fhirProperties.getSystems().getLoinc(), "22034-3", ""));
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .loinc()
+                .setCode("22034-3")
+                .setDisplay("Pathology report Cancer Narrative"));
     diagnosticReport.setCode(pathologyReport);
 
     // Subject

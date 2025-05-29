@@ -115,7 +115,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -150,6 +152,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "385377005",
           "display": "Gleason grade finding for prostatic cancer (finding)"
         } ]
@@ -168,6 +171,7 @@
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "57403001"
         } ],
         "text": "7"
@@ -175,6 +179,7 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "86273004",
           "display": "Biopsy (procedure)"
         } ]
@@ -183,6 +188,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384994009",
             "display": "Primary Gleason pattern"
           } ]
@@ -192,6 +198,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384995005",
             "display": "Secondary Gleason pattern"
           } ]
@@ -228,6 +235,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -270,7 +278,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "84892-9"
+          "version": "2.80",
+          "code": "84892-9",
+          "display": "Residual tumor classification [Type] in Cancer specimen"
         } ]
       },
       "subject": {
@@ -304,6 +314,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "385377005",
           "display": "Gleason grade finding for prostatic cancer (finding)"
         } ]
@@ -322,6 +333,7 @@
             "valueDecimal": 8
           } ],
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "33013007"
         } ],
         "text": "8"
@@ -329,6 +341,7 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "65801008",
           "display": "Excision (procedure)"
         } ]
@@ -337,6 +350,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384994009",
             "display": "Primary Gleason pattern"
           } ]
@@ -346,6 +360,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384995005",
             "display": "Secondary Gleason pattern"
           } ]
@@ -390,12 +405,14 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "18629005"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2025",
           "code": "6-00"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
@@ -459,6 +476,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -481,6 +499,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "277062004",
             "display": "Status des Residualtumors"
           } ]
@@ -496,6 +515,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "399656008",
             "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
@@ -511,6 +531,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "399608002",
             "display": "Status of distant metastasis (observable entity)"
           } ]
@@ -544,7 +565,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -579,6 +602,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "385377005",
           "display": "Gleason grade finding for prostatic cancer (finding)"
         } ]
@@ -597,6 +621,7 @@
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "57403001"
         } ],
         "text": "7"
@@ -604,6 +629,7 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "86273004",
           "display": "Biopsy (procedure)"
         } ]
@@ -612,6 +638,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384994009",
             "display": "Primary Gleason pattern"
           } ]
@@ -621,6 +648,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
             "code": "384995005",
             "display": "Secondary Gleason pattern"
           } ]
@@ -708,6 +736,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -812,7 +841,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -876,7 +907,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -924,10 +957,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -1000,6 +1037,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -1039,7 +1077,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {

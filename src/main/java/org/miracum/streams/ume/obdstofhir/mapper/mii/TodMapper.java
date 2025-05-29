@@ -53,12 +53,13 @@ public class TodMapper extends ObdsToFhirMapper {
         observation.setId(computeResourceIdFromIdentifier(identifier));
 
         // Code | 184305005 | Cause of death (observable entity)
-        var snomedCode = new CodeableConcept();
-        snomedCode
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getSnomed())
-            .setCode("184305005");
-        observation.setCode(snomedCode);
+        var snomedCode =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("184305005")
+                .setDisplay("Cause of death (observable entity)");
+        observation.setCode(new CodeableConcept(snomedCode));
 
         // Subject
         observation.setSubject(patient);
@@ -73,13 +74,12 @@ public class TodMapper extends ObdsToFhirMapper {
         observation.addFocus(condition);
 
         // Value | Todesursache(n) ICD10GM
-        var todesursacheConcept = new CodeableConcept();
-        var tuIcdVersion = "";
         var icd10Version = todesursache.getVersion();
-        if (StringUtils.hasLength(icd10Version)) {
+        StringType versionElement = null;
+        if (StringUtils.hasText(icd10Version)) {
           var matcher = icdVersionPattern.matcher(icd10Version);
-          if (matcher.matches()) {
-            tuIcdVersion = matcher.group("versionYear");
+          if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
+            versionElement = new StringType(matcher.group("versionYear"));
           } else {
             LOG.warn(
                 "Todesursachen_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
@@ -87,13 +87,21 @@ public class TodMapper extends ObdsToFhirMapper {
                 icd10Version);
           }
         } else {
-          LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+          LOG.warn("Todesursachen_ICD_Version is unset or contains only whitespaces");
         }
+
+        if (versionElement == null) {
+          versionElement = new StringType();
+          versionElement.addExtension(
+              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        }
+
+        var todesursacheConcept = new CodeableConcept();
         todesursacheConcept
             .addCoding()
             .setSystem(fhirProperties.getSystems().getIcd10gm())
             .setCode(todesursache.getCode())
-            .setVersion(tuIcdVersion);
+            .setVersionElement(versionElement);
 
         observation.setValue(todesursacheConcept);
 

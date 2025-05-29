@@ -11,6 +11,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class OperationMapper extends ObdsToFhirMapper {
@@ -47,15 +48,20 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
 
       // code
-      CodeableConcept opsCodeableConcept =
-          new CodeableConcept()
-              .addCoding(
-                  new Coding()
-                      .setSystem(fhirProperties.getSystems().getOps())
-                      .setCode(opsCode.getCode())
-                      .setVersion(opsCode.getVersion()));
+      var coding =
+          new Coding().setSystem(fhirProperties.getSystems().getOps()).setCode(opsCode.getCode());
 
-      procedure.setCode(opsCodeableConcept);
+      if (StringUtils.hasText(opsCode.getVersion())) {
+        coding.setVersion(opsCode.getVersion());
+      } else {
+        LOG.warn("Unset version for OPS Code {} in OP {}", opsCode.getCode(), op.getOPID());
+        var absentVersion = new StringType();
+        absentVersion.addExtension(
+            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        coding.setVersionElement(absentVersion);
+      }
+
+      procedure.setCode(new CodeableConcept(coding));
 
       // category: if OPS starts with 5, set 387713003; if first digit 1, set 165197003; else
       // 394841004
@@ -80,12 +86,12 @@ public class OperationMapper extends ObdsToFhirMapper {
       }
 
       procedure.setCategory(
-          new CodeableConcept()
-              .addCoding(
-                  new Coding()
-                      .setSystem(fhirProperties.getSystems().getSnomed())
-                      .setCode(categoryCode)
-                      .setDisplay(categoryDisplay)));
+          new CodeableConcept(
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode(categoryCode)
+                  .setDisplay(categoryDisplay)));
 
       // subject reference
       procedure.setSubject(subject);

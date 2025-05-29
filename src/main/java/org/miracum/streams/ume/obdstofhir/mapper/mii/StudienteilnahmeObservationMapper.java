@@ -47,10 +47,11 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     // Code
     observation.setCode(
         new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getSnomed(),
-                "709491003",
-                "Enrollment in clinical trial (procedure)")));
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("709491003")
+                .setDisplay("Enrollment in clinical trial (procedure)")));
 
     // Subject
     observation.setSubject(patient);
