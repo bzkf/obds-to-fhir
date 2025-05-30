@@ -111,7 +111,7 @@ gx_context = gx.get_context(mode="file")
 expectations = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=min_date, max_value=max_date
+        column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
     ),
     # Deceased date validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
@@ -120,11 +120,11 @@ expectations = [
         ignore_row_if="either_value_is_missing",
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="deceased_date_time", min_value=min_date, max_value=max_date
+        column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
     ),
     # asserted datetime validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="asserted_date", min_value=min_date, max_value=max_date
+        column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="asserted_date",
@@ -164,7 +164,7 @@ expectations = [
 expectations2 = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=min_date, max_value=max_date
+        column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
