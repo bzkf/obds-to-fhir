@@ -5,12 +5,13 @@ from pathlib import Path
 import great_expectations as gx
 import pandas as pd
 from great_expectations.checkpoint import UpdateDataDocsAction
+from great_expectations.core.result_format import ResultFormat
 from loguru import logger
 from pathling import Expression as exp
 from pathling import PathlingContext
-from pyspark.sql.functions import concat, lit
+from pyspark.sql.functions import concat, lit, col
 
-pc = PathlingContext.create(enable_extensions=True)
+pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
 HERE = Path(os.path.abspath(os.path.dirname(__file__)))
 
@@ -32,7 +33,7 @@ patients = data.extract(
         exp("birthDate", "date_of_birth"),
         exp("deceasedDateTime", "deceased_date_time"),
     ],
-)
+).drop_duplicates()
 
 patients.show(truncate=False)
 
@@ -50,7 +51,7 @@ conditions = data.extract(
             "icd_code",
         ),
         exp(
-            "code.coding.where(system='{ICD_10_GM_SYSTEM}').version",
+            f"code.coding.where(system='{ICD_10_GM_SYSTEM}').version",
             "icd_version",
         ),
         exp("subject.reference", "subject_reference"),
@@ -60,16 +61,37 @@ conditions = data.extract(
         ),
         exp("recordedDate", "recorded_date"),
     ],
-)
+).drop_duplicates()
+
+# conditions.toPandas().to_csv("conditions.csv", index=False, header=True)
+# patients.toPandas().to_csv("patients.csv", index=False, header=True)
 
 # (full) outer join to retain null values if either side is missing
 patients_with_conditions = conditions.join(
     patients,
-    conditions["subject_reference"] == concat(lit("Patient/"), patients["patient_id"]),
+    conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
 )
 
-patients_with_conditions.show(truncate=False)
+observations = data.extract(
+    "Observation",
+    columns=[
+        exp("id", "observation_id"),
+        exp("subject.reference", "subject_reference"),
+    ],
+).drop_duplicates()
+
+patients_with_observations = observations.join(
+    patients,
+    observations["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    how="outer",
+)
+
+# patients_with_conditions.to_csv(
+#     "patients_with_conditions.csv", index=False, header=True
+# )
+
+# patients_with_conditions.show(truncate=False)
 
 # patients_with_conditions.coalesce(1).write.mode("overwrite").csv(
 #     "patients_with_conditions.csv", header=True, sep=","
@@ -77,35 +99,11 @@ patients_with_conditions.show(truncate=False)
 
 gx_context = gx.get_context(mode="file")
 
-suite = gx.ExpectationSuite(name="patients_with_conditions_suite")
 
 min_date = pd.Timestamp("1900-01-01")
 max_date = pd.Timestamp("2025-12-31")
 
 expectations = [
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
-        description="Check if the id is always set. "
-        + "Could also indicate a Condition without a Patient.",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="condition_id",
-        description="Check if the id is always set. "
-        + "Could also indicate a Patient without a Condition.",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="icd_version", description="Check if ICD version is always provided"
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="icd_code",
-        description="Check if ICD code is always provided.",
-    ),
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="recorded_date",
-        column_B="date_of_birth",
-        or_equal=True,
-        description="Check if diagnosis recorded date is on or after the date of birth",
-    ),
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="date_of_birth", min_value=min_date, max_value=max_date
@@ -129,30 +127,78 @@ expectations = [
         or_equal=True,
         description="Check if diagnosis asserted date is on or after the date of birth",
     ),
+    # Gender expectation with condition code
+    # see <https://docs.greatexpectations.io/docs/core/customize_expectations/expectation_conditions/?condition_parser=spark>
+    gx.expectations.ExpectColumnValuesToBeInSet(
+        column="gender",
+        value_set=["male"],
+        condition_parser="great_expectations",
+        row_condition='col("icd_code") == "C61"',
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="patient_id",
+        description="Check if the id is always set. "
+        + "Could also indicate a Condition without a Patient.",
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="condition_id",
+        description="Check if the id is always set. "
+        + "Could also indicate a Patient without a Condition.",
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="icd_version", description="Check if ICD version is always provided"
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="icd_code",
+        description="Check if ICD code is always provided.",
+    ),
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="recorded_date",
+        column_B="date_of_birth",
+        or_equal=True,
+        description="Check if diagnosis recorded date is on or after the date of birth",
+    ),
 ]
 
+expectations2 = [
+    # Birth date validations
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="date_of_birth", min_value=min_date, max_value=max_date
+    ),
+]
+
+suite = gx.ExpectationSuite(name="patients_with_conditions_suite")
 for expectation in expectations:
     suite.add_expectation(expectation)
 
+suite2 = gx.ExpectationSuite(name="patients_with_observations_suite")
+for expectation in expectations2:
+    suite2.add_expectation(expectation)
+
 suite = gx_context.suites.add_or_update(suite=suite)
+suite2 = gx_context.suites.add_or_update(suite=suite2)
 
 data_source_name = "snapshot_bundles"
-data_asset_name = "patients_and_conditions"
 batch_definition_name = "all_rows"
 
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
-data_asset = data_source.add_dataframe_asset(name=data_asset_name)
+data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
+data_asset2 = data_source.add_dataframe_asset(name="patients_and_observations")
 
 # Add the Batch Definition
 batch_definition = data_asset.add_batch_definition_whole_dataframe(
     batch_definition_name
 )
 
+batch_definition2 = data_asset2.add_batch_definition_whole_dataframe(
+    batch_definition_name
+)
+
 # Create runtime parameters for the DataFrame
 batch_parameters = {"dataframe": patients_with_conditions}
-batch = batch_definition.get_batch(batch_parameters=batch_parameters)
 
-batch.head(10)
+# TODO: https://docs.greatexpectations.io/docs/core/connect_to_data/dataframes/#procedure-dataframes
+batch = batch_definition.get_batch(batch_parameters=batch_parameters)
 
 # Create a Validation Definition
 definition_name = "validate_conditions"
@@ -165,7 +211,16 @@ validation_definition = gx_context.validation_definitions.add_or_update(
     validation_definition
 )
 
-validation_definitions = [gx_context.validation_definitions.get(definition_name)]
+batch2 = batch_definition.get_batch(
+    batch_parameters={"dataframe": patients_with_observations}
+)
+
+validation_definitions = [
+    validation_definition,
+    gx.ValidationDefinition(
+        data=batch_definition2, suite=suite2, name="validate_observations"
+    ),
+]
 
 # Check points:  Checkpoint executes one or more Validation Definitions
 # performs a set of Actions based on the Validation Results each
@@ -185,7 +240,7 @@ checkpoint = gx.Checkpoint(
     name=checkpoint_name,
     validation_definitions=validation_definitions,
     actions=action_list,
-    result_format={"result_format": "SUMMARY"},
+    result_format=ResultFormat.COMPLETE,
 )
 
 # Add the Checkpoint to the Data Context

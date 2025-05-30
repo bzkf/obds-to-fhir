@@ -90,15 +90,23 @@ data_docs_sites:
 fluent_datasources:
   snapshot_bundles:
     type: spark
-    id: e48316ae-6b89-42de-b183-72999bff11da
+    id: 573dee99-ee61-4a2e-a2a0-98c168e7dc69
     assets:
       patients_and_conditions:
         type: dataframe
-        id: ca400dea-cef6-4d44-be3c-4ef8a61a5a9e
+        id: ea4b74db-d30a-432c-93e7-08f4277e9aa5
         batch_metadata: {}
         batch_definitions:
           all_rows:
-            id: c47c6032-0628-433a-9cbb-d53ebf3c9ec6
+            id: 01e19a57-edb7-480a-816f-9149817a8792
+            partitioner:
+      patients_and_observations:
+        type: dataframe
+        id: 267c7bce-c285-43ac-87f0-be26628715a6
+        batch_metadata: {}
+        batch_definitions:
+          all_rows:
+            id: 601953fe-858d-42d1-96d5-97cfdc5aa35d
             partitioner:
 analytics_enabled:
-data_context_id: 139a2123-5e51-4430-9a30-ff7fe01be78b
+data_context_id: c633fb56-2542-4e82-9cd8-c73b607ed5fd
