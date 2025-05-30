@@ -69,6 +69,8 @@ kube-prometheus-stack:
     enabled: false
   alertmanager:
     enabled: false
+  kubeEtcd:
+    enabled: false
 
 curl:
   image:
