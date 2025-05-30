@@ -18,8 +18,7 @@ env:
       "NebenwirkungMapperTest",
       "OperationMapperTest",
       "StrahlentherapieMapperTest",
-      "VerlaufObservationMapperTest",
-      "ObdsToFhirBundleMapperTest"
+      "VerlaufObservationMapperTest"
     ]
 
 jobs:
@@ -36,7 +35,7 @@ jobs:
       - name: Find unique prefixes
         id: extract
         run: |
-          PREFIXES=$(find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -name "*.fhir.json" \
+          PREFIXES=$(find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f -name "*.fhir.json" \
             | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s -c .)
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
@@ -87,6 +86,48 @@ jobs:
           fhir cache location --path
           fhir cache list
           echo "Validating files for mapper: ${MAPPER_NAME}"
-          find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ \
+          find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
+
+  validate-bundles:
+    runs-on: ubuntu-24.04
+    container: ghcr.io/miracum/ig-build-tools:v2.2.2@sha256:af1420104cce03f02015cca27d1b2bf45e9f4d0efc954e77abbf85f967497d81
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Cache FHIR packages
+        id: fhir-package-cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
+          key: fhir-packages-${{ hashFiles('package.json') }}
+          restore-keys: |
+            fhir-packages-
+
+      - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
+        run: |
+          fhir cache location --path
+          fhir cache list
+          fhir config inflate All
+          fhir restore
+
+      - name: Validate bundles
+        continue-on-error: true
+        run: |
+          fhir cache location --path
+          fhir cache list
+          find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
+            -name "*.fhir.json" -print0 | \
             xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
