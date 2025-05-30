@@ -10,10 +10,17 @@ from loguru import logger
 from pathling import Expression as exp
 from pathling import PathlingContext
 from pyspark.sql.functions import concat, lit, col
+from datetime import datetime
 
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
 HERE = Path(os.path.abspath(os.path.dirname(__file__)))
+ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+ASSERTED_DATE_EXTENSION = (
+    "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+)
+MIN_DATE = pd.Timestamp("1900-01-01")
+MAX_DATE = pd.Timestamp(year=datetime.now().year, month=12, day=31)
 
 snapshots_dir = (
     HERE
@@ -37,10 +44,6 @@ patients = data.extract(
 
 patients.show(truncate=False)
 
-ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
-ASSERTED_DATE_EXTENSION = (
-    "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
-)
 
 conditions = data.extract(
     "Condition",
@@ -63,9 +66,6 @@ conditions = data.extract(
     ],
 ).drop_duplicates()
 
-# conditions.toPandas().to_csv("conditions.csv", index=False, header=True)
-# patients.toPandas().to_csv("patients.csv", index=False, header=True)
-
 # (full) outer join to retain null values if either side is missing
 patients_with_conditions = conditions.join(
     patients,
@@ -73,11 +73,23 @@ patients_with_conditions = conditions.join(
     how="outer",
 )
 
+patients_with_conditions.show(truncate=False)
+
 observations = data.extract(
     "Observation",
     columns=[
         exp("id", "observation_id"),
         exp("subject.reference", "subject_reference"),
+        exp("code.coding.system", "code_system"),
+        exp("code.coding.code", "code_code"),
+        exp(
+            """
+                Observation.where(code.coding.exists(system='http://loinc.org' or system='http://snomed.info/sct')).valueCodeableConcept.coding.code
+            """,
+            "value_codeable_concept_coding_code",
+        ),
+        exp("effectiveDateTime", "effective_date_time"),
+        exp("meta.profile", "meta_profile"),
     ],
 ).drop_duplicates()
 
@@ -87,21 +99,14 @@ patients_with_observations = observations.join(
     how="outer",
 )
 
-# patients_with_conditions.to_csv(
-#     "patients_with_conditions.csv", index=False, header=True
-# )
+patients_with_observations.show(truncate=False)
 
-# patients_with_conditions.show(truncate=False)
-
-# patients_with_conditions.coalesce(1).write.mode("overwrite").csv(
-#     "patients_with_conditions.csv", header=True, sep=","
-# )
+patients_with_observations.write.mode("overwrite").csv(
+    "patients_with_observations.csv", header=True
+)
 
 gx_context = gx.get_context(mode="file")
 
-
-min_date = pd.Timestamp("1900-01-01")
-max_date = pd.Timestamp("2025-12-31")
 
 expectations = [
     # Birth date validations
@@ -137,13 +142,9 @@ expectations = [
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
-        description="Check if the id is always set. "
-        + "Could also indicate a Condition without a Patient.",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="condition_id",
-        description="Check if the id is always set. "
-        + "Could also indicate a Patient without a Condition.",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="icd_version", description="Check if ICD version is always provided"
@@ -165,6 +166,36 @@ expectations2 = [
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="date_of_birth", min_value=min_date, max_value=max_date
     ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="code_system",
+        condition_parser="great_expectations",
+        row_condition='col("meta_profile") != "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"',
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="code_code",
+        condition_parser="great_expectations",
+        row_condition='col("meta_profile") != "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"',
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="patient_id",
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="observation_id",
+    ),
+    # EffectiveDateTime validations
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="effective_date_time",
+        column_B="date_of_birth",
+        or_equal=True,
+    ),
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="deceased_date_time",
+        column_B="effective_date_time",
+        or_equal=True,
+    ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+    ),
 ]
 
 suite = gx.ExpectationSuite(name="patients_with_conditions_suite")
@@ -179,48 +210,32 @@ suite = gx_context.suites.add_or_update(suite=suite)
 suite2 = gx_context.suites.add_or_update(suite=suite2)
 
 data_source_name = "snapshot_bundles"
-batch_definition_name = "all_rows"
 
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
+
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
 data_asset2 = data_source.add_dataframe_asset(name="patients_and_observations")
 
 # Add the Batch Definition
-batch_definition = data_asset.add_batch_definition_whole_dataframe(
-    batch_definition_name
-)
-
-batch_definition2 = data_asset2.add_batch_definition_whole_dataframe(
-    batch_definition_name
-)
-
-# Create runtime parameters for the DataFrame
-batch_parameters = {"dataframe": patients_with_conditions}
-
-# TODO: https://docs.greatexpectations.io/docs/core/connect_to_data/dataframes/#procedure-dataframes
-batch = batch_definition.get_batch(batch_parameters=batch_parameters)
-
-# Create a Validation Definition
-definition_name = "validate_conditions"
-validation_definition = gx.ValidationDefinition(
-    data=batch_definition, suite=suite, name=definition_name
-)
-
-# Add the Validation Definition to the Data Context
 validation_definition = gx_context.validation_definitions.add_or_update(
-    validation_definition
-)
-
-batch2 = batch_definition.get_batch(
-    batch_parameters={"dataframe": patients_with_observations}
-)
-
-validation_definitions = [
-    validation_definition,
     gx.ValidationDefinition(
-        data=batch_definition2, suite=suite2, name="validate_observations"
-    ),
-]
+        name="validate_conditions",
+        data=data_asset.add_batch_definition_whole_dataframe(
+            "patients_and_conditions_all_rows"
+        ),
+        suite=suite,
+    )
+)
+
+validation_definition2 = gx_context.validation_definitions.add_or_update(
+    gx.ValidationDefinition(
+        name="validate_observations",
+        data=data_asset2.add_batch_definition_whole_dataframe(
+            "patients_and_observations_all_rows"
+        ),
+        suite=suite2,
+    )
+)
 
 # Check points:  Checkpoint executes one or more Validation Definitions
 # performs a set of Actions based on the Validation Results each
@@ -234,17 +249,23 @@ action_list = [
     ),
 ]
 
-# Create the Checkpoint
-checkpoint_name = "validation_checkpoint"
-checkpoint = gx.Checkpoint(
-    name=checkpoint_name,
-    validation_definitions=validation_definitions,
-    actions=action_list,
-    result_format=ResultFormat.COMPLETE,
+checkpoint = gx_context.checkpoints.add_or_update(
+    gx.Checkpoint(
+        name="validate_conditions_checkpoint",
+        validation_definitions=[validation_definition],
+        actions=action_list,
+        result_format=ResultFormat.COMPLETE,
+    )
 )
 
-# Add the Checkpoint to the Data Context
-gx_context.checkpoints.add_or_update(checkpoint)
+checkpoint2 = gx_context.checkpoints.add_or_update(
+    gx.Checkpoint(
+        name="validate_observations_checkpoint",
+        validation_definitions=[validation_definition2],
+        actions=action_list,
+        result_format=ResultFormat.COMPLETE,
+    )
+)
 
 # Add Data Docs Site
 site_name = "obds_to_fhir_data_docs_site"
@@ -273,10 +294,23 @@ gx_context.update_data_docs_site(
 gx_context.build_data_docs()
 
 # Run the Checkpoint
-validation_results = checkpoint.run(batch_parameters=batch_parameters)
+validation_results = checkpoint.run(
+    batch_parameters={"dataframe": patients_with_conditions}
+)
 
 logger.info(validation_results.describe())
 
 if not validation_results.success:
+    logger.error("Validation run failed!")
+    sys.exit(1)
+
+
+validation_results2 = checkpoint2.run(
+    batch_parameters={"dataframe": patients_with_observations}
+)
+
+logger.info(validation_results2.describe())
+
+if not validation_results2.success:
     logger.error("Validation run failed!")
     sys.exit(1)
