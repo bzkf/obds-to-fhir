@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
+    uses: miracum/.github/.github/workflows/standard-build.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
     permissions:
       contents: write
       id-token: write
@@ -81,7 +81,7 @@ jobs:
 
       - name: Add coverage to PR
         id: jacoco
-        uses: madrapps/jacoco-report@7c362aca34caf958e7b1c03464bd8781db9f8da7 # v1.7.1
+        uses: madrapps/jacoco-report@50d3aff4548aa991e6753342d9ba291084e63848 # v1.7.2
         with:
           paths: |
             ${{ github.workspace }}/test/jacoco/test/jacocoTestReport.xml
@@ -254,7 +254,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
     permissions:
       contents: read
       pull-requests: write
@@ -269,7 +269,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@50493170d1e94867d2d0792b3ee8225d048a4316 # v1.16.10
+    uses: miracum/.github/.github/workflows/standard-release.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
     needs:
       - lint
       - build
