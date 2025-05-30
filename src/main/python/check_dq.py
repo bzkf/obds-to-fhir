@@ -109,7 +109,37 @@ patients_with_observations.write.mode("overwrite").csv(
 gx_context = gx.get_context(mode="file")
 
 
-expectations = [
+def create_expectations_and_suite(expectations, suite_name, gx_context):
+    suite = gx.ExpectationSuite(name=suite_name)
+    for expectation in expectations:
+        suite.add_expectation(expectation)
+    suite = gx_context.suites.add_or_update(suite=suite)
+    return suite
+
+
+def create_validation_definition(gx_context, data_asset, suite, name, batch_name):
+    return gx_context.validation_definitions.add_or_update(
+        gx.ValidationDefinition(
+            name=name,
+            data=data_asset.add_batch_definition_whole_dataframe(batch_name),
+            suite=suite,
+        )
+    )
+
+
+def create_checkpoint(gx_context, name, validation_definitions, action_list):
+    return gx_context.checkpoints.add_or_update(
+        gx.Checkpoint(
+            name=name,
+            validation_definitions=validation_definitions,
+            actions=action_list,
+            result_format=ResultFormat.COMPLETE,
+        )
+    )
+
+
+# Define expectations for each dataset
+expectations_conditions = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
@@ -162,7 +192,7 @@ expectations = [
     ),
 ]
 
-expectations2 = [
+expectations_observations = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
@@ -199,73 +229,56 @@ expectations2 = [
     ),
 ]
 
-suite = gx.ExpectationSuite(name="patients_with_conditions_suite")
-for expectation in expectations:
-    suite.add_expectation(expectation)
-
-suite2 = gx.ExpectationSuite(name="patients_with_observations_suite")
-for expectation in expectations2:
-    suite2.add_expectation(expectation)
-
-suite = gx_context.suites.add_or_update(suite=suite)
-suite2 = gx_context.suites.add_or_update(suite=suite2)
+# Create expectation suites
+suite_conditions = create_expectations_and_suite(
+    expectations_conditions, "patients_with_conditions_suite", gx_context
+)
+suite_observations = create_expectations_and_suite(
+    expectations_observations, "patients_with_observations_suite", gx_context
+)
 
 data_source_name = "snapshot_bundles"
-
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
-
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
-data_asset2 = data_source.add_dataframe_asset(name="patients_and_observations")
-
-# Add the Batch Definition
-validation_definition = gx_context.validation_definitions.add_or_update(
-    gx.ValidationDefinition(
-        name="validate_conditions",
-        data=data_asset.add_batch_definition_whole_dataframe(
-            "patients_and_conditions_all_rows"
-        ),
-        suite=suite,
-    )
+data_asset_observations = data_source.add_dataframe_asset(
+    name="patients_and_observations"
 )
 
-validation_definition2 = gx_context.validation_definitions.add_or_update(
-    gx.ValidationDefinition(
-        name="validate_observations",
-        data=data_asset2.add_batch_definition_whole_dataframe(
-            "patients_and_observations_all_rows"
-        ),
-        suite=suite2,
-    )
+# Add the Batch Definition and Validation Definitions
+validation_definition_conditions = create_validation_definition(
+    gx_context,
+    data_asset,
+    suite_conditions,
+    "validate_conditions",
+    "patients_and_conditions_all_rows",
+)
+validation_definition_observations = create_validation_definition(
+    gx_context,
+    data_asset_observations,
+    suite_observations,
+    "validate_observations",
+    "patients_and_observations_all_rows",
 )
 
-# Check points:  Checkpoint executes one or more Validation Definitions
-# performs a set of Actions based on the Validation Results each
-# Validation Definition returns.
-
+# Actions for checkpoints
 action_list = [
-    # This Action updates the Data Docs static website with the Validation
-    #   Results after the Checkpoint is run.
     UpdateDataDocsAction(
         name="update_all_data_docs",
     ),
 ]
 
-checkpoint = gx_context.checkpoints.add_or_update(
-    gx.Checkpoint(
-        name="validate_conditions_checkpoint",
-        validation_definitions=[validation_definition],
-        actions=action_list,
-        result_format=ResultFormat.COMPLETE,
-    )
+# Create checkpoints
+checkpoint_conditions = create_checkpoint(
+    gx_context,
+    "validate_conditions_checkpoint",
+    [validation_definition_conditions],
+    action_list,
 )
-
-checkpoint2 = gx_context.checkpoints.add_or_update(
-    gx.Checkpoint(
-        name="validate_observations_checkpoint",
-        validation_definitions=[validation_definition2],
-        actions=action_list,
-        result_format=ResultFormat.COMPLETE,
-    )
+checkpoint_observations = create_checkpoint(
+    gx_context,
+    "validate_observations_checkpoint",
+    [validation_definition_observations],
+    action_list,
 )
 
 # Add Data Docs Site
@@ -294,24 +307,23 @@ gx_context.update_data_docs_site(
 # Build the Data Docs
 gx_context.build_data_docs()
 
-# Run the Checkpoint
-validation_results = checkpoint.run(
+# Run the Checkpoints
+validation_results_conditions = checkpoint_conditions.run(
     batch_parameters={"dataframe": patients_with_conditions}
 )
 
-logger.info(validation_results.describe())
+logger.info(validation_results_conditions.describe())
 
-if not validation_results.success:
+if not validation_results_conditions.success:
     logger.error("Validation run failed!")
     sys.exit(1)
 
-
-validation_results2 = checkpoint2.run(
+validation_results_observations = checkpoint_observations.run(
     batch_parameters={"dataframe": patients_with_observations}
 )
 
-logger.info(validation_results2.describe())
+logger.info(validation_results_observations.describe())
 
-if not validation_results2.success:
+if not validation_results_observations.success:
     logger.error("Validation run failed!")
     sys.exit(1)
