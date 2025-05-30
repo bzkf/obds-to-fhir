@@ -220,6 +220,7 @@ jobs:
             --set "stream-processors.enabled=false" \
             --wait \
             --timeout=10m \
+            --debug \
             obds-to-fhir-test \
             tests/k8s
 
@@ -231,6 +232,7 @@ jobs:
             --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
             --wait \
             --timeout=10m \
+            --debug \
             obds-to-fhir-test \
             tests/k8s
 
