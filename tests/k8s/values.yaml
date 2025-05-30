@@ -61,6 +61,9 @@ stream-processors:
             value: "patient"
 
 kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      maximumStartupDurationSeconds: 900
   kubeStateMetrics:
     enabled: false
   nodeExporter:
@@ -68,6 +71,8 @@ kube-prometheus-stack:
   grafana:
     enabled: false
   alertmanager:
+    enabled: false
+  kubeEtcd:
     enabled: false
 
 curl:
