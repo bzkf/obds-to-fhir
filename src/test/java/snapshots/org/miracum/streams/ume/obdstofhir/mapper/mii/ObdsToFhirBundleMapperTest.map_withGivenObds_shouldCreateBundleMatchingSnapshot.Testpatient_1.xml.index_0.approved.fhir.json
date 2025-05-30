@@ -3286,7 +3286,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -3324,7 +3326,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "385421009"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385421009",
+          "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -3387,7 +3391,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "59847-4"
+          "version": "2.80",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
@@ -3435,10 +3441,14 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "33732-9"
+          "version": "2.80",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "code": "371469007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
@@ -3484,9 +3494,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "443527007"
         } ]
       },
@@ -3533,9 +3545,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "444025001"
         } ]
       },
@@ -3582,9 +3596,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "92832-5"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "1264491009"
         } ]
       },
@@ -3631,9 +3647,11 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "85347-3"
         }, {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "444411008"
         } ]
       },
@@ -3674,6 +3692,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -3719,7 +3738,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "69548-6"
+          "version": "2.80",
+          "code": "69548-6",
+          "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
@@ -3765,7 +3786,9 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "code": "69548-6"
+          "version": "2.80",
+          "code": "69548-6",
+          "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
@@ -3815,6 +3838,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399504009",
           "display": "cT category (observable entity)"
         } ]
@@ -3868,6 +3892,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -3921,6 +3946,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -3965,6 +3991,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "42030-7"
         } ]
       },
@@ -4008,6 +4035,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399537006",
           "display": "Clinical TNM stage grouping"
         } ]
@@ -4071,6 +4099,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -4124,6 +4153,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
@@ -4177,6 +4207,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371497001",
           "display": "pM category (observable entity)"
         } ]
@@ -4221,6 +4252,7 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
+          "version": "2.80",
           "code": "42030-7"
         } ]
       },
@@ -4264,6 +4296,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "395715009"
         } ]
       },
@@ -4307,6 +4340,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371513001"
         } ]
       },
@@ -4350,6 +4384,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "371493002"
         } ]
       },
@@ -4393,6 +4428,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "399588009",
           "display": "Pathologic TNM stage grouping"
         } ]
@@ -4453,7 +4489,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
@@ -4491,7 +4529,9 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "code": "423740007"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         } ]
       },
       "subject": {
