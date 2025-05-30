@@ -1910,7 +1910,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -3732,7 +3733,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -3780,7 +3782,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {

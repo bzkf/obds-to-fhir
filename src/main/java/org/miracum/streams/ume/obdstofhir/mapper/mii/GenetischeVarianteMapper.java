@@ -125,7 +125,8 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
               .addCoding(
                   new Coding()
                       .setSystem(fhirProperties.getSystems().getObservationCategory())
-                      .setCode("laboratory"));
+                      .setCode("laboratory")
+                      .setDisplay("Laboratory"));
       observation.setCategory(Collections.singletonList(categoryCodeableConcept));
 
       // subject reference

@@ -41,8 +41,9 @@ public class ConditionMapper extends ObdsToFhirMapper {
       LOG.debug(
           "Diagnose is null for Meldung. Only the Tumorzuordnung will be used to create the Condition.");
       var tag =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getSnomed())
+          fhirProperties
+              .getCodings()
+              .snomed()
               .setCode("255599008")
               .setDisplay("Incomplete (qualifier value)");
       condition.getMeta().addTag(tag);

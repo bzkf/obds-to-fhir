@@ -536,6 +536,10 @@ public class TNMMapper extends ObdsToFhirMapper {
       case "0a" -> new CodeableConcept(coding.setCode("0a").setDisplay("Stadium 0a"));
       case "0is" -> new CodeableConcept(coding.setCode("0is").setDisplay("Stadium 0is"));
       case "I" -> new CodeableConcept(coding.setCode("I").setDisplay("Stadium I"));
+      case "IA" -> new CodeableConcept(coding.setCode("IA").setDisplay("Stadium IA"));
+      case "IIID" -> new CodeableConcept(coding.setCode("IIID").setDisplay("Stadium IIID"));
+      case "IVA1" -> new CodeableConcept(coding.setCode("IVA1").setDisplay("Stadium IVA1"));
+      case "IVA2" -> new CodeableConcept(coding.setCode("IVA2").setDisplay("Stadium IVA2"));
       case "IA1" -> new CodeableConcept(coding.setCode("IA1").setDisplay("Stadium IA1"));
       case "IA2" -> new CodeableConcept(coding.setCode("IA2").setDisplay("Stadium IA2"));
       case "IA3" -> new CodeableConcept(coding.setCode("IA3").setDisplay("Stadium IA3"));
