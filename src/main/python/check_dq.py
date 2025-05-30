@@ -19,6 +19,7 @@ ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
 ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
 )
+MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"
 MIN_DATE = pd.Timestamp("1900-01-01")
 MAX_DATE = pd.Timestamp(year=datetime.now().year, month=12, day=31)
 
@@ -169,12 +170,12 @@ expectations2 = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
-        row_condition='col("meta_profile") != "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"',
+        row_condition=f'col("meta_profile") != "{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
-        row_condition='col("meta_profile") != "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"',
+        row_condition=f'col("meta_profile") != "{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
