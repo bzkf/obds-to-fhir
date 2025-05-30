@@ -1,5 +1,6 @@
 import os
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import great_expectations as gx
@@ -9,8 +10,7 @@ from great_expectations.core.result_format import ResultFormat
 from loguru import logger
 from pathling import Expression as exp
 from pathling import PathlingContext
-from pyspark.sql.functions import concat, lit, col
-from datetime import datetime
+from pyspark.sql.functions import col, concat, lit
 
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
@@ -19,7 +19,11 @@ ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
 ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
 )
-MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"
+MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
+    "https://www.medizininformatik-initiative.de/"
+    + "fhir/ext/modul-onko/StructureDefinition/"
+    + "mii-pr-onko-weitere-klassifikationen"
+)
 MIN_DATE = pd.Timestamp("1900-01-01")
 MAX_DATE = pd.Timestamp(year=datetime.now().year, month=12, day=31)
 
@@ -85,7 +89,11 @@ observations = data.extract(
         exp("code.coding.code", "code_code"),
         exp(
             """
-                Observation.where(code.coding.exists(system='http://loinc.org' or system='http://snomed.info/sct')).valueCodeableConcept.coding.code
+                Observation.where(
+                    code.coding.exists(
+                        system='http://loinc.org' or
+                        system='http://snomed.info/sct')
+                ).valueCodeableConcept.coding.code
             """,
             "value_codeable_concept_coding_code",
         ),
@@ -164,7 +172,6 @@ expectations_conditions = [
         description="Check if diagnosis asserted date is on or after the date of birth",
     ),
     # Gender expectation with condition code
-    # see <https://docs.greatexpectations.io/docs/core/customize_expectations/expectation_conditions/?condition_parser=spark>
     gx.expectations.ExpectColumnValuesToBeInSet(
         column="gender",
         value_set=["male"],
@@ -200,12 +207,14 @@ expectations_observations = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
-        row_condition=f'col("meta_profile") != "{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        row_condition='col("meta_profile") != '
+        + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
-        row_condition=f'col("meta_profile") != "{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        row_condition='col("meta_profile") != '
+        + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
