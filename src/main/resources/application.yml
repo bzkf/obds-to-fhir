@@ -1,4 +1,6 @@
-app:\n  version: 3.0.0-beta.60
+app-version: 3.0.0-beta.60
+
+app:
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 

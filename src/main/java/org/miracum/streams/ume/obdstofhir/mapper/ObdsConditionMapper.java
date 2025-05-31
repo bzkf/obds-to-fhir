@@ -23,7 +23,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
   private static final Pattern icdVersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
-  @Value("${app.version}")
+  @Value("${app-version}")
   private String appVersion;
 
   @Value("${app.enableCheckDigitConv}")

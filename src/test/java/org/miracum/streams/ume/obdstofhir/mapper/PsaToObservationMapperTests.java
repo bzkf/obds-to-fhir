@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest(
     classes = {FhirProperties.class},
-    properties = {"app.version=0.0.0-test"})
+    properties = {"app-version=0.0.0-test"})
 @EnableConfigurationProperties()
 class PsaToObservationMapperTests extends ObdsProcessorTest {
   private final PsaToObservationMapper sut;
