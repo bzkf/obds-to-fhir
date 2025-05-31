@@ -43,7 +43,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsObservationMapper.class);
 
-  @Value("${app.version}")
+  @Value("${app-version}")
   private String appVersion;
 
   @Value("${app.enableCheckDigitConv}")

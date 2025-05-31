@@ -20,7 +20,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ObdsMedicationStatementMapper.class);
 
-  @Value("${app.version}")
+  @Value("${app-version}")
   private String appVersion;
 
   @Value("${app.enableCheckDigitConv}")
