@@ -16,7 +16,8 @@ env:
     [
       "NebenwirkungMapperTest",
       "StrahlentherapieMapperTest",
-      "VerlaufObservationMapperTest"
+      "VerlaufObservationMapperTest",
+      "ConditionMapperTest"
     ]
 
 jobs:
