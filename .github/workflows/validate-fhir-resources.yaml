@@ -129,4 +129,4 @@ jobs:
           fhir cache list
           find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'printf "\n\n%*s\n" "${COLUMNS:-$(tput cols)}" "" | tr " " - && echo "Validating: {}" && fhir validate --verbose --fail "{}"'
