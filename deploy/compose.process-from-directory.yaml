@@ -1,6 +1,6 @@
 services:
   obds-to-fhir:
-    restart: no
+    restart: "no"
     user: "${USER_ID:-65532}:${GROUP_ID:-65532}"
     environment:
       SPRING_PROFILES_ACTIVE: "process-from-directory"
