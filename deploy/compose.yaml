@@ -1,6 +1,6 @@
 services:
   obds-to-fhir:
-    image: ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.61
+    image: ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.63
     restart: "unless-stopped"
     cap_drop:
       - ALL
@@ -24,7 +24,7 @@ services:
         required: false
 
   kafka:
-    image: docker.io/bitnami/kafka:4.0.0@sha256:daba058b0233756f63129f685927fd84e18ac8959dabd49e0d44ae6eee925872
+    image: docker.io/bitnami/kafka:4.0.0@sha256:6cd4f5e8822e5b649f37bbfca86649e6832b320430e9dd5cd1367b0974f4911d
     restart: "unless-stopped"
     cap_drop:
       - ALL

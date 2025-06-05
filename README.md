@@ -35,10 +35,10 @@ bundles to both `/opt/obds-to-fhir/fhir-output` and a Kafka topic called `fhir.o
 Here's how you can run the application this way:
 
 ```sh
-mkdir fhir-output/
+mkdir ./fhir-output/
 
-INPUT_DIRECTORY="../src/test/resources/obds3/" \
-OUTPUT_DIRECTORY="../fhir-output" \
+INPUT_DIRECTORY="./src/test/resources/obds3/" \
+OUTPUT_DIRECTORY="./fhir-output" \
 USER_ID="$(id -u)" \
 GROUP_ID="$(id -g)" \
 docker compose -f deploy/compose.yaml -f deploy/compose.process-from-directory.yaml run obds-to-fhir
@@ -132,7 +132,7 @@ Prerequisites:
 All released container images are signed using [cosign](https://github.com/sigstore/cosign) and SLSA Level 3 provenance is available for verification.
 
 ```sh
-IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.61
+IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.63
 DIGEST=$(crane digest "${IMAGE}")
 IMAGE_DIGEST_PINNED="ghcr.io/bzkf/obds-to-fhir@${DIGEST}"
 IMAGE_TAG="${IMAGE#*:}"

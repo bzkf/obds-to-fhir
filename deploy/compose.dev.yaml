@@ -17,7 +17,7 @@ services:
       - ./oracle/initV3:/docker-entrypoint-initdb.d/setup
 
   kafka:
-    image: docker.io/bitnami/kafka:4.0.0@sha256:daba058b0233756f63129f685927fd84e18ac8959dabd49e0d44ae6eee925872
+    image: docker.io/bitnami/kafka:4.0.0@sha256:6cd4f5e8822e5b649f37bbfca86649e6832b320430e9dd5cd1367b0974f4911d
     restart: unless-stopped
     cap_drop:
       - ALL
@@ -42,7 +42,7 @@ services:
       - 127.0.0.1:9094:9094
 
   kafka-connect:
-    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.2@sha256:66fa69028dffe5aabe2323a782aa365fbe45394393f8da53cc283375bc910399
+    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.3@sha256:1f5e78d24e032657221fef792d834a37a003d7e2726b18099e879fb24275f023
     restart: unless-stopped
     cap_drop:
       - ALL
