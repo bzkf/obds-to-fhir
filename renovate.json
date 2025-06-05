@@ -1,5 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>miracum/.github//renovate/default"],
-  "baseBranches": ["beta", "master"]
+  "baseBranches": ["beta", "master"],
+  "ignoreDeps": ["ghcr.io/bzkf/obds-to-fhir"]
 }
