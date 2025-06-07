@@ -4,7 +4,8 @@ plugins {
 	id 'jacoco'
 	id 'java'
 	id 'com.diffplug.spotless' version '7.0.4'
-	id "io.freefair.lombok" version "8.13.1"
+	id 'io.freefair.lombok' version '8.13.1'
+	id 'net.ltgt.errorprone' version '4.2.0'
 }
 
 group = 'org.miracum.streams.ume'
@@ -85,6 +86,9 @@ dependencies {
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
 	testImplementation "com.approvaltests:approvaltests:24.22.0"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
+
+	errorprone 'com.google.errorprone:error_prone_core:2.38.0'
+	errorprone 'com.uber.nullaway:nullaway:0.12.7'
 }
 
 dependencyManagement {
@@ -143,3 +147,16 @@ tasks.register('xsd2java') {
 	}
 }
 compileJava.dependsOn xsd2java
+
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile).configureEach {
+  options.errorprone {
+    check("NullAway", CheckSeverity.WARN)
+    option("NullAway:AnnotatedPackages", "org.miracum")
+  }
+  options.errorprone.disableWarningsInGeneratedCode = true
+  // ignore legacy mappers code
+  // MeldungExportV3 causes an errorprone exception - likely because it can't handle all the lombok annotations
+  options.errorprone.errorproneArgs.add("-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java|.*/lookup/.*|.*/mapper/\\w*\\.java)")
+}

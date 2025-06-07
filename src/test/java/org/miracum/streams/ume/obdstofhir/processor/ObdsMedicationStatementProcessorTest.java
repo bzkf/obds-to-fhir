@@ -2,7 +2,6 @@ package org.miracum.streams.ume.obdstofhir.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import java.io.IOException;
 import java.util.*;
@@ -26,7 +25,6 @@ class ObdsMedicationStatementProcessorTest extends ObdsProcessorTest {
   private final ObdsProcedureMapper onkoProcedureMapper;
   private final ObdsPatientMapper onkoPatientMapper;
   private final ObdsConditionMapper onkoConditionMapper;
-  private final FhirContext ctx = FhirContext.forR4();
 
   @Autowired
   public ObdsMedicationStatementProcessorTest(
@@ -109,7 +107,7 @@ class ObdsMedicationStatementProcessorTest extends ObdsProcessorTest {
 
         assertThat(medSt.getCategory().getCoding().get(0).getCode()).isEqualTo(expectedCategory);
 
-        assertThat(medSt.getStatus().toString()).isEqualTo(expectedStatus);
+        assertThat(medSt.getStatus()).hasToString(expectedStatus);
 
         assertThat(medSt.getEffectivePeriod().getStartElement().getValueAsString())
             .isEqualTo(expectedPeriod.getFirst());
@@ -127,17 +125,17 @@ class ObdsMedicationStatementProcessorTest extends ObdsProcessorTest {
         assertThat(intentionCC.getCoding().get(0).getCode()).isEqualTo(expectedIntention);
 
         if (medSt.getPartOf().isEmpty()) {
-          partOfId = medSt.getId();
+          partOfId = medSt.getIdElement().getIdPart();
           partOfCount++;
         } else {
           assertThat(medSt.getPartOf()).hasSize(1);
-          partOfReferences.add(medSt.getPartOf().get(0).getReference());
+          partOfReferences.add(medSt.getPartOf().get(0).getReferenceElement().getIdPart());
         }
       }
 
       assertThat(partOfCount).isEqualTo(1);
       String finalPartOfId = partOfId;
-      assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
+      assertThat(partOfReferences).allSatisfy(ref -> assertThat(ref).isEqualTo(finalPartOfId));
 
       var fhirJson = fhirParser.encodeResourceToString(resultBundle);
       Approvals.verify(
