@@ -154,5 +154,6 @@ tasks.withType(JavaCompile).configureEach {
     options.errorprone.disableWarningsInGeneratedCode = true
     // ignore legacy mappers code
     // MeldungExportV3 causes an errorprone exception - likely because it can't handle all the lombok annotations
-    options.errorprone.errorproneArgs.add('-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java|.*/lookup/.*|.*/mapper/\\w*\\.java)')
+    options.errorprone.errorproneArgs.add('-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java'
+        + '|.*/lookup/.*|.*/mapper/\\w*\\.java)')
 }
