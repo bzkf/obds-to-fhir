@@ -14,7 +14,6 @@ permissions:
 env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "NebenwirkungMapperTest",
       "StrahlentherapieMapperTest",
       "VerlaufObservationMapperTest",
       "ConditionMapperTest"
