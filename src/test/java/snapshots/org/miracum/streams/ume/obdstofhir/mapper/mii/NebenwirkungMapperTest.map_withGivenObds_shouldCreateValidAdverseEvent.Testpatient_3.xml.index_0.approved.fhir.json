@@ -9,6 +9,12 @@
     "value": "mii-pr-onko-nebenwirkung_SystId_01Grad_maximal_2_unbekannt"
   },
   "actuality": "actual",
+  "event": {
+    "extension": [ {
+      "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+      "valueCode": "not-applicable"
+    } ]
+  },
   "subject": {
     "reference": "Patient/any"
   },
