@@ -8,6 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
@@ -50,7 +53,8 @@ public class ProcessFromDirectory {
   }
 
   @EventListener
-  public void processFromFileSystem(ApplicationReadyEvent readyEvent) throws IOException {
+  public void processFromFileSystem(ApplicationReadyEvent readyEvent)
+      throws IOException, InterruptedException {
     LOG.info("Processing oBDS files in folder {}", config.path());
 
     try (var stream = Files.list(Paths.get(config.path()))) {
@@ -82,7 +86,18 @@ public class ProcessFromDirectory {
           LOG.info("Created FHIR bundle {}", bundle.getId());
 
           if (config.outputToKafka().enabled()) {
-            kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
+            try {
+              var future =
+                  kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
+              future.get(60, TimeUnit.SECONDS);
+            } catch (ExecutionException e) {
+              LOG.error("Sending message to Kafka failed", e);
+            } catch (TimeoutException e) {
+              LOG.error("Sending message to Kafka timed out", e);
+            } catch (InterruptedException e) {
+              LOG.error("Sending message to Kafka was interrupted", e);
+              throw e;
+            }
           }
 
           if (config.outputToDirectory().enabled()) {

@@ -2,7 +2,6 @@ package org.miracum.streams.ume.obdstofhir.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import java.io.IOException;
 import java.util.*;
@@ -26,7 +25,6 @@ class ObdsProcedureProcessorTest extends ObdsProcessorTest {
   private final ObdsProcedureMapper onkoProcedureMapper;
   private final ObdsPatientMapper onkoPatientMapper;
   private final ObdsConditionMapper onkoConditionMapper;
-  private final FhirContext ctx = FhirContext.forR4();
 
   @Autowired
   public ObdsProcedureProcessorTest(
@@ -133,7 +131,7 @@ class ObdsProcedureProcessorTest extends ObdsProcessorTest {
                     .getValue();
         assertThat(opIntention.getCoding().get(0).getCode()).isEqualTo(expectedIntention);
 
-        assertThat(opProcedureList.get(0).getStatus().toString()).isEqualTo(expectedStatus);
+        assertThat(opProcedureList.get(0).getStatus()).hasToString(expectedStatus);
 
         assertThat(opProcedureList.get(0).getPerformedDateTimeType().getValueAsString())
             .isEqualTo(expectedOpDate);
@@ -154,7 +152,7 @@ class ObdsProcedureProcessorTest extends ObdsProcessorTest {
       List<String> partOfReferences = new ArrayList<>();
       for (var stProc : stProcedureList) {
 
-        assertThat(stProc.getStatus().toString()).isEqualTo(expectedStatus);
+        assertThat(stProc.getStatus()).hasToString(expectedStatus);
 
         var stellungOPCc =
             (CodeableConcept)
@@ -172,18 +170,18 @@ class ObdsProcedureProcessorTest extends ObdsProcessorTest {
             .isEqualTo(expectedcomplicationDisplay);
 
         if (stProc.getPartOf().isEmpty()) {
-          partOfId = stProc.getId();
+          partOfId = stProc.getIdElement().getIdPart();
           partOfCount++;
         } else {
           assertThat(stProc.getPartOf()).hasSize(1);
-          partOfReferences.add(stProc.getPartOf().get(0).getReference());
+          partOfReferences.add(stProc.getPartOf().get(0).getReferenceElement().getIdPart());
         }
       }
 
       if (!stProcedureList.isEmpty()) {
         assertThat(partOfCount).isEqualTo(1);
         String finalPartOfId = partOfId;
-        assertThat(partOfReferences).allSatisfy(ref -> ref.equals(finalPartOfId));
+        assertThat(partOfReferences).allSatisfy(ref -> assertThat(ref).isEqualTo(finalPartOfId));
       }
 
       var fhirJson = fhirParser.encodeResourceToString(resultBundle);

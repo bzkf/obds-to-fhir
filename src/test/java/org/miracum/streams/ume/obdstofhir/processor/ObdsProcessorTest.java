@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,7 @@ public abstract class ObdsProcessorTest {
 
     for (var xmlTupel : xmlFileNames) {
       File xmlFile = ResourceUtils.getFile("classpath:" + xmlTupel.getFirst());
-      String xmlContent = new String(Files.readAllBytes(xmlFile.toPath()));
+      String xmlContent = new String(Files.readAllBytes(xmlFile.toPath()), StandardCharsets.UTF_8);
 
       var meldungsId = StringUtils.substringBetween(xmlContent, "Meldung_ID=\"", "\" Melder_ID");
       var melderId = StringUtils.substringBetween(xmlContent, "Melder_ID=\"", "\">");
