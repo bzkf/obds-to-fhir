@@ -84,11 +84,17 @@
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
           "version": "33",
           "code": "C50.9"
-        } ]
+        } ],
+        "text": "rechte Brust"
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "R"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "24028007",
+          "display": "Right (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -2612,11 +2618,17 @@
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
           "version": "33",
           "code": "C20.9"
-        } ]
+        } ],
+        "text": "Rektum"
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -3037,11 +3049,17 @@
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
           "version": "33",
           "code": "C44.5"
-        } ]
+        } ],
+        "text": "Rumpf"
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
