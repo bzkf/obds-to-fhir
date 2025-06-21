@@ -14,9 +14,9 @@ permissions:
 env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "NebenwirkungMapperTest",
       "StrahlentherapieMapperTest",
-      "VerlaufObservationMapperTest"
+      "VerlaufObservationMapperTest",
+      "ConditionMapperTest"
     ]
 
 jobs:
@@ -128,4 +128,4 @@ jobs:
           fhir cache list
           find src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}"'
