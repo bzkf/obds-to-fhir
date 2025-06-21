@@ -29,6 +29,7 @@ class ConditionMapperTest extends MapperTest {
     "Testpatient_1.xml",
     "Testpatient_2.xml",
     "Testpatient_3.xml",
+    "Testpatient_leer.xml",
     "Testpatient_Diagnose.xml",
     "Testpatient_Diagnose_ohne_Version.xml"
   })
