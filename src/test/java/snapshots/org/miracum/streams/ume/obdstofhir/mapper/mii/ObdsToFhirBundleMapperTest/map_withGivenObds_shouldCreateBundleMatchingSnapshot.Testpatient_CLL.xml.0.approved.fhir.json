@@ -139,7 +139,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "373818007"
+          "code": "373818007",
+          "display": "No anti-cancer treatment - watchful waiting (finding)"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "WW"
@@ -235,14 +236,16 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "8-54"
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CI"
