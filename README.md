@@ -1,6 +1,6 @@
 # obds-to-fhir
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > Looking for the latest version supporting oBDS version 3 and the MII FHIR Profiles?
 > Head to the `beta` branch: <https://github.com/bzkf/obds-to-fhir/tree/beta>
 
