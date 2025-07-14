@@ -20,17 +20,17 @@ ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
 )
 MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
-    "https://www.medizininformatik-initiative.de/"
-    + "fhir/ext/modul-onko/StructureDefinition/"
-    + "mii-pr-onko-weitere-klassifikationen"
+        "https://www.medizininformatik-initiative.de/"
+        + "fhir/ext/modul-onko/StructureDefinition/"
+        + "mii-pr-onko-weitere-klassifikationen"
 )
 MIN_DATE = pd.Timestamp("1900-01-01")
 MAX_DATE = pd.Timestamp(year=datetime.now().year, month=12, day=31)
 
 snapshots_dir = (
-    HERE
-    / "../../test/java/snapshots/org/miracum/streams/ume/obdstofhir/"
-    / "mapper/mii/ObdsToFhirBundleMapperTest/"
+        HERE
+        / "../src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/"
+        / "mapper/mii/ObdsToFhirBundleMapperTest/"
 ).as_posix()
 
 data = pc.read.bundles(
@@ -76,7 +76,7 @@ patients_with_conditions = conditions.join(
     patients,
     conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
-)
+    )
 
 patients_with_conditions.show(truncate=False)
 
@@ -106,7 +106,7 @@ patients_with_observations = observations.join(
     patients,
     observations["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
-)
+    )
 
 patients_with_observations.show(truncate=False)
 
@@ -208,13 +208,13 @@ expectations_observations = [
         column="code_system",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-        + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+                      + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-        + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+                      + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
