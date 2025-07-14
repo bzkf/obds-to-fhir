@@ -73,14 +73,16 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
         bundle =
             addResourceAsEntryInBundle(
                 bundle,
-                createOpProcedure(meldung, pid, senderId, softwareId, null, distinctOpsSet));
+                createOpProcedure(
+                    meldung, pid, senderId, softwareId, null, distinctOpsSet, reportingReason));
       }
 
       for (var opsCode : distinctOpsSet) {
         bundle =
             addResourceAsEntryInBundle(
                 bundle,
-                createOpProcedure(meldung, pid, senderId, softwareId, opsCode, distinctOpsSet));
+                createOpProcedure(
+                    meldung, pid, senderId, softwareId, opsCode, distinctOpsSet, reportingReason));
       }
     }
 
