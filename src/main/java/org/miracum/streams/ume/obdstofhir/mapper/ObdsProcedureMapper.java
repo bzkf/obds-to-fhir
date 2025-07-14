@@ -59,30 +59,28 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
-    if (reportingReason == Meldeanlass.BEHANDLUNGSENDE) {
-      // OP und Strahlentherapie sofern vorhanden
-      // Strahlentherapie kann auch im beginn stehen, op aber nicht
-      if (meldung != null
-          && meldung.getMenge_OP() != null
-          && meldung.getMenge_OP().getOP() != null
-          && meldung.getMenge_OP().getOP().getMenge_OPS() != null) {
+    // OP und Strahlentherapie sofern vorhanden
+    // Strahlentherapie kann auch im beginn stehen, op aber nicht
+    if (meldung != null
+        && meldung.getMenge_OP() != null
+        && meldung.getMenge_OP().getOP() != null
+        && meldung.getMenge_OP().getOP().getMenge_OPS() != null) {
 
-        var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS().getOP_OPS();
-        var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
+      var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS().getOP_OPS();
+      var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
 
-        if (distinctOpsSet.size() > 1) {
-          bundle =
-              addResourceAsEntryInBundle(
-                  bundle,
-                  createOpProcedure(meldung, pid, senderId, softwareId, null, distinctOpsSet));
-        }
+      if (distinctOpsSet.size() > 1) {
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle,
+                createOpProcedure(meldung, pid, senderId, softwareId, null, distinctOpsSet));
+      }
 
-        for (var opsCode : distinctOpsSet) {
-          bundle =
-              addResourceAsEntryInBundle(
-                  bundle,
-                  createOpProcedure(meldung, pid, senderId, softwareId, opsCode, distinctOpsSet));
-        }
+      for (var opsCode : distinctOpsSet) {
+        bundle =
+            addResourceAsEntryInBundle(
+                bundle,
+                createOpProcedure(meldung, pid, senderId, softwareId, opsCode, distinctOpsSet));
       }
     }
 
@@ -141,7 +139,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       String senderId,
       String softwareId,
       String opsCode,
-      Set<String> distinctOpsSet) {
+      Set<String> distinctOpsSet,
+      Meldeanlass meldeanlass) {
 
     var op = meldung.getMenge_OP().getOP();
 
@@ -210,7 +209,11 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                         .setDisplay(OPIntentionVsLookup.lookupDisplay(opIntention))));
 
     // Status
-    opProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+    if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
+      opProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+    } else {
+      opProcedure.setStatus(Procedure.ProcedureStatus.INPROGRESS);
+    }
 
     // Category
     opProcedure.setCategory(
