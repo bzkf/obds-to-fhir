@@ -60,7 +60,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     var reportingReason = getReportingReasonFromAdt(meldungExport);
 
     // OP und Strahlentherapie sofern vorhanden
-    // Strahlentherapie kann auch im beginn stehen, op aber nicht
+    // können beide sowohl in Behandlungsbeginn als auch Behandlungsende stehen
     if (meldung != null
         && meldung.getMenge_OP() != null
         && meldung.getMenge_OP().getOP() != null
