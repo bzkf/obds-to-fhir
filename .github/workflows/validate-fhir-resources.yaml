@@ -40,7 +40,7 @@ jobs:
 
   validate-fhir-resource:
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.6@sha256:2a916a81cd9bbbda53e748746dc2112a2a8a4b3edd01279747e2120a5e525c32
+    container: ghcr.io/miracum/ig-build-tools:v2.2.11@sha256:56ec1b2667257f3e44953405d63730b0a7b29f2ebb0654cf159620789733feb2
     needs:
       - extract-mapper-names
     strategy:
@@ -48,7 +48,7 @@ jobs:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -90,10 +90,10 @@ jobs:
 
   validate-bundles:
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.6@sha256:2a916a81cd9bbbda53e748746dc2112a2a8a4b3edd01279747e2120a5e525c32
+    container: ghcr.io/miracum/ig-build-tools:v2.2.11@sha256:56ec1b2667257f3e44953405d63730b0a7b29f2ebb0654cf159620789733feb2
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
