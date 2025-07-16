@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -27,17 +26,29 @@ public class TodMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(TodTyp tod, Reference patient, Reference condition) {
+  public List<Observation> map(
+      TodTyp tod, String meldungId, Reference patient, Reference condition) {
     // Validation
     Objects.requireNonNull(tod);
 
-    Validate.notBlank(tod.getAbschlussID(), "Required ABSCHLUSS_ID is unset");
+    String identifierValue;
+
+    if (tod.getAbschlussID() != null) {
+      identifierValue = tod.getAbschlussID();
+    } else {
+      identifierValue = meldungId;
+    }
+
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
     var observationList = new ArrayList<Observation>();
 
-    if (tod.getMengeTodesursachen() != null) {
+    if (tod.getMengeTodesursachen()
+        != null) { // to do: hier werden nur observations erstellt, wenn eine Todesursache
+      // vorhanden ist.
+      // sollte die observation nicht trotzdem erstellt werden, auch wenn nur das
+      // sterbedatum vorhanden ist - to do
 
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
@@ -48,7 +59,7 @@ public class TodMapper extends ObdsToFhirMapper {
         Identifier identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getTodObservationId())
-                .setValue(String.format("%s_%s", tod.getAbschlussID(), todesursache.getCode()));
+                .setValue(String.format("%s_%s", identifierValue, todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
 

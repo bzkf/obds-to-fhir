@@ -153,8 +153,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
       bundle.setId(patient.getId());
 
-      // Meldungen are ordered in a way such that the Meldungen with the Diagnose element present
-      // are always the last ones in the list, thus overriding any incomplete resources that were
+      // Meldungen are ordered in a way such that the Meldungen with the Diagnose
+      // element present
+      // are always the last ones in the list, thus overriding any incomplete
+      // resources that were
       // constructed from just the Tumorzuordung
       // Overriding happens based on the Resource ID in `addToBundle`.
       meldungen.sort(
@@ -172,7 +174,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
 
         // Diagnose
-        // this _always_ creates a Condition resource, even if just the Tumorzuordnung is known
+        // this _always_ creates a Condition resource, even if just the Tumorzuordnung
+        // is known
         var condition =
             conditionMapper.map(
                 meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
@@ -480,7 +483,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Tod
         if (meldung.getTod() != null) {
           var deathObservations =
-              todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
+              todMapper.map(
+                  meldung.getTod(),
+                  meldung.getMeldungID(),
+                  patientReference,
+                  primaryConditionReference);
           for (var resource : deathObservations) {
             addToBundle(bundle, resource);
           }
@@ -733,7 +740,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
     // if a resource entry already exists, it will be replaced.
     // this should only be necessary for the Condition resource,
-    // which can be created from the TumorzuordnungTyp present in all kinds of Meldungen.
+    // which can be created from the TumorzuordnungTyp present in all kinds of
+    // Meldungen.
     var duplicateEntries =
         bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(url)).toList();
 
