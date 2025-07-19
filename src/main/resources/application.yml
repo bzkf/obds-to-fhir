@@ -233,7 +233,7 @@ spring:
     name: obds-to-fhir
   cloud:
     function:
-      definition: ${ACTIVE_PROCESSORS:getMeldungExportObdsProcessor;getMeldungExportObdsV3Processor}
+      definition: "getMeldungExportObdsV3Processor"
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
