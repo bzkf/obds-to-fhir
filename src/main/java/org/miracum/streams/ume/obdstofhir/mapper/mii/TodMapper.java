@@ -44,12 +44,7 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var observationList = new ArrayList<Observation>();
 
-    if (tod.getMengeTodesursachen()
-        != null) { // to do: hier werden nur observations erstellt, wenn eine Todesursache
-      // vorhanden ist.
-      // sollte die observation nicht trotzdem erstellt werden, auch wenn nur das
-      // sterbedatum vorhanden ist - to do
-
+    if (tod.getMengeTodesursachen() != null) {
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
         var observation = new Observation();
