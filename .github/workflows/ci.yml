@@ -75,16 +75,19 @@ jobs:
       - name: Copy unit test coverage reports from test container
         env:
           UNIT_TEST_IMAGE: ${{ fromJson(needs.build.outputs.test-image-meta-json).tags[0] }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         run: |
           docker create --name=unit-test-container "${UNIT_TEST_IMAGE}"
-          docker cp unit-test-container:/test ${{ github.workspace }}/test
+          docker cp unit-test-container:/test "${GITHUB_WORKSPACE}/test"
 
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@50d3aff4548aa991e6753342d9ba291084e63848 # v1.7.2
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         with:
           paths: |
-            ${{ github.workspace }}/test/jacoco/test/jacocoTestReport.xml
+            ${GITHUB_WORKSPACE}/test/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
