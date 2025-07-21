@@ -1,4 +1,4 @@
-FROM docker.io/library/gradle:8.14.3-jdk21@sha256:7f7c8b3c76ce1d54276f463f43f1f845226607552c8787319a1508fe4bd97485 AS build
+FROM docker.io/library/gradle:8.14.3-jdk21@sha256:38ff3221cdecdc24959a1e7935925779ebd63243374701120f4de55380fc435e AS build
 WORKDIR /home/gradle/project
 
 COPY --chown=gradle:gradle . .
@@ -25,7 +25,7 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM gcr.io/distroless/java21-debian12:nonroot@sha256:59c3de3664ddf2a69b2accc04ed4650caa578c14e63863075f5d041fe6961369
+FROM gcr.io/distroless/java21-debian12:nonroot@sha256:d43d0ce3ea52041b8f0fbf5e5fe3519ec331c8271be37d815a10b8a47c07721d
 WORKDIR /opt/obds-to-fhir
 ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
 
