@@ -745,10 +745,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var duplicateEntry = duplicateEntries.getFirst();
       if (duplicateEntry.getResource().getResourceType() != ResourceType.Condition) {
         LOG.warn(
-            "Duplicate entry found in bundle for resource type {} with URL {}. "
+            "Duplicate entry found in bundle with URL {} and profile {}. "
                 + "This should only happen for Condition resources.",
-            resource.getResourceType(),
-            url);
+            url,
+            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
       }
 
       duplicateEntry.setResource(resource);
