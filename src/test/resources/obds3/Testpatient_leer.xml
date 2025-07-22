@@ -33,7 +33,6 @@
                             <Code>C17.1</Code>
                             <Version>10 2015 GM</Version>
                         </Primaertumor_ICD>
-                        <Diagnosedatum Datumsgenauigkeit="T">2024-06-10</Diagnosedatum>
                     </Tumorzuordnung>
                     <Diagnose>
                         <Diagnosesicherung>1</Diagnosesicherung>
