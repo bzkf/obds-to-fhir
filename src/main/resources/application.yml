@@ -1,4 +1,4 @@
-app-version: 3.0.0-beta.72
+app-version: 3.0.0-beta.73
 
 app:
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
