@@ -49,7 +49,7 @@
               <Version>31</Version>
             </Morphologie_ICD_O>
           </Tumorzuordnung>
-          <Tod Abschluss_ID="55">
+          <Tod>
             <Sterbedatum>2021-11-27</Sterbedatum>
             <Tod_tumorbedingt>J</Tod_tumorbedingt>
             <Menge_Todesursachen>
