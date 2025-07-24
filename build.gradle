@@ -1,14 +1,14 @@
 plugins {
-	id 'org.springframework.boot' version '3.5.0'
+	id 'org.springframework.boot' version '3.5.3'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '7.0.4'
-	id "io.freefair.lombok" version "8.13.1"
+	id 'com.diffplug.spotless' version '7.2.0'
+	id "io.freefair.lombok" version "8.14"
 }
 
 group = 'org.miracum.streams.ume'
-version = '3.0.0-beta.66'
+version = '3.0.0-beta.73'
 
 java {
   toolchain {
@@ -37,8 +37,8 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2024.0.1")
-	set('hapiVersion', "8.2.0")
+	set('springCloudVersion', "2024.0.2")
+	set('hapiVersion', "8.2.1")
 	jaxbTargetDir = file("src/generated/java")
 }
 
@@ -57,9 +57,9 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-actuator"
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.1'
-	implementation 'io.micrometer:micrometer-core:1.15.1'
-	implementation "org.miracum:kafka-fhir-serializer:2.0.5"
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
+	implementation 'io.micrometer:micrometer-core:1.15.2'
+	implementation "org.miracum:kafka-fhir-serializer:2.0.6"
 	implementation "org.apache.commons:commons-text:1.13.1"
 	implementation "org.scala-lang:scala-library:2.13.16"
 	implementation "com.github.slugify:slugify:3.0.7"
