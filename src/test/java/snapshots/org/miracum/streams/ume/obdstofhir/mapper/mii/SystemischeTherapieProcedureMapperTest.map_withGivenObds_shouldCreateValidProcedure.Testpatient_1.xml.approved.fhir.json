@@ -43,7 +43,8 @@
     }, {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
       "code": "IM"
-    } ]
+    } ],
+    "text": "Atezolizumab Immuntherapie"
   },
   "subject": {
     "reference": "Patient/any"

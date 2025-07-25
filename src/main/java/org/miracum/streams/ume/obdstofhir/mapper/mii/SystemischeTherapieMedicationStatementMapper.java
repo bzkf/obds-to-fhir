@@ -56,8 +56,6 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
               new CodeableConcept().setText(substanz.getBezeichnung()));
         }
 
-        // TODO: can we be sure that this SYST-ID is globally unqiue across all SYSTs?
-        // if not we may instead need to construct the ID from the patient-id + others.
         var identifier =
             new Identifier()
                 .setSystem(
