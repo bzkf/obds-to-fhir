@@ -58,7 +58,10 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     } else {
       var performed = new Period();
-      convertObdsDatumToDateTimeType(syst.getBeginn()).ifPresent(performed::setStartElement);
+      convertObdsDatumToDateTimeType(syst.getBeginn())
+          .ifPresentOrElse(
+              performed::setStartElement,
+              () -> LOG.warn("No start date set for SYST_ID={}", syst.getSYSTID()));
       convertObdsDatumToDateTimeType(syst.getEnde()).ifPresent(performed::setEndElement);
       procedure.setPerformed(performed);
     }
@@ -74,11 +77,14 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     }
 
     if (syst.getTherapieart() != null) {
-      procedure
-          .getCode()
+      var therapieartCodeableConcept = procedure.getCode();
+      therapieartCodeableConcept
           .addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
           .setCode(syst.getTherapieart().value());
+      if (syst.getProtokoll() != null) {
+        therapieartCodeableConcept.setText(syst.getProtokoll());
+      }
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
       procedure.getCode().addExtension(dataAbsentExtension);
