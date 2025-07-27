@@ -120,7 +120,6 @@ fhir:
     mii-cs-therapie-grund-ende: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"
     mii-cs-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen"
     mii-cs-onko-tod-interpretation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod"
-    mii-cs-onko-therapie-ende-grund: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund"
     mii-cs-onko-strahlentherapie-boost: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
     atcWho: "http://www.whocc.no/atc"
