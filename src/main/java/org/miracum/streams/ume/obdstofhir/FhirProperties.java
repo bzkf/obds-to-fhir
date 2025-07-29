@@ -130,7 +130,6 @@ public class FhirProperties {
     private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String miiCsOnkoTodInterpretation;
-    private String miiCsOnkoTherapieEndeGrund;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
     private String atcBfarm;

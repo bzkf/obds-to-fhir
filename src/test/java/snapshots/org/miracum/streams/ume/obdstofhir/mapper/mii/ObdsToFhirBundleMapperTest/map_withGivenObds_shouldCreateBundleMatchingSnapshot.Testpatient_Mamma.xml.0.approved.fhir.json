@@ -2507,7 +2507,7 @@
       } ],
       "outcome": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende",
           "code": "E"
         } ]
       }
