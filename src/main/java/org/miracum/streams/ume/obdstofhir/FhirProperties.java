@@ -177,6 +177,7 @@ public class FhirProperties {
     private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
+    private String miiPrOnkoSystemischeTherapieMedikation;
     private String miiPrOnkoFernmetastasen;
     private String miiPrMedicationStatement;
     private String miiPrOnkoBefund;

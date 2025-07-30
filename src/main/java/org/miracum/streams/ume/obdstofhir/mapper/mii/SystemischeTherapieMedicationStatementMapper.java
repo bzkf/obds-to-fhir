@@ -39,7 +39,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       var systMedicationStatement = new MedicationStatement();
       systMedicationStatement
           .getMeta()
-          .addProfile(fhirProperties.getProfiles().getMiiPrMedicationStatement());
+          .addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapieMedikation());
 
       if ((null != substanz.getATC() && StringUtils.hasText(substanz.getATC().getCode()))
           || StringUtils.hasText(substanz.getBezeichnung())) {
