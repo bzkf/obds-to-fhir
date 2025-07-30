@@ -152,8 +152,6 @@ fhir:
     stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
-    histoDiagnosticReport: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund"
-    miiPrOnkoGrading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading"
     # MII
     versions:
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.person
@@ -169,6 +167,7 @@ fhir:
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-systemische-therapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-systemische-therapie-medikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-specimen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-anzahl-befallene-lymphknoten: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-anzahl-befallene-sentinel-lymphknoten: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-sentinel-lymphknoten${fhir.profiles.versions.mii-onkologie}"
@@ -198,6 +197,8 @@ fhir:
     mii-pr-onko-tnm-v-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-v-kategorie${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-y-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-weitere-klassifikationen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-befund: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading${fhir.profiles.versions.mii-onkologie}"
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"

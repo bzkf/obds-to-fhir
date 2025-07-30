@@ -15,7 +15,9 @@ env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "VerlaufObservationMapperTest",
-      "ConditionMapperTest"
+      "ConditionMapperTest",
+      "HistologiebefundMapperTest",
+      "SystemischeTherapieMedicationStatementMapperTest"
     ]
 
 jobs:

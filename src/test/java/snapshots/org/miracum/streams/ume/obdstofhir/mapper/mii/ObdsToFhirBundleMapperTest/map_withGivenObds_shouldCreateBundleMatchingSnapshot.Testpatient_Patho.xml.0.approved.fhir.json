@@ -1058,6 +1058,9 @@
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
         "value": "PAT_70101"
@@ -1245,6 +1248,9 @@
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
         "value": "PAT_70103"
@@ -1453,6 +1459,9 @@
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "0ab8291007f01a691b1499f4ee01ececd2e1cee22737198aeabc408e4afb45bb",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
         "value": "PAT_70104"
