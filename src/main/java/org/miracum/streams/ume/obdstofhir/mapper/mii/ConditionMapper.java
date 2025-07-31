@@ -206,10 +206,18 @@ public class ConditionMapper extends ObdsToFhirMapper {
     }
 
     convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
-        .ifPresent(
+        .ifPresentOrElse(
             diagnoseDatum ->
                 condition.addExtension(
-                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum));
+                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum),
+            () -> {
+              LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
+              var absentDateTime = new DateTimeType();
+              absentDateTime.addExtension(
+                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              condition.addExtension(
+                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
+            });
 
     // recordedDate is 1..1, so we need to set it even if the date is absent.
     convertObdsDatumToDateTimeType(meldeDatum)
