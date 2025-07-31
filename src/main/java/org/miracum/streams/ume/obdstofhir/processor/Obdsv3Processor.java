@@ -69,23 +69,28 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                 return meldung;
               });
 
-      return mapped
-          .groupBy(
-              (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
-              Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
-          .aggregate(
-              MeldungExportListV3::new,
-              (key, meldung, aggregate) -> {
-                aggregate.addElement(meldung);
-                return retainLatestVersionOnly(aggregate);
-              },
-              (key, meldung, aggregate) -> {
-                aggregate.removeElement(meldung);
-                return retainLatestVersionOnly(aggregate);
-              },
-              Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
-          .toStream()
-          .mapValues(this::groupByTumorId)
+      var stream =
+          mapped
+              .groupBy(
+                  (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
+                  Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
+              .aggregate(
+                  MeldungExportListV3::new,
+                  (key, meldung, aggregate) -> {
+                    aggregate.addElement(meldung);
+                    return retainLatestVersionOnly(aggregate);
+                  },
+                  (key, meldung, aggregate) -> {
+                    aggregate.removeElement(meldung);
+                    return retainLatestVersionOnly(aggregate);
+                  },
+                  Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
+              .toStream()
+              .mapValues(this::groupByTumorId);
+
+      stream.to("test");
+
+      return stream
           .flatMapValues(this.getMeldungExportListToBundleListMapper())
           .filter((key, bundle) -> bundle != null)
           .selectKey((key, bundle) -> patientBundleKeySelector(bundle));
