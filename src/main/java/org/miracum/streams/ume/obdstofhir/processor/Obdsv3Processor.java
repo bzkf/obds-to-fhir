@@ -17,6 +17,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
@@ -25,6 +26,8 @@ import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
 import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListV3Serde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportV3Serde;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Serializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,13 +47,17 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   private final ObdsMapper obdsMapper;
 
+  private final WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig;
+
   protected Obdsv3Processor(
       FhirProperties fhirProperties,
       ObdsToFhirBundleMapper obdsToFhirBundleMapper,
-      ObdsMapper obdsMapper) {
+      ObdsMapper obdsMapper,
+      WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig) {
     super(fhirProperties);
     this.obdsToFhirBundleMapper = obdsToFhirBundleMapper;
     this.obdsMapper = obdsMapper;
+    this.writeGroupedObdsToKafkaConfig = writeGroupedObdsToKafkaConfig;
   }
 
   @Bean
@@ -88,7 +95,28 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
               .toStream()
               .mapValues(this::groupByTumorId);
 
-      stream.to("test");
+      if (writeGroupedObdsToKafkaConfig.enabled()) {
+        stream
+            .flatMapValues(this.getMeldungExportListToObdsListMapper())
+            .selectKey(
+                (key, obds) ->
+                    String.format(
+                        "%s-%s",
+                        obds.getMengePatient().getPatient().getFirst().getPatientID(),
+                        obds.getMengePatient()
+                            .getPatient()
+                            .getFirst()
+                            .getMengeMeldung()
+                            .getMeldung()
+                            .getFirst()
+                            .getTumorzuordnung()
+                            .getTumorID()))
+            .to(
+                writeGroupedObdsToKafkaConfig.topic(),
+                Produced.with(
+                    Serdes.String(),
+                    Serdes.serdeFrom(new Obdsv3Serializer(), new Obdsv3Deserializer())));
+      }
 
       return stream
           .flatMapValues(this.getMeldungExportListToBundleListMapper())
@@ -106,6 +134,37 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
    */
   private MeldungExportListV3 retainLatestVersionOnly(MeldungExportListV3 meldungExportList) {
     return meldungExportList.stream()
+        // generally only for debugging, can be removed later
+        .map(
+            meldung -> {
+              if (meldung.getObds().getMengePatient().getPatient().size() > 1) {
+                throw new IllegalStateException(
+                    "Meldung contains more than one patient, actually: "
+                        + meldung.getObds().getMengePatient().getPatient().size());
+              }
+
+              if (meldung
+                      .getObds()
+                      .getMengePatient()
+                      .getPatient()
+                      .getFirst()
+                      .getMengeMeldung()
+                      .getMeldung()
+                      .size()
+                  > 1) {
+                throw new IllegalStateException(
+                    "Meldung contains more than one Meldung, actually: "
+                        + meldung
+                            .getObds()
+                            .getMengePatient()
+                            .getPatient()
+                            .getFirst()
+                            .getMengeMeldung()
+                            .getMeldung()
+                            .size());
+              }
+              return meldung;
+            })
         .collect(
             Collectors.groupingBy(
                 Obdsv3Processor::getReportingIdFromObds,
@@ -167,12 +226,16 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       getMeldungExportListToBundleListMapper() {
     return meldungGroupedByPatientIdAndTumorId -> {
       List<OBDS> tumorObds =
-          meldungGroupedByPatientIdAndTumorId.stream()
-              .map(this::processMeldungGroup)
-              .collect(Collectors.toList());
+          meldungGroupedByPatientIdAndTumorId.stream().map(this::processMeldungGroup).toList();
 
       return obdsToFhirBundleMapper.map(tumorObds);
     };
+  }
+
+  private ValueMapper<List<MeldungExportListV3>, List<OBDS>>
+      getMeldungExportListToObdsListMapper() {
+    return meldungGroupedByPatientIdAndTumorId ->
+        meldungGroupedByPatientIdAndTumorId.stream().map(this::processMeldungGroup).toList();
   }
 
   private OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {

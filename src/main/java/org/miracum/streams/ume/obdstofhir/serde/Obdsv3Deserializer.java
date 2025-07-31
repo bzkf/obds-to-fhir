@@ -15,7 +15,8 @@ import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
+public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
+    implements org.apache.kafka.common.serialization.Deserializer<OBDS> {
 
   private final XmlMapper mapper;
 
@@ -67,6 +68,18 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
       return ObdsOrAdt.from(adt);
     } else {
       throw new IOException("Unknown XML root element in deserialization");
+    }
+  }
+
+  @Override
+  public OBDS deserialize(String topic, byte[] data) {
+    if (data == null) {
+      return null;
+    }
+    try {
+      return mapper.readValue(data, OBDS.class);
+    } catch (IOException e) {
+      throw new RuntimeException("Error deserializing OBDS data", e);
     }
   }
 }
