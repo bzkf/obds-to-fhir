@@ -1,5 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.serde;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -44,7 +45,10 @@ public class Obdsv3Serializer extends JsonSerializer<ObdsOrAdt>
   @Override
   public byte[] serialize(String topic, OBDS data) {
     try {
-      return mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(data);
+      return mapper
+          .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+          .writerWithDefaultPrettyPrinter()
+          .writeValueAsBytes(data);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Error serializing OBDS data", e);
     }
