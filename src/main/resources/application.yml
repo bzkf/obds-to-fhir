@@ -363,3 +363,6 @@ obds:
     output-to-directory:
       enabled: false
       path: ""
+  write-grouped-obds-to-kafka:
+    enabled: false
+    topic: "obds.v3.grouped"
