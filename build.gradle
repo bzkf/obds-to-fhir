@@ -1,14 +1,14 @@
 plugins {
-	id 'org.springframework.boot' version '3.5.3'
+	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '7.2.0'
+	id 'com.diffplug.spotless' version '7.2.1'
 	id "io.freefair.lombok" version "8.14"
 }
 
 group = 'org.miracum.streams.ume'
-version = '3.0.0-beta.77'
+version = '3.0.0-beta.78'
 
 java {
   toolchain {
@@ -60,7 +60,7 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
 	implementation 'io.micrometer:micrometer-core:1.15.2'
 	implementation "org.miracum:kafka-fhir-serializer:2.0.6"
-	implementation "org.apache.commons:commons-text:1.13.1"
+	implementation "org.apache.commons:commons-text:1.14.0"
 	implementation "org.scala-lang:scala-library:2.13.16"
 	implementation "com.github.slugify:slugify:3.0.7"
 
@@ -83,7 +83,7 @@ dependencies {
 	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:24.22.0"
+	testImplementation "com.approvaltests:approvaltests:25.0.23"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 }
 
