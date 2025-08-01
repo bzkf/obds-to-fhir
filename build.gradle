@@ -5,7 +5,7 @@ plugins {
 	id 'java'
 	id 'com.diffplug.spotless' version '7.2.1'
 	id 'io.freefair.lombok' version '8.14'
-  id 'net.ltgt.errorprone' version '4.2.0'
+  id 'net.ltgt.errorprone' version '4.3.0'
 }
 
 group = 'org.miracum.streams.ume'
@@ -87,7 +87,7 @@ dependencies {
 	testImplementation "com.approvaltests:approvaltests:25.0.23"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
-  errorprone 'com.google.errorprone:error_prone_core:2.38.0'
+  errorprone 'com.google.errorprone:error_prone_core:2.41.0'
   errorprone 'com.uber.nullaway:nullaway:0.12.7'
 }
 
