@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "59f5aba03328245c1b7986b7550790fc582a8bbb710ea02fb3cabe62954f1385",
+  "id": "4b73b5073b6a29723b080df1804d1062a908a446732e7a9fec836b78c3de689c",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-    "value": "11_2_DI-2-binet"
+    "value": "11_2_di-2-binet-1493935200000"
   } ],
   "status": "final",
   "code": {

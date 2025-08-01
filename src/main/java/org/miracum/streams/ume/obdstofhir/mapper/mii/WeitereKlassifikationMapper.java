@@ -4,17 +4,12 @@ import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.CodeableConcept;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG = LoggerFactory.getLogger(WeitereKlassifikationMapper.class);
 
   public WeitereKlassifikationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -31,14 +26,22 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
     var observations = new ArrayList<Observation>();
 
     for (var klassifikation : mengeWeitereKlassifikation.getWeitereKlassifikation()) {
-
       var observation = new Observation();
       observation
           .getMeta()
           .addProfile(fhirProperties.getProfiles().getMiiPrOnkoWeitereKlassifikationen());
 
       // Identifiers
-      var identifierValue = meldungId + "-" + slugifier.slugify(klassifikation.getName());
+      var identifierBuilder = new StringBuilder();
+      identifierBuilder.append(meldungId).append("-").append(klassifikation.getName());
+      if (klassifikation.getDatum() != null) {
+        identifierBuilder
+            .append("-")
+            .append(klassifikation.getDatum().getValue().toGregorianCalendar().getTimeInMillis());
+      }
+
+      var identifierValue = slugifier.slugify(identifierBuilder.toString());
+
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getWeitereKlassifikationObservationId())
