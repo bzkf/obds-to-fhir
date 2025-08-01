@@ -86,7 +86,7 @@ dependencies {
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
 	testImplementation "com.approvaltests:approvaltests:25.0.23"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
-  
+
   errorprone 'com.google.errorprone:error_prone_core:2.38.0'
   errorprone 'com.uber.nullaway:nullaway:0.12.7'
 }
