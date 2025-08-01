@@ -11,6 +11,7 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v2.ADTGEKID;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.Locale;
 import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +60,12 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
       return new ObdsOrAdt(null, null);
     }
 
-    if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
+    if (xml.toLowerCase(Locale.ENGLISH).contains("<obds")
+        && xml.toLowerCase(Locale.ENGLISH).contains("schema_version=\"3.")) {
       OBDS obds = mapper.readValue(xml, OBDS.class);
       return ObdsOrAdt.from(obds);
-    } else if (xml.toLowerCase().contains("<adt")
-        && xml.toLowerCase().contains("schema_version=\"2.")) {
+    } else if (xml.toLowerCase(Locale.ENGLISH).contains("<adt")
+        && xml.toLowerCase(Locale.ENGLISH).contains("schema_version=\"2.")) {
       ADTGEKID adt = mapper.readValue(xml, ADTGEKID.class);
       return ObdsOrAdt.from(adt);
     } else {

@@ -297,7 +297,6 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
    *
    * @param latestReportingByReportingDate input data source
    * @param obds target data opbject
-   * @return Patient last reported
    */
   protected static void setLatestReportedPatientData(
       OBDS latestReportingByReportingDate, OBDS obds) {

@@ -17,15 +17,18 @@ public class FhirProperties {
   private Codings codings;
 
   public static record Codings(Coding loinc, Coding snomed, Coding ops) {
+    @Override
     public Coding loinc() {
       // return a fresh copy, otherwise the original instance will be modified
       return loinc.copy();
     }
 
+    @Override
     public Coding snomed() {
       return snomed.copy();
     }
 
+    @Override
     public Coding ops() {
       return ops.copy();
     }
