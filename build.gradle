@@ -83,7 +83,7 @@ dependencies {
 	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:24.22.0"
+	testImplementation "com.approvaltests:approvaltests:25.0.23"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 }
 
