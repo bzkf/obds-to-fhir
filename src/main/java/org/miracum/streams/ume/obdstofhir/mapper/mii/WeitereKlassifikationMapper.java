@@ -1,6 +1,7 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
@@ -35,9 +36,10 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
       var identifierBuilder = new StringBuilder();
       identifierBuilder.append(meldungId).append("-").append(klassifikation.getName());
       if (klassifikation.getDatum() != null) {
-        identifierBuilder
-            .append("-")
-            .append(klassifikation.getDatum().getValue().toGregorianCalendar().getTimeInMillis());
+        var date =
+            new SimpleDateFormat("yyyy-MM-dd")
+                .format(klassifikation.getDatum().getValue().toGregorianCalendar().getTime());
+        identifierBuilder.append("-").append(date);
       }
 
       var identifierValue = slugifier.slugify(identifierBuilder.toString());
