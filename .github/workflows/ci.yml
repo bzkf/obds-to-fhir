@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
+    uses: miracum/.github/.github/workflows/standard-build.yaml@d0fb36fdb3d7bc680499eb1b81168a135fa66163 # v1.16.20
     permissions:
       contents: write
       id-token: write
@@ -46,7 +46,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -75,16 +75,19 @@ jobs:
       - name: Copy unit test coverage reports from test container
         env:
           UNIT_TEST_IMAGE: ${{ fromJson(needs.build.outputs.test-image-meta-json).tags[0] }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         run: |
           docker create --name=unit-test-container "${UNIT_TEST_IMAGE}"
-          docker cp unit-test-container:/test ${{ github.workspace }}/test
+          docker cp unit-test-container:/test "${GITHUB_WORKSPACE}/test"
 
       - name: Add coverage to PR
         id: jacoco
         uses: madrapps/jacoco-report@50d3aff4548aa991e6753342d9ba291084e63848 # v1.7.2
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         with:
           paths: |
-            ${{ github.workspace }}/test/jacoco/test/jacocoTestReport.xml
+            ${GITHUB_WORKSPACE}/test/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
@@ -101,7 +104,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -181,7 +184,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -254,7 +257,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@d0fb36fdb3d7bc680499eb1b81168a135fa66163 # v1.16.20
     permissions:
       contents: read
       pull-requests: write
@@ -269,7 +272,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@a80e26ca723f047064376d08380d28eb8d69a632 # v1.16.16
+    uses: miracum/.github/.github/workflows/standard-release.yaml@d0fb36fdb3d7bc680499eb1b81168a135fa66163 # v1.16.20
     needs:
       - lint
       - build

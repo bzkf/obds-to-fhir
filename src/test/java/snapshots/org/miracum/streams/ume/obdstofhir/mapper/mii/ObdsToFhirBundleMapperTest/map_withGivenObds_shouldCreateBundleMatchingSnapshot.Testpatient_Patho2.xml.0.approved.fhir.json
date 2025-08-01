@@ -79,6 +79,11 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -289,6 +294,9 @@
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "46563ac340ea2b1b5d8d0fb87517bf2e97870675437e7ab6ea3c87c53386e3db",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
         "value": "PAT_70102"

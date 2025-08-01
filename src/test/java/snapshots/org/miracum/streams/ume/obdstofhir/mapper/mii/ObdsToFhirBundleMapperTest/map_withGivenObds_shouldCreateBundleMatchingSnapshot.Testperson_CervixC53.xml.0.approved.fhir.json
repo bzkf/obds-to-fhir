@@ -84,11 +84,17 @@
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
           "version": "33",
           "code": "C53.9"
-        } ]
+        } ],
+        "text": "Cervix"
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -183,14 +189,16 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "8-54"
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
@@ -220,7 +228,7 @@
       "resourceType": "MedicationStatement",
       "id": "17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -251,7 +259,7 @@
       "resourceType": "MedicationStatement",
       "id": "9e18c5f8cfb935dbfd738d461861b12ffd9472f9bd5fa09b4e097bc26fd86060",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -310,14 +318,16 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "8-54"
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
@@ -340,7 +350,7 @@
       "resourceType": "MedicationStatement",
       "id": "870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -370,7 +380,7 @@
       "resourceType": "MedicationStatement",
       "id": "a4445c220a40c4227211dc0210f96be8fbfdd3080a0b23f258589e4b376dd8de",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",

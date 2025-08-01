@@ -55,7 +55,12 @@
       },
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
-        "valueDateTime": "2024-06"
+        "_valueDateTime": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          } ]
+        }
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
@@ -113,7 +118,6 @@
       "focus": [ {
         "reference": "Condition/7eaf115fe9d814e15e2bcd56f5f02e8361dd867e692281682806e3b0a05c8b54"
       } ],
-      "effectiveDateTime": "2024-06",
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",

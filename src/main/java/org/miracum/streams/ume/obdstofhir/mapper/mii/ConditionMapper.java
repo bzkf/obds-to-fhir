@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
+import java.util.EnumMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -20,9 +22,54 @@ public class ConditionMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
   private static final Pattern icdVersionPattern =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+  private final EnumMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
   public ConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
+
+    seitenlokalisationToSnomedLookup = new EnumMap<>(SeitenlokalisationTyp.class);
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.L,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("7771000")
+            .setDisplay("Left (qualifier value)"));
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.R,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("24028007")
+            .setDisplay("Right (qualifier value)"));
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.B,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("51440002")
+            .setDisplay("Right and left (qualifier value)"));
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.M,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("260528009")
+            .setDisplay("Median (qualifier value)"));
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.T,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("385432009")
+            .setDisplay("Not applicable (qualifier value)"));
+    seitenlokalisationToSnomedLookup.put(
+        SeitenlokalisationTyp.U,
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("261665006")
+            .setDisplay("Unknown (qualifier value)"));
   }
 
   public Condition map(
@@ -118,6 +165,11 @@ public class ConditionMapper extends ObdsToFhirMapper {
         condition.addBodySite(topographie);
       }
 
+      if (diagnoseMeldung.getPrimaertumorTopographieFreitext() != null) {
+        var freitext = diagnoseMeldung.getPrimaertumorTopographieFreitext();
+        condition.getBodySiteFirstRep().setText(freitext);
+      }
+
       if (diagnoseMeldung.getDiagnosesicherung() != null) {
         Coding verStatus =
             new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
@@ -139,14 +191,33 @@ public class ConditionMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
                   .setCode(tumorzuordnung.getSeitenlokalisation().value()));
+
+      var snomedBodySite =
+          seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());
+      if (snomedBodySite != null) {
+        seitenlokalisation.addCoding(snomedBodySite);
+      } else {
+        LOG.warn(
+            "Seitenlokalisation {} not found in lookup table. No Snomed code will be added.",
+            tumorzuordnung.getSeitenlokalisation());
+      }
+
       condition.addBodySite(seitenlokalisation);
     }
 
     convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
-        .ifPresent(
+        .ifPresentOrElse(
             diagnoseDatum ->
                 condition.addExtension(
-                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum));
+                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum),
+            () -> {
+              LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
+              var absentDateTime = new DateTimeType();
+              absentDateTime.addExtension(
+                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              condition.addExtension(
+                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
+            });
 
     // recordedDate is 1..1, so we need to set it even if the date is absent.
     convertObdsDatumToDateTimeType(meldeDatum)

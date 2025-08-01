@@ -61,18 +61,16 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
           code.addExtension()
               .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
               .setValue(new CodeType("unknown"));
-          adverseEvent.setEvent(code);
-          adverseEvent.getEvent().setText(nb.getArt().getBezeichnung());
+          code.setText(nb.getArt().getBezeichnung());
         } else {
-
           code.addCoding(
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMeddra())
                   .setCode(nb.getArt().getMedDRACode())
                   .setDisplay(nb.getArt().getBezeichnung())
                   .setVersion(nb.getVersion()));
-          adverseEvent.setEvent(code);
         }
+        adverseEvent.setEvent(code);
 
         // seriousness
         var seriousness =
@@ -101,6 +99,15 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
             .setValue("mii-pr-onko-nebenwirkung_" + sourceElementId + "Grad_maximal_2_unbekannt");
     adverseEvent.setIdentifier(identifier);
     adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
+    // event
+    // If the element used to create the AdverseEvent is of type `Grad_maximal_2_unbekannt`,
+    // we can't fill the event code with a MedDRA code or similar.
+    var code = new CodeableConcept();
+    code.addExtension()
+        .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
+        .setValue(new CodeType("not-applicable"));
+    adverseEvent.setEvent(code);
+
     // seriousness
     var seriousness =
         new CodeableConcept(

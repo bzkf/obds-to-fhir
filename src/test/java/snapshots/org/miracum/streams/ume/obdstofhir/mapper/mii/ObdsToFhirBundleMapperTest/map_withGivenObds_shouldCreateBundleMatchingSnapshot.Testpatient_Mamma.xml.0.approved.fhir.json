@@ -84,11 +84,17 @@
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
           "version": "33",
           "code": "C50.4"
-        } ]
+        } ],
+        "text": "Oberer äußerer Quadrant (Brust, Mamma)"
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "R"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "24028007",
+          "display": "Right (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -101,16 +107,16 @@
       "url": "Condition/4d53ce49f798969e45a502c291465ab2608cd71e6a7627d85dceb7dca58bcc95"
     }
   }, {
-    "fullUrl": "Observation/f5cb9006f7ca2b67e940a5a95725a2fc6b1e1687be203f7d317802e45e377857",
+    "fullUrl": "Observation/b6899c725d801e288315ae1b6a09ca6d687f35f16f74ff168293a21a617c54fc",
     "resource": {
       "resourceType": "Observation",
-      "id": "f5cb9006f7ca2b67e940a5a95725a2fc6b1e1687be203f7d317802e45e377857",
+      "id": "b6899c725d801e288315ae1b6a09ca6d687f35f16f74ff168293a21a617c54fc",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-        "value": "55_C50.4"
+        "value": "TOD_60101_C50.4"
       } ],
       "status": "final",
       "code": {
@@ -144,7 +150,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/f5cb9006f7ca2b67e940a5a95725a2fc6b1e1687be203f7d317802e45e377857"
+      "url": "Observation/b6899c725d801e288315ae1b6a09ca6d687f35f16f74ff168293a21a617c54fc"
     }
   }, {
     "fullUrl": "Observation/cd118ca3e3a3ee2412cfba5bb69e74fb72396a9b815308c08b41f8c747b200e2",
@@ -2501,7 +2507,7 @@
       } ],
       "outcome": {
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende",
           "code": "E"
         } ]
       }
@@ -2544,14 +2550,16 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "8-54"
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
@@ -2574,7 +2582,7 @@
       "resourceType": "MedicationStatement",
       "id": "7f30e8f22be34d7b884b477ba95c11b57f5af9076159acb68555f5bed4a9b755",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -2632,14 +2640,16 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "6-00"
+          "code": "6-00",
+          "display": "Applikation von Medikamenten"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "HO"
