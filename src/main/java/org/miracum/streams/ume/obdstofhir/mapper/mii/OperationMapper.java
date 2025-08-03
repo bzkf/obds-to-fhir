@@ -32,11 +32,11 @@ public class OperationMapper extends ObdsToFhirMapper {
     verifyReference(subject, ResourceType.Patient);
 
     var distinctCodes = new HashMap<String, OPS>();
-    for (var morph : op.getMengeOPS().getOPS()) {
-      var code = morph.getCode();
-      var version = morph.getVersion();
+    for (var ops : op.getMengeOPS().getOPS()) {
+      var code = ops.getCode();
+      var version = ops.getVersion();
       if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, morph);
+        distinctCodes.put(code, ops);
       } else {
         var existing = distinctCodes.get(code);
         if (version.compareTo(existing.getVersion()) > 0) {
@@ -45,7 +45,7 @@ public class OperationMapper extends ObdsToFhirMapper {
               code,
               version,
               existing.getVersion());
-          distinctCodes.put(code, morph);
+          distinctCodes.put(code, ops);
         } else {
           LOG.warn(
               "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
