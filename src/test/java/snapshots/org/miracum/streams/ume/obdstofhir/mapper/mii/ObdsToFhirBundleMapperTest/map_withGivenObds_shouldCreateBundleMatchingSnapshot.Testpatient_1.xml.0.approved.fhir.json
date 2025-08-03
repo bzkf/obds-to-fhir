@@ -107,61 +107,6 @@
       "url": "Condition/ac3a7f7cb463b585fefa6c8135a98c84c3f1a025caf269a122b78de52545d0e8"
     }
   }, {
-    "fullUrl": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
-    "resource": {
-      "resourceType": "Procedure",
-      "id": "cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
-      },
-      "extension": [ {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
-          } ]
-        }
-      } ],
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
-        "value": "3015-870"
-      } ],
-      "status": "completed",
-      "category": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "387713003",
-          "display": "Surgical procedure"
-        } ]
-      },
-      "code": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "version": "2020",
-          "code": "5-870"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
-      },
-      "performedDateTime": "2020-03-05",
-      "reasonReference": [ {
-        "reference": "Condition/ac3a7f7cb463b585fefa6c8135a98c84c3f1a025caf269a122b78de52545d0e8"
-      } ],
-      "outcome": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52"
-    }
-  }, {
     "fullUrl": "Procedure/977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4",
     "resource": {
       "resourceType": "Procedure",
@@ -215,6 +160,61 @@
     "request": {
       "method": "PUT",
       "url": "Procedure/977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4"
+    }
+  }, {
+    "fullUrl": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
+        "value": "3015-870"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "387713003",
+          "display": "Surgical procedure"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2020",
+          "code": "5-870"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "performedDateTime": "2020-03-05",
+      "reasonReference": [ {
+        "reference": "Condition/ac3a7f7cb463b585fefa6c8135a98c84c3f1a025caf269a122b78de52545d0e8"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+          "code": "R0"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52"
     }
   }, {
     "fullUrl": "Observation/daa3a29e56fbbdcdf2d899040e8a515eb5ae62414b7e1478d79d0b499469bbcc",

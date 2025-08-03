@@ -1,0 +1,24 @@
+{
+  "resourceType": "MedicationStatement",
+  "id": "c9adbecce1b0b1ff976286d548052dd2b498c565aa517ad055b90a51964fadca",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+    "value": "60_1_IN_1_Epirubicin_7acb"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/any"
+  } ],
+  "status": "active",
+  "medicationCodeableConcept": {
+    "text": "Epirubicin"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "effectivePeriod": {
+    "start": "2020-04-03"
+  }
+}

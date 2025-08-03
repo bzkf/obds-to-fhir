@@ -223,37 +223,6 @@
       "url": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
     }
   }, {
-    "fullUrl": "MedicationStatement/17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "70_1_IN_1_Cisplatin_bb7f"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
-      } ],
-      "status": "completed",
-      "medicationCodeableConcept": {
-        "text": "Cisplatin"
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "effectivePeriod": {
-        "start": "2018-04-07",
-        "end": "2018-05-15"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4"
-    }
-  }, {
     "fullUrl": "MedicationStatement/9e18c5f8cfb935dbfd738d461861b12ffd9472f9bd5fa09b4e097bc26fd86060",
     "resource": {
       "resourceType": "MedicationStatement",
@@ -283,6 +252,37 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/9e18c5f8cfb935dbfd738d461861b12ffd9472f9bd5fa09b4e097bc26fd86060"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "70_1_IN_1_Cisplatin_bb7f"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+      } ],
+      "status": "completed",
+      "medicationCodeableConcept": {
+        "text": "Cisplatin"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "effectivePeriod": {
+        "start": "2018-04-07",
+        "end": "2018-05-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/17ba605ff2b4403d247bfd9625b84b5df622858f3fc73252bb4304e9ce6af6a4"
     }
   }, {
     "fullUrl": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
@@ -345,36 +345,6 @@
       "url": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
     }
   }, {
-    "fullUrl": "MedicationStatement/870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "17_1_IN_2_Carboplatin_1f2d"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Carboplatin"
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "effectivePeriod": {
-        "start": "2018-06-15"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78"
-    }
-  }, {
     "fullUrl": "MedicationStatement/a4445c220a40c4227211dc0210f96be8fbfdd3080a0b23f258589e4b376dd8de",
     "resource": {
       "resourceType": "MedicationStatement",
@@ -403,6 +373,36 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/a4445c220a40c4227211dc0210f96be8fbfdd3080a0b23f258589e4b376dd8de"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "17_1_IN_2_Carboplatin_1f2d"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+      } ],
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Carboplatin"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "effectivePeriod": {
+        "start": "2018-06-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/870ef1978aba599fbfcb949ae39cea4bdeaf7961d142064b11f482080ded9a78"
     }
   }, {
     "fullUrl": "Observation/dcf2f38da5f7af9085fc27236981774c5b29241dc14128f9cf186a1e9f53eba4",

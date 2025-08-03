@@ -1079,23 +1079,23 @@
       "url": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
     }
   }, {
-    "fullUrl": "MedicationStatement/28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813",
+    "fullUrl": "MedicationStatement/309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813",
+      "id": "309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "50_1_IN_1_Folinsure_1a0d"
+        "value": "50_1_IN_1_Oxaliplatin_11c8"
       } ],
       "partOf": [ {
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
-        "text": "Folinsäure"
+        "text": "Oxaliplatin"
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
@@ -1106,7 +1106,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813"
+      "url": "MedicationStatement/309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4"
     }
   }, {
     "fullUrl": "MedicationStatement/e01692be68e07b519fe8d6f8ae1ffd30e356c52261bbe222e4e2cd70410779a9",
@@ -1139,23 +1139,23 @@
       "url": "MedicationStatement/e01692be68e07b519fe8d6f8ae1ffd30e356c52261bbe222e4e2cd70410779a9"
     }
   }, {
-    "fullUrl": "MedicationStatement/309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4",
+    "fullUrl": "MedicationStatement/28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4",
+      "id": "28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "50_1_IN_1_Oxaliplatin_11c8"
+        "value": "50_1_IN_1_Folinsure_1a0d"
       } ],
       "partOf": [ {
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
-        "text": "Oxaliplatin"
+        "text": "Folinsäure"
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
@@ -1166,7 +1166,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/309137e2e12ef67315353efda404c16a4faf929a97a94b919595e0571a0d5fb4"
+      "url": "MedicationStatement/28624a0c37b503a71f85a8c75b59a64f0a0d81c62336eaafbbfc8d6b8cfc6813"
     }
   }, {
     "fullUrl": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",

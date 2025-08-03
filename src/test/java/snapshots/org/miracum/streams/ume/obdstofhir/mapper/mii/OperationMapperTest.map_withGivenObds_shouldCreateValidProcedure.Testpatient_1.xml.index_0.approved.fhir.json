@@ -1,6 +1,6 @@
 {
   "resourceType": "Procedure",
-  "id": "cd1f9a1a39fedb333d953a94169407e9327425dbfa86215925f3e4190665bd52",
+  "id": "977dad45e5c07e0024a93e282b5bcba0399826697e27041d7efa70c3b59beef4",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
   },
@@ -15,7 +15,7 @@
   } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
-    "value": "3015-870"
+    "value": "3015-401.1"
   } ],
   "status": "completed",
   "category": {
@@ -30,7 +30,7 @@
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/ops",
       "version": "2020",
-      "code": "5-870"
+      "code": "5-401.1"
     } ]
   },
   "subject": {

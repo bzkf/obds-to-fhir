@@ -3,8 +3,10 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
+import de.basisdatensatz.obds.v3.SYSTTyp.MengeSubstanz;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -35,7 +37,44 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
     var result = new ArrayList<MedicationStatement>();
 
+    var substanzMap = new HashMap<String, MengeSubstanz.Substanz>();
+
     for (var substanz : syst.getMengeSubstanz().getSubstanz()) {
+      String key;
+      if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
+        key = substanz.getATC().getCode();
+      } else {
+        key = substanz.getBezeichnung();
+      }
+
+      if (!substanzMap.containsKey(key)) {
+        substanzMap.put(key, substanz);
+      } else {
+        LOG.warn("Duplicate Substanz found with key: {}", key);
+
+        if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
+          // note that version is a mandatory field in oBDS
+          var version = substanz.getATC().getVersion();
+
+          var existing = substanzMap.get(key);
+          String existingVersion = null;
+          // getATC() should always return a non-null value, if not, then someone placed an ATC-code
+          // as a Bezeichnung.
+          existingVersion = existing.getATC().getVersion();
+
+          if (version.compareTo(existingVersion) > 0) {
+            LOG.warn(
+                "Duplicate Substanzen with ATC code {} found. Updating version {} over version {}.",
+                key,
+                version,
+                existingVersion);
+            substanzMap.put(key, substanz);
+          }
+        }
+      }
+    }
+
+    for (var substanz : substanzMap.values()) {
       var systMedicationStatement = new MedicationStatement();
       systMedicationStatement
           .getMeta()
