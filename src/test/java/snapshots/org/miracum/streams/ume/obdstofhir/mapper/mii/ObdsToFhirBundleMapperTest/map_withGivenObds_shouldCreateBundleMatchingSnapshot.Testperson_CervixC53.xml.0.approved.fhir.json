@@ -202,7 +202,8 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
-        } ]
+        } ],
+        "text": "Cisplatin/Etoposid"
       },
       "subject": {
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
@@ -331,7 +332,8 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
-        } ]
+        } ],
+        "text": "Carboplatin/Etoposid"
       },
       "subject": {
         "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
