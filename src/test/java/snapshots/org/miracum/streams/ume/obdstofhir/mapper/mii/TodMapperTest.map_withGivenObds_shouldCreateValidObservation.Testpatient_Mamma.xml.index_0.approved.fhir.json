@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "b6899c725d801e288315ae1b6a09ca6d687f35f16f74ff168293a21a617c54fc",
+  "id": "345e26b735931b92ac79d34e9dc9d3eb835dbcf0f902d592535d382bbfcbc955",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-    "value": "TOD_60101_C50.4"
+    "value": "TOD_60101_2021-11-27"
   } ],
   "status": "final",
   "code": {
@@ -24,13 +24,6 @@
     "reference": "Condition/any"
   } ],
   "effectiveDateTime": "2021-11-27",
-  "valueCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
-      "version": "2022",
-      "code": "C50.4"
-    } ]
-  },
   "interpretation": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
