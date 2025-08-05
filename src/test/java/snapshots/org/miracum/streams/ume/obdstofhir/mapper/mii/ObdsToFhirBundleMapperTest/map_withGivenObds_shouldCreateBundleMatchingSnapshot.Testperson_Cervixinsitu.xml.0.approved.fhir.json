@@ -553,6 +553,45 @@
       "url": "Observation/7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c"
     }
   }, {
+    "fullUrl": "Observation/4fc8afcd685845e70f79a2a69710419e3978b3aef7a1082e2612d8d1c0227050",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4fc8afcd685845e70f79a2a69710419e3978b3aef7a1082e2612d8d1c0227050",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
+        "value": "104_2023-09-01"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "184305005",
+          "display": "Cause of death (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "focus": [ {
+        "reference": "Condition/2b8efc01441d384050dfa3aeaf09e5387eb44563ce35e2e27b40d5d1740d7abf"
+      } ],
+      "effectiveDateTime": "2023-09-01",
+      "interpretation": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
+          "code": "N"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4fc8afcd685845e70f79a2a69710419e3978b3aef7a1082e2612d8d1c0227050"
+    }
+  }, {
     "fullUrl": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
     "resource": {
       "resourceType": "Observation",
