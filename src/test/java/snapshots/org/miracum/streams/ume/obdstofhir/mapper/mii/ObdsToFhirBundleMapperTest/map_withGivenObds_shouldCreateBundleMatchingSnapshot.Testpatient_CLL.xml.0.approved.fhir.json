@@ -743,16 +743,16 @@
       "url": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
     }
   }, {
-    "fullUrl": "Observation/d51efc22287c45236a488b6d94877255d9b0d66e568f8b65a03e4ab1359213e4",
+    "fullUrl": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c",
     "resource": {
       "resourceType": "Observation",
-      "id": "d51efc22287c45236a488b6d94877255d9b0d66e568f8b65a03e4ab1359213e4",
+      "id": "93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-        "value": "30_dia_cll_01-binet-2018-04-03"
+        "value": "30_DIA_CLL_01-Binet-2018-04-03"
       } ],
       "status": "final",
       "code": {
@@ -773,7 +773,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/d51efc22287c45236a488b6d94877255d9b0d66e568f8b65a03e4ab1359213e4"
+      "url": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c"
     }
   } ]
 }

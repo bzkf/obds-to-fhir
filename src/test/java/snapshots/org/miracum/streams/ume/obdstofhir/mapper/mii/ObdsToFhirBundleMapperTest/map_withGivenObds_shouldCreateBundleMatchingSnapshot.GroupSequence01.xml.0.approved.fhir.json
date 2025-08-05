@@ -649,16 +649,16 @@
       "url": "Observation/de5d49d389d32453af7d3e8bd0358384e39418cb75b9137d83e3ec1de8430c14"
     }
   }, {
-    "fullUrl": "Observation/6d0d123415aef267ca4dfcc20657d15552e8f98e9f2e9b8811db962c7d4f7c8c",
+    "fullUrl": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429",
     "resource": {
       "resourceType": "Observation",
-      "id": "6d0d123415aef267ca4dfcc20657d15552e8f98e9f2e9b8811db962c7d4f7c8c",
+      "id": "3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-        "value": "2103b5c5-123123-12312-ajcc-2023-12-09"
+        "value": "2103B5C5-123123-12312-AJCC-2023-12-09"
       } ],
       "status": "final",
       "code": {
@@ -679,7 +679,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/6d0d123415aef267ca4dfcc20657d15552e8f98e9f2e9b8811db962c7d4f7c8c"
+      "url": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429"
     }
   } ]
 }
