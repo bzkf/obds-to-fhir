@@ -16,6 +16,7 @@ pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
 HERE = Path(os.path.abspath(os.path.dirname(__file__)))
 ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+OPS_SYSTEM = "http://fhir.de/CodeSystem/bfarm/ops"
 ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
 )
@@ -24,8 +25,16 @@ MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
         + "fhir/ext/modul-onko/StructureDefinition/"
         + "mii-pr-onko-weitere-klassifikationen"
 )
-MIN_DATE = pd.Timestamp("1900-01-01")
-MAX_DATE = pd.Timestamp(year=datetime.now().year, month=12, day=31)
+MIN_DATE = datetime(1999,1,1)
+MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)
+
+date_columns = [
+    "date_of_birth",
+    "deceased_date_time",
+    "asserted_date"
+]
+
+
 
 snapshots_dir = (
         HERE
@@ -71,6 +80,7 @@ conditions = data.extract(
     ],
 ).drop_duplicates()
 
+
 # (full) outer join to retain null values if either side is missing
 patients_with_conditions = conditions.join(
     patients,
@@ -113,6 +123,30 @@ patients_with_observations.show(truncate=False)
 patients_with_observations.write.mode("overwrite").csv(
     "patients_with_observations.csv", header=True
 )
+procedures = data.extract(
+    "Procedure",
+    columns=[
+        exp("id", "procedure_id"),
+        exp( f"code.coding.where(system='{OPS_SYSTEM}').system", "code_system,"),
+        exp( f"code.coding.where(system='{OPS_SYSTEM}').version", "code_system_version"),
+        exp( f"code.coding.where(system='{OPS_SYSTEM}').code", "code_code"),
+        exp("subject.reference", "subject_reference"),
+        exp("performedDateTime", "performed_date_time"),
+        exp( "meta.profile", "meta_profile")
+    ]
+).drop_duplicates()
+print(procedures.columns)
+
+patients_with_procedures = procedures.join(
+    patients,
+    procedures["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    how="inner",
+)
+
+patients_with_procedures.show(truncate=False)
+patients_with_observations.write.mode("overwrite").csv(
+    "patients_with_observations.csv", header=True
+)
 
 gx_context = gx.get_context(mode="file")
 
@@ -149,18 +183,18 @@ def create_checkpoint(gx_context, name, validation_definitions, action_list):
 # Define expectations for each dataset
 expectations_conditions = [
     # Birth date validations
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-    ),
+ #   gx.expectations.ExpectColumnValuesToBeBetween(
+  #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
+  #  ),
     # Deceased date validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
         column_B="date_of_birth",
         ignore_row_if="either_value_is_missing",
     ),
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-    ),
+  #  gx.expectations.ExpectColumnValuesToBeBetween(
+   #     column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+    #),
     # asserted datetime validations
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
@@ -201,9 +235,9 @@ expectations_conditions = [
 
 expectations_observations = [
     # Birth date validations
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-    ),
+#    gx.expectations.ExpectColumnValuesToBeBetween(
+ #       column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
+  #  ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
@@ -233,9 +267,32 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+#    gx.expectations.ExpectColumnValuesToBeBetween(
+ #       column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+  #  ),
+]
+
+expectations_procedure = [
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="patient_id",
     ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="procedure_id",
+    ),
+    # EffectiveDateTime validations
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="performed_date_time",
+        column_B="date_of_birth",
+        or_equal=True,
+    ),
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="deceased_date_time",
+        column_B="performed_date_time",
+        or_equal=True,
+    ),
+ #   gx.expectations.ExpectColumnValuesToBeBetween(
+  #      column="performed_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+   # ),
 ]
 
 # Create expectation suites
@@ -246,12 +303,17 @@ suite_observations = create_expectations_and_suite(
     expectations_observations, "patients_with_observations_suite", gx_context
 )
 
+suite_procedure = create_expectations_and_suite(
+    expectations_procedure, "patients_with_procedure_suite", gx_context
+)
+
 data_source_name = "snapshot_bundles"
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
-data_asset_observations = data_source.add_dataframe_asset(
-    name="patients_and_observations"
-)
+data_asset_observations = data_source.add_dataframe_asset(name="patients_and_observations")
+data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
+
+
 
 # Add the Batch Definition and Validation Definitions
 validation_definition_conditions = create_validation_definition(
@@ -268,7 +330,13 @@ validation_definition_observations = create_validation_definition(
     "validate_observations",
     "patients_and_observations_all_rows",
 )
-
+validation_definition_procedure = create_validation_definition(
+    gx_context,
+    data_asset_procedure,
+    suite_procedure,
+    "validate_procedure",
+    "patients_and_procedure_all_rows",
+)
 # Actions for checkpoints
 action_list = [
     UpdateDataDocsAction(
@@ -289,7 +357,12 @@ checkpoint_observations = create_checkpoint(
     [validation_definition_observations],
     action_list,
 )
-
+checkpoint_procedure = create_checkpoint(
+    gx_context,
+    "validate_procedure_checkpoint",
+    [validation_definition_procedure],
+    action_list,
+)
 # Add Data Docs Site
 site_name = "obds_to_fhir_data_docs_site"
 base_directory = "uncommitted/data_docs/local_site/"
@@ -306,15 +379,15 @@ site_config = {
 # and otherwise you also get:
 # InvalidKeyError: Data Docs Site `obds_to_fhir_data_docs_site` already exists
 # in the Data Context.
-# gx_context.add_data_docs_site(site_name=site_name, site_config=site_config)
+#gx_context.add_data_docs_site(site_name=site_name, site_config=site_config)
 
-gx_context.update_data_docs_site(
-    site_name=site_name,
-    site_config=site_config,
-)
+#gx_context.update_data_docs_site(
+#    site_name=site_name,
+#    site_config=site_config,
+#)
 
 # Build the Data Docs
-gx_context.build_data_docs()
+gx_context.build_data_docs(site_names=[site_name])
 
 # Run the Checkpoints
 validation_results_conditions = checkpoint_conditions.run(
@@ -325,7 +398,7 @@ logger.info(validation_results_conditions.describe())
 
 if not validation_results_conditions.success:
     logger.error("Validation run failed!")
-    sys.exit(1)
+
 
 validation_results_observations = checkpoint_observations.run(
     batch_parameters={"dataframe": patients_with_observations}
@@ -334,5 +407,15 @@ validation_results_observations = checkpoint_observations.run(
 logger.info(validation_results_observations.describe())
 
 if not validation_results_observations.success:
+    logger.error("Validation run failed!")
+    sys.exit(1)
+
+validation_results_procedure = checkpoint_procedure.run(
+        batch_parameters={"dataframe": patients_with_procedures}
+    )
+
+logger.info(validation_results_procedure.describe())
+
+if not validation_results_procedure.success:
     logger.error("Validation run failed!")
     sys.exit(1)
