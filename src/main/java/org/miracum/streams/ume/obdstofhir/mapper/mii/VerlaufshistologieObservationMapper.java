@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
+import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
@@ -35,7 +37,32 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
     var observations = new ArrayList<Observation>();
 
+    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
     for (var morph : histologie.getMorphologieICDO()) {
+      var code = morph.getCode();
+      var version = morph.getVersion();
+      if (!distinctCodes.containsKey(code)) {
+        distinctCodes.put(code, morph);
+      } else {
+        var existing = distinctCodes.get(code);
+        if (version.compareTo(existing.getVersion()) > 0) {
+          LOG.warn(
+              "Multiple ICDO3 morphologies with code {} found. Updating version {} over version {}.",
+              code,
+              version,
+              existing.getVersion());
+          distinctCodes.put(code, morph);
+        } else {
+          LOG.warn(
+              "Multiple ICDO3 morphologies with code {} found. Keeping largest version {} over version {}.",
+              code,
+              existing.getVersion(),
+              version);
+        }
+      }
+    }
+
+    for (var morph : distinctCodes.values()) {
       var observation = new Observation();
 
       // Meta

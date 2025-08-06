@@ -294,36 +294,6 @@
       "url": "MedicationStatement/07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b"
     }
   }, {
-    "fullUrl": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1_Fludarabin_2b64"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Fludarabin"
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "effectivePeriod": {
-        "start": "2020-09-01"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf"
-    }
-  }, {
     "fullUrl": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134",
     "resource": {
       "resourceType": "MedicationStatement",
@@ -352,6 +322,36 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "993_syst1_Fludarabin_2b64"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
+      } ],
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Fludarabin"
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "effectivePeriod": {
+        "start": "2020-09-01"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf"
     }
   }, {
     "fullUrl": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
