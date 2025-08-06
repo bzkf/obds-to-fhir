@@ -1,0 +1,46 @@
+{
+  "expectations": [
+    {
+      "id": "24db2b29-aa33-4b72-b8ce-6103f7bdf5f6",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "f51fbd9e-3308-4f5a-9443-070ee8aefbb2",
+      "kwargs": {
+        "column": "procedure_id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "e91f4812-741c-4887-ac01-86c4ded52696",
+      "kwargs": {
+        "column_A": "performed_date_time",
+        "column_B": "date_of_birth",
+        "or_equal": true
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    },
+    {
+      "id": "746c8043-d7fb-45bd-b00e-6fa02e6197e7",
+      "kwargs": {
+        "column_A": "deceased_date_time",
+        "column_B": "performed_date_time",
+        "or_equal": true
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    }
+  ],
+  "id": "9a09bf07-d1c8-4000-a3af-be2d347637b9",
+  "meta": {
+    "great_expectations_version": "1.5.5"
+  },
+  "name": "patients_with_procedure_suite",
+  "notes": null
+}

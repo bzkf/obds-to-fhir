@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "id": "6df4b31a-16ac-4ca9-ad88-f0b55a42c322",
+      "kwargs": {
+        "column": "code_system",
+        "condition_parser": "great_expectations",
+        "row_condition": "col(\"meta_profile\") != \"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen\""
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "ec7d5d0d-86da-4843-976f-db2bcac4b68b",
+      "kwargs": {
+        "column": "code_code",
+        "condition_parser": "great_expectations",
+        "row_condition": "col(\"meta_profile\") != \"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen\""
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "c391e709-cacf-4377-adf8-8f8f9c772b70",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "14692741-c6ff-4980-82ab-d308117d103a",
+      "kwargs": {
+        "column": "observation_id"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_be_null"
+    },
+    {
+      "id": "6405bf38-6a6a-4975-a54c-687e696c97a0",
+      "kwargs": {
+        "column_A": "effective_date_time",
+        "column_B": "date_of_birth",
+        "or_equal": true
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    },
+    {
+      "id": "eaec4647-bc05-478b-9805-334a79f95f26",
+      "kwargs": {
+        "column_A": "deceased_date_time",
+        "column_B": "effective_date_time",
+        "or_equal": true
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    }
+  ],
+  "id": "28762aa5-b0ef-4b55-9ecf-23f9e877132e",
+  "meta": {
+    "great_expectations_version": "1.5.5"
+  },
+  "name": "patients_with_observations_suite",
+  "notes": null
+}
