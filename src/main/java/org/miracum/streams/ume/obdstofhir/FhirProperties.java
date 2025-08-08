@@ -23,6 +23,7 @@ public class FhirProperties {
     private String sysTheraProto;
     private String dataAbsentReason;
     private String genderAmtlich;
+    private String stBestrahlung;
   }
 
   @Data
@@ -65,6 +66,9 @@ public class FhirProperties {
     private String gleasonScoreObservationId;
     private String psaObservationId;
     private String ucum;
+    private String stApplikationsArt;
+    private String stZielgebiet;
+    private String stStrahlenart;
   }
 
   @Data
