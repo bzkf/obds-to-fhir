@@ -10,6 +10,7 @@ fhir:
     stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
     systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
+    stBestrahlung: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Bestrahlung"
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
   systems:
@@ -45,6 +46,9 @@ fhir:
     gesamtBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
     systIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS"
     systStellungOP: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS"
+    stApplikationsArt: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/ApplikationsartCS"
+    stZielgebiet: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/ZielgebietCS"
+    stStrahlenart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/StrahlenartCS"
     ctcaeGrading: "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"
     sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
     opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"

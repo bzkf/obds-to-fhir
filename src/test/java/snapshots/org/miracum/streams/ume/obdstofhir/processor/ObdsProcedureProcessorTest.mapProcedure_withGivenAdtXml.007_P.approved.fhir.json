@@ -2,10 +2,10 @@
   "resourceType": "Bundle",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567",
+    "fullUrl": "Procedure/4ff2d57d7b7061fab401adf3d7e4e7fbf29b5c5eb62ba1196a63df6de098c389",
     "resource": {
       "resourceType": "Procedure",
-      "id": "4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567",
+      "id": "4ff2d57d7b7061fab401adf3d7e4e7fbf29b5c5eb62ba1196a63df6de098c389",
       "meta": {
         "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
         "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
@@ -28,6 +28,49 @@
             "display": "palliativ"
           } ]
         }
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Bestrahlung",
+        "extension": [ {
+          "url": "Zeitraum",
+          "valuePeriod": {
+            "end": "2021-12-02"
+          }
+        }, {
+          "url": "Zielgebiet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/ZielgebietCS",
+              "code": "1.2"
+            } ]
+          }
+        }, {
+          "url": "SeiteZielgebiet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS",
+              "code": "R"
+            } ]
+          }
+        } ]
+      }, {
+        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Bestrahlung",
+        "extension": [ {
+          "url": "Zielgebiet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/ZielgebietCS",
+              "code": "5.4.-"
+            } ]
+          }
+        }, {
+          "url": "SeiteZielgebiet",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS",
+              "code": "T"
+            } ]
+          }
+        } ]
       } ],
       "status": "completed",
       "category": {
@@ -63,141 +106,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
-    }
-  }, {
-    "fullUrl": "Procedure/2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5",
-    "resource": {
-      "resourceType": "Procedure",
-      "id": "2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5",
-      "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
-        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
-      },
-      "extension": [ {
-        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS",
-            "code": "N",
-            "display": "neoadjuvant"
-          } ]
-        }
-      }, {
-        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS",
-            "code": "P",
-            "display": "palliativ"
-          } ]
-        }
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
-      } ],
-      "status": "completed",
-      "category": {
-        "coding": [ {
-          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
-          "code": "ST",
-          "display": "Strahlentherapie"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
-        "identifier": {
-          "type": {
-            "coding": [ {
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-              "code": "MR"
-            } ]
-          },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
-          "value": "1055555888"
-        }
-      },
-      "reasonReference": [ {
-        "reference": "Condition/7f1aeff536cbf279167b567fbd01427d0ac271d1a3d3b13dedf8561587a45fff"
-      } ],
-      "complication": [ {
-        "coding": [ {
-          "system": "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system",
-          "code": "4",
-          "display": "lebensbedrohlich"
-        } ]
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Procedure/2fc2717fbb9ec3e8d54ec4ffe4817efc8de93dfcbd34db55f20ca53986227dc5"
-    }
-  }, {
-    "fullUrl": "Procedure/5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce",
-    "resource": {
-      "resourceType": "Procedure",
-      "id": "5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce",
-      "meta": {
-        "source": "999999.ONKOSTAR:obds-to-fhir:0.0.0-test",
-        "profile": [ "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie" ]
-      },
-      "extension": [ {
-        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS",
-            "code": "N",
-            "display": "neoadjuvant"
-          } ]
-        }
-      }, {
-        "url": "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS",
-            "code": "P",
-            "display": "palliativ"
-          } ]
-        }
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/4a4b6d61ed9f40f3d3c809e2ca3844a234684e87fa711262acf14ced88533567"
-      } ],
-      "status": "completed",
-      "category": {
-        "coding": [ {
-          "system": "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS",
-          "code": "ST",
-          "display": "Strahlentherapie"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/d9d6b458471f3ff3d65af6021a10d1112718a032eec4b843606616c5faa29937",
-        "identifier": {
-          "type": {
-            "coding": [ {
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-              "code": "MR"
-            } ]
-          },
-          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
-          "value": "1055555888"
-        }
-      },
-      "reasonReference": [ {
-        "reference": "Condition/7f1aeff536cbf279167b567fbd01427d0ac271d1a3d3b13dedf8561587a45fff"
-      } ],
-      "complication": [ {
-        "coding": [ {
-          "system": "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system",
-          "code": "4",
-          "display": "lebensbedrohlich"
-        } ]
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Procedure/5cc816ec84696364d264533059889822137ee92a943ad945eab1dbac304475ce"
+      "url": "Procedure/4ff2d57d7b7061fab401adf3d7e4e7fbf29b5c5eb62ba1196a63df6de098c389"
     }
   } ]
 }
