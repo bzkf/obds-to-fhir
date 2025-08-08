@@ -102,10 +102,6 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     }
   }
 
-  public Procedure createRadioTherapyProcedure() {
-    return null;
-  }
-
   public Procedure createOpProcedure(
       Meldung meldung,
       String pid,
