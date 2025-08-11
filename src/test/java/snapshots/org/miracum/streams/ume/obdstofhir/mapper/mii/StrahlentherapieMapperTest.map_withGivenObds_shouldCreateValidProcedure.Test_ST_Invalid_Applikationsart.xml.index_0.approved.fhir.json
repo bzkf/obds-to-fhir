@@ -73,10 +73,12 @@
     "reference": "Patient/any"
   },
   "performedPeriod": {
-    "extension": [ {
-      "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-      "valueCode": "unknown"
-    } ]
+    "_start": {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+        "valueCode": "unknown"
+      } ]
+    }
   },
   "reasonReference": [ {
     "reference": "Condition/any"

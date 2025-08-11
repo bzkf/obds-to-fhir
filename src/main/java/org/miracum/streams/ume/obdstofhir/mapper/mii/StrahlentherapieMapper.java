@@ -15,6 +15,7 @@ import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
@@ -123,16 +124,15 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var performed =
         computeTreatmentPeriodFromAllBestrahlung(st.getMengeBestrahlung().getBestrahlung());
-
-    if (!performed.isEmpty()) {
-      procedure.setPerformed(performed);
-    } else {
-      LOG.warn("Bestrahlung Beginn/End is unset. Setting data absent extension.");
-      var absentPeriod = new Period();
-      absentPeriod.addExtension(
+    if (!performed.hasStart()) {
+      LOG.warn("Bestrahlung Beginn is unset. Setting data absent extension.");
+      var absentDateTime = new DateTimeType();
+      absentDateTime.addExtension(
           fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-      procedure.setPerformed(absentPeriod);
+      performed.setStartElement(absentDateTime);
     }
+
+    procedure.setPerformed(performed);
 
     var allMetabolic =
         st.getMengeBestrahlung().getBestrahlung().stream()
