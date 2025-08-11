@@ -442,7 +442,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       var sb = new StringBuilder(kontakt.getInterstitiellEndokavitaer());
 
       // I, K, KHDR, KLDR, KPDR, IHDR, ILDR, IPDR
-      sb.append(Objects.toString(kontakt.getRateType()));
+      sb.append(Objects.toString(kontakt.getRateType(), ""));
 
       return ApplikationsartCode.fromString(sb.toString());
     }
@@ -454,7 +454,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       var sb = new StringBuilder("M");
 
       // M, MSIRT, MPRRT, MPSMA, MRJT, MRIT
-      sb.append(metabolisch.getMetabolischTyp());
+      sb.append(Objects.toString(metabolisch.getMetabolischTyp(), ""));
 
       return ApplikationsartCode.fromString(sb.toString());
     }
