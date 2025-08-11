@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Extension;
@@ -122,7 +123,16 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var performed =
         computeTreatmentPeriodFromAllBestrahlung(st.getMengeBestrahlung().getBestrahlung());
-    procedure.setPerformed(performed);
+
+    if (!performed.isEmpty()) {
+      procedure.setPerformed(performed);
+    } else {
+      LOG.warn("Bestrahlung Beginn/End is unset. Setting data absent extension.");
+      var absentPeriod = new Period();
+      absentPeriod.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      procedure.setPerformed(absentPeriod);
+    }
 
     var allMetabolic =
         st.getMengeBestrahlung().getBestrahlung().stream()
