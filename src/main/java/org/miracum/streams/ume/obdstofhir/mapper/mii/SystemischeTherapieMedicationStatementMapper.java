@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
 import de.basisdatensatz.obds.v3.SYSTTyp.MengeSubstanz;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -37,44 +38,9 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
     var result = new ArrayList<MedicationStatement>();
 
-    var substanzMap = new HashMap<String, MengeSubstanz.Substanz>();
+    var distinctSubstanzen = getDistinctSubstanzen(syst.getMengeSubstanz().getSubstanz());
 
-    for (var substanz : syst.getMengeSubstanz().getSubstanz()) {
-      String key;
-      if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
-        key = substanz.getATC().getCode();
-      } else {
-        key = substanz.getBezeichnung();
-      }
-
-      if (!substanzMap.containsKey(key)) {
-        substanzMap.put(key, substanz);
-      } else {
-        LOG.warn("Duplicate Substanz found with key: {}", key);
-
-        if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
-          // note that version is a mandatory field in oBDS
-          var version = substanz.getATC().getVersion();
-
-          var existing = substanzMap.get(key);
-          String existingVersion = null;
-          // getATC() should always return a non-null value, if not, then someone placed an ATC-code
-          // as a Bezeichnung.
-          existingVersion = existing.getATC().getVersion();
-
-          if (version.compareTo(existingVersion) > 0) {
-            LOG.warn(
-                "Duplicate Substanzen with ATC code {} found. Updating version {} over version {}.",
-                key,
-                version,
-                existingVersion);
-            substanzMap.put(key, substanz);
-          }
-        }
-      }
-    }
-
-    for (var substanz : substanzMap.values()) {
+    for (var substanz : distinctSubstanzen) {
       var systMedicationStatement = new MedicationStatement();
       systMedicationStatement
           .getMeta()
@@ -131,6 +97,53 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     }
 
     return result;
+  }
+
+  private static Collection<MengeSubstanz.Substanz> getDistinctSubstanzen(
+      List<MengeSubstanz.Substanz> substanzen) {
+    var substanzMap = new HashMap<String, MengeSubstanz.Substanz>();
+
+    for (var substanz : substanzen) {
+      String key;
+      if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
+        key = substanz.getATC().getCode();
+      } else {
+        key = substanz.getBezeichnung();
+      }
+
+      if (!substanzMap.containsKey(key)) {
+        substanzMap.put(key, substanz);
+      } else {
+        LOG.warn("Duplicate Substanz found with key: {}", key);
+
+        if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
+          // note that version is a mandatory field in oBDS
+          var version = substanz.getATC().getVersion();
+
+          var existing = substanzMap.get(key);
+          // getATC() should always return a non-null value, if not, then someone placed
+          // an ATC-code as a Bezeichnung.
+          var existingVersion = existing.getATC().getVersion();
+
+          if (version == null || existingVersion == null) {
+            LOG.error(
+                "ATC version is missing when comparing duplicates. Defaulting to keeping the current one.");
+            continue;
+          }
+
+          if (version.compareTo(existingVersion) > 0) {
+            LOG.warn(
+                "Duplicate Substanzen with ATC code {} found. Updating version {} over version {}.",
+                key,
+                version,
+                existingVersion);
+            substanzMap.put(key, substanz);
+          }
+        }
+      }
+    }
+
+    return substanzMap.values();
   }
 
   private String createSubstanzIdFromPlain(String plainName) {
