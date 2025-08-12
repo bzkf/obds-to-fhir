@@ -624,16 +624,16 @@
       "url": "Observation/f188bf42ff1a143c3cf83257db96c935df093c6de96f214d7ce30c74e4ac2912"
     }
   }, {
-    "fullUrl": "Observation/be4afbed0abf31d896e2725f1131e88d5e3cdbe910d0a6c151d261eedc1c377a",
+    "fullUrl": "Observation/87814af6d4c91da92f8b10a9a52f8124d4fdff4a609a1c7f7ad0cf82f60ad25c",
     "resource": {
       "resourceType": "Observation",
-      "id": "be4afbed0abf31d896e2725f1131e88d5e3cdbe910d0a6c151d261eedc1c377a",
+      "id": "87814af6d4c91da92f8b10a9a52f8124d4fdff4a609a1c7f7ad0cf82f60ad25c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
-        "value": "47_T"
+        "value": "47-c_T"
       } ],
       "status": "final",
       "code": {
@@ -675,19 +675,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/be4afbed0abf31d896e2725f1131e88d5e3cdbe910d0a6c151d261eedc1c377a"
+      "url": "Observation/87814af6d4c91da92f8b10a9a52f8124d4fdff4a609a1c7f7ad0cf82f60ad25c"
     }
   }, {
-    "fullUrl": "Observation/eadd814e27120094ec1e1ebbdea718e278d111d43bdb0cac5c6d5b310af6e599",
+    "fullUrl": "Observation/5f118ba33bdf2d33140ed017ddd1c545bdd7b8cb0139401b65906d1a33935f96",
     "resource": {
       "resourceType": "Observation",
-      "id": "eadd814e27120094ec1e1ebbdea718e278d111d43bdb0cac5c6d5b310af6e599",
+      "id": "5f118ba33bdf2d33140ed017ddd1c545bdd7b8cb0139401b65906d1a33935f96",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id",
-        "value": "47_N"
+        "value": "47-c_N"
       } ],
       "status": "final",
       "code": {
@@ -729,19 +729,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/eadd814e27120094ec1e1ebbdea718e278d111d43bdb0cac5c6d5b310af6e599"
+      "url": "Observation/5f118ba33bdf2d33140ed017ddd1c545bdd7b8cb0139401b65906d1a33935f96"
     }
   }, {
-    "fullUrl": "Observation/5914440bef6ccb1c9514cac7b90300cfd5b3b2d7e9866efea21fb9c01532d98f",
+    "fullUrl": "Observation/e8d028a08aba37756f47128b2e141c960b1e06fa9460f750efe045cdb97d275f",
     "resource": {
       "resourceType": "Observation",
-      "id": "5914440bef6ccb1c9514cac7b90300cfd5b3b2d7e9866efea21fb9c01532d98f",
+      "id": "e8d028a08aba37756f47128b2e141c960b1e06fa9460f750efe045cdb97d275f",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id",
-        "value": "47_M"
+        "value": "47-c_M"
       } ],
       "status": "final",
       "code": {
@@ -783,19 +783,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/5914440bef6ccb1c9514cac7b90300cfd5b3b2d7e9866efea21fb9c01532d98f"
+      "url": "Observation/e8d028a08aba37756f47128b2e141c960b1e06fa9460f750efe045cdb97d275f"
     }
   }, {
-    "fullUrl": "Observation/56cfcc38da3fda6048bb41b2b83e757096f7116ef72a6ce6e3bf753b537126ae",
+    "fullUrl": "Observation/c38c194d0b638d00470c51d26348360a7e42d6b35dc0523fad7f378f92a9639a",
     "resource": {
       "resourceType": "Observation",
-      "id": "56cfcc38da3fda6048bb41b2b83e757096f7116ef72a6ce6e3bf753b537126ae",
+      "id": "c38c194d0b638d00470c51d26348360a7e42d6b35dc0523fad7f378f92a9639a",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-        "value": "47"
+        "value": "47-c"
       } ],
       "status": "final",
       "code": {
@@ -827,28 +827,28 @@
         } ]
       },
       "hasMember": [ {
-        "reference": "Observation/be4afbed0abf31d896e2725f1131e88d5e3cdbe910d0a6c151d261eedc1c377a"
+        "reference": "Observation/87814af6d4c91da92f8b10a9a52f8124d4fdff4a609a1c7f7ad0cf82f60ad25c"
       }, {
-        "reference": "Observation/eadd814e27120094ec1e1ebbdea718e278d111d43bdb0cac5c6d5b310af6e599"
+        "reference": "Observation/5f118ba33bdf2d33140ed017ddd1c545bdd7b8cb0139401b65906d1a33935f96"
       }, {
-        "reference": "Observation/5914440bef6ccb1c9514cac7b90300cfd5b3b2d7e9866efea21fb9c01532d98f"
+        "reference": "Observation/e8d028a08aba37756f47128b2e141c960b1e06fa9460f750efe045cdb97d275f"
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/56cfcc38da3fda6048bb41b2b83e757096f7116ef72a6ce6e3bf753b537126ae"
+      "url": "Observation/c38c194d0b638d00470c51d26348360a7e42d6b35dc0523fad7f378f92a9639a"
     }
   }, {
-    "fullUrl": "Observation/f0c360f31506ee3a209d41d5a70943b5eb3b4f571e3ac6ef59fcd381343c8c5c",
+    "fullUrl": "Observation/4277e93a0ca725aa2b16ce1cfcca5b5f9f18ab1ae9ffed4ec41b483be09fd9c8",
     "resource": {
       "resourceType": "Observation",
-      "id": "f0c360f31506ee3a209d41d5a70943b5eb3b4f571e3ac6ef59fcd381343c8c5c",
+      "id": "4277e93a0ca725aa2b16ce1cfcca5b5f9f18ab1ae9ffed4ec41b483be09fd9c8",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
-        "value": "48_T"
+        "value": "48-p_T"
       } ],
       "status": "final",
       "code": {
@@ -890,19 +890,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/f0c360f31506ee3a209d41d5a70943b5eb3b4f571e3ac6ef59fcd381343c8c5c"
+      "url": "Observation/4277e93a0ca725aa2b16ce1cfcca5b5f9f18ab1ae9ffed4ec41b483be09fd9c8"
     }
   }, {
-    "fullUrl": "Observation/ceac7ba9b8a4f509fa8e9c0f1b40443b06da41255351caf76f19fbdbfe9f55f0",
+    "fullUrl": "Observation/ccb1d8a000558afcd46dfd1170ae46c3d254c891833e97099147fc72414a9368",
     "resource": {
       "resourceType": "Observation",
-      "id": "ceac7ba9b8a4f509fa8e9c0f1b40443b06da41255351caf76f19fbdbfe9f55f0",
+      "id": "ccb1d8a000558afcd46dfd1170ae46c3d254c891833e97099147fc72414a9368",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id",
-        "value": "48_N"
+        "value": "48-p_N"
       } ],
       "status": "final",
       "code": {
@@ -944,19 +944,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/ceac7ba9b8a4f509fa8e9c0f1b40443b06da41255351caf76f19fbdbfe9f55f0"
+      "url": "Observation/ccb1d8a000558afcd46dfd1170ae46c3d254c891833e97099147fc72414a9368"
     }
   }, {
-    "fullUrl": "Observation/46af0dc49a2d9e57f2ea14a010606d445e139df12d31ec689b0e20dc6a3a3c48",
+    "fullUrl": "Observation/cf7164f61890bdfd71daef9dc43e32d46139f2d9fb5f7ac2d4245e5017365b82",
     "resource": {
       "resourceType": "Observation",
-      "id": "46af0dc49a2d9e57f2ea14a010606d445e139df12d31ec689b0e20dc6a3a3c48",
+      "id": "cf7164f61890bdfd71daef9dc43e32d46139f2d9fb5f7ac2d4245e5017365b82",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id",
-        "value": "48_M"
+        "value": "48-p_M"
       } ],
       "status": "final",
       "code": {
@@ -998,19 +998,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/46af0dc49a2d9e57f2ea14a010606d445e139df12d31ec689b0e20dc6a3a3c48"
+      "url": "Observation/cf7164f61890bdfd71daef9dc43e32d46139f2d9fb5f7ac2d4245e5017365b82"
     }
   }, {
-    "fullUrl": "Observation/dabf6ad7a2b19a7957142805181e44862552c700c10b3c328b58c76f28dd738b",
+    "fullUrl": "Observation/6c3549429c4757ea9158550e7a97bcf2873eee5baff07ddb603d4de7398e82d2",
     "resource": {
       "resourceType": "Observation",
-      "id": "dabf6ad7a2b19a7957142805181e44862552c700c10b3c328b58c76f28dd738b",
+      "id": "6c3549429c4757ea9158550e7a97bcf2873eee5baff07ddb603d4de7398e82d2",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-        "value": "48"
+        "value": "48-p"
       } ],
       "status": "final",
       "code": {
@@ -1042,16 +1042,16 @@
         } ]
       },
       "hasMember": [ {
-        "reference": "Observation/f0c360f31506ee3a209d41d5a70943b5eb3b4f571e3ac6ef59fcd381343c8c5c"
+        "reference": "Observation/4277e93a0ca725aa2b16ce1cfcca5b5f9f18ab1ae9ffed4ec41b483be09fd9c8"
       }, {
-        "reference": "Observation/ceac7ba9b8a4f509fa8e9c0f1b40443b06da41255351caf76f19fbdbfe9f55f0"
+        "reference": "Observation/ccb1d8a000558afcd46dfd1170ae46c3d254c891833e97099147fc72414a9368"
       }, {
-        "reference": "Observation/46af0dc49a2d9e57f2ea14a010606d445e139df12d31ec689b0e20dc6a3a3c48"
+        "reference": "Observation/cf7164f61890bdfd71daef9dc43e32d46139f2d9fb5f7ac2d4245e5017365b82"
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/dabf6ad7a2b19a7957142805181e44862552c700c10b3c328b58c76f28dd738b"
+      "url": "Observation/6c3549429c4757ea9158550e7a97bcf2873eee5baff07ddb603d4de7398e82d2"
     }
   } ]
 }
