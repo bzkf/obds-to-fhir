@@ -136,21 +136,38 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     condition.setCode(new CodeableConcept(icd));
 
-    if (tumorzuordnung.getMorphologieICDO() != null
-        && tumorzuordnung.getMorphologieICDO().getCode() != null) {
-      var morphologie = new CodeableConcept();
-      morphologie
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-          .setCode(tumorzuordnung.getMorphologieICDO().getCode())
-          .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+    if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
+      for (var morphologieCode : meldung.getDiagnose().getHistologie().getMorphologieICDO()) {
+        var morphologie = new CodeableConcept();
+        morphologie
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+            .setCode(morphologieCode.getCode())
+            .setVersion(morphologieCode.getVersion());
 
-      condition.addExtension(
-          fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
-          morphologie);
+        condition.addExtension(
+            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
+            morphologie);
+      }
+
+    } else {
+      if (tumorzuordnung.getMorphologieICDO() != null
+          && tumorzuordnung.getMorphologieICDO().getCode() != null) {
+        var morphologie = new CodeableConcept();
+        morphologie
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+            .setCode(tumorzuordnung.getMorphologieICDO().getCode())
+            .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+
+        condition.addExtension(
+            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
+            morphologie);
+      }
     }
 
-    // icd-o topography and diagnosis verification status are only available for Diagnosemeldungen.
+    // icd-o topography and diagnosis verification status are only available for
+    // Diagnosemeldungen.
     if (meldung.getDiagnose() != null) {
       var diagnoseMeldung = meldung.getDiagnose();
 
