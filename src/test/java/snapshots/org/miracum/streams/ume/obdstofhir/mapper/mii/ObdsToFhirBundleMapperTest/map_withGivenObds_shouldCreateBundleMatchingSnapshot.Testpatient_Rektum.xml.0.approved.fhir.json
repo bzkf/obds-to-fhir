@@ -52,7 +52,8 @@
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
             "version": "31",
             "code": "8140/3"
-          } ]
+          } ],
+          "text": "Adenokarzinom o.n.A."
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",

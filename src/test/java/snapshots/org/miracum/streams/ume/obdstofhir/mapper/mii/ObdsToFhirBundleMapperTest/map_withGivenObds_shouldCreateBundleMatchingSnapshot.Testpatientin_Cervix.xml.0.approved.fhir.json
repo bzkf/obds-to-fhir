@@ -52,7 +52,8 @@
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
             "version": "33",
             "code": "8077/2"
-          } ]
+          } ],
+          "text": "Zervikale intraepitheliale Neoplasie Grad 3"
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",

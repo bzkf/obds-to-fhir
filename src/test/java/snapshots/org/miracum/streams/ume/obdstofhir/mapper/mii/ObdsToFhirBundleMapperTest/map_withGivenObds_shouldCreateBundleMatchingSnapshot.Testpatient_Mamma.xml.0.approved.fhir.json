@@ -53,7 +53,8 @@
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
             "version": "31",
             "code": "8500/3"
-          } ]
+          } ],
+          "text": "Invasives duktales Karzinom o.n.A."
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
