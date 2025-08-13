@@ -20,8 +20,8 @@ import org.springframework.util.StringUtils;
 public class ConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
-  private static final Pattern icdVersionPattern = Pattern
-      .compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+  private static final Pattern icdVersionPattern =
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
   private final EnumMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
   public ConditionMapper(FhirProperties fhirProperties) {
@@ -87,11 +87,12 @@ public class ConditionMapper extends ObdsToFhirMapper {
     if (meldung.getDiagnose() == null) {
       LOG.debug(
           "Diagnose is null for Meldung. Only the Tumorzuordnung will be used to create the Condition.");
-      var tag = fhirProperties
-          .getCodings()
-          .snomed()
-          .setCode("255599008")
-          .setDisplay("Incomplete (qualifier value)");
+      var tag =
+          fhirProperties
+              .getCodings()
+              .snomed()
+              .setCode("255599008")
+              .setDisplay("Incomplete (qualifier value)");
       condition.getMeta().addTag(tag);
     }
 
@@ -104,9 +105,10 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
-    var icd = new Coding()
-        .setSystem(fhirProperties.getSystems().getIcd10gm())
-        .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
+    var icd =
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getIcd10gm())
+            .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
 
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
     StringType versionElement = null;
@@ -171,12 +173,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
       var diagnoseMeldung = meldung.getDiagnose();
 
       if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
-        CodeableConcept topographie = new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-                .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
-                .setVersion(
-                    meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
+        CodeableConcept topographie =
+            new CodeableConcept(
+                new Coding()
+                    .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+                    .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
+                    .setVersion(
+                        meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
         condition.addBodySite(topographie);
       }
 
@@ -186,11 +189,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
       }
 
       if (diagnoseMeldung.getDiagnosesicherung() != null) {
-        Coding verStatus = new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
-        Coding diagnosesicherung = new Coding(
-            fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
-            meldung.getDiagnose().getDiagnosesicherung().value(),
-            "");
+        Coding verStatus =
+            new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
+        Coding diagnosesicherung =
+            new Coding(
+                fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
+                meldung.getDiagnose().getDiagnosesicherung().value(),
+                "");
 
         CodeableConcept verificationStatus = new CodeableConcept();
         verificationStatus.addCoding(verStatus).addCoding(diagnosesicherung);
@@ -199,12 +204,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
     }
 
     if (tumorzuordnung.getSeitenlokalisation() != null) {
-      CodeableConcept seitenlokalisation = new CodeableConcept(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
-              .setCode(tumorzuordnung.getSeitenlokalisation().value()));
+      CodeableConcept seitenlokalisation =
+          new CodeableConcept(
+              new Coding()
+                  .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
+                  .setCode(tumorzuordnung.getSeitenlokalisation().value()));
 
-      var snomedBodySite = seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());
+      var snomedBodySite =
+          seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());
       if (snomedBodySite != null) {
         seitenlokalisation.addCoding(snomedBodySite);
       } else {
@@ -218,8 +225,9 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     convertObdsDatumToDateTimeType(tumorzuordnung.getDiagnosedatum())
         .ifPresentOrElse(
-            diagnoseDatum -> condition.addExtension(
-                fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum),
+            diagnoseDatum ->
+                condition.addExtension(
+                    fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum),
             () -> {
               LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
               var absentDateTime = new DateTimeType();
