@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "name": "update_all_data_docs",
+      "site_names": [],
+      "type": "update_data_docs"
+    }
+  ],
+  "id": "50584f82-e7da-486e-9311-6f6b8f1b2c84",
+  "name": "validate_observations_checkpoint",
+  "result_format": "COMPLETE",
+  "validation_definitions": [
+    {
+      "id": "b1cae247-7452-4add-852d-068368b3067e",
+      "name": "validate_observations"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "id": "181452cb-0abc-4aa5-88c0-cba759fe6823",
+      "kwargs": {
+        "column_A": "effectivePeriod_end",
+        "column_B": "effectivePeriod_start",
+        "ignore_row_if": "either_value_is_missing"
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    },
+    {
+      "id": "36b929e1-26fa-4411-862f-99fe9df3be7c",
+      "kwargs": {
+        "column": "effectivePeriod_start",
+        "max_value": "2025-12-31T00:00:00",
+        "min_value": "1999-01-01T00:00:00"
+      },
+      "meta": {},
+      "type": "expect_column_values_to_be_between"
+    },
+    {
+      "id": "68c324d9-0025-4bc8-89e4-f0df590f9aa6",
+      "kwargs": {
+        "column_A": "effectivePeriod_start",
+        "column_B": "date_of_birth",
+        "ignore_row_if": "either_value_is_missing"
+      },
+      "meta": {},
+      "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    }
+  ],
+  "id": "6ccc8412-29fa-4a5f-bb47-14e55b16b918",
+  "meta": {
+    "great_expectations_version": "1.5.5"
+  },
+  "name": "patients_with_MedicationStatement_suite",
+  "notes": null
+}

@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "270b8dcc-2faa-4eca-b8c6-4b1d65f4c528",
+      "name": "patients_and_observations"
+    },
+    "batch_definition": {
+      "id": "02d46ee6-efce-4595-9bb1-8db654096ed8",
+      "name": "patients_and_observations_all_rows"
+    },
+    "datasource": {
+      "id": "a6742224-253f-47fd-80e7-6db8b5ec02ba",
+      "name": "snapshot_bundles"
+    }
+  },
+  "id": "b1cae247-7452-4add-852d-068368b3067e",
+  "name": "validate_observations",
+  "suite": {
+    "id": "28762aa5-b0ef-4b55-9ecf-23f9e877132e",
+    "name": "patients_with_observations_suite"
+  }
+}

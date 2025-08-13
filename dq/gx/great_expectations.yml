@@ -27,6 +27,7 @@ config_version: 4.0
 #
 # https://docs.greatexpectations.io/docs/guides/setup/configuring_data_contexts/how_to_configure_credentials
 
+
 config_variables_file_path: uncommitted/config_variables.yml
 
 # The plugins_directory will be added to your python path for custom modules
@@ -34,9 +35,9 @@ config_variables_file_path: uncommitted/config_variables.yml
 plugins_directory: plugins/
 
 stores:
-  # Stores are configurable places to store things like Expectations, Validations
-  # Data Docs, and more. These are for advanced users only - most users can simply
-  # leave this section alone.
+# Stores are configurable places to store things like Expectations, Validations
+# Data Docs, and more. These are for advanced users only - most users can simply
+# leave this section alone.
   expectations_store:
     class_name: ExpectationsStore
     store_backend:
@@ -89,23 +90,39 @@ data_docs_sites:
 fluent_datasources:
   snapshot_bundles:
     type: spark
-    id: 25eb7535-48f5-404d-b1b7-dc238178c7db
+    id: a6742224-253f-47fd-80e7-6db8b5ec02ba
     assets:
       patients_and_conditions:
         type: dataframe
-        id: 174a3d34-ee78-48af-a790-48ed8f1b2c73
+        id: 53921630-55d9-4c47-84e2-9fa971ec3d90
         batch_metadata: {}
         batch_definitions:
           patients_and_conditions_all_rows:
-            id: a219d600-962d-46d8-a020-85320f595fc4
+            id: fdee0612-88ed-42f8-a5cf-bc0b03f194f4
             partitioner:
       patients_and_observations:
         type: dataframe
-        id: 45e94e09-3ba3-4724-8019-8f3515736a23
+        id: 270b8dcc-2faa-4eca-b8c6-4b1d65f4c528
         batch_metadata: {}
         batch_definitions:
           patients_and_observations_all_rows:
-            id: 863827e0-116a-4614-b82e-1ea32fdfa581
+            id: 02d46ee6-efce-4595-9bb1-8db654096ed8
+            partitioner:
+      patients_and_procedures:
+        type: dataframe
+        id: 37db13ef-a3d4-46f4-a368-4e03df49be95
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_procedure_all_rows:
+            id: 581d00a1-22b3-4068-9452-d5ec2ba13288
+            partitioner:
+      patients_and_MedicationStatements:
+        type: dataframe
+        id: 4c48003b-a8cc-4cb8-b69f-d3d961f0be1f
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_medicationStatements_all_rows:
+            id: 327dd37f-1544-4179-a5e7-a433471e3691
             partitioner:
 analytics_enabled:
-data_context_id: edac9bf7-2d5a-443d-a47c-950d580e39c1
+data_context_id: e1086299-0733-48cb-bec8-ad674bb90426
