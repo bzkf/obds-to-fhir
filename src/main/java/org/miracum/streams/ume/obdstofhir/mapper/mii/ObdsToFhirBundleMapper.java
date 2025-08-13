@@ -45,6 +45,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TNMMapper tnmMapper;
   private final GleasonScoreMapper gleasonScoreMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
+  private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
 
   @Value("${fhir.mappings.createPatientResources.enabled}")
   private boolean createPatientResources;
@@ -78,7 +79,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
       GleasonScoreMapper gleasonScoreMapper,
-      WeitereKlassifikationMapper weitereKlassifikationMapper) {
+      WeitereKlassifikationMapper weitereKlassifikationMapper,
+      ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -103,6 +105,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tnmMapper = tnmMapper;
     this.gleasonScoreMapper = gleasonScoreMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
+    this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
   }
 
   /**
@@ -173,6 +176,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
 
+        var evidenzReferenceList = new ArrayList<Reference>();
+
         // Diagnose
         // this _always_ creates a Condition resource, even if just the Tumorzuordnung
         // is known
@@ -195,6 +200,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     patientReference,
                     primaryConditionReference);
             addToBundle(bundle, leistungszustand);
+            evidenzReferenceList.add(createReferenceFromResource(leistungszustand));
           }
 
           if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
@@ -202,6 +208,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 fernmetastasenMapper.map(
                     diagnose, meldung.getMeldungID(), patientReference, primaryConditionReference);
             addToBundle(bundle, diagnoseFM);
+            evidenzReferenceList.addAll(createReferenceFromResource(diagnoseFM));
           }
 
           if (diagnose.getHistologie() != null) {
@@ -210,6 +217,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             addToBundle(bundle, specimen);
 
             var specimenReference = createReferenceFromResource(specimen);
+            evidenzReferenceList.add(specimenReference);
 
             if (histologie.getGrading() != null) {
               var grading =
@@ -220,12 +228,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       primaryConditionReference,
                       specimenReference);
               addToBundle(bundle, grading);
+              evidenzReferenceList.add(createReferenceFromResource(grading));
             }
 
             var lymphknotenuntersuchungen =
                 lymphknotenuntersuchungMapper.map(
                     histologie, patientReference, primaryConditionReference, specimenReference);
             addToBundle(bundle, lymphknotenuntersuchungen);
+            evidenzReferenceList.addAll(createReferenceFromResource(lymphknotenuntersuchungen));
           }
 
           if (diagnose.getModulAllgemein() != null) {
@@ -238,6 +248,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       primaryConditionReference,
                       meldung.getMeldungID());
               addToBundle(bundle, studienteilnahmeObservation);
+              evidenzReferenceList.add(createReferenceFromResource(studienteilnahmeObservation));
             }
           }
 
@@ -247,6 +258,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 genetischeVarianteMapper.map(
                     diagnose, patientReference, primaryConditionReference, meldung.getMeldungID());
             addToBundle(bundle, genetischeVarianten);
+            evidenzReferenceList.addAll(createReferenceFromResource(genetischeVarianten));
           }
 
           if (diagnose.getCTNM() != null) {
@@ -258,7 +270,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     patientReference,
                     primaryConditionReference);
             addToBundle(bundle, clinicalTNMObservations);
+            evidenzReferenceList.addAll(createReferenceFromResource(clinicalTNMObservations));
           }
+
           if (diagnose.getPTNM() != null) {
             var pathologicTNMObservations =
                 tnmMapper.map(
@@ -268,6 +282,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     patientReference,
                     primaryConditionReference);
             addToBundle(bundle, pathologicTNMObservations);
+            evidenzReferenceList.addAll(createReferenceFromResource(pathologicTNMObservations));
           }
 
           if (diagnose.getModulProstata() != null && isModulProstataMappingEnabled) {
@@ -280,6 +295,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference);
               addToBundle(bundle, gleasonScore);
+              evidenzReferenceList.add(createReferenceFromResource(gleasonScore));
             }
           }
 
@@ -293,8 +309,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference);
               addToBundle(bundle, weitereKlassifikationen);
+              evidenzReferenceList.addAll(createReferenceFromResource(weitereKlassifikationen));
             }
           }
+
+          var evidenzListe =
+              erstdiagnoseEvidenzListMapper.map(
+                  obdsPatient.getPatientID(),
+                  meldung.getTumorzuordnung().getTumorID(),
+                  patientReference,
+                  evidenzReferenceList);
+
+          addToBundle(bundle, evidenzListe);
+
+          condition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
         }
 
         // Verlauf
@@ -765,5 +793,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private Reference createReferenceFromResource(Resource resource) {
     Objects.requireNonNull(resource.getId());
     return new Reference(resource.getResourceType().name() + "/" + resource.getId());
+  }
+
+  private List<Reference> createReferenceFromResource(List<? extends Resource> resources) {
+    return resources.stream()
+        .map(r -> new Reference(r.getResourceType().name() + "/" + r.getId()))
+        .toList();
   }
 }

@@ -72,6 +72,7 @@ fhir:
     tnm-y-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-y-symbol-observation-id"
     tumorkonferenz-id: "${fhir.default.baseSystemUrl}/tumorkonferenz-id"
     weitere-klassifikation-observation-id: "${fhir.default.baseSystemUrl}/weitere-klassifikation-observation-id"
+    erstdiagnose-evidenz-list-id: "${fhir.default.baseSystemUrl}/erstdiagnose-evidenz-list-id"
 
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -199,6 +200,7 @@ fhir:
     mii-pr-onko-weitere-klassifikationen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-befund: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-liste-evidenz-erstdiagnose: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose${fhir.profiles.versions.mii-onkologie}"
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"

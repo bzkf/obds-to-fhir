@@ -108,7 +108,12 @@
       "subject": {
         "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
       },
-      "recordedDate": "2024-11-30"
+      "recordedDate": "2024-11-30",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -605,6 +610,73 @@
     "request": {
       "method": "PUT",
       "url": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429"
+    }
+  }, {
+    "fullUrl": "List/fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8",
+    "resource": {
+      "resourceType": "List",
+      "id": "fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "9876543-1"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/f09354f4566cac6966aa4c46dd6984df57cff6d42440e043a0f1e920812d6d07"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/f7ba1a598b5d7b2fdc092063e5395641449ca5bcd1b81c2ee3fafe98e87fb54a"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/8a573e2d3d3493fc5876e2036ffa08ae6f7fd0e59a156a53b6bc6c6403928418"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/930e610e16b6a8a72f86895036be0bd1de30997686f0bbd9f6eff5e807c199ba"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/4bb3356d1ff043390af6b3212969ae3b91ccb5d345e74a577fa65102851fba5d"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fc24681047bf6e08fa7c99bacc1998d38992c1eb0029f0cdb20740a0203528f9"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/0a28cb1ecbe6e60276eed2805b517b0c3a1871b90d2701f4bfd0dd30258b1a6e"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/06935140e6319ff0af9e83f33907fa6d881f8c98617d35de39aef3f4ca624469"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/ccbab04eb322ee71ff5d60b3770ab16277fdde79c950e34c040f668d2d7f00c9"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/94497da675770fb064e7f72257406f294378d985336fc545d4897262095ed1b0"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8"
     }
   } ]
 }

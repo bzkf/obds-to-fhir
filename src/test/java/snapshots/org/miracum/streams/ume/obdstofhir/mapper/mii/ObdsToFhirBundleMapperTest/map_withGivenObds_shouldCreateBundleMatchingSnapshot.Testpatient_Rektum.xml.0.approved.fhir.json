@@ -100,7 +100,12 @@
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1590,6 +1595,57 @@
     "request": {
       "method": "PUT",
       "url": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7"
+    }
+  }, {
+    "fullUrl": "List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",
+    "resource": {
+      "resourceType": "List",
+      "id": "fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "50-501"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/8f304ba0ea144670c1f5625484c9660f501c7d6412afc089d9121e139b2d5d7e"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/968aa15695f8ebe6ff7ce8b2b712f480a9d4a8b619e4c3004bd159459b5fb24d"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/2971b022cab252f533172c8d9f6647bd45847caa5f83cff6d7f6dd101b411c06"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87"
     }
   } ]
 }
