@@ -43,7 +43,7 @@ snapshots_dir = (
 ).as_posix()
 
 data = pc.read.bundles(
-    snapshots_dir, ["Patient", "Condition", "Observation", "Procedure"]
+    snapshots_dir, ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"]
 )
 
 patients = data.extract(
@@ -87,6 +87,7 @@ patients_with_conditions = conditions.join(
     conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
     )
+
 
 patients_with_conditions.show(truncate=False)
 
@@ -144,8 +145,31 @@ patients_with_procedures = procedures.join(
 )
 
 patients_with_procedures.show(truncate=False)
-patients_with_observations.write.mode("overwrite").csv(
-    "patients_with_observations.csv", header=True
+patients_with_procedures.write.mode("overwrite").csv(
+    "patients_with_procedures.csv", header=True
+)
+
+medicationStatements = data.extract(
+    "MedicationStatement",
+    columns=[
+        exp("id", "MedicationStatement_id"),
+        exp("subject.reference", "subject_reference"),
+        exp("effectiveperiod.start", "effectivePeriod_start"),
+        exp("effectivePeriod.end", "effectivePeriod_end"),
+        exp( "meta.profile", "meta_profile")
+    ]
+).drop_duplicates()
+print(medicationStatements.columns)
+
+patients_with_medications = medicationStatements.join(
+    patients,
+    medicationStatements["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    how="inner",
+    )
+
+patients_with_medications.show(truncate=False)
+patients_with_medications.write.mode("overwrite").csv(
+    "patients_with_medications.csv", header=True
 )
 
 gx_context = gx.get_context(mode="file")
@@ -270,6 +294,8 @@ expectations_observations = [
 #    gx.expectations.ExpectColumnValuesToBeBetween(
  #       column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
   #  ),
+
+
 ]
 
 expectations_procedure = [
@@ -290,10 +316,36 @@ expectations_procedure = [
         column_B="performed_date_time",
         or_equal=True,
     ),
+
+    gx.expectations.ExpectColumnValuesToNotMatchRegex( ## bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
+        column="code_code",
+        regex=r"^5-6[5-9]|^5-7[0-1]",
+        condition_parser="great_expectations",
+        row_condition= 'col("gender") == "male" and '
+        #'col("icd_code") == "C61"'
+    )
  #   gx.expectations.ExpectColumnValuesToBeBetween(
   #      column="performed_date_time", min_value=MIN_DATE, max_value=MAX_DATE
    # ),
 ]
+
+# expectations_medicationStatements = [
+#     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+#         column_A="effectivePeriod_end", column_B="effectivePeriod_start",
+#         ignore_row_if="either_value_is_missing",
+#         #parse_strings_as_datetimes=True
+#         #ignore_row_if="both_values_are_equal" # wont work 2
+#     ),
+#     gx.expectations.ExpectColumnValuesToBeBetween(
+#         column="effectivePeriod_start", min_value=MIN_DATE, max_value=MAX_DATE,
+#         # parse_strings_as_datetimes=True
+#     ),
+#
+#     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+#         column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
+#         # parse_strings_as_datetimes=True
+#     )
+#]
 
 # Create expectation suites
 suite_conditions = create_expectations_and_suite(
@@ -307,11 +359,16 @@ suite_procedure = create_expectations_and_suite(
     expectations_procedure, "patients_with_procedure_suite", gx_context
 )
 
+suite_medicationStatements = create_expectations_and_suite(
+    expectations_medicationStatements, "patients_with_MedicationStatement_suite", gx_context
+)
+
 data_source_name = "snapshot_bundles"
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
 data_asset_observations = data_source.add_dataframe_asset(name="patients_and_observations")
 data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
+data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
 
 
 
@@ -337,6 +394,14 @@ validation_definition_procedure = create_validation_definition(
     "validate_procedure",
     "patients_and_procedure_all_rows",
 )
+
+validation_definition_medicationStatement = create_validation_definition(
+    gx_context,
+    data_asset_medicationStatements,
+    suite_medicationStatements,
+    "validate_medicationStatements",
+    "patients_and_medicationStatements_all_rows",
+)
 # Actions for checkpoints
 action_list = [
     UpdateDataDocsAction(
@@ -361,6 +426,13 @@ checkpoint_procedure = create_checkpoint(
     gx_context,
     "validate_procedure_checkpoint",
     [validation_definition_procedure],
+    action_list,
+)
+
+checkpoint_medicationStatement = create_checkpoint(
+    gx_context,
+    "validate_medicationStatements_checkpoint",
+    [validation_definition_medicationStatement],
     action_list,
 )
 # Add Data Docs Site
@@ -417,5 +489,15 @@ validation_results_procedure = checkpoint_procedure.run(
 logger.info(validation_results_procedure.describe())
 
 if not validation_results_procedure.success:
+    logger.error("Validation run failed!")
+    sys.exit(1)
+
+validation_results_medicationStatement = checkpoint_medicationStatement.run(
+        batch_parameters={"dataframe": patients_with_medications}
+    )
+
+logger.info(validation_results_medicationStatement.describe())
+
+if not validation_results_medicationStatement.success:
     logger.error("Validation run failed!")
     sys.exit(1)

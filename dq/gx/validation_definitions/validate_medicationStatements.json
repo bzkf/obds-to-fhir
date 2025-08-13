@@ -1,0 +1,22 @@
+{
+  "data": {
+    "asset": {
+      "id": "4c48003b-a8cc-4cb8-b69f-d3d961f0be1f",
+      "name": "patients_and_MedicationStatements"
+    },
+    "batch_definition": {
+      "id": "327dd37f-1544-4179-a5e7-a433471e3691",
+      "name": "patients_and_medicationStatements_all_rows"
+    },
+    "datasource": {
+      "id": "a6742224-253f-47fd-80e7-6db8b5ec02ba",
+      "name": "snapshot_bundles"
+    }
+  },
+  "id": "f478dc61-13bd-4343-9830-3f8656d34ef6",
+  "name": "validate_medicationStatements",
+  "suite": {
+    "id": "6ccc8412-29fa-4a5f-bb47-14e55b16b918",
+    "name": "patients_with_MedicationStatement_suite"
+  }
+}

@@ -1,11 +1,11 @@
 {
   "data": {
     "asset": {
-      "id": "83d60e28-c413-4f07-b1e6-7197ce4ef3c3",
+      "id": "53921630-55d9-4c47-84e2-9fa971ec3d90",
       "name": "patients_and_conditions"
     },
     "batch_definition": {
-      "id": "e41a3aa8-3c52-43e9-8aae-42c21204f692",
+      "id": "fdee0612-88ed-42f8-a5cf-bc0b03f194f4",
       "name": "patients_and_conditions_all_rows"
     },
     "datasource": {

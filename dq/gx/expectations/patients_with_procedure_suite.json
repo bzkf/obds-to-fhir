@@ -1,7 +1,7 @@
 {
   "expectations": [
     {
-      "id": "24db2b29-aa33-4b72-b8ce-6103f7bdf5f6",
+      "id": "d68fb0ff-ad96-4650-ab7e-3056f2993178",
       "kwargs": {
         "column": "patient_id"
       },
@@ -9,7 +9,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "f51fbd9e-3308-4f5a-9443-070ee8aefbb2",
+      "id": "5c5b2866-4637-47f4-ab95-c7b7c68bf107",
       "kwargs": {
         "column": "procedure_id"
       },
@@ -17,7 +17,7 @@
       "type": "expect_column_values_to_not_be_null"
     },
     {
-      "id": "e91f4812-741c-4887-ac01-86c4ded52696",
+      "id": "72be3b02-69e9-458a-b31f-7b47a42d91ee",
       "kwargs": {
         "column_A": "performed_date_time",
         "column_B": "date_of_birth",
@@ -27,7 +27,7 @@
       "type": "expect_column_pair_values_a_to_be_greater_than_b"
     },
     {
-      "id": "746c8043-d7fb-45bd-b00e-6fa02e6197e7",
+      "id": "6ba99343-6673-4e59-90a0-3454dbcae9b8",
       "kwargs": {
         "column_A": "deceased_date_time",
         "column_B": "performed_date_time",
@@ -35,6 +35,17 @@
       },
       "meta": {},
       "type": "expect_column_pair_values_a_to_be_greater_than_b"
+    },
+    {
+      "id": "4ea5daf4-08e9-42a7-94a6-99b84e519afc",
+      "kwargs": {
+        "column": "code_code",
+        "condition_parser": "great_expectations",
+        "regex": "^5-6[5-9]|^5-7[0-1]",
+        "row_condition": "col(\"gender\") == \"male\""
+      },
+      "meta": {},
+      "type": "expect_column_values_to_not_match_regex"
     }
   ],
   "id": "9a09bf07-d1c8-4000-a3af-be2d347637b9",
