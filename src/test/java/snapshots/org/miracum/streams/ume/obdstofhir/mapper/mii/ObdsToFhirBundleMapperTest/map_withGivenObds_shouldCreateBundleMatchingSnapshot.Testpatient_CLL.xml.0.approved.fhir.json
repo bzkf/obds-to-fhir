@@ -608,50 +608,6 @@
       "url": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
     }
   }, {
-    "fullUrl": "Observation/89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "273-ICDO3-9823/3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.80",
-          "code": "59847-4",
-          "display": "Histology and Behavior ICD-O-3 Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "focus": [ {
-        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
-      } ],
-      "effectiveDateTime": "2015-04-03",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
-          "code": "9823/3"
-        } ],
-        "text": "Chronisch lymphatische Leukämie"
-      },
-      "specimen": {
-        "reference": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671"
-    }
-  }, {
     "fullUrl": "Observation/7f1dfbb42c61b66028d7df0ea50ad1f9e863e9e6d2b98d70528fdbf77cb9bc55",
     "resource": {
       "resourceType": "Observation",

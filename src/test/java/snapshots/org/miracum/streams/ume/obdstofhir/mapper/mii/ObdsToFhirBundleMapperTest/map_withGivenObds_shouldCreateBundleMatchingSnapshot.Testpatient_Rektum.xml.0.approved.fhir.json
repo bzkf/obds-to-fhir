@@ -1323,50 +1323,6 @@
       "url": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397"
     }
   }, {
-    "fullUrl": "Observation/6b489dea875e8c29f03168b1e6b527174d4fbdade5df54f458399df75938cfcb",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "6b489dea875e8c29f03168b1e6b527174d4fbdade5df54f458399df75938cfcb",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "258-ICDO3-8140/3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.80",
-          "code": "59847-4",
-          "display": "Histology and Behavior ICD-O-3 Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
-      },
-      "focus": [ {
-        "reference": "Condition/caa87a1a960919b94217deaa8546f718946ff56ee43c7c7a4b4b896e8be4e16a"
-      } ],
-      "effectiveDateTime": "2020-08-02",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "31",
-          "code": "8140/3"
-        } ],
-        "text": "Adenokarzinom o.n.A."
-      },
-      "specimen": {
-        "reference": "Specimen/b5addb6f659b752b5b470656e13dbac88432e01e90d09ef22c5e2c1927510397"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/6b489dea875e8c29f03168b1e6b527174d4fbdade5df54f458399df75938cfcb"
-    }
-  }, {
     "fullUrl": "Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06",
     "resource": {
       "resourceType": "Observation",
