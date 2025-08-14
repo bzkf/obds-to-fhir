@@ -1,5 +1,6 @@
 package org.miracum.streams.ume.obdstofhir.mapper;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
   public Bundle mapOnkoResourcesToMedicationStatement(List<MeldungExport> meldungExportList) {
 
     if (meldungExportList.size() > 2 || meldungExportList.isEmpty()) {
+      LOG.warn("meldungExportList is empty or contains more than 2 entries. Actual: {}", meldungExportList.size());
       return null;
     }
 
@@ -47,13 +49,12 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
         getReportingIdFromAdt(meldungExport),
         ResourceType.MedicationStatement);
 
-    var meldung =
-        meldungExport
-            .getXml_daten()
-            .getMenge_Patient()
-            .getPatient()
-            .getMenge_Meldung()
-            .getMeldung();
+    var meldung = meldungExport
+        .getXml_daten()
+        .getMenge_Patient()
+        .getPatient()
+        .getMenge_Meldung()
+        .getMeldung();
 
     var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
@@ -66,43 +67,37 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
 
       var systemTherapy = meldung.getMenge_SYST().getSYST();
 
+      var substances = new HashSet<String>();
       if (systemTherapy.getMenge_Substanz() != null) {
-        var substances =
-            new HashSet<>(
-                systemTherapy.getMenge_Substanz().getSYST_Substanz()); // removes duplicates
-
-        if (substances.size() > 1) {
-
-          bundle =
-              addResourceAsEntryInBundle(
-                  bundle,
-                  createSystemtherapyMedicationStatement(
-                      meldung,
-                      pid,
-                      senderId,
-                      softwareId,
-                      getReportingReasonFromAdt(meldungExport),
-                      null,
-                      substances));
-        }
-
-        for (var sub : substances) {
-          bundle =
-              addResourceAsEntryInBundle(
-                  bundle,
-                  createSystemtherapyMedicationStatement(
-                      meldung,
-                      pid,
-                      senderId,
-                      softwareId,
-                      getReportingReasonFromAdt(meldungExport),
-                      sub,
-                      substances));
-        }
+        substances = new HashSet<>(
+            systemTherapy.getMenge_Substanz().getSYST_Substanz()); // removes duplicates
       }
 
-    } else {
-      return null;
+      if (substances.size() > 1) {
+        bundle = addResourceAsEntryInBundle(
+            bundle,
+            createSystemtherapyMedicationStatement(
+                meldung,
+                pid,
+                senderId,
+                softwareId,
+                getReportingReasonFromAdt(meldungExport),
+                null,
+                substances));
+      }
+
+      for (var sub : substances) {
+        bundle = addResourceAsEntryInBundle(
+            bundle,
+            createSystemtherapyMedicationStatement(
+                meldung,
+                pid,
+                senderId,
+                softwareId,
+                getReportingReasonFromAdt(meldungExport),
+                sub,
+                substances));
+      }
     }
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
@@ -114,7 +109,8 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
     }
   }
 
-  // Either creates a Part-of-MedicationStatement or a default MedicationStatement (if no
+  // Either creates a Part-of-MedicationStatement or a default MedicationStatement
+  // (if no
   // Substances are documented) in ADT
   // as in https://simplifier.net/oncology/systemtherapie
   public MedicationStatement createSystemtherapyMedicationStatement(
@@ -124,7 +120,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
       String softwareId,
       Meldeanlass meldeanlass,
       String substance,
-      Set<String> substances) {
+      List<String> substances) {
 
     var systemTherapy = meldung.getMenge_SYST().getSYST();
 
