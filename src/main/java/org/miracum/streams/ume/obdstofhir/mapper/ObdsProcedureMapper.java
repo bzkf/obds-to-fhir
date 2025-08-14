@@ -33,6 +33,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
 
     if (meldungExportList.size() > 2
         || meldungExportList.isEmpty()) { // TODO warum lehre Liste überhaupt möglich
+      LOG.warn("meldung.getMenge_OP() != null is empty or size > 2");
       return null;
     }
 
@@ -52,6 +53,10 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
             .getMenge_Meldung()
             .getMeldung();
 
+    if (meldung == null) {
+      LOG.warn("Meldung is null: {}", getReportingIdFromAdt(meldungExport));
+    }
+
     var senderId = meldungExport.getXml_daten().getAbsender().getAbsender_ID();
     var softwareId = meldungExport.getXml_daten().getAbsender().getSoftware_ID();
 
@@ -69,6 +74,10 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS().getOP_OPS();
       var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
 
+      if (distinctOpsSet.isEmpty()) {
+        LOG.warn("distinct OPS code list is empty");
+      }
+
       if (distinctOpsSet.size() > 1) {
         bundle =
             addResourceAsEntryInBundle(
@@ -84,6 +93,8 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                 createOpProcedure(
                     meldung, pid, senderId, softwareId, opsCode, distinctOpsSet, reportingReason));
       }
+    } else {
+      LOG.warn("Menge_OP or some descendent  is null");
     }
 
     if (meldung != null && meldung.getMenge_ST() != null && meldung.getMenge_ST().getST() != null) {
