@@ -100,7 +100,12 @@
       "subject": {
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -257,6 +262,45 @@
     "request": {
       "method": "PUT",
       "url": "Observation/fd98bdb4e128c7c15c49f7ccb96ae8f93dd0a74644507cc4ba2943a17199fef3"
+    }
+  }, {
+    "fullUrl": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
+    "resource": {
+      "resourceType": "List",
+      "id": "1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "10-1"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fd98bdb4e128c7c15c49f7ccb96ae8f93dd0a74644507cc4ba2943a17199fef3"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3"
     }
   } ]
 }

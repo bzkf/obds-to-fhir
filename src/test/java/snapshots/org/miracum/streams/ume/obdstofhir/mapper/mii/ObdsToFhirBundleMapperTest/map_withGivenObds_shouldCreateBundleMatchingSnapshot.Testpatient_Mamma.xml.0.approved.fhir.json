@@ -101,7 +101,12 @@
       "subject": {
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -3076,6 +3081,57 @@
     "request": {
       "method": "PUT",
       "url": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913"
+    }
+  }, {
+    "fullUrl": "List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233",
+    "resource": {
+      "resourceType": "List",
+      "id": "03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "60-601"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/418909882b59a6bf841cc3da0ddf3f8135cebb781550c46ca152df8490087711"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fb96424cc00fca5db9a5e15f38ff61b952e4b230886be11a5afe31cbc2e23991"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/5058b1e24ca8a1884aca9304d8ab5edab105962eeb78ddf50d3f70a6837afb65"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/06adf60a1153ebfe9b20c6e38bf07980e150a4e43573e9c8d61806520feafcfe"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fb2ce4e568f3271dc1fac362d82c11c717a7fae62670e23f993705474d8c6bc1"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233"
     }
   } ]
 }

@@ -82,6 +82,7 @@ public class FhirProperties {
     private String tnmMSymbolObservationId;
     private String tnmRSymbolObservationId;
     private String tnmYSymbolObservationId;
+    private String erstdiagnoseEvidenzListId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -215,6 +216,7 @@ public class FhirProperties {
     private String miiPrOnkoTnmSKategorie;
     private String miiPrOnkoTnmVKategorie;
     private String miiPrOnkoTnmYSymbol;
+    private String miiPrOnkoListeEvidenzErstdiagnose;
   }
 
   @Data

@@ -41,6 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       TNMMapper.class,
       GleasonScoreMapper.class,
       WeitereKlassifikationMapper.class,
+      ErstdiagnoseEvidenzListMapper.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties

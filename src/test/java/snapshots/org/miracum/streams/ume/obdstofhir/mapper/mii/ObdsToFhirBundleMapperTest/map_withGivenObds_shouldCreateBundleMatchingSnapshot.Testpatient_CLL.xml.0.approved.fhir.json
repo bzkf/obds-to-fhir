@@ -100,7 +100,12 @@
       "subject": {
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -731,6 +736,49 @@
     "request": {
       "method": "PUT",
       "url": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c"
+    }
+  }, {
+    "fullUrl": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc",
+    "resource": {
+      "resourceType": "List",
+      "id": "5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "30-301"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/139e56223545fedbb4911f0ddddf852d9fd3459bfc9132989724318b5cbc9f7a"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/7f1dfbb42c61b66028d7df0ea50ad1f9e863e9e6d2b98d70528fdbf77cb9bc55"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc"
     }
   } ]
 }
