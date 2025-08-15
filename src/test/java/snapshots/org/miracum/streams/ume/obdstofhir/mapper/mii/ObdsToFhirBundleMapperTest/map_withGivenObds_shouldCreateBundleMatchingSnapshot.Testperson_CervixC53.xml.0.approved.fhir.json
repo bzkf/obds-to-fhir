@@ -53,7 +53,8 @@
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
             "version": "31",
             "code": "8085/3"
-          } ]
+          } ],
+          "text": "Plattenepithelkarzinom, HPV-positiv"
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
@@ -646,50 +647,6 @@
     "request": {
       "method": "PUT",
       "url": "Specimen/e509ee1edc27e2c99041802e0912eb9de4f4eb4a7fa730237a90977a4617b3f1"
-    }
-  }, {
-    "fullUrl": "Observation/9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "291-ICDO3-8085/3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.80",
-          "code": "59847-4",
-          "display": "Histology and Behavior ICD-O-3 Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "focus": [ {
-        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
-      } ],
-      "effectiveDateTime": "2018-02-01",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "31",
-          "code": "8085/3"
-        } ],
-        "text": "Plattenepithelkarzinom, HPV-positiv"
-      },
-      "specimen": {
-        "reference": "Specimen/e509ee1edc27e2c99041802e0912eb9de4f4eb4a7fa730237a90977a4617b3f1"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/9c3e330b52109d91e5cfa83437f212ea78bfbc5be9c9ecd2581e57f5a4d9f705"
     }
   }, {
     "fullUrl": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f",

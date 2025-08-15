@@ -211,16 +211,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
             var specimenReference = createReferenceFromResource(specimen);
 
-            var verlaufsHistologie =
-                verlaufshistologieObservationMapper.map(
-                    histologie,
-                    meldung.getMeldungID(),
-                    patientReference,
-                    specimenReference,
-                    primaryConditionReference);
-
-            addToBundle(bundle, verlaufsHistologie);
-
             if (histologie.getGrading() != null) {
               var grading =
                   gradingObservationMapper.map(
