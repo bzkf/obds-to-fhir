@@ -85,7 +85,12 @@
       "subject": {
         "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
       },
-      "recordedDate": "2024-06-11"
+      "recordedDate": "2024-06-11",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -129,6 +134,33 @@
     "request": {
       "method": "PUT",
       "url": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11"
+    }
+  }, {
+    "fullUrl": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64",
+    "resource": {
+      "resourceType": "List",
+      "id": "f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "00001234-1"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64"
     }
   } ]
 }

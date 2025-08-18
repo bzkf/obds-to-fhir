@@ -1,9 +1,13 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
+import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
+import java.util.Collection;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -136,21 +140,49 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     condition.setCode(new CodeableConcept(icd));
 
-    if (tumorzuordnung.getMorphologieICDO() != null
-        && tumorzuordnung.getMorphologieICDO().getCode() != null) {
-      var morphologie = new CodeableConcept();
-      morphologie
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-          .setCode(tumorzuordnung.getMorphologieICDO().getCode())
-          .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+    if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
+      var distinctMorphologyCodes =
+          getDistinctMorphologies(meldung.getDiagnose().getHistologie().getMorphologieICDO());
 
-      condition.addExtension(
-          fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
-          morphologie);
+      if (distinctMorphologyCodes.size() > 1) {
+        LOG.warn(
+            "Diagnonse Histologie element contains more than one distinct ICD-O3 code: {}. "
+                + "Adding multiple extensions.",
+            distinctMorphologyCodes);
+      }
+
+      for (var morphologieCode : distinctMorphologyCodes) {
+        var morphologie = new CodeableConcept();
+        morphologie
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+            .setCode(morphologieCode.getCode())
+            .setVersion(morphologieCode.getVersion());
+
+        morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
+
+        condition.addExtension(
+            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
+            morphologie);
+      }
+    } else {
+      if (tumorzuordnung.getMorphologieICDO() != null
+          && tumorzuordnung.getMorphologieICDO().getCode() != null) {
+        var morphologie = new CodeableConcept();
+        morphologie
+            .addCoding()
+            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+            .setCode(tumorzuordnung.getMorphologieICDO().getCode())
+            .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+
+        condition.addExtension(
+            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
+            morphologie);
+      }
     }
 
-    // icd-o topography and diagnosis verification status are only available for Diagnosemeldungen.
+    // icd-o topography and diagnosis verification status are only available for
+    // Diagnosemeldungen.
     if (meldung.getDiagnose() != null) {
       var diagnoseMeldung = meldung.getDiagnose();
 
@@ -238,5 +270,34 @@ public class ConditionMapper extends ObdsToFhirMapper {
     return new Identifier()
         .setSystem(fhirProperties.getSystems().getConditionId())
         .setValue(patientId + "-" + tumorzuordnung.getTumorID());
+  }
+
+  private Collection<MorphologieICDOTyp> getDistinctMorphologies(
+      List<MorphologieICDOTyp> morphologies) {
+    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
+    for (var morph : morphologies) {
+      var code = morph.getCode();
+      var version = morph.getVersion();
+      if (!distinctCodes.containsKey(code)) {
+        distinctCodes.put(code, morph);
+      } else {
+        var existing = distinctCodes.get(code);
+        if (version.compareTo(existing.getVersion()) > 0) {
+          LOG.warn(
+              "Multiple Morphologie ICD-O with code {} found. Updating version {} over version {}.",
+              code,
+              version,
+              existing.getVersion());
+          distinctCodes.put(code, morph);
+        } else {
+          LOG.warn(
+              "Multiple Morphologie ICD-O with code {} found. Keeping largest version {} over version {}.",
+              code,
+              existing.getVersion(),
+              version);
+        }
+      }
+    }
+    return distinctCodes.values();
   }
 }

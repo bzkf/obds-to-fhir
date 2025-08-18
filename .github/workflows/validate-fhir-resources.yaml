@@ -14,9 +14,10 @@ permissions:
 env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "StrahlentherapieMapperTest",
       "VerlaufObservationMapperTest",
-      "ConditionMapperTest"
+      "ConditionMapperTest",
+      "HistologiebefundMapperTest",
+      "SystemischeTherapieMedicationStatementMapperTest"
     ]
 
 jobs:

@@ -31,7 +31,7 @@ public abstract class ObdsToFhirMapper {
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
 
-  protected static final Slugify slugifier = Slugify.builder().build();
+  protected static final Slugify slugifier = Slugify.builder().lowerCase(false).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
   @Value("${app.patient-id-pattern:[^0]\\d{8}}")

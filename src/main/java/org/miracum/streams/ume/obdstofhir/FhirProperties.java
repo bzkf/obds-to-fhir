@@ -17,15 +17,18 @@ public class FhirProperties {
   private Codings codings;
 
   public static record Codings(Coding loinc, Coding snomed, Coding ops) {
+    @Override
     public Coding loinc() {
       // return a fresh copy, otherwise the original instance will be modified
       return loinc.copy();
     }
 
+    @Override
     public Coding snomed() {
       return snomed.copy();
     }
 
+    @Override
     public Coding ops() {
       return ops.copy();
     }
@@ -79,6 +82,7 @@ public class FhirProperties {
     private String tnmMSymbolObservationId;
     private String tnmRSymbolObservationId;
     private String tnmYSymbolObservationId;
+    private String erstdiagnoseEvidenzListId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -130,7 +134,6 @@ public class FhirProperties {
     private String miiCsOnkoResidualstatus;
     private String miiCsTherapieGrundEnde;
     private String miiCsOnkoTodInterpretation;
-    private String miiCsOnkoTherapieEndeGrund;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
     private String atcBfarm;
@@ -178,6 +181,7 @@ public class FhirProperties {
     private String miiPrOnkoOperation;
     private String miiPrOnkoStrahlentherapie;
     private String miiPrOnkoSystemischeTherapie;
+    private String miiPrOnkoSystemischeTherapieMedikation;
     private String miiPrOnkoFernmetastasen;
     private String miiPrMedicationStatement;
     private String miiPrOnkoBefund;
@@ -212,6 +216,7 @@ public class FhirProperties {
     private String miiPrOnkoTnmSKategorie;
     private String miiPrOnkoTnmVKategorie;
     private String miiPrOnkoTnmYSymbol;
+    private String miiPrOnkoListeEvidenzErstdiagnose;
   }
 
   @Data

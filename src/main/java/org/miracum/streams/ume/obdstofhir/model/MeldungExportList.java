@@ -1,15 +1,15 @@
 package org.miracum.streams.ume.obdstofhir.model;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MeldungExportList implements Serializable {
 
-  LinkedList<MeldungExport> elements;
+  ArrayList<MeldungExport> elements;
 
   public MeldungExportList() {
-    elements = new LinkedList<>();
+    elements = new ArrayList<>();
   }
 
   public MeldungExportList addElement(MeldungExport element) {

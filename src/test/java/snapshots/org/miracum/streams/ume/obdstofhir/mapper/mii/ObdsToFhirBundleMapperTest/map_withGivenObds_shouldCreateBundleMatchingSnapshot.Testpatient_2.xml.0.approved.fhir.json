@@ -99,7 +99,12 @@
       "subject": {
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/6384c15ef79a9610a5b9f6f4b53e68292d378e87cc0454c2b30d77809e5d9641"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -333,7 +338,7 @@
       "resourceType": "MedicationStatement",
       "id": "e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -675,7 +680,8 @@
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
             "version": "32",
             "code": "9823/3"
-          } ]
+          } ],
+          "text": "Chronisch lymphatische Leukämie"
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
@@ -722,7 +728,12 @@
       "subject": {
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/68f894434b99e7de5b5769c52326baf79d0e07ab4ff8e7912e25a3689cffdb7d"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -920,6 +931,37 @@
       "url": "Observation/d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23"
     }
   }, {
+    "fullUrl": "List/6384c15ef79a9610a5b9f6f4b53e68292d378e87cc0454c2b30d77809e5d9641",
+    "resource": {
+      "resourceType": "List",
+      "id": "6384c15ef79a9610a5b9f6f4b53e68292d378e87cc0454c2b30d77809e5d9641",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "11-111"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/e058ce128aad62443a3b697b4ab50088b836ab2ee177fa3373c106280f1b5ec1"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/6384c15ef79a9610a5b9f6f4b53e68292d378e87cc0454c2b30d77809e5d9641"
+    }
+  }, {
     "fullUrl": "Observation/5347c26c0cc167b6526753f3b3ae1c5ab7c4378461f6af6bc1f4d51c13ca2243",
     "resource": {
       "resourceType": "Observation",
@@ -986,50 +1028,6 @@
       "url": "Specimen/bef68eef67edead2bae0f85848aaffd00b069f589f1fa4103cdec9486a287c30"
     }
   }, {
-    "fullUrl": "Observation/4ce3018e133178b8bec99e8765e88fc3cabc4171b64c4923b26233014dbebafc",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "4ce3018e133178b8bec99e8765e88fc3cabc4171b64c4923b26233014dbebafc",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "279-ICDO3-9823/3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.80",
-          "code": "59847-4",
-          "display": "Histology and Behavior ICD-O-3 Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
-      },
-      "focus": [ {
-        "reference": "Condition/c5d2b75ce5d91564e68d1b71010997f9488f59b10deacc46a6732e2d8db3e667"
-      } ],
-      "effectiveDateTime": "2017-05-05",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "32",
-          "code": "9823/3"
-        } ],
-        "text": "Chronisch lymphatische Leukämie"
-      },
-      "specimen": {
-        "reference": "Specimen/bef68eef67edead2bae0f85848aaffd00b069f589f1fa4103cdec9486a287c30"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/4ce3018e133178b8bec99e8765e88fc3cabc4171b64c4923b26233014dbebafc"
-    }
-  }, {
     "fullUrl": "Observation/e59101cb6b87710419efc824e3ebf7a1aaad7709114581f942bbb723bc62d0a0",
     "resource": {
       "resourceType": "Observation",
@@ -1083,16 +1081,16 @@
       "url": "Observation/e59101cb6b87710419efc824e3ebf7a1aaad7709114581f942bbb723bc62d0a0"
     }
   }, {
-    "fullUrl": "Observation/59f5aba03328245c1b7986b7550790fc582a8bbb710ea02fb3cabe62954f1385",
+    "fullUrl": "Observation/8191c00addbf6b67701f9cf7ae5c4568795a7ed1cc0b685a6b68e49b661724ca",
     "resource": {
       "resourceType": "Observation",
-      "id": "59f5aba03328245c1b7986b7550790fc582a8bbb710ea02fb3cabe62954f1385",
+      "id": "8191c00addbf6b67701f9cf7ae5c4568795a7ed1cc0b685a6b68e49b661724ca",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-        "value": "11_2_DI-2-binet"
+        "value": "11_2_DI-2-Binet-2017-05-05"
       } ],
       "status": "final",
       "code": {
@@ -1113,7 +1111,46 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/59f5aba03328245c1b7986b7550790fc582a8bbb710ea02fb3cabe62954f1385"
+      "url": "Observation/8191c00addbf6b67701f9cf7ae5c4568795a7ed1cc0b685a6b68e49b661724ca"
+    }
+  }, {
+    "fullUrl": "List/68f894434b99e7de5b5769c52326baf79d0e07ab4ff8e7912e25a3689cffdb7d",
+    "resource": {
+      "resourceType": "List",
+      "id": "68f894434b99e7de5b5769c52326baf79d0e07ab4ff8e7912e25a3689cffdb7d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "11-112"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/5347c26c0cc167b6526753f3b3ae1c5ab7c4378461f6af6bc1f4d51c13ca2243"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/bef68eef67edead2bae0f85848aaffd00b069f589f1fa4103cdec9486a287c30"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/e59101cb6b87710419efc824e3ebf7a1aaad7709114581f942bbb723bc62d0a0"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/8191c00addbf6b67701f9cf7ae5c4568795a7ed1cc0b685a6b68e49b661724ca"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/68f894434b99e7de5b5769c52326baf79d0e07ab4ff8e7912e25a3689cffdb7d"
     }
   } ]
 }

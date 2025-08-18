@@ -24,7 +24,12 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({
+    "Testpatient_1.xml",
+    "Testpatient_2.xml",
+    "Testpatient_3.xml",
+    "Testpatient_Duplicate_OPS_ICDO_Substanzen.xml"
+  })
   void map_withGivenObds_shouldCreateValidMedicationStatement(String sourceFile)
       throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
@@ -43,8 +48,6 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
             .get();
     var list = sut.map(systMeldung.getSYST(), patient, procedure);
 
-    assertThat(list).hasSize(1);
-
-    verify(list.get(0), sourceFile);
+    verifyAll(list, sourceFile);
   }
 }

@@ -43,6 +43,17 @@ public class TNMMapper extends ObdsToFhirMapper {
           "TNM_ID is unset. Defaulting to Meldung_ID as the identifier for the created Observations");
       idBase = meldungsId;
     }
+    switch (tnmType) {
+      case "clinical":
+        idBase += "-c";
+        break;
+      case "pathologic":
+        idBase += "-p";
+        break;
+      case "generic":
+      default:
+        break;
+    }
 
     var memberObservations =
         createObservations(tnm, idBase, patientReference, primaryConditionReference);
