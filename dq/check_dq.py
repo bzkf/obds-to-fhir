@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 import great_expectations as gx
-import pandas as pd
+# import pandas as pd
 from great_expectations.checkpoint import UpdateDataDocsAction
 from great_expectations.core.result_format import ResultFormat
 from loguru import logger
@@ -13,6 +13,7 @@ from pathling import PathlingContext
 from pyspark.sql.functions import col, concat, lit
 
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
+
 
 HERE = Path(os.path.abspath(os.path.dirname(__file__)))
 ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
@@ -25,27 +26,28 @@ MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
         + "fhir/ext/modul-onko/StructureDefinition/"
         + "mii-pr-onko-weitere-klassifikationen"
 )
-MIN_DATE = datetime(1999,1,1)
+MIN_DATE = datetime(1999, 1, 1)
 MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)
-
+checkpoint_path = (HERE / "dq/check_dq.py").as_posix()
 date_columns = [
     "date_of_birth",
     "deceased_date_time",
     "asserted_date"
 ]
 
-
-
 snapshots_dir = (
         HERE
         / "../src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/"
         / "mapper/mii/ObdsToFhirBundleMapperTest/"
 ).as_posix()
+pc.spark.sparkContext.setCheckpointDir(f"file:///{checkpoint_path}")
 
 data = pc.read.bundles(
     snapshots_dir, ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"]
 )
 
+
+data.read('Patient').cache()
 patients = data.extract(
     "Patient",
     columns=[
@@ -55,10 +57,10 @@ patients = data.extract(
         exp("deceasedDateTime", "deceased_date_time"),
     ],
 ).drop_duplicates()
-
+patients = patients.checkpoint(eager=True)
 patients.show(truncate=False)
 
-
+data.read('Condition').cache()
 conditions = data.extract(
     "Condition",
     columns=[
@@ -79,18 +81,17 @@ conditions = data.extract(
         exp("recordedDate", "recorded_date"),
     ],
 ).drop_duplicates()
-
-
+conditions = conditions.checkpoint(eager=True)
 # (full) outer join to retain null values if either side is missing
 patients_with_conditions = conditions.join(
     patients,
     conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
-    )
-
+)
 
 patients_with_conditions.show(truncate=False)
 
+data.read('Observation').cache()
 observations = data.extract(
     "Observation",
     columns=[
@@ -98,46 +99,43 @@ observations = data.extract(
         exp("subject.reference", "subject_reference"),
         exp("code.coding.system", "code_system"),
         exp("code.coding.code", "code_code"),
-        exp(
-            """
-                Observation.where(
-                    code.coding.exists(
-                        system='http://loinc.org' or
-                        system='http://snomed.info/sct')
-                ).valueCodeableConcept.coding.code
-            """,
+        exp("""Observation.where(
+                    code.coding.exists(system='http://loinc.org' or
+                        system='http://snomed.info/sct')).valueCodeableConcept.coding.code""",
             "value_codeable_concept_coding_code",
         ),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
     ],
 ).drop_duplicates()
-
+observations = observations.checkpoint(eager=True)
 patients_with_observations = observations.join(
     patients,
     observations["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
-    )
+)
 
 patients_with_observations.show(truncate=False)
 
 patients_with_observations.write.mode("overwrite").csv(
     "patients_with_observations.csv", header=True
 )
+
+data.read('Procedure').cache()
 procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp( f"code.coding.where(system='{OPS_SYSTEM}').system", "code_system,"),
-        exp( f"code.coding.where(system='{OPS_SYSTEM}').version", "code_system_version"),
-        exp( f"code.coding.where(system='{OPS_SYSTEM}').code", "code_code"),
+        exp(f"code.coding.where(system='{OPS_SYSTEM}').system", "code_system,"),
+        exp(f"code.coding.where(system='{OPS_SYSTEM}').version", "code_system_version"),
+        exp(f"code.coding.where(system='{OPS_SYSTEM}').code", "code_code"),
         exp("subject.reference", "subject_reference"),
         exp("performedDateTime", "performed_date_time"),
-        exp( "meta.profile", "meta_profile")
+        exp("meta.profile", "meta_profile")
     ]
 ).drop_duplicates()
 print(procedures.columns)
-
+procedures = procedures.checkpoint(eager=True)
 patients_with_procedures = procedures.join(
     patients,
     procedures["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
@@ -149,16 +147,19 @@ patients_with_procedures.write.mode("overwrite").csv(
     "patients_with_procedures.csv", header=True
 )
 
+data.read('MedicationStatement').cache()
 medicationStatements = data.extract(
-    "MedicationStatement",
-    columns=[
-        exp("id", "MedicationStatement_id"),
-        exp("subject.reference", "subject_reference"),
-        exp("effectiveperiod.start", "effectivePeriod_start"),
-        exp("effectivePeriod.end", "effectivePeriod_end"),
-        exp( "meta.profile", "meta_profile")
-    ]
-).drop_duplicates()
+     "MedicationStatement",
+     columns=[
+         exp("id", "MedicationStatement_id"),
+
+         exp("subject.reference", "subject_reference"),
+         exp("effectivePeriod.start", "effectivePeriod_start"),
+         exp("effectivePeriod.end", "effectivePeriod_end"),
+         exp( "meta.profile", "meta_profile")
+     ]
+ ).drop_duplicates()
+medicationStatements = medicationStatements.checkpoint(eager=True)
 print(medicationStatements.columns)
 
 patients_with_medications = medicationStatements.join(
@@ -207,22 +208,22 @@ def create_checkpoint(gx_context, name, validation_definitions, action_list):
 # Define expectations for each dataset
 expectations_conditions = [
     # Birth date validations
- #   gx.expectations.ExpectColumnValuesToBeBetween(
-  #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-  #  ),
+    #   gx.expectations.ExpectColumnValuesToBeBetween(
+    #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
+   #   ),
     # Deceased date validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
         column_B="date_of_birth",
         ignore_row_if="either_value_is_missing",
     ),
-  #  gx.expectations.ExpectColumnValuesToBeBetween(
-   #     column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-    #),
+      gx.expectations.ExpectColumnValuesToBeBetween(
+         column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+     ),
     # asserted datetime validations
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
-    ),
+  #  gx.expectations.ExpectColumnValuesToBeBetween(
+  #      column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
+  #  ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="asserted_date",
         column_B="date_of_birth",
@@ -255,13 +256,21 @@ expectations_conditions = [
         or_equal=True,
         description="Check if diagnosis recorded date is on or after the date of birth",
     ),
+    gx.expectations.ExpectColumnValuesToBeInSet(
+        column="gender",
+        value_set=["male"],
+        condition_parser="great_expectations",
+        row_condition='col("icd_code").notnull() and col("condition_icd_code").rlike("^C61")'
+    )
 ]
 
 expectations_observations = [
     # Birth date validations
-#    gx.expectations.ExpectColumnValuesToBeBetween(
- #       column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-  #  ),
+       # gx.expectations.ExpectColumnValuesToBeBetween(
+     #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
+  #    ),
+
+    #TODO prüfen: machen wenig Sinn code System und meta Profil
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
@@ -291,11 +300,9 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-#    gx.expectations.ExpectColumnValuesToBeBetween(
- #       column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-  #  ),
-
-
+      #  gx.expectations.ExpectColumnValuesToBeBetween(
+       #    column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+     # ),
 ]
 
 expectations_procedure = [
@@ -317,35 +324,40 @@ expectations_procedure = [
         or_equal=True,
     ),
 
-    gx.expectations.ExpectColumnValuesToNotMatchRegex( ## bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
+    gx.expectations.ExpectColumnValuesToNotMatchRegex(
+        # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
         column="code_code",
         regex=r"^5-6[5-9]|^5-7[0-1]",
         condition_parser="great_expectations",
-        row_condition= 'col("gender") == "male" and '
-        #'col("icd_code") == "C61"'
-    )
- #   gx.expectations.ExpectColumnValuesToBeBetween(
-  #      column="performed_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-   # ),
+        row_condition='col("gender") == "male" and col("code_code").notnull()"'
+    ),
+    gx.expectations.ExpectColumnValuesToNotMatchRegex(  ## bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
+        column="op_code",
+        regex=r"^5-6[0-4]",
+        condition_parser="great_expectations",
+        row_condition='col("gender") == "female" and col("code_code").notnull()" '
+    ),
+       gx.expectations.ExpectColumnValuesToBeBetween(
+          column="performed_date_time", min_value=MIN_DATE, max_value=MAX_DATE
+     ),
 ]
 
-# expectations_medicationStatements = [
-#     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-#         column_A="effectivePeriod_end", column_B="effectivePeriod_start",
-#         ignore_row_if="either_value_is_missing",
-#         #parse_strings_as_datetimes=True
-#         #ignore_row_if="both_values_are_equal" # wont work 2
-#     ),
-#     gx.expectations.ExpectColumnValuesToBeBetween(
-#         column="effectivePeriod_start", min_value=MIN_DATE, max_value=MAX_DATE,
-#         # parse_strings_as_datetimes=True
-#     ),
-#
-#     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-#         column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
-#         # parse_strings_as_datetimes=True
-#     )
-#]
+expectations_medicationStatements = [
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="effectivePeriod_end", column_B="effectivePeriod_start",
+        ignore_row_if="either_value_is_missing",
+        #parse_strings_as_datetimes=True
+        #ignore_row_if="both_values_are_equal" # wont work 2
+    ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effectivePeriod_start", min_value=MIN_DATE, max_value=MAX_DATE,
+        # parse_strings_as_datetimes=True
+    ),
+     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
+         # parse_strings_as_datetimes=True
+     )
+ ]
 
 # Create expectation suites
 suite_conditions = create_expectations_and_suite(
@@ -369,8 +381,6 @@ data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
 data_asset_observations = data_source.add_dataframe_asset(name="patients_and_observations")
 data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
 data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
-
-
 
 # Add the Batch Definition and Validation Definitions
 validation_definition_conditions = create_validation_definition(
@@ -471,7 +481,6 @@ logger.info(validation_results_conditions.describe())
 if not validation_results_conditions.success:
     logger.error("Validation run failed!")
 
-
 validation_results_observations = checkpoint_observations.run(
     batch_parameters={"dataframe": patients_with_observations}
 )
@@ -483,8 +492,8 @@ if not validation_results_observations.success:
     sys.exit(1)
 
 validation_results_procedure = checkpoint_procedure.run(
-        batch_parameters={"dataframe": patients_with_procedures}
-    )
+    batch_parameters={"dataframe": patients_with_procedures}
+)
 
 logger.info(validation_results_procedure.describe())
 
@@ -495,7 +504,6 @@ if not validation_results_procedure.success:
 validation_results_medicationStatement = checkpoint_medicationStatement.run(
         batch_parameters={"dataframe": patients_with_medications}
     )
-
 logger.info(validation_results_medicationStatement.describe())
 
 if not validation_results_medicationStatement.success:

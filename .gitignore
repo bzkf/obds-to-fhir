@@ -72,3 +72,5 @@ src/generated/
 .approval_tests_temp
 
 gx/**/*.json
+
+spark_checkpoints/
