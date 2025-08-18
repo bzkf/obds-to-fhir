@@ -1,11 +1,11 @@
 {
   "data": {
     "asset": {
-      "id": "4af3f4e9-de14-427c-909b-adc45037d51b",
+      "id": "30c59c41-444d-4302-8afa-894c2498f593",
       "name": "patients_and_procedures"
     },
     "batch_definition": {
-      "id": "0c9b034b-7444-47c2-bb07-2231b7199b77",
+      "id": "5a355c84-5143-4b0a-b786-b94c5d7f9821",
       "name": "patients_and_procedure_all_rows"
     },
     "datasource": {
@@ -16,7 +16,7 @@
   "id": "9acd9b00-a8bf-4a62-b217-136fb17ac162",
   "name": "validate_procedure",
   "suite": {
-    "id": "9a09bf07-d1c8-4000-a3af-be2d347637b9",
+    "id": "d9a60ccd-ee2a-462c-8031-4c617cdfc66f",
     "name": "patients_with_procedure_suite"
   }
 }

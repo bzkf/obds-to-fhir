@@ -1,8 +1,5 @@
-import os
 import sys
-from datetime import datetime
-from pathlib import Path
-
+import config
 import great_expectations as gx
 # import pandas as pd
 from great_expectations.checkpoint import UpdateDataDocsAction
@@ -11,39 +8,20 @@ from loguru import logger
 from pathling import Expression as exp
 from pathling import PathlingContext
 from pyspark.sql.functions import col, concat, lit
+import expectations
 
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
-
-HERE = Path(os.path.abspath(os.path.dirname(__file__)))
-ICD_10_GM_SYSTEM = "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
-OPS_SYSTEM = "http://fhir.de/CodeSystem/bfarm/ops"
-ASSERTED_DATE_EXTENSION = (
-    "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
-)
-MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
-        "https://www.medizininformatik-initiative.de/"
-        + "fhir/ext/modul-onko/StructureDefinition/"
-        + "mii-pr-onko-weitere-klassifikationen"
-)
-MIN_DATE = datetime(1999, 1, 1)
-MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)
-checkpoint_path = (HERE / "dq/check_dq.py").as_posix()
 date_columns = [
     "date_of_birth",
     "deceased_date_time",
     "asserted_date"
 ]
 
-snapshots_dir = (
-        HERE
-        / "../src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/"
-        / "mapper/mii/ObdsToFhirBundleMapperTest/"
-).as_posix()
-pc.spark.sparkContext.setCheckpointDir(f"file:///{checkpoint_path}")
+pc.spark.sparkContext.setCheckpointDir(f"file:///{config.checkpoint_path}")
 
 data = pc.read.bundles(
-    snapshots_dir, ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"]
+    config.snapshots_dir, ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"]
 )
 
 
@@ -66,16 +44,16 @@ conditions = data.extract(
     columns=[
         exp("id", "condition_id"),
         exp(
-            f"code.coding.where(system='{ICD_10_GM_SYSTEM}').code",
+            f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').code",
             "icd_code",
         ),
         exp(
-            f"code.coding.where(system='{ICD_10_GM_SYSTEM}').version",
+            f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').version",
             "icd_version",
         ),
         exp("subject.reference", "subject_reference"),
         exp(
-            f"extension('{ASSERTED_DATE_EXTENSION}').valueDateTime",
+            f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime",
             "asserted_date",
         ),
         exp("recordedDate", "recorded_date"),
@@ -126,9 +104,9 @@ procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp(f"code.coding.where(system='{OPS_SYSTEM}').system", "code_system,"),
-        exp(f"code.coding.where(system='{OPS_SYSTEM}').version", "code_system_version"),
-        exp(f"code.coding.where(system='{OPS_SYSTEM}').code", "code_code"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "code_system,"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "code_system_version"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "code_code"),
         exp("subject.reference", "subject_reference"),
         exp("performedDateTime", "performed_date_time"),
         exp("meta.profile", "meta_profile")
@@ -205,174 +183,20 @@ def create_checkpoint(gx_context, name, validation_definitions, action_list):
     )
 
 
-# Define expectations for each dataset
-expectations_conditions = [
-    # Birth date validations
-    #   gx.expectations.ExpectColumnValuesToBeBetween(
-    #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-   #   ),
-    # Deceased date validations
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="deceased_date_time",
-        column_B="date_of_birth",
-        ignore_row_if="either_value_is_missing",
-    ),
-      gx.expectations.ExpectColumnValuesToBeBetween(
-         column="deceased_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-     ),
-    # asserted datetime validations
-  #  gx.expectations.ExpectColumnValuesToBeBetween(
-  #      column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
-  #  ),
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="asserted_date",
-        column_B="date_of_birth",
-        or_equal=True,
-        description="Check if diagnosis asserted date is on or after the date of birth",
-    ),
-    # Gender expectation with condition code
-    gx.expectations.ExpectColumnValuesToBeInSet(
-        column="gender",
-        value_set=["male"],
-        condition_parser="great_expectations",
-        row_condition='col("icd_code") == "C61"',
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="condition_id",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="icd_version", description="Check if ICD version is always provided"
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="icd_code",
-        description="Check if ICD code is always provided.",
-    ),
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="recorded_date",
-        column_B="date_of_birth",
-        or_equal=True,
-        description="Check if diagnosis recorded date is on or after the date of birth",
-    ),
-    gx.expectations.ExpectColumnValuesToBeInSet(
-        column="gender",
-        value_set=["male"],
-        condition_parser="great_expectations",
-        row_condition='col("icd_code").notnull() and col("condition_icd_code").rlike("^C61")'
-    )
-]
-
-expectations_observations = [
-    # Birth date validations
-       # gx.expectations.ExpectColumnValuesToBeBetween(
-     #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-  #    ),
-
-    #TODO prüfen: machen wenig Sinn code System und meta Profil
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="code_system",
-        condition_parser="great_expectations",
-        row_condition='col("meta_profile") != '
-                      + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="code_code",
-        condition_parser="great_expectations",
-        row_condition='col("meta_profile") != '
-                      + f'"{MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="observation_id",
-    ),
-    # EffectiveDateTime validations
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effective_date_time",
-        column_B="date_of_birth",
-        or_equal=True,
-    ),
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="deceased_date_time",
-        column_B="effective_date_time",
-        or_equal=True,
-    ),
-      #  gx.expectations.ExpectColumnValuesToBeBetween(
-       #    column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-     # ),
-]
-
-expectations_procedure = [
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
-    ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="procedure_id",
-    ),
-    # EffectiveDateTime validations
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="performed_date_time",
-        column_B="date_of_birth",
-        or_equal=True,
-    ),
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="deceased_date_time",
-        column_B="performed_date_time",
-        or_equal=True,
-    ),
-
-    gx.expectations.ExpectColumnValuesToNotMatchRegex(
-        # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
-        column="code_code",
-        regex=r"^5-6[5-9]|^5-7[0-1]",
-        condition_parser="great_expectations",
-        row_condition='col("gender") == "male" and col("code_code").notnull()"'
-    ),
-    gx.expectations.ExpectColumnValuesToNotMatchRegex(  ## bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
-        column="op_code",
-        regex=r"^5-6[0-4]",
-        condition_parser="great_expectations",
-        row_condition='col("gender") == "female" and col("code_code").notnull()" '
-    ),
-       gx.expectations.ExpectColumnValuesToBeBetween(
-          column="performed_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-     ),
-]
-
-expectations_medicationStatements = [
-    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_end", column_B="effectivePeriod_start",
-        ignore_row_if="either_value_is_missing",
-        #parse_strings_as_datetimes=True
-        #ignore_row_if="both_values_are_equal" # wont work 2
-    ),
-    gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effectivePeriod_start", min_value=MIN_DATE, max_value=MAX_DATE,
-        # parse_strings_as_datetimes=True
-    ),
-     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
-         # parse_strings_as_datetimes=True
-     )
- ]
-
 # Create expectation suites
 suite_conditions = create_expectations_and_suite(
-    expectations_conditions, "patients_with_conditions_suite", gx_context
+    expectations.expectations_conditions, "patients_with_conditions_suite", gx_context
 )
 suite_observations = create_expectations_and_suite(
-    expectations_observations, "patients_with_observations_suite", gx_context
+    expectations.expectations_observations, "patients_with_observations_suite", gx_context
 )
 
 suite_procedure = create_expectations_and_suite(
-    expectations_procedure, "patients_with_procedure_suite", gx_context
+    expectations.expectations_procedure, "patients_with_procedure_suite", gx_context
 )
 
 suite_medicationStatements = create_expectations_and_suite(
-    expectations_medicationStatements, "patients_with_MedicationStatement_suite", gx_context
+    expectations.expectations_medicationStatements, "patients_with_MedicationStatement_suite", gx_context
 )
 
 data_source_name = "snapshot_bundles"
