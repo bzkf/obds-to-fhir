@@ -151,6 +151,9 @@ patients_with_medications.write.mode("overwrite").csv(
     "patients_with_medications.csv", header=True
 )
 
+df_merged = patients_with_conditions.merge(patients_with_procedures, on="subject_reference", how="left")
+df_merged.show(truncate=False)
+
 gx_context = gx.get_context(mode="file")
 
 

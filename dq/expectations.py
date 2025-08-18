@@ -249,3 +249,13 @@ expectations_medicationStatements = [
     )
 ]
 
+#has_50 change into merge procedures and conditions -->
+expectations_custom = [
+    gx.expectations.ExpectColumnValuesToNotMatchRegex(
+        column="code_code",
+        regex=r"^5-8[7-8]",
+        row_condition='col("gender") == "male" and has_c50 == False and col("code_code").notnull()',
+        condition_parser="great_expectations"
+    )
+]
+
