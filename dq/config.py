@@ -13,7 +13,7 @@ MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
         + "fhir/ext/modul-onko/StructureDefinition/"
         + "mii-pr-onko-weitere-klassifikationen"
 )
-MIN_DATE = datetime(1999, 1, 1)
+MIN_DATE = datetime(1900, 1, 1)
 MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)
 checkpoint_path = (HERE / "dq/check_dq.py").as_posix()
 date_columns = [

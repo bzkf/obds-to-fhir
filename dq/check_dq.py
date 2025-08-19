@@ -104,9 +104,9 @@ procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "code_system,"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "code_system_version"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "code_code"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system,"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "ops_version"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "ops_code"),
         exp("subject.reference", "subject_reference"),
         exp("performedDateTime", "performed_date_time"),
         exp("meta.profile", "meta_profile")
@@ -151,8 +151,15 @@ patients_with_medications.write.mode("overwrite").csv(
     "patients_with_medications.csv", header=True
 )
 
-df_merged = patients_with_conditions.merge(patients_with_procedures, on="subject_reference", how="left")
-df_merged.show(truncate=False)
+patients_with_procedures_selected = patients_with_procedures.select(
+    "subject_reference", "ops_code"
+)
+patients_with_condition_procedure = patients_with_conditions.join(patients_with_procedures_selected, on="subject_reference", how="left")
+patients_with_condition_procedure.show(truncate=False)
+
+patients_with_condition_procedure.write.mode("overwrite").csv(
+    "patients_with_condition_procedure.csv", header=True
+)
 
 gx_context = gx.get_context(mode="file")
 
@@ -202,12 +209,17 @@ suite_medicationStatements = create_expectations_and_suite(
     expectations.expectations_medicationStatements, "patients_with_MedicationStatement_suite", gx_context
 )
 
+suite_custom = create_expectations_and_suite(
+    expectations.expectations_custom, "patients_with_condition_procedure_suite", gx_context
+)
+
 data_source_name = "snapshot_bundles"
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
 data_asset_observations = data_source.add_dataframe_asset(name="patients_and_observations")
 data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
 data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
+data_asset_condition_procedure = data_source.add_dataframe_asset(name="patients_and_condtition_procedure")
 
 # Add the Batch Definition and Validation Definitions
 validation_definition_conditions = create_validation_definition(
@@ -238,6 +250,14 @@ validation_definition_medicationStatement = create_validation_definition(
     suite_medicationStatements,
     "validate_medicationStatements",
     "patients_and_medicationStatements_all_rows",
+)
+
+validation_definition_condition_procedure = create_validation_definition(
+    gx_context,
+    data_asset_condition_procedure,
+    suite_custom,
+    "validate_condition_procedure",
+    "patients_and_condition_procedure_all_rows",
 )
 # Actions for checkpoints
 action_list = [
@@ -272,6 +292,16 @@ checkpoint_medicationStatement = create_checkpoint(
     [validation_definition_medicationStatement],
     action_list,
 )
+
+
+checkpoint_condition_procedure = create_checkpoint(
+    gx_context,
+    "validate_condition_procedure_checkpoint",
+    [validation_definition_condition_procedure],
+    action_list,
+)
+
+
 # Add Data Docs Site
 site_name = "obds_to_fhir_data_docs_site"
 base_directory = "uncommitted/data_docs/local_site/"
@@ -336,3 +366,14 @@ logger.info(validation_results_medicationStatement.describe())
 if not validation_results_medicationStatement.success:
     logger.error("Validation run failed!")
     sys.exit(1)
+    
+validation_results_condition_procedure = checkpoint_condition_procedure.run(
+        batch_parameters={"dataframe": patients_with_condition_procedure}
+    )
+
+logger.info(validation_results_condition_procedure.describe())
+
+if not validation_results_condition_procedure.success:
+    logger.error("Validation run failed!")
+    sys.exit(1)
+

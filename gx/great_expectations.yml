@@ -93,19 +93,43 @@ fluent_datasources:
     assets:
       patients_and_conditions:
         type: dataframe
-        id: 174a3d34-ee78-48af-a790-48ed8f1b2c73
+        id: 24897aa2-2e07-436f-9c35-ec4f01f2821f
         batch_metadata: {}
         batch_definitions:
           patients_and_conditions_all_rows:
-            id: a219d600-962d-46d8-a020-85320f595fc4
+            id: a731a4ed-af22-4687-be41-1be78bed329e
             partitioner:
       patients_and_observations:
         type: dataframe
-        id: 45e94e09-3ba3-4724-8019-8f3515736a23
+        id: 3ed718ea-3998-43a3-a6ac-4ebffb36c2b8
         batch_metadata: {}
         batch_definitions:
           patients_and_observations_all_rows:
-            id: 863827e0-116a-4614-b82e-1ea32fdfa581
+            id: 3ad658a5-4ba5-4cf7-a65c-ad9ac5480233
+            partitioner:
+      patients_and_procedures:
+        type: dataframe
+        id: b2ccbd26-7f56-43aa-b3ec-ce406509e2e2
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_procedure_all_rows:
+            id: 4a5415ea-0f68-401b-b2e2-fe8d0af79510
+            partitioner:
+      patients_and_MedicationStatements:
+        type: dataframe
+        id: bc5f5097-d0cc-44c5-aecd-bd39c24a4e98
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_medicationStatements_all_rows:
+            id: 6101bac2-dbe2-4dd2-ac5c-006ae8506181
+            partitioner:
+      patients_and_condtition_procedure:
+        type: dataframe
+        id: 1bd1420b-4a16-41dc-b0f4-28cf6d522c49
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_condition_procedure_all_rows:
+            id: df3f8585-cf29-4ca5-b855-05145bfd2d0a
             partitioner:
 analytics_enabled:
 data_context_id: edac9bf7-2d5a-443d-a47c-950d580e39c1

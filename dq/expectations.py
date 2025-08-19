@@ -3,9 +3,9 @@ import config
 
 expectations_conditions = [
     # Birth date validations
-    #   gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-    #   ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+    ),
     # Deceased date validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
@@ -16,9 +16,9 @@ expectations_conditions = [
         column="deceased_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
     ),
     # asserted datetime validations
-    #  gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #      column="asserted_date", min_value=MIN_DATE, max_value=MAX_DATE
-    #  ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="asserted_date", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+    ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="asserted_date",
         column_B="date_of_birth",
@@ -61,11 +61,11 @@ expectations_conditions = [
 
 expectations_observations = [
     # Birth date validations
-    # gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-    #    ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+    ),
 
-    #TODO prüfen: machen wenig Sinn code System und meta Profil
+    #TODO prüfen: warum als Row-Codition meta-profil
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
@@ -95,9 +95,9 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-    #  gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #    column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-    # ),
+      gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effective_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+     ),
 ]
 
 expectations_procedure = [
@@ -156,11 +156,11 @@ expectations_medicationStatements = [
 
 expectations_observations = [
     # Birth date validations
-    # gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #      column="date_of_birth", min_value=MIN_DATE, max_value=MAX_DATE
-    #    ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+    ),
 
-    #TODO prüfen: machen wenig Sinn code System und meta Profil
+    #TODO prüfen: warum als Row-Condition meta Profil
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
@@ -190,9 +190,9 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-    #  gx.expectations.py.ExpectColumnValuesToBeBetween(
-    #    column="effective_date_time", min_value=MIN_DATE, max_value=MAX_DATE
-    # ),
+      gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effective_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+     ),
 ]
 
 expectations_procedure = [
@@ -216,16 +216,16 @@ expectations_procedure = [
 
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
-        column="code_code",
+        column="ops_code",
         regex=r"^5-6[5-9]|^5-7[0-1]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "male" and col("code_code").notnull()"'
+        row_condition='col("gender") == "male" and col("ops_code").notnull()"'
     ),
     gx.expectations.ExpectColumnValuesToNotMatchRegex(  ## bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
-        column="code_code",
+        column="ops_code",
         regex=r"^5-6[0-4]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "female" and col("code_code").notnull()" '
+        row_condition='col("gender") == "female" and col("ops_code").notnull()" '
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="performed_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
@@ -252,9 +252,9 @@ expectations_medicationStatements = [
 #has_50 change into merge procedures and conditions -->
 expectations_custom = [
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
-        column="code_code",
+        column="ops_code",
         regex=r"^5-8[7-8]",
-        row_condition='col("gender") == "male" and has_c50 == False and col("code_code").notnull()',
+        row_condition='col("gender") == "male" and col("icd_code") != "C50.9" and col("ops_code").notnull()',
         condition_parser="great_expectations"
     )
 ]
