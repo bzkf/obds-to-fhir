@@ -8,6 +8,7 @@ OPS_SYSTEM = "http://fhir.de/CodeSystem/bfarm/ops"
 ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
 )
+FERNMETASTASE = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen"
 MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
         "https://www.medizininformatik-initiative.de/"
         + "fhir/ext/modul-onko/StructureDefinition/"

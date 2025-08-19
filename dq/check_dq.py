@@ -84,6 +84,7 @@ observations = data.extract(
         ),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
+        #exp("bodySite.code", )
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
@@ -93,11 +94,15 @@ patients_with_observations = observations.join(
     how="outer",
 )
 
+
+
 patients_with_observations.show(truncate=False)
 
 patients_with_observations.write.mode("overwrite").csv(
     "patients_with_observations.csv", header=True
 )
+
+patients_with_fernmetastasen = patients_with_observations.filter(col("meta_profile") == config.FERNMETASTASE)
 
 data.read('Procedure').cache()
 procedures = data.extract(
@@ -163,7 +168,6 @@ patients_with_condition_procedure.write.mode("overwrite").csv(
 
 gx_context = gx.get_context(mode="file")
 
-
 def create_expectations_and_suite(expectations, suite_name, gx_context):
     suite = gx.ExpectationSuite(name=suite_name)
     for expectation in expectations:
@@ -192,27 +196,6 @@ def create_checkpoint(gx_context, name, validation_definitions, action_list):
         )
     )
 
-
-# Create expectation suites
-suite_conditions = create_expectations_and_suite(
-    expectations.expectations_conditions, "patients_with_conditions_suite", gx_context
-)
-suite_observations = create_expectations_and_suite(
-    expectations.expectations_observations, "patients_with_observations_suite", gx_context
-)
-
-suite_procedure = create_expectations_and_suite(
-    expectations.expectations_procedure, "patients_with_procedure_suite", gx_context
-)
-
-suite_medicationStatements = create_expectations_and_suite(
-    expectations.expectations_medicationStatements, "patients_with_MedicationStatement_suite", gx_context
-)
-
-suite_custom = create_expectations_and_suite(
-    expectations.expectations_custom, "patients_with_condition_procedure_suite", gx_context
-)
-
 data_source_name = "snapshot_bundles"
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
@@ -221,86 +204,79 @@ data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_proced
 data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
 data_asset_condition_procedure = data_source.add_dataframe_asset(name="patients_and_condtition_procedure")
 
-# Add the Batch Definition and Validation Definitions
-validation_definition_conditions = create_validation_definition(
+validation_targets = [
+    {
+   "name": "conditions",
+        "dataframe": patients_with_conditions,
+        "data_asset": data_asset,
+        "expectations": expectations.expectations_conditions,
+    },
+    {
+        "name": "observations",
+        "dataframe": patients_with_observations,
+        "data_asset": data_asset_observations,
+        "expectations": expectations.expectations_observations,
+    },
+    {
+        "name": "procedure",
+        "dataframe": patients_with_procedures,
+        "data_asset": data_asset_procedure,
+        "expectations": expectations.expectations_procedure,
+    },
+    {
+        "name": "medicationStatements",
+        "dataframe": patients_with_medications,
+        "data_asset": data_asset_medicationStatements,
+        "expectations": expectations.expectations_medicationStatements,
+    },
+    {
+        "name": "condition_procedure",
+        "dataframe": patients_with_condition_procedure,
+        "data_asset": data_asset_condition_procedure,
+        "expectations": expectations.expectations_custom,
+    }
+]
+
+
+
+def validate_dataframe(gx_context, target):
+    suite_name= f"{target['name']}_suite"
+    data_asset = target['data_asset']
+    name = f"validate_{target['name']}"
+    batch_name = f"patients_and_{target['name']}_all_rows"
+    #create Suite
+    suite = create_expectations_and_suite(target["expectations"], suite_name, gx_context)
+    
+    #validation_definition
+    validation_definition = create_validation_definition(
     gx_context,
     data_asset,
-    suite_conditions,
-    "validate_conditions",
-    "patients_and_conditions_all_rows",
-)
-validation_definition_observations = create_validation_definition(
+    suite,
+    name,
+    batch_name
+    )
+    
+    #Checkpoints
+    checkpoint = create_checkpoint(
     gx_context,
-    data_asset_observations,
-    suite_observations,
-    "validate_observations",
-    "patients_and_observations_all_rows",
-)
-validation_definition_procedure = create_validation_definition(
-    gx_context,
-    data_asset_procedure,
-    suite_procedure,
-    "validate_procedure",
-    "patients_and_procedure_all_rows",
-)
+    f"validate_{target['name']}_checkpoint",
+    [validation_definition],
+    action_list
+    )
+    #Run
+    validation_results = checkpoint.run(
+    batch_parameters={"dataframe": target["dataframe"]}
+    ) 
+    logger.info(validation_results.describe())
+    if not validation_results.success:
+     logger.error("Validation run failed!")
 
-validation_definition_medicationStatement = create_validation_definition(
-    gx_context,
-    data_asset_medicationStatements,
-    suite_medicationStatements,
-    "validate_medicationStatements",
-    "patients_and_medicationStatements_all_rows",
-)
-
-validation_definition_condition_procedure = create_validation_definition(
-    gx_context,
-    data_asset_condition_procedure,
-    suite_custom,
-    "validate_condition_procedure",
-    "patients_and_condition_procedure_all_rows",
-)
 # Actions for checkpoints
 action_list = [
     UpdateDataDocsAction(
         name="update_all_data_docs",
     ),
 ]
-
-# Create checkpoints
-checkpoint_conditions = create_checkpoint(
-    gx_context,
-    "validate_conditions_checkpoint",
-    [validation_definition_conditions],
-    action_list,
-)
-checkpoint_observations = create_checkpoint(
-    gx_context,
-    "validate_observations_checkpoint",
-    [validation_definition_observations],
-    action_list,
-)
-checkpoint_procedure = create_checkpoint(
-    gx_context,
-    "validate_procedure_checkpoint",
-    [validation_definition_procedure],
-    action_list,
-)
-
-checkpoint_medicationStatement = create_checkpoint(
-    gx_context,
-    "validate_medicationStatements_checkpoint",
-    [validation_definition_medicationStatement],
-    action_list,
-)
-
-
-checkpoint_condition_procedure = create_checkpoint(
-    gx_context,
-    "validate_condition_procedure_checkpoint",
-    [validation_definition_condition_procedure],
-    action_list,
-)
-
 
 # Add Data Docs Site
 site_name = "obds_to_fhir_data_docs_site"
@@ -328,52 +304,5 @@ site_config = {
 # Build the Data Docs
 gx_context.build_data_docs(site_names=[site_name])
 
-# Run the Checkpoints
-validation_results_conditions = checkpoint_conditions.run(
-    batch_parameters={"dataframe": patients_with_conditions}
-)
-
-logger.info(validation_results_conditions.describe())
-
-if not validation_results_conditions.success:
-    logger.error("Validation run failed!")
-
-validation_results_observations = checkpoint_observations.run(
-    batch_parameters={"dataframe": patients_with_observations}
-)
-
-logger.info(validation_results_observations.describe())
-
-if not validation_results_observations.success:
-    logger.error("Validation run failed!")
-    sys.exit(1)
-
-validation_results_procedure = checkpoint_procedure.run(
-    batch_parameters={"dataframe": patients_with_procedures}
-)
-
-logger.info(validation_results_procedure.describe())
-
-if not validation_results_procedure.success:
-    logger.error("Validation run failed!")
-    sys.exit(1)
-
-validation_results_medicationStatement = checkpoint_medicationStatement.run(
-        batch_parameters={"dataframe": patients_with_medications}
-    )
-logger.info(validation_results_medicationStatement.describe())
-
-if not validation_results_medicationStatement.success:
-    logger.error("Validation run failed!")
-    sys.exit(1)
-    
-validation_results_condition_procedure = checkpoint_condition_procedure.run(
-        batch_parameters={"dataframe": patients_with_condition_procedure}
-    )
-
-logger.info(validation_results_condition_procedure.describe())
-
-if not validation_results_condition_procedure.success:
-    logger.error("Validation run failed!")
-    sys.exit(1)
-
+for target in validation_targets:
+    validate_dataframe(gx_context, target)

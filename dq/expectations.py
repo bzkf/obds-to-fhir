@@ -256,6 +256,10 @@ expectations_custom = [
         regex=r"^5-8[7-8]",
         row_condition='col("gender") == "male" and col("icd_code") != "C50.9" and col("ops_code").notnull()',
         condition_parser="great_expectations"
+    ),
+    gx.expectations.ExpectCompoundColumnsToBeUnique(
+        column_list=["patient_id", "fern_date", "body_site_code"],
+        ignore_row_if="any_value_is_missing"
     )
 ]
 
