@@ -1,4 +1,3 @@
-import sys
 import config
 import great_expectations as gx
 # import pandas as pd
@@ -9,6 +8,8 @@ from pathling import Expression as exp
 from pathling import PathlingContext
 from pyspark.sql.functions import col, concat, lit
 import expectations
+
+import sys
 
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
@@ -84,7 +85,7 @@ observations = data.extract(
         ),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
-        #exp("bodySite.code", )
+        exp("bodySite.coding.code", "bodySite_code" )
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
@@ -103,6 +104,10 @@ patients_with_observations.write.mode("overwrite").csv(
 )
 
 patients_with_fernmetastasen = patients_with_observations.filter(col("meta_profile") == config.FERNMETASTASE)
+patients_with_fernmetastasen.show(truncate=False)
+patients_with_fernmetastasen.write.mode("overwrite").csv(
+    "patients_with_fernmetastasen.csv", header=True
+)
 
 data.read('Procedure').cache()
 procedures = data.extract(
@@ -203,6 +208,7 @@ data_asset_observations = data_source.add_dataframe_asset(name="patients_and_obs
 data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
 data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
 data_asset_condition_procedure = data_source.add_dataframe_asset(name="patients_and_condtition_procedure")
+data_asset_fernmetastasen = data_source.add_dataframe_asset(name="patients_and_fernmetastasen")
 
 validation_targets = [
     {
@@ -234,6 +240,12 @@ validation_targets = [
         "dataframe": patients_with_condition_procedure,
         "data_asset": data_asset_condition_procedure,
         "expectations": expectations.expectations_custom,
+    },
+        {
+        "name": "fernmetastasen",
+        "dataframe": patients_with_fernmetastasen,
+        "data_asset": data_asset_fernmetastasen,
+        "expectations": expectations.expectations_fernmetastasen,
     }
 ]
 

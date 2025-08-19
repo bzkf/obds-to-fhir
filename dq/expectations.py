@@ -1,6 +1,7 @@
 import great_expectations as gx
 import config
 
+
 expectations_conditions = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
@@ -249,16 +250,21 @@ expectations_medicationStatements = [
     )
 ]
 
-#has_50 change into merge procedures and conditions -->
 expectations_custom = [
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         column="ops_code",
         regex=r"^5-8[7-8]",
         row_condition='col("gender") == "male" and col("icd_code") != "C50.9" and col("ops_code").notnull()',
         condition_parser="great_expectations"
-    ),
+    )
+]
+
+expectations_fernmetastasen = [
+    ## Second Proto - Duplicate entries
+    ## 1. Expectation for Fernmetastasen, logic- a patient can have multiple fernmetastasen, but if the records are describing as same event we need to catch that.
+    # Add custom expectation
     gx.expectations.ExpectCompoundColumnsToBeUnique(
-        column_list=["patient_id", "fern_date", "body_site_code"],
+        column_list=["patient_id", "effective_date_time", "bodySite_code"],
         ignore_row_if="any_value_is_missing"
     )
 ]
