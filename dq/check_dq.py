@@ -74,7 +74,7 @@ observations = data.extract(
         exp("valueCodeableConcept.coding.system", "value_codeable_concept_coding_system",),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
-        exp("bodySite.coding.code", "bodySite_code" ),
+        exp("bodySite.coding.code", "bodySite_code" )
         
     ],
 ).drop_duplicates()
@@ -329,3 +329,4 @@ gx_context.build_data_docs(site_names=[site_name])
 
 for target in validation_targets:
     validate_dataframe(gx_context, target)
+    

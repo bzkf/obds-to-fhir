@@ -63,7 +63,7 @@ expectations_conditions = [
 expectations_observations = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE, condition_parser="great_expectations"
     ),
 
     #TODO prüfen: warum als Row-Codition meta-profil
@@ -103,7 +103,7 @@ expectations_observations = [
 
 expectations_procedure = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
+        column="patient_id", 
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="procedure_id",
@@ -194,6 +194,12 @@ expectations_observations = [
       gx.expectations.ExpectColumnValuesToBeBetween(
         column="effective_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
      ),
+      
+    gx.expectations.ExpectColumnValuesToBeUnique(
+        column="patient_id",
+        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
+        condition_parser="great_expectations"
+    )
 ]
 
 expectations_procedure = [
