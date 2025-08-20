@@ -242,19 +242,29 @@ expectations_medicationStatements = [
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="effectivePeriod_start", min_value=config.MIN_DATE, max_value=config.MAX_DATE,
-        # parse_strings_as_datetimes=True
+
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
-        # parse_strings_as_datetimes=True
+
     )
 ]
 
-expectations_custom = [
+expectations_condition_procedure = [
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         column="ops_code",
         regex=r"^5-8[7-8]",
         row_condition='col("gender") == "male" and col("icd_code") != "C50.9" and col("ops_code").notnull()',
+        condition_parser="great_expectations"
+    ),
+    # procedure date  > diagnosis date
+    # gilt so für alle Conditions / Procedures -> Einschränkung auf primärdiagnose?
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="performedPeriod_start", column_B="asserted_date", ignore_row_if="either_value_is_missing", condition_parser="great_expectations"
+    ),
+       gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="performed_date_time", column_B="asserted_date", ignore_row_if="either_value_is_missing",
+        row_condition=f'col("meta_profile_con") == "config.PRIMAERDIAGNOSE" and col("meta_profile) == "config.OP"',
         condition_parser="great_expectations"
     )
 ]
@@ -265,7 +275,17 @@ expectations_fernmetastasen = [
     # Add custom expectation
     gx.expectations.ExpectCompoundColumnsToBeUnique(
         column_list=["patient_id", "effective_date_time", "bodySite_code"],
-        ignore_row_if="any_value_is_missing"
+        ignore_row_if="any_value_is_missing",
+        condition_parser="great_expectations"
+    )
+]
+
+expectations_ecog_death = [
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="meta_profile",
+        row_condition='col("value_codeable_concept_coding_code") == 5',
+        condition_parser="great_expectations",
+        description = "check if ecog == 5, there must be a death observation"
     )
 ]
 

@@ -44,20 +44,12 @@ conditions = data.extract(
     "Condition",
     columns=[
         exp("id", "condition_id"),
-        exp(
-            f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').code",
-            "icd_code",
-        ),
-        exp(
-            f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').version",
-            "icd_version",
-        ),
+        exp(f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').code", "icd_code"),
+        exp(f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').version", "icd_version"),
         exp("subject.reference", "subject_reference"),
-        exp(
-            f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime",
-            "asserted_date",
-        ),
+        exp(f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime", "asserted_date"),
         exp("recordedDate", "recorded_date"),
+        exp("meta.profile", "meta_profile_con")
     ],
 ).drop_duplicates()
 conditions = conditions.checkpoint(eager=True)
@@ -78,14 +70,12 @@ observations = data.extract(
         exp("subject.reference", "subject_reference"),
         exp("code.coding.system", "code_system"),
         exp("code.coding.code", "code_code"),
-        exp("""Observation.where(
-                    code.coding.exists(system='http://loinc.org' or
-                        system='http://snomed.info/sct')).valueCodeableConcept.coding.code""",
-            "value_codeable_concept_coding_code",
-        ),
+        exp("valueCodeableConcept.coding.code", "value_codeable_concept_coding_code",),
+        exp("valueCodeableConcept.coding.system", "value_codeable_concept_coding_system",),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
-        exp("bodySite.coding.code", "bodySite_code" )
+        exp("bodySite.coding.code", "bodySite_code" ),
+        
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
@@ -94,20 +84,28 @@ patients_with_observations = observations.join(
     observations["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="outer",
 )
-
-
-
 patients_with_observations.show(truncate=False)
 
 patients_with_observations.write.mode("overwrite").csv(
     "patients_with_observations.csv", header=True
 )
-
+#Fernmetastasen
 patients_with_fernmetastasen = patients_with_observations.filter(col("meta_profile") == config.FERNMETASTASE)
 patients_with_fernmetastasen.show(truncate=False)
 patients_with_fernmetastasen.write.mode("overwrite").csv(
     "patients_with_fernmetastasen.csv", header=True
 )
+
+#Allgemeiner Leisungszustand
+patients_with_ecog = patients_with_observations.filter(col("value_codeable_concept_coding_system") == config.ALL_LEISTUNSGZUSTAND).select("subject_reference", "value_codeable_concept_coding_code", "value_codeable_concept_coding_system")
+patients_with_death = patients_with_observations.filter(col("meta_profile") == config.TOD).select("subject_reference", "meta_profile")
+patients_with_ecog_death = patients_with_ecog.join(
+    patients_with_death,
+    patients_with_ecog["subject_reference"] == patients_with_death["subject_reference"],
+    how="outer",
+)
+patients_with_ecog_death.show(truncate=False)
+
 
 data.read('Procedure').cache()
 procedures = data.extract(
@@ -119,6 +117,7 @@ procedures = data.extract(
         exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "ops_code"),
         exp("subject.reference", "subject_reference"),
         exp("performedDateTime", "performed_date_time"),
+        exp("performedPeriod.start", "performedPeriod_start"),
         exp("meta.profile", "meta_profile")
     ]
 ).drop_duplicates()
@@ -129,6 +128,8 @@ patients_with_procedures = procedures.join(
     procedures["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
     how="inner",
 )
+
+
 
 patients_with_procedures.show(truncate=False)
 patients_with_procedures.write.mode("overwrite").csv(
@@ -161,8 +162,9 @@ patients_with_medications.write.mode("overwrite").csv(
     "patients_with_medications.csv", header=True
 )
 
+
 patients_with_procedures_selected = patients_with_procedures.select(
-    "subject_reference", "ops_code"
+    "subject_reference", "ops_code", "performed_date_time", "performedPeriod_start", "meta_profile"
 )
 patients_with_condition_procedure = patients_with_conditions.join(patients_with_procedures_selected, on="subject_reference", how="left")
 patients_with_condition_procedure.show(truncate=False)
@@ -171,6 +173,8 @@ patients_with_condition_procedure.write.mode("overwrite").csv(
     "patients_with_condition_procedure.csv", header=True
 )
 
+#Great Expectations
+#------------------
 gx_context = gx.get_context(mode="file")
 
 def create_expectations_and_suite(expectations, suite_name, gx_context):
@@ -209,6 +213,7 @@ data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_proced
 data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
 data_asset_condition_procedure = data_source.add_dataframe_asset(name="patients_and_condtition_procedure")
 data_asset_fernmetastasen = data_source.add_dataframe_asset(name="patients_and_fernmetastasen")
+data_asset_ecog_death = data_source.add_dataframe_asset(name="patients_and_ecog_death")
 
 validation_targets = [
     {
@@ -239,13 +244,19 @@ validation_targets = [
         "name": "condition_procedure",
         "dataframe": patients_with_condition_procedure,
         "data_asset": data_asset_condition_procedure,
-        "expectations": expectations.expectations_custom,
+        "expectations": expectations.expectations_condition_procedure,
     },
         {
         "name": "fernmetastasen",
         "dataframe": patients_with_fernmetastasen,
         "data_asset": data_asset_fernmetastasen,
         "expectations": expectations.expectations_fernmetastasen,
+    },
+    {
+        "name": "ecog_death",
+        "dataframe": patients_with_ecog_death,
+        "data_asset": data_asset_ecog_death,
+        "expectations": expectations.expectations_ecog_death,
     }
 ]
 
