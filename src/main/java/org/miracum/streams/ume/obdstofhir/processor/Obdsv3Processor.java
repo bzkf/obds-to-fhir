@@ -2,6 +2,8 @@ package org.miracum.streams.ume.obdstofhir.processor;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
+import de.basisdatensatz.obds.v3.OBDS;
+import java.util.List;
 import java.util.function.Function;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
@@ -105,7 +107,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private ValueMapper<List<MeldungExportListV3>, List<OBDS>>
       getMeldungExportListToObdsListMapper() {
     return meldungGroupedByPatientIdAndTumorId ->
-        meldungGroupedByPatientIdAndTumorId.stream().map(meldungTransformationService::processMeldungGroup).toList();
+        meldungGroupedByPatientIdAndTumorId.stream()
+            .map(meldungTransformationService::processMeldungGroup)
+            .toList();
   }
 
   private static String patientBundleKeySelector(Bundle bundle) {

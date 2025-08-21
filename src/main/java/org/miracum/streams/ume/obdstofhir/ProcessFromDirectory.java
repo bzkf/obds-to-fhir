@@ -93,8 +93,7 @@ public class ProcessFromDirectory {
 
         if (config.outputToKafka().enabled()) {
           try {
-            var future =
-                kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
+            var future = kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
             future.get(60, TimeUnit.SECONDS);
           } catch (ExecutionException e) {
             LOG.error("Sending message to Kafka failed", e);

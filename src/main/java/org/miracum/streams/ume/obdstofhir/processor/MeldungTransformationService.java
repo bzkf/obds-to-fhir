@@ -123,7 +123,7 @@ public class MeldungTransformationService {
         .getTumorID();
   }
 
-  private OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {
+  public OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {
     final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
 
     // Meldedatum
