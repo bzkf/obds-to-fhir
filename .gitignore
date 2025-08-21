@@ -247,3 +247,4 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+dq/dq/check_dq.py
