@@ -161,7 +161,6 @@ expectations_observations = [
         column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
     ),
 
-    #TODO prüfen: warum als Row-Condition meta Profil
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
