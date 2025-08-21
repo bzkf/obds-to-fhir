@@ -49,15 +49,9 @@
               <Version>31</Version>
             </Morphologie_ICD_O>
           </Tumorzuordnung>
-          <Tod Abschluss_ID="55">
+          <Tod>
             <Sterbedatum>2021-11-27</Sterbedatum>
             <Tod_tumorbedingt>J</Tod_tumorbedingt>
-            <Menge_Todesursachen>
-              <Todesursache_ICD>
-                <Code>C50.4</Code>
-                <Version>10 2022 GM</Version>
-              </Todesursache_ICD>
-            </Menge_Todesursachen>
           </Tod>
         </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="VER_60102">

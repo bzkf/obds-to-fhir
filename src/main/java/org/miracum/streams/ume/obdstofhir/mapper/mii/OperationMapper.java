@@ -1,7 +1,9 @@
 package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OPTyp;
+import de.basisdatensatz.obds.v3.OPTyp.MengeOPS.OPS;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -29,10 +31,35 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     verifyReference(subject, ResourceType.Patient);
 
+    var distinctCodes = new HashMap<String, OPS>();
+    for (var ops : op.getMengeOPS().getOPS()) {
+      var code = ops.getCode();
+      var version = ops.getVersion();
+      if (!distinctCodes.containsKey(code)) {
+        distinctCodes.put(code, ops);
+      } else {
+        var existing = distinctCodes.get(code);
+        if (version.compareTo(existing.getVersion()) > 0) {
+          LOG.warn(
+              "Multiple OPS with code {} found. Updating version {} over version {}.",
+              code,
+              version,
+              existing.getVersion());
+          distinctCodes.put(code, ops);
+        } else {
+          LOG.warn(
+              "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
+              code,
+              existing.getVersion(),
+              version);
+        }
+      }
+    }
+
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();
 
-    for (var opsCode : op.getMengeOPS().getOPS()) {
+    for (var opsCode : distinctCodes.values()) {
       var procedure = new Procedure();
 
       var identifier =

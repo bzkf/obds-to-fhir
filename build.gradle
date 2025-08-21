@@ -1,53 +1,54 @@
 plugins {
-	id 'org.springframework.boot' version '3.5.0'
+	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'jacoco'
 	id 'java'
-	id 'com.diffplug.spotless' version '7.0.4'
-	id "io.freefair.lombok" version "8.13.1"
+	id 'com.diffplug.spotless' version '7.2.1'
+	id 'io.freefair.lombok' version '8.14'
+  id 'net.ltgt.errorprone' version '4.3.0'
 }
 
 group = 'org.miracum.streams.ume'
-version = '3.0.0-beta.65'
+version = '3.0.0-beta.87'
 
 java {
-  toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
-  }
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	xsd2java
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    xsd2java
 
-	// Configuration for changing snapshot dependencies
-	// Update every hour
-	configureEach {
-		resolutionStrategy.cacheChangingModulesFor(1, java.util.concurrent.TimeUnit.HOURS)
-	}
+    // Configuration for changing snapshot dependencies
+    // Update every hour
+    configureEach {
+        resolutionStrategy.cacheChangingModulesFor(1, java.util.concurrent.TimeUnit.HOURS)
+    }
 }
 
 repositories {
-	mavenCentral()
-	maven {
-		url = 'https://git.dnpm.dev/api/packages/public-snapshots/maven'
-	}
+    mavenCentral()
+    maven {
+        url = 'https://git.dnpm.dev/api/packages/public-snapshots/maven'
+    }
 }
 
 ext {
-	set('springCloudVersion', "2024.0.1")
-	set('hapiVersion', "8.2.0")
+	set('springCloudVersion', "2024.0.2")
+	set('hapiVersion', "8.2.1")
 	jaxbTargetDir = file("src/generated/java")
 }
 
 sourceSets {
-	main {
-		java {
-			srcDirs jaxbTargetDir
-		}
-	}
+    main {
+        java {
+            srcDirs jaxbTargetDir
+        }
+    }
 }
 
 dependencies {
@@ -57,10 +58,10 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-actuator"
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.1'
-	implementation 'io.micrometer:micrometer-core:1.15.1'
-	implementation "org.miracum:kafka-fhir-serializer:2.0.5"
-	implementation "org.apache.commons:commons-text:1.13.1"
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
+	implementation 'io.micrometer:micrometer-core:1.15.2'
+	implementation "org.miracum:kafka-fhir-serializer:2.0.6"
+	implementation "org.apache.commons:commons-text:1.14.0"
 	implementation "org.scala-lang:scala-library:2.13.16"
 	implementation "com.github.slugify:slugify:3.0.7"
 
@@ -83,63 +84,76 @@ dependencies {
 	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:24.22.0"
+	testImplementation "com.approvaltests:approvaltests:25.0.23"
 	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
+
+  errorprone 'com.google.errorprone:error_prone_core:2.41.0'
+  errorprone 'com.uber.nullaway:nullaway:0.12.7'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jacoco {
-	toolVersion = "0.8.13"
+    toolVersion = '0.8.13'
 }
 
 spotless {
-	java {
-		target("**/*.java")
-		targetExclude("src/generated/java/**/*.*")
-		importOrder()
-		removeUnusedImports()
-		googleJavaFormat()
-	}
+    java {
+        target('**/*.java')
+        targetExclude('src/generated/java/**/*.*')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
 }
 
 jacocoTestReport {
-	reports {
-		csv.required = true
-		html.required = true
-		xml.required = true
-	}
+    reports {
+        csv.required = true
+        html.required = true
+        xml.required = true
+    }
 }
 
 jar {
-	enabled = false
+    enabled = false
 }
 
 tasks.register('xsd2java') {
+    doLast {
+        jaxbTargetDir.mkdirs()
 
-	doLast {
-		jaxbTargetDir.mkdirs()
+        ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.xsd2java.asPath)
+        ant.jaxbTargetDir = jaxbTargetDir
 
-		ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.xsd2java.asPath)
-		ant.jaxbTargetDir = jaxbTargetDir
-
-
-
-		ant.xjc(
-				destdir: "${jaxbTargetDir}",
-				package: 'de.basisdatensatz.obds.v3',
-				schema: 'src/main/resources/schema/oBDS_v3.0.3.xsd',
-				binding: 'src/main/resources/schema/oBDS_v3.0.3.bindings.xjb'
-		)
-
-	}
+        ant.xjc(
+                destdir: "${jaxbTargetDir}",
+                package: 'de.basisdatensatz.obds.v3',
+                schema: 'src/main/resources/schema/oBDS_v3.0.3.xsd',
+                binding: 'src/main/resources/schema/oBDS_v3.0.3.bindings.xjb'
+        )
+    }
 }
 compileJava.dependsOn xsd2java
+
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        check('NullAway', CheckSeverity.WARN)
+        option('NullAway:AnnotatedPackages', 'org.miracum')
+    }
+    options.errorprone.disableWarningsInGeneratedCode = true
+    // ignore legacy mappers code
+    // MeldungExportV3 causes an errorprone exception - likely because it can't handle all the lombok annotations
+    options.errorprone.errorproneArgs.add('-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java'
+        + '|.*/lookup/.*|.*/mapper/\\w*\\.java)')
+}

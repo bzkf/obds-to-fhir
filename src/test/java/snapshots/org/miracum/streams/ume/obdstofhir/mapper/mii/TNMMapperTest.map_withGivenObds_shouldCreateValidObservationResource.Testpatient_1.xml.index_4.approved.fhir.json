@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "0d0c9afe46200509591a4d2dcdf81884a32a4a9a458ee862581e4232a87daf72",
+  "id": "6a2ec4f1d61f831735f3d757573b9f939d4d827fb0e8e812463a56e8cc6692d6",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-    "value": "481"
+    "value": "481-c"
   } ],
   "status": "final",
   "code": {
@@ -38,12 +38,12 @@
     } ]
   },
   "hasMember": [ {
-    "reference": "Observation/46bf2ba927c9a5394f2c919e94418266036de3ef1c99245ba22b7668fd59d753"
+    "reference": "Observation/5cc1dfcc56730907e7f553fd72cd4a77ab9e6f596a99558ade34d2c59f611f80"
   }, {
-    "reference": "Observation/996da1e965c6f0dfcf7e519bd829c6a30f9cd2b65b062e6c230fdbbae8b58f7e"
+    "reference": "Observation/b194b2424b2d9ed4582c7fad017932f83c683f00ed7c82fb8a689b6bebba901a"
   }, {
-    "reference": "Observation/632fdb9d900d442f0faf84f7f9b8c40cc4556d7d9eebb38959c75515315a03ba"
+    "reference": "Observation/16a4933fa5c313603ae268366c847c6f7f1ad2ec9a7abe62c124e9f3c6eb3a3e"
   }, {
-    "reference": "Observation/3792061d576094da1a0e714730f0319e559905458acebf96a57302cc0c80def1"
+    "reference": "Observation/c1a8c26f573becc3b5b66c5e42671b228f1d8b84fb95bca7ef39d57595820d15"
   } ]
 }

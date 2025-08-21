@@ -24,7 +24,7 @@ class TodMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_Mamma.xml"})
   void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -35,14 +35,14 @@ class TodMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
     var condition = new Reference("Condition/any");
-    var tMeldung =
+    var meldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getTod() != null)
             .findFirst()
-            .get()
-            .getTod();
+            .get();
+    var tMeldung = meldung.getTod();
 
-    var observations = tm.map(tMeldung, subject, condition);
+    var observations = tm.map(tMeldung, meldung.getMeldungID(), subject, condition);
 
     verifyAll(observations, sourceFile);
   }
