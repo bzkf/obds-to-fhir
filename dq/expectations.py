@@ -199,7 +199,27 @@ expectations_observations = [
         column="patient_id",
         row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
         condition_parser="great_expectations"
+    ),
+    
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="deceased",
+        row_condition='col("deceased_date_time").notnull()',
+        condition_parser="great_expectations"
+    ),
+    #Wenn Todesmeldung <->dann Patient.deceased=true
+        gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="deceased_date_time",
+        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
+        condition_parser="great_expectations",
+        description ="Todesmeldung <->dann Patient.deceasedDateTime.notNull"
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="deceased_date_time",
+        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
+        condition_parser="great_expectations",
+        description ="Todesmeldung <->dann Patient.deceased=true"
     )
+    
 ]
 
 expectations_procedure = [

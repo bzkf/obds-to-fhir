@@ -34,6 +34,7 @@ patients = data.extract(
         exp("gender", "gender"),
         exp("birthDate", "date_of_birth"),
         exp("deceasedDateTime", "deceased_date_time"),
+        exp("deceasedBoolean", "deceased")
     ],
 ).drop_duplicates()
 patients = patients.checkpoint(eager=True)
@@ -74,8 +75,7 @@ observations = data.extract(
         exp("valueCodeableConcept.coding.system", "value_codeable_concept_coding_system",),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
-        exp("bodySite.coding.code", "bodySite_code" )
-        
+        exp("bodySite.coding.code", "bodySite_code" ),        
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
