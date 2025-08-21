@@ -1,16 +1,19 @@
 package org.miracum.streams.ume.obdstofhir;
 
 import ca.uhn.fhir.context.FhirContext;
-import de.basisdatensatz.obds.v3.OBDS;
-import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.stream.Collectors;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import org.hl7.fhir.r4.model.Bundle;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
+import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
+import org.miracum.streams.ume.obdstofhir.processor.MeldungTransformationService;
 import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,19 +36,19 @@ public class ProcessFromDirectory {
   private ProcessFromDirectoryConfig config;
   private KafkaTemplate<String, IBaseResource> kafkaTemplate;
   private ObdsToFhirBundleMapper mapper;
-  private ObdsMapper obdsV2ToV3Mapper;
   private Obdsv3Deserializer deserializer;
+  private MeldungTransformationService meldungTransformationService;
 
   public ProcessFromDirectory(
       ProcessFromDirectoryConfig config,
       KafkaTemplate<String, IBaseResource> kafkaTemplate,
       ObdsToFhirBundleMapper mapper,
-      ObdsMapper obdsMapper,
-      Obdsv3Deserializer deserializer) {
+      Obdsv3Deserializer deserializer,
+      MeldungTransformationService meldungTransformationService) {
     this.config = config;
     this.kafkaTemplate = kafkaTemplate;
     this.mapper = mapper;
-    this.obdsV2ToV3Mapper = obdsMapper;
+    this.meldungTransformationService = meldungTransformationService;
     this.deserializer = deserializer;
   }
 
@@ -57,6 +60,8 @@ public class ProcessFromDirectory {
       var files =
           stream.filter(file -> !Files.isDirectory(file)).sorted().collect(Collectors.toSet());
 
+      MeldungExportListV3 meldungExportV3List = new MeldungExportListV3();
+
       for (var file : files) {
         MDC.put("fileName", file.getFileName().toString());
         LOG.info("Processing file");
@@ -65,39 +70,39 @@ public class ProcessFromDirectory {
 
         var obdsOrAdt = deserializer.deserializeAsObdsOrAdt(xmlString);
 
-        OBDS obds = null;
-        if (obdsOrAdt.hasADT()) {
-          LOG.info("Mapping ADT_GEKID to oBDS v3 first.");
-          var adt = obdsOrAdt.getAdt();
-          obds = obdsV2ToV3Mapper.map(adt);
-        } else if (obdsOrAdt.hasOBDS()) {
-          obds = obdsOrAdt.getObds();
+        MeldungExportV3 meldung = new MeldungExportV3();
+        if (obdsOrAdt.hasADT() || obdsOrAdt.hasOBDS()) {
+          meldung.setObdsOrAdt(obdsOrAdt);
+          meldung.setVersionsnummer(1);
         } else {
           LOG.warn("No OBDS or ADT_GEKID found in file. Ignoring and continuing.");
           continue;
         }
 
-        final var bundles = mapper.map(obds);
-        for (var bundle : bundles) {
-          LOG.info("Created FHIR bundle {}", bundle.getId());
+        meldungExportV3List.addElement(meldung);
+      }
 
-          if (config.outputToKafka().enabled()) {
-            kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
-          }
+      List<Bundle> bundles = meldungTransformationService.processDirMeldungen(meldungExportV3List);
 
-          if (config.outputToDirectory().enabled()) {
-            var filename = file.getFileName() + "-bundle-" + bundle.getId() + ".fhir.json";
-            var outputPath = Path.of(config.outputToDirectory().path(), filename);
+      for (var bundle : bundles) {
+        LOG.info("Created FHIR bundle {}", bundle.getId());
 
-            var bundleJson =
-                fhirContext.newJsonParser().setPrettyPrint(true).encodeResourceToString(bundle);
+        if (config.outputToKafka().enabled()) {
+          kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
+        }
 
-            Files.writeString(
-                outputPath,
-                bundleJson,
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING);
-          }
+        if (config.outputToDirectory().enabled()) {
+          var filename = "bundle-" + bundle.getId() + ".fhir.json";
+          var outputPath = Path.of(config.outputToDirectory().path(), filename);
+
+          var bundleJson =
+              fhirContext.newJsonParser().setPrettyPrint(true).encodeResourceToString(bundle);
+
+          Files.writeString(
+              outputPath,
+              bundleJson,
+              StandardOpenOption.CREATE,
+              StandardOpenOption.TRUNCATE_EXISTING);
         }
       }
       MDC.clear();
