@@ -46,8 +46,7 @@ public class MeldungTransformationService {
     return retainLatestVersionOnly(aggregate);
   }
 
-  public List<Bundle> toBundles(MeldungExportListV3 meldungList) {
-    var grouped = groupByTumorId(meldungList);
+  public List<Bundle> toBundles(List<MeldungExportListV3> grouped) {
     return getMeldungExportListToBundleListMapper().apply(grouped);
   }
 
@@ -89,7 +88,7 @@ public class MeldungTransformationService {
    * @param meldungExportList The list of MeldungExport objects to group.
    * @return A list of MeldungExportList, each containing meldungen belonging to the same Tumor ID.
    */
-  private List<MeldungExportListV3> groupByTumorId(MeldungExportListV3 meldungExportList) {
+  public List<MeldungExportListV3> groupByTumorId(MeldungExportListV3 meldungExportList) {
     return new ArrayList<>(
         meldungExportList.stream()
             .collect(
@@ -176,7 +175,7 @@ public class MeldungTransformationService {
             .toList();
 
     return aggregated.stream()
-        .flatMap(meldungList -> this.toBundles(meldungList).stream())
+        .flatMap(meldungList -> this.toBundles(this.groupByTumorId(meldungList)).stream())
         .filter(Objects::nonNull)
         .toList();
   }
