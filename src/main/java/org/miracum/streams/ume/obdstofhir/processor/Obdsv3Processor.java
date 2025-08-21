@@ -10,11 +10,14 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Patient;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
+import org.miracum.streams.ume.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportV3;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportListV3Serde;
 import org.miracum.streams.ume.obdstofhir.serde.MeldungExportV3Serde;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Deserializer;
+import org.miracum.streams.ume.obdstofhir.serde.Obdsv3Serializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,10 +35,15 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   private final MeldungTransformationService meldungTransformationService;
 
+  private final WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig;
+
   protected Obdsv3Processor(
-      FhirProperties fhirProperties, MeldungTransformationService meldungTransformationService) {
+      FhirProperties fhirProperties,
+      MeldungTransformationService meldungTransformationService,
+      WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig) {
     super(fhirProperties);
     this.meldungTransformationService = meldungTransformationService;
+    this.writeGroupedObdsToKafkaConfig = writeGroupedObdsToKafkaConfig;
   }
 
   @Bean
@@ -45,19 +53,46 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return stringOnkoMeldungExpTable -> {
       var mapped = stringOnkoMeldungExpTable.mapValues(meldungTransformationService::mapObdsOrAdt);
 
-      return mapped
-          .groupBy(
-              (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
-              Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
-          .aggregate(
-              MeldungExportListV3::new,
-              (key, meldung, aggregate) ->
-                  meldungTransformationService.aggregate(meldung, aggregate),
-              (key, meldung, aggregate) -> meldungTransformationService.remove(meldung, aggregate),
-              Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
-          .toStream()
-          .mapValues(meldungTransformationService::toBundles)
-          .flatMapValues(list -> list) // flatten List<Bundle> into Bundle
+      var stream =
+          mapped
+              .groupBy(
+                  (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
+                  Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
+              .aggregate(
+                  MeldungExportListV3::new,
+                  (key, meldung, aggregate) ->
+                      meldungTransformationService.aggregate(meldung, aggregate),
+                  (key, meldung, aggregate) ->
+                      meldungTransformationService.remove(meldung, aggregate),
+                  Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
+              .toStream()
+              .mapValues(meldungTransformationService::groupByTumorId);
+
+      if (writeGroupedObdsToKafkaConfig.enabled()) {
+        stream
+            .flatMapValues(this.getMeldungExportListToObdsListMapper())
+            .selectKey(
+                (key, obds) ->
+                    String.format(
+                        "%s-%s",
+                        obds.getMengePatient().getPatient().getFirst().getPatientID(),
+                        obds.getMengePatient()
+                            .getPatient()
+                            .getFirst()
+                            .getMengeMeldung()
+                            .getMeldung()
+                            .getFirst()
+                            .getTumorzuordnung()
+                            .getTumorID()))
+            .to(
+                writeGroupedObdsToKafkaConfig.topic(),
+                Produced.with(
+                    Serdes.String(),
+                    Serdes.serdeFrom(new Obdsv3Serializer(), new Obdsv3Deserializer())));
+      }
+
+      return stream
+          .flatMapValues(meldungTransformationService::toBundles)
           .filter((key, bundle) -> bundle != null)
           .selectKey((key, bundle) -> patientBundleKeySelector(bundle));
     };
@@ -65,6 +100,12 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
 
   public static String getPatIdFromMeldung(MeldungExportV3 meldung) {
     return meldung.getObds().getMengePatient().getPatient().getFirst().getPatientID();
+  }
+
+  private ValueMapper<List<MeldungExportListV3>, List<OBDS>>
+      getMeldungExportListToObdsListMapper() {
+    return meldungGroupedByPatientIdAndTumorId ->
+        meldungGroupedByPatientIdAndTumorId.stream().map(meldungTransformationService::processMeldungGroup).toList();
   }
 
   private static String patientBundleKeySelector(Bundle bundle) {

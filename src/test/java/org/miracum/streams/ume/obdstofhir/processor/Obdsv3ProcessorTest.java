@@ -37,6 +37,7 @@ import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.Obdsv2v3MapperConfig;
 import org.miracum.streams.ume.obdstofhir.Obdsv2v3MapperProperties;
+import org.miracum.streams.ume.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import org.miracum.streams.ume.obdstofhir.mapper.mii.*;
 import org.miracum.streams.ume.obdstofhir.model.Meldeanlass;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExportListV3;
@@ -82,8 +83,9 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       Obdsv2v3MapperConfig.class,
       Obdsv2v3MapperProperties.class,
       MeldungTransformationService.class,
+      ErstdiagnoseEvidenzListMapper.class,
     })
-@EnableConfigurationProperties(value = {FhirProperties.class})
+@EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 public class Obdsv3ProcessorTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
@@ -91,7 +93,6 @@ public class Obdsv3ProcessorTest {
   private static final FhirContext ctx = FhirContext.forR4();
 
   @Autowired private Obdsv3Processor processor;
-  @Autowired private Obdsv3Deserializer obdsDeserializer;
   @Autowired private MeldungTransformationService meldungTransformationService;
 
   @Value("classpath:obds3/*.xml")

@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.apache.commons.lang3.Validate;
+import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
@@ -122,6 +124,14 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var performed =
         computeTreatmentPeriodFromAllBestrahlung(st.getMengeBestrahlung().getBestrahlung());
+    if (!performed.hasStart()) {
+      LOG.warn("Bestrahlung Beginn is unset. Setting data absent extension.");
+      var absentDateTime = new DateTimeType();
+      absentDateTime.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      performed.setStartElement(absentDateTime);
+    }
+
     procedure.setPerformed(performed);
 
     var allMetabolic =
@@ -169,7 +179,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (st.getEndeGrund() != null) {
       var outcome =
           new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieEndeGrund())
+              .setSystem(fhirProperties.getSystems().getMiiCsTherapieGrundEnde())
               .setCode(st.getEndeGrund());
       procedure.setOutcome(new CodeableConcept(outcome));
     }
@@ -442,7 +452,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       var sb = new StringBuilder(kontakt.getInterstitiellEndokavitaer());
 
       // I, K, KHDR, KLDR, KPDR, IHDR, ILDR, IPDR
-      sb.append(Objects.toString(kontakt.getRateType()));
+      sb.append(Objects.toString(kontakt.getRateType(), ""));
 
       return ApplikationsartCode.fromString(sb.toString());
     }
@@ -454,7 +464,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       var sb = new StringBuilder("M");
 
       // M, MSIRT, MPRRT, MPSMA, MRJT, MRIT
-      sb.append(metabolisch.getMetabolischTyp());
+      sb.append(Objects.toString(metabolisch.getMetabolischTyp(), ""));
 
       return ApplikationsartCode.fromString(sb.toString());
     }

@@ -2,12 +2,13 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
-import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -27,51 +28,79 @@ public class TodMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Observation> map(TodTyp tod, Reference patient, Reference condition) {
+  private Observation createBaseObservation(
+      Reference patient, Reference condition, Optional<DateTimeType> todesZeitpunkt, TodTyp tod) {
+
+    var observation = new Observation();
+
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
+    observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    // Code | 184305005 | Cause of death (observable entity)
+    var snomedCode =
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("184305005")
+            .setDisplay("Cause of death (observable entity)");
+    observation.setCode(new CodeableConcept(snomedCode));
+
+    // Subject
+    observation.setSubject(patient);
+
+    // Effective | Sterbedatum
+    if (todesZeitpunkt.isPresent()) {
+      observation.setEffective(todesZeitpunkt.get());
+    }
+
+    // Focus | Bezugsdiagnose
+    observation.addFocus(condition);
+
+    // Interpretation | Tod Tumorbedingt
+    if (tod.getTodTumorbedingt() != null) {
+      var interpretation = new CodeableConcept();
+      interpretation
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
+          .setCode(tod.getTodTumorbedingt().value());
+      observation.setInterpretation(Arrays.asList(interpretation));
+    }
+
+    return observation;
+  }
+
+  public List<Observation> map(
+      TodTyp tod, String meldungId, Reference patient, Reference condition) {
     // Validation
     Objects.requireNonNull(tod);
 
-    Validate.notBlank(tod.getAbschlussID(), "Required ABSCHLUSS_ID is unset");
+    String identifierValue;
+
+    if (tod.getAbschlussID() != null) {
+      identifierValue = tod.getAbschlussID();
+    } else {
+      identifierValue = meldungId;
+    }
+
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
     var observationList = new ArrayList<Observation>();
 
-    if (tod.getMengeTodesursachen() != null) {
+    var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum());
 
+    if (tod.getMengeTodesursachen() != null) {
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
-        var observation = new Observation();
-        observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
-        observation.setStatus(Observation.ObservationStatus.FINAL);
+        var observation = createBaseObservation(patient, condition, todesZeitpunkt, tod);
 
+        // Identifier: set identifier per todesursache
         Identifier identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getTodObservationId())
-                .setValue(String.format("%s_%s", tod.getAbschlussID(), todesursache.getCode()));
+                .setValue(String.format("%s_%s", identifierValue, todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
-
-        // Code | 184305005 | Cause of death (observable entity)
-        var snomedCode =
-            fhirProperties
-                .getCodings()
-                .snomed()
-                .setCode("184305005")
-                .setDisplay("Cause of death (observable entity)");
-        observation.setCode(new CodeableConcept(snomedCode));
-
-        // Subject
-        observation.setSubject(patient);
-
-        // Effective | Sterbedatum
-        var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum());
-        if (todesZeitpunkt.isPresent()) {
-          observation.setEffective(todesZeitpunkt.get());
-        }
-
-        // Focus | Bezugsdiagnose
-        observation.addFocus(condition);
 
         // Value | Todesursache(n) ICD10GM
         var icd10Version = todesursache.getVersion();
@@ -105,18 +134,29 @@ public class TodMapper extends ObdsToFhirMapper {
 
         observation.setValue(todesursacheConcept);
 
-        // Interpretation | Tod Tumorbedingt
-        if (tod.getTodTumorbedingt() != null) {
-          var interpretation = new CodeableConcept();
-          interpretation
-              .addCoding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
-              .setCode(tod.getTodTumorbedingt().value());
-          observation.setInterpretation(Arrays.asList(interpretation));
-        }
-
         observationList.add(observation);
       }
+
+    } else {
+      var observation = createBaseObservation(patient, condition, todesZeitpunkt, tod);
+
+      // Identifier: in this case there should only be one single death observation
+      // adding "sterbedatum" here because Abschluss_ID (if present, else Meldung_ID)
+      // might not be unique enough
+      String dateOnly = null;
+      if (todesZeitpunkt.isPresent()) {
+        DateTimeType sterbedatum = todesZeitpunkt.get();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        dateOnly = sdf.format(sterbedatum.getValue());
+      }
+      Identifier identifier =
+          new Identifier()
+              .setSystem(fhirProperties.getSystems().getTodObservationId())
+              .setValue(String.format("%s_%s", identifierValue, dateOnly));
+      observation.addIdentifier(identifier);
+      observation.setId(computeResourceIdFromIdentifier(identifier));
+
+      observationList.add(observation);
     }
 
     return observationList;

@@ -2,13 +2,10 @@ package org.miracum.streams.ume.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
-import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
-import org.miracum.streams.ume.obdstofhir.lookup.obds.OPSTherapietypLookup;
-import org.miracum.streams.ume.obdstofhir.lookup.obds.SnomedCtTherapietypLookup;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +16,6 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
-
-  private static final String SNOMED_CT_SYST_CATEGORY = "18629005";
 
   public SystemischeTherapieProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -34,8 +29,6 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());
 
-    // TODO: can we be sure that this SYST-ID is globally unqiue across all SYSTs? -
-    // if not we may instead need to construct the ID from the patient-id + others.
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getSystemischeTherapieProcedureId())
@@ -65,52 +58,36 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     } else {
       var performed = new Period();
-      convertObdsDatumToDateTimeType(syst.getBeginn()).ifPresent(performed::setStartElement);
+      convertObdsDatumToDateTimeType(syst.getBeginn())
+          .ifPresentOrElse(
+              performed::setStartElement,
+              () -> LOG.warn("No start date set for SYST_ID={}", syst.getSYSTID()));
       convertObdsDatumToDateTimeType(syst.getEnde()).ifPresent(performed::setEndElement);
       procedure.setPerformed(performed);
     }
 
-    var code = new CodeableConcept();
-    if (null != syst.getTherapieart()
-        && List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS, Therapieart.SO)
-            .contains(syst.getTherapieart())) {
-      code.addCoding(
-          fhirProperties
-              .getCodings()
-              .snomed()
-              .setCode(SnomedCtTherapietypLookup.lookupCode(syst.getTherapieart())));
-    } else if (null != syst.getTherapieart()
-        && null != OPSTherapietypLookup.lookupCode(syst.getTherapieart())) {
-      code.addCoding(
-          fhirProperties
-              .getCodings()
-              .ops()
-              .setCode(OPSTherapietypLookup.lookupCode(syst.getTherapieart())));
-    } else {
-      LOG.warn("Unknown, unset or unsupported Therapieart: {}", syst.getTherapieart());
-      code.addCoding(fhirProperties.getCodings().ops().setCodeElement(dataAbsentCode));
+    var categoryAndCode = lookupCategoryAndCode(syst.getTherapieart());
+
+    if (categoryAndCode.category() != null) {
+      procedure.setCategory(new CodeableConcept(categoryAndCode.category()));
     }
 
-    if (null != syst.getTherapieart()) {
-      code.addCoding()
+    if (categoryAndCode.code() != null) {
+      procedure.setCode(new CodeableConcept(categoryAndCode.code()));
+    }
+
+    if (syst.getTherapieart() != null) {
+      var therapieartCodeableConcept = procedure.getCode();
+      therapieartCodeableConcept
+          .addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
           .setCode(syst.getTherapieart().value());
-    }
-
-    procedure.setCode(code);
-
-    /*
-     * Kategorie als SNOMED - Code
-     * Kategorie für Systemische Therapien 18629005 | Administration of drug or medicament (procedure)
-     * Kategorie für Abwartende Therapien : keine (kein geeignetes Parent-Konzept, Suche direkt über Kodierung empfohlen)
-     */
-    if (syst.getTherapieart() != null
-        && !List.of(Therapieart.WW, Therapieart.WS, Therapieart.AS)
-            .contains(syst.getTherapieart())) {
-      var category = fhirProperties.getCodings().snomed().setCode(SNOMED_CT_SYST_CATEGORY);
-      // category is optional, so it's fine to keep it unset if no appropriate snomed code is found
-      // for the therapy type
-      procedure.setCategory(new CodeableConcept(category));
+      if (syst.getProtokoll() != null) {
+        therapieartCodeableConcept.setText(syst.getProtokoll());
+      }
+    } else {
+      LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
+      procedure.getCode().addExtension(dataAbsentExtension);
     }
 
     var intention = new CodeableConcept();
@@ -140,5 +117,87 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     }
 
     return procedure;
+  }
+
+  private static record CategoryAndCode(Coding category, Coding code) {}
+
+  private CategoryAndCode lookupCategoryAndCode(Therapieart therapieart) {
+    Coding category = null;
+    Coding code = null;
+
+    var medicationCategory =
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("18629005")
+            .setDisplay("Administration of drug or medicament (procedure)");
+
+    switch (therapieart) {
+      case CH, IM, CI, CIZ, CZ, IZ, ZS -> {
+        category = medicationCategory;
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("8-54")
+                .setDisplay(
+                    "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie");
+      }
+      case SZ -> {
+        category = medicationCategory;
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("8-86")
+                .setDisplay("Therapie mit besonderen Zellen und Blutbestandteilen");
+      }
+      case HO -> {
+        category = medicationCategory;
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("6-00")
+                .setDisplay("Applikation von Medikamenten");
+      }
+      case WW ->
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("373818007")
+                  .setDisplay("No anti-cancer treatment - watchful waiting (finding)");
+      case AS ->
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("424313000")
+                  .setDisplay("Active surveillance (regime/therapy)");
+      case WS ->
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("310341009")
+                  .setDisplay("Follow-up (wait and see) (finding)");
+      case SO -> {
+        category =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("394841004")
+                .setDisplay("Other category (qualifier value)");
+        code =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("74964007")
+                .setDisplay("Other (qualifier value)");
+      }
+    }
+
+    return new CategoryAndCode(category, code);
   }
 }

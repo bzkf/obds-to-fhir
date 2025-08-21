@@ -1,24 +1,24 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
+  "id": "c9adbecce1b0b1ff976286d548052dd2b498c565aa517ad055b90a51964fadca",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "12_1_Innere.1_Paclitaxel_a0a4"
+    "value": "60_1_IN_1_Epirubicin_7acb"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"
   } ],
   "status": "active",
   "medicationCodeableConcept": {
-    "text": "Paclitaxel"
+    "text": "Epirubicin"
   },
   "subject": {
     "reference": "Patient/any"
   },
   "effectivePeriod": {
-    "start": "2018-03-17"
+    "start": "2020-04-03"
   }
 }

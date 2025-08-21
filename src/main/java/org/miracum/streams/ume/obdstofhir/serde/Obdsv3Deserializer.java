@@ -11,11 +11,13 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import de.basisdatensatz.obds.v2.ADTGEKID;
 import de.basisdatensatz.obds.v3.OBDS;
 import java.io.IOException;
+import java.util.Locale;
 import org.miracum.streams.ume.obdstofhir.model.ObdsOrAdt;
 import org.springframework.stereotype.Service;
 
 @Service
-public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
+public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
+    implements org.apache.kafka.common.serialization.Deserializer<OBDS> {
 
   private final XmlMapper mapper;
 
@@ -58,15 +60,28 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt> {
       return new ObdsOrAdt(null, null);
     }
 
-    if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
+    if (xml.toLowerCase(Locale.ENGLISH).contains("<obds")
+        && xml.toLowerCase(Locale.ENGLISH).contains("schema_version=\"3.")) {
       OBDS obds = mapper.readValue(xml, OBDS.class);
       return ObdsOrAdt.from(obds);
-    } else if (xml.toLowerCase().contains("<adt")
-        && xml.toLowerCase().contains("schema_version=\"2.")) {
+    } else if (xml.toLowerCase(Locale.ENGLISH).contains("<adt")
+        && xml.toLowerCase(Locale.ENGLISH).contains("schema_version=\"2.")) {
       ADTGEKID adt = mapper.readValue(xml, ADTGEKID.class);
       return ObdsOrAdt.from(adt);
     } else {
       throw new IOException("Unknown XML root element in deserialization");
+    }
+  }
+
+  @Override
+  public OBDS deserialize(String topic, byte[] data) {
+    if (data == null) {
+      return null;
+    }
+    try {
+      return mapper.readValue(data, OBDS.class);
+    } catch (IOException e) {
+      throw new RuntimeException("Error deserializing OBDS data", e);
     }
   }
 }

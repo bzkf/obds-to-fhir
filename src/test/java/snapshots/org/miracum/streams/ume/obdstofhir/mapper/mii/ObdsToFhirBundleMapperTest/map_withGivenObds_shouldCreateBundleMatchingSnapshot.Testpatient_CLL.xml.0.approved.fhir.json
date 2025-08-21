@@ -50,9 +50,10 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "31",
+            "version": "33",
             "code": "9823/3"
-          } ]
+          } ],
+          "text": "Chronisch lymphatische Leukämie"
         }
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
@@ -99,7 +100,12 @@
       "subject": {
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
       },
-      "recordedDate": "2024-02-16"
+      "recordedDate": "2024-02-16",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -139,7 +145,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "373818007"
+          "code": "373818007",
+          "display": "No anti-cancer treatment - watchful waiting (finding)"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "WW"
@@ -235,18 +242,21 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005"
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
         } ]
       },
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
           "version": "2025",
-          "code": "8-54"
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CI"
-        } ]
+        } ],
+        "text": "FCR"
       },
       "subject": {
         "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
@@ -265,7 +275,7 @@
       "resourceType": "MedicationStatement",
       "id": "07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -290,42 +300,12 @@
       "url": "MedicationStatement/07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b"
     }
   }, {
-    "fullUrl": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1_Fludarabin_2b64"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Fludarabin"
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "effectivePeriod": {
-        "start": "2020-09-01"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf"
-    }
-  }, {
     "fullUrl": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
@@ -348,6 +328,36 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "993_syst1_Fludarabin_2b64"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
+      } ],
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Fludarabin"
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "effectivePeriod": {
+        "start": "2020-09-01"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf"
     }
   }, {
     "fullUrl": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
@@ -604,50 +614,6 @@
       "url": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
     }
   }, {
-    "fullUrl": "Observation/89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "273-ICDO3-9823/3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.80",
-          "code": "59847-4",
-          "display": "Histology and Behavior ICD-O-3 Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "focus": [ {
-        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
-      } ],
-      "effectiveDateTime": "2015-04-03",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
-          "code": "9823/3"
-        } ],
-        "text": "Chronisch lymphatische Leukämie"
-      },
-      "specimen": {
-        "reference": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/89c7bd5fea9cae902a5af90e22cf8bf17d0a506580efadd6a6e805672c4d2671"
-    }
-  }, {
     "fullUrl": "Observation/7f1dfbb42c61b66028d7df0ea50ad1f9e863e9e6d2b98d70528fdbf77cb9bc55",
     "resource": {
       "resourceType": "Observation",
@@ -739,16 +705,16 @@
       "url": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
     }
   }, {
-    "fullUrl": "Observation/21ea34c0d1e3c7e08b0480f0421b97fdfb79f6be353b4516fce36921c6e91c1f",
+    "fullUrl": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c",
     "resource": {
       "resourceType": "Observation",
-      "id": "21ea34c0d1e3c7e08b0480f0421b97fdfb79f6be353b4516fce36921c6e91c1f",
+      "id": "93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-        "value": "30_DIA_CLL_01-binet"
+        "value": "30_DIA_CLL_01-Binet-2018-04-03"
       } ],
       "status": "final",
       "code": {
@@ -769,7 +735,50 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/21ea34c0d1e3c7e08b0480f0421b97fdfb79f6be353b4516fce36921c6e91c1f"
+      "url": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c"
+    }
+  }, {
+    "fullUrl": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc",
+    "resource": {
+      "resourceType": "List",
+      "id": "5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "30-301"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/139e56223545fedbb4911f0ddddf852d9fd3459bfc9132989724318b5cbc9f7a"
+        }
+      }, {
+        "item": {
+          "reference": "Specimen/cac92d4dc889a2b71271d6018d492914391709a69ac21b6849b849ccc00a2575"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/7f1dfbb42c61b66028d7df0ea50ad1f9e863e9e6d2b98d70528fdbf77cb9bc55"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/5c111f15d52594a1e3e176265fcb23a0fbcd7b893300a7afa3fbf4780f4f23cc"
     }
   } ]
 }
