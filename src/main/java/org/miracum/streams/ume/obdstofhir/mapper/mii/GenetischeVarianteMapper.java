@@ -79,22 +79,17 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       var observation = new Observation();
 
       // identifier, meta
-      String value;
-      if (genetischeVariante.getAuspraegung() != null) {
-        value =
-            "GenetischeAusprägung-"
-                + source
-                + meldungsID
-                + genetischeVariante.getAuspraegung().value()
-                + i;
-      } else {
-        value = "GenetischeAusprägung-" + source + meldungsID + i;
-      }
+      String value =
+          genetischeVariante.getAuspraegung() != null
+              ? String.format(
+                  "GenetischeAusprägung-%s-%s-%s-%d",
+                  source, meldungsID, genetischeVariante.getAuspraegung().value(), i)
+              : String.format("GenetischeAusprägung-%s-%s-%d", source, meldungsID, i);
 
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getGenetischeVarianteId())
-              .setValue(value);
+              .setValue(slugifier.slugify(value));
 
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));

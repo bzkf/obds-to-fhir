@@ -32,7 +32,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     final Identifier identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getTumorkonferenzId())
-            .setValue("Tumorkonferenz_" + tk.getTumorkonferenzID());
+            .setValue(slugifier.slugify("Tumorkonferenz-" + tk.getTumorkonferenzID()));
     carePlan.addIdentifier(identifier);
     carePlan.setId(computeResourceIdFromIdentifier(identifier));
     // Status

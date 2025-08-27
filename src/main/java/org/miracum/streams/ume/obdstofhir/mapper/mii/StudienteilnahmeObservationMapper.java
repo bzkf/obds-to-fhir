@@ -37,7 +37,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getStudienteilnahmeId())
-            .setValue(meldungsID + "_Studienteilnahme");
+            .setValue(slugifier.slugify(meldungsID + "-Studienteilnahme"));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 

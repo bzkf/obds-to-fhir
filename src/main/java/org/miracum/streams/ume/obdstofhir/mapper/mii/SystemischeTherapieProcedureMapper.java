@@ -32,7 +32,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getSystemischeTherapieProcedureId())
-            .setValue(syst.getSYSTID());
+            .setValue(slugifier.slugify(syst.getSYSTID()));
     procedure.addIdentifier(identifier);
     procedure.setId(computeResourceIdFromIdentifier(identifier));
 

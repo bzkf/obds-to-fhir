@@ -107,7 +107,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getStrahlentherapieProcedureId())
-            .setValue(st.getSTID());
+            .setValue(slugifier.slugify(st.getSTID()));
     procedure.addIdentifier(identifier);
     procedure.setId(computeResourceIdFromIdentifier(identifier));
 

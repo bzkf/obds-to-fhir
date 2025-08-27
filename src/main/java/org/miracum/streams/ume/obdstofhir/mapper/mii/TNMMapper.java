@@ -80,7 +80,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     var memberObservationList = new ArrayList<Observation>();
 
     if (tnmTyp.getT() != null) {
-      String identifierValue = idBase + "_T";
+      String identifierValue = idBase + "-T";
       var tKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
@@ -99,7 +99,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getN() != null) {
-      String identifierValue = idBase + "_N";
+      String identifierValue = idBase + "-N";
       var nKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
@@ -118,7 +118,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getM() != null) {
-      String identifierValue = idBase + "_M";
+      String identifierValue = idBase + "-M";
       var mKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
@@ -137,7 +137,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getASymbol() != null) {
-      String identifierValue = idBase + "_a";
+      String identifierValue = idBase + "-a";
       var aSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
@@ -153,7 +153,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getMSymbol() != null) {
-      String identifierValue = idBase + "_m";
+      String identifierValue = idBase + "-m";
       var mSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
@@ -169,7 +169,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getL() != null) {
-      String identifierValue = idBase + "_L";
+      String identifierValue = idBase + "-L";
       var lKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
@@ -185,7 +185,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getPn() != null) {
-      String identifierValue = idBase + "_Pn";
+      String identifierValue = idBase + "-Pn";
       var pnKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
@@ -201,7 +201,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getRSymbol() != null) {
-      String identifierValue = idBase + "_r";
+      String identifierValue = idBase + "-r";
       var rSymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
@@ -217,7 +217,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getS() != null) {
-      String identifierValue = idBase + "_S";
+      String identifierValue = idBase + "-S";
       var sKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
@@ -233,7 +233,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getV() != null) {
-      String identifierValue = idBase + "_V";
+      String identifierValue = idBase + "-V";
       var vKategorieObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
@@ -249,7 +249,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     }
 
     if (tnmTyp.getYSymbol() != null) {
-      String identifierValue = idBase + "_y";
+      String identifierValue = idBase + "-y";
       var ySymbolObservation =
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
@@ -290,7 +290,8 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     observation.setMeta(new Meta().addProfile(profile));
 
-    var identifier = new Identifier().setSystem(identifierSystem).setValue(identifierValue);
+    var identifier =
+        new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -477,7 +478,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getTnmGroupingObservationId())
-            .setValue(idBase);
+            .setValue(slugifier.slugify(idBase));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
