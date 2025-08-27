@@ -1,6 +1,6 @@
 {
   "resourceType": "Procedure",
-  "id": "e998689be497ac35683749735bcbbe54733da906c44adbcdf346dace830f95ba",
+  "id": "ecdf6893954d92d42dd2fae68b7a7d7d0c057b97cd28aee26d840928c26171a0",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie" ]
   },
@@ -66,7 +66,7 @@
   } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",
-    "value": "11_1_Strahlen.1"
+    "value": "11_1_Strahlen-1"
   } ],
   "status": "in-progress",
   "category": {

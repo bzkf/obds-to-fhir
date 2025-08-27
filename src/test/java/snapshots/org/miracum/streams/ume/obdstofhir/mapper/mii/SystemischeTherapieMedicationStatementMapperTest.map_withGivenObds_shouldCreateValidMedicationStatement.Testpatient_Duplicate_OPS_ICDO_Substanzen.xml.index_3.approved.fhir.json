@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "3f65d62d03c880acab915842837caf43a60a4bb27173acb06d699b3ebb72c827",
+  "id": "5065f1d08ad4e2463358042410811d9da75bc6e65ab6bed8bd06dba699533afa",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "60_1_IN_1_Taxotere_663d"
+    "value": "60_1_IN_1-Taxotere_663d"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"
