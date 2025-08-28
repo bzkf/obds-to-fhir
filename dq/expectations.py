@@ -14,7 +14,9 @@ expectations_conditions = [
         ignore_row_if="either_value_is_missing",
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="deceased_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="deceased_date_time",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
     ),
     # asserted datetime validations
     gx.expectations.ExpectColumnValuesToBeBetween(
@@ -56,28 +58,31 @@ expectations_conditions = [
         column="gender",
         value_set=["male"],
         condition_parser="great_expectations",
-        row_condition='col("icd_code").notnull() and col("condition_icd_code").rlike("^C61")'
-    )
+        row_condition='col("icd_code").notnull() and'
+        + 'col("condition_icd_code").rlike("^C61")',
+    ),
 ]
 
 expectations_observations = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE, condition_parser="great_expectations"
+        column="date_of_birth",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+        condition_parser="great_expectations",
     ),
-
-    #TODO prüfen: warum als Row-Codition meta-profil
+    # TODO prüfen: warum als Row-Codition meta-profil
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-                      + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-                      + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
@@ -96,14 +101,16 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-      gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effective_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
-     ),
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effective_date_time",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+    ),
 ]
 
 expectations_procedure = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id", 
+        column="patient_id",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="procedure_id",
@@ -119,40 +126,47 @@ expectations_procedure = [
         column_B="performed_date_time",
         or_equal=True,
     ),
-
+    # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
-        # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
         column="code_code",
         regex=r"^5-6[5-9]|^5-7[0-1]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "male" and col("code_code").notnull()"'
+        row_condition='col("gender") == "male" and col("code_code").notnull()"',
     ),
-    gx.expectations.ExpectColumnValuesToNotMatchRegex(  ## bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
+    # bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
+    gx.expectations.ExpectColumnValuesToNotMatchRegex(
         column="code_code",
         regex=r"^5-6[0-4]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "female" and col("code_code").notnull()" '
+        row_condition='col("gender") == "female" and col("code_code").notnull()" ',
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="performed_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="performed_date_time",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
     ),
 ]
 
 expectations_medicationStatements = [
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_end", column_B="effectivePeriod_start",
+        column_A="effectivePeriod_end",
+        column_B="effectivePeriod_start",
         ignore_row_if="either_value_is_missing",
-        #parse_strings_as_datetimes=True
-        #ignore_row_if="both_values_are_equal" # wont work 2
+        # parse_strings_as_datetimes=True
+        # ignore_row_if="both_values_are_equal" # wont work 2
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effectivePeriod_start", min_value=config.MIN_DATE, max_value=config.MAX_DATE,
+        column="effectivePeriod_start",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
         # parse_strings_as_datetimes=True
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
+        column_A="effectivePeriod_start",
+        column_B="date_of_birth",
+        ignore_row_if="either_value_is_missing",
         # parse_strings_as_datetimes=True
-    )
+    ),
 ]
 
 expectations_observations = [
@@ -160,18 +174,17 @@ expectations_observations = [
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
     ),
-
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-                      + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
-                      + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="patient_id",
@@ -190,35 +203,34 @@ expectations_observations = [
         column_B="effective_date_time",
         or_equal=True,
     ),
-      gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effective_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
-     ),
-      
+    gx.expectations.ExpectColumnValuesToBeBetween(
+        column="effective_date_time",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+    ),
     gx.expectations.ExpectColumnValuesToBeUnique(
         column="patient_id",
-        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
-        condition_parser="great_expectations"
+        row_condition='col("meta_profile") == ' + f'"{config.TOD}"',
+        condition_parser="great_expectations",
     ),
-    
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="deceased",
         row_condition='col("deceased_date_time").notnull()',
-        condition_parser="great_expectations"
-    ),
-    #Wenn Todesmeldung <->dann Patient.deceased=true
-        gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="deceased_date_time",
-        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
         condition_parser="great_expectations",
-        description ="Todesmeldung <->dann Patient.deceasedDateTime.notNull"
+    ),
+    # Wenn Todesmeldung <->dann Patient.deceased=true
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="deceased_date_time",
+        row_condition='col("meta_profile") == ' + f'"{config.TOD}"',
+        condition_parser="great_expectations",
+        description="Todesmeldung <->dann Patient.deceasedDateTime.notNull",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="deceased_date_time",
-        row_condition='col("meta_profile") == '+ f'"{config.TOD}"',
+        row_condition='col("meta_profile") == ' + f'"{config.TOD}"',
         condition_parser="great_expectations",
-        description ="Todesmeldung <->dann Patient.deceased=true"
-    )
-    
+        description="Todesmeldung <->dann Patient.deceased=true",
+    ),
 ]
 
 expectations_procedure = [
@@ -239,69 +251,79 @@ expectations_procedure = [
         column_B="performed_date_time",
         or_equal=True,
     ),
-
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
         column="ops_code",
         regex=r"^5-6[5-9]|^5-7[0-1]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "male" and col("ops_code").notnull()"'
+        row_condition='col("gender") == "male" and col("ops_code").notnull()"',
     ),
-    gx.expectations.ExpectColumnValuesToNotMatchRegex(  ## bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
+    # bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
+    gx.expectations.ExpectColumnValuesToNotMatchRegex(
         column="ops_code",
         regex=r"^5-6[0-4]",
         condition_parser="great_expectations",
-        row_condition='col("gender") == "female" and col("ops_code").notnull()" '
+        row_condition='col("gender") == "female" and col("ops_code").notnull()" ',
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="performed_date_time", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="performed_date_time",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
     ),
 ]
 
 expectations_medicationStatements = [
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_end", column_B="effectivePeriod_start",
+        column_A="effectivePeriod_end",
+        column_B="effectivePeriod_start",
         ignore_row_if="either_value_is_missing",
-        #parse_strings_as_datetimes=True
-        #ignore_row_if="both_values_are_equal" # wont work 2
+        # parse_strings_as_datetimes=True
+        # ignore_row_if="both_values_are_equal" # wont work 2
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="effectivePeriod_start", min_value=config.MIN_DATE, max_value=config.MAX_DATE,
-
+        column="effectivePeriod_start",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="effectivePeriod_start", column_B="date_of_birth", ignore_row_if="either_value_is_missing",
-
-    )
+        column_A="effectivePeriod_start",
+        column_B="date_of_birth",
+        ignore_row_if="either_value_is_missing",
+    ),
 ]
 
 expectations_condition_procedure = [
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         column="ops_code",
         regex=r"^5-8[7-8]",
-        row_condition='col("gender") == "male" and col("icd_code") != "C50.9" and col("ops_code").notnull()',
-        condition_parser="great_expectations"
+        row_condition='col("gender") == "male" and'
+        + 'col("icd_code") != "C50.9" and col("ops_code").notnull()',
+        condition_parser="great_expectations",
     ),
     # procedure date  > diagnosis date
-    # gilt so für alle Conditions / Procedures -> Einschränkung auf primärdiagnose?
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="performedPeriod_start", column_B="asserted_date", ignore_row_if="either_value_is_missing", condition_parser="great_expectations"
+        column_A="performedPeriod_start",
+        column_B="asserted_date",
+        ignore_row_if="either_value_is_missing",
+        condition_parser="great_expectations",
     ),
-       gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="performed_date_time", column_B="asserted_date", ignore_row_if="either_value_is_missing",
-        row_condition=f'col("meta_profile_con") == "config.PRIMAERDIAGNOSE" and col("meta_profile) == "config.OP"',
-        condition_parser="great_expectations"
-    )
+    gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
+        column_A="performed_date_time",
+        column_B="asserted_date",
+        ignore_row_if="either_value_is_missing",
+        row_condition='col("meta_profile_con") == "config.PRIMAERDIAGNOSE"'
+        + 'and col("meta_profile) == "config.OP"',
+        condition_parser="great_expectations",
+    ),
 ]
-
+# Second Proto - Duplicate entries
+# 1. Expectation for Fernmetastasen, logic- a patient can have multiple fernmetastasen
+# but if the records are describing as same event we need to catch that.
 expectations_fernmetastasen = [
-    ## Second Proto - Duplicate entries
-    ## 1. Expectation for Fernmetastasen, logic- a patient can have multiple fernmetastasen, but if the records are describing as same event we need to catch that.
-    # Add custom expectation
     gx.expectations.ExpectCompoundColumnsToBeUnique(
         column_list=["patient_id", "effective_date_time", "bodySite_code"],
         ignore_row_if="any_value_is_missing",
-        condition_parser="great_expectations"
+        condition_parser="great_expectations",
     )
 ]
 
@@ -310,7 +332,6 @@ expectations_ecog_death = [
         column="meta_profile",
         row_condition='col("value_codeable_concept_coding_code") == 5',
         condition_parser="great_expectations",
-        description = "check if ecog == 5, there must be a death observation"
+        description="check if ecog == 5, there must be a death observation",
     )
 ]
-

@@ -1,6 +1,5 @@
 import config
 import great_expectations as gx
-# import pandas as pd
 from great_expectations.checkpoint import UpdateDataDocsAction
 from great_expectations.core.result_format import ResultFormat
 from loguru import logger
@@ -9,24 +8,19 @@ from pathling import PathlingContext
 from pyspark.sql.functions import col, concat, lit
 import expectations
 
-import sys
-
 pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
-date_columns = [
-    "date_of_birth",
-    "deceased_date_time",
-    "asserted_date"
-]
+date_columns = ["date_of_birth", "deceased_date_time", "asserted_date"]
 
 pc.spark.sparkContext.setCheckpointDir(f"file:///{config.checkpoint_path}")
 
 data = pc.read.bundles(
-    config.snapshots_dir, ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"]
+    config.snapshots_dir,
+    ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"],
 )
 
 
-data.read('Patient').cache()
+data.read("Patient").cache()
 patients = data.extract(
     "Patient",
     columns=[
@@ -34,23 +28,29 @@ patients = data.extract(
         exp("gender", "gender"),
         exp("birthDate", "date_of_birth"),
         exp("deceasedDateTime", "deceased_date_time"),
-        exp("deceasedBoolean", "deceased")
+        exp("deceasedBoolean", "deceased"),
     ],
 ).drop_duplicates()
 patients = patients.checkpoint(eager=True)
 patients.show(truncate=False)
 
-data.read('Condition').cache()
+data.read("Condition").cache()
 conditions = data.extract(
     "Condition",
     columns=[
         exp("id", "condition_id"),
         exp(f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').code", "icd_code"),
-        exp(f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').version", "icd_version"),
+        exp(
+            f"code.coding.where(system='{config.ICD_10_GM_SYSTEM}').version",
+            "icd_version",
+        ),
         exp("subject.reference", "subject_reference"),
-        exp(f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime", "asserted_date"),
+        exp(
+            f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime",
+            "asserted_date",
+        ),
         exp("recordedDate", "recorded_date"),
-        exp("meta.profile", "meta_profile_con")
+        exp("meta.profile", "meta_profile_con"),
     ],
 ).drop_duplicates()
 conditions = conditions.checkpoint(eager=True)
@@ -63,7 +63,7 @@ patients_with_conditions = conditions.join(
 
 patients_with_conditions.show(truncate=False)
 
-data.read('Observation').cache()
+data.read("Observation").cache()
 observations = data.extract(
     "Observation",
     columns=[
@@ -71,11 +71,17 @@ observations = data.extract(
         exp("subject.reference", "subject_reference"),
         exp("code.coding.system", "code_system"),
         exp("code.coding.code", "code_code"),
-        exp("valueCodeableConcept.coding.code", "value_codeable_concept_coding_code",),
-        exp("valueCodeableConcept.coding.system", "value_codeable_concept_coding_system",),
+        exp(
+            "valueCodeableConcept.coding.code",
+            "value_codeable_concept_coding_code",
+        ),
+        exp(
+            "valueCodeableConcept.coding.system",
+            "value_codeable_concept_coding_system",
+        ),
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
-        exp("bodySite.coding.code", "bodySite_code" ),        
+        exp("bodySite.coding.code", "bodySite_code"),
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
@@ -86,19 +92,24 @@ patients_with_observations = observations.join(
 )
 patients_with_observations.show(truncate=False)
 
-patients_with_observations.write.mode("overwrite").csv(
-    "patients_with_observations.csv", header=True
-)
-#Fernmetastasen
-patients_with_fernmetastasen = patients_with_observations.filter(col("meta_profile") == config.FERNMETASTASE)
-patients_with_fernmetastasen.show(truncate=False)
-patients_with_fernmetastasen.write.mode("overwrite").csv(
-    "patients_with_fernmetastasen.csv", header=True
+
+# Fernmetastasen
+patients_with_fernmetastasen = patients_with_observations.filter(
+    col("meta_profile") == config.FERNMETASTASE
 )
 
-#Allgemeiner Leisungszustand
-patients_with_ecog = patients_with_observations.filter(col("value_codeable_concept_coding_system") == config.ALL_LEISTUNSGZUSTAND).select("subject_reference", "value_codeable_concept_coding_code", "value_codeable_concept_coding_system")
-patients_with_death = patients_with_observations.filter(col("meta_profile") == config.TOD).select("subject_reference", "meta_profile")
+
+# Allgemeiner Leisungszustand
+patients_with_ecog = patients_with_observations.filter(
+    col("value_codeable_concept_coding_system") == config.ALL_LEISTUNSGZUSTAND
+).select(
+    "subject_reference",
+    "value_codeable_concept_coding_code",
+    "value_codeable_concept_coding_system",
+)
+patients_with_death = patients_with_observations.filter(
+    col("meta_profile") == config.TOD
+).select("subject_reference", "meta_profile")
 patients_with_ecog_death = patients_with_ecog.join(
     patients_with_death,
     patients_with_ecog["subject_reference"] == patients_with_death["subject_reference"],
@@ -107,7 +118,7 @@ patients_with_ecog_death = patients_with_ecog.join(
 patients_with_ecog_death.show(truncate=False)
 
 
-data.read('Procedure').cache()
+data.read("Procedure").cache()
 procedures = data.extract(
     "Procedure",
     columns=[
@@ -118,8 +129,8 @@ procedures = data.extract(
         exp("subject.reference", "subject_reference"),
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
-        exp("meta.profile", "meta_profile")
-    ]
+        exp("meta.profile", "meta_profile"),
+    ],
 ).drop_duplicates()
 print(procedures.columns)
 procedures = procedures.checkpoint(eager=True)
@@ -129,53 +140,44 @@ patients_with_procedures = procedures.join(
     how="inner",
 )
 
-
-
-patients_with_procedures.show(truncate=False)
-patients_with_procedures.write.mode("overwrite").csv(
-    "patients_with_procedures.csv", header=True
-)
-
-data.read('MedicationStatement').cache()
+data.read("MedicationStatement").cache()
 medicationStatements = data.extract(
-     "MedicationStatement",
-     columns=[
-         exp("id", "MedicationStatement_id"),
-
-         exp("subject.reference", "subject_reference"),
-         exp("effectivePeriod.start", "effectivePeriod_start"),
-         exp("effectivePeriod.end", "effectivePeriod_end"),
-         exp( "meta.profile", "meta_profile")
-     ]
- ).drop_duplicates()
+    "MedicationStatement",
+    columns=[
+        exp("id", "MedicationStatement_id"),
+        exp("subject.reference", "subject_reference"),
+        exp("effectivePeriod.start", "effectivePeriod_start"),
+        exp("effectivePeriod.end", "effectivePeriod_end"),
+        exp("meta.profile", "meta_profile"),
+    ],
+).drop_duplicates()
 medicationStatements = medicationStatements.checkpoint(eager=True)
 print(medicationStatements.columns)
 
 patients_with_medications = medicationStatements.join(
     patients,
-    medicationStatements["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    medicationStatements["subject_reference"]
+    == concat(lit("Patient/"), col("patient_id")),
     how="inner",
-    )
-
-patients_with_medications.show(truncate=False)
-patients_with_medications.write.mode("overwrite").csv(
-    "patients_with_medications.csv", header=True
 )
-
 
 patients_with_procedures_selected = patients_with_procedures.select(
-    "subject_reference", "ops_code", "performed_date_time", "performedPeriod_start", "meta_profile"
+    "subject_reference",
+    "ops_code",
+    "performed_date_time",
+    "performedPeriod_start",
+    "meta_profile",
 )
-patients_with_condition_procedure = patients_with_conditions.join(patients_with_procedures_selected, on="subject_reference", how="left")
+patients_with_condition_procedure = patients_with_conditions.join(
+    patients_with_procedures_selected, on="subject_reference", how="left"
+)
 patients_with_condition_procedure.show(truncate=False)
 
-patients_with_condition_procedure.write.mode("overwrite").csv(
-    "patients_with_condition_procedure.csv", header=True
-)
 
-#Great Expectations
-#------------------
+# Great Expectations
+# ------------------
 gx_context = gx.get_context(mode="file")
+
 
 def create_expectations_and_suite(expectations, suite_name, gx_context):
     suite = gx.ExpectationSuite(name=suite_name)
@@ -205,19 +207,28 @@ def create_checkpoint(gx_context, name, validation_definitions, action_list):
         )
     )
 
+
 data_source_name = "snapshot_bundles"
 data_source = gx_context.data_sources.add_or_update_spark(name=data_source_name)
 data_asset = data_source.add_dataframe_asset(name="patients_and_conditions")
-data_asset_observations = data_source.add_dataframe_asset(name="patients_and_observations")
+data_asset_observations = data_source.add_dataframe_asset(
+    name="patients_and_observations"
+)
 data_asset_procedure = data_source.add_dataframe_asset(name="patients_and_procedures")
-data_asset_medicationStatements = data_source.add_dataframe_asset(name="patients_and_MedicationStatements")
-data_asset_condition_procedure = data_source.add_dataframe_asset(name="patients_and_condtition_procedure")
-data_asset_fernmetastasen = data_source.add_dataframe_asset(name="patients_and_fernmetastasen")
+data_asset_medicationStatements = data_source.add_dataframe_asset(
+    name="patients_and_MedicationStatements"
+)
+data_asset_condition_procedure = data_source.add_dataframe_asset(
+    name="patients_and_condtition_procedure"
+)
+data_asset_fernmetastasen = data_source.add_dataframe_asset(
+    name="patients_and_fernmetastasen"
+)
 data_asset_ecog_death = data_source.add_dataframe_asset(name="patients_and_ecog_death")
 
 validation_targets = [
     {
-   "name": "conditions",
+        "name": "conditions",
         "dataframe": patients_with_conditions,
         "data_asset": data_asset,
         "expectations": expectations.expectations_conditions,
@@ -246,7 +257,7 @@ validation_targets = [
         "data_asset": data_asset_condition_procedure,
         "expectations": expectations.expectations_condition_procedure,
     },
-        {
+    {
         "name": "fernmetastasen",
         "dataframe": patients_with_fernmetastasen,
         "data_asset": data_asset_fernmetastasen,
@@ -257,42 +268,40 @@ validation_targets = [
         "dataframe": patients_with_ecog_death,
         "data_asset": data_asset_ecog_death,
         "expectations": expectations.expectations_ecog_death,
-    }
+    },
 ]
 
 
-
 def validate_dataframe(gx_context, target):
-    suite_name= f"{target['name']}_suite"
-    data_asset = target['data_asset']
+    suite_name = f"{target['name']}_suite"
+    data_asset = target["data_asset"]
     name = f"validate_{target['name']}"
     batch_name = f"patients_and_{target['name']}_all_rows"
-    #create Suite
-    suite = create_expectations_and_suite(target["expectations"], suite_name, gx_context)
-    
-    #validation_definition
+    # create Suite
+    suite = create_expectations_and_suite(
+        target["expectations"], suite_name, gx_context
+    )
+
+    # validation_definition
     validation_definition = create_validation_definition(
-    gx_context,
-    data_asset,
-    suite,
-    name,
-    batch_name
+        gx_context, data_asset, suite, name, batch_name
     )
-    
-    #Checkpoints
+
+    # Checkpoints
     checkpoint = create_checkpoint(
-    gx_context,
-    f"validate_{target['name']}_checkpoint",
-    [validation_definition],
-    action_list
+        gx_context,
+        f"validate_{target['name']}_checkpoint",
+        [validation_definition],
+        action_list,
     )
-    #Run
+    # Run
     validation_results = checkpoint.run(
-    batch_parameters={"dataframe": target["dataframe"]}
-    ) 
+        batch_parameters={"dataframe": target["dataframe"]}
+    )
     logger.info(validation_results.describe())
     if not validation_results.success:
-     logger.error("Validation run failed!")
+        logger.error("Validation run failed!")
+
 
 # Actions for checkpoints
 action_list = [
@@ -317,16 +326,15 @@ site_config = {
 # and otherwise you also get:
 # InvalidKeyError: Data Docs Site `obds_to_fhir_data_docs_site` already exists
 # in the Data Context.
-#gx_context.add_data_docs_site(site_name=site_name, site_config=site_config)
+# gx_context.add_data_docs_site(site_name=site_name, site_config=site_config)
 
-#gx_context.update_data_docs_site(
+# gx_context.update_data_docs_site(
 #    site_name=site_name,
 #    site_config=site_config,
-#)
+# )
 
 # Build the Data Docs
 gx_context.build_data_docs(site_names=[site_name])
 
 for target in validation_targets:
     validate_dataframe(gx_context, target)
-    
