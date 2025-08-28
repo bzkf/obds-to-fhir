@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "edd569068b42afff422567b1d7afa6492a001efcf4172f0c68c3194ed991a6b3",
+  "id": "930a3613e68e35619cae56cd4289723329ed1743d6b017d4dc91e04ef43de8af",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "60_1_IN_1_Cyclophosphamid_7ddd"
+    "value": "60_1_IN_1-Cyclophosphamid_7ddd"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"

@@ -122,16 +122,16 @@
       "url": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
     }
   }, {
-    "fullUrl": "Observation/8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496",
+    "fullUrl": "Observation/99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18",
     "resource": {
       "resourceType": "Observation",
-      "id": "8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496",
+      "id": "99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-        "value": "271-ICDO3-8140/3"
+        "value": "271-ICDO3-8140-3"
       } ],
       "status": "final",
       "code": {
@@ -163,7 +163,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/8ad7892ab442de80c7bec0c0b26925f4d3d428fa060c1df71a3a444db9495496"
+      "url": "Observation/99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18"
     }
   }, {
     "fullUrl": "Observation/ed51598e3ce3a0dae7d439a13d8fb202bec295a9bbae22cb36f43d9d89024291",

@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "e4b35c4756c9668e9c2b92f281667382020c401482e0a674566a695cd20a4cfa",
+  "id": "d1035b7be20579576aa95b27403eb90ca6bc37bbffe0e4ec75c23d4d8e4cc0a9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "11_1_Innere.1_Bicalutamid_fa96"
+    "value": "11_1_Innere-1-Bicalutamid_fa96"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"

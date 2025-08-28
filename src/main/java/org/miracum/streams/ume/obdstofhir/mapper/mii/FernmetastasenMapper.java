@@ -57,7 +57,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       var identifier = new Identifier();
       identifier
           .setSystem(fhirProperties.getSystems().getFernmetastasenId())
-          .setValue(source + "-" + i);
+          .setValue(slugifier.slugify(source + "-" + i));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
       // Meta-Daten

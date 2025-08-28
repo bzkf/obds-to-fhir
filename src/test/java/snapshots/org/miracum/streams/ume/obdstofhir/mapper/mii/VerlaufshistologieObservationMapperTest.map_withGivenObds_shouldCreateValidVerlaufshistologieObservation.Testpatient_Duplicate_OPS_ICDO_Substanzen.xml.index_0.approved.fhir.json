@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "1f28a41a3190df5e32923eda743d8a1f432477e2065ec0e3fbab639d903f6017",
+  "id": "1df0563476fbce0041bbe5d9870aacd30ca355d3d2b5886e791891b79b9a36a9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-    "value": "272-ICDO3-8140/3"
+    "value": "272-ICDO3-8140-3"
   } ],
   "status": "final",
   "code": {

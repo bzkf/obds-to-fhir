@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "3c7a32d931b0826c46b0aadcfecfc638f841c2903416fb4a5e651956ac95ffdf",
+  "id": "0fd2af8dc29b135e268a52b4a594f9aa7061f22b72caa1304d8fdc70d937b883",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-sentinel-lymphknoten" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-    "value": "523_befallen_sentinel"
+    "value": "523-befallen-sentinel"
   } ],
   "status": "final",
   "category": [ {

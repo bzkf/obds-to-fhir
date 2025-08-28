@@ -37,7 +37,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getObservationVerlaufId())
-            .setValue(verlauf.getVerlaufID());
+            .setValue(slugifier.slugify(verlauf.getVerlaufID()));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 

@@ -171,16 +171,16 @@
       "url": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a"
     }
   }, {
-    "fullUrl": "Observation/ec33a8efcfcb75e08f08f99c73cb91c4223c68f092f15bc5d86d1eb944828828",
+    "fullUrl": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
     "resource": {
       "resourceType": "Observation",
-      "id": "ec33a8efcfcb75e08f08f99c73cb91c4223c68f092f15bc5d86d1eb944828828",
+      "id": "36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
-        "value": "30_Inner_1_Studienteilnahme"
+        "value": "30_Inner_1-Studienteilnahme"
       } ],
       "status": "final",
       "code": {
@@ -206,7 +206,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/ec33a8efcfcb75e08f08f99c73cb91c4223c68f092f15bc5d86d1eb944828828"
+      "url": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e"
     }
   }, {
     "fullUrl": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc",
@@ -270,16 +270,16 @@
       "url": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
     }
   }, {
-    "fullUrl": "MedicationStatement/07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b",
+    "fullUrl": "MedicationStatement/2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b",
+      "id": "2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1_Cyclophosphamid_7ddd"
+        "value": "993_syst1-Cyclophosphamid_7ddd"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -297,19 +297,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/07a1de7ad1a2997a550d339c7f9213873a49a78b412fac091c8cd6a6d540372b"
+      "url": "MedicationStatement/2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69"
     }
   }, {
-    "fullUrl": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134",
+    "fullUrl": "MedicationStatement/2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134",
+      "id": "2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1_Rituximab_e082"
+        "value": "993_syst1-Rituximab_e082"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -327,19 +327,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/6ccec74dddb93f058b2d87d1a38533b0fa83713c69bac9872de8ce1636675134"
+      "url": "MedicationStatement/2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325"
     }
   }, {
-    "fullUrl": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+    "fullUrl": "MedicationStatement/c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf",
+      "id": "c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1_Fludarabin_2b64"
+        "value": "993_syst1-Fludarabin_2b64"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -357,19 +357,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/78dccc6b6fd75b4e9729d6698f082d6f1c02af727eb088f98544046c5457f6bf"
+      "url": "MedicationStatement/c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8"
     }
   }, {
-    "fullUrl": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
+    "fullUrl": "Observation/84311930f093ea4d654d76846e11eb565e18a68dac160a4ae38f3231736e1c43",
     "resource": {
       "resourceType": "Observation",
-      "id": "bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7",
+      "id": "84311930f093ea4d654d76846e11eb565e18a68dac160a4ae38f3231736e1c43",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
-        "value": "30_Inner_2_Studienteilnahme"
+        "value": "30_Inner_2-Studienteilnahme"
       } ],
       "status": "final",
       "code": {
@@ -395,7 +395,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/bd61067c64cea1d3e78ab7893668c26512237a5791e9820380f176fd8a1936d7"
+      "url": "Observation/84311930f093ea4d654d76846e11eb565e18a68dac160a4ae38f3231736e1c43"
     }
   }, {
     "fullUrl": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
@@ -478,16 +478,16 @@
       "url": "Observation/cc4dd4a4b721a37b7fe09749609bfc409f12816af087e11a9ef12ac37c18aa8f"
     }
   }, {
-    "fullUrl": "Observation/30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776",
+    "fullUrl": "Observation/e19f3412f3573b17c07a2942c786f916c2bcdd7be404c876879f70affb770252",
     "resource": {
       "resourceType": "Observation",
-      "id": "30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776",
+      "id": "e19f3412f3573b17c07a2942c786f916c2bcdd7be404c876879f70affb770252",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
-        "value": "30_Verlauf_1_Studienteilnahme"
+        "value": "30_Verlauf_1-Studienteilnahme"
       } ],
       "status": "final",
       "code": {
@@ -513,19 +513,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/30434048dc341d3d2cb94af94d73dabea4adf1b1dc3ddd6a6b2bd31e6c6fd776"
+      "url": "Observation/e19f3412f3573b17c07a2942c786f916c2bcdd7be404c876879f70affb770252"
     }
   }, {
-    "fullUrl": "CarePlan/b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c",
+    "fullUrl": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
     "resource": {
       "resourceType": "CarePlan",
-      "id": "b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c",
+      "id": "72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
-        "value": "Tumorkonferenz_111"
+        "value": "Tumorkonferenz-111"
       } ],
       "status": "active",
       "intent": "plan",
@@ -545,7 +545,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "CarePlan/b8ad15d63609dcb8fdcdb3a8aafcd69a333c6320b19eeac5ccd997f5a7f7b18c"
+      "url": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672"
     }
   }, {
     "fullUrl": "Observation/139e56223545fedbb4911f0ddddf852d9fd3459bfc9132989724318b5cbc9f7a",
@@ -667,16 +667,16 @@
       "url": "Observation/7f1dfbb42c61b66028d7df0ea50ad1f9e863e9e6d2b98d70528fdbf77cb9bc55"
     }
   }, {
-    "fullUrl": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9",
+    "fullUrl": "Observation/e3f4c42eacd29bbfc2e8950ff3a04b1e4eeed26a0d4c75184f18244f5b5d560e",
     "resource": {
       "resourceType": "Observation",
-      "id": "608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9",
+      "id": "e3f4c42eacd29bbfc2e8950ff3a04b1e4eeed26a0d4c75184f18244f5b5d560e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
-        "value": "30_DIA_CLL_01_Studienteilnahme"
+        "value": "30_DIA_CLL_01-Studienteilnahme"
       } ],
       "status": "final",
       "code": {
@@ -702,7 +702,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
+      "url": "Observation/e3f4c42eacd29bbfc2e8950ff3a04b1e4eeed26a0d4c75184f18244f5b5d560e"
     }
   }, {
     "fullUrl": "Observation/93248842d266c77b75d2ece014134690edc9be2a19081662367ba98532638a1c",
@@ -768,7 +768,7 @@
         }
       }, {
         "item": {
-          "reference": "Observation/608498bafb76915e9a6a7fbbc624af655549d215269b5bbd2b0082703892efa9"
+          "reference": "Observation/e3f4c42eacd29bbfc2e8950ff3a04b1e4eeed26a0d4c75184f18244f5b5d560e"
         }
       }, {
         "item": {

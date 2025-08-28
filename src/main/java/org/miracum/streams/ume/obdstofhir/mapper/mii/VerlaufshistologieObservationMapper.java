@@ -81,7 +81,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getObservationHistologieId())
-              .setValue(identifierValue);
+              .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       // Id
       observation.setId(computeResourceIdFromIdentifier(identifier));

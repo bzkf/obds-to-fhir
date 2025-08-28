@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "4d5e5848caf4c5c2e960b813d83c17aed7fd14ec0faa8668db7b00df95528359",
+  "id": "131c3dc0badc213d4be1a3c6e63d02303887545e4f666391b474a227c1994e02",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
-    "value": "522_untersucht"
+    "value": "522-untersucht"
   } ],
   "status": "final",
   "category": [ {

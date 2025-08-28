@@ -70,7 +70,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getGleasonScoreObservationId())
-            .setValue("gleason-score-" + meldungId);
+            .setValue(slugifier.slugify("gleason-score-" + meldungId));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
