@@ -98,7 +98,7 @@ public class TodMapper extends ObdsToFhirMapper {
         Identifier identifier =
             new Identifier()
                 .setSystem(fhirProperties.getSystems().getTodObservationId())
-                .setValue(String.format("%s_%s", identifierValue, todesursache.getCode()));
+                .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -152,7 +152,7 @@ public class TodMapper extends ObdsToFhirMapper {
       Identifier identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getTodObservationId())
-              .setValue(String.format("%s_%s", identifierValue, dateOnly));
+              .setValue(slugifier.slugify(identifierValue + "-" + dateOnly));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
 

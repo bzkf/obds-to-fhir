@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "e5db603a12f215c3610bd5e24d86e6bf57600de58f044ebf9e18b29b6c35b69e",
+  "id": "1025153aa5767fd0283d53d7041afe6ecf8c00a5efba457882fe8e84f6aef0ff",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
-    "value": "GenetischeAusprägung-Diagnose10_1_DI_1M0"
+    "value": "GenetischeAuspraegung-Diagnose-10_1_DI_1-M-0"
   } ],
   "status": "final",
   "category": [ {

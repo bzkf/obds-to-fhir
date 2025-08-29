@@ -65,7 +65,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getOperationProcedureId())
-              .setValue(op.getOPID() + opsCode.getCode());
+              .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
       procedure.addIdentifier(identifier);
       procedure.setId(computeResourceIdFromIdentifier(identifier));
 

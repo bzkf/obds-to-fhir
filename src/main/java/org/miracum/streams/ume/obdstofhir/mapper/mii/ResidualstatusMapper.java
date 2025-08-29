@@ -40,7 +40,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getResidualstatusObservationId())
-            .setValue(op.getOPID());
+            .setValue(slugifier.slugify(op.getOPID()));
     observation.setId(computeResourceIdFromIdentifier(identifier));
     observation.setIdentifier(List.of(identifier));
 

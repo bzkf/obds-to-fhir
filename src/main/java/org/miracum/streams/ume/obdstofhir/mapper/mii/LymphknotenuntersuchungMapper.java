@@ -35,7 +35,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getLKBefallen() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "_befallen",
+              histologie.getHistologieID() + "-befallen",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneLymphknoten(),
               "21893-3",
               "443527007",
@@ -49,7 +49,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getLKUntersucht() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "_untersucht",
+              histologie.getHistologieID() + "-untersucht",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteLymphknoten(),
               "21894-1",
               "444025001",
@@ -63,7 +63,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getSentinelLKBefallen() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "_befallen_sentinel",
+              histologie.getHistologieID() + "-befallen-sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
               "92832-5",
               "1264491009",
@@ -77,7 +77,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getSentinelLKUntersucht() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "_untersucht_sentinel",
+              histologie.getHistologieID() + "-untersucht-sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
               "85347-3",
               "444411008",
@@ -106,7 +106,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getObservationHistologieId())
-            .setValue(identifierValue);
+            .setValue(slugifier.slugify(identifierValue));
     observation.addIdentifier(identifier);
 
     // Id

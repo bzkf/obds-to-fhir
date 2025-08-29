@@ -112,10 +112,10 @@
       "url": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
     }
   }, {
-    "fullUrl": "Procedure/e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359",
+    "fullUrl": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8",
     "resource": {
       "resourceType": "Procedure",
-      "id": "e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359",
+      "id": "58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
       },
@@ -138,7 +138,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
-        "value": "12_1_Innere.1"
+        "value": "12_1_Innere-1"
       } ],
       "status": "in-progress",
       "category": {
@@ -169,22 +169,22 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359"
+      "url": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8"
     }
   }, {
-    "fullUrl": "MedicationStatement/da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
+    "fullUrl": "MedicationStatement/ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7",
+      "id": "ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "12_1_Innere.1_Paclitaxel_a0a4"
+        "value": "12_1_Innere-1-Paclitaxel_a0a4"
       } ],
       "partOf": [ {
-        "reference": "Procedure/e722bcc3a86e05e00a0fe5566607b4293be976500750ed2de2f48280b7fba359"
+        "reference": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
@@ -199,19 +199,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/da9d78a5d066bba6acd32a9a903c8663ecc1421cb373dcb51566b6d23dd30df7"
+      "url": "MedicationStatement/ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930"
     }
   }, {
-    "fullUrl": "Observation/4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1",
+    "fullUrl": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
     "resource": {
       "resourceType": "Observation",
-      "id": "4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1",
+      "id": "39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "1.2.3"
+        "value": "1-2-3"
       } ],
       "status": "final",
       "code": {
@@ -288,7 +288,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/4c833e80319d499f13d4213efff6bf33ae4921999ca97bd40363c01a4430c2e1"
+      "url": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8"
     }
   }, {
     "fullUrl": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
@@ -331,10 +331,10 @@
       "url": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122"
     }
   }, {
-    "fullUrl": "Procedure/eb50819015978eaa445c1a6553dfee33010b305162808c044e7a667293050216",
+    "fullUrl": "Procedure/ab777506937182733cc0aadcdf36234724a006177ba65acdb13258af95b5638b",
     "resource": {
       "resourceType": "Procedure",
-      "id": "eb50819015978eaa445c1a6553dfee33010b305162808c044e7a667293050216",
+      "id": "ab777506937182733cc0aadcdf36234724a006177ba65acdb13258af95b5638b",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie" ]
       },
@@ -408,7 +408,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",
-        "value": "12_1_Strahlen.1"
+        "value": "12_1_Strahlen-1"
       } ],
       "status": "in-progress",
       "category": {
@@ -439,7 +439,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/eb50819015978eaa445c1a6553dfee33010b305162808c044e7a667293050216"
+      "url": "Procedure/ab777506937182733cc0aadcdf36234724a006177ba65acdb13258af95b5638b"
     }
   }, {
     "fullUrl": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4",
