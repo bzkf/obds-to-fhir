@@ -27,6 +27,7 @@ config_version: 4.0
 #
 # https://docs.greatexpectations.io/docs/guides/setup/configuring_data_contexts/how_to_configure_credentials
 
+
 config_variables_file_path: uncommitted/config_variables.yml
 
 # The plugins_directory will be added to your python path for custom modules
@@ -34,14 +35,14 @@ config_variables_file_path: uncommitted/config_variables.yml
 plugins_directory: plugins/
 
 stores:
-  # Stores are configurable places to store things like Expectations, Validations
-  # Data Docs, and more. These are for advanced users only - most users can simply
-  # leave this section alone.
+# Stores are configurable places to store things like Expectations, Validations
+# Data Docs, and more. These are for advanced users only - most users can simply
+# leave this section alone.
   expectations_store:
     class_name: ExpectationsStore
     store_backend:
       class_name: TupleFilesystemStoreBackend
-      base_directory: expectations/
+      base_directory: expectations.py/
 
   validation_results_store:
     class_name: ValidationResultsStore
@@ -89,63 +90,39 @@ data_docs_sites:
 fluent_datasources:
   snapshot_bundles:
     type: spark
-    id: 25eb7535-48f5-404d-b1b7-dc238178c7db
+    id: a6742224-253f-47fd-80e7-6db8b5ec02ba
     assets:
       patients_and_conditions:
         type: dataframe
-        id: 8afe9530-b14d-4101-9a4b-050656f4e8f1
+        id: 9102ee87-b93a-49c7-9fa3-8b4da56084b9
         batch_metadata: {}
         batch_definitions:
           patients_and_conditions_all_rows:
-            id: 68f9bb45-4995-4315-8265-026dfc231ded
+            id: 553f61c6-d3d7-4983-8ec5-41f79f0f9e32
             partitioner:
       patients_and_observations:
         type: dataframe
-        id: 8eabdd25-1c57-45f9-80e2-637eb74612ac
+        id: 6ada9f20-26b4-4f6c-ad54-4a575307440c
         batch_metadata: {}
         batch_definitions:
           patients_and_observations_all_rows:
-            id: 838abac6-190e-4284-8daf-73868c918824
+            id: 82f0851a-85fe-4fb5-9fb6-6b960a02e811
             partitioner:
       patients_and_procedures:
         type: dataframe
-        id: 6b0f4182-6bc6-446a-b98d-b2694dcfe0c5
+        id: 30c59c41-444d-4302-8afa-894c2498f593
         batch_metadata: {}
         batch_definitions:
           patients_and_procedure_all_rows:
-            id: 009c048d-a7aa-41c7-836e-442e2d2a6b20
+            id: 5a355c84-5143-4b0a-b786-b94c5d7f9821
             partitioner:
       patients_and_MedicationStatements:
         type: dataframe
-        id: 14846f8e-37d2-455c-a65e-d00fbc0a8383
+        id: 968c137f-175b-448b-ae58-c27f3cbc2160
         batch_metadata: {}
         batch_definitions:
           patients_and_medicationStatements_all_rows:
-            id: 293eeae6-801b-4b56-a0f6-e574640fec79
-            partitioner:
-      patients_and_condtition_procedure:
-        type: dataframe
-        id: dcf92106-411a-4439-bb7b-563ea2582d25
-        batch_metadata: {}
-        batch_definitions:
-          patients_and_condition_procedure_all_rows:
-            id: 4a6312e8-a77e-40d1-92d2-eb82ddba6c95
-            partitioner:
-      patients_and_fernmetastasen:
-        type: dataframe
-        id: 928810b3-3516-4973-9a99-81183cc7c95f
-        batch_metadata: {}
-        batch_definitions:
-          patients_and_fernmetastasen_all_rows:
-            id: 88630f72-566c-443a-8f2a-bc035c27c524
-            partitioner:
-      patients_and_ecog_death:
-        type: dataframe
-        id: b0fcaa8d-6cfc-42cb-987c-59918fdf003e
-        batch_metadata: {}
-        batch_definitions:
-          patients_and_ecog_death_all_rows:
-            id: 1711c8ec-8431-4782-8fe3-be22d8563a8d
+            id: 37c24669-376a-4c7f-a1e8-7987f67320f5
             partitioner:
 analytics_enabled:
-data_context_id: edac9bf7-2d5a-443d-a47c-950d580e39c1
+data_context_id: e1086299-0733-48cb-bec8-ad674bb90426
