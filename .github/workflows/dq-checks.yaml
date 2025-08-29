@@ -33,7 +33,7 @@ jobs:
 
       - name: Run checks
         run: |
-          python src/main/python/check_dq.py
+          python dq/check_dq.py 
 
       - name: Upload data docs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
