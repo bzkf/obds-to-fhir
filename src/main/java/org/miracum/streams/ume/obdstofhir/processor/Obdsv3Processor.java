@@ -15,7 +15,6 @@ import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.Patient;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
@@ -439,15 +438,13 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   }
 
   private static String patientBundleKeySelector(Bundle bundle) {
-    var patients = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class);
     var conditions = BundleUtil.toListOfResourcesOfType(ctx, bundle, Condition.class);
 
-    if (patients.size() != 1) {
-      throw new RuntimeException(
-          String.format(
-              "A patient bundle contains %d patient resources instead of 1", patients.size()));
+    // bundle id equals patient id
+    if (bundle.getId().isEmpty() || bundle.getId().isBlank()) {
+      throw new RuntimeException("A patient bundle has no id");
     }
-    var patient = patients.getFirst();
+    var patientRef = String.format("%s/%s", "Patient", bundle.getId());
 
     if (conditions.isEmpty()) {
       /*
@@ -455,12 +452,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
       then we create a bundle without a condition ID.
       NOTE: if we should encounter more than one tumor for this patient, we could override a fhir bundle due same kafka key, since we miss condition discriminante.
       */
-      return String.format("%s/%s", patient.getResourceType(), patient.getId());
+      return patientRef;
     }
 
     var condition = conditions.getFirst();
-    return String.format(
-        "%s/%s - %s/%s",
-        patient.getResourceType(), patient.getId(), condition.getResourceType(), condition.getId());
+    return String.format("%s - %s/%s", patientRef, condition.getResourceType(), condition.getId());
   }
 }
