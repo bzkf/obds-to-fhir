@@ -37,6 +37,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   add-test-coverage:
+    name: add test coverage to PR
     runs-on: ubuntu-24.04
     needs:
       - build

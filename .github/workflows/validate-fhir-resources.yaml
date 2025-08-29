@@ -22,6 +22,7 @@ env:
 
 jobs:
   extract-mapper-names:
+    name: extract mapper names
     runs-on: ubuntu-24.04
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
@@ -40,6 +41,7 @@ jobs:
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
 
   validate-fhir-resource:
+    name: validate fhir resources
     runs-on: ubuntu-24.04
     container: ghcr.io/miracum/ig-build-tools:v2.2.11@sha256:56ec1b2667257f3e44953405d63730b0a7b29f2ebb0654cf159620789733feb2
     needs:
@@ -90,6 +92,7 @@ jobs:
             xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
 
   validate-bundles:
+    name: validate bundles
     runs-on: ubuntu-24.04
     container: ghcr.io/miracum/ig-build-tools:v2.2.11@sha256:56ec1b2667257f3e44953405d63730b0a7b29f2ebb0654cf159620789733feb2
     steps:
