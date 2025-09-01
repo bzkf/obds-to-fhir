@@ -82,6 +82,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       WeitereKlassifikationMapper.class,
       Obdsv2v3MapperConfig.class,
       Obdsv2v3MapperProperties.class,
+      MeldungTransformationService.class,
       ErstdiagnoseEvidenzListMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
@@ -92,6 +93,7 @@ public class Obdsv3ProcessorTest {
   private static final FhirContext ctx = FhirContext.forR4();
 
   @Autowired private Obdsv3Processor processor;
+  @Autowired private MeldungTransformationService meldungTransformationService;
 
   @Value("classpath:obds3/*.xml")
   private Resource[] obdsResources;
@@ -321,7 +323,7 @@ public class Obdsv3ProcessorTest {
         buildMeldungExport(
             getResourceByName(inputXmlResourceName, obdsResources), "1", "12356789", "123", 1));
 
-    var result = processor.getTumorKonferenzmeldungen(meldungExportListV3);
+    var result = meldungTransformationService.getTumorKonferenzmeldungen(meldungExportListV3);
     assertThat(result.getFirst().getTumorkonferenz().getMeldeanlass().name())
         .isEqualTo(Meldeanlass.valueOf(expectedMeldeAnlass).name());
   }
@@ -394,7 +396,7 @@ public class Obdsv3ProcessorTest {
     meldungExportListV3.add(
         buildMeldungExport(
             getResourceByName("Test_SysT_2.xml", obdsResources), "3", "12356789", "125", 1));
-    var result = processor.getSystemtherapieMeldungen(meldungExportListV3);
+    var result = meldungTransformationService.getSystemtherapieMeldungen(meldungExportListV3);
 
     assertThat(result).as(description).isNotNull();
     assertThat(result.size()).as(description).isEqualTo(2);
