@@ -1,6 +1,8 @@
+import os
+import sys
 import config
 import great_expectations as gx
-from great_expectations.checkpoint import UpdateDataDocsAction
+from great_expectations.checkpoint.actions import UpdateDataDocsAction
 from great_expectations.core.result_format import ResultFormat
 from loguru import logger
 from pathling import Expression as exp
@@ -12,7 +14,9 @@ pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
 
 date_columns = ["date_of_birth", "deceased_date_time", "asserted_date"]
 
-pc.spark.sparkContext.setCheckpointDir(f"file:///{config.checkpoint_path}")
+if os.getenv("SPARK_INSTALL_PACKAGES_AND_EXIT", "false").lower() == "1":
+    logger.info("Exiting after having installed packages")
+    sys.exit()
 
 data = pc.read.bundles(
     config.snapshots_dir,
