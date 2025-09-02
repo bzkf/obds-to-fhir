@@ -75,6 +75,8 @@ jobs:
         env:
           DQ_CHECKS_IMAGE: "ghcr.io/${{ github.repository }}-dq-checks:${{ needs.build.outputs.image-version }}"
         run: |
+          mkdir -p ./data-docs
+          sudo chown -R 65532:65532 ./data-docs
           docker run --rm \
             -v ./src:/src:ro \
             -v ./data-docs:/app/gx/uncommitted/data_docs/:rw \
