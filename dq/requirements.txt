@@ -2,3 +2,4 @@ pathling==7.2.0
 loguru==0.7.3
 great-expectations==1.5.10
 numpy==1.26.4
+typed-settings[attrs]==25.0.0

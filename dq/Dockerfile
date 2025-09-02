@@ -24,7 +24,7 @@ EOF
 # Install dependencies
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    uv pip install -r requirements.txt
+    uv pip install --no-cache -r requirements.txt
 
 # Copy the project into the image
 COPY . /app

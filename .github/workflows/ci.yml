@@ -257,22 +257,6 @@ jobs:
           path: |
             kind-cluster-dump.txt
 
-  build-dq-image:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@61598243fff8ce6ef7bd312e26d586b2dd10d7b3 # v1.16.23
-    permissions:
-      contents: write
-      id-token: write
-      packages: write
-      pull-requests: write
-      actions: read
-      security-events: write
-    with:
-      build-context: dq/
-      enable-build-test-layer: false
-      enable-upload-test-image: false
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
-
   lint:
     uses: miracum/.github/.github/workflows/standard-lint.yaml@61598243fff8ce6ef7bd312e26d586b2dd10d7b3 # v1.16.23
     permissions:
