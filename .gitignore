@@ -71,7 +71,7 @@ src/generated/
 
 .approval_tests_temp
 
-gx/**/*.json
+dq/**/*.json
 
 spark_checkpoints/
 
