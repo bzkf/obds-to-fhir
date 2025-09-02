@@ -27,15 +27,12 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install --no-cache-dir -r requirements.txt
 
 # Copy the project into the image
-COPY . /app
+COPY --chown=65532:65532 . /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 
 USER 65532:65532
 
-RUN <<EOF
-SPARK_INSTALL_PACKAGES_AND_EXIT=1 python3 /app/check_dq.py
-chown -R 65532:65532 /app
-EOF
+RUN SPARK_INSTALL_PACKAGES_AND_EXIT=1 python3 /app/check_dq.py
 
 ENTRYPOINT [ "python3", "/app/check_dq.py" ]
