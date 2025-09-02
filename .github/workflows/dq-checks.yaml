@@ -79,6 +79,7 @@ jobs:
             -v ./src:/src:ro \
             -v ./data-docs:/app/uncommitted/:rw \
             -e READ_FROM_DELTA=False \
+            -e SPARK_CHECKPOINT_PATH=/tmp \
             -e BUNDLES_DIR=/src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
             "${DQ_CHECKS_IMAGE}"
 
