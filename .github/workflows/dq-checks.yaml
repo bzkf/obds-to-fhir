@@ -77,7 +77,7 @@ jobs:
         run: |
           docker run --rm \
             -v ./src:/src:ro \
-            -v ./data-docs:/app/uncommitted/:rw \
+            -v ./data-docs:/app/gx/uncommitted/data_docs/:rw \
             -e READ_FROM_DELTA=False \
             -e SPARK_CHECKPOINT_PATH=/tmp \
             -e BUNDLES_DIR=/src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
