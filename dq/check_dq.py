@@ -61,11 +61,11 @@ spark_config = (
 
 spark = spark_config.getOrCreate()
 
-spark.sparkContext.setCheckpointDir(config.spark_checkpoint_path)
-
 if config.spark_install_packages_and_exit:
     logger.info("Exiting after having installed packages")
     sys.exit()
+
+spark.sparkContext.setCheckpointDir(config.spark_checkpoint_path)
 
 pc = PathlingContext.create(
     spark,

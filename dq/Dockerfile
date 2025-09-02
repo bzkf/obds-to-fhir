@@ -19,6 +19,8 @@ groupadd -r -g 65532 nonroot
 useradd --create-home --shell /bin/bash --uid 65532 -g nonroot nonroot
 
 uv venv /app/.venv
+
+chown -R 65532:65532 /app
 EOF
 
 # Install dependencies
