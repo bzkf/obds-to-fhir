@@ -21,7 +21,7 @@ class Config:
     spark_driver_memory: str = "4g"
     spark_install_packages_and_exit: bool = False
     spark_warehouse_dir: str = (HERE / "warehouse").as_posix()
-    spark_checkpoint_path: str = (HERE / "spark-checkpoints").as_posix()
+    spark_checkpoint_path: str = (HERE / "checkpoints").as_posix()
     aws_access_key_id: str = "admin"
     aws_secret_access_key: str = ts.secret(default="miniopass")
     s3_endpoint: str = "localhost:9000"
