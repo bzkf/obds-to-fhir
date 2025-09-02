@@ -79,7 +79,7 @@ jobs:
           sudo chown -R 65532:65532 ./data-docs
           docker run --rm \
             -v ./src:/src:ro \
-            -v ./data-docs:/app/gx/uncommitted/data_docs/:rw \
+            -v ./data-docs:/app/gx/uncommitted/:rw \
             -e READ_FROM_DELTA=False \
             -e SPARK_CHECKPOINT_PATH=/tmp \
             -e BUNDLES_DIR=/src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
