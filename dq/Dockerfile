@@ -19,8 +19,6 @@ groupadd -r -g 65532 nonroot
 useradd --create-home --shell /bin/bash --uid 65532 -g nonroot nonroot
 
 uv venv /app/.venv
-
-chown -R 65532:65532 /app
 EOF
 
 # Install dependencies
@@ -35,6 +33,9 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 USER 65532:65532
 
-RUN SPARK_INSTALL_PACKAGES_AND_EXIT=1 python3 /app/check_dq.py
+RUN <<EOF
+SPARK_INSTALL_PACKAGES_AND_EXIT=1 python3 /app/check_dq.py
+chown -R 65532:65532 /app
+EOF
 
 ENTRYPOINT [ "python3", "/app/check_dq.py" ]
