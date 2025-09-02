@@ -73,14 +73,14 @@ jobs:
 
       - name: Run checks
         env:
-          OBDS_TO_FHIR_DQ_CHECKS_VERSION: ${{ needs.build.outputs.image-version }}
+          DQ_CHECKS_IMAGE: "ghcr.io/${{ github.repository }}-dq-checks:${{ needs.build.outputs.image-version }}"
         run: |
           docker run --rm -it \
             -v ./src:/src:ro \
             -v ./data-docs:/app/uncommitted/:rw \
             -e READ_FROM_DELTA=False \
             -e BUNDLES_DIR=/src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
-            "ghcr.io/${{ github.repository }}-dq-checks:${OBDS_TO_FHIR_DQ_CHECKS_VERSION}"
+            "${DQ_CHECKS_IMAGE}"
 
       - name: Upload data docs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
