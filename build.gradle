@@ -1,11 +1,11 @@
 plugins {
-	id 'org.springframework.boot' version '3.5.4'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'jacoco'
-	id 'java'
-	id 'com.diffplug.spotless' version '7.2.1'
-	id 'io.freefair.lombok' version '8.14'
-  id 'net.ltgt.errorprone' version '4.3.0'
+    id 'org.springframework.boot' version '3.5.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+    id 'java'
+    id 'com.diffplug.spotless' version '7.2.1'
+    id 'io.freefair.lombok' version '8.14'
+    id 'net.ltgt.errorprone' version '4.3.0'
 }
 
 group = 'org.miracum.streams.ume'
@@ -38,9 +38,9 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2025.0.0")
-	set('hapiVersion', "8.2.1")
-	jaxbTargetDir = file("src/generated/java")
+    set('springCloudVersion', '2025.0.0')
+    set('hapiVersion', '8.2.1')
+    jaxbTargetDir = file('src/generated/java')
 }
 
 sourceSets {
@@ -52,43 +52,43 @@ sourceSets {
 }
 
 dependencies {
-	implementation 'org.apache.kafka:kafka-streams'
-	implementation 'org.springframework.cloud:spring-cloud-stream'
-	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-	implementation "org.springframework.boot:spring-boot-starter-actuator"
-	implementation "org.springframework.boot:spring-boot-starter-web"
-	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
-	implementation 'io.micrometer:micrometer-core:1.15.2'
-	implementation "org.miracum:kafka-fhir-serializer:2.0.6"
-	implementation "org.apache.commons:commons-text:1.14.0"
-	implementation "org.scala-lang:scala-library:2.13.16"
-	implementation "com.github.slugify:slugify:3.0.7"
+    implementation 'org.apache.kafka:kafka-streams'
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.2'
+    implementation 'io.micrometer:micrometer-core:1.15.2'
+    implementation 'org.miracum:kafka-fhir-serializer:2.0.6'
+    implementation 'org.apache.commons:commons-text:1.14.0'
+    implementation 'org.scala-lang:scala-library:2.13.16'
+    implementation 'com.github.slugify:slugify:3.0.7'
 
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
-	// <https://github.com/FasterXML/jackson-modules-java8>
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
-	implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
+    // <https://github.com/FasterXML/jackson-modules-java8>
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
 
-	// OBDS2 to OBDS3
-	implementation ("dev.pcvolkmer.onco:obds2-to-obds3:0.1.0-SNAPSHOT") { changing = true }
+    // OBDS2 to OBDS3
+    implementation('dev.pcvolkmer.onco:obds2-to-obds3:0.1.0-SNAPSHOT') { changing = true }
 
-	// JAXB code generation
-	xsd2java "com.sun.xml.bind:jaxb-xjc:4.0.5"
-	xsd2java "com.sun.xml.bind:jaxb-impl:4.0.5"
+    // JAXB code generation
+    xsd2java 'com.sun.xml.bind:jaxb-xjc:4.0.5'
+    xsd2java 'com.sun.xml.bind:jaxb-impl:4.0.5'
 
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation:${hapiVersion}"
-	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:25.0.23"
-	testImplementation 'org.apache.kafka:kafka-streams-test-utils'
+    testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation:${hapiVersion}"
+    testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+    testImplementation 'com.approvaltests:approvaltests:25.0.23'
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
-  errorprone 'com.google.errorprone:error_prone_core:2.41.0'
-  errorprone 'com.uber.nullaway:nullaway:0.12.7'
+    errorprone 'com.google.errorprone:error_prone_core:2.41.0'
+    errorprone 'com.uber.nullaway:nullaway:0.12.7'
 }
 
 dependencyManagement {

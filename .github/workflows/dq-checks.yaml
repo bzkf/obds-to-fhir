@@ -13,31 +13,80 @@ permissions:
   contents: read
 
 jobs:
+  build:
+    uses: miracum/.github/.github/workflows/standard-build.yaml@61598243fff8ce6ef7bd312e26d586b2dd10d7b3 # v1.16.23
+    permissions:
+      contents: write
+      id-token: write
+      packages: write
+      pull-requests: write
+      actions: read
+      security-events: write
+    with:
+      build-context: dq/
+      enable-build-test-layer: false
+      enable-upload-test-image: false
+      image: "ghcr.io/${{ github.repository }}-dq-checks"
+    secrets:
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+
   run-gx-checks:
     name: run dq checks
     runs-on: ubuntu-24.04
+    needs:
+      - build
     steps:
-      - name: Checkout code
+      - name: Harden Runner
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      # <https://docs.docker.com/storage/containerd/>
+      # via <https://github.com/docker/setup-buildx-action/issues/257>
+      - name: Set up containerd image store
+        shell: bash
+        run: |
+          [ -f /etc/docker/daemon.json ] || echo "{}" | sudo tee /etc/docker/daemon.json
+          jq '. | .+{"features": {"containerd-snapshotter": true}}' /etc/docker/daemon.json > /tmp/docker-daemon-with-containerd.json
+          sudo mv /tmp/docker-daemon-with-containerd.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          docker info -f '{{ .DriverStatus }}'
+
+      - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+      - name: Download image
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
-          python-version: 3.12
-          cache: "pip"
+          name: ${{ needs.build.outputs.image-slug }}
+          path: /tmp
 
-      - name: Install dependencies
+      - name: Load image
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
-          pip install -r requirements.txt
+          docker load --input /tmp/image.tar
+          docker image ls
 
       - name: Run checks
+        env:
+          DQ_CHECKS_IMAGE: "ghcr.io/${{ github.repository }}-dq-checks:${{ needs.build.outputs.image-version }}"
         run: |
-          python dq/check_dq.py
+          mkdir -p ./data-docs
+          sudo chown -R 65532:65532 ./data-docs
+          docker run --rm \
+            -v ./src:/src:ro \
+            -v ./data-docs:/app/gx/uncommitted/:rw \
+            -e READ_FROM_DELTA=False \
+            -e SPARK_CHECKPOINT_PATH=/tmp \
+            -e BUNDLES_DIR=/src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
+            "${DQ_CHECKS_IMAGE}"
 
       - name: Upload data docs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: gx-data-docs
-          path: gx/uncommitted/data_docs/local_site
+          path: data-docs/

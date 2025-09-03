@@ -1,6 +1,5 @@
 import great_expectations as gx
-import config
-
+from config import config
 
 expectations_conditions = [
     # Birth date validations

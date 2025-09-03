@@ -1,24 +1,89 @@
-import config
+import sys
+
+import expectations
 import great_expectations as gx
-from great_expectations.checkpoint import UpdateDataDocsAction
+from config import config
+from great_expectations.checkpoint.actions import UpdateDataDocsAction
 from great_expectations.core.result_format import ResultFormat
 from loguru import logger
+from pathling import DataSource
 from pathling import Expression as exp
 from pathling import PathlingContext
+from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, concat, lit
-import expectations
 
-pc = PathlingContext.create(enable_extensions=True, enable_delta=True)
-
-date_columns = ["date_of_birth", "deceased_date_time", "asserted_date"]
-
-pc.spark.sparkContext.setCheckpointDir(f"file:///{config.checkpoint_path}")
-
-data = pc.read.bundles(
-    config.snapshots_dir,
-    ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"],
+spark_config = (
+    SparkSession.builder.master(config.spark_master)  # type: ignore
+    .appName("fhir_to_lakehouse")
+    .config(
+        "spark.jars.packages",
+        ",".join(
+            [
+                "au.csiro.pathling:library-runtime:7.2.0",
+                "io.delta:delta-spark_2.12:3.3.2",
+                "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.6",
+                "org.apache.hadoop:hadoop-aws:3.3.4",
+            ]
+        ),
+    )
+    .config(
+        "spark.sql.extensions",
+        "io.delta.sql.DeltaSparkSessionExtension",
+    )
+    .config(
+        "spark.driver.memory",
+        config.spark_driver_memory,
+    )
+    .config("spark.sql.warehouse.dir", config.spark_warehouse_dir)
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .config(
+        "spark.sql.catalog.spark_catalog",
+        "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+    )
+    .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    .config(
+        "spark.hadoop.fs.s3a.path.style.access",
+        "true",
+    )
+    .config(
+        "spark.hadoop.fs.s3a.endpoint",
+        config.s3_endpoint,
+    )
+    .config(
+        "spark.hadoop.fs.s3a.connection.ssl.enabled",
+        config.s3_connection_ssl_enabled,
+    )
+    .config("fs.s3a.committer.name", "magic")
+    .config("fs.s3a.committer.magic.enabled", "true")
+    .config("fs.s3a.access.key", config.aws_access_key_id)
+    .config("fs.s3a.secret.key", config.aws_secret_access_key)
 )
 
+spark = spark_config.getOrCreate()
+
+if config.spark_install_packages_and_exit:
+    logger.info("Exiting after having installed packages")
+    sys.exit()
+
+spark.sparkContext.setCheckpointDir(config.spark_checkpoint_path)
+
+pc = PathlingContext.create(
+    spark,
+    enable_extensions=True,
+    enable_delta=True,
+    enable_terminology=False,
+    terminology_server_url="http://localhost/not-a-real-server",
+)
+
+data: DataSource
+
+if config.read_from_delta:
+    data = pc.read.delta(config.delta_dir)
+else:
+    data = pc.read.bundles(
+        config.bundles_dir,
+        ["Patient", "Condition", "Observation", "Procedure", "MedicationStatement"],
+    )
 
 data.read("Patient").cache()
 patients = data.extract(

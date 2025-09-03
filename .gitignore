@@ -71,7 +71,7 @@ src/generated/
 
 .approval_tests_temp
 
-gx/**/*.json
+dq/**/*.json
 
 spark_checkpoints/
 
@@ -248,3 +248,5 @@ poetry.toml
 pyrightconfig.json
 
 dq/dq/check_dq.py
+
+dq/**/checkpoints/
