@@ -338,7 +338,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
               .getCodings()
               .snomed()
               .setCode("399315003")
-              .setDisplay("Radionuclide therapy (procedure)");
+              .setDisplay("Radionuclide therapy");
 
       var code =
           fhirProperties
