@@ -273,17 +273,21 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     procedure.setPerformed(performed);
 
     // usedCode
-    var strahlenartCoding =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieStrahlenart())
-            .setCode(bestrahlungsData.strahlenart());
-    procedure.addUsedCode(new CodeableConcept(strahlenartCoding));
+    if (bestrahlungsData.strahlenart() != null) {
+      var strahlenartCoding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieStrahlenart())
+              .setCode(bestrahlungsData.strahlenart());
+      procedure.addUsedCode(new CodeableConcept(strahlenartCoding));
+    }
 
-    var applikationsartCoding =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
-            .setCode(bestrahlungsData.applikationsart().getCode());
-    procedure.addUsedCode(new CodeableConcept(applikationsartCoding));
+    if (bestrahlungsData.applikationsart() != null) {
+      var applikationsartCoding =
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
+              .setCode(bestrahlungsData.applikationsart().getCode());
+      procedure.addUsedCode(new CodeableConcept(applikationsartCoding));
+    }
 
     // bodySite
     if (bestrahlungsData.zielgebiet() != null) {

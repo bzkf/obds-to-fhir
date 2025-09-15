@@ -56,10 +56,6 @@
   } ],
   "usedCode": [ {
     "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart"
-    } ]
-  }, {
-    "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
       "code": "I"
     } ]
