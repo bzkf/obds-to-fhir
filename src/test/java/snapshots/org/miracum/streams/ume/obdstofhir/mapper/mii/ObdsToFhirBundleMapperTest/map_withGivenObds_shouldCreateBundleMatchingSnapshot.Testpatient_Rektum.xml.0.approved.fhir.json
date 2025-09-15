@@ -1199,33 +1199,6 @@
             "code": "A"
           } ]
         }
-      }, {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung",
-        "extension": [ {
-          "url": "Applikationsart",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "PRCN"
-            } ]
-          }
-        }, {
-          "url": "Zielgebiet",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "5.1.+"
-            } ]
-          }
-        }, {
-          "url": "Zielgebiet_Lateralitaet",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "B"
-            } ]
-          }
-        } ]
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",
@@ -1261,6 +1234,74 @@
     "request": {
       "method": "PUT",
       "url": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4"
+    }
+  }, {
+    "fullUrl": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-bestrahlung-procedure-id",
+        "value": "50_1_ST_1-0"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4"
+      } ],
+      "status": "in-progress",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+      },
+      "performedPeriod": {
+        "start": "2020-10-05"
+      },
+      "bodySite": [ {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "B"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
+          "code": "5.1.+"
+        } ]
+      } ],
+      "usedCode": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+          "code": "PRCN"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab"
     }
   }, {
     "fullUrl": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0",

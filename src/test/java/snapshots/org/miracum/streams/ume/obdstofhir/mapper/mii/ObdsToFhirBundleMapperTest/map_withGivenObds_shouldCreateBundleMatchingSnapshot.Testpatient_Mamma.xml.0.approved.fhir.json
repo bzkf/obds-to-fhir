@@ -2421,57 +2421,6 @@
             "code": "A"
           } ]
         }
-      }, {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung",
-        "extension": [ {
-          "url": "Applikationsart",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-              "code": "PRCN"
-            } ]
-          }
-        }, {
-          "url": "Zielgebiet",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-              "code": "3.1.+"
-            } ]
-          }
-        }, {
-          "url": "Zielgebiet_Lateralitaet",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
-            } ]
-          }
-        }, {
-          "url": "Gesamtdosis",
-          "valueQuantity": {
-            "value": 58.8,
-            "unit": "Gy",
-            "system": "http://unitsofmeasure.org",
-            "code": "Gy"
-          }
-        }, {
-          "url": "Einzeldosis",
-          "valueQuantity": {
-            "value": 1.8,
-            "unit": "Gy",
-            "system": "http://unitsofmeasure.org",
-            "code": "Gy"
-          }
-        }, {
-          "url": "Boost",
-          "valueCodeableConcept": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-              "code": "SIB"
-            } ]
-          }
-        } ]
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",
@@ -2514,6 +2463,100 @@
     "request": {
       "method": "PUT",
       "url": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec"
+    }
+  }, {
+    "fullUrl": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis",
+        "valueQuantity": {
+          "value": 58.8,
+          "unit": "Gy",
+          "system": "http://unitsofmeasure.org",
+          "code": "Gy"
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis",
+        "valueQuantity": {
+          "value": 1.8,
+          "unit": "Gy",
+          "system": "http://unitsofmeasure.org",
+          "code": "Gy"
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-boost",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
+            "code": "SIB"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-bestrahlung-procedure-id",
+        "value": "60_1_ST_1-0"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "1287742003",
+          "display": "Radiotherapy (procedure)"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2025",
+          "code": "8-52",
+          "display": "Strahlentherapie"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+      },
+      "performedPeriod": {
+        "start": "2020-06-12",
+        "end": "2020-07-15"
+      },
+      "bodySite": [ {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+              "code": "R"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
+          "code": "3.1.+"
+        } ]
+      } ],
+      "usedCode": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+          "code": "PRCN"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39"
     }
   }, {
     "fullUrl": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",

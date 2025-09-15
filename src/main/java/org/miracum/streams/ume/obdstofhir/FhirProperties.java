@@ -49,6 +49,10 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
     private String miiExOnkoSystemischeTherapieIntention;
+    private String miiExOnkoStrahlentherapieBestrahlungEinzeldosis;
+    private String miiExOnkoStrahlentherapieBestrahlungGesamtdosis;
+    private String miiExOnkoStrahlentherapieBestrahlungBoost;
+    private String miiExOnkoStrahlentherapieBestrahlungSeitenlokalisation;
     private String conditionAssertedDate;
     private String ordinalValue;
   }
@@ -127,6 +131,7 @@ public class FhirProperties {
     private String miiCsOnkoStrahlentherapieBoost;
     private String miiCsOnkoOperationResidualstatus;
     private String strahlentherapieProcedureId;
+    private String strahlentherapieBestrahlungProcedureId;
     private String systemischeTherapieProcedureId;
     private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
@@ -217,6 +222,8 @@ public class FhirProperties {
     private String miiPrOnkoTnmVKategorie;
     private String miiPrOnkoTnmYSymbol;
     private String miiPrOnkoListeEvidenzErstdiagnose;
+    private String miiPrOnkoStrahlentherapieBestrahlungStrahlentherapie;
+    private String miiPrOnkoStrahlentherapieBestrahlungNuklearmedizin;
   }
 
   @Data

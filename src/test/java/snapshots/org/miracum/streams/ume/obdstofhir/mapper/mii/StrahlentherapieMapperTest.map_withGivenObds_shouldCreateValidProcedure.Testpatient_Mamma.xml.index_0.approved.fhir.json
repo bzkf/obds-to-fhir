@@ -20,57 +20,6 @@
         "code": "A"
       } ]
     }
-  }, {
-    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung",
-    "extension": [ {
-      "url": "Applikationsart",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-          "code": "PRCN"
-        } ]
-      }
-    }, {
-      "url": "Zielgebiet",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "3.1.+"
-        } ]
-      }
-    }, {
-      "url": "Zielgebiet_Lateralitaet",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "R"
-        } ]
-      }
-    }, {
-      "url": "Gesamtdosis",
-      "valueQuantity": {
-        "value": 58.8,
-        "unit": "Gy",
-        "system": "http://unitsofmeasure.org",
-        "code": "Gy"
-      }
-    }, {
-      "url": "Einzeldosis",
-      "valueQuantity": {
-        "value": 1.8,
-        "unit": "Gy",
-        "system": "http://unitsofmeasure.org",
-        "code": "Gy"
-      }
-    }, {
-      "url": "Boost",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-          "code": "SIB"
-        } ]
-      }
-    } ]
   } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",

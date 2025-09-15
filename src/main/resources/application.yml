@@ -31,6 +31,10 @@ fhir:
     mii-ex-onko-histology-morphology-behavior-icdo3: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3"
     mii-ex-onko-systemische-therapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"
     mii-ex-onko-op-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"
+    mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis"
+    mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis"
+    mii-ex-onko-strahlentherapie-bestrahlung-boost: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-boost"
+    mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
   systems:
@@ -48,6 +52,7 @@ fhir:
     gleason-score-observation-id: "${fhir.default.baseSystemUrl}/gleason-score-observation-id"
     psaObservationId: "${fhir.default.baseSystemUrl}/psa-observation-id"
     strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/strahlentherapie-procedure-id"
+    strahlentherapie-bestrahlung-procedure-id: "${fhir.default.baseSystemUrl}/strahlentherapie-bestrahlung-procedure-id"
     systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/systemische-therapie-procedure-id"
     systemische-therapie-medication-statement-id: "${fhir.default.baseSystemUrl}/systemische-therapie-medication-statement-id"
     allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/allgemeiner-leistungszustand-ecog-id"
@@ -201,6 +206,8 @@ fhir:
     mii-pr-onko-befund: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-liste-evidenz-erstdiagnose: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin${fhir.profiles.versions.mii-onkologie}"
 
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
