@@ -195,6 +195,10 @@ procedures = data.extract(
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
         exp("meta.profile", "meta_profile"),
+        exp(
+            "Procedure.reasonReference.resolve().ofType(Condition).id",
+            "reason_reference_condition_id",
+        ),
     ],
 ).drop_duplicates()
 print(procedures.columns)
@@ -226,18 +230,12 @@ patients_with_medications = medicationStatements.join(
     how="inner",
 )
 
-patients_with_procedures_selected = patients_with_procedures.select(
-    "subject_reference",
-    "ops_code",
-    "performed_date_time",
-    "performedPeriod_start",
-    "meta_profile",
+condition_with_procedure = conditions.join(
+    procedures,
+    conditions["condition_id"] == procedures["reason_reference_condition_id"],
+    how="left",
 )
-patients_with_condition_procedure = patients_with_conditions.join(
-    patients_with_procedures_selected, on="subject_reference", how="left"
-)
-patients_with_condition_procedure.show(truncate=False)
-
+condition_with_procedure.show()
 
 # Great Expectations
 # ------------------
@@ -284,7 +282,7 @@ data_asset_medicationStatements = data_source.add_dataframe_asset(
     name="patients_and_MedicationStatements"
 )
 data_asset_condition_procedure = data_source.add_dataframe_asset(
-    name="patients_and_condtition_procedure"
+    name="condition_with_procedure"
 )
 data_asset_fernmetastasen = data_source.add_dataframe_asset(
     name="patients_and_fernmetastasen"
@@ -318,7 +316,7 @@ validation_targets = [
     },
     {
         "name": "condition_procedure",
-        "dataframe": patients_with_condition_procedure,
+        "dataframe": condition_with_procedure,
         "data_asset": data_asset_condition_procedure,
         "expectations": expectations.expectations_condition_procedure,
     },
