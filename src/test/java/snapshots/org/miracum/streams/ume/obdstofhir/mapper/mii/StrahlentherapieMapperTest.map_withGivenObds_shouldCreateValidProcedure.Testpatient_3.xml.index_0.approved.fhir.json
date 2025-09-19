@@ -20,57 +20,6 @@
         "code": "O"
       } ]
     }
-  }, {
-    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung",
-    "extension": [ {
-      "url": "Applikationsart",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-          "code": "PRCN-ST4D"
-        } ]
-      }
-    }, {
-      "url": "Strahlenart",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-          "code": "NE"
-        } ]
-      }
-    }, {
-      "url": "Zielgebiet",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "1.1."
-        } ]
-      }
-    }, {
-      "url": "Zielgebiet_Lateralitaet",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "T"
-        } ]
-      }
-    }, {
-      "url": "Einzeldosis",
-      "valueQuantity": {
-        "value": 3,
-        "unit": "Gy",
-        "system": "http://unitsofmeasure.org",
-        "code": "Gy"
-      }
-    }, {
-      "url": "Boost",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-          "code": "J"
-        } ]
-      }
-    } ]
   } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-procedure-id",

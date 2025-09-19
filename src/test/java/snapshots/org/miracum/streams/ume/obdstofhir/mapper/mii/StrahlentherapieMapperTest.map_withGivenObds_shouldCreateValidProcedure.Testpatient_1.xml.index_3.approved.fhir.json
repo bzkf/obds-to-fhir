@@ -1,0 +1,81 @@
+{
+  "resourceType": "Procedure",
+  "id": "68cc6dd03306fd9703859bd165a85477bea8daf5bcccc755d096c65f608c4feb",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis",
+    "valueQuantity": {
+      "value": 20,
+      "unit": "GBq",
+      "system": "http://unitsofmeasure.org",
+      "code": "GBq"
+    }
+  }, {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis",
+    "valueQuantity": {
+      "value": 20,
+      "unit": "GBq",
+      "system": "http://unitsofmeasure.org",
+      "code": "GBq"
+    }
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-bestrahlung-procedure-id",
+    "value": "101_ST-2-2"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559"
+  } ],
+  "status": "completed",
+  "category": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "399315003",
+      "display": "Radionuclide therapy"
+    } ]
+  },
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/ops",
+      "version": "2025",
+      "code": "8-53",
+      "display": "Nuklearmedizinische Therapie"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "performedPeriod": {
+    "start": "2020-03-10",
+    "end": "2020-03-10"
+  },
+  "bodySite": [ {
+    "extension": [ {
+      "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "U"
+        } ]
+      }
+    } ],
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
+      "code": "7.+"
+    } ]
+  } ],
+  "usedCode": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
+      "code": "Y-90"
+    } ]
+  }, {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+      "code": "MPRRT"
+    } ]
+  } ]
+}

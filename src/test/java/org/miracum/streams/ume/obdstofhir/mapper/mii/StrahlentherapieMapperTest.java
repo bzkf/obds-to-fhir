@@ -47,7 +47,7 @@ class StrahlentherapieMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getST() != null) {
-        list.add(sut.map(meldung.getST(), subject, condition));
+        list.addAll(sut.map(meldung.getST(), subject, condition, meldung.getMeldungID()));
       }
     }
 

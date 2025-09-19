@@ -223,7 +223,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (meldung.getST() != null) {
           var st = meldung.getST();
           var stProcedure =
-              strahlentherapieMapper.map(st, patientReference, primaryConditionReference);
+              strahlentherapieMapper.map(
+                  st, patientReference, primaryConditionReference, meldung.getMeldungID());
           addToBundle(bundle, stProcedure);
 
           if (st.getModulAllgemein() != null) {
@@ -827,11 +828,5 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private Reference createReferenceFromResource(Resource resource) {
     Objects.requireNonNull(resource.getId());
     return new Reference(resource.getResourceType().name() + "/" + resource.getId());
-  }
-
-  private List<Reference> createReferenceFromResource(List<? extends Resource> resources) {
-    return resources.stream()
-        .map(r -> new Reference(r.getResourceType().name() + "/" + r.getId()))
-        .toList();
   }
 }
