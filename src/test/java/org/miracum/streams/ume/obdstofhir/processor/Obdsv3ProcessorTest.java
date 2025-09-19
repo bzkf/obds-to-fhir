@@ -346,19 +346,26 @@ public class Obdsv3ProcessorTest {
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
 
-      // Patient + ST_1-Procedure behandlungsende
+      // Patient + ST_1-Procedure behandlungsende (2 Procedure: 1 bestrahlung + 1 'bracket')
       validateMultiStBundle(
-          (Bundle) outputRecords.getFirst().value, 4, Procedure.ProcedureStatus.COMPLETED);
+          (Bundle) outputRecords.getFirst().value,
+          4,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.get(1).value,
-          5,
+          6,
           Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.INPROGRESS,
           Procedure.ProcedureStatus.INPROGRESS);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.getLast().value,
-          5,
+          6,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
     } catch (JSONException e) {
