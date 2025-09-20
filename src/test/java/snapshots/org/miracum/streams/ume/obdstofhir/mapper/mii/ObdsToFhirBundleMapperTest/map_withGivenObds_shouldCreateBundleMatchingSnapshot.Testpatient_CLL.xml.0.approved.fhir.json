@@ -112,103 +112,6 @@
       "url": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
     }
   }, {
-    "fullUrl": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a",
-    "resource": {
-      "resourceType": "Procedure",
-      "id": "468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
-      },
-      "extension": [ {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "S"
-          } ]
-        }
-      }, {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
-            "code": "O"
-          } ]
-        }
-      } ],
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
-        "value": "992_syst1"
-      } ],
-      "status": "completed",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "373818007",
-          "display": "No anti-cancer treatment - watchful waiting (finding)"
-        }, {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "WW"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "performedPeriod": {
-        "start": "2015-07-15",
-        "end": "2020-07-18"
-      },
-      "outcome": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende",
-          "code": "P"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a"
-    }
-  }, {
-    "fullUrl": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
-        "value": "30_Inner_1-Studienteilnahme"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "709491003",
-          "display": "Enrollment in clinical trial (procedure)"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "focus": [ {
-        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
-      } ],
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e"
-    }
-  }, {
     "fullUrl": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc",
     "resource": {
       "resourceType": "Procedure",
@@ -398,6 +301,135 @@
       "url": "Observation/84311930f093ea4d654d76846e11eb565e18a68dac160a4ae38f3231736e1c43"
     }
   }, {
+    "fullUrl": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
+    "resource": {
+      "resourceType": "CarePlan",
+      "id": "72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+        "value": "Tumorkonferenz-111"
+      } ],
+      "status": "active",
+      "intent": "plan",
+      "category": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+          "code": "praeth"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "created": "2020-08-17",
+      "addresses": [ {
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672"
+    }
+  }, {
+    "fullUrl": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "S"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
+            "code": "O"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "value": "992_syst1"
+      } ],
+      "status": "completed",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "373818007",
+          "display": "No anti-cancer treatment - watchful waiting (finding)"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "WW"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "performedPeriod": {
+        "start": "2015-07-15",
+        "end": "2020-07-18"
+      },
+      "outcome": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende",
+          "code": "P"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a"
+    }
+  }, {
+    "fullUrl": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
+        "value": "30_Inner_1-Studienteilnahme"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "709491003",
+          "display": "Enrollment in clinical trial (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "focus": [ {
+        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e"
+    }
+  }, {
     "fullUrl": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",
     "resource": {
       "resourceType": "Observation",
@@ -514,38 +546,6 @@
     "request": {
       "method": "PUT",
       "url": "Observation/e19f3412f3573b17c07a2942c786f916c2bcdd7be404c876879f70affb770252"
-    }
-  }, {
-    "fullUrl": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
-    "resource": {
-      "resourceType": "CarePlan",
-      "id": "72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
-        "value": "Tumorkonferenz-111"
-      } ],
-      "status": "active",
-      "intent": "plan",
-      "category": [ {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "praeth"
-        } ]
-      } ],
-      "subject": {
-        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
-      },
-      "created": "2020-08-17",
-      "addresses": [ {
-        "reference": "Condition/280cf3a59b2bfe79a6d3517ac663328fa5e6c57942ec2c4836ccc18ef29f1848"
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672"
     }
   }, {
     "fullUrl": "Observation/139e56223545fedbb4911f0ddddf852d9fd3459bfc9132989724318b5cbc9f7a",

@@ -356,10 +356,10 @@ public class Obdsv3ProcessorTest {
       validateMultiStBundle(
           (Bundle) outputRecords.get(1).value,
           6,
-          Procedure.ProcedureStatus.COMPLETED,
-          Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.INPROGRESS,
-          Procedure.ProcedureStatus.INPROGRESS);
+          Procedure.ProcedureStatus.INPROGRESS,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.getLast().value,

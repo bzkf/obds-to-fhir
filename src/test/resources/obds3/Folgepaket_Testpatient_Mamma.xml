@@ -34,44 +34,6 @@
         </Adresse>
       </Patienten_Stammdaten>
       <Menge_Meldung>
-        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_60108">
-          <Meldebegruendung>I</Meldebegruendung>
-          <Eigene_Leistung>J</Eigene_Leistung>
-          <Tumorzuordnung Tumor_ID="601">
-            <Primaertumor_ICD>
-              <Code>C50.4</Code>
-              <Version>10 2020 GM</Version>
-            </Primaertumor_ICD>
-            <Diagnosedatum Datumsgenauigkeit="E">2020-02-16</Diagnosedatum>
-            <Seitenlokalisation>R</Seitenlokalisation>
-            <Morphologie_ICD_O>
-              <Code>8500/3</Code>
-              <Version>31</Version>
-            </Morphologie_ICD_O>
-          </Tumorzuordnung>
-          <SYST SYST_ID="60_1_IN_1">
-            <Meldeanlass>behandlungsbeginn</Meldeanlass>
-            <Intention>K</Intention>
-            <Stellung_OP>A</Stellung_OP>
-            <Therapieart>CH</Therapieart>
-            <Protokoll>ETC</Protokoll>
-            <Beginn Datumsgenauigkeit="E">2020-04-03</Beginn>
-            <Menge_Substanz>
-              <Substanz>
-                <Bezeichnung>Cyclophosphamid</Bezeichnung>
-              </Substanz>
-              <Substanz>
-                <Bezeichnung>Epirubicin</Bezeichnung>
-              </Substanz>
-              <Substanz>
-                <Bezeichnung>Taxotere</Bezeichnung>
-              </Substanz>
-            </Menge_Substanz>
-            <Nebenwirkungen>
-              <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
-            </Nebenwirkungen>
-          </SYST>
-        </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_60112">
           <Meldebegruendung>I</Meldebegruendung>
           <Eigene_Leistung>J</Eigene_Leistung>
@@ -107,6 +69,44 @@
             </Menge_Substanz>
             <Ende_Grund>E</Ende_Grund>
             <Ende>2020-05-14</Ende>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_60108">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="601">
+            <Primaertumor_ICD>
+              <Code>C50.4</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-02-16</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8500/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="60_1_IN_1">
+            <Meldeanlass>behandlungsbeginn</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>A</Stellung_OP>
+            <Therapieart>CH</Therapieart>
+            <Protokoll>ETC</Protokoll>
+            <Beginn Datumsgenauigkeit="E">2020-04-03</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <Bezeichnung>Cyclophosphamid</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>Epirubicin</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>Taxotere</Bezeichnung>
+              </Substanz>
+            </Menge_Substanz>
             <Nebenwirkungen>
               <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
             </Nebenwirkungen>

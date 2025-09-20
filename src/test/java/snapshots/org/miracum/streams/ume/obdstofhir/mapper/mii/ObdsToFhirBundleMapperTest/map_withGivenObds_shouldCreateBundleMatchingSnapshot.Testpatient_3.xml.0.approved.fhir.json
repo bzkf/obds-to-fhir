@@ -202,135 +202,6 @@
       "url": "MedicationStatement/ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930"
     }
   }, {
-    "fullUrl": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
-        "value": "1-2-3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "396432002",
-          "display": "Status of regression of tumor (observable entity)"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
-      },
-      "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
-      } ],
-      "effectiveDateTime": "2018-06-02",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
-          "code": "P",
-          "display": "Progression"
-        } ]
-      },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "277062004",
-            "display": "Status des Residualtumors"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
-            "code": "K",
-            "display": "kein Tumor nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "399656008",
-            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
-            "code": "K",
-            "display": "kein Lymphknotenbefall nachweisbar"
-          } ]
-        }
-      }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "399608002",
-            "display": "Status of distant metastasis (observable entity)"
-          } ]
-        },
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
-            "code": "R",
-            "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
-          } ]
-        }
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8"
-    }
-  }, {
-    "fullUrl": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
-        "value": "ECOG-12_1_VE_1"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "423740007",
-          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
-      },
-      "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
-      } ],
-      "effectiveDateTime": "2018-06-02",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
-          "code": "2",
-          "display": "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122"
-    }
-  }, {
     "fullUrl": "Procedure/ab777506937182733cc0aadcdf36234724a006177ba65acdb13258af95b5638b",
     "resource": {
       "resourceType": "Procedure",
@@ -475,6 +346,135 @@
     "request": {
       "method": "PUT",
       "url": "Procedure/be702f3694be4fb15373b7ddee19a10aa7515009c8795b3aef73229633e5a0de"
+    }
+  }, {
+    "fullUrl": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
+        "value": "1-2-3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "focus": [ {
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+      } ],
+      "effectiveDateTime": "2018-06-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "P",
+          "display": "Progression"
+        } ]
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+            "code": "277062004",
+            "display": "Status des Residualtumors"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
+            "code": "K",
+            "display": "kein Tumor nachweisbar"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+            "code": "399656008",
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
+            "code": "K",
+            "display": "kein Lymphknotenbefall nachweisbar"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+            "code": "399608002",
+            "display": "Status of distant metastasis (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
+            "code": "R",
+            "display": "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8"
+    }
+  }, {
+    "fullUrl": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-12_1_VE_1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
+      },
+      "focus": [ {
+        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+      } ],
+      "effectiveDateTime": "2018-06-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "2",
+          "display": "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122"
     }
   }, {
     "fullUrl": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4",

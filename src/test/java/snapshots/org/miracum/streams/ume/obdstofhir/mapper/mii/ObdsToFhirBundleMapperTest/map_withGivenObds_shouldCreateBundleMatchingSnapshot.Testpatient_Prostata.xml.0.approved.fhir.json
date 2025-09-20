@@ -461,71 +461,6 @@
       "url": "CarePlan/38782f24873022ccbfc4be178fe11507d3901799c6d68e63ac77bf2e8e27fc60"
     }
   }, {
-    "fullUrl": "CarePlan/5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88",
-    "resource": {
-      "resourceType": "CarePlan",
-      "id": "5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
-        "value": "Tumorkonferenz-113"
-      } ],
-      "status": "completed",
-      "intent": "plan",
-      "category": [ {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "postop"
-        } ]
-      } ],
-      "subject": {
-        "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
-      },
-      "created": "2020-06-10",
-      "addresses": [ {
-        "reference": "Condition/3c390a2f5a1bb1e9ee813bfc8a786efbbf59d662e24049d421c0f106bdd67ac7"
-      } ],
-      "activity": [ {
-        "detail": {
-          "code": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "ST"
-            } ]
-          },
-          "status": "unknown",
-          "statusReason": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "U"
-            } ]
-          }
-        }
-      }, {
-        "detail": {
-          "code": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "HO"
-            } ]
-          },
-          "status": "unknown",
-          "statusReason": {
-            "coding": [ {
-              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "U"
-            } ]
-          }
-        }
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "CarePlan/5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88"
-    }
-  }, {
     "fullUrl": "Procedure/4226087905f6057b9b71e30b1c5035fbb7a3dc43aab842605f2616611f690e3d",
     "resource": {
       "resourceType": "Procedure",
@@ -1431,6 +1366,71 @@
     "request": {
       "method": "PUT",
       "url": "Observation/4eccc5f8d8499c776dffe9e481c7582889e29158fe5b8061825c69f9a904d42c"
+    }
+  }, {
+    "fullUrl": "CarePlan/5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88",
+    "resource": {
+      "resourceType": "CarePlan",
+      "id": "5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+        "value": "Tumorkonferenz-113"
+      } ],
+      "status": "completed",
+      "intent": "plan",
+      "category": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+          "code": "postop"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
+      },
+      "created": "2020-06-10",
+      "addresses": [ {
+        "reference": "Condition/3c390a2f5a1bb1e9ee813bfc8a786efbbf59d662e24049d421c0f106bdd67ac7"
+      } ],
+      "activity": [ {
+        "detail": {
+          "code": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+              "code": "ST"
+            } ]
+          },
+          "status": "unknown",
+          "statusReason": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
+              "code": "U"
+            } ]
+          }
+        }
+      }, {
+        "detail": {
+          "code": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+              "code": "HO"
+            } ]
+          },
+          "status": "unknown",
+          "statusReason": {
+            "coding": [ {
+              "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
+              "code": "U"
+            } ]
+          }
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "CarePlan/5837f18e83fcf397fa438fcd05fdc5e21bed11562005a08dab3313d55c2ebe88"
     }
   }, {
     "fullUrl": "Observation/33ffb713694408e707d2cdcc4ce660a637c11a9470ca973e8a62f4354d950d9c",

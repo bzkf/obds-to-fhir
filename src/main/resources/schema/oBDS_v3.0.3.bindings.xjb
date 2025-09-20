@@ -70,6 +70,9 @@
         <jaxb:bindings node="//xs:complexType[@name='Tumorkonferenz_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
             <jaxb:typesafeEnumClass name="Meldeanlass" />
         </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='Verlauf_Typ']//xs:element[@name='Meldeanlass']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="Meldeanlass" />
+        </jaxb:bindings>
         <jaxb:bindings
             node="//xs:complexType[@name='Menge_Genetik_Typ']//xs:element[@name='Genetische_Variante']//xs:element[@name='Auspraegung']/xs:simpleType">
             <jaxb:typesafeEnumClass name="GenetischeVarianteAuspraegung" />
