@@ -85,7 +85,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       ErstdiagnoseEvidenzListMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
-public class Obdsv3ProcessorTest {
+public class Obdsv3ProcessorTest extends MapperTest{
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
@@ -368,6 +368,8 @@ public class Obdsv3ProcessorTest {
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
+
+      verifyAll(outputRecords.stream().map(r -> r.value).toList(), "Test_ST");
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }
