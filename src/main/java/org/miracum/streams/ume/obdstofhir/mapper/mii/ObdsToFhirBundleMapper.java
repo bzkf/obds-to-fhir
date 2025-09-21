@@ -234,19 +234,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           }
 
           if (st.getNebenwirkungen() != null) {
+            // in the list of procedures, find the primary/bracket one by cehcking its
+            // profile. It's the one the AdverseEvent should reference.
+            var stProfile = fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie();
             var primaryProcedure =
                 stProcedure.stream()
                     .filter(
                         p ->
                             p.getMeta().getProfile().stream()
-                                .anyMatch(
-                                    c ->
-                                        c.getValue()
-                                            .equals(
-                                                fhirProperties
-                                                    .getProfiles()
-                                                    .getMiiPrOnkoStrahlentherapie())))
+                                .anyMatch(c -> stProfile.equals(c.getValue())))
                     .findFirst();
+
             if (primaryProcedure.isPresent()) {
               var stProcedureReference = createReferenceFromResource(primaryProcedure.get());
               var nebenwirkungen =
