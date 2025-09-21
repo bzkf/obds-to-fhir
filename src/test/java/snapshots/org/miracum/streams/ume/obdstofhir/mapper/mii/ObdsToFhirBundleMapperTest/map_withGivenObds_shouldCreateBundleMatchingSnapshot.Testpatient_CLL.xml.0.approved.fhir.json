@@ -301,6 +301,45 @@
       "url": "Observation/84311930f093ea4d654d76846e11eb565e18a68dac160a4ae38f3231736e1c43"
     }
   }, {
+    "fullUrl": "AdverseEvent/a334edd7b6d4f98b2b26365a8095622600193894e04c034117d6d7310a4cb09d",
+    "resource": {
+      "resourceType": "AdverseEvent",
+      "id": "a334edd7b6d4f98b2b26365a8095622600193894e04c034117d6d7310a4cb09d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+      },
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-993_syst1-0"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ],
+        "text": "Übelkeit"
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "seriousness": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "3"
+        } ]
+      },
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "AdverseEvent/a334edd7b6d4f98b2b26365a8095622600193894e04c034117d6d7310a4cb09d"
+    }
+  }, {
     "fullUrl": "CarePlan/72062eee5679ff3f1831b970f9066808d9d84093afb30e1ef5c67aefdef35672",
     "resource": {
       "resourceType": "CarePlan",
@@ -428,6 +467,44 @@
     "request": {
       "method": "PUT",
       "url": "Observation/36adfe338d3f48d5fb78ab927a97860d653156a21f544fde96e9b58f70b36c6e"
+    }
+  }, {
+    "fullUrl": "AdverseEvent/5a8f29a14a07843b5e5f4951018c74c60399654e350c890d0fccefd8886a6cf5",
+    "resource": {
+      "resourceType": "AdverseEvent",
+      "id": "5a8f29a14a07843b5e5f4951018c74c60399654e350c890d0fccefd8886a6cf5",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+      },
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-992_syst1-Grad-maximal-2-unbekannt"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "not-applicable"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/66eab990c3ab4a1dac96eecfa7189a4455b4a4e9d39b1813fa20e17b8cc564d2"
+      },
+      "seriousness": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "U"
+        } ]
+      },
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/468b48b84c08b2959fa1521508cb461ed2111042570286cc8183a6bd45576d3a"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "AdverseEvent/5a8f29a14a07843b5e5f4951018c74c60399654e350c890d0fccefd8886a6cf5"
     }
   }, {
     "fullUrl": "Observation/44ef659215b381d8790b6c78a8105b1a64b4c532e1cee97d422528d571d1e150",

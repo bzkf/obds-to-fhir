@@ -57,6 +57,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GleasonScoreMapper gleasonScoreMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
+  private final NebenwirkungMapper nebenwirkungMapper;
 
   @Value("${fhir.mappings.createPatientResources.enabled}")
   private boolean createPatientResources;
@@ -91,7 +92,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TNMMapper tnmMapper,
       GleasonScoreMapper gleasonScoreMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
-      ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper) {
+      ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
+      NebenwirkungMapper nebenwirkungMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -117,6 +119,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.gleasonScoreMapper = gleasonScoreMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
+    this.nebenwirkungMapper = nebenwirkungMapper;
   }
 
   /**
@@ -227,6 +230,31 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       primaryConditionReference,
                       meldung.getMeldungID());
               addToBundle(bundle, studienteilnahmeObservation);
+            }
+          }
+
+          if (st.getNebenwirkungen() != null) {
+            var primaryProcedure =
+                stProcedure.stream()
+                    .filter(
+                        p ->
+                            p.getMeta().getProfile().stream()
+                                .anyMatch(
+                                    c ->
+                                        c.getValue()
+                                            .equals(
+                                                fhirProperties
+                                                    .getProfiles()
+                                                    .getMiiPrOnkoStrahlentherapie())))
+                    .findFirst();
+            if (primaryProcedure.isPresent()) {
+              var stProcedureReference = createReferenceFromResource(primaryProcedure.get());
+              var nebenwirkungen =
+                  nebenwirkungMapper.map(
+                      st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
+              addToBundle(bundle, nebenwirkungen);
+            } else {
+              LOG.error("Unable to find the primary ST procedure");
             }
           }
         }
@@ -614,6 +642,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 allgemein, patientReference, primaryConditionReference, meldung.getMeldungID());
         mappedResources.add(studienteilnahmeObservation);
       }
+    }
+
+    if (syst.getNebenwirkungen() != null) {
+      var nebenwirkungen =
+          nebenwirkungMapper.map(
+              syst.getNebenwirkungen(), patientReference, procedureReference, syst.getSYSTID());
+      mappedResources.addAll(nebenwirkungen);
     }
 
     return mappedResources;

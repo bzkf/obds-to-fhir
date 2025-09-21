@@ -42,6 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       GleasonScoreMapper.class,
       WeitereKlassifikationMapper.class,
       ErstdiagnoseEvidenzListMapper.class,
+      NebenwirkungMapper.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties
