@@ -88,7 +88,8 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getGenetischeVarianteId())
+              .setSystem(
+                  fhirProperties.getSystems().getIdentifiers().getGenetischeVarianteObservationId())
               .setValue(slugifier.slugify(value));
 
       observation.addIdentifier(identifier);

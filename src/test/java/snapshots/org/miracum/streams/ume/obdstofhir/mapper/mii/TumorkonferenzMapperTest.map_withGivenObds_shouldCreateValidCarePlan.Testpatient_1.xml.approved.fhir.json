@@ -1,11 +1,11 @@
 {
   "resourceType": "CarePlan",
-  "id": "7a14c5181ec72a8c66aaacaef9e736840e0a4cabb3ac6d29767a37e00f6f8ee3",
+  "id": "4c9ff87c9a1f31f39a0fcb197d426adda086aa14d5314c25c50e2b7feb2221da",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-care-plan-id",
     "value": "Tumorkonferenz-221"
   } ],
   "status": "completed",

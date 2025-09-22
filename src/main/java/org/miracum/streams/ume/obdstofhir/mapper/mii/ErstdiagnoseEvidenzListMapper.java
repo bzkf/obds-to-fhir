@@ -28,7 +28,7 @@ public class ErstdiagnoseEvidenzListMapper extends ObdsToFhirMapper {
 
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getErstdiagnoseEvidenzListId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getErstdiagnoseEvidenzListId())
             .setValue(slugifier.slugify(patientId + "-" + tumorId));
     list.addIdentifier(identifier);
     list.setId(computeResourceIdFromIdentifier(identifier));

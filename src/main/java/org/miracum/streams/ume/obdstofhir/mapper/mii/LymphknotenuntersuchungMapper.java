@@ -105,7 +105,11 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     // Identifier
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+            .setSystem(
+                fhirProperties
+                    .getSystems()
+                    .getIdentifiers()
+                    .getLymphknotenuntersuchungObservationId())
             .setValue(slugifier.slugify(identifierValue));
     observation.addIdentifier(identifier);
 

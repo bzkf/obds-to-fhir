@@ -27,7 +27,7 @@ public class SpecimenMapper extends ObdsToFhirMapper {
     // Identifier = HistologieId
     var identifier = new Identifier();
     identifier
-        .setSystem(fhirProperties.getSystems().getSpecimenId())
+        .setSystem(fhirProperties.getSystems().getIdentifiers().getHistologieSpecimenId())
         .setValue(slugifier.slugify(histologie.getHistologieID()));
     specimen.addIdentifier(identifier);
     // Id

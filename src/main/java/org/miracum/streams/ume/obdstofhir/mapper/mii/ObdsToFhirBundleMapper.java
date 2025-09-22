@@ -59,13 +59,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
 
-  @Value("${fhir.mappings.createPatientResources.enabled}")
+  @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
 
   @Value("${fhir.mappings.modul.prostata.enabled}")
   private boolean isModulProstataMappingEnabled;
 
-  @Value("${fhir.mappings.metaSource}")
+  @Value("${fhir.mappings.meta.source}")
   private String metaSource;
 
   public ObdsToFhirBundleMapper(

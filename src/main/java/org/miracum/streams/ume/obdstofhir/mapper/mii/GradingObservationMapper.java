@@ -44,7 +44,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // Identifer
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getGradingObservationId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getGradingObservationId())
             .setValue(slugifier.slugify(identifierValue + "-grading"));
     observation.addIdentifier(identifier);
 

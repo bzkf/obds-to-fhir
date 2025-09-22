@@ -58,7 +58,11 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getAllgemeinerLeistungszustandEcogId())
+            .setSystem(
+                fhirProperties
+                    .getSystems()
+                    .getIdentifiers()
+                    .getAllgemeinerLeistungszustandEcogObservationId())
             .setValue(slugifier.slugify("ECOG-" + meldungsId));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
