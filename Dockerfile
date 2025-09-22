@@ -20,16 +20,16 @@ FROM docker.io/library/debian:12.11-slim@sha256:b1a741487078b369e78119849663d7f1
 RUN <<EOF
 set -e
 apt-get update
-apt-get install -y --no-install-recommends libjemalloc-dev
+apt-get install -y --no-install-recommends libjemalloc2
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
 FROM gcr.io/distroless/java21-debian12:nonroot@sha256:fb0d294a2ba6edffc3776a87dd2dce9771801a3fb0aa7319d51300239dd51aeb
 WORKDIR /opt/obds-to-fhir
-ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
+ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
 
-COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so /usr/lib/x86_64-linux-gnu/libjemalloc.so
+COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so.2 /usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 COPY --from=build /home/gradle/project/dependencies/ ./
 COPY --from=build /home/gradle/project/spring-boot-loader/ ./

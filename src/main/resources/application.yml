@@ -60,7 +60,7 @@ fhir:
     residualstatusObservationId: "${fhir.default.baseSystemUrl}/residualstatus-observation-id"
     histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/histologiebefund-diagnostic-report-id"
     genetische-variante-id: "${fhir.default.baseSystemUrl}/genetische-variante-id"
-    nebenwirkung-adverseEvent-id: "${fhir.default.baseSystemUrl}/nebenwirkung-adverseEvent-id"
+    nebenwirkung-adverse-event-id: "${fhir.default.baseSystemUrl}/nebenwirkung-adverse-event-id"
     tod-observation-id: "${fhir.default.baseSystemUrl}/tod-observation-id"
     grading-observation-id: "${fhir.default.baseSystemUrl}/grading-observation-id"
     tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/tnm-grouping-observation-id"

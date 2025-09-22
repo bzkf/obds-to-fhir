@@ -9,7 +9,9 @@ import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
+@Service
 public class NebenwirkungMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(NebenwirkungMapper.class);
@@ -25,6 +27,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
       String sourceElementId) {
 
     Objects.requireNonNull(nebenwirkung, "Nebenwirkung must not be null");
+    Objects.requireNonNull(sourceElementId, "Source element id (SYST_ID, ST_ID) must not be null");
     verifyReference(patient, ResourceType.Patient);
 
     var result = new ArrayList<AdverseEvent>();
@@ -37,7 +40,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     return result;
   }
 
-  public List<AdverseEvent> createAdverseEvent(
+  private List<AdverseEvent> createAdverseEvent(
       NebenwirkungTyp nebenwirkung,
       Reference patient,
       Reference suspectedEntity,
@@ -87,7 +90,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     return adverseEvents;
   }
 
-  public AdverseEvent createAdverseEventMax2(
+  private AdverseEvent createAdverseEventMax2(
       NebenwirkungTyp nebenwirkung,
       Reference patient,
       Reference suspectedEntity,

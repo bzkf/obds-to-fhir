@@ -5,11 +5,15 @@ import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.PathologieTyp;
+import de.basisdatensatz.obds.v3.STTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp;
+import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
@@ -53,6 +57,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GleasonScoreMapper gleasonScoreMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
+  private final NebenwirkungMapper nebenwirkungMapper;
 
   @Value("${fhir.mappings.createPatientResources.enabled}")
   private boolean createPatientResources;
@@ -87,7 +92,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TNMMapper tnmMapper,
       GleasonScoreMapper gleasonScoreMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
-      ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper) {
+      ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
+      NebenwirkungMapper nebenwirkungMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -113,6 +119,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.gleasonScoreMapper = gleasonScoreMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
+    this.nebenwirkungMapper = nebenwirkungMapper;
   }
 
   /**
@@ -149,6 +156,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
+      meldungen = sortMeldungen(meldungen);
+
       // Patient
       // XXX: this assumes that the "meldungen" contains every single Meldung for the
       // patient
@@ -162,22 +171,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         addToBundle(bundle, patient);
       }
       bundle.setId(patient.getId());
-
-      // Meldungen are ordered in a way such that the Meldungen with the Diagnose
-      // element present
-      // are always the last ones in the list, thus overriding any incomplete
-      // resources that were
-      // constructed from just the Tumorzuordung
-      // Overriding happens based on the Resource ID in `addToBundle`.
-      meldungen.sort(
-          (a, b) -> {
-            var aHasDiagnose = a.getDiagnose() != null;
-            var bHasDiagnose = b.getDiagnose() != null;
-            if (aHasDiagnose == bHasDiagnose) {
-              return 0;
-            }
-            return aHasDiagnose ? 1 : -1;
-          });
 
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
@@ -239,6 +232,29 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               addToBundle(bundle, studienteilnahmeObservation);
             }
           }
+
+          if (st.getNebenwirkungen() != null) {
+            // in the list of procedures, find the primary/bracket one by cehcking its
+            // profile. It's the one the AdverseEvent should reference.
+            var stProfile = fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie();
+            var primaryProcedure =
+                stProcedure.stream()
+                    .filter(
+                        p ->
+                            p.getMeta().getProfile().stream()
+                                .anyMatch(c -> stProfile.equals(c.getValue())))
+                    .findFirst();
+
+            if (primaryProcedure.isPresent()) {
+              var stProcedureReference = createReferenceFromResource(primaryProcedure.get());
+              var nebenwirkungen =
+                  nebenwirkungMapper.map(
+                      st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
+              addToBundle(bundle, nebenwirkungen);
+            } else {
+              LOG.error("Unable to find the primary ST procedure");
+            }
+          }
         }
 
         // Tod
@@ -285,6 +301,65 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       MDC.clear();
     }
     return bundles;
+  }
+
+  private static List<Meldung> sortMeldungen(List<Meldung> meldungen) {
+    var clonedMeldungen = new ArrayList<>(meldungen);
+
+    // if a list of Meldungen contains either a ST or SYST with the same ID,
+    // but one for the behandlungsende and one for the behandlungsbeginn,
+    // we want to make sure the one describing the behandlungsende
+    // is processed later than the begin.
+    // simple solution: just push them to the end of the list.
+    Function<Meldung, Integer> priority =
+        m -> {
+          if (m.getST() != null) {
+            return prioritiseMeldeanlass(
+                m.getST().getMeldeanlass(), STTyp.Meldeanlass.BEHANDLUNGSENDE);
+          }
+          if (m.getSYST() != null) {
+            return prioritiseMeldeanlass(
+                m.getSYST().getMeldeanlass(), SYSTTyp.Meldeanlass.BEHANDLUNGSENDE);
+          }
+          if (m.getTumorkonferenz() != null) {
+            return prioritiseMeldeanlass(
+                m.getTumorkonferenz().getMeldeanlass(),
+                TumorkonferenzTyp.Meldeanlass.BEHANDLUNGSENDE,
+                TumorkonferenzTyp.Meldeanlass.STATUSAENDERUNG);
+          }
+          if (m.getVerlauf() != null) {
+            return prioritiseMeldeanlass(
+                m.getVerlauf().getMeldeanlass(), VerlaufTyp.Meldeanlass.STATUSAENDERUNG);
+          }
+          return 0; // No meldeanlass -> normal priority
+        };
+
+    clonedMeldungen.sort(Comparator.comparing(priority));
+
+    // Meldungen are ordered in a way such that the Meldungen with the Diagnose
+    // element present are always the last ones in the list, thus overriding
+    // any incomplete resources that were constructed from just the Tumorzuordung
+    // Overriding happens based on the Resource ID in `addToBundle`.
+    // this pushes meldungen where the getDiagnose() != null to the end
+    // Note: it's important to have this Diagnose sorting at the very end of this
+    // method,
+    // so all diagnose meldungen are indeed at the very end.
+    clonedMeldungen.sort(Comparator.comparing(m -> m.getDiagnose() != null ? 1 : 0));
+
+    return clonedMeldungen;
+  }
+
+  private static <E extends Enum<E>> int prioritiseMeldeanlass(
+      E meldeanlass, E ende, E statusaenderung) {
+    if (meldeanlass == null) return 0;
+    if (meldeanlass.equals(ende)) return 2; // highest priority -> at the end
+    if (meldeanlass.equals(statusaenderung)) return 1; // middle priority
+    return 0; // normal
+  }
+
+  private static <E extends Enum<E>> int prioritiseMeldeanlass(E meldeanlass, E ende) {
+    if (meldeanlass == null) return 0;
+    return meldeanlass.equals(ende) ? 2 : 0; // "ende" at the end, everything else at the front
   }
 
   private List<Resource> mapDiagnose(
@@ -568,6 +643,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
     }
 
+    if (syst.getNebenwirkungen() != null) {
+      var nebenwirkungen =
+          nebenwirkungMapper.map(
+              syst.getNebenwirkungen(), patientReference, procedureReference, syst.getSYSTID());
+      mappedResources.addAll(nebenwirkungen);
+    }
+
     return mappedResources;
   }
 
@@ -804,10 +886,16 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (!duplicateEntries.isEmpty()) {
       var duplicateEntry = duplicateEntries.getFirst();
-      if (duplicateEntry.getResource().getResourceType() != ResourceType.Condition) {
+      if (duplicateEntry.getResource().getResourceType() == ResourceType.Condition) {
+        LOG.debug(
+            "Overwriting duplicate entry in bundle with URL {} and profile {}. "
+                + "This is fine for Condition resources.",
+            url,
+            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+      } else {
         LOG.warn(
-            "Duplicate entry found in bundle with URL {} and profile {}. "
-                + "This should only happen for Condition resources.",
+            "Overwriting duplicate entry in bundle with URL {} and profile {}. "
+                + "This is fine for ST, SYST and Diagnose-related resources.",
             url,
             resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
       }

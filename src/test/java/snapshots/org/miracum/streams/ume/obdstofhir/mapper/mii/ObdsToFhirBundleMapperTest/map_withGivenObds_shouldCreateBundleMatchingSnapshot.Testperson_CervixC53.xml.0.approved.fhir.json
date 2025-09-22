@@ -162,6 +162,211 @@
       "url": "Procedure/313b791e4fba30e1696cf2cd2d09ec2a417569701722b705ee1653fe4968b755"
     }
   }, {
+    "fullUrl": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
+            "code": "A"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "value": "17_1_IN_2"
+      } ],
+      "status": "in-progress",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2025",
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "CH"
+        } ],
+        "text": "Carboplatin/Etoposid"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "performedPeriod": {
+        "start": "2018-06-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "17_1_IN_2-Etoposid_bcc5"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+      } ],
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Etoposid"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "effectivePeriod": {
+        "start": "2018-06-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "17_1_IN_2-Carboplatin_1f2d"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+      } ],
+      "status": "active",
+      "medicationCodeableConcept": {
+        "text": "Carboplatin"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "effectivePeriod": {
+        "start": "2018-06-15"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b"
+    }
+  }, {
+    "fullUrl": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59",
+    "resource": {
+      "resourceType": "AdverseEvent",
+      "id": "ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+      },
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-17_1_IN_2-Grad-maximal-2-unbekannt"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "not-applicable"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "seriousness": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "U"
+        } ]
+      },
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59"
+    }
+  }, {
+    "fullUrl": "Observation/84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
+        "value": "67-T98-3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "184305005",
+          "display": "Cause of death (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "focus": [ {
+        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
+      } ],
+      "effectiveDateTime": "2023-09-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2020",
+          "code": "T98.3"
+        } ]
+      },
+      "interpretation": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
+          "code": "N"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471"
+    }
+  }, {
     "fullUrl": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec",
     "resource": {
       "resourceType": "Procedure",
@@ -292,125 +497,43 @@
       "url": "MedicationStatement/512df6c59881fd1603f31c9e88bf17173ac2a6970e2eb49d4dd93fe46c1337c1"
     }
   }, {
-    "fullUrl": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+    "fullUrl": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3",
     "resource": {
-      "resourceType": "Procedure",
-      "id": "ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+      "resourceType": "AdverseEvent",
+      "id": "d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
       },
-      "extension": [ {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
-          } ]
-        }
-      }, {
-        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop",
-        "valueCodeableConcept": {
-          "coding": [ {
-            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop",
-            "code": "A"
-          } ]
-        }
-      } ],
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
-        "value": "17_1_IN_2"
-      } ],
-      "status": "in-progress",
-      "category": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-70_1_IN_1-0"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ],
+        "text": "Übelkeit"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "seriousness": {
         "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "18629005",
-          "display": "Administration of drug or medicament (procedure)"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "3"
         } ]
       },
-      "code": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "version": "2025",
-          "code": "8-54",
-          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
-        }, {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
-        } ],
-        "text": "Carboplatin/Etoposid"
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "performedPeriod": {
-        "start": "2018-06-15"
-      }
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+        }
+      } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
-    }
-  }, {
-    "fullUrl": "MedicationStatement/6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "17_1_IN_2-Etoposid_bcc5"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Etoposid"
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "effectivePeriod": {
-        "start": "2018-06-15"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/6cabbcff998cce3921d78b6d164f22255eebc99de26b207c6d5a55a5468d5d77"
-    }
-  }, {
-    "fullUrl": "MedicationStatement/b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b",
-    "resource": {
-      "resourceType": "MedicationStatement",
-      "id": "b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "17_1_IN_2-Carboplatin_1f2d"
-      } ],
-      "partOf": [ {
-        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
-      } ],
-      "status": "active",
-      "medicationCodeableConcept": {
-        "text": "Carboplatin"
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "effectivePeriod": {
-        "start": "2018-06-15"
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "MedicationStatement/b0bd503cbf53e02fd2855fc9fe14ad3a3763f8663781a0db7c49d78e26cb5a8b"
+      "url": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3"
     }
   }, {
     "fullUrl": "Observation/dcf2f38da5f7af9085fc27236981774c5b29241dc14128f9cf186a1e9f53eba4",
@@ -540,52 +663,6 @@
     "request": {
       "method": "PUT",
       "url": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d"
-    }
-  }, {
-    "fullUrl": "Observation/84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-        "value": "67-T98-3"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "184305005",
-          "display": "Cause of death (observable entity)"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
-      },
-      "focus": [ {
-        "reference": "Condition/9303ac0da09b7213ccd25da65c7077dc6b552aedcef58a31872bc0a9651730e9"
-      } ],
-      "effectiveDateTime": "2023-09-01",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
-          "version": "2020",
-          "code": "T98.3"
-        } ]
-      },
-      "interpretation": [ {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
-          "code": "N"
-        } ]
-      } ]
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/84a37187e4f5f8106715f644738b159c76e9f5570fb6fca3c74a3f550ec78471"
     }
   }, {
     "fullUrl": "Observation/d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193",

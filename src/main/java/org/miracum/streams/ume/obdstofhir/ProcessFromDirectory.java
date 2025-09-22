@@ -83,7 +83,7 @@ public class ProcessFromDirectory {
 
         final var bundles = mapper.map(obds);
         for (var bundle : bundles) {
-          LOG.info("Created FHIR bundle {}", bundle.getId());
+          LOG.debug("Created FHIR bundle {}", bundle.getId());
 
           if (config.outputToKafka().enabled()) {
             try {

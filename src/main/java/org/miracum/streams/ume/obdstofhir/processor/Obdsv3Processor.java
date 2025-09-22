@@ -361,7 +361,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
         verlauf ->
             ((VerlaufTyp) verlauf).getMeldeanlass() == null
                 ? null
-                : ((VerlaufTyp) verlauf).getMeldeanlass());
+                : ((VerlaufTyp) verlauf).getMeldeanlass().toString());
   }
 
   protected List<Meldung> getTumorKonferenzmeldungen(MeldungExportListV3 meldungExportList) {

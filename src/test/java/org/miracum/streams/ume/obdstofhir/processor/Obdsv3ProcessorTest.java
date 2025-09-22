@@ -83,9 +83,10 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       Obdsv2v3MapperConfig.class,
       Obdsv2v3MapperProperties.class,
       ErstdiagnoseEvidenzListMapper.class,
+      NebenwirkungMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
-public class Obdsv3ProcessorTest {
+public class Obdsv3ProcessorTest extends MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
@@ -349,25 +350,27 @@ public class Obdsv3ProcessorTest {
       // Patient + ST_1-Procedure behandlungsende (2 Procedure: 1 bestrahlung + 1 'bracket')
       validateMultiStBundle(
           (Bundle) outputRecords.getFirst().value,
-          4,
+          5,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.get(1).value,
-          6,
-          Procedure.ProcedureStatus.COMPLETED,
-          Procedure.ProcedureStatus.COMPLETED,
+          8,
           Procedure.ProcedureStatus.INPROGRESS,
-          Procedure.ProcedureStatus.INPROGRESS);
+          Procedure.ProcedureStatus.INPROGRESS,
+          Procedure.ProcedureStatus.COMPLETED,
+          Procedure.ProcedureStatus.COMPLETED);
       // Patient + ST_1-Procedure behandlungsende + ST_2-Procedure behandlungsbeginn
       validateMultiStBundle(
           (Bundle) outputRecords.getLast().value,
-          6,
+          8,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED,
           Procedure.ProcedureStatus.COMPLETED);
+
+      verifyAll(outputRecords.stream().map(r -> r.value).toList(), "Test_ST");
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }

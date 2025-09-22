@@ -148,7 +148,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
         LOG.warn(
             "Diagnonse Histologie element contains more than one distinct ICD-O3 code: {}. "
                 + "Adding multiple extensions.",
-            distinctMorphologyCodes);
+            distinctMorphologyCodes.stream().map(c -> c.getCode()));
       }
 
       for (var morphologieCode : distinctMorphologyCodes) {
