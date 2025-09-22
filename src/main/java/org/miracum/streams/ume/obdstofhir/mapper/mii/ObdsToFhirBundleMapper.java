@@ -20,7 +20,6 @@ import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
-import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -341,7 +340,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     // any incomplete resources that were constructed from just the Tumorzuordung
     // Overriding happens based on the Resource ID in `addToBundle`.
     // this pushes meldungen where the getDiagnose() != null to the end
-    // Note: it's important to have this Diagnose sorting at the very end of this method,
+    // Note: it's important to have this Diagnose sorting at the very end of this
+    // method,
     // so all diagnose meldungen are indeed at the very end.
     clonedMeldungen.sort(Comparator.comparing(m -> m.getDiagnose() != null ? 1 : 0));
 
@@ -885,13 +885,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (!duplicateEntries.isEmpty()) {
       var duplicateEntry = duplicateEntries.getFirst();
-      if (duplicateEntry.getResource().getResourceType() != ResourceType.Condition) {
-        LOG.warn(
-            "Duplicate entry found in bundle with URL {} and profile {}. "
-                + "This should only happen for Condition resources.",
-            url,
-            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
-      }
+      LOG.info(
+          "Overwriting duplicate bundle entry with URL {} and profile {}.",
+          url,
+          resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
 
       duplicateEntry.setResource(resource);
     } else {
