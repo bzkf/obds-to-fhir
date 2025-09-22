@@ -80,7 +80,8 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       // Identifer
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getObservationHistologieId())
+              .setSystem(
+                  fhirProperties.getSystems().getIdentifiers().getVerlaufshistologieObservationId())
               .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       // Id

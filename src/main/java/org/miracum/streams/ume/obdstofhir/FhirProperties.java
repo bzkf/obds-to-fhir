@@ -58,22 +58,19 @@ public class FhirProperties {
   }
 
   @Data
-  public static class FhirSystems {
+  public static class FhirIdentifierSystems {
     // local systems
     private String patientId;
-    private String conditionId;
-    private String observationId;
-    private String procedureId;
-    private String operationProcedureId;
-    private String medicationStatementId;
-    private String fernmetastasenId;
+    private String primaerdiagnoseConditionId;
+    private String fernmetastasenObservationId;
     private String residualstatusObservationId;
     private String weitereKlassifikationObservationId;
-    private String specimenId;
-    private String studienteilnahmeId;
-    private String allgemeinerLeistungszustandEcogId;
-    private String genetischeVarianteId;
-    private String tumorkonferenzId;
+    private String histologieSpecimenId;
+    private String studienteilnahmeObservationId;
+    private String lymphknotenuntersuchungObservationId;
+    private String allgemeinerLeistungszustandEcogObservationId;
+    private String genetischeVarianteObservationId;
+    private String tumorkonferenzCarePlanId;
     private String tnmGroupingObservationId;
     private String tnmTKategorieObservationId;
     private String tnmNKategorieObservationId;
@@ -87,6 +84,28 @@ public class FhirProperties {
     private String tnmRSymbolObservationId;
     private String tnmYSymbolObservationId;
     private String erstdiagnoseEvidenzListId;
+    private String verlaufshistologieObservationId;
+    private String gleasonScoreObservationId;
+    private String strahlentherapieProcedureId;
+    private String strahlentherapieBestrahlungProcedureId;
+    private String systemischeTherapieProcedureId;
+    private String systemischeTherapieMedicationStatementId;
+    private String histologiebefundDiagnosticReportId;
+    private String gradingObservationId;
+    private String observationVerlaufId;
+    private String todObservationId;
+    private String nebenwirkungAdverseEventId;
+  }
+
+  @Data
+  public static class FhirSystems {
+    private FhirIdentifierSystems identifiers;
+
+    private String observationId;
+    private String procedureId;
+    private String operationProcedureId;
+    private String medicationStatementId;
+    private String psaObservationId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -118,9 +137,6 @@ public class FhirProperties {
     private String opComplication;
     private String observationValue;
     private String genderAmtlichDe;
-    private String gleasonScoreObservationId;
-    private String psaObservationId;
-    private String todObservationId;
     private String ucum;
     private String miiCsOnkoIntention;
     private String miiCsOnkoPrimaertumorDiagnosesicherung;
@@ -130,10 +146,6 @@ public class FhirProperties {
     private String miiCsOnkoTherapieStellungzurop;
     private String miiCsOnkoStrahlentherapieBoost;
     private String miiCsOnkoOperationResidualstatus;
-    private String strahlentherapieProcedureId;
-    private String strahlentherapieBestrahlungProcedureId;
-    private String systemischeTherapieProcedureId;
-    private String systemischeTherapieMedicationStatementId;
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
     private String miiCsOnkoResidualstatus;
@@ -143,10 +155,8 @@ public class FhirProperties {
     private String icdo3MorphologieOid;
     private String atcBfarm;
     private String atcWho;
-    private String observationHistologieId;
     private String observationCategory;
     private String miiCsOnkoStudienteilnahme;
-    private String observationVerlaufId;
     private String miiCsOnkoGrading;
     private String miiCsOnkoTherapieplanungTyp;
     private String miiCsOnkoVerlaufPrimaertumor;
@@ -155,14 +165,11 @@ public class FhirProperties {
     private String miiCsOnkoVerlaufGesamtbeurteilung;
     private String miiCsOnkoFernmetastasen;
     private String miiCsOnkoAllgemeinerLeistungszustandEcog;
-    private String histologiebefundDiagnosticReportId;
     private String miiCsOnkoGenetischeVarianteAuspraegung;
-    private String nebenwirkungAdverseEventId;
     private String miiCsOnkoNebenwirkungCtcaeGrad;
     private String meddra;
     private String miiCsOnkoTherapieTyp;
     private String miiCsOnkoTherapieabweichung;
-    private String gradingObservationId;
     private String miiCsOnkoTnmVersion;
     private String tnmUicc;
   }

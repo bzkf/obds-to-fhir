@@ -85,7 +85,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmTKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmTKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -104,7 +104,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmNKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmNKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -123,7 +123,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmMKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmMKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -142,7 +142,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
               identifierValue,
-              fhirProperties.getSystems().getTnmASymbolObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmASymbolObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -158,7 +158,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
               identifierValue,
-              fhirProperties.getSystems().getTnmMSymbolObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmMSymbolObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -174,7 +174,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmLKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmLKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -190,7 +190,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmPnKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmPnKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -206,7 +206,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
               identifierValue,
-              fhirProperties.getSystems().getTnmRSymbolObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmRSymbolObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -222,7 +222,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmSKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmSKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -238,7 +238,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
               identifierValue,
-              fhirProperties.getSystems().getTnmVKategorieObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmVKategorieObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -254,7 +254,7 @@ public class TNMMapper extends ObdsToFhirMapper {
           createTNMBaseResource(
               fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
               identifierValue,
-              fhirProperties.getSystems().getTnmYSymbolObservationId(),
+              fhirProperties.getSystems().getIdentifiers().getTnmYSymbolObservationId(),
               tnmTyp.getVersion(),
               tnmTyp.getDatum(),
               patient,
@@ -477,7 +477,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getTnmGroupingObservationId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getTnmGroupingObservationId())
             .setValue(slugifier.slugify(idBase));
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));

@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "efd645ba495d0e173ca21571b35c37367206acdb60ec70509767cd2fa09122d0",
+  "id": "0657e28f35d528b2a2f9fa597ee44d275b7a0385fd3fdc01c03907b170bf682e",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
     "value": "GenetischeAuspraegung-Pathologie-PAT_70103-W-0"
   } ],
   "status": "final",

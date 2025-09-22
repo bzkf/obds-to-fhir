@@ -38,10 +38,10 @@
       "url": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
     }
   }, {
-    "fullUrl": "Condition/ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24",
+    "fullUrl": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
     "resource": {
       "resourceType": "Condition",
-      "id": "ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24",
+      "id": "5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
         "valueDateTime": "2017-07-02"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "10-1"
       } ],
       "verificationStatus": {
@@ -109,7 +109,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24"
+      "url": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
     }
   }, {
     "fullUrl": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
@@ -136,7 +136,7 @@
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
       },
       "focus": [ {
-        "reference": "Condition/ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24"
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -152,15 +152,15 @@
       "url": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
     }
   }, {
-    "fullUrl": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+    "fullUrl": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
     "resource": {
       "resourceType": "Specimen",
-      "id": "5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+      "id": "f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
         "value": "280"
       } ],
       "accessionIdentifier": {
@@ -175,7 +175,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      "url": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
     }
   }, {
     "fullUrl": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
@@ -213,7 +213,7 @@
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
       },
       "focus": [ {
-        "reference": "Condition/ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24"
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -223,7 +223,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+        "reference": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
       }
     },
     "request": {
@@ -250,7 +250,7 @@
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
       },
       "focus": [ {
-        "reference": "Condition/ba2f432ea0f61ed9f9da75fb2f7c845098313cbe41653a093c1c0333a912ac24"
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -286,7 +286,7 @@
         }
       }, {
         "item": {
-          "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+          "reference": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
         }
       }, {
         "item": {

@@ -46,7 +46,7 @@ class GleasonScoreToObservationMapperTests extends ObdsProcessorTest {
         .setReference(ResourceType.Patient + "/" + patientId)
         .setIdentifier(
             new Identifier()
-                .setSystem(fhirProps.getSystems().getPatientId())
+                .setSystem(fhirProps.getSystems().getIdentifiers().getPatientId())
                 .setType(
                     new CodeableConcept(
                         new Coding(fhirProps.getSystems().getIdentifierType(), "MR", null)))
