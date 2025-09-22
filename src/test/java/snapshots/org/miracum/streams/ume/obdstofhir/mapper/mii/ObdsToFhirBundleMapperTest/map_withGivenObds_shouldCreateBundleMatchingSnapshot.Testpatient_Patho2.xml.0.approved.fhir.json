@@ -38,10 +38,10 @@
       "url": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
     }
   }, {
-    "fullUrl": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0",
+    "fullUrl": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c",
     "resource": {
       "resourceType": "Condition",
-      "id": "572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0",
+      "id": "2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
@@ -65,7 +65,7 @@
         "valueDateTime": "2021-07-08"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "41-411"
       } ],
       "code": {
@@ -93,18 +93,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
+      "url": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
     }
   }, {
-    "fullUrl": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892",
+    "fullUrl": "Specimen/db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020",
     "resource": {
       "resourceType": "Specimen",
-      "id": "44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892",
+      "id": "db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
         "value": "271"
       } ],
       "accessionIdentifier": {
@@ -119,18 +119,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
+      "url": "Specimen/db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020"
     }
   }, {
-    "fullUrl": "Observation/99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18",
+    "fullUrl": "Observation/d00a9441200a9e547be663c54b38c38397745a7d7488ed5a24d2c55b57cd1836",
     "resource": {
       "resourceType": "Observation",
-      "id": "99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18",
+      "id": "d00a9441200a9e547be663c54b38c38397745a7d7488ed5a24d2c55b57cd1836",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlaufshistologie-observation-id",
         "value": "271-ICDO3-8140-3"
       } ],
       "status": "final",
@@ -146,7 +146,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueCodeableConcept": {
@@ -158,12 +158,12 @@
         "text": "Adenokarzinom"
       },
       "specimen": {
-        "reference": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
+        "reference": "Specimen/db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/99ab911acca8006abd1c7bdef43bcd081a8eb3fd3923284fa60305fd7019cd18"
+      "url": "Observation/d00a9441200a9e547be663c54b38c38397745a7d7488ed5a24d2c55b57cd1836"
     }
   }, {
     "fullUrl": "Observation/ed51598e3ce3a0dae7d439a13d8fb202bec295a9bbae22cb36f43d9d89024291",
@@ -201,7 +201,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueCodeableConcept": {
@@ -211,7 +211,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
+        "reference": "Specimen/db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020"
       }
     },
     "request": {
@@ -240,7 +240,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/572cc36d20dee632c0c3ce67646a3b2c005224e30158f6c65448be116f9031a0"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
       } ],
       "effectiveDateTime": "2021-08-01",
       "valueCodeableConcept": {
@@ -314,7 +314,7 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "specimen": [ {
-        "reference": "Specimen/44484431b96747792dd9f446da41a57c29c0eee2038cc7113e311afd29a12892"
+        "reference": "Specimen/db122dc57b8d290cd196a2cfe7cffd1556f642ad6cb31462c9735cc209767020"
       } ],
       "conclusion": "Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     },

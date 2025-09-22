@@ -5,8 +5,6 @@ app:
   patient-id-pattern: "[^0]\\d{8}"
 
 fhir:
-  default:
-    baseSystemUrl: "https://bzkf.github.io/obds-to-fhir/identifiers"
   codings:
     loinc:
       system: "${fhir.systems.loinc}"
@@ -25,6 +23,8 @@ fhir:
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
+    condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+    ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-stellungzurop: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"
     mii-ex-onko-strahlentherapie-bestrahlung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"
@@ -35,49 +35,50 @@ fhir:
     mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis"
     mii-ex-onko-strahlentherapie-bestrahlung-boost: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-boost"
     mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation"
-    condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
-    ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
   systems:
-    # local systems with prefix {fhir.default.baseSystemUrl}
-    patientId: "${fhir.default.baseSystemUrl}/patient-id"
-    conditionId: "${fhir.default.baseSystemUrl}/primaerdiagnose-id"
-    observationId: "${fhir.default.baseSystemUrl}/observation-id"
-    procedureId: "${fhir.default.baseSystemUrl}/procedure-id"
-    operationProcedureId: "${fhir.default.baseSystemUrl}/operation-procedure-id"
-    medicationStatementId: "${fhir.default.baseSystemUrl}/medication-statement-id"
-    specimenId: "${fhir.default.baseSystemUrl}/specimen-id"
-    studienteilnahmeId: "${fhir.default.baseSystemUrl}/studienteilnahme-id"
-    observationHistologieId: "${fhir.default.baseSystemUrl}/observation-histologie-id"
-    observationVerlaufId: "${fhir.default.baseSystemUrl}/observation-verlauf-id"
-    gleason-score-observation-id: "${fhir.default.baseSystemUrl}/gleason-score-observation-id"
-    psaObservationId: "${fhir.default.baseSystemUrl}/psa-observation-id"
-    strahlentherapie-procedure-id: "${fhir.default.baseSystemUrl}/strahlentherapie-procedure-id"
-    strahlentherapie-bestrahlung-procedure-id: "${fhir.default.baseSystemUrl}/strahlentherapie-bestrahlung-procedure-id"
-    systemische-therapie-procedure-id: "${fhir.default.baseSystemUrl}/systemische-therapie-procedure-id"
-    systemische-therapie-medication-statement-id: "${fhir.default.baseSystemUrl}/systemische-therapie-medication-statement-id"
-    allgemeiner-leistungszustand-ecog-id: "${fhir.default.baseSystemUrl}/allgemeiner-leistungszustand-ecog-id"
-    fernmetastasen-id: "${fhir.default.baseSystemUrl}/fernmetastasen-id"
-    residualstatusObservationId: "${fhir.default.baseSystemUrl}/residualstatus-observation-id"
-    histologiebefund-diagnostic-report-id: "${fhir.default.baseSystemUrl}/histologiebefund-diagnostic-report-id"
-    genetische-variante-id: "${fhir.default.baseSystemUrl}/genetische-variante-id"
-    nebenwirkung-adverse-event-id: "${fhir.default.baseSystemUrl}/nebenwirkung-adverse-event-id"
-    tod-observation-id: "${fhir.default.baseSystemUrl}/tod-observation-id"
-    grading-observation-id: "${fhir.default.baseSystemUrl}/grading-observation-id"
-    tnm-grouping-observation-id: "${fhir.default.baseSystemUrl}/tnm-grouping-observation-id"
-    tnm-t-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-t-kategorie-observation-id"
-    tnm-n-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-n-kategorie-observation-id"
-    tnm-m-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-m-kategorie-observation-id"
-    tnm-l-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-l-kategorie-observation-id"
-    tnm-pn-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-pn-kategorie-observation-id"
-    tnm-s-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-s-kategorie-observation-id"
-    tnm-v-kategorie-observation-id: "${fhir.default.baseSystemUrl}/tnm-v-kategorie-observation-id"
-    tnm-a-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-a-symbol-observation-id"
-    tnm-m-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-m-symbol-observation-id"
-    tnm-r-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-r-symbol-observation-id"
-    tnm-y-symbol-observation-id: "${fhir.default.baseSystemUrl}/tnm-y-symbol-observation-id"
-    tumorkonferenz-id: "${fhir.default.baseSystemUrl}/tumorkonferenz-id"
-    weitere-klassifikation-observation-id: "${fhir.default.baseSystemUrl}/weitere-klassifikation-observation-id"
-    erstdiagnose-evidenz-list-id: "${fhir.default.baseSystemUrl}/erstdiagnose-evidenz-list-id"
+    identifiers:
+      base-url: "https://bzkf.github.io/obds-to-fhir/identifiers"
+      patient-id: "${fhir.systems.identifiers.base-url}/patient-id"
+      primaerdiagnose-condition-id: "${fhir.systems.identifiers.base-url}/primaerdiagnose-condition-id"
+      histologie-specimen-id: "${fhir.systems.identifiers.base-url}/histologie-specimen-id"
+      studienteilnahme-observation-id: "${fhir.systems.identifiers.base-url}/studienteilnahme-observation-id"
+      lymphknotenuntersuchung-observation-id: "${fhir.systems.identifiers.base-url}/lymphknotenuntersuchung-observation-id"
+      verlaufshistologie-observation-id: "${fhir.systems.identifiers.base-url}/verlaufshistologie-observation-id"
+      gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/gleason-score-observation-id"
+      strahlentherapie-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-procedure-id"
+      strahlentherapie-bestrahlung-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-bestrahlung-procedure-id"
+      systemische-therapie-procedure-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-procedure-id"
+      systemische-therapie-medication-statement-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-statement-id"
+      allgemeiner-leistungszustand-ecog-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-ecog-id"
+      fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-id"
+      residualstatus-observation-id: "${fhir.systems.identifiers.base-url}/residualstatus-observation-id"
+      histologiebefund-diagnostic-report-id: "${fhir.systems.identifiers.base-url}/histologiebefund-diagnostic-report-id"
+      genetische-variante-observation-id: "${fhir.systems.identifiers.base-url}/genetische-variante-observation-id"
+      nebenwirkung-adverse-event-id: "${fhir.systems.identifiers.base-url}/nebenwirkung-adverse-event-id"
+      tod-observation-id: "${fhir.systems.identifiers.base-url}/tod-observation-id"
+      grading-observation-id: "${fhir.systems.identifiers.base-url}/grading-observation-id"
+      tnm-grouping-observation-id: "${fhir.systems.identifiers.base-url}/tnm-grouping-observation-id"
+      tnm-t-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-t-kategorie-observation-id"
+      tnm-n-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-n-kategorie-observation-id"
+      tnm-m-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-m-kategorie-observation-id"
+      tnm-l-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-l-kategorie-observation-id"
+      tnm-pn-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-pn-kategorie-observation-id"
+      tnm-s-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-s-kategorie-observation-id"
+      tnm-v-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-v-kategorie-observation-id"
+      tnm-a-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-a-symbol-observation-id"
+      tnm-m-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-m-symbol-observation-id"
+      tnm-r-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-r-symbol-observation-id"
+      tnm-y-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-y-symbol-observation-id"
+      tumorkonferenz-care-plan-id: "${fhir.systems.identifiers.base-url}/tumorkonferenz-care-plan-id"
+      weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
+      erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
+
+    # DKTK
+    observationId: "${fhir.systems.identifiers.base-url}/observation-id"
+    procedureId: "${fhir.systems.identifiers.base-url}/procedure-id"
+    operationProcedureId: "${fhir.systems.identifiers.base-url}/operation-procedure-id"
+    medicationStatementId: "${fhir.systems.identifiers.base-url}/medication-statement-id"
+    psaObservationId: "${fhir.systems.identifiers.base-url}/psa-observation-id"
 
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
@@ -85,6 +86,8 @@ fhir:
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
+
+    # DKTK
     gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
     uicc: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"
     tnmPraefix: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS"
@@ -96,16 +99,17 @@ fhir:
     tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
     fMLokalisationCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"
     jnuCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"
-    icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
-    adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
-    snomed: "http://snomed.info/sct"
-    opIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS"
-    systTherapieart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"
-    ops: "http://fhir.de/CodeSystem/bfarm/ops"
     lokalBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"
     gesamtBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
     systIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS"
     systStellungOP: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS"
+    opIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS"
+    systTherapieart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"
+    adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
+
+    icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+    snomed: "http://snomed.info/sct"
+    ops: "http://fhir.de/CodeSystem/bfarm/ops"
     ctcaeGrading: "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"
     sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
     opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
@@ -113,6 +117,13 @@ fhir:
     genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
     ucum: "http://unitsofmeasure.org"
     condition-ver-status: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
+    tnm-uicc: "https://www.uicc.org/resources/tnm"
+    atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
+    atcWho: "http://www.whocc.no/atc"
+    observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
+    meddra: "https://www.meddra.org"
+
+    # MII
     mii-cs-onko-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention"
     mii-cs-onko-primaertumor-diagnosesicherung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung"
     mii-cs-onko-strahlentherapie-applikationsart: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart"
@@ -127,9 +138,6 @@ fhir:
     mii-cs-onko-fernmetastasen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen"
     mii-cs-onko-tod-interpretation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod"
     mii-cs-onko-strahlentherapie-boost: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost"
-    atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
-    atcWho: "http://www.whocc.no/atc"
-    observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
     mii-cs-onko-grading: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading"
     mii-cs-onko-verlauf-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor"
     mii-cs-onko-verlauf-lymphknoten: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten"
@@ -139,12 +147,10 @@ fhir:
     mii-cs-onko-studienteilnahme: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme"
     mii-cs-onko-genetische-variante-auspraegung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung"
     mii-cs-onko-nebenwirkung-ctcae-grad: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad"
-    meddra: "https://www.meddra.org"
     mii-cs-onko-therapieplanung-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ"
     mii-cs-onko-therapie-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
     mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
-    tnm-uicc: "https://www.uicc.org/resources/tnm"
 
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
@@ -221,15 +227,17 @@ fhir:
     psaLoinc: "Prostate specific Ag [Mass/volume] in Serum or Plasma"
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
+
   mappings:
-    metaSource: ${META_SOURCE:}
+    meta:
+      source: ""
     modul:
       prostata:
         enabled: false
-    createPatientResources:
+    create-patient-resources:
       enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
 
-obdsv2v3:
+obdsv2-to-v3:
   mapper:
     ignore-unmappable: true
     fix-missing-id: true

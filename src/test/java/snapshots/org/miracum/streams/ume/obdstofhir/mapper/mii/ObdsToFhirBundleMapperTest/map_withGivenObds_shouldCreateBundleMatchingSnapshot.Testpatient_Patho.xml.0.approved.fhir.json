@@ -38,10 +38,10 @@
       "url": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
     }
   }, {
-    "fullUrl": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd",
+    "fullUrl": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c",
     "resource": {
       "resourceType": "Condition",
-      "id": "4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd",
+      "id": "be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
@@ -65,7 +65,7 @@
         "valueDateTime": "2019-10-01"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-401"
       } ],
       "code": {
@@ -93,18 +93,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+      "url": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
     }
   }, {
-    "fullUrl": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16",
+    "fullUrl": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a",
     "resource": {
       "resourceType": "Specimen",
-      "id": "f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16",
+      "id": "672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
         "value": "269"
       } ],
       "accessionIdentifier": {
@@ -119,18 +119,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+      "url": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
     }
   }, {
-    "fullUrl": "Observation/72589631bd806fa071ac4bfff244866df297096a4ed054865499df5fcb3bef8f",
+    "fullUrl": "Observation/80a32f9be9e1b9f3ca971bc77ee08f9ae8b58d3efefb71858c791c62ad87b268",
     "resource": {
       "resourceType": "Observation",
-      "id": "72589631bd806fa071ac4bfff244866df297096a4ed054865499df5fcb3bef8f",
+      "id": "80a32f9be9e1b9f3ca971bc77ee08f9ae8b58d3efefb71858c791c62ad87b268",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlaufshistologie-observation-id",
         "value": "269-ICDO3-8500-3"
       } ],
       "status": "final",
@@ -146,7 +146,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -158,12 +158,12 @@
         "text": "Invasives duktales Karzinom o.n.A."
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/72589631bd806fa071ac4bfff244866df297096a4ed054865499df5fcb3bef8f"
+      "url": "Observation/80a32f9be9e1b9f3ca971bc77ee08f9ae8b58d3efefb71858c791c62ad87b268"
     }
   }, {
     "fullUrl": "Observation/6bd43fb23b560d6bc1fe13a1fd769746e09aaee2d305a7c407e88265f197c60c",
@@ -201,7 +201,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -211,7 +211,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
@@ -219,15 +219,15 @@
       "url": "Observation/6bd43fb23b560d6bc1fe13a1fd769746e09aaee2d305a7c407e88265f197c60c"
     }
   }, {
-    "fullUrl": "Observation/8bb936c1adbad113c944ad7e7843a5bc15755be9e5d103d56e89553fc1d05865",
+    "fullUrl": "Observation/d9192bb731f59ccb5e3803fb5df35e84a89f73094529bf3ddb455b871317f16a",
     "resource": {
       "resourceType": "Observation",
-      "id": "8bb936c1adbad113c944ad7e7843a5bc15755be9e5d103d56e89553fc1d05865",
+      "id": "d9192bb731f59ccb5e3803fb5df35e84a89f73094529bf3ddb455b871317f16a",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
         "value": "269-befallen"
       } ],
       "status": "final",
@@ -252,7 +252,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueQuantity": {
@@ -262,23 +262,23 @@
         "code": "1"
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/8bb936c1adbad113c944ad7e7843a5bc15755be9e5d103d56e89553fc1d05865"
+      "url": "Observation/d9192bb731f59ccb5e3803fb5df35e84a89f73094529bf3ddb455b871317f16a"
     }
   }, {
-    "fullUrl": "Observation/7205f6fdf38c9be924ccd3da78a2f7f95836d1397c548337a3c8f02e3e4ed8a8",
+    "fullUrl": "Observation/f732ba29ce0f4ab03cc14eacd72e4cb76f5beb3ea5bab2aa0baffd78f3ce7d99",
     "resource": {
       "resourceType": "Observation",
-      "id": "7205f6fdf38c9be924ccd3da78a2f7f95836d1397c548337a3c8f02e3e4ed8a8",
+      "id": "f732ba29ce0f4ab03cc14eacd72e4cb76f5beb3ea5bab2aa0baffd78f3ce7d99",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-lymphknoten" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
         "value": "269-untersucht"
       } ],
       "status": "final",
@@ -303,7 +303,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueQuantity": {
@@ -313,23 +313,23 @@
         "code": "1"
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/7205f6fdf38c9be924ccd3da78a2f7f95836d1397c548337a3c8f02e3e4ed8a8"
+      "url": "Observation/f732ba29ce0f4ab03cc14eacd72e4cb76f5beb3ea5bab2aa0baffd78f3ce7d99"
     }
   }, {
-    "fullUrl": "Observation/b3e660b81ccb28724d517efbb293dde836b28a0c878b5e4c5dcec1fb51d1d054",
+    "fullUrl": "Observation/74d2d83f6bab55c134837b9507889f1fe9b5ce383fcbad498f9595aeaaa7411b",
     "resource": {
       "resourceType": "Observation",
-      "id": "b3e660b81ccb28724d517efbb293dde836b28a0c878b5e4c5dcec1fb51d1d054",
+      "id": "74d2d83f6bab55c134837b9507889f1fe9b5ce383fcbad498f9595aeaaa7411b",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-sentinel-lymphknoten" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
         "value": "269-befallen-sentinel"
       } ],
       "status": "final",
@@ -354,7 +354,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueQuantity": {
@@ -364,23 +364,23 @@
         "code": "1"
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/b3e660b81ccb28724d517efbb293dde836b28a0c878b5e4c5dcec1fb51d1d054"
+      "url": "Observation/74d2d83f6bab55c134837b9507889f1fe9b5ce383fcbad498f9595aeaaa7411b"
     }
   }, {
-    "fullUrl": "Observation/9dec715203286cc62fb695d7dcc617fc6dc0a58a4fe74ea6c64d63e99f5da8d6",
+    "fullUrl": "Observation/8107ca91d649aeb8aa601bead187c25e77a60cdb64414ed81bcd722a86ecd662",
     "resource": {
       "resourceType": "Observation",
-      "id": "9dec715203286cc62fb695d7dcc617fc6dc0a58a4fe74ea6c64d63e99f5da8d6",
+      "id": "8107ca91d649aeb8aa601bead187c25e77a60cdb64414ed81bcd722a86ecd662",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
         "value": "269-untersucht-sentinel"
       } ],
       "status": "final",
@@ -405,7 +405,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueQuantity": {
@@ -415,12 +415,12 @@
         "code": "1"
       },
       "specimen": {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/9dec715203286cc62fb695d7dcc617fc6dc0a58a4fe74ea6c64d63e99f5da8d6"
+      "url": "Observation/8107ca91d649aeb8aa601bead187c25e77a60cdb64414ed81bcd722a86ecd662"
     }
   }, {
     "fullUrl": "Observation/7df77964205346253bbdb46fe59d65a1ba53c8d67248d60995a97143b00fdffb",
@@ -447,7 +447,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -462,15 +462,15 @@
       "url": "Observation/7df77964205346253bbdb46fe59d65a1ba53c8d67248d60995a97143b00fdffb"
     }
   }, {
-    "fullUrl": "Observation/6cbb8ce0d54fa385c916eeacf2a9419f09e2e0bf0599d70c32de59e8ae1b39ca",
+    "fullUrl": "Observation/9a03ccedb9da448d173547c3c973d1fabc6dbc7d0479d4f886e86c069969fd34",
     "resource": {
       "resourceType": "Observation",
-      "id": "6cbb8ce0d54fa385c916eeacf2a9419f09e2e0bf0599d70c32de59e8ae1b39ca",
+      "id": "9a03ccedb9da448d173547c3c973d1fabc6dbc7d0479d4f886e86c069969fd34",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
         "value": "GenetischeAuspraegung-Pathologie-PAT_70101-M-0"
       } ],
       "status": "final",
@@ -493,7 +493,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "interpretation": [ {
@@ -508,18 +508,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/6cbb8ce0d54fa385c916eeacf2a9419f09e2e0bf0599d70c32de59e8ae1b39ca"
+      "url": "Observation/9a03ccedb9da448d173547c3c973d1fabc6dbc7d0479d4f886e86c069969fd34"
     }
   }, {
-    "fullUrl": "Observation/59e09d211ca79daeeec46cd2369aca6db6abad944e30db23087614c2db2f7f7d",
+    "fullUrl": "Observation/99699868258f091f27ca61a405f5887f2275fb2995b02f85be0fd1e87c527589",
     "resource": {
       "resourceType": "Observation",
-      "id": "59e09d211ca79daeeec46cd2369aca6db6abad944e30db23087614c2db2f7f7d",
+      "id": "99699868258f091f27ca61a405f5887f2275fb2995b02f85be0fd1e87c527589",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
         "value": "GenetischeAuspraegung-Pathologie-PAT_70101-1"
       } ],
       "status": "final",
@@ -542,7 +542,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "interpretation": [ {
@@ -558,7 +558,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/59e09d211ca79daeeec46cd2369aca6db6abad944e30db23087614c2db2f7f7d"
+      "url": "Observation/99699868258f091f27ca61a405f5887f2275fb2995b02f85be0fd1e87c527589"
     }
   }, {
     "fullUrl": "Observation/52b8c69abb6259c7a48f6319105088029b415374dcc80e214233af3e294643ea",
@@ -594,7 +594,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -648,7 +648,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -702,7 +702,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -746,7 +746,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -790,7 +790,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -834,7 +834,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -878,7 +878,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -923,7 +923,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -967,7 +967,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -1013,7 +1013,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4393db103a425cb0cd10bbe605906f715ceac791e2c02e59e73069b9f136cddd"
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
       } ],
       "effectiveDateTime": "2022-08-05",
       "valueCodeableConcept": {
@@ -1078,7 +1078,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "specimen": [ {
-        "reference": "Specimen/f88f01f8376de7db60d4497121febc5659d9877f9268d25f6ca240fac028dc16"
+        "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
       } ],
       "conclusion": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
     },
@@ -1087,10 +1087,10 @@
       "url": "DiagnosticReport/dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b"
     }
   }, {
-    "fullUrl": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5",
+    "fullUrl": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00",
     "resource": {
       "resourceType": "Condition",
-      "id": "4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5",
+      "id": "85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
@@ -1114,7 +1114,7 @@
         "valueDateTime": "2020-01-01"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-402"
       } ],
       "code": {
@@ -1142,18 +1142,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5"
+      "url": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
     }
   }, {
-    "fullUrl": "Observation/efd645ba495d0e173ca21571b35c37367206acdb60ec70509767cd2fa09122d0",
+    "fullUrl": "Observation/0657e28f35d528b2a2f9fa597ee44d275b7a0385fd3fdc01c03907b170bf682e",
     "resource": {
       "resourceType": "Observation",
-      "id": "efd645ba495d0e173ca21571b35c37367206acdb60ec70509767cd2fa09122d0",
+      "id": "0657e28f35d528b2a2f9fa597ee44d275b7a0385fd3fdc01c03907b170bf682e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
         "value": "GenetischeAuspraegung-Pathologie-PAT_70103-W-0"
       } ],
       "status": "final",
@@ -1176,7 +1176,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5"
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
       } ],
       "effectiveDateTime": "2020-01-13",
       "interpretation": [ {
@@ -1191,18 +1191,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/efd645ba495d0e173ca21571b35c37367206acdb60ec70509767cd2fa09122d0"
+      "url": "Observation/0657e28f35d528b2a2f9fa597ee44d275b7a0385fd3fdc01c03907b170bf682e"
     }
   }, {
-    "fullUrl": "Observation/3bf5b07eb5b93288fb44d75e85cc70bb0f1446a497cd2465d159e264c57db3b8",
+    "fullUrl": "Observation/febe78f155d973ffb89bd3f18869914ad0035ae1d1b48c1cf8faefb6158e5881",
     "resource": {
       "resourceType": "Observation",
-      "id": "3bf5b07eb5b93288fb44d75e85cc70bb0f1446a497cd2465d159e264c57db3b8",
+      "id": "febe78f155d973ffb89bd3f18869914ad0035ae1d1b48c1cf8faefb6158e5881",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
         "value": "GenetischeAuspraegung-Pathologie-PAT_70103-1"
       } ],
       "status": "final",
@@ -1225,7 +1225,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/4e6fc5b57a9068af3c8e475b67ae0b573d144421ede0955776d7a991ba4e91f5"
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
       } ],
       "effectiveDateTime": "2020-01-13",
       "interpretation": [ {
@@ -1241,7 +1241,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/3bf5b07eb5b93288fb44d75e85cc70bb0f1446a497cd2465d159e264c57db3b8"
+      "url": "Observation/febe78f155d973ffb89bd3f18869914ad0035ae1d1b48c1cf8faefb6158e5881"
     }
   }, {
     "fullUrl": "DiagnosticReport/1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2",
@@ -1274,10 +1274,10 @@
       "url": "DiagnosticReport/1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2"
     }
   }, {
-    "fullUrl": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1",
+    "fullUrl": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90",
     "resource": {
       "resourceType": "Condition",
-      "id": "9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1",
+      "id": "3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
@@ -1301,7 +1301,7 @@
         "valueDateTime": "2020-01-01"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-403"
       } ],
       "code": {
@@ -1329,18 +1329,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1"
+      "url": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
     }
   }, {
-    "fullUrl": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1",
+    "fullUrl": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd",
     "resource": {
       "resourceType": "Specimen",
-      "id": "2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1",
+      "id": "e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
         "value": "270"
       } ],
       "accessionIdentifier": {
@@ -1355,18 +1355,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1"
+      "url": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd"
     }
   }, {
-    "fullUrl": "Observation/edb519c383e1e34d6414faabe31a561d2639f99c839366b81449980f9538dfa5",
+    "fullUrl": "Observation/78b56df15827f454e56832e2dbe6eb6c621f09a5ce76e0a13310ddc4cc21eca9",
     "resource": {
       "resourceType": "Observation",
-      "id": "edb519c383e1e34d6414faabe31a561d2639f99c839366b81449980f9538dfa5",
+      "id": "78b56df15827f454e56832e2dbe6eb6c621f09a5ce76e0a13310ddc4cc21eca9",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlaufshistologie-observation-id",
         "value": "270-ICDO3-8720-3"
       } ],
       "status": "final",
@@ -1382,7 +1382,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1"
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
       } ],
       "effectiveDateTime": "2020-01-01",
       "valueCodeableConcept": {
@@ -1394,12 +1394,12 @@
         "text": "Malignes Melanom o.n.A."
       },
       "specimen": {
-        "reference": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1"
+        "reference": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd"
       }
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/edb519c383e1e34d6414faabe31a561d2639f99c839366b81449980f9538dfa5"
+      "url": "Observation/78b56df15827f454e56832e2dbe6eb6c621f09a5ce76e0a13310ddc4cc21eca9"
     }
   }, {
     "fullUrl": "Observation/13eb2e254799582f4989eb8cc69b1f55b7706e8c1bce22d02feac6c1ce313b54",
@@ -1437,7 +1437,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "focus": [ {
-        "reference": "Condition/9f65ba4bd12301996eb41445b4e3b0ec9a38c02207444021ec283cd53280d5b1"
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
       } ],
       "effectiveDateTime": "2020-01-01",
       "valueCodeableConcept": {
@@ -1447,7 +1447,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1"
+        "reference": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd"
       }
     },
     "request": {
@@ -1479,7 +1479,7 @@
         "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
       },
       "specimen": [ {
-        "reference": "Specimen/2da3bf8cee3f3f6e68af5f378ca717cee8a896209d3251d791b496651ec422b1"
+        "reference": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd"
       } ],
       "conclusion": "Lorem ipsum dolor sit amet, consectetaur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Et harumd und lookum like Greek to me, dereud facilis est er expedit distinct."
     },

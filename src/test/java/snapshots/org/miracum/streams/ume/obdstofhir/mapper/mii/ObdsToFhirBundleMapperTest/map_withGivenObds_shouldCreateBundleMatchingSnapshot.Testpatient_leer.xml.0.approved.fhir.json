@@ -46,10 +46,10 @@
       "url": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
     }
   }, {
-    "fullUrl": "Condition/7eaf115fe9d814e15e2bcd56f5f02e8361dd867e692281682806e3b0a05c8b54",
+    "fullUrl": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04",
     "resource": {
       "resourceType": "Condition",
-      "id": "7eaf115fe9d814e15e2bcd56f5f02e8361dd867e692281682806e3b0a05c8b54",
+      "id": "a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -63,7 +63,7 @@
         }
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "00001234-1"
       } ],
       "verificationStatus": {
@@ -94,7 +94,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/7eaf115fe9d814e15e2bcd56f5f02e8361dd867e692281682806e3b0a05c8b54"
+      "url": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04"
     }
   }, {
     "fullUrl": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11",
@@ -121,7 +121,7 @@
         "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
       },
       "focus": [ {
-        "reference": "Condition/7eaf115fe9d814e15e2bcd56f5f02e8361dd867e692281682806e3b0a05c8b54"
+        "reference": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04"
       } ],
       "valueCodeableConcept": {
         "coding": [ {

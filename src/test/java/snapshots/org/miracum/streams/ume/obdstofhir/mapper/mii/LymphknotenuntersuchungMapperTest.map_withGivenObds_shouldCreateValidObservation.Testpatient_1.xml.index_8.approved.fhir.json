@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "ccbfd0f25864822530c0f7190b715c5b23e037a56941bf70d6c84f0bb3284f2a",
+  "id": "a7a691ec1683ed830d060a6ad430422497b98c0ebaf9c21345ce2ec1f79efc03",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
     "value": "523-befallen"
   } ],
   "status": "final",

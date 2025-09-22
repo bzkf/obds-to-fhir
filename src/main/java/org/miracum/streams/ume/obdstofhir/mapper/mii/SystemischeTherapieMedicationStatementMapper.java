@@ -64,7 +64,10 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         var identifier =
             new Identifier()
                 .setSystem(
-                    fhirProperties.getSystems().getSystemischeTherapieMedicationStatementId())
+                    fhirProperties
+                        .getSystems()
+                        .getIdentifiers()
+                        .getSystemischeTherapieMedicationStatementId())
                 .setValue(slugifier.slugify(syst.getSYSTID() + "-" + substanzId));
         systMedicationStatement.addIdentifier(identifier);
         systMedicationStatement.setId(computeResourceIdFromIdentifier(identifier));

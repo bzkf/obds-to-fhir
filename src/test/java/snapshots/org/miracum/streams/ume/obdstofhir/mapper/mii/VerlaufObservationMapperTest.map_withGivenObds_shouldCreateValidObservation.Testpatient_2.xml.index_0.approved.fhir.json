@@ -1,11 +1,10 @@
 {
   "resourceType": "Observation",
-  "id": "39fbe38346be8eddbabd5a292f3e2221058edbcc113a6db677291cc72e90e9a0",
+  "id": "d2e87dec0901c3de9b134651eeccbc6d6816117e1c379575ee87ee0a3b0bebc9",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
     "value": "164"
   } ],
   "status": "final",

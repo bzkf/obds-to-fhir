@@ -53,7 +53,8 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         //  Identifier and Id
         var identifier =
             new Identifier()
-                .setSystem(fhirProperties.getSystems().getNebenwirkungAdverseEventId())
+                .setSystem(
+                    fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId())
                 .setValue(
                     slugifier.slugify("mii-pr-onko-nebenwirkung-" + sourceElementId + "-" + i));
         adverseEvent.setIdentifier(identifier);
@@ -99,7 +100,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     //  Identifier and Id
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getNebenwirkungAdverseEventId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId())
             .setValue(
                 slugifier.slugify(
                     "mii-pr-onko-nebenwirkung-" + sourceElementId + "-Grad-maximal-2-unbekannt"));

@@ -58,10 +58,10 @@ public abstract class ObdsToFhirMapper {
     String idToHash;
     switch (type.toString()) {
       case "Patient":
-        idToHash = fhirProperties.getSystems().getPatientId();
+        idToHash = fhirProperties.getSystems().getIdentifiers().getPatientId();
         break;
       case "Condition":
-        idToHash = fhirProperties.getSystems().getConditionId();
+        idToHash = fhirProperties.getSystems().getIdentifiers().getPrimaerdiagnoseConditionId();
         break;
       case "Observation":
         idToHash = fhirProperties.getSystems().getObservationId();

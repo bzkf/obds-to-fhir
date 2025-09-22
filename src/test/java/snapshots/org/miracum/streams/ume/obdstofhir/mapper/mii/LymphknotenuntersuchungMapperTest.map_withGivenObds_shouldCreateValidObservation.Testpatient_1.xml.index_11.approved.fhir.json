@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "1812e73c6e2b788c19af82c8fbd82e7a3399411894a1826b5795156049ac6216",
+  "id": "38824a851ce81906651e5795be00c96305a85063eabdca906632ba14fab4bf0b",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-histologie-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
     "value": "523-untersucht-sentinel"
   } ],
   "status": "final",

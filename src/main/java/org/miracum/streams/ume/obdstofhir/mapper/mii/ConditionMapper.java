@@ -268,7 +268,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
   private Identifier buildConditionIdentifier(TumorzuordnungTyp tumorzuordnung, String patientId) {
     return new Identifier()
-        .setSystem(fhirProperties.getSystems().getConditionId())
+        .setSystem(fhirProperties.getSystems().getIdentifiers().getPrimaerdiagnoseConditionId())
         .setValue(slugifier.slugify(patientId + "-" + tumorzuordnung.getTumorID()));
   }
 

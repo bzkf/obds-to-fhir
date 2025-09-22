@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "9c3d260ddc4be403de69afe6f1b9ad584096011757220497f198606049afd285",
+  "id": "71eae9714fdea07a7ecedbf4ab1d589c7850660610a82e5bb9b1a304a9c429e8",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-observation-id",
     "value": "10_1_DI_1-Studienteilnahme"
   } ],
   "status": "final",

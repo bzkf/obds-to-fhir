@@ -38,10 +38,10 @@
       "url": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
     }
   }, {
-    "fullUrl": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7",
+    "fullUrl": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c",
     "resource": {
       "resourceType": "Condition",
-      "id": "38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7",
+      "id": "c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
       },
@@ -60,7 +60,7 @@
         "valueDateTime": "2017-07-02"
       } ],
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "12-121"
       } ],
       "verificationStatus": {
@@ -109,7 +109,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+      "url": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
     }
   }, {
     "fullUrl": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8",
@@ -292,7 +292,7 @@
         "start": "2018-06-06"
       },
       "reasonReference": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ]
     },
     "request": {
@@ -424,15 +424,14 @@
       "url": "AdverseEvent/2388ab82dc76ff04abb291c34dcf61f890b3166aa69308b616f2873469d44cf3"
     }
   }, {
-    "fullUrl": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
+    "fullUrl": "Observation/7b843b64426c6554822ebc643a6c33034d4b06bc86f3a1d123cf8e3eddcd5b11",
     "resource": {
       "resourceType": "Observation",
-      "id": "39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8",
+      "id": "7b843b64426c6554822ebc643a6c33034d4b06bc86f3a1d123cf8e3eddcd5b11",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/observation-verlauf-id",
         "value": "1-2-3"
       } ],
       "status": "final",
@@ -448,7 +447,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ],
       "effectiveDateTime": "2018-06-02",
       "valueCodeableConcept": {
@@ -510,7 +509,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/39ba215dd5281f41aeff7796cee91f993d1df2a3b267c9c49ee70e6289bbb8d8"
+      "url": "Observation/7b843b64426c6554822ebc643a6c33034d4b06bc86f3a1d123cf8e3eddcd5b11"
     }
   }, {
     "fullUrl": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122",
@@ -537,7 +536,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ],
       "effectiveDateTime": "2018-06-02",
       "valueCodeableConcept": {
@@ -577,7 +576,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -593,15 +592,15 @@
       "url": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4"
     }
   }, {
-    "fullUrl": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+    "fullUrl": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
     "resource": {
       "resourceType": "Specimen",
-      "id": "5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c",
+      "id": "f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/specimen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
         "value": "280"
       } ],
       "accessionIdentifier": {
@@ -616,7 +615,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+      "url": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
     }
   }, {
     "fullUrl": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
@@ -654,7 +653,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -664,7 +663,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+        "reference": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
       }
     },
     "request": {
@@ -691,7 +690,7 @@
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57"
       },
       "focus": [ {
-        "reference": "Condition/38066e3a2af8b2fcc481b61ed2d049dc5577e42e28614ea2e40de4a961710ee7"
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
@@ -727,7 +726,7 @@
         }
       }, {
         "item": {
-          "reference": "Specimen/5cdea52c0023bfe2eeab5ddcf50d778fd03d49641275c5465d3d1070f17c4a2c"
+          "reference": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
         }
       }, {
         "item": {

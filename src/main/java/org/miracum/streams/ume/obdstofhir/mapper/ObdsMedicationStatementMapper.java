@@ -235,7 +235,7 @@ public class ObdsMedicationStatementMapper extends ObdsToFhirMapper {
             .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, pid))
             .setIdentifier(
                 new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
                     .setType(
                         new CodeableConcept(
                             new Coding(

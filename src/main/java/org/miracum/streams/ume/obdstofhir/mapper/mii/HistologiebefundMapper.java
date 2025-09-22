@@ -46,7 +46,11 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
     // Identifier
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getHistologiebefundDiagnosticReportId())
+            .setSystem(
+                fhirProperties
+                    .getSystems()
+                    .getIdentifiers()
+                    .getHistologiebefundDiagnosticReportId())
             .setValue(slugifier.slugify(identifierValue));
     diagnosticReport.addIdentifier(identifier);
     // Id

@@ -318,7 +318,7 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
             .setReference(ResourceType.Patient + "/" + this.getHash(ResourceType.Patient, patId))
             .setIdentifier(
                 new Identifier()
-                    .setSystem(fhirProperties.getSystems().getPatientId())
+                    .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
                     .setType(
                         new CodeableConcept(
                             new Coding(

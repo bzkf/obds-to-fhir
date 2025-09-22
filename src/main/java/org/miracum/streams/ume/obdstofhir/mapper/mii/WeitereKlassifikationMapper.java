@@ -46,7 +46,11 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
 
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getWeitereKlassifikationObservationId())
+              .setSystem(
+                  fhirProperties
+                      .getSystems()
+                      .getIdentifiers()
+                      .getWeitereKlassifikationObservationId())
               .setValue(identifierValue);
       observation.setId(computeResourceIdFromIdentifier(identifier));
       observation.setIdentifier(List.of(identifier));
