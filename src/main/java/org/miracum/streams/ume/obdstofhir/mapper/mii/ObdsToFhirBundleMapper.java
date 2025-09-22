@@ -20,6 +20,7 @@ import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
@@ -885,10 +886,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (!duplicateEntries.isEmpty()) {
       var duplicateEntry = duplicateEntries.getFirst();
-      LOG.info(
-          "Overwriting duplicate bundle entry with URL {} and profile {}.",
-          url,
-          resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+      if (duplicateEntry.getResource().getResourceType() == ResourceType.Condition) {
+        LOG.debug(
+            "Overwriting duplicate entry in bundle with URL {} and profile {}. "
+                + "This is fine for Condition resources.",
+            url,
+            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+      } else {
+        LOG.warn(
+            "Overwriting duplicate entry in bundle with URL {} and profile {}. "
+                + "This is fine for ST, SYST and Diagnose-related resources.",
+            url,
+            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+      }
 
       duplicateEntry.setResource(resource);
     } else {
