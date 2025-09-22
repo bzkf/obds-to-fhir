@@ -72,6 +72,50 @@ There's also some more details on the setup at <https://github.com/bzkf/onco-ana
 
 See [package.json](package.json) for a list of used packages and their versions.
 
+## De-Identification
+
+The generated FHIR resources contain identifying information directly taken from the source oBDS data.
+This includes technical IDs taken from the Meldungen such as `Meldung_ID` and `SYST_ID` which are used to construct
+the `Resource.identifier` elements. The identifier value is also used to compute the `Resource.id` by first appending
+it to the identifier system and then hashing the resulting string using SHA-256.
+To appropriately de-identify the generated resources, we therefore recommend de-identifying all `Resource.id`
+and `Resource.identifier.value` elements. This may be done using pseudonymization or hashing with a secret salt.
+
+`DiagnosticReport.conclusion` is mapped verbatim from the Pathologie Meldung's `Befundtext` element, depending on the
+use case, it might be appropriate to remove this free-text data element as well.
+
+An example `anonymization.yaml` config as used by the [FHIR Pseudonymizer](https://github.com/miracum/fhir-pseudonymizer)
+may look like this:
+
+```yaml
+fhirVersion: R4
+fhirPathRules:
+  - path: Resource.id
+    method: cryptoHash
+  - path: Bundle.entry.fullUrl
+    method: cryptoHash
+  - path: Bundle.entry.request.url
+    method: cryptoHash
+  - path: nodesByType('Reference').reference
+    method: cryptoHash
+  - path: nodesByType('Identifier').value
+    method: cryptoHash
+  - path: DiagnosticReport.conclusion
+    method: redact
+parameters:
+  dateShiftKey: ""
+  dateShiftScope: resource
+  cryptoHashKey: "a-long-secret-key"
+  encryptKey: ""
+  enablePartialAgesForRedact: true
+  enablePartialDatesForRedact: true
+  enablePartialZipCodesForRedact: true
+  restrictedZipCodeTabulationAreas: []
+```
+
+The application also logs to stdout and the output always include the currently processed `Meldung_ID` and potentially other information
+extracted directly from the source data. If this is a concern, we recommend disabling logging by in the container runtime used.
+
 ## Development
 
 ### oBDS v3 code generation
