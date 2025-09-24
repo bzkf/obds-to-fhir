@@ -189,9 +189,12 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
         continue;
       }
 
-      // we could also try to construct the identifier value from ST_ID + Bestrahlung.beginn() +
-      // Applikationsart, but it's possible that all those values are unset or even change
-      // across multiple reports. Still, the use of indices feels fragile, similar to how
+      // we could also try to construct the identifier value from ST_ID +
+      // Bestrahlung.beginn() +
+      // Applikationsart, but it's possible that all those values are unset or even
+      // change
+      // across multiple reports. Still, the use of indices feels fragile, similar to
+      // how
       // we're handling multiple Fernmetastasen right now.
       var identifierValue = idBase + "-" + i;
 
@@ -221,11 +224,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
               fhirProperties
                   .getProfiles()
                   .getMiiPrOnkoStrahlentherapieBestrahlungStrahlentherapie());
-    }
-
-    var bestrahlungsData = getBestrahlungsData(bestrahlung.getApplikationsart());
-    if (bestrahlungsData == null) {
-      throw new IllegalStateException("Unable to extract Bestrahlung data.");
     }
 
     var identifier =
@@ -277,6 +275,11 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     procedure.setPerformed(performed);
 
+    var bestrahlungsData = getBestrahlungsData(bestrahlung.getApplikationsart());
+    if (bestrahlungsData == null) {
+      throw new IllegalStateException("Unable to extract Bestrahlung data.");
+    }
+
     // usedCode
     if (bestrahlungsData.strahlenart() != null) {
       var strahlenartCoding =
@@ -304,7 +307,8 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       procedure.addBodySite(new CodeableConcept(bodySiteCoding));
     }
 
-    // this ensures that if the zielgebiet is unset and only the seiteZielgebiet is set,
+    // this ensures that if the zielgebiet is unset and only the seiteZielgebiet is
+    // set,
     // we still create a bodySite element with just that extension.
     if (bestrahlungsData.seiteZielgebiet() != null) {
       var sideCoding =
@@ -549,7 +553,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
           null);
     }
 
-    return null;
+    return new StrahlentherapieBestrahlung(applikationsartCode, null, null, null, null, null, null);
   }
 
   private static String getZielgebiet(ZielgebietTyp zielgebiet) {

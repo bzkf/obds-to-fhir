@@ -31,7 +31,8 @@ class StrahlentherapieMapperTest extends MapperTest {
     "Testpatient_2.xml",
     "Testpatient_3.xml",
     "Testpatient_Mamma.xml",
-    "Test_ST_Invalid_Applikationsart.xml"
+    "Test_ST_Invalid_Applikationsart.xml",
+    "Test_ST_Applikationsart_Empty_Sonstige.xml"
   })
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);

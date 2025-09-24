@@ -27,6 +27,7 @@ public abstract class MapperTest {
         .addModule(new JakartaXmlBindAnnotationModule())
         .addModule(new Jdk8Module())
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        // .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
         .build();
   }
 
