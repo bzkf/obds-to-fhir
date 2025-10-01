@@ -62,7 +62,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-core:1.15.4'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.6'
     implementation 'org.apache.commons:commons-text:1.14.0'
-    implementation 'org.scala-lang:scala-library:2.13.16'
+    implementation 'org.scala-lang:scala-library:2.13.17'
     implementation 'com.github.slugify:slugify:3.0.7'
 
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
