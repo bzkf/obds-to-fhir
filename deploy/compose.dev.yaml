@@ -1,17 +1,17 @@
 #checkov:skip=CKV_SECRET_6: all dev setup
 services:
-  oracle:
-    image: docker.io/gvenzl/oracle-free:23.9-slim-faststart@sha256:f75e5568cba81a337afc4ea98b8f8e6cb837774a3a5b175cce918b1c399d9403
-    cap_drop:
-      - ALL
-    privileged: false
-    environment:
-      # kics-scan ignore-line
-      ORACLE_PASSWORD: "devPassword" # gitleaks:allow
-    ports:
-      - "127.0.0.1:1521:1521"
-    volumes:
-      - ./oracle/initV3:/docker-entrypoint-initdb.d/setup
+  # oracle:
+  #   image: docker.io/gvenzl/oracle-free:23.9-slim-faststart@sha256:f75e5568cba81a337afc4ea98b8f8e6cb837774a3a5b175cce918b1c399d9403
+  #   cap_drop:
+  #     - ALL
+  #   privileged: false
+  #   environment:
+  #     # kics-scan ignore-line
+  #     ORACLE_PASSWORD: "devPassword" # gitleaks:allow
+  #   ports:
+  #     - "127.0.0.1:1521:1521"
+  #   volumes:
+  #     - ./oracle/initV3:/docker-entrypoint-initdb.d/setup
 
   kafka:
     image: docker.io/apache/kafka:4.1.0@sha256:bff074a5d0051dbc0bbbcd25b045bb1fe84833ec0d3c7c965d1797dd289ec88f

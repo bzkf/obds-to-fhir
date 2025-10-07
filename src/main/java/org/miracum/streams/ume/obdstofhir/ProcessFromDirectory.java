@@ -65,6 +65,11 @@ public class ProcessFromDirectory {
         MDC.put("fileName", file.getFileName().toString());
         LOG.info("Processing file");
 
+        if (!file.getFileName().toString().endsWith(".xml")) {
+          LOG.warn("File does not have .xml suffix. Ignoring and continuing.");
+          continue;
+        }
+
         var xmlString = Files.readString(file);
 
         var obdsOrAdt = deserializer.deserializeAsObdsOrAdt(xmlString);
@@ -83,7 +88,7 @@ public class ProcessFromDirectory {
 
         final var bundles = mapper.map(obds);
         for (var bundle : bundles) {
-          LOG.debug("Created FHIR bundle {}", bundle.getId());
+          LOG.info("Created FHIR bundle {}", bundle.getId());
 
           if (config.outputToKafka().enabled()) {
             try {

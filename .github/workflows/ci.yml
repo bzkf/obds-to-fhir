@@ -175,6 +175,86 @@ jobs:
             -f tests/compose/compose.yaml \
             -f deploy/compose.process-from-directory.yaml logs
 
+  test-compose-process-from-directory-v2-to-v3:
+    name: test compose processing files from directory with v2 to v3 conversion
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'pull_request' || github.ref_name == 'beta' }}
+    needs:
+      - build
+    permissions:
+      contents: read
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      # <https://docs.docker.com/storage/containerd/>
+      # via <https://github.com/docker/setup-buildx-action/issues/257>
+      - name: Set up containerd image store
+        shell: bash
+        run: |
+          [ -f /etc/docker/daemon.json ] || echo "{}" | sudo tee /etc/docker/daemon.json
+          jq '. | .+{"features": {"containerd-snapshotter": true}}' /etc/docker/daemon.json > /tmp/docker-daemon-with-containerd.json
+          sudo mv /tmp/docker-daemon-with-containerd.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          docker info -f '{{ .DriverStatus }}'
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Download image
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: ${{ needs.build.outputs.image-slug }}
+          path: /tmp
+
+      - name: Load image
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker load --input /tmp/image.tar
+          docker image ls
+
+      - name: Run obds-to-fhir
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
+        run: |
+          mkdir -p "${OUTPUT_DIRECTORY}"
+          USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
+            docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml \
+            run obds-to-fhir
+
+      - name: Make sure the FHIR bundles appear in the output dir
+        run: |
+          if find "$PWD/tests/compose/fhir-output" -type f -name "*.fhir.json" -print -quit | grep -q .; then
+              echo "Output FHIR bundles found"
+              ls -lsa "$PWD/tests/compose/fhir-output"
+          else
+              echo "No files found"
+              exit 1
+          fi
+
+      - name: Print compose logs
+        if: always()
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
+          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
+        run: |
+          docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml logs
+
   test:
     name: run k8s smoke test
     runs-on: ubuntu-24.04
