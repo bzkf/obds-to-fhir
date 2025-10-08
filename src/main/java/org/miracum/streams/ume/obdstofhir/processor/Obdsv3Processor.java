@@ -138,29 +138,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
             meldung -> {
               if (meldung.getObds().getMengePatient().getPatient().size() > 1) {
                 throw new IllegalStateException(
-                    "Meldung contains more than one patient, actually: "
-                        + meldung.getObds().getMengePatient().getPatient().size());
-              }
-
-              if (meldung
-                      .getObds()
-                      .getMengePatient()
-                      .getPatient()
-                      .getFirst()
-                      .getMengeMeldung()
-                      .getMeldung()
-                      .size()
-                  > 1) {
-                throw new IllegalStateException(
-                    "Meldung contains more than one Meldung, actually: "
-                        + meldung
-                            .getObds()
-                            .getMengePatient()
-                            .getPatient()
-                            .getFirst()
-                            .getMengeMeldung()
-                            .getMeldung()
-                            .size());
+                    String.format(
+                        "Meldung %s contains more than one patient, actually %d",
+                        getReportingIdFromObds(meldung),
+                        meldung.getObds().getMengePatient().getPatient().size()));
               }
               return meldung;
             })
