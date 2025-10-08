@@ -156,9 +156,9 @@ jobs:
 
       - name: Make sure the FHIR bundles appear in the output dir
         run: |
+          ls -lsa "$OUTPUT_DIRECTORY"
           if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
               echo "Output FHIR bundles found"
-              ls -lsa "$OUTPUT_DIRECTORY"
           else
               echo "No files found"
               exit 1
@@ -183,7 +183,7 @@ jobs:
     permissions:
       contents: read
     env:
-      INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/
+      INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/adt/
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
@@ -235,9 +235,9 @@ jobs:
 
       - name: Make sure the FHIR bundles appear in the output dir
         run: |
+          ls -lsa "$OUTPUT_DIRECTORY"
           if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
               echo "Output FHIR bundles found"
-              ls -lsa "$OUTPUT_DIRECTORY"
           else
               echo "No files found"
               exit 1

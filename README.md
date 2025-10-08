@@ -37,7 +37,7 @@ Here's how you can run the application this way:
 ```sh
 mkdir ./fhir-output/
 
-INPUT_DIRECTORY="../src/test/resources/obds3/rbk/" \
+INPUT_DIRECTORY="../src/test/resources/obds3/" \
 OUTPUT_DIRECTORY="../fhir-output" \
 USER_ID="$(id -u)" \
 GROUP_ID="$(id -g)" \
