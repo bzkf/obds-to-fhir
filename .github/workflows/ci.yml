@@ -183,6 +183,9 @@ jobs:
       - build
     permissions:
       contents: read
+    env:
+      INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/
+      OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
@@ -222,8 +225,6 @@ jobs:
       - name: Run obds-to-fhir
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
-          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/
-          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
           mkdir -p "${OUTPUT_DIRECTORY}"
           USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
@@ -247,8 +248,6 @@ jobs:
         if: always()
         env:
           OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
-          INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
-          OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
         run: |
           docker compose \
             -f deploy/compose.yaml \
