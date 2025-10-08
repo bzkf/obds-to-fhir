@@ -81,6 +81,11 @@ public abstract class ObdsToFhirMapper {
   }
 
   protected String computeResourceIdFromIdentifier(Identifier identifier) {
+    Validate.notBlank(identifier.getSystem());
+    Validate.notBlank(
+        identifier.getValue(),
+        "Identifier value must not be blank. System: %s",
+        identifier.getSystem());
     return Hashing.sha256()
         .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
         .toString();

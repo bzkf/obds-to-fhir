@@ -155,9 +155,9 @@ jobs:
 
       - name: Make sure the FHIR bundles appear in the output dir
         run: |
-          if find "$PWD/tests/compose/fhir-output" -type f -name "*.fhir.json" -print -quit | grep -q .; then
+          if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
               echo "Output FHIR bundles found"
-              ls -lsa "$PWD/tests/compose/fhir-output"
+              ls -lsa "$OUTPUT_DIRECTORY"
           else
               echo "No files found"
               exit 1
@@ -235,9 +235,9 @@ jobs:
 
       - name: Make sure the FHIR bundles appear in the output dir
         run: |
-          if find "$PWD/tests/compose/fhir-output" -type f -name "*.fhir.json" -print -quit | grep -q .; then
+          if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
               echo "Output FHIR bundles found"
-              ls -lsa "$PWD/tests/compose/fhir-output"
+              ls -lsa "$OUTPUT_DIRECTORY"
           else
               echo "No files found"
               exit 1

@@ -11,6 +11,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
@@ -22,7 +23,11 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      HistologieTyp histologie, Reference patient, Reference diagnosis, Reference specimen) {
+      HistologieTyp histologie,
+      Reference patient,
+      Reference diagnosis,
+      Reference specimen,
+      String meldungsId) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     verifyReference(patient, ResourceType.Patient);
     verifyReference(diagnosis, ResourceType.Condition);
@@ -32,10 +37,17 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
     var effectiveDate = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
 
+    var identifierValueBase = histologie.getHistologieID();
+    if (!StringUtils.hasText(identifierValueBase)) {
+      LOG.warn(
+          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologie Specimen.");
+      identifierValueBase = meldungsId;
+    }
+
     if (histologie.getLKBefallen() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "-befallen",
+              identifierValueBase + "-befallen",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneLymphknoten(),
               "21893-3",
               "443527007",
@@ -49,7 +61,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getLKUntersucht() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "-untersucht",
+              identifierValueBase + "-untersucht",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteLymphknoten(),
               "21894-1",
               "444025001",
@@ -63,7 +75,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getSentinelLKBefallen() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "-befallen-sentinel",
+              identifierValueBase + "-befallen-sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
               "92832-5",
               "1264491009",
@@ -77,7 +89,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     if (histologie.getSentinelLKUntersucht() != null) {
       result.add(
           createObservation(
-              histologie.getHistologieID() + "-untersucht-sentinel",
+              identifierValueBase + "-untersucht-sentinel",
               fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
               "85347-3",
               "444411008",

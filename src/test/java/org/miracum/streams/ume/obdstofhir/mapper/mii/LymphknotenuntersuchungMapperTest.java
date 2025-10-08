@@ -43,19 +43,43 @@ class LymphknotenuntersuchungMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getDiagnose().getHistologie(), subject, diagnose, specimen));
+        list.addAll(
+            sut.map(
+                meldung.getDiagnose().getHistologie(),
+                subject,
+                diagnose,
+                specimen,
+                meldung.getMeldungID()));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getVerlauf().getHistologie(), subject, diagnose, specimen));
+        list.addAll(
+            sut.map(
+                meldung.getVerlauf().getHistologie(),
+                subject,
+                diagnose,
+                specimen,
+                meldung.getMeldungID()));
       }
 
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getOP().getHistologie(), subject, diagnose, specimen));
+        list.addAll(
+            sut.map(
+                meldung.getOP().getHistologie(),
+                subject,
+                diagnose,
+                specimen,
+                meldung.getMeldungID()));
       }
 
       if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.addAll(sut.map(meldung.getPathologie().getHistologie(), subject, diagnose, specimen));
+        list.addAll(
+            sut.map(
+                meldung.getPathologie().getHistologie(),
+                subject,
+                diagnose,
+                specimen,
+                meldung.getMeldungID()));
       }
     }
 

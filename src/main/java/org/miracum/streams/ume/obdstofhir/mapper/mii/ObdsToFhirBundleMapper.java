@@ -393,7 +393,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (diagnose.getHistologie() != null) {
       var histologie = diagnose.getHistologie();
-      var specimen = specimenMapper.map(histologie, patientReference);
+      var specimen = specimenMapper.map(histologie, patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
       var specimenReference = createReferenceFromResource(specimen);
@@ -411,7 +411,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var lymphknotenuntersuchungen =
           lymphknotenuntersuchungMapper.map(
-              histologie, patientReference, primaryConditionReference, specimenReference);
+              histologie,
+              patientReference,
+              primaryConditionReference,
+              specimenReference,
+              meldung.getMeldungID());
       mappedResources.addAll(lymphknotenuntersuchungen);
     }
 
@@ -527,7 +531,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (verlauf.getHistologie() != null) {
       var histologie = verlauf.getHistologie();
-      var specimen = specimenMapper.map(verlauf.getHistologie(), patientReference);
+      var specimen =
+          specimenMapper.map(verlauf.getHistologie(), patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
       var specimenReference = createReferenceFromResource(specimen);
@@ -555,7 +560,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var lymphknotenuntersuchungen =
           lymphknotenuntersuchungMapper.map(
-              histologie, patientReference, primaryConditionReference, specimenReference);
+              histologie,
+              patientReference,
+              primaryConditionReference,
+              specimenReference,
+              meldung.getMeldungID());
       mappedResources.addAll(lymphknotenuntersuchungen);
     }
 
@@ -668,7 +677,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (op.getHistologie() != null) {
       var histologie = op.getHistologie();
-      var specimen = specimenMapper.map(op.getHistologie(), patientReference);
+      var specimen =
+          specimenMapper.map(op.getHistologie(), patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
       var specimenReference = createReferenceFromResource(specimen);
@@ -696,7 +706,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var lymphknotenuntersuchungen =
           lymphknotenuntersuchungMapper.map(
-              histologie, patientReference, primaryConditionReference, specimenReference);
+              histologie,
+              patientReference,
+              primaryConditionReference,
+              specimenReference,
+              meldung.getMeldungID());
       mappedResources.addAll(lymphknotenuntersuchungen);
     }
 
@@ -755,7 +769,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (pathologie.getHistologie() != null) {
       var histologie = pathologie.getHistologie();
-      var specimen = specimenMapper.map(pathologie.getHistologie(), patientReference);
+      var specimen =
+          specimenMapper.map(pathologie.getHistologie(), patientReference, meldung.getMeldungID());
 
       mappedResources.add(specimen);
 
@@ -784,7 +799,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var lymphknotenuntersuchungen =
           lymphknotenuntersuchungMapper.map(
-              histologie, patientReference, primaryConditionReference, specimenReference);
+              histologie,
+              patientReference,
+              primaryConditionReference,
+              specimenReference,
+              meldung.getMeldungID());
       mappedResources.addAll(lymphknotenuntersuchungen);
     }
 
