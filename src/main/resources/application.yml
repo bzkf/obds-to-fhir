@@ -44,6 +44,7 @@ fhir:
       studienteilnahme-observation-id: "${fhir.systems.identifiers.base-url}/studienteilnahme-observation-id"
       lymphknotenuntersuchung-observation-id: "${fhir.systems.identifiers.base-url}/lymphknotenuntersuchung-observation-id"
       verlaufshistologie-observation-id: "${fhir.systems.identifiers.base-url}/verlaufshistologie-observation-id"
+      verlauf-observation-id: "${fhir.systems.identifiers.base-url}/verlauf-observation-id"
       gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/gleason-score-observation-id"
       strahlentherapie-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-procedure-id"
       strahlentherapie-bestrahlung-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-bestrahlung-procedure-id"
