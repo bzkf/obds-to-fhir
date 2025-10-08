@@ -160,15 +160,16 @@
       "url": "Observation/ce89cda0a0fb5263cfecc47a1a54c58b616e282f4b80c19cc8fde3b60b5ea9d5"
     }
   }, {
-    "fullUrl": "Specimen/83ab31d841160303d29e5060b5e1cdbbecb6142d0c7b1815906c90b3c623d8c1",
+    "fullUrl": "Specimen/da59f7fcad20202cffb0bdb41c3b3555707b6cab1692b09d7a4ccbc5d4d8d918",
     "resource": {
       "resourceType": "Specimen",
-      "id": "83ab31d841160303d29e5060b5e1cdbbecb6142d0c7b1815906c90b3c623d8c1",
+      "id": "da59f7fcad20202cffb0bdb41c3b3555707b6cab1692b09d7a4ccbc5d4d8d918",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+        "value": "2103B5C5-123123-12312"
       } ],
       "subject": {
         "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
@@ -176,7 +177,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Specimen/83ab31d841160303d29e5060b5e1cdbbecb6142d0c7b1815906c90b3c623d8c1"
+      "url": "Specimen/da59f7fcad20202cffb0bdb41c3b3555707b6cab1692b09d7a4ccbc5d4d8d918"
     }
   }, {
     "fullUrl": "Observation/70767873f6bd1815e3f411b0acfe134ea3823452f4b12d2102c6b12f9bfb524a",
@@ -229,7 +230,7 @@
         } ]
       },
       "specimen": {
-        "reference": "Specimen/83ab31d841160303d29e5060b5e1cdbbecb6142d0c7b1815906c90b3c623d8c1"
+        "reference": "Specimen/da59f7fcad20202cffb0bdb41c3b3555707b6cab1692b09d7a4ccbc5d4d8d918"
       }
     },
     "request": {
@@ -634,7 +635,7 @@
         }
       }, {
         "item": {
-          "reference": "Specimen/83ab31d841160303d29e5060b5e1cdbbecb6142d0c7b1815906c90b3c623d8c1"
+          "reference": "Specimen/da59f7fcad20202cffb0bdb41c3b3555707b6cab1692b09d7a4ccbc5d4d8d918"
         }
       }, {
         "item": {

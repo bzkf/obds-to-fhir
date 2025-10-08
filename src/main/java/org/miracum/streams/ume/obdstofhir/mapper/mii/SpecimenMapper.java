@@ -8,6 +8,7 @@ import org.miracum.streams.ume.obdstofhir.mapper.ObdsToFhirMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class SpecimenMapper extends ObdsToFhirMapper {
@@ -18,17 +19,24 @@ public class SpecimenMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Specimen map(HistologieTyp histologie, Reference patient) {
+  public Specimen map(HistologieTyp histologie, Reference patient, String meldungsId) {
     Objects.requireNonNull(histologie, "HistologieTyp must not be null");
     verifyReference(patient, ResourceType.Patient);
 
     var specimen = new Specimen();
 
+    var identifierValue = histologie.getHistologieID();
+    if (!StringUtils.hasText(identifierValue)) {
+      LOG.warn(
+          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologie Specimen.");
+      identifierValue = meldungsId;
+    }
+
     // Identifier = HistologieId
     var identifier = new Identifier();
     identifier
         .setSystem(fhirProperties.getSystems().getIdentifiers().getHistologieSpecimenId())
-        .setValue(slugifier.slugify(histologie.getHistologieID()));
+        .setValue(slugifier.slugify(identifierValue));
     specimen.addIdentifier(identifier);
     // Id
     specimen.setId(computeResourceIdFromIdentifier(identifier));

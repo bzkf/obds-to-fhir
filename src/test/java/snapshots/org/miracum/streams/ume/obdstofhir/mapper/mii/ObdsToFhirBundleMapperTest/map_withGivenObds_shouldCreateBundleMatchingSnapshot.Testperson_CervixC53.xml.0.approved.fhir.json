@@ -536,14 +536,15 @@
       "url": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3"
     }
   }, {
-    "fullUrl": "Observation/eacbb15761e9564ff98c80b0f78f500e63686012d5b9cf64076d3fbbdf56f311",
+    "fullUrl": "Observation/2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd",
     "resource": {
       "resourceType": "Observation",
-      "id": "eacbb15761e9564ff98c80b0f78f500e63686012d5b9cf64076d3fbbdf56f311",
+      "id": "2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
       },
       "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlauf-observation-id",
         "value": "195"
       } ],
       "status": "final",
@@ -621,7 +622,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/eacbb15761e9564ff98c80b0f78f500e63686012d5b9cf64076d3fbbdf56f311"
+      "url": "Observation/2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd"
     }
   }, {
     "fullUrl": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d",

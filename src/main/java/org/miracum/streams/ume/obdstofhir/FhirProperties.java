@@ -92,7 +92,7 @@ public class FhirProperties {
     private String systemischeTherapieMedicationStatementId;
     private String histologiebefundDiagnosticReportId;
     private String gradingObservationId;
-    private String observationVerlaufId;
+    private String verlaufObservationId;
     private String todObservationId;
     private String nebenwirkungAdverseEventId;
   }

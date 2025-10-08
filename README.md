@@ -37,8 +37,8 @@ Here's how you can run the application this way:
 ```sh
 mkdir ./fhir-output/
 
-INPUT_DIRECTORY="./src/test/resources/obds3/" \
-OUTPUT_DIRECTORY="./fhir-output" \
+INPUT_DIRECTORY="../src/test/resources/obds3/" \
+OUTPUT_DIRECTORY="../fhir-output" \
 USER_ID="$(id -u)" \
 GROUP_ID="$(id -g)" \
 docker compose -f deploy/compose.yaml -f deploy/compose.process-from-directory.yaml run obds-to-fhir

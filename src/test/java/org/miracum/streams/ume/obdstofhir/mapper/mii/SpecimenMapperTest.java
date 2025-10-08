@@ -40,19 +40,19 @@ class SpecimenMapperTest extends MapperTest {
 
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
-        list.add(sut.map(meldung.getDiagnose().getHistologie(), subject));
+        list.add(sut.map(meldung.getDiagnose().getHistologie(), subject, meldung.getMeldungID()));
       }
 
       if (meldung.getVerlauf() != null && meldung.getVerlauf().getHistologie() != null) {
-        list.add(sut.map(meldung.getVerlauf().getHistologie(), subject));
+        list.add(sut.map(meldung.getVerlauf().getHistologie(), subject, meldung.getMeldungID()));
       }
 
       if (meldung.getOP() != null && meldung.getOP().getHistologie() != null) {
-        list.add(sut.map(meldung.getOP().getHistologie(), subject));
+        list.add(sut.map(meldung.getOP().getHistologie(), subject, meldung.getMeldungID()));
       }
 
       if (meldung.getPathologie() != null && meldung.getPathologie().getHistologie() != null) {
-        list.add(sut.map(meldung.getPathologie().getHistologie(), subject));
+        list.add(sut.map(meldung.getPathologie().getHistologie(), subject, meldung.getMeldungID()));
       }
     }
 
