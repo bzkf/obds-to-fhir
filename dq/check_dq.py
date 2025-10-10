@@ -165,6 +165,7 @@ patients_with_fernmetastasen = patients_with_observations.filter(
 
 
 # Allgemeiner Leisungszustand
+# rename subject reference
 patients_with_ecog = patients_with_observations.filter(
     col("value_codeable_concept_coding_system") == config.ALL_LEISTUNSGZUSTAND
 ).select(
@@ -175,11 +176,17 @@ patients_with_ecog = patients_with_observations.filter(
 patients_with_death = patients_with_observations.filter(
     col("meta_profile") == config.TOD
 ).select("subject_reference", "meta_profile")
+
+patients_with_death_renamed = patients_with_death.withColumnRenamed(
+    "subject_reference", "subject_reference_death"
+).withColumnRenamed("meta_profile", "meta_profile_death")
 patients_with_ecog_death = patients_with_ecog.join(
-    patients_with_death,
-    patients_with_ecog["subject_reference"] == patients_with_death["subject_reference"],
+    patients_with_death_renamed,
+    patients_with_ecog["subject_reference"]
+    == patients_with_death_renamed["subject_reference_death"],
     how="outer",
 )
+
 patients_with_ecog_death.show(truncate=False)
 
 

@@ -34,12 +34,32 @@ class Config:
     ASSERTED_DATE_EXTENSION = (
         "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     )
-    FERNMETASTASE = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen"
-    TOD = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod"
-    ALL_LEISTUNSGZUSTAND = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
-    MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen"
-    PRIMAERDIAGNOSE = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor"
-    OP = "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation"
+    FERNMETASTASE = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "StructureDefinition/"
+        "mii-pr-onko-fernmetastasen"
+    )
+    TOD = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "StructureDefinition/mii-pr-onko-tod"
+    )
+    ALL_LEISTUNSGZUSTAND = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog"
+    )
+    MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "StructureDefinition/"
+        "mii-pr-onko-weitere-klassifikationen"
+    )
+    PRIMAERDIAGNOSE = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "StructureDefinition/mii-pr-onko-diagnose-primaertumor"
+    )
+    OP = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "StructureDefinition/mii-pr-onko-operation"
+    )
     MIN_DATE = datetime(1900, 1, 1)
     MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)
 

@@ -217,7 +217,11 @@ expectations_condition_procedure = [
 # but if the records are describing as same event we need to catch that.
 expectations_fernmetastasen = [
     gx.expectations.ExpectCompoundColumnsToBeUnique(
-        column_list=["patient_id", "effective_date_time", "bodySite_code"],
+        column_list=[
+            "patient_id",
+            "effective_date_time",
+            "value_codeable_concept_coding_code",
+        ],
         ignore_row_if="any_value_is_missing",
         condition_parser="great_expectations",
     )
@@ -225,9 +229,9 @@ expectations_fernmetastasen = [
 
 expectations_ecog_death = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="meta_profile",
+        column="meta_profile_death",
         row_condition='col("value_codeable_concept_coding_code") == 5',
         condition_parser="great_expectations",
-        description="check if ecog == 5, there must be a death observation",
+        # description="check if ecog == 5, there must be a death observation",
     )
 ]
