@@ -2,6 +2,7 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.github.slugify.Slugify;
+import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
@@ -34,6 +35,16 @@ public abstract class ObdsToFhirMapper {
   protected static final Slugify slugifier =
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
+
+  @Value("${fhir.mappings.idHashAlgorithm:sha256}")
+  private String idHashAlgorithm;
+
+  private HashFunction getHashFunction() {
+    if (null != idHashAlgorithm && idHashAlgorithm.equalsIgnoreCase("md5")) {
+      return Hashing.md5();
+    }
+    return Hashing.sha256();
+  }
 
   @Value("${app.patient-id-pattern:[^0]\\d{8}}")
   void setStringPattern(String value) {
@@ -73,11 +84,11 @@ public abstract class ObdsToFhirMapper {
         idToHash = fhirProperties.getSystems().getProcedureId();
         break;
       case "Surrogate":
-        return Hashing.sha256().hashString(id, StandardCharsets.UTF_8).toString();
+        return getHashFunction().hashString(id, StandardCharsets.UTF_8).toString();
       default:
         return null;
     }
-    return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
+    return getHashFunction().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
   }
 
   protected String computeResourceIdFromIdentifier(Identifier identifier) {
@@ -86,7 +97,7 @@ public abstract class ObdsToFhirMapper {
         identifier.getValue(),
         "Identifier value must not be blank. System: %s",
         identifier.getSystem());
-    return Hashing.sha256()
+    return getHashFunction()
         .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
         .toString();
   }
