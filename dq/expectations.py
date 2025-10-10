@@ -171,8 +171,8 @@ expectations_medicationStatements = [
         column_A="effectivePeriod_end",
         column_B="effectivePeriod_start",
         ignore_row_if="either_value_is_missing",
+        or_equal=True,
         # parse_strings_as_datetimes=True
-        # ignore_row_if="both_values_are_equal" # wont work 2
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="effectivePeriod_start",
@@ -196,7 +196,7 @@ expectations_condition_procedure = [
     ),
     # procedure date  > diagnosis date
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
-        column_A="performedPeriod_start",
+        column_A="performed_date_time",
         column_B="asserted_date",
         ignore_row_if="either_value_is_missing",
         condition_parser="great_expectations",
@@ -205,8 +205,10 @@ expectations_condition_procedure = [
         column_A="performed_date_time",
         column_B="asserted_date",
         ignore_row_if="either_value_is_missing",
-        row_condition='col("meta_profile_con") == "config.PRIMAERDIAGNOSE"'
-        + 'and col("meta_profile) == "config.OP"',
+        row_condition='col("meta_profile_con") =='
+        + f'"{config.PRIMAERDIAGNOSE}"'
+        + 'and col("meta_profile_procedure") == '
+        + f'"{config.OP}"',
         condition_parser="great_expectations",
     ),
 ]

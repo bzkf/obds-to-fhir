@@ -188,13 +188,13 @@ procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system,"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system"),
         exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "ops_version"),
         exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "ops_code"),
-        exp("subject.reference", "subject_reference"),
+        exp("subject.reference", "subject_reference_procedure"),
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
-        exp("meta.profile", "meta_profile"),
+        exp("meta.profile", "meta_profile_procedure"),
         exp(
             "Procedure.reasonReference.resolve().ofType(Condition).id",
             "reason_reference_condition_id",
@@ -205,7 +205,8 @@ print(procedures.columns)
 procedures = procedures.checkpoint(eager=True)
 patients_with_procedures = procedures.join(
     patients,
-    procedures["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    procedures["subject_reference_procedure"]
+    == concat(lit("Patient/"), col("patient_id")),
     how="inner",
 )
 
@@ -234,6 +235,10 @@ condition_with_procedure = conditions.join(
     procedures,
     conditions["condition_id"] == procedures["reason_reference_condition_id"],
     how="left",
+).join(
+    patients,
+    conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    how="inner",
 )
 condition_with_procedure.show()
 
