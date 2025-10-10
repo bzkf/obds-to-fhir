@@ -165,6 +165,7 @@ patients_with_fernmetastasen = patients_with_observations.filter(
 
 
 # Allgemeiner Leisungszustand
+# rename subject reference
 patients_with_ecog = patients_with_observations.filter(
     col("value_codeable_concept_coding_system") == config.ALL_LEISTUNSGZUSTAND
 ).select(
@@ -175,11 +176,17 @@ patients_with_ecog = patients_with_observations.filter(
 patients_with_death = patients_with_observations.filter(
     col("meta_profile") == config.TOD
 ).select("subject_reference", "meta_profile")
+
+patients_with_death_renamed = patients_with_death.withColumnRenamed(
+    "subject_reference", "subject_reference_death"
+).withColumnRenamed("meta_profile", "meta_profile_death")
 patients_with_ecog_death = patients_with_ecog.join(
-    patients_with_death,
-    patients_with_ecog["subject_reference"] == patients_with_death["subject_reference"],
+    patients_with_death_renamed,
+    patients_with_ecog["subject_reference"]
+    == patients_with_death_renamed["subject_reference_death"],
     how="outer",
 )
+
 patients_with_ecog_death.show(truncate=False)
 
 
@@ -188,13 +195,13 @@ procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system,"),
+        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system"),
         exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "ops_version"),
         exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "ops_code"),
-        exp("subject.reference", "subject_reference"),
+        exp("subject.reference", "subject_reference_procedure"),
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
-        exp("meta.profile", "meta_profile"),
+        exp("meta.profile", "meta_profile_procedure"),
         exp(
             "Procedure.reasonReference.resolve().ofType(Condition).id",
             "reason_reference_condition_id",
@@ -205,7 +212,8 @@ print(procedures.columns)
 procedures = procedures.checkpoint(eager=True)
 patients_with_procedures = procedures.join(
     patients,
-    procedures["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    procedures["subject_reference_procedure"]
+    == concat(lit("Patient/"), col("patient_id")),
     how="inner",
 )
 
@@ -234,6 +242,10 @@ condition_with_procedure = conditions.join(
     procedures,
     conditions["condition_id"] == procedures["reason_reference_condition_id"],
     how="left",
+).join(
+    patients,
+    conditions["subject_reference"] == concat(lit("Patient/"), col("patient_id")),
+    how="inner",
 )
 condition_with_procedure.show()
 
