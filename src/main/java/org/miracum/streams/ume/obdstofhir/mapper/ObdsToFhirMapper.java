@@ -30,13 +30,11 @@ public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
+  static String idHashAlgorithm;
 
   protected static final Slugify slugifier =
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
-
-  @Value("${fhir.mappings.idHashAlgorithm:sha256}")
-  private String idHashAlgorithm;
 
   private MessageDigest getMessageDigest() {
     if (null != idHashAlgorithm && idHashAlgorithm.equalsIgnoreCase("md5")) {
@@ -58,6 +56,11 @@ public abstract class ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv:false}")
   void setCheckDigitConversion(boolean checkDigitConversion) {
     ObdsToFhirMapper.checkDigitConversion = checkDigitConversion;
+  }
+
+  @Value("${fhir.mappings.idHashAlgorithm:sha256}")
+  void setIdHashAlgorithm(String idHashAlgorithm) {
+    ObdsToFhirMapper.idHashAlgorithm = idHashAlgorithm;
   }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
