@@ -2,10 +2,9 @@ package org.miracum.streams.ume.obdstofhir.mapper;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.github.slugify.Slugify;
-import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
-import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -15,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
@@ -30,10 +30,18 @@ public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
   static boolean checkDigitConversion;
   static Pattern localPatientIdPattern = Pattern.compile("[^0]\\d{8}");
+  static String idHashAlgorithm;
 
   protected static final Slugify slugifier =
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
+
+  private MessageDigest getMessageDigest() {
+    if (null != idHashAlgorithm && idHashAlgorithm.equalsIgnoreCase("md5")) {
+      return DigestUtils.getMd5Digest();
+    }
+    return DigestUtils.getSha256Digest();
+  }
 
   @Value("${app.patient-id-pattern:[^0]\\d{8}}")
   void setStringPattern(String value) {
@@ -48,6 +56,11 @@ public abstract class ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv:false}")
   void setCheckDigitConversion(boolean checkDigitConversion) {
     ObdsToFhirMapper.checkDigitConversion = checkDigitConversion;
+  }
+
+  @Value("${fhir.mappings.idHashAlgorithm:sha256}")
+  void setIdHashAlgorithm(String idHashAlgorithm) {
+    ObdsToFhirMapper.idHashAlgorithm = idHashAlgorithm;
   }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
@@ -73,11 +86,11 @@ public abstract class ObdsToFhirMapper {
         idToHash = fhirProperties.getSystems().getProcedureId();
         break;
       case "Surrogate":
-        return Hashing.sha256().hashString(id, StandardCharsets.UTF_8).toString();
+        return new DigestUtils(getMessageDigest()).digestAsHex(id);
       default:
         return null;
     }
-    return Hashing.sha256().hashString(idToHash + "|" + id, StandardCharsets.UTF_8).toString();
+    return new DigestUtils(getMessageDigest()).digestAsHex(idToHash + "|" + id);
   }
 
   protected String computeResourceIdFromIdentifier(Identifier identifier) {
@@ -86,9 +99,8 @@ public abstract class ObdsToFhirMapper {
         identifier.getValue(),
         "Identifier value must not be blank. System: %s",
         identifier.getSystem());
-    return Hashing.sha256()
-        .hashString(identifier.getSystem() + "|" + identifier.getValue(), StandardCharsets.UTF_8)
-        .toString();
+    return new DigestUtils(getMessageDigest())
+        .digestAsHex(identifier.getSystem() + "|" + identifier.getValue());
   }
 
   protected static String getConvertedPatIdFromMeldung(MeldungExport meldung) {
