@@ -64,6 +64,7 @@ dependencies {
     implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'org.scala-lang:scala-library:2.13.17'
     implementation 'com.github.slugify:slugify:3.0.7'
+    implementation 'commons-codec:commons-codec:1.19.0'
 
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
