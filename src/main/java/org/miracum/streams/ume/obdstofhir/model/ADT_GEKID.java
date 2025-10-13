@@ -425,7 +425,6 @@ public class ADT_GEKID implements Serializable {
                   @JsonProperty @EqualsAndHashCode.Include private String ST_Zielgebiet;
                   @JsonProperty @EqualsAndHashCode.Include private String ST_Seite_Zielgebiet;
                   @JsonProperty @EqualsAndHashCode.Include private String ST_Applikationsart;
-                  @JsonProperty @EqualsAndHashCode.Include private String ST_Strahlenart;
                 }
               }
 
