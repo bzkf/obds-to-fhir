@@ -60,9 +60,9 @@ class ObdsProcedureProcessorTest extends ObdsProcessorTest {
             "Nein"),
         Arguments.of(
             List.of(new Tupel<>("007_Pat2_Tumor1_Behandlungsende_ST.xml", 1)),
-            1,
+            3,
             0,
-            1,
+            3,
             0,
             "COMPLETED",
             "",

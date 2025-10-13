@@ -87,10 +87,43 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     }
 
     if (meldung != null && meldung.getMenge_ST() != null && meldung.getMenge_ST().getST() != null) {
-      bundle =
-          addResourceAsEntryInBundle(
-              bundle,
-              createRadiotherapyProcedure(meldung, pid, senderId, softwareId, reportingReason));
+      var radioTherapy = meldung.getMenge_ST().getST();
+
+      if (radioTherapy.getMenge_Bestrahlung() != null) {
+        var partialRadiations = radioTherapy.getMenge_Bestrahlung().getBestrahlung();
+        var distinctPartialRadiations = new HashSet<>(partialRadiations); // removes duplicates
+        var timeSpan = getTimeSpanFromPartialRadiations(partialRadiations);
+
+        if (distinctPartialRadiations.size() > 1) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createRadiotherapyProcedure(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      reportingReason,
+                      null,
+                      timeSpan,
+                      distinctPartialRadiations));
+        }
+
+        for (var radio : distinctPartialRadiations) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createRadiotherapyProcedure(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      reportingReason,
+                      radio,
+                      null,
+                      distinctPartialRadiations));
+        }
+      }
     }
 
     bundle.setType(Bundle.BundleType.TRANSACTION);
@@ -271,18 +304,75 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
   // Create a ST Procedure as in
   // https://simplifier.net/oncology/strahlentherapie
   public Procedure createRadiotherapyProcedure(
-      Meldung meldung, String pid, String senderId, String softwareId, Meldeanlass meldeanlass) {
+      Meldung meldung,
+      String pid,
+      String senderId,
+      String softwareId,
+      Meldeanlass meldeanlass,
+      Bestrahlung radio,
+      Tupel<Date, Date> timeSpan,
+      Set<Bestrahlung> distinctPartialRadiations) {
 
     var radioTherapy = meldung.getMenge_ST().getST();
 
-    var tumorId = meldung.getTumorzuordnung().getTumor_ID();
-
-    var id = pid + "-" + tumorId + "-" + radioTherapy.getST_ID();
+    var partOfId = pid + "st-partOf-procedure" + radioTherapy.getST_ID();
 
     var stProcedure = new Procedure();
 
-    // Id
-    stProcedure.setId(this.getHash(ResourceType.Procedure, id));
+    if (radio != null) {
+      var stBeginnDateString = radio.getST_Beginn_Datum();
+      var stEndDateString = radio.getST_Ende_Datum();
+
+      var id =
+          pid
+              + "st-procedure"
+              + radioTherapy.getST_ID()
+              + stBeginnDateString
+              + radio.getST_Zielgebiet()
+              + radio.getST_Seite_Zielgebiet()
+              + radio.getST_Applikationsart();
+
+      // Id
+      stProcedure.setId(this.getHash(ResourceType.Procedure, id));
+
+      // PartOf
+      if (distinctPartialRadiations.size() > 1) {
+        stProcedure.setPartOf(
+            List.of(
+                new Reference()
+                    .setReference(
+                        ResourceType.Procedure
+                            + "/"
+                            + this.getHash(ResourceType.Procedure, partOfId))));
+      }
+      // Performed
+      DateTimeType stBeginnDateType = convertObdsDateToDateTimeType(stBeginnDateString);
+      DateTimeType stEndDateType = convertObdsDateToDateTimeType(stEndDateString);
+
+      if (stBeginnDateType != null && stEndDateType != null) {
+        stProcedure.setPerformed(
+            new Period().setStartElement(stBeginnDateType).setEndElement(stEndDateType));
+      } else if (stBeginnDateType != null) {
+        stProcedure.setPerformed(new Period().setStartElement(stBeginnDateType));
+      }
+    } else {
+      // Id
+      stProcedure.setId(this.getHash(ResourceType.Procedure, partOfId));
+
+      // Performed
+      if (timeSpan != null) {
+        var minDate = timeSpan.getFirst();
+        var maxDate = timeSpan.getSecond();
+        if (minDate != null && maxDate != null) {
+          stProcedure.setPerformed(
+              new Period()
+                  .setStartElement(new DateTimeType(minDate))
+                  .setEndElement(new DateTimeType(maxDate)));
+        } else if (minDate != null) {
+          stProcedure.setPerformed(new Period().setStartElement(new DateTimeType(minDate)));
+        }
+      }
+    }
 
     // Meta
     stProcedure.getMeta().setSource(generateProfileMetaSource(senderId, softwareId, appVersion));
@@ -318,108 +408,6 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
                         .setCode(systIntention)
                         .setSystem(fhirProperties.getSystems().getSystIntention())
                         .setDisplay(SystIntentionVsLookup.lookupDisplay(systIntention))));
-
-    // add the individual Bestrahlungen as a list of extensions
-    if (radioTherapy.getMenge_Bestrahlung() != null
-        && radioTherapy.getMenge_Bestrahlung().getBestrahlung() != null) {
-      var bestrahlungen = radioTherapy.getMenge_Bestrahlung().getBestrahlung();
-      var distinctPartialRadiations = new HashSet<>(bestrahlungen); // removes duplicates
-
-      if (bestrahlungen.size() > distinctPartialRadiations.size()) {
-        LOG.warn("Found duplicate Bestrahlung entries in ST: ST_ID={}", radioTherapy.getST_ID());
-      }
-
-      var timeSpan = getTimeSpanFromPartialRadiations(distinctPartialRadiations.stream().toList());
-
-      // Performed
-      if (timeSpan != null) {
-        var minDate = timeSpan.getFirst();
-        var maxDate = timeSpan.getSecond();
-        if (minDate != null && maxDate != null) {
-          stProcedure.setPerformed(
-              new Period()
-                  .setStartElement(new DateTimeType(minDate))
-                  .setEndElement(new DateTimeType(maxDate)));
-        } else if (minDate != null) {
-          stProcedure.setPerformed(new Period().setStartElement(new DateTimeType(minDate)));
-        }
-      } else {
-        LOG.warn(
-            "No usable start or end date found for Bestrahlung entries in ST: ST_ID={}",
-            radioTherapy.getST_ID());
-      }
-
-      for (var radio : distinctPartialRadiations) {
-        var bestrahlungExtension =
-            new Extension().setUrl(fhirProperties.getExtensions().getStBestrahlung());
-
-        // Performed
-        var stBeginnDateType = convertObdsDateToDateTimeType(radio.getST_Beginn_Datum());
-        var stEndDateType = convertObdsDateToDateTimeType(radio.getST_Ende_Datum());
-
-        var performed = new Period();
-
-        if (stBeginnDateType != null) {
-          performed.setStartElement(stBeginnDateType);
-        }
-
-        if (stEndDateType != null) {
-          performed.setEndElement(stEndDateType);
-        }
-
-        // this is not a valid DKTK extension
-        // only set it if atleast one date is available
-        if (stBeginnDateType != null || stEndDateType != null) {
-          bestrahlungExtension.addExtension(new Extension().setUrl("Zeitraum").setValue(performed));
-        }
-
-        if (radio.getST_Applikationsart() != null) {
-          var applikationsartCoding =
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getStApplikationsArt())
-                  .setCode(radio.getST_Applikationsart());
-          bestrahlungExtension.addExtension(
-              new Extension()
-                  .setUrl("Applikationsart")
-                  .setValue(new CodeableConcept().addCoding(applikationsartCoding)));
-        }
-
-        if (radio.getST_Zielgebiet() != null) {
-          var zielgebietCoding =
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getStZielgebiet())
-                  .setCode(radio.getST_Zielgebiet());
-          bestrahlungExtension.addExtension(
-              new Extension()
-                  .setUrl("Zielgebiet")
-                  .setValue(new CodeableConcept().addCoding(zielgebietCoding)));
-        }
-
-        if (radio.getST_Seite_Zielgebiet() != null) {
-          var seiteZielgebietCoding =
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getAdtSeitenlokalisation())
-                  .setCode(radio.getST_Seite_Zielgebiet());
-          bestrahlungExtension.addExtension(
-              new Extension()
-                  .setUrl("SeiteZielgebiet")
-                  .setValue(new CodeableConcept().addCoding(seiteZielgebietCoding)));
-        }
-
-        if (radio.getST_Strahlenart() != null) {
-          var strahlenartCoding =
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getStStrahlenart())
-                  .setCode(radio.getST_Strahlenart());
-          bestrahlungExtension.addExtension(
-              new Extension()
-                  .setUrl("Strahlenart")
-                  .setValue(new CodeableConcept().addCoding(strahlenartCoding)));
-        }
-
-        stProcedure.addExtension(bestrahlungExtension);
-      }
-    }
 
     // Status
     if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
