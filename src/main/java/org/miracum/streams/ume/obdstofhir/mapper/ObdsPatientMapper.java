@@ -109,9 +109,13 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
     }
 
     // address
-    var patAddress = patData.getMenge_Adresse().getAdresse().getFirst();
-    if (StringUtils.hasLength(patAddress.getPatienten_PLZ())) {
-      patient.addAddress(getAddress(patAddress));
+    if (patData.getMenge_Adresse() != null
+        && patData.getMenge_Adresse().getAdresse() != null
+        && !patData.getMenge_Adresse().getAdresse().isEmpty()) {
+      var patAddress = patData.getMenge_Adresse().getAdresse().getFirst();
+      if (StringUtils.hasLength(patAddress.getPatienten_PLZ())) {
+        patient.addAddress(getAddress(patAddress));
+      }
     }
 
     var bundle = new Bundle();
@@ -133,7 +137,8 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
   }
 
   private Type getDeceased(List<MeldungExport> deathReports) {
-    // get the first entry with the largest version number where the death date is set
+    // get the first entry with the largest version number where the death date is
+    // set
     var reportWithSterbeDatum =
         deathReports.stream()
             .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
