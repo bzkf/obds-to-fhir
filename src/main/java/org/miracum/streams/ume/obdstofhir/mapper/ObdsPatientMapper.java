@@ -137,8 +137,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
   }
 
   private Type getDeceased(List<MeldungExport> deathReports) {
-    // get the first entry with the largest version number where the death date is
-    // set
+    // get the first entry with the largest version number where the death date is set
     var reportWithSterbeDatum =
         deathReports.stream()
             .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
