@@ -1,0 +1,25 @@
+services:
+  obds-to-fhir-dq-checks:
+    image: ghcr.io/bzkf/obds-to-fhir-dq-checks:v3.0.0-beta.106
+    restart: "no"
+    cap_drop:
+      - ALL
+    privileged: false
+    ipc: none
+    security_opt:
+      - "no-new-privileges:true"
+    user: "65532:65532"
+    environment:
+      READ_FROM_DELTA: "true"
+      SPARK_CHECKPOINT_PATH: "/tmp"
+      DELTA_DIR: "s3a://fhir/default"
+      S3_ENDPOINT: "${S3_ENDPOINT:-minio:9000}"
+      S3_CONNECTION_SSL_ENABLED: "false"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID:-admin}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY:-miniopass}"
+    volumes:
+      - type: bind
+        source: ${DQ_CHECKS_DATA_DOCS_PATH:?}
+        target: /app/gx/uncommitted/
+        bind:
+          create_host_path: true

@@ -91,6 +91,17 @@
             ]
           },
           {
+            "files": ["deploy/compose.dq-checks.yaml"],
+            "from": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v.*",
+            "to": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v${nextRelease.version}",
+            "results": [
+              {
+                "file": "deploy/compose.dq-checks.yaml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
             "files": ["build.gradle"],
             "from": "version = '.*'",
             "to": "version = '${nextRelease.version}'",
