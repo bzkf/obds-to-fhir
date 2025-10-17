@@ -170,7 +170,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         }
       } else if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         // aus Verlauf: histologie, grading und p-tnm
-        // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein Verlauf in
+        // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein
+        // Verlauf in
         // Menge_Verlauf), Jasmin klaert das noch
         var verlauf = meldung.getMenge_Verlauf().getVerlauf();
         var hist = verlauf.getHistologie();
@@ -273,10 +274,12 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
           var fernMetaId =
               fernMetaTupel.getFirst().getFM_Diagnosedatum()
                   + fernMetaTupel.getFirst().getFM_Lokalisation();
-          // Sonderfall OTH, hier brauchen wir alle (Datum und Lokalisation kann mehrfach relevant
+          // Sonderfall OTH, hier brauchen wir alle (Datum und Lokalisation kann mehrfach
+          // relevant
           // vorhanden sein)
           if (Objects.equals(fernMetaTupel.getFirst().getFM_Lokalisation(), "OTH")) {
-            // TODO was wenn neues Datum mit OTH dann kann Reihenfolge nicht mehr stimmen und führt
+            // TODO was wenn neues Datum mit OTH dann kann Reihenfolge nicht mehr stimmen
+            // und führt
             // hier zum Bug
             fernMetaId += index;
             index++;
@@ -298,7 +301,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         verlaufId);
   }
 
-  // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper() {
+  // public ValueMapper<MeldungExport, Bundle> getOnkoToObservationBundleMapper()
+  // {
   // return meldungExport -> {
   public Bundle mapOnkoResourcesToObservationsBundle(
       List<Tupel<ADT_GEKID.HistologieAbs, Meldeanlass>> histologieList,
@@ -440,7 +444,10 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var histDateString = histologie.getTumor_Histologiedatum();
 
     if (histDateString != null) {
-      gradingObs.setEffective(convertObdsDateToDateTimeType(histDateString));
+      var histDateTimeType = convertObdsDateToDateTimeType(histDateString);
+      if (histDateTimeType != null) {
+        gradingObs.setEffective(histDateTimeType);
+      }
     }
 
     var grading = histologie.getGrading();
@@ -583,7 +590,8 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
     var fernMetaDateString = fernMeta.getFM_Diagnosedatum();
     var fernMetaLokal = fernMeta.getFM_Lokalisation();
 
-    // TODO: this builds the indentifier slightly different than the other Observations.
+    // TODO: this builds the indentifier slightly different than the other
+    // Observations.
     // worth investigating if we should standardize instead?
     fernMetaObs.setId(this.getHash(ResourceType.Observation, fernMetaId));
 
@@ -689,9 +697,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     // tnm c Date
     var tnmcDateString = cTnm.getTNM_Datum();
-
     if (tnmcDateString != null) {
-      tnmcObs.setEffective(convertObdsDateToDateTimeType(tnmcDateString));
+      var tnmcDateTimeType = convertObdsDateToDateTimeType(tnmcDateString);
+      if (tnmcDateTimeType != null) {
+        tnmcObs.setEffective(tnmcDateTimeType);
+      }
     }
 
     if (classification != null
@@ -848,9 +858,11 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
 
     // tnm p Date
     var tnmpDateString = pTnm.getTNM_Datum();
-
     if (tnmpDateString != null) {
-      tnmpObs.setEffective(convertObdsDateToDateTimeType(tnmpDateString));
+      var tnmpDateTimeType = convertObdsDateToDateTimeType(tnmpDateString);
+      if (tnmpDateTimeType != null) {
+        tnmpObs.setEffective(tnmpDateTimeType);
+      }
     }
 
     // only defined in diagnosis
