@@ -58,7 +58,7 @@ class ObdsToFhirMapperTests {
     "2024-08-00,2024-08-15",
     "2024-00-00,2024-07-01"
   })
-  void extractDateTimeFromADTDate_withGivenObdsDate_shouldConvertToExpectedFhirDateTime(
+  void convertObdsDateToDateTimeType_withGivenObdsDate_shouldConvertToExpectedFhirDateTime(
       String obdsDate, String expectedFhirDateTimeString) {
     var fhirDate = ObdsToFhirMapper.convertObdsDateToDateTimeType(obdsDate);
 

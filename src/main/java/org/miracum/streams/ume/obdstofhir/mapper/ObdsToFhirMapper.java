@@ -250,7 +250,7 @@ public abstract class ObdsToFhirMapper {
       return adtDateTime;
     } catch (DateTimeException e) {
       log.error("Cannot parse '{}' as date", obdsDate);
-      throw e;
+      return null;
     }
   }
 
