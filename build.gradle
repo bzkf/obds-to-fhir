@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'org.miracum.streams.ume'
-version = '3.0.0-beta.106'
+version = '3.0.0-beta.107'
 
 java {
     toolchain {
