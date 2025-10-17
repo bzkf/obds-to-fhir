@@ -18,7 +18,7 @@
                 <Meldung
                     xmlns='http://www.basisdatensatz.de/oBDS/XML' Meldung_ID='m0'
                     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' Melder_ID='0'>
-                    <Meldebegruendung></Meldebegruendung>
+                    <Meldebegruendung>I</Meldebegruendung>
                     <Eigene_Leistung>J</Eigene_Leistung>
                     <Tumorzuordnung Tumor_ID='1'>
                         <Primaertumor_ICD>
@@ -55,6 +55,33 @@
                                 <NU>N</NU>
                             </Studienteilnahme>
                         </Modul_Allgemein>
+                    </ST>
+                </Meldung>
+                <Meldung
+                    xmlns='http://www.basisdatensatz.de/oBDS/XML' Meldung_ID='m1'
+                    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' Melder_ID='0'>
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID='1'>
+                        <Primaertumor_ICD>
+                            <Code>C71.9</Code>
+                            <Version>10 2010 GM</Version>
+                        </Primaertumor_ICD>
+                        <Diagnosedatum Datumsgenauigkeit='E'>2025-01-01</Diagnosedatum>
+                    </Tumorzuordnung>
+                    <ST ST_ID="2">
+                        <Meldeanlass>behandlungsbeginn</Meldeanlass>
+                        <Intention>K</Intention>
+                        <Stellung_OP>O</Stellung_OP>
+                        <Menge_Bestrahlung>
+                            <Bestrahlung>
+                                <Beginn>2002-02-02</Beginn>
+                                <Applikationsart/>
+                            </Bestrahlung>
+                        </Menge_Bestrahlung>
+                        <Nebenwirkungen>
+                            <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
+                        </Nebenwirkungen>
                     </ST>
                 </Meldung>
             </Menge_Meldung>

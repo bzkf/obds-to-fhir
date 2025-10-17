@@ -122,7 +122,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
         versionElement = new StringType(matcher.group("versionYear"));
       } else {
         LOG.warn(
-            "Primaertumor_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
+            "Unable to extract year from Primaertumor_ICD_Version via RegEx '{}', actual: '{}'",
             icdVersionPattern.pattern(),
             icd10Version);
       }
