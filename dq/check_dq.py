@@ -313,8 +313,10 @@ data_asset_ecog_death = data_source.add_dataframe_asset(name="patients_and_ecog_
 data_asset_death_observations = data_source.add_dataframe_asset(
     name="death_observations"
 )
-data_asset_death_observations_distinct_dates_count_by_patient = data_source.add_dataframe_asset(
-    name="death_observations_distinct_dates_count_by_patient"
+data_asset_death_observations_distinct_dates_count_by_patient = (
+    data_source.add_dataframe_asset(
+        name="death_observations_distinct_dates_count_by_patient"
+    )
 )
 
 validation_targets = [
@@ -370,7 +372,7 @@ validation_targets = [
         "name": "death_observations_correctness",
         "dataframe": death_observations_distinct_dates_count_by_patient,
         "data_asset": data_asset_death_observations_distinct_dates_count_by_patient,
-        "expectations": expectations.expectations_death_observations_distinct_dates_count_by_patient,
+        "expectations": expectations.expectations_death_observations_distinct_dates,
     },
 ]
 

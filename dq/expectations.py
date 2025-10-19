@@ -241,24 +241,30 @@ expectations_death_observations = [
         column="value_codeable_concept_coding_code",
         description="there should be an ICD code representing the cause of death",
     ),
-    # at least from quick testing, it looks like GX automatically adds a check for NULLs:
-    # df.filter(F.expr((interpretation_tod_tumorbedingt_code IS NOT NULL) AND (NOT (NOT (interpretation_tod_tumorbedingt_code IN (U, NULL))))))
-    # So we have to create 2 expectations, one for NULL and one for 'U'. There might be a better way to do this.
+    # at least from quick testing, it looks like GX automatically adds a check
+    # for NULLs:
+    # df.filter(F.expr((interpretation_tod_tumorbedingt_code IS NOT NULL)
+    # AND (NOT (NOT (interpretation_tod_tumorbedingt_code IN (U, NULL))))))
+    # So we have to create 2 expectations, one for NULL and one for 'U'.
+    # There might be a better way to do this.
     gx.expectations.ExpectColumnValuesToNotBeInSet(
         column="interpretation_tod_tumorbedingt_code",
         value_set=["U"],
-        description="whether or not the death is caused by the tumor should be indicated, not 'Unknown'",
+        description="whether or not the death is caused by the tumor"
+        + " should be indicated, not 'Unknown'",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="interpretation_tod_tumorbedingt_code",
-        description="whether or not the death is caused by the tumor should be indicated, not NULL",
+        description="whether or not the death is caused by the tumor"
+        + " should be indicated, not NULL",
     ),
 ]
 
-expectations_death_observations_distinct_dates_count_by_patient = [
+expectations_death_observations_distinct_dates = [
     gx.expectations.ExpectColumnValuesToBeInSet(
         column="distinct_dates_count",
         value_set=[1],
-        description="there should only be one distinct death date per patient across all death observations",
+        description="there should only be one distinct death date per"
+        + " patient across all death observations",
     ),
 ]
