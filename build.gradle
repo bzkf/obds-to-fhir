@@ -58,8 +58,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.4'
-    implementation 'io.micrometer:micrometer-core:1.15.4'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.15.5'
+    implementation 'io.micrometer:micrometer-core:1.15.5'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.6'
     implementation 'org.apache.commons:commons-text:1.14.0'
     implementation 'org.scala-lang:scala-library:2.13.17'
@@ -85,7 +85,7 @@ dependencies {
     testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
-    testImplementation 'com.approvaltests:approvaltests:25.4.3'
+    testImplementation 'com.approvaltests:approvaltests:25.7.0'
     testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
     errorprone 'com.google.errorprone:error_prone_core:2.42.0'
@@ -103,7 +103,7 @@ tasks.named('test') {
 }
 
 jacoco {
-    toolVersion = '0.8.13'
+    toolVersion = '0.8.14'
 }
 
 spotless {
