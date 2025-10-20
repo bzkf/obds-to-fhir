@@ -10,7 +10,7 @@ from pathling import DataSource
 from pathling import Expression as exp
 from pathling import PathlingContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, concat, lit
+from pyspark.sql.functions import col, concat, lit, count_distinct
 
 spark_config = (
     SparkSession.builder.master(config.spark_master)  # type: ignore
@@ -147,6 +147,10 @@ observations = data.extract(
         exp("effectiveDateTime", "effective_date_time"),
         exp("meta.profile", "meta_profile"),
         exp("bodySite.coding.code", "bodySite_code"),
+        exp(
+            f"interpretation.coding.where(system='{config.CS_TOD_TUMORBEDINGT}').code",
+            "interpretation_tod_tumorbedingt_code",
+        ),
     ],
 ).drop_duplicates()
 observations = observations.checkpoint(eager=True)
@@ -162,6 +166,12 @@ patients_with_observations.show(truncate=False)
 patients_with_fernmetastasen = patients_with_observations.filter(
     col("meta_profile") == config.FERNMETASTASE
 )
+
+death_observations = observations.filter(col("meta_profile") == config.TOD)
+
+death_observations_distinct_dates_count_by_patient = death_observations.groupBy(
+    "subject_reference"
+).agg(count_distinct("effective_date_time").alias("distinct_dates_count"))
 
 
 # Allgemeiner Leisungszustand
@@ -300,6 +310,14 @@ data_asset_fernmetastasen = data_source.add_dataframe_asset(
     name="patients_and_fernmetastasen"
 )
 data_asset_ecog_death = data_source.add_dataframe_asset(name="patients_and_ecog_death")
+data_asset_death_observations = data_source.add_dataframe_asset(
+    name="death_observations"
+)
+data_asset_death_observations_distinct_dates_count_by_patient = (
+    data_source.add_dataframe_asset(
+        name="death_observations_distinct_dates_count_by_patient"
+    )
+)
 
 validation_targets = [
     {
@@ -343,6 +361,18 @@ validation_targets = [
         "dataframe": patients_with_ecog_death,
         "data_asset": data_asset_ecog_death,
         "expectations": expectations.expectations_ecog_death,
+    },
+    {
+        "name": "death_observations_completeness",
+        "dataframe": death_observations,
+        "data_asset": data_asset_death_observations,
+        "expectations": expectations.expectations_death_observations,
+    },
+    {
+        "name": "death_observations_correctness",
+        "dataframe": death_observations_distinct_dates_count_by_patient,
+        "data_asset": data_asset_death_observations_distinct_dates_count_by_patient,
+        "expectations": expectations.expectations_death_observations_distinct_dates,
     },
 ]
 

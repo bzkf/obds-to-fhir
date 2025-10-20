@@ -93,59 +93,75 @@ fluent_datasources:
     assets:
       patients_and_conditions:
         type: dataframe
-        id: 784928b8-ae08-4873-9af0-d14ca1245983
+        id: ab767cab-e8c6-49e2-bef0-ce1fe10927c3
         batch_metadata: {}
         batch_definitions:
           patients_and_conditions_all_rows:
-            id: f0631519-6621-465d-bdf3-855cc66c9325
+            id: eadbc349-14f3-4ad9-bc07-e89d37abd1bb
             partitioner:
       patients_and_observations:
         type: dataframe
-        id: fed17f24-568b-40d8-afd9-449f56374f04
+        id: 7d7a0c86-9775-4af6-a84f-6da72ee206ff
         batch_metadata: {}
         batch_definitions:
           patients_and_observations_all_rows:
-            id: 9d17aecf-022f-443d-998f-43d3e16de110
+            id: f97a0906-d597-47e2-8189-27ec9d90d25e
             partitioner:
       patients_and_procedures:
         type: dataframe
-        id: 429d6eab-3d33-401c-9b37-d4e1c6ed7618
+        id: 8f46c495-6390-42bc-87d6-c6f40db3dcd9
         batch_metadata: {}
         batch_definitions:
           patients_and_procedure_all_rows:
-            id: b5ef49c0-3b51-4bb7-8d45-206af0e6ae3c
+            id: 8fb8950a-6d89-4377-aa60-dd9d342ea3d4
             partitioner:
       patients_and_MedicationStatements:
         type: dataframe
-        id: 64cc8ed1-f155-4e9e-8499-bd623c901320
+        id: 6efc0f27-77da-4f47-b458-4d67a769f1f4
         batch_metadata: {}
         batch_definitions:
           patients_and_medicationStatements_all_rows:
-            id: 5a5f4174-b867-4bab-905f-2520577f8176
+            id: e9fdefb9-3e95-49fa-930a-6200eb5e17d8
             partitioner:
       condition_with_procedure:
         type: dataframe
-        id: 1cd703bf-0a96-4000-97ce-bb3fe93298f0
+        id: 51615dba-1538-402e-990d-8c1b44e7821f
         batch_metadata: {}
         batch_definitions:
           patients_and_condition_procedure_all_rows:
-            id: 910f908c-0c15-4fbb-b0c6-f0b01f8f86bd
+            id: b4b5e9f4-de47-45b8-8faf-1166d2e944e1
             partitioner:
       patients_and_fernmetastasen:
         type: dataframe
-        id: 3e864ac8-4e4e-4b9f-9dc0-c55f16c45ce1
+        id: 598d1c7f-2d89-4113-ac5e-b710c535589e
         batch_metadata: {}
         batch_definitions:
           patients_and_fernmetastasen_all_rows:
-            id: c6f78cfa-f2f6-436c-a6ea-747a366b00b5
+            id: 18773e4c-457b-4ea6-baa5-20f65e68e7d1
             partitioner:
       patients_and_ecog_death:
         type: dataframe
-        id: d95e2ff2-0a45-49a0-a5f6-3cc51b3ac96a
+        id: 0418e311-d172-4eb1-9422-5c2be2a779ac
         batch_metadata: {}
         batch_definitions:
           patients_and_ecog_death_all_rows:
-            id: a1edc35d-eeb3-4045-a5e0-ca47cd3ae174
+            id: 981f70b0-5316-4ed6-8d90-c67e4fec7ef4
+            partitioner:
+      death_observations:
+        type: dataframe
+        id: 1d5fc92b-19f5-4a2d-b192-9585adf51448
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_death_observations_completeness_all_rows:
+            id: 5e89bfa1-77ef-4d3f-9b06-25da17fd6977
+            partitioner:
+      death_observations_distinct_dates_count_by_patient:
+        type: dataframe
+        id: 6acc3370-9ccb-4f12-bf13-a98d6eed0eb0
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_death_observations_correctness_all_rows:
+            id: 1ba443a9-8433-466e-b375-d9f45b43764d
             partitioner:
 analytics_enabled:
 data_context_id: e1086299-0733-48cb-bec8-ad674bb90426
