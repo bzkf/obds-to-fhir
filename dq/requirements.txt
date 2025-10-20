@@ -1,6 +1,6 @@
 pathling==7.2.0
 loguru==0.7.3
-great-expectations==1.7.1
+great-expectations==1.6.3
 numpy==1.26.4
 typed-settings[attrs]==25.1.0
 setuptools==80.9.0
