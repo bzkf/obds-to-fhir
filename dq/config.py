@@ -18,7 +18,7 @@ snapshots_dir = (
 @ts.settings
 class Config:
     spark_master: str = "local[*]"
-    spark_driver_memory: str = "4g"
+    spark_driver_memory: str = "8g"
     spark_install_packages_and_exit: bool = False
     spark_warehouse_dir: str = (HERE / "warehouse").as_posix()
     spark_checkpoint_path: str = (HERE / "checkpoints").as_posix()
@@ -59,6 +59,10 @@ class Config:
     OP = (
         "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
         "StructureDefinition/mii-pr-onko-operation"
+    )
+    CS_TOD_TUMORBEDINGT = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "CodeSystem/mii-cs-onko-tod"
     )
     MIN_DATE = datetime(1900, 1, 1)
     MAX_DATE = datetime(year=datetime.now().year, month=12, day=31)

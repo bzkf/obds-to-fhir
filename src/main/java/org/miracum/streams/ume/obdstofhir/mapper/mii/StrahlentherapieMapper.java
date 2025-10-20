@@ -276,9 +276,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     procedure.setPerformed(performed);
 
     var bestrahlungsData = getBestrahlungsData(bestrahlung.getApplikationsart());
-    if (bestrahlungsData == null) {
-      throw new IllegalStateException("Unable to extract Bestrahlung data.");
-    }
 
     // usedCode
     if (bestrahlungsData.strahlenart() != null) {
@@ -336,12 +333,21 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
   private StrahlenTherapieCategoryAndCode getCategoryAndCodeFromBestrahlungen(
       List<Bestrahlung> bestrahlungen) {
-    var allMetabolic =
-        bestrahlungen.stream().allMatch(b -> b.getApplikationsart().getMetabolisch() != null);
-    var allRadiotherapy =
-        bestrahlungen.stream().allMatch(b -> b.getApplikationsart().getMetabolisch() == null);
 
-    if (allMetabolic) {
+    var bestrahlungenWithApplikationsart =
+        bestrahlungen.stream().filter(b -> b.getApplikationsart() != null).toList();
+
+    var allMetabolic =
+        bestrahlungenWithApplikationsart.stream()
+            .allMatch(b -> b.getApplikationsart().getMetabolisch() != null);
+    var allRadiotherapy =
+        bestrahlungenWithApplikationsart.stream()
+            .allMatch(b -> b.getApplikationsart().getMetabolisch() == null);
+
+    // if bestrahlungenWithApplikationsart is empty, then the allMatch always
+    // evaluates to true
+    // in that case, we want to default to radiotherapy
+    if (!bestrahlungenWithApplikationsart.isEmpty() && allMetabolic) {
       var category =
           fhirProperties
               .getCodings()
@@ -362,6 +368,12 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       if (!allRadiotherapy) {
         LOG.warn(
             "Bestrahlung contains a mixture of radionuclide and radiotherapy entries. "
+                + "Defaulting to radiotherapy for the whole-resource code and category.");
+      }
+
+      if (bestrahlungenWithApplikationsart.isEmpty()) {
+        LOG.warn(
+            "Bestrahlung contains no entries for the Applikationsart. This violates the oBDS schema. "
                 + "Defaulting to radiotherapy for the whole-resource code and category.");
       }
 
@@ -416,11 +428,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var data = getBestrahlungsData(bestrahlung.getApplikationsart());
 
-    if (data == null) {
-      LOG.warn("Unable to extract Bestrahlung data. Likely Malformed Applikationsart element.");
-      return List.of();
-    }
-
     var gesamtdosis = data.gesamtdosis();
     if (gesamtdosis != null) {
       var value =
@@ -463,7 +470,8 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     // extra handling for metabolisch, quite ugly, should instead be moved to a
     // "StrahlentherapieBestrahlung"-based type hierarchy
-    if (bestrahlung.getApplikationsart().getMetabolisch() != null) {
+    if (bestrahlung.getApplikationsart() != null
+        && bestrahlung.getApplikationsart().getMetabolisch() != null) {
       var metabolisch = bestrahlung.getApplikationsart().getMetabolisch();
       if (metabolisch.getEinzeldosis() != null) {
         var value =
