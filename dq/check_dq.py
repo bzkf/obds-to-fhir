@@ -443,3 +443,11 @@ gx_context.build_data_docs(site_names=[site_name])
 
 for target in validation_targets:
     validate_dataframe(gx_context, target)
+
+num_patients = patients.count()
+num_conditions = conditions.count()
+
+
+logger.info(f" Anzahl Patient-Ressourcen: {num_patients}")
+logger.info(f" Anzahl Condition-Ressourcen: {num_conditions}")
+conditions.select("asserted_date").describe().show()
