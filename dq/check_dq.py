@@ -128,14 +128,14 @@ patients_with_conditions = conditions.join(
 
 patients_with_conditions.show(truncate=False)
 
-data.read("Observation").cache()
+do = data.read("Observation").cache()
 observations = data.extract(
     "Observation",
     columns=[
         exp("id", "observation_id"),
         exp("subject.reference", "subject_reference"),
         exp("code.coding.system", "code_system"),
-        exp("code.coding.code", "code_code"),
+        exp("code.coding.code.first()", "code_code"),
         exp(
             "valueCodeableConcept.coding.code",
             "value_codeable_concept_coding_code",
@@ -200,14 +200,22 @@ patients_with_ecog_death = patients_with_ecog.join(
 patients_with_ecog_death.show(truncate=False)
 
 
-data.read("Procedure").cache()
+dp = data.read("Procedure").cache()
 procedures = data.extract(
     "Procedure",
     columns=[
         exp("id", "procedure_id"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').system", "ops_system"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').version", "ops_version"),
-        exp(f"code.coding.where(system='{config.OPS_SYSTEM}').code", "ops_code"),
+        exp(
+            f"code.coding.where(system='{config.OPS_SYSTEM}').system.first()",
+            "ops_system",
+        ),
+        exp(
+            f"code.coding.where(system='{config.OPS_SYSTEM}').version.first()",
+            "ops_version",
+        ),
+        exp(
+            f"code.coding.where(system='{config.OPS_SYSTEM}').code.first()", "ops_code"
+        ),
         exp("subject.reference", "subject_reference_procedure"),
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
@@ -227,7 +235,7 @@ patients_with_procedures = procedures.join(
     how="inner",
 )
 
-data.read("MedicationStatement").cache()
+dm = data.read("MedicationStatement").cache()
 medicationStatements = data.extract(
     "MedicationStatement",
     columns=[
@@ -444,14 +452,24 @@ gx_context.build_data_docs(site_names=[site_name])
 for target in validation_targets:
     validate_dataframe(gx_context, target)
 
-num_patients = patients.count()
-num_conditions = conditions.count()
-
-
-logger.info(f" Number of Patient resources: {num_patients}")
-logger.info(f" Number of Condition resources (extract): {num_conditions}")
-logger.info(f"Number of Condition resources (read): {dc.count()}")
+logger.info(f" Number Patient resources: {patients.count()}")
+logger.info(f" Number Condition resources (extract): {conditions.count()}")
+logger.info(f"Number Condition resources (read): {dc.count()}")
 conditions.groupBy("condition_id").count().filter("count > 1").show()
-
-
+logger.info(f" Number Observation resources (extract): {observations.count()}")
+logger.info(f" Number Observation resources (read): {do.count()}")
+observations.groupBy("observation_id").count().filter("count > 1").show()
+logger.info(f" Number Procedure resources (extract): {procedures.count()}")
+logger.info(f" Number Procedure resources (read): {dp.count()}")
+procedures.groupBy("procedure_id").count().filter("count > 1").show()
+logger.info(
+    f" Number MedicationStatement resources (extract): {medicationStatements.count()}"
+)
+logger.info(f" Number of MedicationStatement resources (read): {dm.count()}")
+medicationStatements.groupBy("MedicationStatement_id").count().filter(
+    "count > 1"
+).show()
+logger.info("Condition asserted_date statistics:")
 conditions.select("asserted_date").describe().show()
+logger.info("Condition recorded_date statistics:")
+conditions.select("recorded_date").describe().show()
