@@ -99,7 +99,7 @@ patients = data.extract(
 patients = patients.checkpoint(eager=True)
 patients.show(truncate=False)
 
-data.read("Condition").cache()
+dc = data.read("Condition").cache()
 conditions = data.extract(
     "Condition",
     columns=[
@@ -111,7 +111,7 @@ conditions = data.extract(
         ),
         exp("subject.reference", "subject_reference"),
         exp(
-            f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime",
+            f"extension('{config.ASSERTED_DATE_EXTENSION}').valueDateTime.first()",
             "asserted_date",
         ),
         exp("recordedDate", "recorded_date"),
@@ -448,6 +448,10 @@ num_patients = patients.count()
 num_conditions = conditions.count()
 
 
-logger.info(f" Anzahl Patient-Ressourcen: {num_patients}")
-logger.info(f" Anzahl Condition-Ressourcen: {num_conditions}")
+logger.info(f" Number of Patient resources: {num_patients}")
+logger.info(f" Number of Condition resources (extract): {num_conditions}")
+logger.info(f"Number of Condition resources (read): {dc.count()}")
+conditions.groupBy("condition_id").count().filter("count > 1").show()
+
+
 conditions.select("asserted_date").describe().show()
