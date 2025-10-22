@@ -164,14 +164,18 @@ patients_with_observations.show(truncate=False)
 
 # Fernmetastasen
 patients_with_fernmetastasen = patients_with_observations.filter(
-    col("meta_profile") == config.FERNMETASTASE
+    col("meta_profile").startswith(config.FERNMETASTASE)
 )
 
-death_observations = observations.filter(col("meta_profile") == config.TOD)
+observations.show(truncate=False)
+
+death_observations = observations.filter(col("meta_profile").startswith(config.TOD))
+death_observations.show(truncate=False)
 
 death_observations_distinct_dates_count_by_patient = death_observations.groupBy(
     "subject_reference"
 ).agg(count_distinct("effective_date_time").alias("distinct_dates_count"))
+death_observations_distinct_dates_count_by_patient.show(truncate=False)
 
 
 # Allgemeiner Leisungszustand
@@ -184,7 +188,7 @@ patients_with_ecog = patients_with_observations.filter(
     "value_codeable_concept_coding_system",
 )
 patients_with_death = patients_with_observations.filter(
-    col("meta_profile") == config.TOD
+    col("meta_profile").startswith(config.TOD)
 ).select("subject_reference", "meta_profile")
 
 patients_with_death_renamed = patients_with_death.withColumnRenamed(
@@ -471,5 +475,4 @@ medicationStatements.groupBy("MedicationStatement_id").count().filter(
 ).show()
 logger.info("Condition asserted_date statistics:")
 conditions.select("asserted_date").describe().show()
-logger.info("Condition recorded_date statistics:")
 conditions.select("recorded_date").describe().show()

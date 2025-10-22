@@ -1,4 +1,5 @@
 import great_expectations as gx
+from great_expectations.core.result_format import ResultFormat
 from config import config
 
 expectations_conditions = [
@@ -27,6 +28,10 @@ expectations_conditions = [
         or_equal=True,
         description="Check if diagnosis asserted date is on or after the date of birth",
     ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="asserted_date",
+        description="Asserted date (Diagnosedatum) should not be null",
+    ),
     # Gender expectation with condition code
     gx.expectations.ExpectColumnValuesToBeInSet(
         column="gender",
@@ -52,6 +57,10 @@ expectations_conditions = [
         column_B="date_of_birth",
         or_equal=True,
         description="Check if diagnosis recorded date is on or after the date of birth",
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="recorded_date",
+        description="Recorded date (Meldedatum) should not be null",
     ),
     gx.expectations.ExpectColumnValuesToBeInSet(
         column="gender",
@@ -96,6 +105,10 @@ expectations_observations = [
         column_A="deceased_date_time",
         column_B="effective_date_time",
         or_equal=True,
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="effective_date_time",
+        description="Effective date time should not be null for observations",
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="effective_date_time",
@@ -163,6 +176,19 @@ expectations_procedure = [
         column="performed_date_time",
         min_value=config.MIN_DATE,
         max_value=config.MAX_DATE,
+    ),
+    # performed date time should not be null when performedPeriod_start is null,
+    # aka at least one of them should be present
+    # !...notnull() because I couldn't get .isNull() to work in GX...
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="performed_date_time",
+        row_condition='!col("performedPeriod_start").notnull()',
+        condition_parser="great_expectations",
+    ),
+    gx.expectations.ExpectColumnValuesToNotBeNull(
+        column="performedPeriod_start",
+        row_condition='!col("performed_date_time").notnull()',
+        condition_parser="great_expectations",
     ),
 ]
 
@@ -240,6 +266,7 @@ expectations_death_observations = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="value_codeable_concept_coding_code",
         description="there should be an ICD code representing the cause of death",
+        result_format=ResultFormat.COMPLETE,
     ),
     # at least from quick testing, it looks like GX automatically adds a check
     # for NULLs:
@@ -252,11 +279,13 @@ expectations_death_observations = [
         value_set=["U"],
         description="whether or not the death is caused by the tumor"
         + " should be indicated, not 'Unknown'",
+        result_format=ResultFormat.COMPLETE,
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="interpretation_tod_tumorbedingt_code",
         description="whether or not the death is caused by the tumor"
         + " should be indicated, not NULL",
+        result_format=ResultFormat.COMPLETE,
     ),
 ]
 
