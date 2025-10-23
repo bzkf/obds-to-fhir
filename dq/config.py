@@ -52,6 +52,11 @@ class Config:
         "StructureDefinition/"
         "mii-pr-onko-weitere-klassifikationen"
     )
+    MII_CS_ONKO_STUDIENTEILNAHME = (
+        "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
+        "CodeSystem/"
+        "mii-cs-onko-studienteilnahme"
+    )
     PRIMAERDIAGNOSE = (
         "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/"
         "StructureDefinition/mii-pr-onko-diagnose-primaertumor"
