@@ -111,7 +111,8 @@ expectations_observations = [
         description="Effective date time should not be null for observations",
         condition_parser="great_expectations",
         row_condition='col("value_codeable_concept_coding_system") != '
-        + f'"{config.MII_CS_ONKO_STUDIENTEILNAHME}" or col("value_codeable_concept_coding_code") != "N")',
+        + f'"{config.MII_CS_ONKO_STUDIENTEILNAHME}" or '
+        + 'col("value_codeable_concept_coding_code") != "N")',
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="effective_date_time",
