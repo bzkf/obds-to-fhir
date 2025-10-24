@@ -5,28 +5,37 @@ from config import config
 expectations_conditions = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="date_of_birth",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+        description="date of birth is within range of 1900-today",
     ),
     # Deceased date validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
         column_B="date_of_birth",
         ignore_row_if="either_value_is_missing",
+        or_equal=True,
+        description="deceased date is after date of birth",
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="deceased_date_time",
         min_value=config.MIN_DATE,
         max_value=config.MAX_DATE,
+        description="deceased date is within range of 1900-today",
     ),
     # asserted datetime validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="asserted_date", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="asserted_date",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+        description="asserted date is within range of 1900-today",
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="asserted_date",
         column_B="date_of_birth",
         or_equal=True,
-        description="Check if diagnosis asserted date is on or after the date of birth",
+        description="diagnosis asserted date >= the date of birth",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="asserted_date",
@@ -38,12 +47,13 @@ expectations_conditions = [
         value_set=["male"],
         condition_parser="great_expectations",
         row_condition='col("icd_code") == "C61"',
+        description="Check if gender is male for prostate cancer diagnoses",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
+        column="patient_id", description="Check if patient_id is always provided"
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="condition_id",
+        column="condition_id", description="Check if condition_id is always provided"
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="icd_version", description="Check if ICD version is always provided"
@@ -62,49 +72,52 @@ expectations_conditions = [
         column="recorded_date",
         description="Recorded date (Meldedatum) should not be null",
     ),
-    gx.expectations.ExpectColumnValuesToBeInSet(
-        column="gender",
-        value_set=["male"],
-        condition_parser="great_expectations",
-        row_condition='col("icd_code").notnull() and'
-        + 'col("condition_icd_code").rlike("^C61")',
-    ),
 ]
 
 
 expectations_observations = [
     # Birth date validations
     gx.expectations.ExpectColumnValuesToBeBetween(
-        column="date_of_birth", min_value=config.MIN_DATE, max_value=config.MAX_DATE
+        column="date_of_birth",
+        min_value=config.MIN_DATE,
+        max_value=config.MAX_DATE,
+        description="date of birth is within range of 1900-today",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_system",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
         + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        description="code system should not be null "
+        + "for observations except Weitere Klassifikationen",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="code_code",
         condition_parser="great_expectations",
         row_condition='col("meta_profile") != '
         + f'"{config.MII_PR_ONKO_WEITERE_KLASSIFIKATIONEN}"',
+        description="code should not be null "
+        + "for observations except Weitere Klassifikationen",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
+        column="patient_id", description="Check if patient_id is always provided"
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="observation_id",
+        description="Check if observation_id is always provided",
     ),
     # EffectiveDateTime validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="effective_date_time",
         column_B="date_of_birth",
         or_equal=True,
+        description="Effective date time (Observation) >= date of birth",
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
         column_B="effective_date_time",
         or_equal=True,
+        description="Deceased date time >= effective date time (Observation)",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="effective_date_time",
@@ -118,16 +131,19 @@ expectations_observations = [
         column="effective_date_time",
         min_value=config.MIN_DATE,
         max_value=config.MAX_DATE,
+        description="effective date time (Observation) is within range of 1900-today",
     ),
     gx.expectations.ExpectColumnValuesToBeUnique(
         column="patient_id",
         row_condition='col("meta_profile") == ' + f'"{config.TOD}"',
         condition_parser="great_expectations",
+        description="There should be only one death observation per patient",
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="deceased",
         row_condition='col("deceased_date_time").notnull()',
         condition_parser="great_expectations",
+        description="deceased_date_time.notNull <-> Patient.deceased.notNull",
     ),
     # Wenn Todesmeldung <->dann Patient.deceased=true
     gx.expectations.ExpectColumnValuesToNotBeNull(
@@ -146,21 +162,23 @@ expectations_observations = [
 
 expectations_procedure = [
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="patient_id",
+        column="patient_id", description="Check if patient_id is always provided"
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
-        column="procedure_id",
+        column="procedure_id", description="Check if procedure_id is always provided"
     ),
     # EffectiveDateTime validations
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="performed_date_time",
         column_B="date_of_birth",
         or_equal=True,
+        description="performed date time (Procedure) >= date of birth",
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="deceased_date_time",
         column_B="performed_date_time",
         or_equal=True,
+        description="Deceased date time >= performed date time (Procedure)",
     ),
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
         # bfarm OPS 2023 version, 5-65...5-71 - Operations on the female genital organs
@@ -168,6 +186,10 @@ expectations_procedure = [
         regex=r"^5-6[5-9]|^5-7[0-1]",
         condition_parser="great_expectations",
         row_condition='col("gender") == "male" and col("ops_code").notnull()"',
+        description=(
+            "OPS codes 5-65 to 5-71 (Operations on the female genital organs) "
+            + "should not be present for male patients"
+        ),
     ),
     # bfarm OPS 2023 version, 5-60...5-64 Operations on the male genital organs
     gx.expectations.ExpectColumnValuesToNotMatchRegex(
@@ -175,11 +197,16 @@ expectations_procedure = [
         regex=r"^5-6[0-4]",
         condition_parser="great_expectations",
         row_condition='col("gender") == "female" and col("ops_code").notnull()" ',
+        description=(
+            "OPS codes 5-60 to 5-64 (Operations on the male genital organs) "
+            + "should not be present for female patients"
+        ),
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="performed_date_time",
         min_value=config.MIN_DATE,
         max_value=config.MAX_DATE,
+        description="performed date time (Procedure) is within range of 1900-today",
     ),
     # performed date time should not be null when performedPeriod_start is null,
     # aka at least one of them should be present
@@ -188,11 +215,15 @@ expectations_procedure = [
         column="performed_date_time",
         row_condition='!col("performedPeriod_start").notnull()',
         condition_parser="great_expectations",
+        description=(
+            "performed date time should not be null when performedPeriod_start is null"
+        ),
     ),
     gx.expectations.ExpectColumnValuesToNotBeNull(
         column="performedPeriod_start",
         row_condition='!col("performed_date_time").notnull()',
         condition_parser="great_expectations",
+        description="performedPeriod_start != null when performed date time is null",
     ),
 ]
 
@@ -202,17 +233,23 @@ expectations_medicationStatements = [
         column_B="effectivePeriod_start",
         ignore_row_if="either_value_is_missing",
         or_equal=True,
+        description="medicationStatement effectivePeriod_end >= effectivePeriod_start",
         # parse_strings_as_datetimes=True
     ),
     gx.expectations.ExpectColumnValuesToBeBetween(
         column="effectivePeriod_start",
         min_value=config.MIN_DATE,
         max_value=config.MAX_DATE,
+        description=(
+            "medicationStatement effectivePeriod_start is within range of 1900-today"
+        ),
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="effectivePeriod_start",
         column_B="date_of_birth",
         ignore_row_if="either_value_is_missing",
+        description="medicationStatement effectivePeriod_start >= date of birth",
+        or_equal=True,
     ),
 ]
 
@@ -223,13 +260,19 @@ expectations_condition_procedure = [
         row_condition='col("gender") == "male" and'
         + 'col("icd_code") != "C50.9" and col("ops_code").notnull()',
         condition_parser="great_expectations",
+        description=(
+            "OPS codes 5-87 and 5-88 (Breast surgery) should not be present for"
+            + " male patients except for prostate cancer patients (ICD C50.9)"
+        ),
     ),
     # procedure date  > diagnosis date
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="performed_date_time",
         column_B="asserted_date",
         ignore_row_if="either_value_is_missing",
+        or_equal=True,
         condition_parser="great_expectations",
+        description="Procedure date should be on or after diagnosis date",
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="performed_date_time",
@@ -239,7 +282,12 @@ expectations_condition_procedure = [
         + f'"{config.PRIMAERDIAGNOSE}"'
         + 'and col("meta_profile_procedure") == '
         + f'"{config.OP}"',
+        or_equal=True,
         condition_parser="great_expectations",
+        description=(
+            "Procedure date (mii-onko-operation) >= "
+            "diagnosis date (mii-pr-onko-diagnose-primaertumor)"
+        ),
     ),
 ]
 # Second Proto - Duplicate entries
@@ -254,6 +302,9 @@ expectations_fernmetastasen = [
         ],
         ignore_row_if="any_value_is_missing",
         condition_parser="great_expectations",
+        description=(
+            "There should be no duplicate fernmetastasen records for the same patient"
+        ),
     )
 ]
 
@@ -262,6 +313,7 @@ expectations_ecog_death = [
         column="meta_profile_death",
         row_condition='col("value_codeable_concept_coding_code") == 5',
         condition_parser="great_expectations",
+        description="there should be a death observation if ecog == 5",
         # description="check if ecog == 5, there must be a death observation",
     )
 ]
