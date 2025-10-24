@@ -145,7 +145,7 @@ observations = data.extract(
             "value_codeable_concept_coding_system",
         ),
         exp("effectiveDateTime", "effective_date_time"),
-        exp("meta.profile", "meta_profile"),
+        exp("meta.profile.first()", "meta_profile"),
         exp("bodySite.coding.code", "bodySite_code"),
         exp(
             f"interpretation.coding.where(system='{config.CS_TOD_TUMORBEDINGT}').code",
@@ -223,7 +223,7 @@ procedures = data.extract(
         exp("subject.reference", "subject_reference_procedure"),
         exp("performedDateTime", "performed_date_time"),
         exp("performedPeriod.start", "performedPeriod_start"),
-        exp("meta.profile", "meta_profile_procedure"),
+        exp("meta.profile.first()", "meta_profile_procedure"),
         exp(
             "Procedure.reasonReference.resolve().ofType(Condition).id",
             "reason_reference_condition_id",
@@ -247,7 +247,7 @@ medicationStatements = data.extract(
         exp("subject.reference", "subject_reference"),
         exp("effectivePeriod.start", "effectivePeriod_start"),
         exp("effectivePeriod.end", "effectivePeriod_end"),
-        exp("meta.profile", "meta_profile"),
+        exp("meta.profile.first()", "meta_profile"),
     ],
 ).drop_duplicates()
 medicationStatements = medicationStatements.checkpoint(eager=True)
@@ -476,3 +476,9 @@ medicationStatements.groupBy("MedicationStatement_id").count().filter(
 logger.info("Condition asserted_date statistics:")
 conditions.select("asserted_date").describe().show()
 conditions.select("recorded_date").describe().show()
+
+logger.info("Observations with effective_date_time==null grouped by meta.profile:")
+
+observations.where(col("effective_date_time").isNull()).groupBy(
+    "meta_profile"
+).count().show(truncate=False)
