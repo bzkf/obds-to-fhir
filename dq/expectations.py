@@ -229,7 +229,9 @@ expectations_condition_procedure = [
         column_A="performed_date_time",
         column_B="asserted_date",
         ignore_row_if="either_value_is_missing",
+        or_equal=True,
         condition_parser="great_expectations",
+        description="Procedure date should be on or after diagnosis date",
     ),
     gx.expectations.ExpectColumnPairValuesAToBeGreaterThanB(
         column_A="performed_date_time",
