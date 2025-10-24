@@ -222,6 +222,11 @@ class ObdsToFhirMapperTests {
 
     var actual = ObdsToFhirMapper.convertObdsDatumToDateType(datum);
 
+    if (datum.getDatumsgenauigkeit() == DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau.V) {
+      assertThat(actual).isEmpty();
+      return;
+    }
+
     assertThat(actual).isPresent();
     assertThat(actual.get().asStringValue()).isEqualTo(expected);
   }
