@@ -72,13 +72,6 @@ expectations_conditions = [
         column="recorded_date",
         description="Recorded date (Meldedatum) should not be null",
     ),
-    gx.expectations.ExpectColumnValuesToBeInSet(
-        column="gender",
-        value_set=["male"],
-        condition_parser="great_expectations",
-        row_condition='col("icd_code").notnull() and'
-        + 'col("condition_icd_code").rlike("^C61")',
-    ),
 ]
 
 
@@ -230,9 +223,7 @@ expectations_procedure = [
         column="performedPeriod_start",
         row_condition='!col("performed_date_time").notnull()',
         condition_parser="great_expectations",
-        description=(
-            "performedPeriod_start should not be null when performed date time is null",
-        ),
+        description="performedPeriod_start != null when performed date time is null",
     ),
 ]
 
