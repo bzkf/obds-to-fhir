@@ -124,7 +124,7 @@ public abstract class ObdsToFhirMapper {
       }
       return resultBuilder.toString();
     } else {
-      log.warn("Identifier to convert does not match pattern: {}", matcher.pattern().toString());
+      log.warn("Identifier to convert does not match pattern: {}", matcher.pattern());
       return id;
     }
   }
@@ -331,12 +331,12 @@ public abstract class ObdsToFhirMapper {
         break;
       // vollständig geschätzt (genaue Angabe zum Jahr nicht möglich)
       case V:
-        date.setPrecision(TemporalPrecisionEnum.YEAR);
         log.warn(
-            "Date precision is completely estimated. Likely not a correct value. "
-                + "Defaulting to most granular 'year' precision.");
-        break;
+            "Input date precision is completely estimated. "
+                + "Not setting a date value in FHIR resource.");
+        return Optional.empty();
     }
+
     return Optional.of(date);
   }
 
