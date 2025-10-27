@@ -482,3 +482,9 @@ logger.info("Observations with effective_date_time==null grouped by meta.profile
 observations.where(col("effective_date_time").isNull()).groupBy(
     "meta_profile"
 ).count().show(truncate=False)
+
+logger.info("Multiple death observations per patient with differing dates: ")
+
+death_observations_distinct_dates_count_by_patient.filter(
+    col("distinct_dates_count") > 1
+).show(truncate=False)
