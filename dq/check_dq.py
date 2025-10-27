@@ -483,7 +483,7 @@ observations.where(col("effective_date_time").isNull()).groupBy(
     "meta_profile"
 ).count().show(truncate=False)
 
-logger.info("Multiple death observations per patient with differing dates: ")
+logger.info("Multiple death observations per patient with differing dates: (max 100 rows)")
 
 death_observations_distinct_dates_count_by_patient.filter(
     col("distinct_dates_count") > 1
