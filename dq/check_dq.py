@@ -487,4 +487,4 @@ logger.info("Multiple death observations per patient with differing dates: ")
 
 death_observations_distinct_dates_count_by_patient.filter(
     col("distinct_dates_count") > 1
-).show(truncate=False)
+).show(n=100)
