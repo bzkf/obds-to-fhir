@@ -211,19 +211,20 @@ expectations_procedure = [
     # performed date time should not be null when performedPeriod_start is null,
     # aka at least one of them should be present
     # !...notnull() because I couldn't get .isNull() to work in GX...
-    gx.expectations.ExpectColumnValuesToNotBeNull(
+    gx.expectations.ExpectColumnValuesToBeNull(
         column="performed_date_time",
-        row_condition='!col("performedPeriod_start").notnull()',
+        row_condition='col("performedPeriod_start").notnull()',
         condition_parser="great_expectations",
         description=(
-            "performed date time should not be null when performedPeriod_start is null"
+            "performed date time can be null when performedPeriod_start is not null"
         ),
     ),
-    gx.expectations.ExpectColumnValuesToNotBeNull(
+    gx.expectations.ExpectColumnValuesToBeNull(
         column="performedPeriod_start",
-        row_condition='!col("performed_date_time").notnull()',
+        row_condition='col("performed_date_time").notnull()',
         condition_parser="great_expectations",
-        description="performedPeriod_start != null when performed date time is null",
+        description="performedPeriod_start can be null when performed date time "
+        + "is not null",
     ),
 ]
 
