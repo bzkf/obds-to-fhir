@@ -73,6 +73,7 @@
         }
       },
       "onsetDateTime": "2021-03-18",
+      "recordedDate": "2021-05-20",
       "stage": [ {
         "assessment": [ {
           "reference": "Observation/fc7cabc6beffc1605c782aa46a8a32df94aa5ef01b9c828e0671e2a643d0a2bc"

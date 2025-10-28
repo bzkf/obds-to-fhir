@@ -42,6 +42,7 @@
         }
       },
       "onsetDateTime": "2021-02-08",
+      "recordedDate": "2021-05-20",
       "evidence": [ {
         "detail": [ {
           "reference": "Observation/c283276eb31614ec2e9ea44e9d844ff51c3de42b20cead14da926251a1ddbafc"

@@ -135,6 +135,12 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
         .getDiagnosedatum()
         .ifPresent(value -> onkoCondition.setOnset(convertObdsDateToDateTimeType(value)));
 
+    if (StringUtils.hasText(meldung.getMeldedatum())) {
+      onkoCondition.setRecordedDateElement(convertObdsDateToDateTimeType(meldung.getMeldedatum()));
+    } else {
+      LOG.warn("Meldedatum is unset for {}", meldung.getMeldung_ID());
+    }
+
     var stageBackBoneComponentList = new ArrayList<Condition.ConditionStageComponent>();
     var evidenceBackBoneComponentList = new ArrayList<Condition.ConditionEvidenceComponent>();
 

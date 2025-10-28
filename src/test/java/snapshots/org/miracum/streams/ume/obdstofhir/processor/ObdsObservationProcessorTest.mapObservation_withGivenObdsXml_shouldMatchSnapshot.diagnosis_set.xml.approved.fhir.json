@@ -29,7 +29,8 @@
           "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
           "value": "0001234567"
         }
-      }
+      },
+      "recordedDate": "2024-01-30"
     },
     "request": {
       "method": "PUT",
