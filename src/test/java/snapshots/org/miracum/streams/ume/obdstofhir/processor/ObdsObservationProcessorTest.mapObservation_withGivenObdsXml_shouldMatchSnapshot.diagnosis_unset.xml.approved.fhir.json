@@ -41,7 +41,8 @@
           "value": "0001234567"
         }
       },
-      "onsetDateTime": "2019-08-21"
+      "onsetDateTime": "2019-08-21",
+      "recordedDate": "2024-01-30"
     },
     "request": {
       "method": "PUT",
