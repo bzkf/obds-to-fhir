@@ -26,7 +26,7 @@ apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM gcr.io/distroless/java25-debian13:nonroot@sha256:427b96593928d4c904de5dccec7c9b87aeb163c8f9f28f3212ee0b7f5f445746
+FROM gcr.io/distroless/java25-debian13:nonroot@sha256:1bea63434771d1a97f5bb8c37e5dfa3b06d7cfa188a1d271825927a19a02efdd
 WORKDIR /opt/obds-to-fhir
 ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
 
