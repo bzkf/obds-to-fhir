@@ -329,7 +329,7 @@ spring:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportObdsV3Processor-in-0:
               consumer:
-                application-id: obds-meldung-exp-v3-processor${YEAR_LIMITATION_SUFFIX:}
+                application-id: ${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}
             getMeldungExportObdsV3Processor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
