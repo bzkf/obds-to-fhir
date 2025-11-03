@@ -8,7 +8,7 @@ plugins {
     id 'net.ltgt.errorprone' version '4.3.0'
 }
 
-group = 'org.miracum.streams.ume'
+group = 'io.github.bzkf.obdstofhir'
 version = '3.0.0-beta.123'
 
 java {
@@ -150,7 +150,7 @@ import net.ltgt.gradle.errorprone.CheckSeverity
 tasks.withType(JavaCompile).configureEach {
     options.errorprone {
         check('NullAway', CheckSeverity.WARN)
-        option('NullAway:AnnotatedPackages', 'org.miracum')
+        option('NullAway:AnnotatedPackages', 'io.github.bzkf.obdstofhir')
     }
     options.errorprone.disableWarningsInGeneratedCode = true
     // ignore legacy mappers code
