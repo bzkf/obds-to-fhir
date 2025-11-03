@@ -10,7 +10,7 @@ date_columns = ["date_of_birth", "deceased_date_time", "asserted_date"]
 
 snapshots_dir = (
     HERE
-    / "../src/test/java/snapshots/org/miracum/streams/ume/obdstofhir/"
+    / "../src/test/java/snapshots/io/github/bzkf/obdstofhir/"
     / "mapper/mii/ObdsToFhirBundleMapperTest/"
 ).as_posix()
 
