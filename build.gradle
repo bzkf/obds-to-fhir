@@ -89,7 +89,7 @@ dependencies {
     testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
     errorprone 'com.google.errorprone:error_prone_core:2.43.0'
-    errorprone 'com.uber.nullaway:nullaway:0.12.10'
+    errorprone 'com.uber.nullaway:nullaway:0.12.11'
 }
 
 dependencyManagement {
