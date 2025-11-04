@@ -12,5 +12,9 @@
       "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^(?<version>.*)${{/if}}",
       "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}https://packages.simplifier.net{{/if}}"
     }
+  ],
+  "ignoreDeps": [
+    "ghcr.io/bzkf/obds-to-fhir-dq-checks",
+    "ghcr.io/bzkf/obds-to-fhir"
   ]
 }
