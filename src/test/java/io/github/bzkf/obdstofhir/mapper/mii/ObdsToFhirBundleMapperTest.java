@@ -6,6 +6,7 @@ import ca.uhn.fhir.context.FhirContext;
 import com.spun.util.introspection.Caller;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import java.io.IOException;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,6 +44,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       WeitereKlassifikationMapper.class,
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,
+      PatientReferenceGenerator.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties

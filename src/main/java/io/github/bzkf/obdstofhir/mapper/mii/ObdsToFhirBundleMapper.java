@@ -68,6 +68,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
 
+  private final Function<OBDS.MengePatient.Patient, Reference> patientReferenceGenerator;
+
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
       PatientMapper patientMapper,
@@ -93,7 +95,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       GleasonScoreMapper gleasonScoreMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
-      NebenwirkungMapper nebenwirkungMapper) {
+      NebenwirkungMapper nebenwirkungMapper,
+      Function<OBDS.MengePatient.Patient, Reference> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -120,6 +123,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
+    this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
   /**
@@ -164,7 +168,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       // e.g. in case of Folgepakete, this might not be the case. The main Problem is
       // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
-      var patientReference = new Reference("Patient/" + patient.getId());
+
+      var patientReference = patientReferenceGenerator.apply(obdsPatient);
 
       // only add patient resource to bundle if active profile is set to patient
       if (createPatientResources) {

@@ -9,6 +9,7 @@ import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.Obdsv2v3MapperConfig;
 import io.github.bzkf.obdstofhir.Obdsv2v3MapperProperties;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.mii.*;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
@@ -84,9 +85,10 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       Obdsv2v3MapperProperties.class,
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,
+      PatientReferenceGenerator.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
-public class Obdsv3ProcessorTest extends MapperTest {
+class Obdsv3ProcessorTest extends MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
