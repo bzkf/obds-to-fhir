@@ -1,14 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>miracum/.github//renovate/default"
-  ],
+  "extends": ["github>miracum/.github//renovate/default"],
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/^src/main/resources/application.yml$/"
-      ],
+      "managerFilePatterns": ["/^src/main/resources/application.yml$/"],
       "matchStrings": [
         "datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
       ],
@@ -21,8 +17,5 @@
     "ghcr.io/bzkf/obds-to-fhir-dq-checks",
     "ghcr.io/bzkf/obds-to-fhir"
   ],
-  "ignorePaths": [
-    "**/node_modules/**",
-    "**/bower_components/**"
-  ]
+  "ignorePaths": ["**/node_modules/**", "**/bower_components/**"]
 }
