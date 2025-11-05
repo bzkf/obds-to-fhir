@@ -14,6 +14,6 @@ dependencies:
     condition: stream-processors.enabled
   - name: strimzi-kafka-operator
     repository: oci://quay.io/strimzi-helm
-    version: 0.45.0
+    version: 0.48.0
 version: 0.0.0
 appVersion: 0.0.0
