@@ -22,7 +22,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@9e83a2b0b2e5681d913d4decdd18ac4ad6a6091c # v1.18.0
+    uses: miracum/.github/.github/workflows/standard-build.yaml@f8a5d9da93963f4dfe7111954bd1325bacec2498 # v1.18.1
     permissions:
       contents: write
       id-token: write
@@ -47,7 +47,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -108,7 +108,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -187,7 +187,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -263,7 +263,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@f4a75cfd619ee5ce8d5b864b0d183aff3c69b55a # v2.13.1
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -336,7 +336,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@9e83a2b0b2e5681d913d4decdd18ac4ad6a6091c # v1.18.0
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@f8a5d9da93963f4dfe7111954bd1325bacec2498 # v1.18.1
     permissions:
       contents: read
       pull-requests: write
@@ -351,7 +351,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@9e83a2b0b2e5681d913d4decdd18ac4ad6a6091c # v1.18.0
+    uses: miracum/.github/.github/workflows/standard-release.yaml@f8a5d9da93963f4dfe7111954bd1325bacec2498 # v1.18.1
     needs:
       - lint
       - build
