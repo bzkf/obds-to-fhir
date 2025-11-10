@@ -17,6 +17,10 @@
             <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau" />
         </jaxb:bindings>
         <jaxb:bindings
+                node="//xs:complexType[@name='Datum_Tag_oder_Monat_genau_Typ_Schaetz_optional']//xs:attribute[@name='Datumsgenauigkeit']/xs:simpleType">
+            <jaxb:typesafeEnumClass name="DatumsgenauigkeitTagOderMonatGenauTypSchaetzOptional" />
+        </jaxb:bindings>
+        <jaxb:bindings
             node="//xs:complexType[@name='Diagnose_Typ']//xs:element[@name='Diagnosesicherung']/xs:simpleType">
             <jaxb:typesafeEnumClass name="DiagnoseTypDiagnosesicherung">
                 <jaxb:typesafeEnumMember value="1" name="DS_1" />
