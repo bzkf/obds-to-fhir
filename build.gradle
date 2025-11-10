@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'io.github.bzkf.obdstofhir'
-version = '3.0.0-beta.128'
+version = '3.0.0-beta.129'
 
 java {
     toolchain {
