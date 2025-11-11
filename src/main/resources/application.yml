@@ -20,7 +20,6 @@ fhir:
     procedureId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id"
     medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
-    conditionCategory: "http://terminology.hl7.org/CodeSystem/condition-category"
     gleasonScoreObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/gleason-score-observation-id"
     psaObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/psa-observation-id"
     loinc: "http://loinc.org"
