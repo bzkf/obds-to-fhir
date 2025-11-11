@@ -203,14 +203,17 @@ class ObdsToFhirMapperTests {
   }
 
   @ParameterizedTest
-  @CsvSource({
-    "2017-07-02,E,2017-07-02",
-    "1999-12-31,E,1999-12-31",
-    "2017-07-02,T,2017-07",
-    "2017-07-02,M,2017",
-    "1999-12-31,M,1999",
-    "2000-01-01,V,2000",
-  })
+  @CsvSource(
+      nullValues = {"null"},
+      value = {
+        "2017-07-02,E,2017-07-02",
+        "1999-12-31,E,1999-12-31",
+        "2017-07-02,T,2017-07",
+        "2017-07-02,M,2017",
+        "1999-12-31,M,1999",
+        "2000-01-01,V,2000",
+        "2003-02-01,null,2003-02-01",
+      })
   void shouldConvertDatumTagOderMonatOderJahrOderNichtGenauTypToDateType(
       String input,
       DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau genauigkeit,
