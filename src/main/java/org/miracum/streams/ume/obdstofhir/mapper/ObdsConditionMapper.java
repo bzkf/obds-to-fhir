@@ -260,7 +260,6 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
 
     for (var fruehereTumorerkrankung :
         diagnose.getMenge_Fruehere_Tumorerkrankung().getFruehere_Tumorerkrankung()) {
-      // fruehereTumorerkrankung.
       var condition = new Condition();
       final var conIdentifier =
           conditionIdentifier
