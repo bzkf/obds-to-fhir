@@ -296,6 +296,14 @@ public abstract class ObdsToFhirMapper {
     }
 
     var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+
+    if (obdsDatum.getDatumsgenauigkeit() == null) {
+      log.warn("Datumsgenauigkeit is unset. Assuming 'Day' precision.");
+      // we set the precision to ensure that in FHIR the datetime
+      // doesn't include the time part.
+      date.setPrecision(TemporalPrecisionEnum.DAY);
+    }
+
     switch (obdsDatum.getDatumsgenauigkeit()) {
       // exakt (entspricht taggenau)
       case E:
@@ -306,6 +314,7 @@ public abstract class ObdsToFhirMapper {
         date.setPrecision(TemporalPrecisionEnum.MONTH);
         break;
     }
+
     return Optional.of(date);
   }
 
@@ -316,6 +325,15 @@ public abstract class ObdsToFhirMapper {
     }
 
     var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+
+    if (obdsDatum.getDatumsgenauigkeit() == null) {
+      log.warn("Datumsgenauigkeit is unset. Assuming 'Day' precision.");
+      // we set the precision to ensure that in FHIR the datetime
+      // doesn't include the time part.
+      date.setPrecision(TemporalPrecisionEnum.DAY);
+      return Optional.of(date);
+    }
+
     switch (obdsDatum.getDatumsgenauigkeit()) {
       // exakt (entspricht taggenau)
       case E:
