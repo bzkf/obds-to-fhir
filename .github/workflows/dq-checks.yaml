@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@f8a5d9da93963f4dfe7111954bd1325bacec2498 # v1.18.1
+    uses: miracum/.github/.github/workflows/standard-build.yaml@254a4584e8b941410909f6c911055891ae053563 # v1.18.2
     permissions:
       contents: write
       id-token: write
