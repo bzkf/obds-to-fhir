@@ -323,6 +323,12 @@ public abstract class ObdsToFhirMapper {
     }
 
     var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+
+    if (obdsDatum.getDatumsgenauigkeit() == null) {
+      log.warn("Datumsgenauigkeit is unset. Taking the date as-is.");
+      return Optional.of(date);
+    }
+
     switch (obdsDatum.getDatumsgenauigkeit()) {
       // exakt (entspricht taggenau)
       case E:
