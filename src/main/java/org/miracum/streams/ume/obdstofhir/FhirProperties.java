@@ -34,6 +34,7 @@ public class FhirProperties {
     private String procedureId;
     private String medicationStatementId;
     private String observationCategorySystem;
+    private String conditionCategory;
     private String loinc;
     private String idco3Morphologie;
     private String gradingDktk;
@@ -81,6 +82,7 @@ public class FhirProperties {
     private String systMedStatement;
     private String miiPatientPseudonymisiert;
     private String deathObservation;
+    private String fruehereTumorerkrankung;
   }
 
   @Data

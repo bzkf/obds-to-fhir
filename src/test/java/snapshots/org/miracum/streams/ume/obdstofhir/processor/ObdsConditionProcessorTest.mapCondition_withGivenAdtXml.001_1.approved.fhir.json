@@ -88,5 +88,41 @@
       "method": "PUT",
       "url": "Condition/a90ae2425e2d00616e04da0617c3617740c6f11363cc31df696eef9c06235616"
     }
+  }, {
+    "fullUrl": "Condition/466be13173e66a354d920fdb95086a9401a11d320cdaf7324715d0435aba7b43",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "466be13173e66a354d920fdb95086a9401a11d320cdaf7324715d0435aba7b43",
+      "meta": {
+        "source": "UKER_ONKOSTAR.ONKOSTAR:obds-to-fhir:0.0.0-test",
+        "profile": [ "http://bzkf.github.io/obds-to-fhir/fhir/StructureDefinition/fruehere-tumorerkrankung" ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2021",
+          "code": "C41.01"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/cb07d6456df4982ff6b8de92fc018b0d5fc9dab1d1e303e97bd0474699111b52",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR"
+            } ]
+          },
+          "system": "https://fhir.diz.uk-erlangen.de/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "onsetDateTime": "2021-02-08",
+      "recordedDate": "2021-05-20"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/466be13173e66a354d920fdb95086a9401a11d320cdaf7324715d0435aba7b43"
+    }
   } ]
 }

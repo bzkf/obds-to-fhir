@@ -46,7 +46,7 @@ class ObdsConditionProcessorTest extends ObdsProcessorTest {
     return Stream.of(
         Arguments.of(
             List.of(new Tupel<>("001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml", 1)),
-            1,
+            2,
             "C72.0",
             "2021",
             "T",
@@ -73,7 +73,7 @@ class ObdsConditionProcessorTest extends ObdsProcessorTest {
                 new Tupel<>(
                     "009_Pat1_Tumor1_Statusaenderung_Fernmeta_3x-überschreibt2xFernMetaausDIAGNOSE.xml",
                     1)),
-            1,
+            2,
             "C72.0",
             "2021",
             "T",

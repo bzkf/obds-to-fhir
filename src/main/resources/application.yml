@@ -20,6 +20,7 @@ fhir:
     procedureId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id"
     medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
+    conditionCategory: "http://terminology.hl7.org/CodeSystem/condition-category"
     gleasonScoreObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/gleason-score-observation-id"
     psaObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/psa-observation-id"
     loinc: "http://loinc.org"
@@ -64,6 +65,7 @@ fhir:
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     miiPatientPseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
+    fruehereTumorerkrankung: "http://bzkf.github.io/obds-to-fhir/fhir/StructureDefinition/fruehere-tumorerkrankung"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
