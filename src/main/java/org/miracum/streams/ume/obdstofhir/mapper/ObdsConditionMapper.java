@@ -7,10 +7,10 @@ import org.hl7.fhir.r4.model.*;
 import org.miracum.streams.ume.obdstofhir.FhirProperties;
 import org.miracum.streams.ume.obdstofhir.lookup.*;
 import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID;
+import org.miracum.streams.ume.obdstofhir.model.ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Diagnose;
 import org.miracum.streams.ume.obdstofhir.model.MeldungExport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
@@ -29,7 +29,6 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
-  @Autowired
   public ObdsConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -71,6 +70,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
       primDia = meldung.getTumorzuordnung();
 
       if (primDia == null) {
+        LOG.warn("Unable to retrieve Tumorzuordnung from meldung {}", meldungsId);
         return null;
       }
     }
@@ -164,9 +164,6 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
         } else {
           var profile = obsEntry.getResource().getMeta().getProfile().getFirst().getValue();
           if (profile.equals(fhirProperties.getProfiles().getHistologie())) {
-            // || profile.equals(fhirProperties.getProfiles().getGenVariante())) { Genetische
-            // Variante
-            // erst ab ADTv3
             var conditionEvidenceComponent = new Condition.ConditionEvidenceComponent();
             conditionEvidenceComponent.addDetail(new Reference(obsEntry.getFullUrl()));
             evidenceBackBoneComponentList.add(conditionEvidenceComponent);
@@ -196,6 +193,25 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     var bundle = new Bundle();
     bundle.setType(Bundle.BundleType.TRANSACTION);
     bundle = addResourceAsEntryInBundle(bundle, onkoCondition);
+
+    if (meldung.getDiagnose() != null) {
+      var diagnose = meldung.getDiagnose();
+      if (diagnose.getMenge_Fruehere_Tumorerkrankung() != null
+          && diagnose.getMenge_Fruehere_Tumorerkrankung().getFruehere_Tumorerkrankung() != null) {
+
+        var fruehereErkrankungenConditions =
+            mapFruehereTumorerkrankung(
+                diagnose,
+                onkoCondition.getSubject(),
+                conIdentifier,
+                onkoCondition.getMeta().getSource(),
+                onkoCondition.getRecordedDateElement());
+
+        for (var fruehereErkrankungenCondition : fruehereErkrankungenConditions) {
+          bundle = addResourceAsEntryInBundle(bundle, fruehereErkrankungenCondition);
+        }
+      }
+    }
 
     return bundle;
   }
@@ -232,5 +248,63 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     bodySiteConcept.addCoding(bodySiteADTCoding).addCoding(bodySiteSNOMEDCoding);
 
     return bodySiteConcept;
+  }
+
+  private List<Condition> mapFruehereTumorerkrankung(
+      Diagnose diagnose,
+      Reference subject,
+      String conditionIdentifier,
+      String metaSource,
+      DateTimeType recordedDate) {
+    var result = new ArrayList<Condition>();
+
+    for (var fruehereTumorerkrankung :
+        diagnose.getMenge_Fruehere_Tumorerkrankung().getFruehere_Tumorerkrankung()) {
+      var condition = new Condition();
+      final var conIdentifier =
+          conditionIdentifier
+              + "-fruehere-tumorerkrankung-"
+              + fruehereTumorerkrankung.getICD_Code()
+              + "-"
+              + fruehereTumorerkrankung.getDiagnosedatum();
+
+      condition.setId(this.getHash(ResourceType.Condition, conIdentifier));
+
+      condition.getMeta().addProfile(fhirProperties.getProfiles().getFruehereTumorerkrankung());
+      condition.getMeta().setSource(metaSource);
+      condition.setSubject(subject);
+      condition.setRecordedDateElement(recordedDate);
+
+      var coding =
+          new Coding()
+              .setCode(fruehereTumorerkrankung.getICD_Code())
+              .setSystem(fhirProperties.getSystems().getIcd10gm());
+
+      var icd10Version = fruehereTumorerkrankung.getICD_Version();
+      if (StringUtils.hasLength(icd10Version)) {
+        getIcd10VersionYear(icd10Version)
+            .ifPresentOrElse(
+                coding::setVersion,
+                () ->
+                    LOG.warn(
+                        "Fruehere_Tumorerkrankung ICD Version doesn't match expected format. "
+                            + "Expected: '{}', actual: '{}'",
+                        icdVersionPattern.pattern(),
+                        icd10Version));
+      } else {
+        LOG.warn("Fruehere_Tumorerkrankung_ICD_Version is unset or contains only whitespaces");
+      }
+
+      condition.setCode(new CodeableConcept(coding));
+
+      if (StringUtils.hasLength(fruehereTumorerkrankung.getDiagnosedatum())) {
+        condition.setOnset(
+            convertObdsDateToDateTimeType(fruehereTumorerkrankung.getDiagnosedatum()));
+      }
+
+      result.add(condition);
+    }
+
+    return result;
   }
 }

@@ -129,6 +129,8 @@ public class ADT_GEKID implements Serializable {
             // @JsonProperty private String ICD_O_Topographie_Version;
             @JsonProperty private String Seitenlokalisation;
 
+            @JsonProperty private Menge_Fruehere_Tumorerkrankung Menge_Fruehere_Tumorerkrankung;
+
             @JsonProperty private Menge_Histologie Menge_Histologie;
 
             @JsonProperty private cTNM cTNM;
@@ -155,6 +157,20 @@ public class ADT_GEKID implements Serializable {
                 @JsonProperty private String Morphologie_ICD_O_Version; //
                 @JsonProperty private String Grading;
                 @JsonProperty private String Morphologie_Freitext;
+              }
+            }
+
+            @Data
+            public static class Menge_Fruehere_Tumorerkrankung {
+              @JacksonXmlElementWrapper(useWrapping = false)
+              private List<Fruehere_Tumorerkrankung> Fruehere_Tumorerkrankung;
+
+              @Data
+              @EqualsAndHashCode
+              public static class Fruehere_Tumorerkrankung {
+                @JsonProperty private String ICD_Code;
+                @JsonProperty private String ICD_Version;
+                @JsonProperty private String Diagnosedatum;
               }
             }
 
