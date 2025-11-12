@@ -302,6 +302,7 @@ public abstract class ObdsToFhirMapper {
       // we set the precision to ensure that in FHIR the datetime
       // doesn't include the time part.
       date.setPrecision(TemporalPrecisionEnum.DAY);
+      return Optional.of(date);
     }
 
     switch (obdsDatum.getDatumsgenauigkeit()) {
