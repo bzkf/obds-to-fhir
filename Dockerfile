@@ -9,7 +9,7 @@ set -e
 gradle clean build --info
 gradle jacocoTestReport
 PROJECT_VERSION="$(gradle -q printVersion)"
-java -Djarmode=layertools -jar build/libs/obds-to-fhir-${PROJECT_VERSION}.jar extract
+java -Djarmode=layertools -jar "build/libs/obds-to-fhir-${PROJECT_VERSION}.jar" extract
 EOF
 
 FROM scratch AS test
