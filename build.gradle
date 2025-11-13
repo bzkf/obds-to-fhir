@@ -3,18 +3,23 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'java'
+    id 'signing'
+    id 'maven-publish'
     id 'com.diffplug.spotless' version '8.0.0'
     id 'io.freefair.lombok' version '9.1.0'
     id 'net.ltgt.errorprone' version '4.3.0'
+    id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
 }
 
-group = 'io.github.bzkf.obdstofhir'
+group = 'io.github.bzkf'
 version = '3.0.0-beta.132'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 configurations {
@@ -157,4 +162,74 @@ tasks.withType(JavaCompile).configureEach {
     // MeldungExportV3 causes an errorprone exception - likely because it can't handle all the lombok annotations
     options.errorprone.errorproneArgs.add('-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java'
         + '|.*/lookup/.*|.*/mapper/\\w*\\.java)')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'obds-to-fhir'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'oBDS to FHIR®'
+                description = 'A tool for mapping oBDS to FHIR® resources.'
+                url = 'https://github.com/bzkf/obds-to-fhir'
+                licenses {
+                    license {
+                        name = 'GPL 3.0'
+                        url = 'https://opensource.org/license/gpl-3-0'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'BZKF'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/bzkf/obds-to-fhir.git'
+                    developerConnection = 'scm:git:ssh://github.com:bzkf/obds-to-fhir.git'
+                    url = 'https://github.com/bzkf/obds-to-fhir'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'Local'
+            url = layout.buildDirectory.dir('repos/bundles')
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+signing {
+    def signingKey = System.getenv('SIGNING_KEY')
+    def signingPassword = System.getenv('SIGNING_KEY_PASSPHRASE')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+pkmerBoot {
+    sonatypeMavenCentral {
+        // the same with publishing.repositories.maven.url in the configuration.
+        stagingRepository = layout.buildDirectory.dir('repos/bundles')
+        /**
+         * get username and password from
+         * <a href="https://central.sonatype.com/account"> central sonatype account</a>
+         */
+        username = System.getenv('OSSRH_USERNAME')
+        password = System.getenv('OSSRH_PASSWORD')
+    }
 }
