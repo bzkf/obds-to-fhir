@@ -20,6 +20,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+    withJavadocJar()
+    withSourcesJar()
 }
 
 configurations {
@@ -231,5 +233,12 @@ pkmerBoot {
          */
         username = System.getenv('OSSRH_USERNAME')
         password = System.getenv('OSSRH_PASSWORD')
+    }
+}
+
+// via <https://stackoverflow.com/questions/24936781/gradle-plugin-project-version-number>
+task printVersion {
+    doLast {
+        println project.version
     }
 }
