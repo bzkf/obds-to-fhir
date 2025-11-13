@@ -1,3 +1,5 @@
+// groovylint-disable NestedBlockDepth
+
 plugins {
     id 'org.springframework.boot' version '3.5.7'
     id 'io.spring.dependency-management' version '1.1.7'
@@ -18,8 +20,6 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
-    withJavadocJar()
-    withSourcesJar()
 }
 
 configurations {
@@ -166,7 +166,7 @@ tasks.withType(JavaCompile).configureEach {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        bootJava(MavenPublication) {
             artifactId = 'obds-to-fhir'
             from components.java
             versionMapping {
@@ -218,7 +218,7 @@ signing {
     def signingKey = System.getenv('SIGNING_KEY')
     def signingPassword = System.getenv('SIGNING_KEY_PASSPHRASE')
     useInMemoryPgpKeys(signingKey, signingPassword)
-    sign publishing.publications.mavenJava
+    sign publishing.publications.bootJava
 }
 
 pkmerBoot {
