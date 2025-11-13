@@ -10,7 +10,7 @@ from pathling import DataSource
 from pathling import Expression as exp
 from pathling import PathlingContext
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, concat, lit, count_distinct
+from pyspark.sql.functions import col, concat, count_distinct, lit
 
 spark_config = (
     SparkSession.builder.master(config.spark_master)  # type: ignore
