@@ -1,0 +1,68 @@
+name: Publish to Maven Central
+
+on:
+  push:
+    branches:
+      - master
+      - beta
+  release:
+    types:
+      - created
+  pull_request:
+    branches:
+      - master
+      - beta
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    name: Build and publish
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+        with:
+          java-version: "25"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - uses: gradle/actions/wrapper-validation@4d9f0ba0025fe599b4ebab900eb7f3a1d93ef4c2 # v5.0.0
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@4d9f0ba0025fe599b4ebab900eb7f3a1d93ef4c2 # v5.0.0
+
+      - name: Build with Gradle
+        run: |
+          ./gradlew build
+
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: package
+          path: build/
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Run Test Coverage
+        run: ./gradlew jacocoTestReport
+
+      - name: Publish to central
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        run: |
+          ./gradlew publish
+          ./gradlew publishToMavenCentralPortal
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}

@@ -1,6 +1,6 @@
 import great_expectations as gx
-from great_expectations.core.result_format import ResultFormat
 from config import config
+from great_expectations.core.result_format import ResultFormat
 
 expectations_conditions = [
     # Birth date validations

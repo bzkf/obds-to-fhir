@@ -65,7 +65,7 @@ The [image used to deploy Kafka Connect](https://github.com/miracum/util-images/
 the dependencies necessary to connect to MySQL, MariaDB, or an Oracle databases. Once the service is running, you can configure the Connect task using
 [deploy-connectors.sh](deploy/deploy-connectors.sh). Once it is running, XML data from the database is send to Kafka by running the query every 5 seconds.
 
-You can see all available configuration options for the connector [here](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/source_config_options.html).
+You can see all available configuration options for the connector in the [Configuration Reference for JDBC Source Connector for Confluent Platform](https://docs.confluent.io/kafka-connectors/jdbc/current/source-connector/source_config_options.html).
 There's also some more details on the setup at <https://github.com/bzkf/onco-analytics-on-fhir/tree/master/docker-compose#7-enable-kafka-connect-and-the-connector>.
 
 ## Used FHIR profiles

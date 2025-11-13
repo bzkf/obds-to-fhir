@@ -8,7 +8,8 @@ RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
 set -e
 gradle clean build --info
 gradle jacocoTestReport
-java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
+PROJECT_VERSION="$(gradle -q printVersion)"
+java -Djarmode=layertools -jar "build/libs/obds-to-fhir-${PROJECT_VERSION}.jar" extract
 EOF
 
 FROM scratch AS test
