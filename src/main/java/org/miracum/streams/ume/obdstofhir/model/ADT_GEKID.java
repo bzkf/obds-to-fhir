@@ -240,7 +240,9 @@ public class ADT_GEKID implements Serializable {
 
           @Data
           public static class Menge_OP {
-            @JsonProperty private OP OP;
+
+            @JacksonXmlElementWrapper(useWrapping = false)
+            private List<OP> OP;
 
             @Data
             public static class OP {
@@ -317,7 +319,8 @@ public class ADT_GEKID implements Serializable {
           @Data
           public static class Menge_Verlauf {
 
-            @JsonProperty private Verlauf Verlauf;
+            @JacksonXmlElementWrapper(useWrapping = false)
+            private List<Verlauf> Verlauf;
 
             @Data
             public static class Verlauf {

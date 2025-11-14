@@ -64,25 +64,39 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
     if (meldung != null
         && meldung.getMenge_OP() != null
         && meldung.getMenge_OP().getOP() != null
-        && meldung.getMenge_OP().getOP().getMenge_OPS() != null) {
+        && !meldung.getMenge_OP().getOP().isEmpty()) {
 
-      var opsSet = meldung.getMenge_OP().getOP().getMenge_OPS().getOP_OPS();
-      var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
-
-      if (distinctOpsSet.size() > 1) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createOpProcedure(
-                    meldung, pid, senderId, softwareId, null, distinctOpsSet, reportingReason));
+      if (meldung.getMenge_OP().getOP().size() > 1) {
+        LOG.error("OP Meldung contains more than one OP {}", meldung.getMeldung_ID());
       }
 
-      for (var opsCode : distinctOpsSet) {
-        bundle =
-            addResourceAsEntryInBundle(
-                bundle,
-                createOpProcedure(
-                    meldung, pid, senderId, softwareId, opsCode, distinctOpsSet, reportingReason));
+      var op = meldung.getMenge_OP().getOP().getFirst();
+
+      if (op.getMenge_OPS() != null && !op.getMenge_OPS().getOP_OPS().isEmpty()) {
+        var opsSet = op.getMenge_OPS().getOP_OPS();
+        var distinctOpsSet = new HashSet<>(opsSet); // removes duplicates
+
+        if (distinctOpsSet.size() > 1) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createOpProcedure(
+                      meldung, pid, senderId, softwareId, null, distinctOpsSet, reportingReason));
+        }
+
+        for (var opsCode : distinctOpsSet) {
+          bundle =
+              addResourceAsEntryInBundle(
+                  bundle,
+                  createOpProcedure(
+                      meldung,
+                      pid,
+                      senderId,
+                      softwareId,
+                      opsCode,
+                      distinctOpsSet,
+                      reportingReason));
+        }
       }
     }
 
@@ -144,7 +158,7 @@ public class ObdsProcedureMapper extends ObdsToFhirMapper {
       Set<String> distinctOpsSet,
       Meldeanlass meldeanlass) {
 
-    var op = meldung.getMenge_OP().getOP();
+    var op = meldung.getMenge_OP().getOP().getFirst();
 
     // Create a OP Procedure as in
     // https://simplifier.net/oncology/operation

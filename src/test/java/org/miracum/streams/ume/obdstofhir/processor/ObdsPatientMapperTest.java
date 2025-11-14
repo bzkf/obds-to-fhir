@@ -108,8 +108,7 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
 
   @ParameterizedTest
   @ValueSource(strings = {"0", "123", "00000", "12", "12345", "1234567890"})
-  void mapOnkoResourcesToPatient_withMeldungExportWithValidPLZ_shouldSetAsPostalCode(String plz)
-      throws IOException {
+  void mapOnkoResourcesToPatient_withMeldungExportWithValidPLZ_shouldSetAsPostalCode(String plz) {
 
     var meldungExportList = createMeldungExportListFromPLZ(plz);
 
@@ -127,7 +126,7 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
   @NullSource
   @ValueSource(strings = {""})
   void mapOnkoResourcesToPatient_withMeldungExportWithInvalidPLZ_shouldCreateNotFillAddress(
-      String plz) throws IOException {
+      String plz) {
 
     var meldungExportList = createMeldungExportListFromPLZ(plz);
 
@@ -142,8 +141,7 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
 
   @Test
   void
-      mapOnkoResourcesToPatient_withMeldungExportListWithMultipleDeathReports_shouldSetDeathDateFromMostRecentReport()
-          throws IOException {
+      mapOnkoResourcesToPatient_withMeldungExportListWithMultipleDeathReports_shouldSetDeathDateFromMostRecentReport() {
     var meldungExportList = new MeldungExportList();
     for (int i = 1; i < 6; i++) {
       var tod =
@@ -153,7 +151,7 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
           new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf();
       verlauf.setTod(tod);
       var mengeVerlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf();
-      mengeVerlauf.setVerlauf(verlauf);
+      mengeVerlauf.setVerlauf(List.of(verlauf));
       var meldungExport = createMeldungExportFromPLZ("" + i);
       meldungExport.setVersionsnummer(i);
       meldungExport
@@ -185,13 +183,13 @@ class ObdsPatientMapperTest extends ObdsProcessorTest {
   }
 
   @Test
-  void mapOnkoResourcesToPatient_withMeldungExportListWithoutDeathDate_shouldSetDeathBooleanToTrue()
-      throws IOException {
+  void
+      mapOnkoResourcesToPatient_withMeldungExportListWithoutDeathDate_shouldSetDeathBooleanToTrue() {
     var tod = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf.Tod();
     var verlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf.Verlauf();
     verlauf.setTod(tod);
     var mengeVerlauf = new ADT_GEKID.Menge_Patient.Patient.Menge_Meldung.Meldung.Menge_Verlauf();
-    mengeVerlauf.setVerlauf(verlauf);
+    mengeVerlauf.setVerlauf(List.of(verlauf));
     var meldungExport = createMeldungExportFromPLZ("" + 0);
     meldungExport.setVersionsnummer(0);
     meldungExport

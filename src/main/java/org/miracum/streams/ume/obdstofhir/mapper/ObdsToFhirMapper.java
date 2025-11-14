@@ -104,7 +104,7 @@ public abstract class ObdsToFhirMapper {
       }
       return resultBuilder.toString();
     } else {
-      log.warn("Identifier to convert does not match pattern: {}", matcher.pattern().toString());
+      log.warn("Identifier to convert does not match pattern: {}", matcher.pattern());
       return id;
     }
   }
