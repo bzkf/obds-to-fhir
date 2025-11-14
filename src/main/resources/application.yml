@@ -78,6 +78,8 @@ fhir:
   url:
     tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
   mappings:
+    fruehere-tumorerkrankung:
+      enabled: false
     modul:
       prostata:
         enabled: false
