@@ -95,6 +95,7 @@ public class FhirProperties {
     private String verlaufObservationId;
     private String todObservationId;
     private String nebenwirkungAdverseEventId;
+    private String fruehereTumorerkrankungConditionId;
   }
 
   @Data

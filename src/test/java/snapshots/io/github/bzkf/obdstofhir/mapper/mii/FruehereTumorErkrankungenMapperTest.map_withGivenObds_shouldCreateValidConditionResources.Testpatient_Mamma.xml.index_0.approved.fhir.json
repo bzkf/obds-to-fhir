@@ -1,0 +1,24 @@
+{
+  "resourceType": "Condition",
+  "id": "1e04d8ae09dc7e3c15d9b8a8bc0906c616ffa5ac510b94c38d8aae7c3c1a6571",
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+    "valueDateTime": "1999"
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+    "value": "pd-id-1-C43-7-1999"
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "2022",
+      "code": "C43.7"
+    } ],
+    "text": "Malignes Melanom re. Oberschenkel"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "recordedDate": "2024-02-16"
+}

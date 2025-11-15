@@ -73,6 +73,7 @@ fhir:
       tumorkonferenz-care-plan-id: "${fhir.systems.identifiers.base-url}/tumorkonferenz-care-plan-id"
       weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
       erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
+      fruehere-tumorerkrankung-condition-id: "${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"
 
     # DKTK
     observationId: "${fhir.systems.identifiers.base-url}/observation-id"

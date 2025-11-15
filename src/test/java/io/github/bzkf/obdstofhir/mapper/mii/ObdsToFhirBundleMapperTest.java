@@ -45,6 +45,7 @@ import org.springframework.boot.test.context.SpringBootTest;
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,
       PatientReferenceGenerator.class,
+      FruehereTumorerkrankungenMapper.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties

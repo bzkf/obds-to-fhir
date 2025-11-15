@@ -2903,6 +2903,36 @@
       "url": "CarePlan/87fd2ca0c7c1180e754c383c0a50580c47a4211518fa52fe8868de8540b9ff34"
     }
   }, {
+    "fullUrl": "Condition/f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401",
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "1999"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+        "value": "60-601-C43-7-1999"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2022",
+          "code": "C43.7"
+        } ],
+        "text": "Malignes Melanom re. Oberschenkel"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+      },
+      "recordedDate": "2024-02-16"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401"
+    }
+  }, {
     "fullUrl": "Observation/b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610",
     "resource": {
       "resourceType": "Observation",
@@ -3254,6 +3284,10 @@
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
       },
       "entry": [ {
+        "item": {
+          "reference": "Condition/f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401"
+        }
+      }, {
         "item": {
           "reference": "Observation/b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610"
         }

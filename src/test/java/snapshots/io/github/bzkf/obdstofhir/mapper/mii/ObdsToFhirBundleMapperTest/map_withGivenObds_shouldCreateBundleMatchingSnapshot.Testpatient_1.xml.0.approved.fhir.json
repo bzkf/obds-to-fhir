@@ -3534,6 +3534,36 @@
       "url": "Observation/9f15623e280f9fd3ded3abf724026c23236dae872fa38a1534be56a9b8517cfa"
     }
   }, {
+    "fullUrl": "Condition/be5fdbc94b5c77d0860fba2cea1fc7dee6ec503e9d8ae7939583b42b6392b071",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "be5fdbc94b5c77d0860fba2cea1fc7dee6ec503e9d8ae7939583b42b6392b071",
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2010"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+        "value": "10-101-C43-7-2010"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2010",
+          "code": "C43.7"
+        } ],
+        "text": "Malignes Melanom rechtes Bein"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "recordedDate": "2024-09-19"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/be5fdbc94b5c77d0860fba2cea1fc7dee6ec503e9d8ae7939583b42b6392b071"
+    }
+  }, {
     "fullUrl": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
     "resource": {
       "resourceType": "Observation",
@@ -4712,6 +4742,10 @@
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
       },
       "entry": [ {
+        "item": {
+          "reference": "Condition/be5fdbc94b5c77d0860fba2cea1fc7dee6ec503e9d8ae7939583b42b6392b071"
+        }
+      }, {
         "item": {
           "reference": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
         }

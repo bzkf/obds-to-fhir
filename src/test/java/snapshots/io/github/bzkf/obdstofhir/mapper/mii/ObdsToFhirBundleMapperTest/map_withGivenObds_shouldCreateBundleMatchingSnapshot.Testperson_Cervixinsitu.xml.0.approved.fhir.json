@@ -598,6 +598,36 @@
       "url": "Observation/ff6c32b91d499a3f61730706ce5f8d0bbf7370462db4186ab22de4734c00cb88"
     }
   }, {
+    "fullUrl": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2013"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+        "value": "19-195-C50-9-2013"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2013",
+          "code": "C50.9"
+        } ],
+        "text": "Mamma-Ca, links"
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "recordedDate": "2024-07-18"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e"
+    }
+  }, {
     "fullUrl": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
     "resource": {
       "resourceType": "Observation",
@@ -1202,6 +1232,10 @@
         "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
       },
       "entry": [ {
+        "item": {
+          "reference": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e"
+        }
+      }, {
         "item": {
           "reference": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62"
         }
