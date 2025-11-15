@@ -29,18 +29,12 @@ configurations {
         extendsFrom annotationProcessor
     }
     xsd2java
-
-    // Configuration for changing snapshot dependencies
-    // Update every hour
-    configureEach {
-        resolutionStrategy.cacheChangingModulesFor(1, java.util.concurrent.TimeUnit.HOURS)
-    }
 }
 
 repositories {
     mavenCentral()
     maven {
-        url = 'https://git.dnpm.dev/api/packages/public-snapshots/maven'
+        url = 'https://git.dnpm.dev/api/packages/public/maven'
     }
 }
 
@@ -80,7 +74,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
 
     // OBDS2 to OBDS3
-    implementation('dev.pcvolkmer.onco:obds2-to-obds3:0.1.0-SNAPSHOT') { changing = true }
+    implementation 'dev.pcvolkmer.onco:obds2-to-obds3:0.1.0'
 
     // JAXB code generation
     xsd2java 'com.sun.xml.bind:jaxb-xjc:4.0.6'
