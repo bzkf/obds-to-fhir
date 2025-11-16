@@ -1,7 +1,7 @@
 #checkov:skip=CKV_SECRET_6: all dev setup
 services:
   oracle:
-    image: docker.io/gvenzl/oracle-free:23.5-slim-faststart@sha256:a628d0978579ff8cdc8cc68192ed79d2ab1b27ab78be9ae8fc40d5235838b84c
+    image: docker.io/gvenzl/oracle-free:23.5-slim-faststart@sha256:9d51195cdee13031c60300be1809149f41d11b1503cac3d42217adf713b94e65
     cap_drop:
       - ALL
     privileged: false
