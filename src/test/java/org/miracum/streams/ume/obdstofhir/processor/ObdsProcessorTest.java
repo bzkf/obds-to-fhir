@@ -37,7 +37,11 @@ import org.springframework.util.ResourceUtils;
       GleasonScoreToObservationMapper.class,
       PsaToObservationMapper.class,
     },
-    properties = {"app.version=0.0.0-test", "fhir.mappings.modul.prostata.enabled=true"})
+    properties = {
+      "app.version=0.0.0-test",
+      "fhir.mappings.modul.prostata.enabled=true",
+      "fhir.mappings.fruehere-tumorerkrankung.enabled=true"
+    })
 @EnableConfigurationProperties()
 public abstract class ObdsProcessorTest {
 

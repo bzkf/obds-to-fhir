@@ -137,7 +137,8 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
   }
 
   private Type getDeceased(List<MeldungExport> deathReports) {
-    // get the first entry with the largest version number where the death date is set
+    // get the first entry with the largest version number where the death date is
+    // set
     var reportWithSterbeDatum =
         deathReports.stream()
             .sorted(Comparator.comparingInt(MeldungExport::getVersionsnummer).reversed())
@@ -151,9 +152,24 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
                           .getMeldung()
                           .getMenge_Verlauf();
 
+                  if (mengeVerlauf == null) {
+                    return false;
+                  }
+
+                  if (mengeVerlauf.getVerlauf() == null || mengeVerlauf.getVerlauf().isEmpty()) {
+                    return false;
+                  }
+
+                  if (mengeVerlauf.getVerlauf().size() > 1) {
+                    LOG.warn(
+                        "More than one Verlauf element within the Tod Meldung {}",
+                        getReportingIdFromAdt(m));
+                  }
+
+                  var verlauf = mengeVerlauf.getVerlauf().getFirst();
+
                   try {
-                    return StringUtils.hasLength(
-                        mengeVerlauf.getVerlauf().getTod().getSterbedatum());
+                    return StringUtils.hasLength(verlauf.getTod().getSterbedatum());
                   } catch (NullPointerException e) {
                     return false;
                   }
@@ -171,6 +187,7 @@ public class ObdsPatientMapper extends ObdsToFhirMapper {
               .getMeldung()
               .getMenge_Verlauf()
               .getVerlauf()
+              .getFirst()
               .getTod()
               .getSterbedatum();
 

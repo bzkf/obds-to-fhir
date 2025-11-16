@@ -170,49 +170,70 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
         }
       } else if (meldeanlass == Meldeanlass.STATUSAENDERUNG) {
         // aus Verlauf: histologie, grading und p-tnm
-        // TODO Menge Verlauf berueksichtigen ggf. abfangen (in Erlangen immer nur ein
-        // Verlauf in
-        // Menge_Verlauf), Jasmin klaert das noch
-        var verlauf = meldung.getMenge_Verlauf().getVerlauf();
-        var hist = verlauf.getHistologie();
-        if (hist != null) {
-          histList = List.of(new Tupel<>(hist, meldeanlass));
-        }
+        var mengeVerlauf = meldung.getMenge_Verlauf();
 
-        var statusTnm = verlauf.getTNM();
-        if (statusTnm != null
-            && (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
-                || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
-                || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p"))) {
-          pTnm = new Triple<>(statusTnm, null, meldeanlass);
-        }
+        if (mengeVerlauf != null && mengeVerlauf.getVerlauf() != null) {
+          if (!mengeVerlauf.getVerlauf().isEmpty()) {
 
-        fernMetaList = new ArrayList<>();
-        if (verlauf.getMenge_FM() != null) {
-          for (var fernMeta : verlauf.getMenge_FM().getFernmetastase()) {
-            fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+            if (mengeVerlauf.getVerlauf().size() > 1) {
+              LOG.error(
+                  "Menge_Verlauf contains more than one element. {}", meldung.getMeldung_ID());
+            }
+
+            var verlauf = mengeVerlauf.getVerlauf().getFirst();
+            var hist = verlauf.getHistologie();
+            if (hist != null) {
+              histList = List.of(new Tupel<>(hist, meldeanlass));
+            }
+
+            var statusTnm = verlauf.getTNM();
+            if (statusTnm != null
+                && (Objects.equals(statusTnm.getTNM_c_p_u_Praefix_T(), "p")
+                    || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_N(), "p")
+                    || Objects.equals(statusTnm.getTNM_c_p_u_Praefix_M(), "p"))) {
+              pTnm = new Triple<>(statusTnm, null, meldeanlass);
+            }
+
+            fernMetaList = new ArrayList<>();
+            if (verlauf.getMenge_FM() != null) {
+              for (var fernMeta : verlauf.getMenge_FM().getFernmetastase()) {
+                fernMetaList.add(new Tupel<>(fernMeta, meldeanlass));
+              }
+            }
+
+            if (verlauf.getModul_Prostata().isPresent()) {
+              var baseDatum =
+                  convertObdsDateToDateTimeType(
+                      verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
+              var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
+
+              prostataMappingParams =
+                  new ModulProstataMappingParams(
+                      meldeanlass,
+                      verlauf.getModul_Prostata().get(),
+                      patId,
+                      meldung.getTumorzuordnung().getTumor_ID() + " - " + verlauf.getVerlauf_ID(),
+                      baseDatum,
+                      meldedatum);
+            }
+          } else {
+            LOG.warn("Menge_Verlauf is empty for {}", meldung.getMeldung_ID());
           }
-        }
-
-        if (verlauf.getModul_Prostata().isPresent()) {
-          var baseDatum =
-              convertObdsDateToDateTimeType(verlauf.getUntersuchungsdatum_Verlauf().orElse(null));
-          var meldedatum = convertObdsDateToDateTimeType(meldung.getMeldedatum());
-
-          prostataMappingParams =
-              new ModulProstataMappingParams(
-                  meldeanlass,
-                  verlauf.getModul_Prostata().get(),
-                  patId,
-                  meldung.getTumorzuordnung().getTumor_ID() + " - " + verlauf.getVerlauf_ID(),
-                  baseDatum,
-                  meldedatum);
+        } else {
+          LOG.warn("Menge_Verlauf is unset for {}", meldung.getMeldung_ID());
         }
       } else if (meldeanlass == Meldeanlass.BEHANDLUNGSENDE) {
         // aus Operation: histologie, grading und p-tnm
-        // TODO Menge OP berueksichtigen, in Erlangen aber immer neue Meldung
-        if (meldung.getMenge_OP() != null) {
-          var op = meldung.getMenge_OP().getOP();
+        if (meldung.getMenge_OP() != null
+            && meldung.getMenge_OP().getOP() != null
+            && !meldung.getMenge_OP().getOP().isEmpty()) {
+          if (meldung.getMenge_OP().getOP().size() > 1) {
+            LOG.error(
+                "Can't handle more than one OP element. Defaulting to first for Meldung {}",
+                meldung.getMeldung_ID());
+          }
+
+          var op = meldung.getMenge_OP().getOP().getFirst();
           var hist = op.getHistologie();
           if (hist != null) {
             histList = List.of(new Tupel<>(hist, meldeanlass));
@@ -244,9 +265,16 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
                 .getMeldung()
                 .getMenge_Verlauf();
 
-        if (mengeVerlauf != null && mengeVerlauf.getVerlauf() != null) {
-          verlaufId = mengeVerlauf.getVerlauf().getVerlauf_ID();
-          death = mengeVerlauf.getVerlauf().getTod();
+        if (mengeVerlauf != null
+            && mengeVerlauf.getVerlauf() != null
+            && !mengeVerlauf.getVerlauf().isEmpty()) {
+          if (mengeVerlauf.getVerlauf().size() > 1) {
+            LOG.error("Can't handle more than one Verlauf element in {}", meldung.getMeldung_ID());
+          }
+
+          var verlauf = mengeVerlauf.getVerlauf().getFirst();
+          verlaufId = verlauf.getVerlauf_ID();
+          death = verlauf.getTod();
         }
       }
 

@@ -29,6 +29,9 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
   @Value("${app.enableCheckDigitConv}")
   private boolean checkDigitConversion;
 
+  @Value("${fhir.mappings.fruehere-tumorerkrankung.enabled}")
+  private boolean isFruehereTumorErkrankungMappingEnabled;
+
   public ObdsConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -108,7 +111,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
                       icdVersionPattern.pattern(),
                       icd10Version));
     } else {
-      LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+      LOG.debug("Primaertumor_ICD_Version is unset or contains only whitespaces");
     }
 
     var conditionCode = new CodeableConcept().addCoding(coding);
@@ -194,7 +197,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
     bundle.setType(Bundle.BundleType.TRANSACTION);
     bundle = addResourceAsEntryInBundle(bundle, onkoCondition);
 
-    if (meldung.getDiagnose() != null) {
+    if (isFruehereTumorErkrankungMappingEnabled && meldung.getDiagnose() != null) {
       var diagnose = meldung.getDiagnose();
       if (diagnose.getMenge_Fruehere_Tumorerkrankung() != null
           && diagnose.getMenge_Fruehere_Tumorerkrankung().getFruehere_Tumorerkrankung() != null) {
