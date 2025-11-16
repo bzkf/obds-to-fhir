@@ -111,7 +111,7 @@ public class ObdsConditionMapper extends ObdsToFhirMapper {
                       icdVersionPattern.pattern(),
                       icd10Version));
     } else {
-      LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+      LOG.debug("Primaertumor_ICD_Version is unset or contains only whitespaces");
     }
 
     var conditionCode = new CodeableConcept().addCoding(coding);
