@@ -24,6 +24,7 @@ fhir:
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+    condition-related: "http://hl7.org/fhir/StructureDefinition/condition-related"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-stellungzurop: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"

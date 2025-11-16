@@ -49,7 +49,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
     for (var fruehereTumorerkrankung : mengeFruehereTumorerkrankung.getFruehereTumorerkrankung()) {
       // check if there is either at least an ICD code or the free text
       if ((fruehereTumorerkrankung.getICD() != null
-              && fruehereTumorerkrankung.getICD().getCode() != null)
+          && fruehereTumorerkrankung.getICD().getCode() != null)
           || StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
         result.add(
             map(
@@ -81,8 +81,8 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
 
     condition.setSubject(patient);
     // TODO: there should be a dedicated profile for the fruehere tumorerkrankung
-    // TODO: use primaerdiagnose as a reference in extension.ReferenzPrimaerdiagnose
-    // condition
+
+    condition.addExtension(fhirProperties.getExtensions().getConditionRelated(), primaerdiagnose);
 
     var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
 
@@ -119,7 +119,8 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       if (condition.hasCode()) {
         condition.getCode().setText(fruehereTumorerkrankung.getFreitext());
       } else {
-        // if there's no Condition.code yet, it means that there's no ICD Code set but only
+        // if there's no Condition.code yet, it means that there's no ICD Code set but
+        // only
         // the freitext element.
         var codingElement = new Coding();
         codingElement.addExtension(
@@ -173,10 +174,9 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       valueBuilder.add(fruehereTumorerkrankung.getICD().getCode());
     } else if (StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
       // if we only have the free text, use its hash as part of the identifier
-      var hashedFreeText =
-          Hashing.sha256()
-              .hashString(fruehereTumorerkrankung.getFreitext(), StandardCharsets.UTF_8)
-              .toString();
+      var hashedFreeText = Hashing.sha256()
+          .hashString(fruehereTumorerkrankung.getFreitext(), StandardCharsets.UTF_8)
+          .toString();
       valueBuilder.add(hashedFreeText);
     } else {
       throw new IllegalArgumentException(

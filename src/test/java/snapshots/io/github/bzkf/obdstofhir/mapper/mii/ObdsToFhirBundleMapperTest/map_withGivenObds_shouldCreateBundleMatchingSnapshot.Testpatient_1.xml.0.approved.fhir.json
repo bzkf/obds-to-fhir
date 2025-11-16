@@ -3539,6 +3539,11 @@
       "resourceType": "Condition",
       "id": "be5fdbc94b5c77d0860fba2cea1fc7dee6ec503e9d8ae7939583b42b6392b071",
       "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-related",
+        "valueReference": {
+          "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+        }
+      }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
         "valueDateTime": "2010"
       } ],

@@ -2,6 +2,11 @@
   "resourceType": "Condition",
   "id": "8a460ab43f3cb11d9be9c9ce3318938b7d33f640495146f4d988f75073ed6a51",
   "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-related",
+    "valueReference": {
+      "reference": "Condition/Primärdiagnose"
+    }
+  }, {
     "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
     "valueDateTime": "2013"
   } ],

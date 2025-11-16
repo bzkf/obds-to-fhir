@@ -434,6 +434,11 @@
       "resourceType": "Condition",
       "id": "2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
       "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-related",
+        "valueReference": {
+          "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
+        }
+      }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
         "valueDateTime": "2013"
       } ],
