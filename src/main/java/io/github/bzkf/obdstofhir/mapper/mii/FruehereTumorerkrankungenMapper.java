@@ -49,7 +49,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
     for (var fruehereTumorerkrankung : mengeFruehereTumorerkrankung.getFruehereTumorerkrankung()) {
       // check if there is either at least an ICD code or the free text
       if ((fruehereTumorerkrankung.getICD() != null
-          && fruehereTumorerkrankung.getICD().getCode() != null)
+              && fruehereTumorerkrankung.getICD().getCode() != null)
           || StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
         result.add(
             map(
@@ -174,9 +174,10 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       valueBuilder.add(fruehereTumorerkrankung.getICD().getCode());
     } else if (StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
       // if we only have the free text, use its hash as part of the identifier
-      var hashedFreeText = Hashing.sha256()
-          .hashString(fruehereTumorerkrankung.getFreitext(), StandardCharsets.UTF_8)
-          .toString();
+      var hashedFreeText =
+          Hashing.sha256()
+              .hashString(fruehereTumorerkrankung.getFreitext(), StandardCharsets.UTF_8)
+              .toString();
       valueBuilder.add(hashedFreeText);
     } else {
       throw new IllegalArgumentException(
