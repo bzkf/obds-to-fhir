@@ -41,7 +41,6 @@ class FruehereTumorerkrankungenMapperTest extends MapperTest {
 
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
-    var diagnose = new Reference("Condition/Primärdiagnose");
 
     final var list = new ArrayList<Condition>();
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
@@ -51,7 +50,6 @@ class FruehereTumorerkrankungenMapperTest extends MapperTest {
             sut.map(
                 meldung.getDiagnose().getMengeFruehereTumorerkrankung(),
                 subject,
-                diagnose,
                 new Identifier().setSystem("any").setValue("pd-id-1"),
                 obds.getMeldedatum());
         list.addAll(conditions);

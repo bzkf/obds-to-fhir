@@ -38,12 +38,10 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
   public @NonNull List<Condition> map(
       @NonNull MengeFruehereTumorerkrankung mengeFruehereTumorerkrankung,
       @NonNull Reference patient,
-      @NonNull Reference primaerdiagnose,
       @NonNull Identifier primaerdiagnoseIdentifier,
       @NonNull XMLGregorianCalendar meldeDatum) {
     Objects.requireNonNull(mengeFruehereTumorerkrankung.getFruehereTumorerkrankung());
     verifyReference(patient, ResourceType.Patient);
-    verifyReference(primaerdiagnose, ResourceType.Condition);
     var result = new ArrayList<Condition>();
 
     for (var fruehereTumorerkrankung : mengeFruehereTumorerkrankung.getFruehereTumorerkrankung()) {
@@ -51,13 +49,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       if ((fruehereTumorerkrankung.getICD() != null
               && fruehereTumorerkrankung.getICD().getCode() != null)
           || StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
-        result.add(
-            map(
-                fruehereTumorerkrankung,
-                patient,
-                primaerdiagnose,
-                primaerdiagnoseIdentifier,
-                meldeDatum));
+        result.add(map(fruehereTumorerkrankung, patient, primaerdiagnoseIdentifier, meldeDatum));
       } else {
         LOG.warn(
             "Fruehere_Tumorerkrankung contains neither an ICD code nor a free text element. "
@@ -71,7 +63,6 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
   private @NonNull Condition map(
       FruehereTumorerkrankung fruehereTumorerkrankung,
       Reference patient,
-      Reference primaerdiagnose,
       Identifier primaerdiagnoseIdentifier,
       XMLGregorianCalendar meldeDatum) {
     var condition = new Condition();
@@ -81,8 +72,6 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
 
     condition.setSubject(patient);
     // TODO: there should be a dedicated profile for the fruehere tumorerkrankung
-
-    condition.addExtension(fhirProperties.getExtensions().getConditionRelated(), primaerdiagnose);
 
     var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
 

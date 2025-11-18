@@ -21,6 +21,7 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -384,17 +385,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     var primaryConditionReference = createReferenceFromResource(primaryCondition);
 
-    if (diagnose.getMengeFruehereTumorerkrankung() != null) {
-      var fruehereTumorErkrankungen =
-          fruehereTumorErkrankungenMapper.map(
-              diagnose.getMengeFruehereTumorerkrankung(),
-              patientReference,
-              primaryConditionReference,
-              primaryCondition.getIdentifierFirstRep(),
-              meldedatum);
-      mappedResources.addAll(fruehereTumorErkrankungen);
-    }
-
     if (diagnose.getAllgemeinerLeistungszustand() != null) {
       var leistungszustand =
           leistungszustandMapper.map(
@@ -517,8 +507,34 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     // It's not ideal to modify the Condition resource after it's creation in the
     // mapper.
     primaryCondition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
-
     mappedResources.add(evidenzListe);
+
+    if (diagnose.getMengeFruehereTumorerkrankung() != null) {
+      var fruehereTumorErkrankungen =
+          fruehereTumorErkrankungenMapper.map(
+              diagnose.getMengeFruehereTumorerkrankung(),
+              patientReference,
+              primaryCondition.getIdentifierFirstRep(),
+              meldedatum);
+      mappedResources.addAll(fruehereTumorErkrankungen);
+
+      var fruehereTumorerkrankungenExtensions =
+          fruehereTumorErkrankungen.stream()
+              .map(this::createReferenceFromResource)
+              .map(
+                  reference ->
+                      new Extension(
+                          fhirProperties.getExtensions().getConditionOccurredFollowing(),
+                          reference))
+              .toList();
+
+      // again, not great to modify the resource after its creation.
+      // maybe we should use the FruehereTumorerkrankungen mapper inside
+      // the ConditionMapper
+      for (var extension : fruehereTumorerkrankungenExtensions) {
+        primaryCondition.addExtension(extension);
+      }
+    }
 
     return mappedResources;
   }

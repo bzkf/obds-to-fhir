@@ -54,7 +54,7 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieBestrahlungBoost;
     private String miiExOnkoStrahlentherapieBestrahlungSeitenlokalisation;
     private String conditionAssertedDate;
-    private String conditionRelated;
+    private String conditionOccurredFollowing;
     private String ordinalValue;
   }
 
