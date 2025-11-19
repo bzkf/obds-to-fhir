@@ -1,5 +1,5 @@
 # can't yet upgrade to `trixie` as it doesn't include JRE 17
-FROM ghcr.io/astral-sh/uv:0.9.8-python3.12-bookworm-slim@sha256:b64bb25505ad7d6630f185a0f5ab29dab437a5b99f522885c1665842fb0c304b
+FROM ghcr.io/astral-sh/uv:0.9.10-python3.12-bookworm-slim@sha256:cfa800b463709b2294e26851cfd18d7637606ad1e07cf9617ff8749b64e7047a
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     PYTHONUNBUFFERED=1 \
