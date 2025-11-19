@@ -59,8 +59,8 @@ jobs:
       - name: Publish to central
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         run: |
-          ./gradlew publish
-          ./gradlew publishToMavenCentralPortal
+          ./gradlew publish -PenableJar
+          ./gradlew publishToMavenCentralPortal -PenableJar
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}

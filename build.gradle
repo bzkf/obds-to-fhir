@@ -120,7 +120,11 @@ jacocoTestReport {
 }
 
 jar {
-    enabled = false
+    enabled = project.hasProperty("enableJar")
+}
+
+bootJar {
+    enabled = !project.hasProperty("enableJar")
 }
 
 tasks.register('xsd2java') {
