@@ -5,7 +5,7 @@ import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
-import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
+import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;

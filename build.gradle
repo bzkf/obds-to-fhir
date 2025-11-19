@@ -33,9 +33,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven {
-        url = 'https://git.dnpm.dev/api/packages/public/maven'
-    }
 }
 
 ext {
@@ -66,15 +63,12 @@ dependencies {
     implementation 'org.scala-lang:scala-library:2.13.17'
     implementation 'com.github.slugify:slugify:3.0.7'
     implementation 'commons-codec:commons-codec:1.20.0'
-
+    implementation 'io.github.bzkf:obds2-to-obds3:0.1.2'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
     // <https://github.com/FasterXML/jackson-modules-java8>
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
-
-    // OBDS2 to OBDS3
-    implementation 'dev.pcvolkmer.onco:obds2-to-obds3:0.1.0'
 
     // JAXB code generation
     xsd2java 'com.sun.xml.bind:jaxb-xjc:4.0.6'
