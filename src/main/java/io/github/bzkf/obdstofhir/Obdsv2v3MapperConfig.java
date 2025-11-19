@@ -1,6 +1,6 @@
 package io.github.bzkf.obdstofhir;
 
-import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
+import io.github.bzkf.obds2toobds3.ObdsMapper;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

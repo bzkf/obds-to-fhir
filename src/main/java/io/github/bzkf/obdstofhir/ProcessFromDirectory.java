@@ -2,7 +2,7 @@ package io.github.bzkf.obdstofhir;
 
 import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
-import dev.pcvolkmer.onko.obds2to3.ObdsMapper;
+import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
