@@ -16,10 +16,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -58,6 +60,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
+  private final FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper;
 
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
@@ -96,6 +99,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
+      FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
       Function<OBDS.MengePatient.Patient, Reference> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
@@ -124,6 +128,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
+    this.fruehereTumorErkrankungenMapper = fruehereTumorErkrankungenMapper;
   }
 
   /**
@@ -198,7 +203,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   meldung,
                   obdsPatient.getPatientID(),
                   patientReference,
-                  condition);
+                  condition,
+                  obds.getMeldedatum());
           addToBundle(bundle, resources);
         }
 
@@ -372,7 +378,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       Meldung meldung,
       String patientId,
       Reference patientReference,
-      Condition primaryCondition) {
+      Condition primaryCondition,
+      XMLGregorianCalendar meldedatum) {
 
     var mappedResources = new ArrayList<Resource>();
 
@@ -500,8 +507,34 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     // It's not ideal to modify the Condition resource after it's creation in the
     // mapper.
     primaryCondition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
-
     mappedResources.add(evidenzListe);
+
+    if (diagnose.getMengeFruehereTumorerkrankung() != null) {
+      var fruehereTumorErkrankungen =
+          fruehereTumorErkrankungenMapper.map(
+              diagnose.getMengeFruehereTumorerkrankung(),
+              patientReference,
+              primaryCondition.getIdentifierFirstRep(),
+              meldedatum);
+      mappedResources.addAll(fruehereTumorErkrankungen);
+
+      var fruehereTumorerkrankungenExtensions =
+          fruehereTumorErkrankungen.stream()
+              .map(this::createReferenceFromResource)
+              .map(
+                  reference ->
+                      new Extension(
+                          fhirProperties.getExtensions().getConditionOccurredFollowing(),
+                          reference))
+              .toList();
+
+      // again, not great to modify the resource after its creation.
+      // maybe we should use the FruehereTumorerkrankungen mapper inside
+      // the ConditionMapper
+      for (var extension : fruehereTumorerkrankungenExtensions) {
+        primaryCondition.addExtension(extension);
+      }
+    }
 
     return mappedResources;
   }

@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 public class ConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
-  private static final Pattern icdVersionPattern =
+  public static final Pattern ICD_VERSION_PATTERN =
       Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
   private final EnumMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
@@ -117,13 +117,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
     StringType versionElement = null;
     if (StringUtils.hasText(icd10Version)) {
-      var matcher = icdVersionPattern.matcher(icd10Version);
+      var matcher = ICD_VERSION_PATTERN.matcher(icd10Version);
       if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
         versionElement = new StringType(matcher.group("versionYear"));
       } else {
         LOG.warn(
             "Unable to extract year from Primaertumor_ICD_Version via RegEx '{}', actual: '{}'",
-            icdVersionPattern.pattern(),
+            ICD_VERSION_PATTERN.pattern(),
             icd10Version);
       }
     } else {
