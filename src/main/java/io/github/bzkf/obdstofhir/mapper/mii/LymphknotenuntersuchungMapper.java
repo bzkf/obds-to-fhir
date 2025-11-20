@@ -39,7 +39,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
     var identifierValueBase = histologie.getHistologieID();
     if (!StringUtils.hasText(identifierValueBase)) {
-      LOG.warn(
+      LOG.debug(
           "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologie Specimen.");
       identifierValueBase = meldungsId;
     }

@@ -1,0 +1,90 @@
+{
+  "resourceType": "Bundle",
+  "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
+      },
+      "identifier": [ {
+        "type": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }, {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "PSEUDED",
+            "display": "pseudonymized"
+          } ]
+        },
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+        "value": "1"
+      } ],
+      "gender": "female",
+      "birthDate": "1900-01-01",
+      "address": [ {
+        "type": "both",
+        "postalCode": "11111",
+        "country": "DE"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149"
+    }
+  }, {
+    "fullUrl": "Condition/2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
+        "tag": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "255599008",
+          "display": "Incomplete (qualifier value)"
+        } ]
+      },
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2000-01-01"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
+        "value": "1-1"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2000",
+          "code": "C50.8"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "R"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "24028007",
+          "display": "Right (qualifier value)"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149"
+      },
+      "recordedDate": "2000-01-01"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9"
+    }
+  } ]
+}
