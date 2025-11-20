@@ -36,7 +36,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     var identifierValue = histologie.getHistologieID();
     if (!StringUtils.hasText(identifierValue)) {
-      LOG.warn(
+      LOG.debug(
           "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Grading Observation.");
       identifierValue = meldungsId;
     }

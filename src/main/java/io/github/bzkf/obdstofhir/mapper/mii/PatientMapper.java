@@ -77,7 +77,8 @@ public class PatientMapper extends ObdsToFhirMapper {
 
     if (!deathReports.isEmpty()) {
       if (deathReports.size() > 1) {
-        LOG.warn("Meldungen contains more than one death report.");
+        var reportIds = deathReports.stream().map(m -> m.getMeldungID()).toList();
+        LOG.warn("Meldungen contains more than one death report: {}", reportIds);
       }
 
       // sorts ascending by default, so to most recent sterbedatum ist the last one in the
