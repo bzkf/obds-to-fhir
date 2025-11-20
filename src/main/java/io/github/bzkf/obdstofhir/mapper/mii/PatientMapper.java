@@ -79,13 +79,21 @@ public class PatientMapper extends ObdsToFhirMapper {
       if (deathReports.size() > 1) {
         LOG.warn("Meldungen contains more than one death report.");
       }
-      // sorts ascending by default, so to most recent report ist the last one in the list
-      var latestReport =
+
+      // sorts ascending by default, so to most recent sterbedatum ist the last one in the
+      // list
+      // first filter to find those where the sterbedatum is set
+      var latestReports =
           deathReports.stream()
-              .sorted(Comparator.comparing(r -> r.getTod().getSterbedatum().toGregorianCalendar()))
-              .toList()
-              .getLast();
-      if (latestReport.getTod() != null && latestReport.getTod().getSterbedatum() != null) {
+              .filter(m -> m.getTod().getSterbedatum() != null)
+              .sorted(Comparator.comparing(m -> m.getTod().getSterbedatum().toGregorianCalendar()))
+              .toList();
+
+      if (latestReports.isEmpty()) {
+        LOG.warn("None of the death reports contains a valid death date.");
+        patient.setDeceased(new BooleanType(true));
+      } else {
+        var latestReport = latestReports.getLast();
         var deceased =
             new DateTimeType(
                 latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
