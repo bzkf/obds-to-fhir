@@ -14,7 +14,7 @@ plugins {
 }
 
 group = 'io.github.bzkf'
-version = '3.0.0-beta.139'
+version = '3.0.0-beta.140'
 
 java {
     toolchain {
