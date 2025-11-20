@@ -612,13 +612,18 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (applikationsart.getMetabolisch() != null) {
       var metabolisch = applikationsart.getMetabolisch();
 
+      if (metabolisch.getMetabolischTyp() == null) {
+        LOG.warn("Metabolisch Typ is unset. Defaulting to 'M'");
+        return ApplikationsartCode.M;
+      }
+
       // M
-      var sb = new StringBuilder("M");
+      if (metabolisch.getMetabolischTyp().equals("M")) {
+        return ApplikationsartCode.M;
+      }
 
-      // M, MSIRT, MPRRT, MPSMA, MRJT, MRIT
-      sb.append(Objects.toString(metabolisch.getMetabolischTyp(), ""));
-
-      return ApplikationsartCode.fromString(sb.toString());
+      // MSIRT, MPRRT, MPSMA, MRJT, MRIT
+      return ApplikationsartCode.fromString("M" + metabolisch.getMetabolischTyp());
     }
 
     if (applikationsart.getSonstige() == null) {
