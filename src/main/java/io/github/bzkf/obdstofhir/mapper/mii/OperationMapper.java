@@ -7,9 +7,9 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,16 @@ public class OperationMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public List<Procedure> map(OPTyp op, Reference subject, Reference condition) {
-
-    Objects.requireNonNull(op, "OP must not be null");
+  public List<Procedure> map(
+      @NonNull OPTyp op, @NonNull Reference subject, @NonNull Reference condition) {
     Validate.notBlank(op.getOPID(), "Required OP_ID is unset");
-
     verifyReference(subject, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
+
+    if (op.getMengeOPS() == null || op.getMengeOPS().getOPS().isEmpty()) {
+      LOG.warn("No OPS codes set for OP {}. Not creating Procedure resources.", op.getOPID());
+      return List.of();
+    }
 
     var distinctCodes = new HashMap<String, OPS>();
     for (var ops : op.getMengeOPS().getOPS()) {
@@ -90,7 +94,8 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       procedure.setCode(new CodeableConcept(coding));
 
-      // category: if OPS starts with 5, set 387713003; if first digit 1, set 165197003; else
+      // category: if OPS starts with 5, set 387713003; if first digit 1, set
+      // 165197003; else
       // 394841004
       // https://simplifier.net/packages/de.medizininformatikinitiative.kerndatensatz.prozedur/2024.0.0-ballot/files/2253000
       String firstDigitOPS = opsCode.getCode().substring(0, 1);
