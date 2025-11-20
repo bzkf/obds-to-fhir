@@ -16,13 +16,15 @@ import org.springframework.stereotype.Service;
 public class PatientMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(PatientMapper.class);
-  private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender> genderMap;
+  private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
+      genderMap;
 
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
 
-    var gMap = new EnumMap<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>(
-        PatientenStammdatenMelderTyp.Geschlecht.class);
+    var gMap =
+        new EnumMap<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>(
+            PatientenStammdatenMelderTyp.Geschlecht.class);
     gMap.put(PatientenStammdatenMelderTyp.Geschlecht.W, Enumerations.AdministrativeGender.FEMALE);
     gMap.put(PatientenStammdatenMelderTyp.Geschlecht.M, Enumerations.AdministrativeGender.MALE);
     gMap.put(PatientenStammdatenMelderTyp.Geschlecht.D, Enumerations.AdministrativeGender.OTHER);
@@ -56,10 +58,11 @@ public class PatientMapper extends ObdsToFhirMapper {
         .setCode("PSEUDED")
         .setDisplay("pseudonymized");
 
-    var identifier = new Identifier()
-        .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
-        .setValue(obdsPatient.getPatientID())
-        .setType(mrTypeConcept);
+    var identifier =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
+            .setValue(obdsPatient.getPatientID())
+            .setType(mrTypeConcept);
     patient.addIdentifier(identifier);
     patient.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -80,18 +83,20 @@ public class PatientMapper extends ObdsToFhirMapper {
       // sorts ascending by default, so to most recent sterbedatum ist the last one in the
       // list
       // first filter to find those where the sterbedatum is set
-      var latestReports = deathReports.stream()
-          .filter(m -> m.getTod().getSterbedatum() != null)
-          .sorted(Comparator.comparing(m -> m.getTod().getSterbedatum().toGregorianCalendar()))
-          .toList();
+      var latestReports =
+          deathReports.stream()
+              .filter(m -> m.getTod().getSterbedatum() != null)
+              .sorted(Comparator.comparing(m -> m.getTod().getSterbedatum().toGregorianCalendar()))
+              .toList();
 
       if (latestReports.isEmpty()) {
         LOG.warn("None of the death reports contains a valid death date.");
         patient.setDeceased(new BooleanType(true));
       } else {
         var latestReport = latestReports.getLast();
-        var deceased = new DateTimeType(
-            latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
+        var deceased =
+            new DateTimeType(
+                latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
         deceased.setPrecision(TemporalPrecisionEnum.DAY);
         patient.setDeceased(deceased);
       }
