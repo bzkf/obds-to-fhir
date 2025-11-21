@@ -13,7 +13,8 @@
     "coding": [ {
       "system": "http://loinc.org",
       "version": "2.80",
-      "code": "42030-7"
+      "code": "42030-7",
+      "display": "Multiple tumors reported as single primary Cancer"
     } ]
   },
   "subject": {
