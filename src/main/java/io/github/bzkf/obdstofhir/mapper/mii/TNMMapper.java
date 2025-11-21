@@ -147,8 +147,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      aSymbolObservation.setCode(getCodeableConceptLoinc("101660-9"));
-      aSymbolObservation.setValue(getCodeableConceptSnomed("421426001"));
+      aSymbolObservation.setCode(
+          getCodeableConceptLoinc("101660-9", "Cancer staging during autopsy"));
+      aSymbolObservation.setValue(
+          getCodeableConceptSnomed("421426001", "Tumor staging descriptor a (tumor staging)"));
       memberObservationList.add(aSymbolObservation);
     }
 
@@ -163,7 +165,8 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      mSymbolObservation.setCode(getCodeableConceptLoinc("42030-7"));
+      mSymbolObservation.setCode(
+          getCodeableConceptLoinc("42030-7", "Multiple tumors reported as single primary Cancer"));
       mSymbolObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
       memberObservationList.add(mSymbolObservation);
     }
@@ -179,7 +182,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      lKategorieObservation.setCode(getCodeableConceptSnomed("395715009"));
+      lKategorieObservation.setCode(
+          getCodeableConceptSnomed(
+              "395715009",
+              "Status of lymphatic (small vessel) invasion by tumor (observable entity)"));
       lKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getL()));
       memberObservationList.add(lKategorieObservation);
     }
@@ -195,7 +201,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      pnKategorieObservation.setCode(getCodeableConceptSnomed("371513001"));
+      pnKategorieObservation.setCode(
+          getCodeableConceptSnomed(
+              "371513001",
+              "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"));
       pnKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getPn()));
       memberObservationList.add(pnKategorieObservation);
     }
@@ -211,8 +220,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      rSymbolObservation.setCode(getCodeableConceptLoinc("101659-1"));
-      rSymbolObservation.setValue(getCodeableConceptSnomed("421188008"));
+      rSymbolObservation.setCode(
+          getCodeableConceptLoinc("101659-1", "Cancer staging after tumor recurrence"));
+      rSymbolObservation.setValue(
+          getCodeableConceptSnomed("421188008", "Tumor staging descriptor r (tumor staging)"));
       memberObservationList.add(rSymbolObservation);
     }
 
@@ -227,7 +238,8 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      sKategorieObservation.setCode(getCodeableConceptSnomed("399424006"));
+      sKategorieObservation.setCode(
+          getCodeableConceptSnomed("399424006", "Serum tumor marker category (observable entity)"));
       sKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getS()));
       memberObservationList.add(sKategorieObservation);
     }
@@ -243,7 +255,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      vKategorieObservation.setCode(getCodeableConceptSnomed("371493002"));
+      vKategorieObservation.setCode(
+          getCodeableConceptSnomed(
+              "371493002",
+              "Status of venous (large vessel) invasion by tumor (observable entity)"));
       vKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getV()));
       memberObservationList.add(vKategorieObservation);
     }
@@ -259,8 +274,10 @@ public class TNMMapper extends ObdsToFhirMapper {
               tnmTyp.getDatum(),
               patient,
               primaryConditionReference);
-      ySymbolObservation.setCode(getCodeableConceptLoinc("101658-3"));
-      ySymbolObservation.setValue(getCodeableConceptSnomed("421755005"));
+      ySymbolObservation.setCode(
+          getCodeableConceptLoinc("101658-3", "Cancer staging after multimodality therapy"));
+      ySymbolObservation.setValue(
+          getCodeableConceptSnomed("421755005", "Tumor staging descriptor y (tumor staging)"));
       memberObservationList.add(ySymbolObservation);
     }
 
@@ -440,8 +457,9 @@ public class TNMMapper extends ObdsToFhirMapper {
     return codeableConcept;
   }
 
-  private CodeableConcept getCodeableConceptSnomed(String snomedCode) {
-    return new CodeableConcept(fhirProperties.getCodings().snomed().setCode(snomedCode));
+  private CodeableConcept getCodeableConceptSnomed(String snomedCode, String display) {
+    return new CodeableConcept(
+        fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(display));
   }
 
   private CodeableConcept getCodeableConceptTnmUicc(String tnmValue) {
@@ -450,8 +468,9 @@ public class TNMMapper extends ObdsToFhirMapper {
         new Coding().setSystem(fhirProperties.getSystems().getTnmUicc()).setCode(tnmValue));
   }
 
-  private CodeableConcept getCodeableConceptLoinc(String loincCode) {
-    return new CodeableConcept(fhirProperties.getCodings().loinc().setCode(loincCode));
+  private CodeableConcept getCodeableConceptLoinc(String loincCode, String display) {
+    return new CodeableConcept(
+        fhirProperties.getCodings().loinc().setCode(loincCode).setDisplay(display));
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {

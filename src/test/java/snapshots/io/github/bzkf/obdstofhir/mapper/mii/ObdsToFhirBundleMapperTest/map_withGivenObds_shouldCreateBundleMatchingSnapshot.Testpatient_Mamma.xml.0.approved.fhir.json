@@ -701,7 +701,8 @@
         "coding": [ {
           "system": "http://loinc.org",
           "version": "2.80",
-          "code": "42030-7"
+          "code": "42030-7",
+          "display": "Multiple tumors reported as single primary Cancer"
         } ]
       },
       "subject": {
@@ -745,7 +746,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "395715009"
+          "code": "395715009",
+          "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
@@ -789,7 +791,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371513001"
+          "code": "371513001",
+          "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
       },
       "subject": {
@@ -833,7 +836,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371493002"
+          "code": "371493002",
+          "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
@@ -1444,7 +1448,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "395715009"
+          "code": "395715009",
+          "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
@@ -1488,7 +1493,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371513001"
+          "code": "371513001",
+          "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
       },
       "subject": {
@@ -1532,7 +1538,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371493002"
+          "code": "371493002",
+          "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
@@ -2404,7 +2411,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "395715009"
+          "code": "395715009",
+          "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
@@ -2448,7 +2456,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371513001"
+          "code": "371513001",
+          "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
       },
       "subject": {
@@ -2492,7 +2501,8 @@
         "coding": [ {
           "system": "http://loinc.org",
           "version": "2.80",
-          "code": "101659-1"
+          "code": "101659-1",
+          "display": "Cancer staging after tumor recurrence"
         } ]
       },
       "subject": {
@@ -2506,7 +2516,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "421188008"
+          "code": "421188008",
+          "display": "Tumor staging descriptor r (tumor staging)"
         } ]
       },
       "method": {
@@ -2537,7 +2548,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "371493002"
+          "code": "371493002",
+          "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
