@@ -282,6 +282,15 @@ public class ConditionMapper extends ObdsToFhirMapper {
         distinctCodes.put(code, morph);
       } else {
         var existing = distinctCodes.get(code);
+        if (version == null) {
+          LOG.warn(
+              "Multiple Morphologie ICD-O with code {} found, but new version is unset. "
+                  + "Keeping one with existing version {}.",
+              code,
+              existing.getVersion());
+          continue;
+        }
+
         if (version.compareTo(existing.getVersion()) > 0) {
           LOG.warn(
               "Multiple Morphologie ICD-O with code {} found. Updating version {} over version {}.",

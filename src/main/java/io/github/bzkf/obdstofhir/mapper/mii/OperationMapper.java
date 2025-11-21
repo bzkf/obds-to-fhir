@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.jboss.logging.MDC;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,10 @@ public class OperationMapper extends ObdsToFhirMapper {
     verifyReference(subject, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
+    MDC.put("OPID", op.getOPID());
+
     if (op.getMengeOPS() == null || op.getMengeOPS().getOPS().isEmpty()) {
-      LOG.warn("No OPS codes set for OP {}. Not creating Procedure resources.", op.getOPID());
+      LOG.warn("No OPS codes set for OP. Not creating Procedure resources.");
       return List.of();
     }
 
@@ -43,6 +46,15 @@ public class OperationMapper extends ObdsToFhirMapper {
         distinctCodes.put(code, ops);
       } else {
         var existing = distinctCodes.get(code);
+
+        if (version == null) {
+          LOG.warn(
+              "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
+              code,
+              existing.getVersion());
+          continue;
+        }
+
         if (version.compareTo(existing.getVersion()) > 0) {
           LOG.warn(
               "Multiple OPS with code {} found. Updating version {} over version {}.",
@@ -65,6 +77,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     for (var opsCode : distinctCodes.values()) {
       var procedure = new Procedure();
+      MDC.put("opsCode", opsCode.getCode());
 
       var identifier =
           new Identifier()
@@ -85,7 +98,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       if (StringUtils.hasText(opsCode.getVersion())) {
         coding.setVersion(opsCode.getVersion());
       } else {
-        LOG.warn("Unset version for OPS Code {} in OP {}", opsCode.getCode(), op.getOPID());
+        LOG.warn("Unset version for OPS Code");
         var absentVersion = new StringType();
         absentVersion.addExtension(
             fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
@@ -173,9 +186,13 @@ public class OperationMapper extends ObdsToFhirMapper {
         procedure.setOutcome(outcome);
       }
 
+      MDC.remove("opsCode");
+
       // add procedure to procedure list here
       procedureList.add(procedure);
     }
+
+    MDC.remove("OPID");
 
     return procedureList;
   }
