@@ -54,6 +54,7 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieBestrahlungBoost;
     private String miiExOnkoStrahlentherapieBestrahlungSeitenlokalisation;
     private String conditionAssertedDate;
+    private String conditionOccurredFollowing;
     private String ordinalValue;
   }
 
@@ -95,6 +96,7 @@ public class FhirProperties {
     private String verlaufObservationId;
     private String todObservationId;
     private String nebenwirkungAdverseEventId;
+    private String fruehereTumorerkrankungConditionId;
   }
 
   @Data

@@ -24,6 +24,7 @@ fhir:
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+    condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-stellungzurop: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"
@@ -73,6 +74,7 @@ fhir:
       tumorkonferenz-care-plan-id: "${fhir.systems.identifiers.base-url}/tumorkonferenz-care-plan-id"
       weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
       erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
+      fruehere-tumorerkrankung-condition-id: "${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"
 
     # DKTK
     observationId: "${fhir.systems.identifiers.base-url}/observation-id"

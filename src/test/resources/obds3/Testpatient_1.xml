@@ -69,6 +69,13 @@
                 </ICD>
                 <Diagnosedatum>2010</Diagnosedatum>
               </Fruehere_Tumorerkrankung>
+              <Fruehere_Tumorerkrankung>
+                <ICD>
+                  <Code>C22.0</Code>
+                  <Version>10 2008 GM</Version>
+                </ICD>
+                <Diagnosedatum>2009</Diagnosedatum>
+              </Fruehere_Tumorerkrankung>
             </Menge_Fruehere_Tumorerkrankung>
             <Histologie Histologie_ID="521">
               <Tumor_Histologiedatum Datumsgenauigkeit="E">2020-03-05</Tumor_Histologiedatum>
