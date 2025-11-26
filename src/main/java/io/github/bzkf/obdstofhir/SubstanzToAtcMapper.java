@@ -27,9 +27,9 @@ public class SubstanzToAtcMapper {
         var substanz = row.get("Substanzbezeichnung");
         var code = row.get("ATC-Code");
 
-        // this will automatically overwrite duplicates with the latest entry in the
-        // CSV, which should be the most recent one.
         if (!code.equals("fehlt")) {
+          // this will automatically overwrite duplicates with the latest entry in the
+          // CSV, which should be the most recent one.
           substanzToCode.put(substanz, code);
         }
       }
