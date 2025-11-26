@@ -173,22 +173,26 @@
       "url": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
     }
   }, {
-    "fullUrl": "MedicationStatement/2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69",
+    "fullUrl": "MedicationStatement/9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69",
+      "id": "9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Cyclophosphamid_7ddd"
+        "value": "993_syst1-L01AA01"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01AA01"
+        } ],
         "text": "Cyclophosphamid"
       },
       "subject": {
@@ -200,25 +204,29 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/2b02246ea3bfa79ee4fbfe7705607be66ef7b35e0cc4136767d5f3e0e2236e69"
+      "url": "MedicationStatement/9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f"
     }
   }, {
-    "fullUrl": "MedicationStatement/2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325",
+    "fullUrl": "MedicationStatement/c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325",
+      "id": "c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Rituximab_e082"
+        "value": "993_syst1-L01FA01"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01FA01"
+        } ],
         "text": "Rituximab"
       },
       "subject": {
@@ -230,25 +238,29 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/2e92e0ab32652e4db12b9fe89a73819bce71f3051453b15949e83c7b9918b325"
+      "url": "MedicationStatement/c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6"
     }
   }, {
-    "fullUrl": "MedicationStatement/c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8",
+    "fullUrl": "MedicationStatement/30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8",
+      "id": "30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Fludarabin_2b64"
+        "value": "993_syst1-L01BB05"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01BB05"
+        } ],
         "text": "Fludarabin"
       },
       "subject": {
@@ -260,7 +272,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/c41aff6371cf54a199f3c66e7ac78049d79cdd5e9ea3b24683b036f1d9cbdec8"
+      "url": "MedicationStatement/30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef"
     }
   }, {
     "fullUrl": "Observation/791de91efd0db68e9d536e05b317b9c9c2416e3fd2e01bdb8e2a1dfc12979c9f",

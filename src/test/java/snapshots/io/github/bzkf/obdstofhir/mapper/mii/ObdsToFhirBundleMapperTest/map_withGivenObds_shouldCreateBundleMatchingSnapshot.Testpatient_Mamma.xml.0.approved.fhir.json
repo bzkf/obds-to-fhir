@@ -1687,22 +1687,26 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/d29599c4e761cbf3fe5cbcf17ca7284cc3c3578f9b6d6149c0c271f4e46efada",
+    "fullUrl": "MedicationStatement/24c9cbf936b2a4e43c9894ad456b780d08f3ea696a42b104aa8ca676dca9d802",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "d29599c4e761cbf3fe5cbcf17ca7284cc3c3578f9b6d6149c0c271f4e46efada",
+      "id": "24c9cbf936b2a4e43c9894ad456b780d08f3ea696a42b104aa8ca676dca9d802",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Cisplatin_bb7f"
+        "value": "60_1_IN_1-L01XA01"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01XA01"
+        } ],
         "text": "Cisplatin"
       },
       "subject": {
@@ -1714,7 +1718,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/d29599c4e761cbf3fe5cbcf17ca7284cc3c3578f9b6d6149c0c271f4e46efada"
+      "url": "MedicationStatement/24c9cbf936b2a4e43c9894ad456b780d08f3ea696a42b104aa8ca676dca9d802"
     }
   }, {
     "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",

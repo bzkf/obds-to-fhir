@@ -1,28 +1,29 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "6e2b4f8b438afb9afbb0c11b55146743f2b1961d10e2bc618d3d6bf8ff2e78b2",
+  "id": "b19b9b4ae0f6def98635ecfc6a73a92fa1b7ba4a2118fa3682e62540eec50e5c",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "60_1_IN_1-L01DB03"
+    "value": "101_IN-2-L01EX05"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"
   } ],
-  "status": "active",
+  "status": "completed",
   "medicationCodeableConcept": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01DB03"
+      "code": "L01EX05"
     } ],
-    "text": "Epirubicin"
+    "text": "Regorafenib"
   },
   "subject": {
     "reference": "Patient/any"
   },
   "effectivePeriod": {
-    "start": "2020-04-03"
+    "start": "2023-06",
+    "end": "2023-10-15"
   }
 }

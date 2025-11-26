@@ -164,22 +164,26 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/930a3613e68e35619cae56cd4289723329ed1743d6b017d4dc91e04ef43de8af",
+    "fullUrl": "MedicationStatement/089570d255ce9b0a3033b533776cdb0096f74d332031b19a96c6031308842159",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "930a3613e68e35619cae56cd4289723329ed1743d6b017d4dc91e04ef43de8af",
+      "id": "089570d255ce9b0a3033b533776cdb0096f74d332031b19a96c6031308842159",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Cyclophosphamid_7ddd"
+        "value": "60_1_IN_1-L01AA01"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
       } ],
       "status": "completed",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01AA01"
+        } ],
         "text": "Cyclophosphamid"
       },
       "subject": {
@@ -192,25 +196,29 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/930a3613e68e35619cae56cd4289723329ed1743d6b017d4dc91e04ef43de8af"
+      "url": "MedicationStatement/089570d255ce9b0a3033b533776cdb0096f74d332031b19a96c6031308842159"
     }
   }, {
-    "fullUrl": "MedicationStatement/24c866274018a5f2139fb695dfb3eeea17e2226dec2caf839cd4c60e52b54e76",
+    "fullUrl": "MedicationStatement/6e2b4f8b438afb9afbb0c11b55146743f2b1961d10e2bc618d3d6bf8ff2e78b2",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "24c866274018a5f2139fb695dfb3eeea17e2226dec2caf839cd4c60e52b54e76",
+      "id": "6e2b4f8b438afb9afbb0c11b55146743f2b1961d10e2bc618d3d6bf8ff2e78b2",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Epirubicin_7acb"
+        "value": "60_1_IN_1-L01DB03"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
       } ],
       "status": "completed",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01DB03"
+        } ],
         "text": "Epirubicin"
       },
       "subject": {
@@ -223,19 +231,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/24c866274018a5f2139fb695dfb3eeea17e2226dec2caf839cd4c60e52b54e76"
+      "url": "MedicationStatement/6e2b4f8b438afb9afbb0c11b55146743f2b1961d10e2bc618d3d6bf8ff2e78b2"
     }
   }, {
-    "fullUrl": "MedicationStatement/5065f1d08ad4e2463358042410811d9da75bc6e65ab6bed8bd06dba699533afa",
+    "fullUrl": "MedicationStatement/90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "5065f1d08ad4e2463358042410811d9da75bc6e65ab6bed8bd06dba699533afa",
+      "id": "90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Taxotere_663d"
+        "value": "60_1_IN_1-Taxotere"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
@@ -254,7 +262,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/5065f1d08ad4e2463358042410811d9da75bc6e65ab6bed8bd06dba699533afa"
+      "url": "MedicationStatement/90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9"
     }
   }, {
     "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",

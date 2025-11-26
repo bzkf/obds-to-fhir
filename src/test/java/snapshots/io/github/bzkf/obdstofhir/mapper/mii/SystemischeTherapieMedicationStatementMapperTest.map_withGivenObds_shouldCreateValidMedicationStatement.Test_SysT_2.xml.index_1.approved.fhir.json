@@ -1,28 +1,25 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "6e2b4f8b438afb9afbb0c11b55146743f2b1961d10e2bc618d3d6bf8ff2e78b2",
+  "id": "12f6c19cc24aa9dd1e1278e32635fb0e8db7c25219ac0fa228cda222ca955379",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "60_1_IN_1-L01DB03"
+    "value": "101_IN-2-Revumenib"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"
   } ],
-  "status": "active",
+  "status": "completed",
   "medicationCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01DB03"
-    } ],
-    "text": "Epirubicin"
+    "text": "Revumenib"
   },
   "subject": {
     "reference": "Patient/any"
   },
   "effectivePeriod": {
-    "start": "2020-04-03"
+    "start": "2023-06",
+    "end": "2023-10-15"
   }
 }

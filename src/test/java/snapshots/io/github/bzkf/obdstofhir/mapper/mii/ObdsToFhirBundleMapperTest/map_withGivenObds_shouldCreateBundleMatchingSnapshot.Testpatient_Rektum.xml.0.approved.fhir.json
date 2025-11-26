@@ -1025,22 +1025,26 @@
       "url": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
     }
   }, {
-    "fullUrl": "MedicationStatement/dabf0ff52e807f2a9e41a3beb5c7af878ad0c07436b0b0f2fd6dfc440e0a1339",
+    "fullUrl": "MedicationStatement/6948cf45833514e0a7378013278334f910f30a11b478b898839fa9aa4e7a7084",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "dabf0ff52e807f2a9e41a3beb5c7af878ad0c07436b0b0f2fd6dfc440e0a1339",
+      "id": "6948cf45833514e0a7378013278334f910f30a11b478b898839fa9aa4e7a7084",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "50_1_IN_1-Oxaliplatin_11c8"
+        "value": "50_1_IN_1-L01XA03"
       } ],
       "partOf": [ {
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01XA03"
+        } ],
         "text": "Oxaliplatin"
       },
       "subject": {
@@ -1052,19 +1056,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/dabf0ff52e807f2a9e41a3beb5c7af878ad0c07436b0b0f2fd6dfc440e0a1339"
+      "url": "MedicationStatement/6948cf45833514e0a7378013278334f910f30a11b478b898839fa9aa4e7a7084"
     }
   }, {
-    "fullUrl": "MedicationStatement/5d97b47f4cf7bd4519c9c3f98b3865e74fce1152754a4e33b6ed63df3e1afea5",
+    "fullUrl": "MedicationStatement/b483d229a8906023647a98e2530595794c779fbf3a2a7db3981fc04835545ee4",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "5d97b47f4cf7bd4519c9c3f98b3865e74fce1152754a4e33b6ed63df3e1afea5",
+      "id": "b483d229a8906023647a98e2530595794c779fbf3a2a7db3981fc04835545ee4",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "50_1_IN_1-5Fluorouracil_d603"
+        "value": "50_1_IN_1-5-Fluorouracil"
       } ],
       "partOf": [ {
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
@@ -1082,25 +1086,29 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/5d97b47f4cf7bd4519c9c3f98b3865e74fce1152754a4e33b6ed63df3e1afea5"
+      "url": "MedicationStatement/b483d229a8906023647a98e2530595794c779fbf3a2a7db3981fc04835545ee4"
     }
   }, {
-    "fullUrl": "MedicationStatement/5c002efad4226e1f9d396358931af1d2e0c37588bc6acc9f0725d5eefb4f6735",
+    "fullUrl": "MedicationStatement/2f0830688ec000ade2c5c02d22722217f540d35735a5cd802b277812d13c198e",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "5c002efad4226e1f9d396358931af1d2e0c37588bc6acc9f0725d5eefb4f6735",
+      "id": "2f0830688ec000ade2c5c02d22722217f540d35735a5cd802b277812d13c198e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "50_1_IN_1-Folinsure_1a0d"
+        "value": "50_1_IN_1-V03AF03"
       } ],
       "partOf": [ {
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "V03AF03"
+        } ],
         "text": "Folinsäure"
       },
       "subject": {
@@ -1112,7 +1120,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/5c002efad4226e1f9d396358931af1d2e0c37588bc6acc9f0725d5eefb4f6735"
+      "url": "MedicationStatement/2f0830688ec000ade2c5c02d22722217f540d35735a5cd802b277812d13c198e"
     }
   }, {
     "fullUrl": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
