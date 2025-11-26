@@ -404,22 +404,26 @@
       "url": "Procedure/177d21a6e24969e5a639921f0688163978547b64fd65195940969b759984b142"
     }
   }, {
-    "fullUrl": "MedicationStatement/103717960f444378eb534de13fb041476a2fbb6bc30dd8170ae346a65e700aec",
+    "fullUrl": "MedicationStatement/281290e3bdeeff5b4bec99610e9a568024888a2c325142adce45e70a46da7880",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "103717960f444378eb534de13fb041476a2fbb6bc30dd8170ae346a65e700aec",
+      "id": "281290e3bdeeff5b4bec99610e9a568024888a2c325142adce45e70a46da7880",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "80_1_IN_1-Buserelin_b426"
+        "value": "80_1_IN_1-L02AE01"
       } ],
       "partOf": [ {
         "reference": "Procedure/177d21a6e24969e5a639921f0688163978547b64fd65195940969b759984b142"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L02AE01"
+        } ],
         "text": "Buserelin"
       },
       "subject": {
@@ -431,7 +435,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/103717960f444378eb534de13fb041476a2fbb6bc30dd8170ae346a65e700aec"
+      "url": "MedicationStatement/281290e3bdeeff5b4bec99610e9a568024888a2c325142adce45e70a46da7880"
     }
   }, {
     "fullUrl": "AdverseEvent/076316e44da8abdb6ae031d4bf8c8a08c374edb81505a545c7575e4a8bc2baf0",

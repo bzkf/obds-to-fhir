@@ -172,22 +172,26 @@
       "url": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8"
     }
   }, {
-    "fullUrl": "MedicationStatement/ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930",
+    "fullUrl": "MedicationStatement/3cbd0ed5c35305835e87cd71f3a1e26b8414aefb56f54ec2d9c2a2cd19d48b26",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930",
+      "id": "3cbd0ed5c35305835e87cd71f3a1e26b8414aefb56f54ec2d9c2a2cd19d48b26",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "12_1_Innere-1-Paclitaxel_a0a4"
+        "value": "12_1_Innere-1-L01CD01"
       } ],
       "partOf": [ {
         "reference": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L01CD01"
+        } ],
         "text": "Paclitaxel"
       },
       "subject": {
@@ -199,7 +203,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/ba889630c79734fb64b98bee62fc00429278f166293bbbe61108b2e096ad1930"
+      "url": "MedicationStatement/3cbd0ed5c35305835e87cd71f3a1e26b8414aefb56f54ec2d9c2a2cd19d48b26"
     }
   }, {
     "fullUrl": "AdverseEvent/dcf43497f15af4ec80e4798274aeb099c4420e1cb58e45021428ac4ef3dedccb",

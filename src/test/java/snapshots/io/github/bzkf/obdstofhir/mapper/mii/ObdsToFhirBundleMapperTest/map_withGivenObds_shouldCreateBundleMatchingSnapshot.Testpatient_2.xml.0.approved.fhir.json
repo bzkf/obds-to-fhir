@@ -333,22 +333,26 @@
       "url": "Procedure/c67a22480caccbb4d0bdaf182914e0df6b8e5aa27e4f4f736178fa6dda44d061"
     }
   }, {
-    "fullUrl": "MedicationStatement/d1035b7be20579576aa95b27403eb90ca6bc37bbffe0e4ec75c23d4d8e4cc0a9",
+    "fullUrl": "MedicationStatement/072b4382b3876211d88ab343f07933271bfbf7a4fdb16392f53b0f4d1c2a86e8",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "d1035b7be20579576aa95b27403eb90ca6bc37bbffe0e4ec75c23d4d8e4cc0a9",
+      "id": "072b4382b3876211d88ab343f07933271bfbf7a4fdb16392f53b0f4d1c2a86e8",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "11_1_Innere-1-Bicalutamid_fa96"
+        "value": "11_1_Innere-1-L02BB03"
       } ],
       "partOf": [ {
         "reference": "Procedure/c67a22480caccbb4d0bdaf182914e0df6b8e5aa27e4f4f736178fa6dda44d061"
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "code": "L02BB03"
+        } ],
         "text": "Bicalutamid"
       },
       "subject": {
@@ -360,7 +364,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/d1035b7be20579576aa95b27403eb90ca6bc37bbffe0e4ec75c23d4d8e4cc0a9"
+      "url": "MedicationStatement/072b4382b3876211d88ab343f07933271bfbf7a4fdb16392f53b0f4d1c2a86e8"
     }
   }, {
     "fullUrl": "AdverseEvent/a8145ea75a1a24ec05e87c2c996e497aacf9ccb05e84a7498634b27c78b815b5",
