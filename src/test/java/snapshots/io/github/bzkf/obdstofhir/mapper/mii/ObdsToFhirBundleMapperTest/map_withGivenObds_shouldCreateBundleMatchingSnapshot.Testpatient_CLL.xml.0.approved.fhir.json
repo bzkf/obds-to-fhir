@@ -173,16 +173,16 @@
       "url": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
     }
   }, {
-    "fullUrl": "MedicationStatement/9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f",
+    "fullUrl": "MedicationStatement/bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f",
+      "id": "bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-L01AA01"
+        "value": "993_syst1-Cyclophosphamid"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -204,19 +204,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/9e47ed63a85f79e3f46271a25b2c53d652caea7c2ef049f78b309f23ed48fd7f"
+      "url": "MedicationStatement/bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7"
     }
   }, {
-    "fullUrl": "MedicationStatement/c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6",
+    "fullUrl": "MedicationStatement/fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6",
+      "id": "fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-L01FA01"
+        "value": "993_syst1-Rituximab"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -238,19 +238,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/c16d598c8842b19d5ade051bec53582052c47d7d2789e0402b0d633267bed4b6"
+      "url": "MedicationStatement/fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb"
     }
   }, {
-    "fullUrl": "MedicationStatement/30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef",
+    "fullUrl": "MedicationStatement/249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef",
+      "id": "249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-L01BB05"
+        "value": "993_syst1-Fludarabin"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -272,7 +272,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/30878093f8dc5e679baaf8d1384c89dd7249d6c5e6fbd48bd80ef75f2463ebef"
+      "url": "MedicationStatement/249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe"
     }
   }, {
     "fullUrl": "Observation/791de91efd0db68e9d536e05b317b9c9c2416e3fd2e01bdb8e2a1dfc12979c9f",
