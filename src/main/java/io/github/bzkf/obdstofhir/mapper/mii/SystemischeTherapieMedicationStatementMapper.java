@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.jboss.logging.MDC;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,8 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     verifyReference(patient, ResourceType.Patient);
     verifyReference(procedure, ResourceType.Procedure);
 
+    MDC.put("SYST_ID", syst.getSYSTID());
+
     var result = new ArrayList<MedicationStatement>();
 
     var distinctSubstanzen = getDistinctSubstanzen(syst.getMengeSubstanz().getSubstanz());
@@ -50,12 +53,9 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
           .getMeta()
           .addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapieMedikation());
 
-      if (substanz.getATC() == null
-          || !StringUtils.hasText(substanz.getATC().getCode())
-          || !StringUtils.hasText(substanz.getBezeichnung())) {
-        LOG.warn(
-            "Substanz in Systemische Therapie with is missing ATC code or Bezeichnung. Skipping mapping for this substance. SYST_ID={}",
-            syst.getSYSTID());
+      if ((substanz.getATC() == null || !StringUtils.hasText(substanz.getATC().getCode()))
+          && !StringUtils.hasText(substanz.getBezeichnung())) {
+        LOG.warn("Substanz in Systemische Therapie is missing ATC code or Bezeichnung.");
       }
 
       var substanzId = "";
@@ -65,12 +65,16 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
             new Coding(fhirProperties.getSystems().getAtcBfarm(), substanz.getATC().getCode(), "");
         systMedicationStatement.setMedication(new CodeableConcept(atcCoding));
       } else {
+        // previously, we overwrote substanzId with the ATC code if it was present in the mapping,
+        // however this will also end up changing the resource ID, in particular if we update
+        // the mapping table, then multiple MedicationStatements would be created for the same
+        // Substanz (a new one with the ATC code as its identifier, the old one with just the
+        // Substanz).
         substanzId = substanz.getBezeichnung();
 
         var mappedCode = substanzToAtcMapper.getCode(substanz.getBezeichnung());
         if (mappedCode.isPresent()) {
           var atcCode = mappedCode.get();
-          substanzId = atcCode;
           var atcCoding = new Coding(fhirProperties.getSystems().getAtcBfarm(), atcCode, "");
           systMedicationStatement.setMedication(
               new CodeableConcept(atcCoding).setText(substanz.getBezeichnung()));
@@ -119,6 +123,8 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
       result.add(systMedicationStatement);
     }
+
+    MDC.remove("SYST_ID");
 
     return result;
   }

@@ -223,16 +223,16 @@
       "url": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
     }
   }, {
-    "fullUrl": "MedicationStatement/818279365df77577d84743eb28f905326aee822fd3a87f3cb9f952fa0e479ccc",
+    "fullUrl": "MedicationStatement/1cd929a0ae1b046a189cf0e76cf65bd1132d94208378bf30fae63b6215eae88f",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "818279365df77577d84743eb28f905326aee822fd3a87f3cb9f952fa0e479ccc",
+      "id": "1cd929a0ae1b046a189cf0e76cf65bd1132d94208378bf30fae63b6215eae88f",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "17_1_IN_2-L01CB01"
+        "value": "17_1_IN_2-Etoposid"
       } ],
       "partOf": [ {
         "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
@@ -254,19 +254,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/818279365df77577d84743eb28f905326aee822fd3a87f3cb9f952fa0e479ccc"
+      "url": "MedicationStatement/1cd929a0ae1b046a189cf0e76cf65bd1132d94208378bf30fae63b6215eae88f"
     }
   }, {
-    "fullUrl": "MedicationStatement/4c361ebedf4bee9cdf24617b0ccfe76d94319d2b52c228ef7684731c07d052fc",
+    "fullUrl": "MedicationStatement/07fdb05c1f7322b00e0e3fffb292b705d491bd6db74253f22558061f02385d5b",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "4c361ebedf4bee9cdf24617b0ccfe76d94319d2b52c228ef7684731c07d052fc",
+      "id": "07fdb05c1f7322b00e0e3fffb292b705d491bd6db74253f22558061f02385d5b",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "17_1_IN_2-L01XA02"
+        "value": "17_1_IN_2-Carboplatin"
       } ],
       "partOf": [ {
         "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
@@ -288,7 +288,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/4c361ebedf4bee9cdf24617b0ccfe76d94319d2b52c228ef7684731c07d052fc"
+      "url": "MedicationStatement/07fdb05c1f7322b00e0e3fffb292b705d491bd6db74253f22558061f02385d5b"
     }
   }, {
     "fullUrl": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59",
@@ -443,16 +443,16 @@
       "url": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
     }
   }, {
-    "fullUrl": "MedicationStatement/1447d4696ed5022341ec56069811ea215fbdd0d2fb89f6f158c8977fc0e04185",
+    "fullUrl": "MedicationStatement/43546452795db92102a09935bdf4b7adb3d4c7840794ea3f382f70f67c4168bc",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "1447d4696ed5022341ec56069811ea215fbdd0d2fb89f6f158c8977fc0e04185",
+      "id": "43546452795db92102a09935bdf4b7adb3d4c7840794ea3f382f70f67c4168bc",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "70_1_IN_1-L01CB01"
+        "value": "70_1_IN_1-Etoposid"
       } ],
       "partOf": [ {
         "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
@@ -475,19 +475,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/1447d4696ed5022341ec56069811ea215fbdd0d2fb89f6f158c8977fc0e04185"
+      "url": "MedicationStatement/43546452795db92102a09935bdf4b7adb3d4c7840794ea3f382f70f67c4168bc"
     }
   }, {
-    "fullUrl": "MedicationStatement/dfe6a88b78f21681802c5ed5af2803f54f030b49828191a86f99acd9b05a9b59",
+    "fullUrl": "MedicationStatement/b3985fb7717ff08aa65071239641767699779e1277c8cdb94b2581ed6b098b27",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "dfe6a88b78f21681802c5ed5af2803f54f030b49828191a86f99acd9b05a9b59",
+      "id": "b3985fb7717ff08aa65071239641767699779e1277c8cdb94b2581ed6b098b27",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "70_1_IN_1-L01XA01"
+        "value": "70_1_IN_1-Cisplatin"
       } ],
       "partOf": [ {
         "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
@@ -510,7 +510,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/dfe6a88b78f21681802c5ed5af2803f54f030b49828191a86f99acd9b05a9b59"
+      "url": "MedicationStatement/b3985fb7717ff08aa65071239641767699779e1277c8cdb94b2581ed6b098b27"
     }
   }, {
     "fullUrl": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3",

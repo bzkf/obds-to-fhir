@@ -69,6 +69,8 @@ dependencies {
     // <https://github.com/FasterXML/jackson-modules-java8>
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+    // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
 
     // JAXB code generation
     xsd2java 'com.sun.xml.bind:jaxb-xjc:4.0.6'
