@@ -1,5 +1,8 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import ca.uhn.fhir.context.FhirContext;
+import com.github.difflib.text.DiffRow.Tag;
+import com.github.difflib.text.DiffRowGenerator;
 import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
@@ -12,9 +15,11 @@ import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.function.Function;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
@@ -32,6 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ObdsToFhirBundleMapper.class);
+  private static final FhirContext fhirContext = FhirContext.forR4();
 
   private final PatientMapper patientMapper;
   private final ConditionMapper conditionMapper;
@@ -905,23 +911,56 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(url)).toList();
 
     if (duplicateEntries.size() > 1) {
-      throw new IllegalStateException("Multiple entries found in bundle matching URL: " + url);
+      throw new IllegalStateException(
+          "More than one duplicate entry found in bundle matching URL: " + url);
     }
 
     if (!duplicateEntries.isEmpty()) {
       var duplicateEntry = duplicateEntries.getFirst();
-      if (duplicateEntry.getResource().getResourceType() == ResourceType.Condition) {
+      var existingResource = duplicateEntry.getResource();
+      if (existingResource.getResourceType() == ResourceType.Condition) {
         LOG.debug(
             "Overwriting duplicate entry in bundle with URL {} and profile {}. "
                 + "This is fine for Condition resources.",
             url,
             resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
       } else {
-        LOG.warn(
-            "Overwriting duplicate entry in bundle with URL {} and profile {}. "
-                + "This is fine for ST, SYST and Diagnose-related resources.",
-            url,
-            resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+        if (!existingResource.equalsDeep(resource)) {
+          var parser = fhirContext.newJsonParser().setPrettyPrint(true);
+          var existing = Arrays.asList(parser.encodeResourceToString(existingResource).split("\n"));
+          var updated = Arrays.asList(parser.encodeResourceToString(resource).split("\n"));
+
+          var generator =
+              DiffRowGenerator.create()
+                  .showInlineDiffs(true)
+                  .inlineDiffByWord(true)
+                  .oldTag(f -> "~")
+                  .newTag(f -> "**")
+                  .build();
+
+          var rows = generator.generateDiffRows(existing, updated);
+
+          var sj = new StringJoiner("\n");
+          sj.add("|original|new|");
+          sj.add("|--------|---|");
+          for (var row : rows) {
+            if (row.getTag() != Tag.EQUAL) {
+              sj.add("|" + row.getOldLine() + "|" + row.getNewLine() + "|");
+            }
+          }
+
+          LOG.warn(
+              "Overwriting non-identical, duplicate entry in bundle with URL {} and profile {}. Diff:\n{}",
+              url,
+              resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList(),
+              sj);
+
+        } else {
+          LOG.debug(
+              "Duplicate entry in bundle with URL {} and profile {} is identical.",
+              url,
+              resource.getMeta().getProfile().stream().map(p -> p.getValue()).toList());
+        }
       }
 
       duplicateEntry.setResource(resource);

@@ -3,14 +3,19 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
+import com.github.difflib.text.DiffRowGenerator;
 import com.spun.util.introspection.Caller;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.StringJoiner;
 import org.approvaltests.Approvals;
+import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +109,52 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
               .forFile()
               .withExtension(".fhir.json"));
     }
+  }
+
+  @Test
+  void shouldDetectDuplicateResources() {
+    var p1 = new Patient();
+    p1.setId("Patient/1");
+    p1.setActive(false);
+    var p2 = new Patient();
+    p2.setId("Patient/1");
+    p2.setActive(true);
+    p2.addIdentifier().setSystem("example").setValue("123");
+
+    var parser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
+    var existing = Arrays.asList(parser.encodeResourceToString(p1).split("\n"));
+    var updated = Arrays.asList(parser.encodeResourceToString(p2).split("\n"));
+
+    var generator =
+        DiffRowGenerator.create()
+            .showInlineDiffs(true)
+            .inlineDiffByWord(true)
+            .oldTag(f -> "~")
+            .newTag(f -> "**")
+            .build();
+
+    var rows = generator.generateDiffRows(existing, updated);
+
+    var sj = new StringJoiner("\n");
+    sj.add("|original|new|");
+    sj.add("|--------|---|");
+    for (var row : rows) {
+      sj.add("|" + row.getOldLine() + "|" + row.getNewLine() + "|");
+    }
+
+    assertThat(sj.toString())
+        .hasToString(
+"""
+|original|new|
+|--------|---|
+|{|{|
+|  "resourceType": "Patient",|  "resourceType": "Patient",|
+|  "id": "1",|  "id": "1",|
+|  ~"active"~: ~false~|  **"identifier"**: **[ {**|
+||**    "system": "example",**|
+||**    "value": "123"**|
+||**  } ],**|
+||**  "active": true**|
+|}|}|""");
   }
 }
