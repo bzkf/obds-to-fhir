@@ -949,6 +949,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             }
           }
 
+          // add a newline to the end for better readability/copy-pasting from the logs
+          sj.add("");
+
           LOG.warn(
               "Overwriting non-identical, duplicate entry in bundle with URL {} and profile {}. Diff:\n{}",
               url,
