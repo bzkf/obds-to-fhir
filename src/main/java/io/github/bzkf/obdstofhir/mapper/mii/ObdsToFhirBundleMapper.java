@@ -301,11 +301,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
           addToBundle(bundle, carePlan);
         }
-
-        // add meta.source to all bundle entries if metaSource is not empty
-        if (!metaSource.isEmpty()) {
-          bundle.getEntry().forEach(entry -> entry.getResource().getMeta().setSource(metaSource));
-        }
       }
 
       bundles.add(bundle);
@@ -902,6 +897,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   }
 
   private Bundle addToBundle(Bundle bundle, Resource resource) {
+    // add meta.source to all bundle entries if metaSource is not empty
+    // XXX: we moved this here so the meta.source is always set before the diff is
+    // ran.
+    // Previously, it was set in the individual mappers, but then the diff
+    // would always show a difference in meta.source
+    if (!metaSource.isEmpty()) {
+      resource.getMeta().setSource(metaSource);
+    }
+
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
     // if a resource entry already exists, it will be replaced.
     // this should only be necessary for the Condition resource,
