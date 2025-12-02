@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.csv.CSVFormat;
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,8 @@ public class SubstanzToAtcMapper {
     }
   }
 
-  public Optional<String> getCode(String substanz) {
-    var code = substanzToCode.get(substanz);
+  public Optional<String> getCode(@NonNull String substanz) {
+    var code = substanzToCode.get(substanz.trim());
     return Optional.ofNullable(code);
   }
 }
