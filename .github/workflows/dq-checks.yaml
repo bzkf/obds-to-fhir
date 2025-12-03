@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@254a4584e8b941410909f6c911055891ae053563 # v1.18.2
+    uses: miracum/.github/.github/workflows/standard-build.yaml@25644e0d4ff70af6ee319e6cb4bd6d2f451882f8 # v1.18.4
     permissions:
       contents: write
       id-token: write
@@ -43,7 +43,7 @@ jobs:
       - build
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -60,7 +60,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
           persist-credentials: false
 
