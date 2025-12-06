@@ -23,18 +23,17 @@ jobs:
       - name: Harden Runner
         uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
         with:
-          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+          egress-policy: audit
           disable-sudo: true
           disable-telemetry: true
 
       - name: Add workspace as safe directory
         run: |
-          git config --global --add safe.directory /__w/charts/charts
+          git config --global --add safe.directory /__w/obds-to-fhir/
 
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Check if documentation is up-to-date
