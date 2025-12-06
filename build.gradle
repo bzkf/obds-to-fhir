@@ -56,6 +56,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.0'
     implementation 'io.micrometer:micrometer-core:1.16.0'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.7'

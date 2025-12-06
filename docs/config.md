@@ -1,6 +1,6 @@
 # Configuration
 
-<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md -->
+<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
 
 ## Environment Variables
 
@@ -38,6 +38,12 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
     Patient_ID and any occurrence of `_` is replaced by `-`.
 - `PATIENT_ID`
     Patient_ID is taken as-is.
+- `FHIR_SERVER_LOOKUP`
+    Query a FHIR server to get the logical ID of the Patient resource from the identifier value.
+    This sends a `GET /Patient?identifier=<fhir.systems.identifiers.patient-id>|<Patient_ID>` query
+    to the server specified in `patient-reference-generation.fhir-server.base-url` and returns the
+    `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
+    the job exits with an error.
 
 ## All Available Settings
 
@@ -82,7 +88,11 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.modul.prostata.enabled | bool | `false` | Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile |
-| fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.enabled | bool | `false` | use HTTP Basic Authentication for FHIR server authentication |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.password | string | `""` | the password |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.username | string | `""` | the username |
+| fhir.mappings.patient-reference-generation.fhir-server.base-url | string | `""` | the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier. E.g. `https://fhir.example.com/fhir` |
+| fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |
 | fhir.profiles.condition | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"` |  |
 | fhir.profiles.deathObservation | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"` |  |
 | fhir.profiles.fernMeta | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"` |  |

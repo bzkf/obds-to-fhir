@@ -1,6 +1,6 @@
 # Configuration
 
-<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md -->
+<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
 
 ## Environment Variables
 
@@ -38,6 +38,12 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
     Patient_ID and any occurrence of `_` is replaced by `-`.
 - `PATIENT_ID`
     Patient_ID is taken as-is.
+- `FHIR_SERVER_LOOKUP`
+    Query a FHIR server to get the logical ID of the Patient resource from the identifier value.
+    This sends a `GET /Patient?identifier=<fhir.systems.identifiers.patient-id>|<Patient_ID>` query
+    to the server specified in `patient-reference-generation.fhir-server.base-url` and returns the
+    `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
+    the job exits with an error.
 
 ## All Available Settings
 
