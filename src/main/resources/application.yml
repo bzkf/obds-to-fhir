@@ -246,7 +246,21 @@ fhir:
       enabled: true
     patient-reference-generation:
       # -- How the Resource.subject.reference to the Patient resources should be generated.
+      # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
+      # to avoid creating additional, unreferenced Patient resources.
       strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
+      fhir-server:
+        # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier.
+        # E.g. `https://fhir.example.com/fhir`
+        base-url: ""
+        auth:
+          basic:
+            # -- use HTTP Basic Authentication for FHIR server authentication
+            enabled: false
+            # -- the username
+            username: ""
+            # -- the password
+            password: ""
 
 obdsv2-to-v3:
   mapper:
