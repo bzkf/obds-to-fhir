@@ -243,7 +243,7 @@ fhir:
     create-patient-resources:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
-      enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
+      enabled: true
     patient-reference-generation:
       # -- How the Resource.subject.reference to the Patient resources should be generated.
       strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID

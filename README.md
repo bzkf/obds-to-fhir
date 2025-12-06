@@ -23,7 +23,7 @@ Obds-to-fhir can be configured to either read oBDS XMLs from a filesystem direct
 
 ### Configuration
 
-See [config.md](docs/config.md)
+See [config.md](docs/config.md) for more information on configuring the job.
 
 #### Reading oBDS XML from a directory
 

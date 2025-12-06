@@ -79,7 +79,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.extensions.stellungOP | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"` |  |
 | fhir.extensions.sysTheraProto | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"` |  |
 | fhir.extensions.systIntention | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"` |  |
-| fhir.mappings.create-patient-resources.enabled | string | `"${CREATE_PATIENT_FHIR_RESOURCES:true}"` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
+| fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.modul.prostata.enabled | bool | `false` | Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile |
 | fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. |
