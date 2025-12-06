@@ -168,6 +168,7 @@ fhir:
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
     # MII
+    # @ignored
     versions:
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.person
       mii-person: "|2025.0.0"
@@ -406,5 +407,5 @@ obds:
     # -- the oBDS Einzelmeldungen are internally combined to a single oBDS Export.
     # If enabled, write the combined oBDS exports to a topic: one message per Patient_ID+Tumor_ID
     enabled: false
-    # --
+    # -- the name of the topic to write the combined oBDS export to. Helpful for debugging.
     topic: "obds.v3.grouped"
