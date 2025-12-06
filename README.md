@@ -21,6 +21,10 @@ Prerequisites:
 
 Obds-to-fhir can be configured to either read oBDS XMLs from a filesystem directory or from an ONKOSTAR database table by leveraging [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html).
 
+### Configuration
+
+See [config.md](docs/config.md) for more information on configuring the job.
+
 #### Reading oBDS XML from a directory
 
 > [!NOTE]

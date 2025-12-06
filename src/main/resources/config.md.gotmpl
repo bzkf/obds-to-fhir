@@ -1,0 +1,44 @@
+# Configuration
+
+<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md -->
+
+## Environment Variables
+
+The config values below can be set as environment variables by replacing all `.` and `-` with `_`
+and optionally upper-casing the value. E.g. to change the default system for the Specimen.id, change:
+
+`fhir.systems.identifiers.histologie-specimen-id`
+
+to
+
+`FHIR_SYSTEMS_IDENTIFIERS_HISTOLOGIE_SPECIMEN_ID`
+
+and pass it as an environment variable to the container.
+
+## Configuration file
+
+You can also load extra configuration files. See the [official Spring Boot docs](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.files) for details.
+
+# Configuration
+
+## Patient Reference Generation
+
+By default, the job creates FHIR Patient resources which are referenced by each resource.
+If you already create Patient resources from a different source, you may want to set
+`FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED=false` and specify a Reference generation
+strategy that allows for creating matching logical IDs to your existing Patient resources:
+
+Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values below:
+
+- `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID` (default)
+    The reference is computed as the SHA-256 hash of `fhir.systems.identifiers.patient-id` + "|" + Patient_ID.
+- `MD5_HASHED_PATIENT_ID`
+    The reference is computed as the MD5 hash of Patient_ID.
+- `PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES`
+    Patient_ID and any occurrence of `_` is replaced by `-`.
+- `PATIENT_ID`
+    Patient_ID is taken as-is.
+
+## All Available Settings
+
+{{ template "chart.valuesSection" . }}

@@ -1,0 +1,49 @@
+name: Docs
+
+on:
+  pull_request:
+    branches:
+      - master
+      - beta
+
+permissions:
+  contents: read
+
+# https://stackoverflow.com/a/72408109
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  check-docs:
+    name: Check if auto-generated docs are up-to-date
+    runs-on: ubuntu-24.04
+    container: ghcr.io/chgl/kube-powertools:v2.4.33@sha256:2de7f7447dfebb94c4d37c128058549e6db7e3567dcc3f3a35d8704fcfc321af
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        with:
+          egress-policy: audit
+          disable-sudo: true
+          disable-telemetry: true
+
+      - name: Add workspace as safe directory
+        run: |
+          git config --global --add safe.directory "$(pwd)"
+
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: true
+
+      - name: Check if documentation is up-to-date
+        run: |
+          helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md
+          if git diff --exit-code HEAD; then
+            echo -e "\033[0;32mDocumentation up to date\033[0m ✔"
+          else
+            echo -e "\033[0;31mDocumentation outdated! Please run helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md locally and push the changes.\033[0m ❌"
+            git diff --color
+            exit 1
+          fi

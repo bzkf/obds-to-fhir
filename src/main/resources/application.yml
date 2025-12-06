@@ -1,5 +1,7 @@
+# @ignored
 app-version: 3.0.0-beta.155
 
+# @ignored
 app:
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
@@ -166,6 +168,7 @@ fhir:
     systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
     deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
     # MII
+    # @ignored
     versions:
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.person
       mii-person: "|2025.0.0"
@@ -231,19 +234,27 @@ fhir:
 
   mappings:
     meta:
+      # -- Value to set for the meta.source field in all generated resources
       source: ""
     modul:
       prostata:
+        # -- Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile
         enabled: false
     create-patient-resources:
-      enabled: ${CREATE_PATIENT_FHIR_RESOURCES:true}
+      # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
+      # from a different source.
+      enabled: true
     patient-reference-generation:
+      # -- How the Resource.subject.reference to the Patient resources should be generated.
       strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
 
 obdsv2-to-v3:
   mapper:
+    # @ignored
     ignore-unmappable: false
+    # @ignored
     fix-missing-id: false
+    # -- Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen
     disable-schema-validation: false
 
 spring:
@@ -257,33 +268,35 @@ spring:
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
+          destination: onkostar.MELDUNG_EXPORT
         getMeldungExportObdsProcessor-in-1:
-          destination: fhir.obds.Observation${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Observation
         getMeldungExportObdsProcessor-out-0:
-          destination: fhir.obds.MedicationStatement${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.MedicationStatement
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-1:
-          destination: fhir.obds.Observation${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Observation
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-2:
-          destination: fhir.obds.Procedure${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Procedure
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-3:
-          destination: fhir.obds.Condition${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Condition
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-4:
-          destination: fhir.obds.Patient${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Patient
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsV3Processor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
+          # -- Name of the topic where ONKOSTAR oBDS Meldungen are read from
+          destination: ${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}
         getMeldungExportObdsV3Processor-out-0:
-          destination: fhir.obds.bundles${YEAR_LIMITATION_SUFFIX:}
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
@@ -299,11 +312,11 @@ spring:
           bindings:
             getMeldungExportObdsProcessor-in-0:
               consumer:
-                application-id: obds-meldung-exp-grouped-processor${YEAR_LIMITATION_SUFFIX:}
+                application-id: obds-meldung-exp-grouped-processor
             getMeldungExportObdsProcessor-in-1:
               consumer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                application-id: obds-meldung-exp-condition-processor${YEAR_LIMITATION_SUFFIX:}
+                application-id: obds-meldung-exp-condition-processor
             getMeldungExportObdsProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
@@ -331,6 +344,7 @@ spring:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getMeldungExportObdsV3Processor-in-0:
               consumer:
+                # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
                 application-id: ${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}
             getMeldungExportObdsV3Processor-out-0:
               producer:
@@ -375,14 +389,23 @@ management:
 
 obds:
   process-from-directory:
+    # -- if enabled, read oBDS XML exports from a directory instead of from Kafka
     enabled: false
+    # -- the folder path to read from. All XML files within this folder are read
     path: ""
     output-to-kafka:
+      # -- write the FHIR bundles to a Kafka topic
       enabled: false
+      # -- name of the topic to write to
       topic: ""
     output-to-directory:
+      # -- output the fir Bundles to a directory, 1 file per Bundle
       enabled: false
+      # -- path to the directory to write Bundles to
       path: ""
   write-grouped-obds-to-kafka:
+    # -- the oBDS Einzelmeldungen are internally combined to a single oBDS Export.
+    # If enabled, write the combined oBDS exports to a topic: one message per Patient_ID+Tumor_ID
     enabled: false
+    # -- the name of the topic to write the combined oBDS export to. Helpful for debugging.
     topic: "obds.v3.grouped"
