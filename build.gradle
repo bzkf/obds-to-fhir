@@ -28,7 +28,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    xsd2java
 }
 
 repositories {
@@ -38,15 +37,6 @@ repositories {
 ext {
     set('springCloudVersion', '2025.0.0')
     set('hapiVersion', '8.6.0')
-    jaxbTargetDir = file('src/generated/java')
-}
-
-sourceSets {
-    main {
-        java {
-            srcDirs jaxbTargetDir
-        }
-    }
 }
 
 dependencies {
@@ -60,10 +50,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.0'
     implementation 'io.micrometer:micrometer-core:1.16.0'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.7'
-    implementation 'org.apache.commons:commons-text:1.14.0'
-    implementation 'org.scala-lang:scala-library:2.13.18'
     implementation 'com.github.slugify:slugify:3.0.7'
-    implementation 'commons-codec:commons-codec:1.20.0'
     implementation 'io.github.bzkf:obds2-to-obds3:0.1.14'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
@@ -72,10 +59,6 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
     // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
     implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
-
-    // JAXB code generation
-    xsd2java 'com.sun.xml.bind:jaxb-xjc:4.0.6'
-    xsd2java 'com.sun.xml.bind:jaxb-impl:4.0.6'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -107,7 +90,6 @@ jacoco {
 spotless {
     java {
         target('**/*.java')
-        targetExclude('src/generated/java/**/*.*')
         importOrder()
         removeUnusedImports()
         googleJavaFormat()
@@ -129,23 +111,6 @@ jar {
 bootJar {
     enabled = !project.hasProperty('enableJar')
 }
-
-tasks.register('xsd2java') {
-    doLast {
-        jaxbTargetDir.mkdirs()
-
-        ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.xsd2java.asPath)
-        ant.jaxbTargetDir = jaxbTargetDir
-
-        ant.xjc(
-                destdir: "${jaxbTargetDir}",
-                package: 'de.basisdatensatz.obds.v3',
-                schema: 'src/main/resources/schema/oBDS_v3.0.4.xsd',
-                binding: 'src/main/resources/schema/oBDS_v3.0.4.bindings.xjb'
-        )
-    }
-}
-compileJava.dependsOn xsd2java
 
 import net.ltgt.gradle.errorprone.CheckSeverity
 
