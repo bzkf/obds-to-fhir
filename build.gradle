@@ -45,6 +45,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.0'
@@ -71,6 +73,9 @@ dependencies {
 
     errorprone 'com.google.errorprone:error_prone_core:2.45.0'
     errorprone 'com.uber.nullaway:nullaway:0.12.14'
+
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
 dependencyManagement {

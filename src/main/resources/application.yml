@@ -261,6 +261,18 @@ fhir:
             username: ""
             # -- the password
             password: ""
+      record-id-database:
+        # -- JDBC url to connect to to query an internal RecordID from a Patient_ID
+        jdbc-url: ""
+        # -- username for authentication
+        username: ""
+        # -- password for authentication
+        password: ""
+        # -- the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message.
+        query: |
+          SELECT RecordID
+          FROM lookup
+          WHERE PatientID = ?
     substanz-to-atc:
       # -- path to a CSV file containing additional Substanz -> ATC code mappings.
       # The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`.

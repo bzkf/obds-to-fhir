@@ -50,6 +50,11 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
     `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
     the job exits with an error.
 
+- `RECORD_ID_DATABASE_LOOKUP`
+
+    Query a database table to lookup an internal ID from the given Patient_ID. The database connection
+    and SQL query to run can be configured in the `patient-reference-generation.record-id-database` settings.
+
 ## All Available Settings
 
 {{ template "chart.valuesSection" . }}

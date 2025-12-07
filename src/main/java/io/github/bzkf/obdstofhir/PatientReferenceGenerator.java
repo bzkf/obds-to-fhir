@@ -12,6 +12,7 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
+import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.RetryListener;
@@ -49,22 +51,34 @@ public class PatientReferenceGenerator {
     PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES,
     PATIENT_ID,
     FHIR_SERVER_LOOKUP,
+    RECORD_ID_DATABASE_LOOKUP,
   }
 
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
 
   private final @NonNull FhirProperties fhirProperties;
-  private @Nullable IGenericClient fhirClient = null;
-  private @Nullable RetryTemplate retryTemplate = null;
+  private @Nullable IGenericClient fhirClient;
+  private @Nullable RetryTemplate retryTemplate;
+  private @Nullable JdbcTemplate recordIdJdbcTemplate;
+  private @Nullable RecordIdDbConfig recordIdDbConfig;
 
   public PatientReferenceGenerator(
-      FhirProperties fhirProperties, Optional<FhirServerConfig> fhirServerConfig) {
+      FhirProperties fhirProperties,
+      Optional<FhirServerConfig> fhirServerConfig,
+      Optional<JdbcTemplate> recordIdJdbcTemplate,
+      Optional<RecordIdDbConfig> recordIdDbConfig) {
     this.fhirProperties = fhirProperties;
 
-    if (fhirServerConfig.isPresent()) {
-      this.fhirClient = createFhirClient(fhirServerConfig.get());
-      this.retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
+    fhirServerConfig.ifPresent(
+        cfg -> {
+          this.fhirClient = createFhirClient(cfg);
+          this.retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
+        });
+
+    if (recordIdJdbcTemplate.isPresent() && recordIdDbConfig.isPresent()) {
+      this.recordIdJdbcTemplate = recordIdJdbcTemplate.get();
+      this.recordIdDbConfig = recordIdDbConfig.get();
     }
   }
 
@@ -107,6 +121,14 @@ public class PatientReferenceGenerator {
             };
 
         break;
+      case RECORD_ID_DATABASE_LOOKUP:
+        if (recordIdJdbcTemplate == null) {
+          throw new IllegalArgumentException(
+              "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
+        }
+
+        idGenerator = p -> findRecordIdByPatientId(p.getPatientID());
+        break;
       default:
         throw new IllegalStateException(
             "Unsupported patient reference generation strategy: " + strategy);
@@ -133,20 +155,24 @@ public class PatientReferenceGenerator {
     return client;
   }
 
+  private String findRecordIdByPatientId(String patientId) {
+    return this.recordIdJdbcTemplate.queryForObject(
+        recordIdDbConfig.query(), String.class, patientId);
+  }
+
   private IIdType findPatientIdByIdentifier(Identifier patientIdentifier) {
     var result =
         retryTemplate.execute(
-            context -> {
-              return fhirClient
-                  .search()
-                  .forResource(Patient.class)
-                  .where(
-                      Patient.IDENTIFIER
-                          .exactly()
-                          .systemAndIdentifier(
-                              patientIdentifier.getSystem(), patientIdentifier.getValue()))
-                  .execute();
-            });
+            context ->
+                fhirClient
+                    .search()
+                    .forResource(Patient.class)
+                    .where(
+                        Patient.IDENTIFIER
+                            .exactly()
+                            .systemAndIdentifier(
+                                patientIdentifier.getSystem(), patientIdentifier.getValue()))
+                    .execute());
 
     var patients =
         BundleUtil.toListOfResourcesOfType(fhirClient.getFhirContext(), result, Patient.class);
