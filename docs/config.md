@@ -50,6 +50,11 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
     `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
     the job exits with an error.
 
+- `RECORD_ID_DATABASE_LOOKUP`
+
+    Query a database table to lookup an internal ID from the given Patient_ID. The database connection
+    and SQL query to run can be configured in the `patient-reference-generation.record-id-database` settings.
+
 ## All Available Settings
 
 ## Values
@@ -97,6 +102,10 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.password | string | `""` | the password |
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.username | string | `""` | the username |
 | fhir.mappings.patient-reference-generation.fhir-server.base-url | string | `""` | the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier. E.g. `https://fhir.example.com/fhir` |
+| fhir.mappings.patient-reference-generation.record-id-database.jdbc-url | string | `""` | JDBC url to connect to to query an internal RecordID from a Patient_ID |
+| fhir.mappings.patient-reference-generation.record-id-database.password | string | `""` | password for authentication |
+| fhir.mappings.patient-reference-generation.record-id-database.query | string | `"SELECT RecordID\nFROM lookup\nWHERE PatientID = ?\n"` | the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message. |
+| fhir.mappings.patient-reference-generation.record-id-database.username | string | `""` | username for authentication |
 | fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | fhir.profiles.condition | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"` |  |
