@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ADT_GEKID xmlns="http://www.gekid.de/namespace" Schema_Version="2.2.1">
+	<Absender Absender_ID="999999" Software_ID="ONKOSTAR" Installations_ID="2.9.8">
+		<Absender_Bezeichnung>UKER</Absender_Bezeichnung>
+		<Absender_Ansprechpartner/>
+		<Absender_Anschrift>Maximiliansplatz 2, 91054 Erlangen</Absender_Anschrift>
+	</Absender>
+	<Menge_Patient>
+		<Patient>
+            <Patienten_Stammdaten Patient_ID="1055555999">
+                <KrankenversichertenNr>Q00000000</KrankenversichertenNr>
+                <KrankenkassenNr>10000000</KrankenkassenNr>
+                <Patienten_Nachname>Doe</Patienten_Nachname>
+                <Patienten_Vornamen>John</Patienten_Vornamen>
+                <Patienten_Geschlecht>M</Patienten_Geschlecht>
+                <Patienten_Geburtsdatum>11.09.1900</Patienten_Geburtsdatum>
+                <Menge_Adresse>
+                    <Adresse>
+                        <Patienten_Strasse>Johnstr. 7</Patienten_Strasse>
+                        <Patienten_Land>DE</Patienten_Land>
+                        <Patienten_PLZ>91000</Patienten_PLZ>
+                        <Patienten_Ort>Johncity</Patienten_Ort>
+                    </Adresse>
+                </Menge_Adresse>
+            </Patienten_Stammdaten>
+			<Menge_Meldung>
+				<Meldung Meldung_ID="ST0004776" Melder_ID="ST">
+					<Meldedatum>10.11.2021</Meldedatum>
+					<Meldebegruendung>I</Meldebegruendung>
+					<Meldeanlass>behandlungsende</Meldeanlass>
+					<Tumorzuordnung Tumor_ID="2">
+                        <Primaertumor_ICD_Code>C41.01</Primaertumor_ICD_Code>
+                        <Primaertumor_ICD_Version>10 2021 GM</Primaertumor_ICD_Version>
+                        <Diagnosedatum>08.02.2021</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                    </Tumorzuordnung>
+					<Menge_ST>
+						<ST ST_ID="45968">
+							<ST_Intention>K</ST_Intention>
+							<ST_Stellung_OP>S</ST_Stellung_OP>
+							<Menge_Bestrahlung>
+								<Bestrahlung>
+									<ST_Zielgebiet>5.4.-</ST_Zielgebiet>
+									<ST_Seite_Zielgebiet>U</ST_Seite_Zielgebiet>
+									<ST_Beginn_Datum>13.09.2021</ST_Beginn_Datum>
+									<ST_Ende_Datum>14.09.2021</ST_Ende_Datum>
+								</Bestrahlung>
+								<Bestrahlung>
+									<ST_Zielgebiet>1.2</ST_Zielgebiet>
+									<ST_Seite_Zielgebiet>L</ST_Seite_Zielgebiet>
+									<ST_Beginn_Datum>01.10.2021</ST_Beginn_Datum>
+									<ST_Ende_Datum>02.10.2021</ST_Ende_Datum>
+								</Bestrahlung>
+							</Menge_Bestrahlung>
+							<ST_Ende_Grund>E</ST_Ende_Grund>
+							<Menge_Nebenwirkung>
+								<ST_Nebenwirkung>
+									<Nebenwirkung_Grad>K</Nebenwirkung_Grad>
+								</ST_Nebenwirkung>
+							</Menge_Nebenwirkung>
+						</ST>
+					</Menge_ST>
+				</Meldung>
+			</Menge_Meldung>
+		</Patient>
+	</Menge_Patient>
+	<Menge_Melder>
+		<Melder Melder_ID="ST">
+			<Meldende_Stelle>ST</Meldende_Stelle>
+		</Melder>
+	</Menge_Melder>
+</ADT_GEKID>
