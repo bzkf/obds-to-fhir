@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+    <Absender Absender_ID="TEST" Software_ID="ONKOSTAR" Software_Version="2.13.1">
+        <Bezeichnung>TEST</Bezeichnung>
+        <Anschrift>Musterstraße 1, 012345 Musterhausen</Anschrift>
+    </Absender>
+    <Meldedatum>2024-06-11</Meldedatum>
+    <Menge_Patient>
+        <Patient Patient_ID="00001234">
+            <Patienten_Stammdaten>
+                <Versichertendaten_GKV>
+                    <IKNR></IKNR>
+                    <GKV_Versichertennummer></GKV_Versichertennummer>
+                </Versichertendaten_GKV>
+                <Nachname></Nachname>
+                <Vornamen></Vornamen>
+                <Geschlecht></Geschlecht>
+                <Geburtsdatum Datumsgenauigkeit="T"></Geburtsdatum>
+                <Adresse>
+                    <Strasse></Strasse>
+                    <Hausnummer></Hausnummer>
+                    <Land></Land>
+                    <PLZ></PLZ>
+                    <Ort></Ort>
+                </Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung Meldung_ID="TEST1727528" Melder_ID="TEST">
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD>
+                            <Code>C17.1</Code>
+                            <Version>10 2015 GM</Version>
+                        </Primaertumor_ICD>
+                    </Tumorzuordnung>
+                    <Diagnose>
+                        <Diagnosesicherung>1</Diagnosesicherung>
+                        <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+                    </Diagnose>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+</oBDS>

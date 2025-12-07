@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.4">
+  <Absender Absender_ID="UO" Software_ID="obds2-to-obds3" Software_Version="0.1.0">
+    <Bezeichnung>UO</Bezeichnung>
+    <Anschrift>UO</Anschrift>
+  </Absender>
+  <Meldedatum>2000-01-01</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="1">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101111111</IKNR>
+          <GKV_Versichertennummer>N011101111</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>A</Nachname>
+        <Vornamen>B</Vornamen>
+        <Geburtsname>C</Geburtsname>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1900-01-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>A 26</Strasse>
+          <Land>DE</Land>
+          <PLZ>11111</PLZ>
+          <Ort>Test</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Meldung_ID="A1" Melder_ID="A">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="1">
+            <Primaertumor_ICD>
+              <Code>C50.8</Code>
+              <Version>10 2000 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2000-01-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+          </Tumorzuordnung>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="A">
+      <Ident_Nummern/>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

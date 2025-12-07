@@ -1,0 +1,61 @@
+<oBDS
+    xmlns="http://www.basisdatensatz.de/oBDS/XML"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    Schema_Version="3.0.2"
+    xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.2.xsd">
+    <Absender Installations_ID='Test' Software_ID='Test' Absender_ID='Test'></Absender>
+    <Menge_Patient>
+        <Patient Patient_ID='p0'>
+            <Patienten_Stammdaten>
+                <Geschlecht>W</Geschlecht>
+                <Geburtsdatum Datumsgenauigkeit='E'>2000-01-01</Geburtsdatum>
+                <Adresse>
+                    <PLZ>00</PLZ>
+                    <Land>DE</Land>
+                </Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung
+                    xmlns='http://www.basisdatensatz.de/oBDS/XML' Meldung_ID='m0'
+                    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' Melder_ID='0'>
+                    <Meldebegruendung></Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID='1'>
+                        <Primaertumor_ICD>
+                            <Code>C71.9</Code>
+                            <Version>10 2010 GM</Version>
+                        </Primaertumor_ICD>
+                        <Diagnosedatum Datumsgenauigkeit='E'>2025-01-01</Diagnosedatum>
+                        <Seitenlokalisation>L</Seitenlokalisation>
+                        <Morphologie_ICD_O>
+                            <Code>9440/3</Code>
+                            <Version>31</Version>
+                        </Morphologie_ICD_O>
+                    </Tumorzuordnung>
+                    <ST ST_ID='1'>
+                        <Meldeanlass>behandlungsende</Meldeanlass>
+                        <Intention>K</Intention>
+                        <Stellung_OP>O</Stellung_OP>
+                        <Menge_Bestrahlung>
+                            <Bestrahlung>
+                                <Applikationsart>
+                                    <Kontakt>
+                                        <Interstitiell_endokavitaer>I</Interstitiell_endokavitaer>
+                                        <Zielgebiet>
+                                            <CodeVersion2014>1.2.</CodeVersion2014>
+                                        </Zielgebiet>
+                                        <Seite_Zielgebiet>U</Seite_Zielgebiet>
+                                    </Kontakt>
+                                </Applikationsart>
+                            </Bestrahlung>
+                        </Menge_Bestrahlung>
+                        <Ende_Grund>E</Ende_Grund>
+                        <Nebenwirkungen>
+                            <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
+                        </Nebenwirkungen>
+                    </ST>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+</oBDS>

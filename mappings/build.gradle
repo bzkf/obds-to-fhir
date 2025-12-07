@@ -1,0 +1,153 @@
+// groovylint-disable NestedBlockDepth
+
+plugins {
+    id 'org.springframework.boot' version '3.5.8' apply false
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id 'io.freefair.lombok' version '9.1.0'
+    id 'com.diffplug.spotless' version '8.1.0'
+    id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
+}
+
+group = 'io.github.bzkf'
+version = '3.0.0-beta.157'
+base.archivesName = 'obds-to-fhir'
+
+dependencyManagement {
+  imports {
+    mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+  }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    api 'io.github.bzkf:obds2-to-obds3:0.1.14'
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.0'
+    api 'io.github.java-diff-utils:java-diff-utils:4.16'
+    api 'com.github.slugify:slugify:3.0.7'
+
+    api platform('com.fasterxml.jackson:jackson-bom:2.20.1')
+    api 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    api 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+    api 'jakarta.validation:jakarta.validation-api:3.1.1'
+    api 'commons-codec:commons-codec:1.20.0'
+    api 'org.slf4j:slf4j-api:2.0.17'
+
+    testImplementation platform('org.junit:junit-bom:5.14.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.27.6'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.approvaltests:approvaltests:25.9.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add("-parameters")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'obds2-to-obds3'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'oBDS v2 to oBDS v3'
+                description = 'Library to map oBDS v2 into oBDS v3 messages'
+                url = 'https://github.com/bzkf/obds2-to-obds3'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'BZKF'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/bzkf/obds2-to-obds3.git'
+                    developerConnection = 'scm:git:ssh://github.com:bzkf/obds2-to-obds3.git'
+                    url = 'https://github.com/bzkf/obds2-to-obds3'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'Local'
+            url = layout.buildDirectory.dir('repos/bundles')
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+signing {
+    def signingKey = System.getenv('SIGNING_KEY')
+    def signingPassword = System.getenv('SIGNING_KEY_PASSPHRASE')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+pkmerBoot {
+    sonatypeMavenCentral {
+        // the same with publishing.repositories.maven.url in the configuration.
+        stagingRepository = layout.buildDirectory.dir('repos/bundles')
+        /**
+         * get username and password from
+         * <a href='https://central.sonatype.com/account'> central sonatype account</a>
+         */
+        username = System.getenv('OSSRH_USERNAME')
+        password = System.getenv('OSSRH_PASSWORD')
+    }
+}
+
+// via <https://stackoverflow.com/questions/24936781/gradle-plugin-project-version-number>
+task printVersion {
+    doLast {
+        println project.version
+    }
+}
+
+spotless {
+    java {
+        target('**/*.java')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}

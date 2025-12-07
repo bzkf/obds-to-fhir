@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.1">
+  <Absender Absender_ID="3" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="10">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lator</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Wendy</Vornamen>
+        <Geburtsname>Müller</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Meier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Hier</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="1">
+            <Primaertumor_ICD>
+              <Code>C56</Code>
+              <Version>10 2017 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2017-07-02</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8461/3</Code>
+              <Version>32</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Ovarial-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C56.9</Code>
+              <Version>32</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Ovar</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="280">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2017-07-02</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H111/2017</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8461/3</Code>
+                <Version>32</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Seröses papilläres Oberflächenkarzinom</Morphologie_Freitext>
+              <Grading>3</Grading>
+            </Histologie>
+            <Menge_Weitere_Klassifikation>
+              <Weitere_Klassifikation>
+                <Datum Datumsgenauigkeit="E">2017-07-02</Datum>
+                <Name>FIGO</Name>
+                <Stadium>IIIB</Stadium>
+              </Weitere_Klassifikation>
+            </Menge_Weitere_Klassifikation>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+          </Diagnose>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

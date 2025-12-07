@@ -1,1 +1,3 @@
 rootProject.name = 'obds-to-fhir'
+
+include("src", "mappings")

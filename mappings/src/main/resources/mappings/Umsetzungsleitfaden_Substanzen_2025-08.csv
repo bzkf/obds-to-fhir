@@ -1,0 +1,673 @@
+Therapieart laut UL;Substanzbezeichnung;gültig bis;ATC-Code;ATC-Code gültig bis (WHO-ATC alterations);Änderungsvermerk
+HO;Abarelix;;L02BX01;;
+IM;Abatacept;;L04AA24;;
+ZS;Abemaciclib;;L01XE50;31.12.2020;
+ZS;Abemaciclib;;L01EF03;;
+IM;Abetimus;;L04AA22;;
+HO;Abirateron;;L02BX03;;
+ZS;Acalabrutinib;;L01XE51;31.12.2020;
+ZS;Acalabrutinib;;L01EL02;;
+CH;Aclarubicin;;L01DB04;;
+ZS;Adagrasib ;;L01XX77;;Aktualisierung 2024
+IM;Adalimumab;;L04AA17;31.12.2007;
+IM;Adalimumab;;L04AB04;;
+SO;Aderlass;31.12.2023;fehlt;;Prozedur (kein Wirkstoff) siehe Liste der Protokolle
+ZS;Afatinib;;L01XE13;31.12.2020;
+ZS;Afatinib;;L01EB03;;
+IM;Afelimomab;;L04AA16;31.12.2007;
+IM;Afelimomab;;L04AB03;;
+ZS;Aflibercept;;L01XX44;;
+IM;Aldesleukin;;L03AC01;;
+ZS;Alectinib;;L01XE36;31.12.2020;
+ZS;Alectinib;;L01ED03;;
+IM;Alefacept;;L04AA15;;
+IM;Alemtuzumab;;L04AA34;31.12.2023;
+IM;Alemtuzumab;;L04AG06;;
+SO;Alendronsäure;;M05BA04;;
+ZS;Alisertib;;fehlt;;
+SO;Alitretinoin;;L01XX22;31.12.2020;
+SO;Alitretinoin;;D11AX19;31.12.2011;
+SO;Alitretinoin;;L01XF02;;
+SZ;Allogene Stammzellen;;;;Korrektur Februar 2024 (ATC-Code gelöscht)
+IM;Alnuctanab;;fehlt;;Aktualisierung 2024
+ZS;Alpelisib;;L01XX65;31.12.2020;
+ZS;Alpelisib;;L01EM03;;
+CH;Altretamin;;L01XX03;;
+IM;Amatuximab;;fehlt;;Aktualisierung 2024
+SO;Amilomer;;V03AM01;;
+HO;Aminoglutethimid;;L02BG01;;
+SO;Aminolevulinsäure;;L01XD04;;
+IM;Amivantamab;;L01FX18;;Aktualisierung 31.12.2023
+CH;Amonafid;;fehlt;;
+CH;Amrubicin;;L01DB10;;
+CH;Amsacrin;;L01XX01;;
+CH;Anagrelid;;B01AC14;31.12.2005;
+CH;Anagrelid;;L01XX35;;
+IM;Anakinra;;L04AA14;31.12.2007;
+IM;Anakinra;;L04AC03;;
+HO;Anastrozol;;L02BG03;;
+IM;Antithymozytäres Immunglobulin;;L04AA04;;"Korrektur 2025: Schreibweise angepasst analog ATC ohne Zusatz ""(Kaninchen)"""
+HO;Apalutamid;;L02BB05;;
+SO;Arfolitixorin;;fehlt;;Aktualisierung 31.12.2023
+CH;Arsentrioxid;;L01XX27;;
+SO;Artesunat;;P01BE03;;
+ZS;Asciminib;;L01EA06;;
+CH;Asparaginase;;L01XX02;;
+ZS;Asunercept;;fehlt;;Aktualisierung 2024
+IM;Atezolizumab;;L01FF05;;
+SZ;Autologe Stammzellen;;fehlt;;Korrektur Februar 2024 (ATC-Code gelöscht)
+ZS;Avapritinib;;L01EX18;;
+IM;Avelumab;;L01FF04;;
+IM;Axicabtagen Ciloleucel;;L01XX70;31.12.2022;
+IM;Axicabtagen Ciloleucel;;L01XL03;;
+ZS;Axitinib;;L01XE17;31.12.2020;
+ZS;Axitinib;;L01EK01;;
+CH;Azacitidin;;L01BC07;;
+IM;Azathioprin;;L04AX01;;
+IM;Balixafortide;;fehlt;;Aktualisierung 2024
+IM;Basiliximab;;L04AA09;31.12.2007;
+IM;Basiliximab;;L04AC02;;
+IM;Bavituximab;;fehlt;;Aktualisierung 31.12.2023
+IM;BCG;;L03AX03;;
+IM;Belantamab mafodotin;;L01FX15;;
+IM;Belatacept;;L04AA28;;
+IM;Belimumab;;L04AA26;31.12.2023;
+IM;Belimumab;;L04AG04;;
+ZS;Belinostat;;L01XX49;31.12.2020;
+ZS;Belinostat;;L01XH04;;
+ZS;Belvarafenib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Belzutifan;;L01XX74;;Aktualisierung 31.12.2023
+IM;Bemarituzumab;;fehlt;;
+ZS;Bemcentinib;;fehlt;;
+SO;Bempegaldesleukin;;fehlt;;Aktualisierung 2024
+CH;Bendamustin;;L01AA09;;
+IM;Bermekimab;;L01FX11;;Aktualisierung 2025
+IM;Bevacizumab;;L01FG01;;
+SO;Bexaroten;;L01XX25;31.12.2020;
+SO;Bexaroten;;L01XF03;;
+HO;Bicalutamid;;L02BB03;;
+ZS;Binimetinib;;L01XE41;31.12.2020;
+ZS;Binimetinib;;L01EE03;;
+CH;Bleomycin;;L01DC01;;
+ZS;Bleximenib;;fehlt;;Aktualisierung 2025
+IM;Blinatumomab;;L01FX07;;
+ZS;Bortezomib;;L01XX32;31.12.2020;
+ZS;Bortezomib;;L01XG01;;
+ZS;Bosutinib;;L01XE14;31.12.2020;
+ZS;Bosutinib;;L01EA04;;
+IM;Brentuximab vedotin;;L01FX05;;
+IM;Brexucabtagen autoleucel;;L01XL06;;Aktualisierung 31.12.2023
+IM;Briakinumab;;L04AC09;;
+ZS;Brigatinib;;L01XE43;31.12.2020;
+ZS;Brigatinib;;L01ED04;;
+HO;Bromocriptin;;N04BC01;;
+ZS;Buparlisib;;fehlt;;Aktualisierung 2024
+HO;Buserelin;;L02AE01;;
+CH;Busulfan;;L01AB01;;
+CH;Cabazitaxel;;L01CD04;;
+HO;Cabergolin;;N04BC06;;
+ZS;Cabozantinib;;L01XE26;31.12.2020;
+ZS;Cabozantinib;;L01EX07;;
+SO;Calciumfolinat;;V03AF03;;Aktualisierung 2025
+SO;Calciumlevofolinat;;V03AF04;;
+CH;Camptothecin;;fehlt;;
+IM;Canakinumab;;L04AC08;;
+CH;Capecitabin;;L01BC06;;
+ZS;Capivasertib;;L01EX27 ;;Aktualisierung 2024, Korrektur Therapieart: IM geändert in Therapieart ZS
+ZS;Capmatinib;;L01EX17;;
+CH;Carboplatin;;L01XA02;;
+CH;Carboquon;;L01AC03;;
+ZS;Carfilzomib;;L01XX45;31.12.2020;
+ZS;Carfilzomib;;L01XG02;;
+CH;Carmofur;;L01BC04;;
+CH;Carmustin;;L01AD01;;
+IM;Catumaxomab;;L01FX03;;
+IM;Cemiplimab;;L01FF06;;
+ZS;Ceralasertib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Ceritinib;;L01XE28;31.12.2020;
+ZS;Ceritinib;;L01ED02;;
+IM;Certolizumab pegol;;L04AB05;;
+IM;Cetrelimab ;;fehlt;;Aktualisierung 31.12.2023
+HO;Cetrorelix;;H01CC02;;Korrektur Februar 2024 (ATC-Code korrigiert)
+IM;Cetuximab;;L01FE01;;Korrektur Februar 2024 (ATC-Code korrigiert)
+CH;Chlorambucil;;L01AA02;;Korrektur Februar 2024 (ATC-Code korrigiert)
+HO;Chlormadinon;;G03DB06;;
+CH;Chlormethin;;L01AA05;;
+SO;Ciclosporin;;L04AA01;31.12.2007;
+SO;Ciclosporin;;L04AD01;;
+ZS;Cilengitide;;fehlt;;
+IM;Ciltacabtagen autoleucel;;L01XL05;;Aktualisierung 31.12.2023
+CH;Cisplatin;;L01XA01;;
+CH;Cladribin;;L01BB04;;
+SO;Clodronsäure;;M05BA02;;
+CH;Clofarabin;;L01BB06;;
+ZS;Cobimetinib;;L01XE38;31.12.2020;
+ZS;Cobimetinib;;L01EE02;;
+ZS;Copanlisib;;L01XX61;31.12.2020;
+ZS;Copanlisib;;L01EM02;;
+IM;Coxsackievirus A21;;fehlt;;
+ZS;Crenigacestat;;fehlt;;Aktualisierung 31.12.2023
+ZS;Crenolanib;;fehlt;;
+ZS;Crizotinib;;L01XE16;31.12.2020;
+ZS;Crizotinib;;L01ED01;;
+IM;Cusatuzumab;;fehlt;;Aktualisierung 31.12.2023
+CH;Cyclophosphamid;;L01AA01;;
+HO;Cyproteron;;G03HA01;;
+CH;Cytarabin;;L01BC01;;
+CH;Cytarabin liposomal;;fehlt;;
+CH;Cytarabin und Daunorubicin;;L01XY01;;Aktualisierung 31.12.2023
+ZS;Dabrafenib;;L01XE23;31.12.2020;
+ZS;Dabrafenib;;L01EC02;;
+CH;Dacarbazin;;L01AX04;;
+IM;Daclizumab;;L04AA08;31.12.2007;
+IM;Daclizumab;;L04AC01;;
+ZS;Dacomitinib;;L01EB07;;Aktualisierung 31.12.2023
+CH;Dactinomycin;;L01DA01;;
+ZS;Dactolisib;;fehlt;;Aktualisierung 2025
+IM;Daratumumab;;L01FC01;;
+SO;Darbepoetin alfa;;B03XA02;;
+HO;Darolutamid;;L02BB06;;
+IM;Daromun;;fehlt;;Aktualisierung 2024
+ZS;Dasatinib;;L01XE06;31.12.2020;
+ZS;Dasatinib;;L01EA02;;
+IM;Datopotamab deruxtecan;;fehlt;;Aktualisierung 2024
+CH;Daunorubicin;;L01DB02;;
+CH;Daunorubicin liposomal;;fehlt;;
+CH;Decitabin;;L01BC08;;
+CH;Decitabin und Cedazuridin;;L01BC68;;Aktualisierung 2025
+HO;Degarelix;;L02BX02;;
+CH;Demecolcin;;L01CC01;;
+ZS;Denileukindiftitox;;L01XX29;;bis 31.07.2025 gelistet mit dem Namen Denileukin diftitox, Schreibweise aktualisiert laut ATC
+IM;Denosumab;;M05BX04;;
+IM;Depatuximab-Mafodotin;;fehlt;;
+ZS;Derazantinib;;fehlt;;Aktualisierung 31.12.2023
+SO;Dexamethason;;H02AB02;;
+SO;Dinatriumfolinat;;fehlt;;
+IM;Dinutuximab beta;;L01FX06;;Aktualisierung 31.12.2023
+IM;Disitamab vedotin;;fehlt;;Aktualisierung 31.12.2023
+CH;Docetaxel;;L01CD02;;
+IM;Domvanalimab;;fehlt;;Aktualisierung 2025
+IM;Dostarlimab;;L01FF07;;Aktualisierung 31.12.2023
+CH;Doxifluridin;;fehlt;;
+CH;Doxorubicin;;L01DB01;;
+CH;Doxorubicin liposomal;31.07.2025;L01DB01;;Ablaufdatum, da eindeutig bezeichnet mit ATC L01DB01
+CH;Doxorubicin PEG-liposomal;31.07.2025;L01DB01;;Ablaufdatum, da eindeutig bezeichnet mit ATC L01DB02
+IM;Durvalumab;;L01FF03;;
+SO;Dutasterid;;G04CB02;;
+ZS;Duvelisib;;L01EM04;;Aktualisierung 31.12.2023
+IM;Eculizumab;;L04AA25;31.12.2023;
+IM;Eculizumab;;L04AJ01;;
+IM;Edrecolomab;;L01FX01;;
+IM;Efalizumab;;L04AA21;31.12.2023;
+IM;Efalizumab;;L04AG02;;
+SO;Efaproxiral;;L01XD06;;
+ZS;Eftilagimod alpha;;fehlt;;
+HO;Elacestrant;;L02BA04;;Aktualisierung 2024
+IM;Elotuzumab;;L01FX08;;
+IM;Elranatamab;;L01FX32;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2025)
+IM;Elsilimomab;;fehlt;;
+ZS;Eltrombopag;;B02BX05;;
+ZS;Emavusertib;;fehlt;;Aktualisierung 2025
+SO;EmboCept;31.07.2025;fehlt;;Ablaufdatum, nicht tumorspezifisch (Mikrosphären, Verwendung bei TACE, TAE)
+SO;Embozene;31.07.2025;fehlt;;Ablaufdatum, nicht tumorspezifisch (Mikrosphären, Verwendung bei TACE, TAE)
+ZS;Enasidenib;;L01XX59;31.04.2024;
+ZS;Enasidenib;;L01XM01;;Änderung zum 30.04.2023 nur WiDO, nicht WHO
+ZS;Encorafenib;;L01XE46;31.12.2020;
+ZS;Encorafenib;;L01EC03;;
+IM;Enfortumab Vedotin;;L01FX13;;
+ZS;Ensartinib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Entospletinib;;fehlt;;
+ZS;Entrectinib;;L01XE56;31.12.2021;Aktualisierung 31.12.2023
+ZS;Entrectinib;;L01EX14;;Aktualisierung 31.12.2023
+HO;Enzalutamid;;L02BB04;;
+ZS;Enzastaurin;;fehlt;;
+IM;Epcoritamab;;L01FX27;;Aktualisierung 2024
+CH;Epirubicin;;L01DB03;;
+IM;Equecabtagen autoleucel ;;fehlt;;Aktualisierung 2025
+ZS;Erdafitinib;;L01EN01;;
+CH;Eribulin;;L01XX41;;
+ZS;Erlotinib;;L01XX34;31.12.2006;
+ZS;Erlotinib;;L01XE03;31.12.2020;
+ZS;Erlotinib;;L01EB02;;
+SO;Erythropoietin;;B03XA01;;bis 31.07.2025 gelistet mit dem Namen Erythropoetin, Schreibweise aktualisiert laut ATC
+CH;Estramustin;;L01XX11;;
+SO;Etanercept;;L04AA11;31.12.2007;
+SO;Etanercept;;L04AB01;;
+SO;Etidronsäure;;M05BA01;;
+CH;Etoglucid;;L01AG01;;
+CH;Etoposid;;L01CB01;;
+ZS;Everolimus;;L01XE10;31.12.2020;
+ZS;Everolimus;;L01EG02;;L01 antineoplastische Mittel
+ZS;Everolimus;30.04.2025;L04AH02;;L04 Immunsuppressiva
+HO;Exemestan;;L02BG06;;
+IM;Favezelimab;;fehlt;;Aktualisierung 2025
+ZS;Fedratinib;;L01XE57;31.12.2021;Aktualisierung 31.12.2023
+ZS;Fedratinib;;L01EJ02;;Aktualisierung 31.12.2023
+IM;Fianlimab;;fehlt;;Aktualisierung 2025
+IM;Fibromun;;fehlt;;Aktualisierung 2024
+IM;Figitumumab;;fehlt;;Aktualisierung 31.12.2023
+SO;Filgrastim;;L03AA02;;
+HO;Finasterid;;G04CB01;;
+SO;Fingolimod;;L04AA27;31.12.2023;
+MO;Fingolimod;;L04AE01;;
+CH;Floxuridin;;L01BC09;;
+CH;Fludarabin;;L01BB05;;
+CH;Fluorouracil;;L01BC02;;
+CH;Fluorouracil, Kombinationen;;L01BC52;;Aktualisierung 31.12.2023
+HO;Flutamid;;L02BB01;;
+IM;Flysyn;;fehlt;;
+SO;Folinsäure;;V03AF03;;
+HO;Formestan;;L02BG02;;
+HO;Fosfestrol;;L02AA04;;
+ZS;Fostamatinib;;B02BX09;;Aktualisierung 2024
+CH;Fotemustin;;L01AD05;;
+ZS;Fruquintinib;;L01EK04;;Aktualisierung 2024
+HO;Fulvestrant;;L02BA03;;
+ZS;Futibatinib;;L01EN04;;Aktualisierung 31.12.2023
+IM;Galiximab;;fehlt;;
+ZS;Ganetespib;;fehlt;;
+IM;Gatipotuzumab;;fehlt;;Aktualisierung 31.12.2023
+SO;GcMAF;;fehlt;;
+SO;G-CSF;;fehlt;;
+ZS;Gefitinib;;L01XX31;31.12.2006;
+ZS;Gefitinib;;L01XE02;31.12.2020;
+ZS;Gefitinib;;L01EB01;;
+CH;Gemcitabin;;L01BC05;;
+IM;Gemtuzumab ozogamicin;;L01FX02;;bis 31.12.2023 gelistet mit dem Namen Gemtuzumab, Schreibweise aktualisiert laut ATC
+HO;Gestonoron;;L02AB03;;
+IM;Gevokizumab;;fehlt;;Aktualisierung 2025
+ZS;Gilteritinib;;L01XE54;31.12.2020;
+ZS;Gilteritinib;;L01EX13;;
+IM;Giredestrant;;fehlt;;Aktualisierung 2024
+IM;Girentuximab;;fehlt;;Aktualisierung 31.12.2023
+ZS;Glasdegib;;L01XX63;31.12.2020;
+ZS;Glasdegib;;L01XJ03;;
+IM;Glofitamab;;L01FX28;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+IM;Golimumab;;L04AB06;;
+HO;Gonadorelin;;H01CA01;;Aktualisierung 31.12.2023
+HO;Goserelin;;L02AE03;;
+CH;Guadecitabin;;fehlt;;
+IM;Gusperimus;;L04AA19;;
+SO;Helleborus Niger;;fehlt;;Aktualisierung 2025
+SO;Hepasphere;;fehlt;;
+SO;Histamindihydrochlorid;;L03AX14;;Aktualisierung 31.12.2023
+HO;Histrelin;;H01CA03;31.12.2012;
+HO;Histrelin;;L02AE05;;
+CH;Hydroxycarbamid;;L01XX05;;
+SO;Ibandronsäure;;M05BA06;;
+IM;Iberdomid ;;fehlt;;Aktualisierung 2024
+IM;Ibritumomab-Tiuxetan;31.12.2023;V10XX02;;Radioimmuntherapie mit Y-90, ab oBDS als Strahlentherapie zu melden
+ZS;Ibrutinib;;L01XE27;31.12.2020;
+ZS;Ibrutinib;;L01EL01;;
+CH;Idarubicin;;L01DB06;;
+ZS;Idasanutlin;;fehlt;;Aktualisierung 31.12.2023
+IM;Idecabtagen vicleucel;;L01XL07;;Aktualisierung 31.12.2023
+ZS;Idelalisib;;L01XX47;31.12.2020;
+ZS;Idelalisib;;L01EM01;;
+IM;Ifinatamab deruxtecan;;fehlt;;Aktualisierung 2025
+CH;Ifosfamid;;L01AA06;;
+ZS;Imatinib;;L01XX28;31.12.2006;
+ZS;Imatinib;;L01XE01;31.12.2020;
+ZS;Imatinib;;L01EA01;;
+ZS;Imetelstat;;L01XX80;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2025)
+IM;Imiquimod;;D06BB10;;Korrektur Therapieart: SO geändert in Therapieart IM
+ZS;Inavolisib;;fehlt;;Aktualisierung 2024
+IM;Indatuximab ravtansin;;fehlt;;Aktualisierung 31.12.2023
+IM;Infliximab;;L04AA12;31.12.2007;
+IM;Infliximab;;L04AB02;;
+SO;Ingenolmebutat;;D06BX02;;bis 31.07.2025 gelistet mit dem Namen Ingenol, Schreibweise aktualisiert laut ATC
+IM;Inolimomab;;fehlt;;Aktualisierung 31.12.2023
+IM;Inotuzumab Ozogamicin;;L01FB01;;
+IM;Interferon alfa, natürlich;;L03AB01;;bis 31.07.2025 gelistet mit dem Namen Interferon alpha natürlich, Schreibweise aktualisiert laut ATC
+IM;Interferon alfa-2a;;L03AB04;;bis 31.07.2025 gelistet mit dem Namen Interferon alpha-2a, Schreibweise aktualisiert laut ATC
+IM;Interferon alfa-2b;;L03AB05;;bis 31.07.2025 gelistet mit dem Namen Interferon alpha-2b, Schreibweise aktualisiert laut ATC
+IM;Interferon gamma-1b;;L03AB18;;
+ZS;Ipatasertib;;fehlt;;Aktualisierung 2024
+IM;Ipilimumab;;L01FX04;;
+CH;Irinotecan;;L01XX19;31.12.2020;
+CH;Irinotecan;;L01CE02;;
+CH;Irinotecan nanoliposomal pegyliert;30.07.2025;L01CE02;;Ablaufdatum, da eindeutig bezeichnet mit Irinotecan und ATC L01CE02
+IM;Isatuximab;;L01FC02;;
+ZS;Ivosidenib;;L01XX62;30.04.2024;
+ZS;Ivosidenib;;L01XM02;;Änderung zum 30.04.2024 nur WiDO, nicht WHO
+CH;Ixabepilon;;L01DC04;;
+ZS;Ixazomib;;L01XX50;31.12.2020;
+ZS;Ixazomib;;L01XG03;;
+SO;Ketoconazol;;H02CA03;;Korrektur Februar 2024 (ATC-Code korrigiert)
+HO;Lanreotid;;H01CB03;;
+ZS;Lapatinib;;L01XE07;31.12.2020;
+ZS;Lapatinib;;L01EH01;;
+ZS;Larotrectinib;;L01XE53;31.12.2020;
+ZS;Larotrectinib;;L01EX12;;
+ZS;Lazertinib;;L01EB09;;Aktualisierung 2024
+IM;Leflunomid;;L04AA13;31.12.2023;
+IM;Leflunomid;;L04AK01;;
+IM;Lemzoparlimab;;fehlt;;Aktualisierung 2024
+ZS;Lenalidomid;;L04AX04;;
+SO;Lenograstim;;L03AA10;;
+ZS;Lenvatinib;;L01XE29;31.12.2020;
+ZS;Lenvatinib;;L01EX08;;
+HO;Letrozol;;L02BG04;;
+HO;Leuprorelin;;L02AE02;;
+IM;Linvoseltamab;;fehlt;;Aktualisierung 2025
+SO;Lipegfilgrastim;;L03AA14;;
+IM;Lisocabtagen maraleucel;;L01XL08;;Aktualisierung 31.12.2023
+CH;Lomustin;;L01AD02;;
+ZS;Lonafarnib;;A16AX20;;
+IM;Loncastuximab tesirin;;L01FX22;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+CH;Lonidamin;;L01XX07;;
+ZS;Lorlatinib;;L01XE44;31.12.2020;
+ZS;Lorlatinib;;L01ED05;;
+ZS;Lucitanib;;fehlt;;Aktualisierung 31.12.2023
+CH;Lurbinectedin;;L01XX69;;
+ZS;Luspatercept;;B03XA06;;
+HO;Lynestrenol;;G03DC03;;
+IM;Magrolimab;;fehlt;;Aktualisierung 2024
+CH;Mannosulfan;;L01AB03;;
+IM;Maraviroc;;J05AX09;;Aktualisierung 2024
+IM;Margetuximab;;L01FD06;;
+ZS;Marizomib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Masoprocol;;L01XX10;;
+CH;Chlormethin;;L01AA05;;bis 31.07.2025 gelistet mit dem Namen Mechlorethamin, Schreibweise aktualisiert laut ATC
+HO;Medroxyprogesteron;;L02AB02;;
+HO;Megestrol;;L02AB01;;
+CH;Melphalan;;L01AA03;;
+IM;Mepolizumab;;L04AC06;31.12.2016;
+IM;Mepolizumab;;R03DX09;;
+CH;Mercaptopurin;;L01BB02;;
+ZS;Merestinib;;fehlt;;
+SO;Mesna;;V03AF01;;
+SO;Methadon;;N07BC02;;
+CH;Methotrexat;;L01BA01;;Korrektur Februar 2024 (Gültigkeitsdatum entfernt, 2. ATC-Code gelöscht, da nicht tumorrelevant)
+SO;Methoxsalen;;L01XD10;;
+SO;Methoxy-Polyethylenglycol-Epoetin beta;;B03XA03;;Aktualisierung 31.12.2023
+SO;Methylaminolevulinat;;L01XD03;;Aktualisierung 31.12.2023
+SO;Methylprednisolon;;H02AB04;;
+ZS;Midostaurin;;L01XE39;31.12.2020;
+ZS;Midostaurin;;L01EX10;;
+IM;Mifamurtid;;L03AX15;;
+SO;Miltefosin;;L01XX09;;
+IM;Mirvetuximab soravtansin;;L01FX26;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2025)
+SO;Mistelkraut;;L01CH01;;
+SO;Mistelkraut;;L01CP01;;
+CH;Mitobronitol;;L01AX01;;
+ZS;Mitoguazon;;L01XX16;;
+CH;Mitomycin;;L01DC03;;
+CH;Mitotan;;L01XX23;;
+CH;Mitoxantron;;L01DB07;;
+ZS;Mobocertinib;;L01EB10;;Aktualisierung 31.12.2023
+IM;Mogamulizumab;;L01FX09;;
+SO;Molgramostim;;L03AA03;;
+ZS;Momelotinib;;L01EJ04;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+IM;Mosunetuzumab;;L01FX24;31.12.2023;Aktualisierung 31.12.2023
+IM;Mosunetuzumab;;L01FX25;;
+IM;Motixafortid;;fehlt;;Aktualisierung 31.12.2023
+IM;Moxetumomab pasudotox;;L01FB02;;Aktualisierung 31.12.2023
+IM;Muromonab-CD3;;L04AA02;31.12.2023;
+IM;Muromonab-CD3;;L04AG01;;
+IM;Mycophenolsäure;;L04AA06;;
+IM;Nadunolimab;;fehlt;;Aktualisierung 2024
+ZS;Naporafenib;;fehlt;;Aktualisierung 31.12.2023
+IM;Natalizumab;;L04AA23;31.12.2023;
+IM;Natalizumab;;L04AG03;;
+SO;Natriumfolinat;;V03AF06;;Aktualisierung 2025
+SO;Natriumlevofolinat;;V03AF10;;bis 31.07.2025 gelistet mit dem Namen Natrium Levofolinat, Schreibweise aktualisiert laut ATC
+IM;Navitoclax;;L01XX78;;Aktualisierung 2024
+IM;Navtemadlin;;fehlt;;Aktualisierung 2025
+ZS;Nazartinib;;fehlt;;Aktualisierung 2024
+ZS;Nazartinib;;fehlt;;Aktualisierung 2025
+IM;Necitumumab;;L01FE03;;
+CH;Nelarabin;;L01BB07;;
+ZS;Nemtabrutinib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Neratinib;;L01XE45;31.12.2020;
+ZS;Neratinib;;L01EH02;;
+ZS;Nilotinib;;L01XE08;31.12.2020;
+ZS;Nilotinib;;L01EA03;;
+HO;Nilutamid;;L02BB02;;
+CH;Nimustin;;L01AD06;;
+ZS;Nintedanib;;L01XE31;31.12.2020;
+ZS;Nintedanib;;L01EX09;;
+ZS;Niraparib;;L01XX54;31.12.2020;
+ZS;Niraparib;;L01XK02;;
+IM;Nisevokitug;;fehlt;;Aktualisierung 2024
+IM;Nivolumab;;L01FF01;;
+IM;Nivolumab und Relatlimab;;L01XY03;31.12.2023;Aktualisierung 31.12.2023
+IM;Nivolumab und Relatlimab;;L01FY02;;
+IM;Obinutuzumab;;L01FA03;;
+ZS;Oblimersen;;L01XX36;;
+HO;Octreotid;;H01CB02;;
+IM;Odronextamab;;L01FX34;;Aktualisierung 2025
+IM;Ofatumumab;;L01FA02;31.12.2023;
+IM;Ofatumumab;;L04AG12;;
+ZS;Olaparib;;L01XX46;31.12.2020;
+ZS;Olaparib;;L01XK01;;
+ZS;Olaptesed;;fehlt;;
+IM;Olaratumab;;L01FX10;;
+ZS;Olverembatinib;;fehlt;;Aktualisierung 2025
+ZS;Omacetaxinmepesuccinat;;L01XX40;;bis 31.07.2025 gelistet mit dem Namen Omacetaxin mepesuccinat, Schreibweise aktualisiert laut ATC
+IM;Oportuzumab monatox;;L01FX16;;Aktualisierung 31.12.2023
+IM;Oprelvekin;;L03AC02;;
+ZS;Osimertinib;;L01XE35;31.12.2020;
+ZS;Osimertinib;;L01EB04;;
+CH;Oxaliplatin;;L01XA03;;
+CH;Paclitaxel;;L01CD01;;
+CH;Paclitaxel nab;;fehlt;;
+CH;Paclitaxelpoliglumex;;L01CD03;;
+ZS;Pacritinib;;L01EJ03;;Aktualisierung 2024
+SO;Padeliporfin;;L01XD07 ;;Aktualisierung 2025
+ZS;Palbociclib;;L01XE33;31.12.2020;
+ZS;Palbociclib;;L01EF01;;
+SO;Palifermin;;V03AF08;;
+SO;Pamidronsäure;;M05BA03;;
+IM;Pamvatamig;;fehlt;;Aktualisierung 2025
+IM;Panitumumab;;L01FE02;;
+ZS;Panobinostat;;L01XX42;31.12.2020;
+ZS;Panobinostat;;L01XH03;;
+IM;Parvovirus H1;;fehlt;;
+IM;Patritumab deruxtecan;;fehlt;;Aktualisierung 2025
+ZS;Pazopanib;;L01X11;31.12.2020;
+ZS;Pazopanib;;L01EX03;;
+CH;Pegaspargase;;L01XX24;;
+SO;Pegfilgrastim;;L03AA13;;
+IM;Peginterferon alfa 2a;;L03AB11;;bis 31.07.2025 gelistet mit dem Namen Peginterferon alpha-2a, Schreibweise aktualisiert laut ATC
+IM;Peginterferon alfa 2b;;L03AB10;;bis 31.07.2025 gelistet mit dem Namen Peginterferon alpha-2b, Schreibweise aktualisiert laut ATC
+IM;Pelareorep;;fehlt;;Aktualisierung 31.12.2023
+IM;Pembrolizumab;;L01FF02;;
+CH;Pemetrexed;;L01BA04;;
+ZS;Pemigatinib;;L01EN02;;Aktualisierung 31.12.2023
+IM;Penpulimab;;fehlt;;Aktualisierung 31.12.2023
+CH;Pentostatin;;L01XX08;;Korrektur Therapieart: ZS geändert in Therapieart CH
+IM;Pertuzumab;;L01FD02;;
+IM;Pertuzumab und Trastuzumab;;L01XY02;31.12.2023;Aktualisierung 31.12.2023
+IM;Pertuzumab und Trastuzumab;;L01FY01;;
+ZS;Pevonedistat;;fehlt;;Aktualisierung 31.12.2023
+CH;Pipobroman;;L01AX02;;
+CH;Pirarubicin;;L01DB08;;
+ZS;Pirtobrutinib;;L01EL05;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+CH;Pixantron;;L01DB11;;
+SO;Placebo;;V03AX10;;Korrektur Februar 2024 (ATC-Code ergänzt)
+SO;Plerixafor;;L03AX16;;
+CH;Plicamycin;;L01DC02;;
+IM;Plozalizumab;;fehlt;;
+IM;Polatuzumab Vedotin;;L01FX14;;
+SO;Poly ICLC;;L03AX08;;
+HO;Polyestradiolphosphat;;L02AA02;;
+CH;Polyplatillen;;L01XA05;;
+ZS;Pomalidomid;;L04AX06;;
+ZS;Ponatinib;;L01XE24;31.12.2020;
+ZS;Ponatinib;;L01EA05;;
+SO;Porfimer natrium;;L01XD01;;
+CH;Pralatrexat;;L01BA05;;
+ZS;Pralsetinib;;L01EX23;;Aktualisierung 31.12.2023
+IM;Prednicarbat;;D07AC18;;Aktualisierung 2024
+CH;Prednimustin;;L01AA08;;
+SO;Prednisolon;;H02AB06;;
+SO;Prednison;;H02AB07;;
+CH;Procarbazin;;L01XB01;;
+SO;Psoralen;31.12.2023;D05AD;;Überbegriff (D05AD), spezifischer Wirkstoff: Methoxsalen
+SO;Psoralen;31.12.2023;D05BA;;Überbegriff (D05BA), spezifischer Wirkstoff: Methoxsalen
+ZS;Quizartinib;;L01XE52;31.12.2020;
+ZS;Quizartinib;;L01EX11;;
+HO;Raloxifen;;G03XC01;;
+CH;Raltitrexed;;L01BA03;;
+IM;Ramucirumab;;L01FG02;;
+CH;Ranimustin;;L01AD07;;
+ZS;Regorafenib;;L01XE21;31.12.2020;
+ZS;Regorafenib;;L01EX05;;
+IM;Relatlimab;31.07.2025;fehlt;;Ablaufdatum, gibt es nicht als Einzelsubstanz
+IM;Relatlimab (Kombi mit Nivolumab);31.07.2025;L01XY03;;Ablaufdatum, Bezeichnung Kombi nach ATC: Nivolumab und Relatlimab
+HO;Relugolix;;L02BX04;;Aktualisierung 31.12.2023
+ZS;Repotrectinib;;L01EX28;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2025)
+IM;Retifanlimab;;L01FF10;;Aktualisierung 31.12.2023
+ZS;Revumenib;;fehlt;;Aktualisierung 2025
+ZS;Ribociclib;;L01XE42;31.12.2020;
+ZS;Ribociclib;;L01EF02;;
+ZS;Rigosertib;;fehlt;;
+IM;Rilonacept;;L04AC04;;
+IM;Rilotumumab;;fehlt;;Aktualisierung 31.12.2023
+IM;Rindopepimut;;fehlt;;Aktualisierung 2025
+ZS;Rineterkib;;fehlt;;Aktualisierung 31.12.2023
+ZS;Ripretinib;;L01EX19;;Aktualisierung 31.12.2023
+SO;Risedronsäure;;M05BA07;;
+IM;Rituximab;;L01FA01;;
+ZS;Rociletinib;;L01EB05;;Aktualisierung 2025
+ZS;Romidepsin;;L01XH02;;
+ZS;Romidepsin;;L01XX39 ;31.12.2020;
+ZS;Romiplostim;;B02BX04;;
+IM;Ropeginterferon alfa-2b;;L03AB15;;
+IM;Rovalpituzumab tesirin;;fehlt;;Aktualisierung 31.12.2023
+ZS;Rucaparib;;L01XK03;;Aktualisierung 31.12.2023
+ZS;Ruxolitinib;;L01XE18;31.12.2020;
+ZS;Ruxolitinib;;L01EJ01;;
+IM;Sabatolimab;;L01FX19;;Aktualisierung 31.12.2023
+IM;Sacituzumab govitecan;;L01FX17;;bis 31.07.2025 gelistet mit dem Namen Sacituzumab Govitecan-hziy , Schreibweise aktualisiert laut ATC
+CH;Satraplatin;;L01XA04;;
+ZS;Savolitinib;;fehlt;;Aktualisierung 2025
+ZS;Selinexor;;L01XX66;;
+ZS;Selpercatinib;;L01EX22;;
+ZS;Selumetinib;;L01EE04;;Aktualisierung 31.12.2023
+CH;Semustin;;L01AD03;;
+IM;Seribantumab;;fehlt;;Aktualisierung 31.12.2023
+IM;Serplulimab;;L01FF12;;Aktualisierung 2025
+IM;Siltuximab;;L04AC11;;Aktualisierung 2024
+IM;Sintilimab;;fehlt;;Aktualisierung 2024
+ZS;Siremadlin;;fehlt;;
+ZS;Sirolimus;;L04AA10;31.12.2023;
+ZS;Sirolimus;;L04AH01;;
+IM;Sitimagen ceradenovec;;L01XL01;;Aktualisierung 2024
+HO;Somatostatin;;H01CB01;;Aktualisierung 31.12.2023
+ZS;Sonidegib;;L01XJ02;;Aktualisierung 31.12.2023
+ZS;Sorafenib;;L01EX02;;
+ZS;Sorafenib;;L01XE05;31.12.2020;
+ZS;Sotorasib;;L01XX73;;Aktualisierung 31.12.2023
+IM;Spartalizumab;;fehlt;;
+CH;Streptozocin;;L01AD04;;
+SO;Studienmedikament;;fehlt;;
+IM;Sugemalimab;;L01FF11;;Aktualisierung 2024
+ZS;Sunitinib;;L01XE04;31.12.2020;
+ZS;Sunitinib;;L01EX01;;
+IM;Tacrolimus;;L04AA05;31.12.2007;
+IM;Tacrolimus;;D11AX14;31.12.2009;
+IM;Tacrolimus;;L04AD02;;
+IM;Tafasitamab;;L01FX12;;Aktualisierung 31.12.2023
+IM;Tagraxofusp;;L01XX67;;
+IM;Talacotuzumab;;fehlt;;
+ZS;Talazoparib;;L01XX60;31.12.2020;
+ZS;Talazoparib;;L01XK04;;
+ZS;Talimogen laherparepvec;;L01XX51;31.12.2022;
+ZS;Talimogen laherparepvec;;L01XL02;;
+IM;Talquetamab;;L01FX29;;Aktualisierung 2024
+HO;Tamoxifen;;L02BA01;;
+IM;Tarlatamab;;L01FX33;;Aktualisierung 2025
+ZS;Tasidotin;;fehlt;;Aktualisierung 2025
+SO;Tasonermin;;L03AX11;;
+ZS;Tazemetostat;;L01XX72;;Aktualisierung 31.12.2023
+IM;Tebentafusp;;L01XX75;;Aktualisierung 31.12.2023
+IM;Teclistamab;;L01FX24;;Aktualisierung 31.12.2023, Korrektur Februar 2024 (ATC-Code ergänzt)
+CH;Tegafur;;L01BC03;;Aktualisierung 31.12.2023, bis 31.07.2025 gelistet mit dem Namen Tegafur, Kombinationen und ATC-Code L01BC53, ersetzt durch Tegafur/L01BC03
+CH;Tegafur, Uracil;;L01BC63;;Aktualisierung 31.12.2023
+CH;Tegafur,Gimeracil,Oteracil;;L01BC73;;
+CH;Temoporfin;;L01XD05;;
+CH;Temozolomid;;L01AX03;;
+ZS;Temsirolimus;;L01XE09;31.12.2020;
+ZS;Temsirolimus;;L01EG01;;
+CH;Teniposid;;L01CB02;;
+ZS;Tepotinib;;L01EX21;;Aktualisierung 31.12.2023
+ZS;Thalidomid;;L04AX02;;
+CH;Thiotepa;;L01AC01;;
+ZS;Tiazofurin;;L01XX18;;
+ZS;Tilsotolimod;;fehlt;;Aktualisierung 31.12.2023
+SO;Tiludronsäure;;M05BA05;;
+CH;Tioguanin;;L01BB03;;
+ZS;Tipifarnib;;fehlt;;
+ZS;Tirabrutinib;;L01EL06;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2025)
+IM;Tiragolumab;;fehlt;;Aktualisierung 31.12.2023
+IM;Tisagenlecleucel;;L01XX71;31.12.2022;
+IM;Tisagenlecleucel;;L01XL04;;
+IM;Tislelizumab;;L01FF09;;
+IM;Tisotumab vedotin;;L01FX23;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+ZS;Tivantinib;;fehlt;;
+ZS;Tivozanib;;L01XE34;31.12.2020;
+ZS;Tivozanib;;L01EK03;;
+IM;Tocilizumab;;L04AC07;;
+IM;Tomuzotuximab;;fehlt;;Aktualisierung 31.12.2023
+CH;Topotecan;;L01XX17;31.12.2020;
+CH;Topotecan;;L01CE01;;
+HO;Toremifen;;L02BA02;;
+IM;Toripalimab;;L01FF13;;Aktualisierung 31.12.2023, Ergänzung ATC-Code (neu seit 2024)
+IM;Tositumomab;31.12.2023;V10XA53;;Radioimmuntherapie mit J-131, ab oBDS als Strahlentherapie melden
+ZS;Tovorafenib;;fehlt;;Aktualisierung 2024
+CH;Trabectedin;;L01CX01;;
+ZS;Trametinib;;L01XE25;31.12.2020;
+ZS;Trametinib;;L01EE01;;
+IM;Trastuzumab;;L01FD01;;
+IM;Trastuzumab deruxtecan;;L01FD04;;
+IM;Trastuzumab duocarmazin;;L01FD05;;bis 31.07.2025 gelistet mit dem Namen Trastuzumab duocarmarzine, Schreibweise aktualisiert laut ATC
+IM;Trastuzumab emtansin;;L01FD03;;bis 31.07.2025 gelistet mit dem Namen Trastuzumab Emtansin, Schreibweise aktualisiert laut ATC
+ZS;Trebananib;;fehlt;;
+IM;Tremelimumab;;L01FX20;;
+CH;Treosulfan;;L01AB02;;
+SO;Tretinoin;;L01XX14;31.12.2020;
+SO;Tretinoin;;L01XF01;;
+CH;Triaziquon;;L01AC02;;
+CH;Trifluridin, Kombinationen;;L01BC59;;
+HO;Triptorelin;;L02AE04;;
+CH;Trofosfamid;;L01AA07;;
+ZS;Tucatinib;;L01EH03;;
+IM;Tumorlysat-gepulsten dendritischen Zellen;;fehlt;;Aktualisierung 2025
+IM;Ubamatamab;;fehlt;;Aktualisierung 2025
+ZS;Umirolimus;;fehlt;;
+CH;Uramustin;;L01AD08;;
+IM;Urelumab;;fehlt;;
+ZS;Valproinsäure;;N03AG01;;
+CH;Valrubicin;;L01DB09;;
+ZS;Vandetanib;;L01XE12;31.12.2020;
+ZS;Vandetanib;;L01EX04;;
+ZS;Veliparib;;L01XK05;;
+ZS;Vemurafenib;;L01XE15;31.12.2020;
+ZS;Vemurafenib;;L01EC01;;
+ZS;Venetoclax;;L01XX52;;
+IM;Vibostolimab;;fehlt;;Aktualisierung 31.12.2023
+CH;Vinblastin;;L01CA01;;
+CH;Vincristin;;L01CA02;;
+CH;Vindesin;;L01CA03;;
+CH;Vinflunin;;L01CA05;;
+CH;Vinorelbin;;L01CA04;;
+ZS;Vismodegib;;L01XJ01;;
+ZS;Vismodegib;;L01XX43;31.12.2020;
+IM;Voclosporin;;L04AD03;;
+ZS;Volasertib;;fehlt;;
+ZS;Volrustomig;;fehlt;;Aktualisierung 2025
+ZS;Vorinostat;;L01XX38;31.12.2020;
+ZS;Vorinostat;;L01XH01;;
+HO;Vorozol;;L02BG05;;
+CH;Vosaroxin;;L01XX53;;Aktualisierung 31.12.2023
+IM;Zanidatamab;;fehlt;;Aktualisierung 2025
+ZS;Zanubrutinib;;L01EL03;;
+IM;Zenocutuzumab;;fehlt;;Aktualisierung 2025
+IM;Zilovertamab vedotin;;fehlt;;Aktualisierung 2024
+IM;Zolbetuximab;;L01FX31;;Aktualisierung 2025
+SO;Zoledronsäure;;M05BA08;;
+ZS;Zongertinib;;fehlt;;Aktualisierung 2025
+CH;Zorubicin;;L01DB05;;
+ZS;Zotarolimus;;fehlt;;
