@@ -15,7 +15,7 @@ plugins {
 
 group = 'io.github.bzkf'
 version = '3.0.0-beta.157'
-base.archivesName = 'obds-to-fhir'
+base.archivesName = 'obds-to-fhir-mappings'
 
 dependencyManagement {
   imports {
@@ -133,13 +133,6 @@ pkmerBoot {
          */
         username = System.getenv('OSSRH_USERNAME')
         password = System.getenv('OSSRH_PASSWORD')
-    }
-}
-
-// via <https://stackoverflow.com/questions/24936781/gradle-plugin-project-version-number>
-task printVersion {
-    doLast {
-        println project.version
     }
 }
 
