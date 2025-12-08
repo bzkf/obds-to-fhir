@@ -67,17 +67,17 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     }
 
-    var categoryAndCode = lookupCategoryAndCode(syst.getTherapieart());
-
-    if (categoryAndCode.category() != null) {
-      procedure.setCategory(new CodeableConcept(categoryAndCode.category()));
-    }
-
-    if (categoryAndCode.code() != null) {
-      procedure.setCode(new CodeableConcept(categoryAndCode.code()));
-    }
-
     if (syst.getTherapieart() != null) {
+      var categoryAndCode = lookupCategoryAndCode(syst.getTherapieart());
+
+      if (categoryAndCode.category() != null) {
+        procedure.setCategory(new CodeableConcept(categoryAndCode.category()));
+      }
+
+      if (categoryAndCode.code() != null) {
+        procedure.setCode(new CodeableConcept(categoryAndCode.code()));
+      }
+
       var therapieartCodeableConcept = procedure.getCode();
       therapieartCodeableConcept
           .addCoding()
