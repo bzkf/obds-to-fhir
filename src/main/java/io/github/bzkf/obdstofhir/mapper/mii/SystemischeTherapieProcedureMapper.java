@@ -88,9 +88,13 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       }
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
-      var absentCoding = fhirProperties.getCodings().ops();
-      absentCoding.getCodeElement().addExtension(dataAbsentExtension);
-      procedure.setCode(new CodeableConcept().addCoding(absentCoding));
+      var absentOpsCoding = fhirProperties.getCodings().ops();
+      absentOpsCoding.getCodeElement().addExtension(dataAbsentExtension);
+      procedure.setCode(new CodeableConcept().addCoding(absentOpsCoding));
+
+      var absentSnomedCoding = fhirProperties.getCodings().snomed();
+      absentSnomedCoding.getCodeElement().addExtension(dataAbsentExtension);
+      procedure.setCategory(new CodeableConcept().addCoding(absentSnomedCoding));
     }
 
     var intention = new CodeableConcept();
