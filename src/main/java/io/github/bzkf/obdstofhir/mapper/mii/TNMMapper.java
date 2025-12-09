@@ -55,6 +55,21 @@ public class TNMMapper extends ObdsToFhirMapper {
         break;
     }
 
+    // we found that ONKOSTAR seems to re-use the TNM-ID multiple times for the
+    // same patient with different values/context. This causes multiple Observations
+    // with the same ID to be created that override each other. For now, we use the
+    // timestamp as an additional discriminator
+    if (tnm.getDatum() != null) {
+      var date = convertObdsDatumToDateTimeType(tnm.getDatum());
+      if (date.isPresent()) {
+        idBase += "-" + date.get().getValueAsString();
+      } else {
+        LOG.error("Unable to convert XML date.");
+      }
+    } else {
+      LOG.warn("TNM Datum is unset. This may cause duplicate Observations to be created.");
+    }
+
     var memberObservations =
         createObservations(tnm, idBase, patientReference, primaryConditionReference);
     var observationList = new ArrayList<>(memberObservations);
@@ -399,7 +414,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   protected CodeableConcept createValueWithItcSnSuffixExtension(String inputValue) {
 
-    //  suffixes = {"i-", "i+", "sn"};
+    // suffixes = {"i-", "i+", "sn"};
     var suffixPattern = "\\(?(\\Qi-\\E|\\Qi+\\E|\\Qsn\\E)\\)?";
     var pattern = Pattern.compile(suffixPattern);
     var matcher = pattern.matcher(inputValue.trim());
