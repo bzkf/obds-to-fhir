@@ -24,7 +24,12 @@ class SystemischeTherapieProcedureMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({
+    "Testpatient_1.xml",
+    "Testpatient_2.xml",
+    "Testpatient_3.xml",
+    "Test_SysT_0_unset_Therapieart.xml"
+  })
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
