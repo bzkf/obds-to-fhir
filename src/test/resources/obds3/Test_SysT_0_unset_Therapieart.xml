@@ -55,6 +55,7 @@
             <Intention>K</Intention>
             <Stellung_OP>O</Stellung_OP>
             <Beginn Datumsgenauigkeit="E">2021-11-08</Beginn>
+            <Protokoll>Stammzellmobilisierung (MM)</Protokoll>
             <Menge_Substanz>
               <Substanz>
                 <Bezeichnung>Bicalutamid</Bezeichnung>
