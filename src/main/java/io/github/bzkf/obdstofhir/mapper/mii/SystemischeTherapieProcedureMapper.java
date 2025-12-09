@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
-  private static final Logger LOG = LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
+  private static final Logger LOG =
+      LoggerFactory.getLogger(SystemischeTherapieProcedureMapper.class);
 
   public SystemischeTherapieProcedureMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -28,10 +29,11 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());
 
-    var identifier = new Identifier()
-        .setSystem(
-            fhirProperties.getSystems().getIdentifiers().getSystemischeTherapieProcedureId())
-        .setValue(slugifier.slugify(syst.getSYSTID()));
+    var identifier =
+        new Identifier()
+            .setSystem(
+                fhirProperties.getSystems().getIdentifiers().getSystemischeTherapieProcedureId())
+            .setValue(slugifier.slugify(syst.getSYSTID()));
     procedure.addIdentifier(identifier);
     procedure.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -44,8 +46,9 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
     procedure.setSubject(subject);
 
-    var dataAbsentExtension = new Extension(
-        fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+    var dataAbsentExtension =
+        new Extension(
+            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
     var dataAbsentCode = new CodeType();
     dataAbsentCode.addExtension(dataAbsentExtension);
 
@@ -103,9 +106,10 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     procedure.addExtension(
         fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieIntention(), intention);
 
-    var stellungZurOp = new Coding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieStellungzurop())
-        .setCode(syst.getStellungOP());
+    var stellungZurOp =
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieStellungzurop())
+            .setCode(syst.getStellungOP());
     procedure
         .addExtension()
         .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieStellungzurop())
@@ -123,74 +127,82 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     return procedure;
   }
 
-  private static record CategoryAndCode(Coding category, Coding code) {
-  }
+  private static record CategoryAndCode(Coding category, Coding code) {}
 
   private CategoryAndCode lookupCategoryAndCode(Therapieart therapieart) {
     Coding category = null;
     Coding code = null;
 
-    var medicationCategory = fhirProperties
-        .getCodings()
-        .snomed()
-        .setCode("18629005")
-        .setDisplay("Administration of drug or medicament (procedure)");
+    var medicationCategory =
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("18629005")
+            .setDisplay("Administration of drug or medicament (procedure)");
 
     switch (therapieart) {
       case CH, IM, CI, CIZ, CZ, IZ, ZS -> {
         category = medicationCategory;
-        code = fhirProperties
-            .getCodings()
-            .ops()
-            .setCode("8-54")
-            .setDisplay(
-                "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie");
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("8-54")
+                .setDisplay(
+                    "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie");
       }
       case SZ -> {
         category = medicationCategory;
-        code = fhirProperties
-            .getCodings()
-            .ops()
-            .setCode("8-86")
-            .setDisplay("Therapie mit besonderen Zellen und Blutbestandteilen");
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("8-86")
+                .setDisplay("Therapie mit besonderen Zellen und Blutbestandteilen");
       }
       case HO -> {
         category = medicationCategory;
-        code = fhirProperties
-            .getCodings()
-            .ops()
-            .setCode("6-00")
-            .setDisplay("Applikation von Medikamenten");
+        code =
+            fhirProperties
+                .getCodings()
+                .ops()
+                .setCode("6-00")
+                .setDisplay("Applikation von Medikamenten");
       }
       case WW ->
-        code = fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("373818007")
-            .setDisplay("No anti-cancer treatment - watchful waiting (finding)");
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("373818007")
+                  .setDisplay("No anti-cancer treatment - watchful waiting (finding)");
       case AS ->
-        code = fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("424313000")
-            .setDisplay("Active surveillance (regime/therapy)");
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("424313000")
+                  .setDisplay("Active surveillance (regime/therapy)");
       case WS ->
-        code = fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("310341009")
-            .setDisplay("Follow-up (wait and see) (finding)");
+          code =
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("310341009")
+                  .setDisplay("Follow-up (wait and see) (finding)");
       case SO -> {
-        category = fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("394841004")
-            .setDisplay("Other category (qualifier value)");
-        code = fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("74964007")
-            .setDisplay("Other (qualifier value)");
+        category =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("394841004")
+                .setDisplay("Other category (qualifier value)");
+        code =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("74964007")
+                .setDisplay("Other (qualifier value)");
       }
     }
 
