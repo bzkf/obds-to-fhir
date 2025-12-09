@@ -48,7 +48,8 @@
           "valueCode": "unknown"
         } ]
       }
-    } ]
+    } ],
+    "text": "Stammzellmobilisierung (MM)"
   },
   "subject": {
     "reference": "Patient/any"
