@@ -27,9 +27,15 @@
   } ],
   "status": "in-progress",
   "code": {
-    "extension": [ {
-      "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-      "valueCode": "unknown"
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/ops",
+      "version": "2025",
+      "_code": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      }
     } ]
   },
   "subject": {
