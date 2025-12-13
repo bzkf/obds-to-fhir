@@ -1052,7 +1052,10 @@
       },
       "effectivePeriod": {
         "start": "2020-09-21"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1082,7 +1085,10 @@
       },
       "effectivePeriod": {
         "start": "2020-09-21"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1116,7 +1122,10 @@
       },
       "effectivePeriod": {
         "start": "2020-09-21"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ]
     },
     "request": {
       "method": "PUT",

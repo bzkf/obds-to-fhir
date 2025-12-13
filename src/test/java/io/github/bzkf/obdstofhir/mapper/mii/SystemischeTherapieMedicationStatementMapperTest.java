@@ -46,12 +46,13 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
 
     var patient = new Reference("Patient/any");
     var procedure = new Reference("Procedure/any");
+    var primaryCondition = new Reference("Condition/any");
     var systMeldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getSYST() != null)
             .findFirst()
             .get();
-    var list = sut.map(systMeldung.getSYST(), patient, procedure);
+    var list = sut.map(systMeldung.getSYST(), patient, procedure, primaryCondition);
 
     verifyAll(list, sourceFile);
   }

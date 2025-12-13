@@ -250,7 +250,10 @@
       },
       "effectivePeriod": {
         "start": "2018-06-15"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -284,7 +287,10 @@
       },
       "effectivePeriod": {
         "start": "2018-06-15"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -471,7 +477,10 @@
       "effectivePeriod": {
         "start": "2018-04-07",
         "end": "2018-05-15"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -506,7 +515,10 @@
       "effectivePeriod": {
         "start": "2018-04-07",
         "end": "2018-05-15"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
     },
     "request": {
       "method": "PUT",

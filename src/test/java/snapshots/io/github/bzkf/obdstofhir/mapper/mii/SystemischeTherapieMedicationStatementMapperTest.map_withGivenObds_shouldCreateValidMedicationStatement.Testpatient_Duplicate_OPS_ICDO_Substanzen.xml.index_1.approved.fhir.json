@@ -23,5 +23,8 @@
   },
   "effectivePeriod": {
     "start": "2020-04-03"
-  }
+  },
+  "reasonReference": [ {
+    "reference": "Condition/any"
+  } ]
 }

@@ -192,7 +192,10 @@
       "effectivePeriod": {
         "start": "2020-04-03",
         "end": "2020-05-14"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -227,7 +230,10 @@
       "effectivePeriod": {
         "start": "2020-04-03",
         "end": "2020-05-14"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -258,7 +264,10 @@
       "effectivePeriod": {
         "start": "2020-04-03",
         "end": "2020-05-14"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ]
     },
     "request": {
       "method": "PUT",
