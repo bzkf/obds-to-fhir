@@ -24,5 +24,8 @@
   "effectivePeriod": {
     "start": "2021-11",
     "end": "2022-10-15"
-  }
+  },
+  "reasonReference": [ {
+    "reference": "Condition/any"
+  } ]
 }

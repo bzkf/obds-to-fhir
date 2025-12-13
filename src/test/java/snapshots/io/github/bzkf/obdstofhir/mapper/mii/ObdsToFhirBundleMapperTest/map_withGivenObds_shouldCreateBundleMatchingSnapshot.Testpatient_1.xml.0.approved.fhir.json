@@ -2243,7 +2243,10 @@
       "effectivePeriod": {
         "start": "2020-05",
         "end": "2020-10-15"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+      } ]
     },
     "request": {
       "method": "PUT",

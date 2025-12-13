@@ -644,7 +644,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     if (syst.getMengeSubstanz() != null) {
       var systMedicationStatements =
           systemischeTherapieMedicationStatementMapper.map(
-              syst, patientReference, procedureReference);
+              syst, patientReference, procedureReference, primaryConditionReference);
       mappedResources.addAll(systMedicationStatements);
     }
 

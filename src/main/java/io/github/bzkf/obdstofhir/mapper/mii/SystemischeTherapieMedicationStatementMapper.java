@@ -35,11 +35,15 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
   }
 
   public List<MedicationStatement> map(
-      @NonNull SYSTTyp syst, Reference patient, Reference procedure) {
+      @NonNull SYSTTyp syst,
+      @NonNull Reference patient,
+      @NonNull Reference procedure,
+      @NonNull Reference primaryConditionReference) {
 
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
     verifyReference(patient, ResourceType.Patient);
     verifyReference(procedure, ResourceType.Procedure);
+    verifyReference(primaryConditionReference, ResourceType.Condition);
 
     MDC.put("SYST_ID", syst.getSYSTID());
 
@@ -120,6 +124,8 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
       // Part of
       systMedicationStatement.setPartOf(List.of(procedure));
+
+      systMedicationStatement.addReasonReference(primaryConditionReference);
 
       result.add(systMedicationStatement);
     }
