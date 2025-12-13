@@ -149,6 +149,7 @@
       } ],
       "status": "current",
       "mode": "snapshot",
+      "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
         "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
       },
