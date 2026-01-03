@@ -37,6 +37,7 @@ public class ErstdiagnoseEvidenzListMapper extends ObdsToFhirMapper {
 
     list.setStatus(ListStatus.CURRENT);
     list.setMode(ListMode.SNAPSHOT);
+    list.setTitle("Liste der Evidenz zum Erstdiagnosezeitpunkt");
 
     for (var reference : evidenceReferences) {
       list.addEntry().setItem(reference);

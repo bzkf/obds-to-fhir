@@ -12,7 +12,6 @@ plugins {
 
 group = 'io.github.bzkf'
 version = '3.0.0-beta.162'
-base.archivesName = 'obds-to-fhir'
 
 java {
     toolchain {
@@ -105,14 +104,6 @@ jacocoTestReport {
         html.required = true
         xml.required = true
     }
-}
-
-jar {
-    enabled = project.hasProperty('enableJar')
-}
-
-bootJar {
-    enabled = !project.hasProperty('enableJar')
 }
 
 import net.ltgt.gradle.errorprone.CheckSeverity

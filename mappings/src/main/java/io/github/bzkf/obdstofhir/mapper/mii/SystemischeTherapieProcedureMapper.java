@@ -67,28 +67,35 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.setPerformed(performed);
     }
 
-    var categoryAndCode = lookupCategoryAndCode(syst.getTherapieart());
-
-    if (categoryAndCode.category() != null) {
-      procedure.setCategory(new CodeableConcept(categoryAndCode.category()));
-    }
-
-    if (categoryAndCode.code() != null) {
-      procedure.setCode(new CodeableConcept(categoryAndCode.code()));
-    }
-
     if (syst.getTherapieart() != null) {
+      var categoryAndCode = lookupCategoryAndCode(syst.getTherapieart());
+
+      if (categoryAndCode.category() != null) {
+        procedure.setCategory(new CodeableConcept(categoryAndCode.category()));
+      }
+
+      if (categoryAndCode.code() != null) {
+        procedure.setCode(new CodeableConcept(categoryAndCode.code()));
+      }
+
       var therapieartCodeableConcept = procedure.getCode();
       therapieartCodeableConcept
           .addCoding()
           .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
           .setCode(syst.getTherapieart().value());
-      if (syst.getProtokoll() != null) {
-        therapieartCodeableConcept.setText(syst.getProtokoll());
-      }
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
-      procedure.getCode().addExtension(dataAbsentExtension);
+      var absentOpsCoding = fhirProperties.getCodings().ops();
+      absentOpsCoding.getCodeElement().addExtension(dataAbsentExtension);
+      procedure.setCode(new CodeableConcept().addCoding(absentOpsCoding));
+
+      var absentSnomedCoding = fhirProperties.getCodings().snomed();
+      absentSnomedCoding.getCodeElement().addExtension(dataAbsentExtension);
+      procedure.setCategory(new CodeableConcept().addCoding(absentSnomedCoding));
+    }
+
+    if (syst.getProtokoll() != null) {
+      procedure.getCode().setText(syst.getProtokoll());
     }
 
     var intention = new CodeableConcept();

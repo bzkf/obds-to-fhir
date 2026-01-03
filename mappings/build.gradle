@@ -15,7 +15,6 @@ plugins {
 
 group = 'io.github.bzkf'
 version = '3.0.0-beta.157'
-base.archivesName = 'obds-to-fhir-mappings'
 
 dependencyManagement {
   imports {
@@ -37,17 +36,13 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+
+    // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.14'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.0'
     api 'io.github.java-diff-utils:java-diff-utils:4.16'
     api 'com.github.slugify:slugify:3.0.7'
 
-    api platform('com.fasterxml.jackson:jackson-bom:2.20.1')
-    api 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
-    api 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
-    api 'jakarta.validation:jakarta.validation-api:3.1.1'
-    api 'commons-codec:commons-codec:1.20.0'
     api 'org.slf4j:slf4j-api:2.0.17'
 
     testImplementation platform('org.junit:junit-bom:5.14.1')
@@ -69,7 +64,7 @@ tasks.withType(JavaCompile).configureEach {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = 'obds2-to-obds3'
+            artifactId = 'obds-to-fhir'
             from components.java
             versionMapping {
                 usage('java-api') {
@@ -80,13 +75,13 @@ publishing {
                 }
             }
             pom {
-                name = 'oBDS v2 to oBDS v3'
-                description = 'Library to map oBDS v2 into oBDS v3 messages'
-                url = 'https://github.com/bzkf/obds2-to-obds3'
+                name = 'obds-to-fhir'
+                description = 'Library used to map oBDS v3 messages to MII-conformant FHIR resources.'
+                url = 'https://github.com/bzkf/obds-to-fhir'
                 licenses {
                     license {
-                        name = 'MIT'
-                        url = 'https://opensource.org/licenses/MIT'
+                        name = 'GPL-3.0-only'
+                        url = 'https://opensource.org/license/GPL-3.0'
                     }
                 }
                 developers {
@@ -95,9 +90,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:https://github.com/bzkf/obds2-to-obds3.git'
-                    developerConnection = 'scm:git:ssh://github.com:bzkf/obds2-to-obds3.git'
-                    url = 'https://github.com/bzkf/obds2-to-obds3'
+                    connection = 'scm:git:https://github.com/bzkf/obds-to-fhir.git'
+                    developerConnection = 'scm:git:ssh://github.com:bzkf/obds-to-fhir.git'
+                    url = 'https://github.com/bzkf/obds-to-fhir'
                 }
             }
         }

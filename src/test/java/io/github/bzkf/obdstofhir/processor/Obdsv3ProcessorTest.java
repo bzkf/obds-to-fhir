@@ -90,7 +90,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       SubstanzToAtcMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
-class Obdsv3ProcessorTest extends MapperTest {
+class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";

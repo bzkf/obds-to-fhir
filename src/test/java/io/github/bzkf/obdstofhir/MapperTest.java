@@ -1,4 +1,4 @@
-package io.github.bzkf.obdstofhir.mapper.mii;
+package io.github.bzkf.obdstofhir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

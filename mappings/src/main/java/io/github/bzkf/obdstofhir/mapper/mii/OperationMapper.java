@@ -31,7 +31,7 @@ public class OperationMapper extends ObdsToFhirMapper {
     verifyReference(subject, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
-    MDC.put("OPID", op.getOPID());
+    MDC.put("OP_ID", op.getOPID());
 
     if (op.getMengeOPS() == null || op.getMengeOPS().getOPS().isEmpty()) {
       LOG.warn("No OPS codes set for OP. Not creating Procedure resources.");
@@ -192,7 +192,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedureList.add(procedure);
     }
 
-    MDC.remove("OPID");
+    MDC.remove("OP_ID");
 
     return procedureList;
   }
