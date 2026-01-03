@@ -84,11 +84,11 @@ jobs:
           mkdir -p ./data-docs
           sudo chown -R 65532:65532 ./data-docs
           docker run --rm \
-            -v ./src:/src:ro \
+            -v ./mappings:/mappings:ro \
             -v ./data-docs:/app/gx/uncommitted/:rw \
             -e READ_FROM_DELTA=False \
             -e SPARK_CHECKPOINT_PATH=/tmp \
-            -e BUNDLES_DIR=/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
+            -e BUNDLES_DIR=/mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
             "${DQ_CHECKS_IMAGE}"
 
       - name: Upload data docs
