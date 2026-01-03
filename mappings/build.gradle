@@ -1,0 +1,141 @@
+// groovylint-disable NestedBlockDepth
+
+plugins {
+    id 'org.springframework.boot' version '3.5.8' apply false
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+    id 'io.freefair.lombok' version '9.1.0'
+    id 'com.diffplug.spotless' version '8.1.0'
+    id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
+}
+
+group = 'io.github.bzkf'
+version = '3.0.0-beta.162'
+
+dependencyManagement {
+  imports {
+    mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+  }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // the lib also includes the oBDS model classes
+    api 'io.github.bzkf:obds2-to-obds3:0.1.14'
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.0'
+    api 'io.github.java-diff-utils:java-diff-utils:4.16'
+    api 'com.github.slugify:slugify:3.0.7'
+
+    api 'org.slf4j:slf4j-api:2.0.17'
+
+    testImplementation platform('org.junit:junit-bom:5.14.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.27.6'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.approvaltests:approvaltests:25.9.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add("-parameters")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'obds-to-fhir'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'obds-to-fhir'
+                description = 'Library used to map oBDS v3 messages to MII-conformant FHIR resources.'
+                url = 'https://github.com/bzkf/obds-to-fhir'
+                licenses {
+                    license {
+                        name = 'GPL-3.0-only'
+                        url = 'https://opensource.org/license/GPL-3.0'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'BZKF'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/bzkf/obds-to-fhir.git'
+                    developerConnection = 'scm:git:ssh://github.com:bzkf/obds-to-fhir.git'
+                    url = 'https://github.com/bzkf/obds-to-fhir'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'Local'
+            url = layout.buildDirectory.dir('repos/bundles')
+        }
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+signing {
+    def signingKey = System.getenv('SIGNING_KEY')
+    def signingPassword = System.getenv('SIGNING_KEY_PASSPHRASE')
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+pkmerBoot {
+    sonatypeMavenCentral {
+        // the same with publishing.repositories.maven.url in the configuration.
+        stagingRepository = layout.buildDirectory.dir('repos/bundles')
+        /**
+         * get username and password from
+         * <a href='https://central.sonatype.com/account'> central sonatype account</a>
+         */
+        username = System.getenv('OSSRH_USERNAME')
+        password = System.getenv('OSSRH_PASSWORD')
+    }
+}
+
+spotless {
+    java {
+        target('**/*.java')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}

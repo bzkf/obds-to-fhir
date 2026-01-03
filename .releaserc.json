@@ -65,7 +65,9 @@
       {
         "replacements": [
           {
-            "files": ["src/main/resources/application.yml"],
+            "files": [
+              "src/main/resources/application.yml"
+            ],
             "from": "^app-version: .*$",
             "to": "app-version: ${nextRelease.version}",
             "results": [
@@ -76,7 +78,10 @@
             ]
           },
           {
-            "files": ["README.md", "deploy/compose.yaml"],
+            "files": [
+              "README.md",
+              "deploy/compose.yaml"
+            ],
             "from": "ghcr.io/bzkf/obds-to-fhir:v.*",
             "to": "ghcr.io/bzkf/obds-to-fhir:v${nextRelease.version}",
             "results": [
@@ -91,7 +96,9 @@
             ]
           },
           {
-            "files": ["deploy/compose.dq-checks.yaml"],
+            "files": [
+              "deploy/compose.dq-checks.yaml"
+            ],
             "from": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v.*",
             "to": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v${nextRelease.version}",
             "results": [
@@ -102,18 +109,27 @@
             ]
           },
           {
-            "files": ["build.gradle"],
+            "files": [
+              "build.gradle",
+              "mappings/build.gradle"
+            ],
             "from": "version = '.*'",
             "to": "version = '${nextRelease.version}'",
             "results": [
               {
                 "file": "build.gradle",
                 "hasChanged": true
+              },
+              {
+                "file": "mappings/build.gradle",
+                "hasChanged": true
               }
             ]
           },
           {
-            "files": ["package.json"],
+            "files": [
+              "package.json"
+            ],
             "from": "\"version\": \".*\"",
             "to": "\"version\": \"${nextRelease.version}\"",
             "results": [
@@ -132,8 +148,10 @@
         "assets": [
           "src/main/resources/application.yml",
           "build.gradle",
+          "mappings/build.gradle",
           "README.md",
-          "deploy/compose.yaml"
+          "deploy/compose.yaml",
+          "package.json"
         ]
       }
     ]

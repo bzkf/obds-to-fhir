@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
 jobs:
   build:
     uses: miracum/.github/.github/workflows/standard-build.yaml@25644e0d4ff70af6ee319e6cb4bd6d2f451882f8 # v1.18.4

@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-09-19</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="10">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lator</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Wendy</Vornamen>
+        <Geburtsname>Müller</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Meier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Hier</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Einwilligung_nicht_meldepflichtig>J</Einwilligung_nicht_meldepflichtig>
+          <Zertifizierung>1</Zertifizierung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Mamma-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C50.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>rechte Brust</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Menge_Fruehere_Tumorerkrankung>
+              <Fruehere_Tumorerkrankung>
+                <Freitext>Malignes Melanom rechtes Bein</Freitext>
+                <ICD>
+                  <Code>C43.7</Code>
+                  <Version>10 2010 GM</Version>
+                </ICD>
+                <Diagnosedatum>2010</Diagnosedatum>
+              </Fruehere_Tumorerkrankung>
+            </Menge_Fruehere_Tumorerkrankung>
+            <Histologie Histologie_ID="521">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2020-03-05</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/123456/1</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8010/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>2</Grading>
+              <LK_untersucht>10</LK_untersucht>
+              <LK_befallen>2</LK_befallen>
+              <Sentinel_LK_untersucht>2</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <Menge_FM>
+              <Fernmetastase>
+                <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+                <Lokalisation>OSS</Lokalisation>
+              </Fernmetastase>
+            </Menge_FM>
+            <cTNM ID="481">
+              <Datum>2020-03-01</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>c</c_p_u_Praefix_T>
+              <T>2</T>
+              <m_Symbol>m</m_Symbol>
+              <c_p_u_Praefix_N>c</c_p_u_Praefix_N>
+              <N>1</N>
+              <c_p_u_Praefix_M>c</c_p_u_Praefix_M>
+              <M>1</M>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </cTNM>
+            <pTNM ID="482">
+              <Datum>2020-03-05</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>2</T>
+              <m_Symbol>3</m_Symbol>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>1</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>LX</L>
+              <V>VX</V>
+              <Pn>PnX</Pn>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </pTNM>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-03-01</Datum>
+                <Bezeichnung>BRCA 1</Bezeichnung>
+                <Auspraegung>M</Auspraegung>
+              </Genetische_Variante>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-03-01</Datum>
+                <Bezeichnung>BRCA 2</Bezeichnung>
+                <Sonstige_Auspraegung>Translation</Sonstige_Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <Datum>2020-03-15</Datum>
+              </Sozialdienstkontakt>
+              <Psychoonkologiekontakt>
+                <Datum>2020-03-16</Datum>
+              </Psychoonkologiekontakt>
+              <Studienteilnahme>
+                <Datum>2020-03-17</Datum>
+              </Studienteilnahme>
+            </Modul_Allgemein>
+            <Modul_Mamma>
+              <Praetherapeutischer_Menopausenstatus>3</Praetherapeutischer_Menopausenstatus>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>18</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>0</TumorgroesseDCIS>
+            </Modul_Mamma>
+          </Diagnose>
+          <Anmerkung>Anmerkung zur Meldung!</Anmerkung>
+        </Meldung>
+        <Meldung Melder_ID="9876_#Aa/m" Meldung_ID="10_1_OP-1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="301">
+            <Intention>K</Intention>
+            <Datum>2020-03-05</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-870</Code>
+                <Version>2020</Version>
+              </OPS>
+              <OPS>
+                <Code>5-401.1</Code>
+                <Version>2020</Version>
+              </OPS>
+            </Menge_OPS>
+            <Histologie Histologie_ID="522">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2020-03-05</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/123456/1</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8010/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>2</Grading>
+              <LK_untersucht>10</LK_untersucht>
+              <LK_befallen>2</LK_befallen>
+              <Sentinel_LK_untersucht>2</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <TNM ID="483">
+              <Datum>2020-03-05</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>2</T>
+              <m_Symbol>3</m_Symbol>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>1</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>L0</L>
+              <V>V0</V>
+              <Pn>Pn0</Pn>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </TNM>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R2</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Komplikation_nein_oder_unbekannt>N</Komplikation_nein_oder_unbekannt>
+            </Komplikationen>
+            <Modul_Mamma>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <PraeopDrahtmarkierung>S</PraeopDrahtmarkierung>
+              <IntraopPraeparatkontrolle>S</IntraopPraeparatkontrolle>
+              <TumorgroesseInvasiv>18</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>0</TumorgroesseDCIS>
+            </Modul_Mamma>
+          </OP>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_ST-2">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <ST ST_ID="101_ST-2">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>S</Stellung_OP>
+            <Menge_Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2020-03-10</Beginn>
+                <Ende>2020-03-20</Ende>
+                <Applikationsart>
+                  <Perkutan>
+                    <Radiochemo>RCN</Radiochemo>
+                    <Stereotaktisch>ST</Stereotaktisch>
+                    <Atemgetriggert>4D</Atemgetriggert>
+                    <Zielgebiet>
+                      <CodeVersion2014>3.1.-</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>U</Seite_Zielgebiet>
+                    <Strahlenart>Co-60</Strahlenart>
+                    <Gesamtdosis>
+                      <Dosis>30.3</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Gesamtdosis>
+                    <Einzeldosis>
+                      <Dosis>5.8</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Einzeldosis>
+                    <Boost>KON</Boost>
+                  </Perkutan>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2020-03-10</Beginn>
+                <Ende>2020-03-20</Ende>
+                <Applikationsart>
+                  <Kontakt>
+                    <Interstitiell_endokavitaer>I</Interstitiell_endokavitaer>
+                    <Rate_Type>HDR</Rate_Type>
+                    <Zielgebiet>
+                      <CodeVersion2021>6.10</CodeVersion2021>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>L</Seite_Zielgebiet>
+                    <Strahlenart>SO</Strahlenart>
+                    <Gesamtdosis>
+                      <Dosis>30</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Gesamtdosis>
+                    <Einzeldosis>
+                      <Dosis>5</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Einzeldosis>
+                    <Boost>N</Boost>
+                  </Kontakt>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2020-03-10</Beginn>
+                <Ende>2020-03-10</Ende>
+                <Applikationsart>
+                  <Metabolisch>
+                    <Metabolisch_Typ>PRRT</Metabolisch_Typ>
+                    <Zielgebiet>
+                      <CodeVersion2014>7.+</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>U</Seite_Zielgebiet>
+                    <Strahlenart>Y-90</Strahlenart>
+                    <Gesamtdosis>
+                      <Dosis>20</Dosis>
+                      <Einheit>GBq</Einheit>
+                    </Gesamtdosis>
+                    <Einzeldosis>
+                      <Dosis>20</Dosis>
+                      <Einheit>GBq</Einheit>
+                    </Einzeldosis>
+                  </Metabolisch>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2020-03-10</Beginn>
+                <Ende>2020-03-20</Ende>
+                <Applikationsart>
+                  <Sonstige>
+                    <Zielgebiet>
+                      <CodeVersion2021>6.16</CodeVersion2021>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>B</Seite_Zielgebiet>
+                    <Gesamtdosis>
+                      <Dosis>10.5</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Gesamtdosis>
+                    <Einzeldosis>
+                      <Dosis>1.1</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Einzeldosis>
+                  </Sonstige>
+                </Applikationsart>
+              </Bestrahlung>
+            </Menge_Bestrahlung>
+            <Ende_Grund>E</Ende_Grund>
+            <Nebenwirkungen>
+              <Menge_Nebenwirkung>
+                <Nebenwirkung>
+                  <Art>
+                    <MedDRA_Code>26356258</MedDRA_Code>
+                  </Art>
+                  <Grad>3</Grad>
+                  <Version>5.0</Version>
+                </Nebenwirkung>
+              </Menge_Nebenwirkung>
+            </Nebenwirkungen>
+          </ST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_IN-2">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="101_IN-1">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>P</Intention>
+            <Stellung_OP>S</Stellung_OP>
+            <Therapieart>IM</Therapieart>
+            <Protokoll>Atezolizumab Immuntherapie</Protokoll>
+            <Beginn Datumsgenauigkeit="T">2020-05-01</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <ATC>
+                  <Code>L01FF05</Code>
+                  <Version>2020</Version>
+                </ATC>
+              </Substanz>
+            </Menge_Substanz>
+            <Ende_Grund>V</Ende_Grund>
+            <Ende>2020-10-15</Ende>
+            <Nebenwirkungen>
+              <Menge_Nebenwirkung>
+                <Nebenwirkung>
+                  <Art>
+                    <Bezeichnung>Schüttelfrost</Bezeichnung>
+                  </Art>
+                  <Grad>5</Grad>
+                  <Version>Sonstige</Version>
+                </Nebenwirkung>
+              </Menge_Nebenwirkung>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_KO-1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tumorkonferenz Tumorkonferenz_ID="221">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Datum Datumsgenauigkeit="E">2020-10-20</Datum>
+            <Typ>postth</Typ>
+            <Therapieempfehlung>
+              <Menge_Typ_Therapieempfehlung>
+                <Typ_Therapieempfehlung>CH</Typ_Therapieempfehlung>
+              </Menge_Typ_Therapieempfehlung>
+              <Abweichung_Patientenwunsch>J</Abweichung_Patientenwunsch>
+            </Therapieempfehlung>
+          </Tumorkonferenz>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_VE-1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="341">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-06-01</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>Y</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>R</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>R</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>R</Verlauf_Tumorstatus_Fernmetastasen>
+            <Menge_FM>
+              <Fernmetastase>
+                <Diagnosedatum Datumsgenauigkeit="E">2021-06-01</Diagnosedatum>
+                <Lokalisation>BRA</Lokalisation>
+              </Fernmetastase>
+            </Menge_FM>
+            <Histologie Histologie_ID="523">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2021-06-01</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/654987/1</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8010/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>2</Grading>
+              <LK_untersucht>5</LK_untersucht>
+              <LK_befallen>5</LK_befallen>
+              <Sentinel_LK_untersucht>1</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <TNM ID="484">
+              <Datum>2021-06-01</Datum>
+              <Version>8</Version>
+              <r_Symbol>r</r_Symbol>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>3</T>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>3</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>L1</L>
+              <V>V2</V>
+              <Pn>Pn1</Pn>
+              <UICC_Stadium>IIIA</UICC_Stadium>
+            </TNM>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2021-06-01</Datum>
+                <Bezeichnung>BLUB</Bezeichnung>
+                <Auspraegung>W</Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Allgemeiner_Leistungszustand>20%</Allgemeiner_Leistungszustand>
+            <Modul_Mamma>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>18</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>0</TumorgroesseDCIS>
+            </Modul_Mamma>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_VE-2">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>N</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="342">
+            <Meldeanlass>statusmeldung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-12-02</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>K</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>N</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>N</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>X</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>10%</Allgemeiner_Leistungszustand>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_AB_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Einwilligung_nicht_meldepflichtig>J</Einwilligung_nicht_meldepflichtig>
+          <Zertifizierung>1</Zertifizierung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tod Abschluss_ID="161">
+            <Sterbedatum>2022-08-01</Sterbedatum>
+            <Tod_tumorbedingt>J</Tod_tumorbedingt>
+            <Menge_Todesursachen>
+              <Todesursache_ICD>
+                <Code>C50.9</Code>
+                <Version>10 2020 GM</Version>
+              </Todesursache_ICD>
+              <Todesursache_ICD>
+                <Code>T57.3</Code>
+                <Version>10 2020 GM</Version>
+              </Todesursache_ICD>
+            </Menge_Todesursachen>
+          </Tod>
+          <Anmerkung>Todesmeldung aus der Zeitung</Anmerkung>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_2_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="102">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-01-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Rektum-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C20.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Rektum</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Darm>
+              <RektumAbstandAnokutanlinie>12</RektumAbstandAnokutanlinie>
+              <RektumMRTDuennschichtAngabemesorektaleFaszie>13</RektumMRTDuennschichtAngabemesorektaleFaszie>
+              <RASMutation>W</RASMutation>
+            </Modul_Darm>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_2_OP_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="102">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-01-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="302">
+            <Intention>K</Intention>
+            <Datum>2020-02-01</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-484.55</Code>
+                <Version>2020</Version>
+              </OPS>
+            </Menge_OPS>
+            <TNM ID="485">
+              <Datum>2020-02-01</Datum>
+              <Version>8</Version>
+              <y_Symbol>y</y_Symbol>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>1</T>
+            </TNM>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R2</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Menge_Komplikation>
+                <Komplikation>
+                  <Kuerzel>DAI</Kuerzel>
+                </Komplikation>
+              </Menge_Komplikation>
+            </Komplikationen>
+            <Modul_Darm>
+              <RektumAbstandAboralerResektionsrand>10</RektumAbstandAboralerResektionsrand>
+              <RektumAbstandCircResektionsebene>11</RektumAbstandCircResektionsebene>
+              <RektumQualitaetTME>1</RektumQualitaetTME>
+              <ArtEingriff>E</ArtEingriff>
+              <RektumAnzeichnungStomaposition>D</RektumAnzeichnungStomaposition>
+              <GradRektumAnastomoseninsuffizienz>B</GradRektumAnastomoseninsuffizienz>
+              <ASA>2</ASA>
+              <RASMutation>W</RASMutation>
+            </Modul_Darm>
+          </OP>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_2_VE_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="102">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-01-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="343">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2020-12-01</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>P</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Darm>
+              <RASMutation>M</RASMutation>
+            </Modul_Darm>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_3_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="103">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Malignes Melanom</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C44.5</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Rumpf</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Malignes_Melanom>
+              <Sicherheitsabstand_Primaertumor>1</Sicherheitsabstand_Primaertumor>
+              <Tumordicke>0.9</Tumordicke>
+              <LDH>40</LDH>
+              <Ulzeration>J</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_3_VE_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="103">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="344">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-12-15</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>P</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>P</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Malignes_Melanom>
+              <LDH>60</LDH>
+            </Modul_Malignes_Melanom>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_3_OP_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="103">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="303">
+            <Intention>K</Intention>
+            <Datum>2021-12-20</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-894.1</Code>
+                <Version>2021</Version>
+              </OPS>
+            </Menge_OPS>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R2</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Komplikation_nein_oder_unbekannt>N</Komplikation_nein_oder_unbekannt>
+            </Komplikationen>
+            <Modul_Malignes_Melanom>
+              <Sicherheitsabstand_Primaertumor>2</Sicherheitsabstand_Primaertumor>
+              <Tumordicke>1.1</Tumordicke>
+              <Ulzeration>N</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </OP>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+    <Melder ID="9876_#Aa/m">
+      <Ident_Nummern>
+        <LANR>123456789</LANR>
+        <BSNR>987654321</BSNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Praxis</KH_Abt_Station_Praxis>
+      <Arztname>Hippokrates</Arztname>
+      <Anschrift>Kos Str. 1</Anschrift>
+      <PLZ>98765</PLZ>
+      <Ort>Kos</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Hippokrates</Kontoinhaber>
+      <BIC>98765432198</BIC>
+      <IBAN>DE41500105172332627618</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

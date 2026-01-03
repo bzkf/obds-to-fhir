@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
-import org.jboss.logging.MDC;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
