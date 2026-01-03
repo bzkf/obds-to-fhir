@@ -35,7 +35,7 @@ jobs:
       - name: Find unique prefixes
         id: extract
         run: |
-          PREFIXES=$(find src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f -name "*.fhir.json" \
+          PREFIXES=$(find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f -name "*.fhir.json" \
             | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s -c .)
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
@@ -87,7 +87,7 @@ jobs:
           fhir cache location --path
           fhir cache list
           echo "Validating files for mapper: ${MAPPER_NAME}"
-          find src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f \
+          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
             xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
 
@@ -130,6 +130,6 @@ jobs:
         run: |
           fhir cache location --path
           fhir cache list
-          find src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
+          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
             xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}"'
