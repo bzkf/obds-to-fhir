@@ -20,6 +20,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
 jobs:
   publish:
     runs-on: ubuntu-24.04
@@ -58,7 +62,7 @@ jobs:
 
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: package
+          name: libs
           path: |
             mappings/build/libs/
             build/libs/
