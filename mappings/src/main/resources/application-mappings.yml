@@ -83,6 +83,7 @@ fhir:
     # external systems
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
+    diagnostic-service-section-id : "http://terminology.hl7.org/CodeSystem/v2-0074"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
     icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"

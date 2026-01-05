@@ -480,6 +480,12 @@
           "code": "laboratory",
           "display": "Laboratory"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+          "code": "GE",
+          "display": "Genetics"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -528,6 +534,12 @@
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
           "code": "laboratory",
           "display": "Laboratory"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+          "code": "GE",
+          "display": "Genetics"
         } ]
       } ],
       "code": {
@@ -1171,6 +1183,12 @@
           "code": "laboratory",
           "display": "Laboratory"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+          "code": "GE",
+          "display": "Genetics"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -1219,6 +1237,12 @@
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
           "code": "laboratory",
           "display": "Laboratory"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+          "code": "GE",
+          "display": "Genetics"
         } ]
       } ],
       "code": {

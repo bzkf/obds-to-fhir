@@ -16,13 +16,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
+  # fatal: Internal logic failure: Unknown symbol 'resolve'
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "VerlaufObservationMapperTest",
-      "ConditionMapperTest",
       "HistologiebefundMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest",
-      "FruehereTumorerkrankungenMapperTest"
+      "SystemischeTherapieMedicationStatementMapperTest"
     ]
 
 jobs:

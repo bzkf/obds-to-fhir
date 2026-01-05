@@ -112,6 +112,8 @@ public class FhirProperties {
     private String medicationStatementId;
     private String psaObservationId;
 
+    private String diagnosticServiceSectionId;
+
     private String identifierType;
     private String observationCategorySystem;
     private String loinc;

@@ -163,6 +163,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.atcWho | string | `"http://www.whocc.no/atc"` |  |
 | fhir.systems.condition-ver-status | string | `"http://terminology.hl7.org/CodeSystem/condition-ver-status"` |  |
 | fhir.systems.ctcaeGrading | string | `"http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"` |  |
+| fhir.systems.diagnostic-service-section-id | string | `"http://terminology.hl7.org/CodeSystem/v2-0074"` |  |
 | fhir.systems.fMLokalisationCS | string | `"http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"` |  |
 | fhir.systems.genderAmtlichDe | string | `"http://fhir.de/CodeSystem/gender-amtlich-de"` |  |
 | fhir.systems.gesamtBeurtResidualCS | string | `"http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"` |  |
