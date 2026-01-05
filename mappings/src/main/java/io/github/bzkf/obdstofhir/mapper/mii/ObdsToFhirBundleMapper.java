@@ -511,7 +511,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     mappedResources.add(evidenzListe);
 
-    // we map these after the evidenz list since it may only contain Observation/DiagnosticReport resources.
+    // we map these after the evidenz list since it may only contain Observation/DiagnosticReport
+    // resources.
     if (diagnose.getMengeFruehereTumorerkrankung() != null) {
       var fruehereTumorErkrankungen =
           fruehereTumorErkrankungenMapper.map(
