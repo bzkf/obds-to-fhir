@@ -1,6 +1,10 @@
 # Configuration
 
-<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
+<!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -f ../../../mappings/src/main/resources/application-mappings.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
+
+## FHIR identifier, CodeSystem, Profile, etc.
+
+See [application-mappings.yml](../mappings/src/main/resources/application-mappings.yml) for FHIR systems configuration settings.
 
 ## Environment Variables
 
@@ -77,6 +81,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.display.tnmcLoinc | string | `"Stage group.clinical Cancer"` |  |
 | fhir.display.tnmpLoinc | string | `"Stage group.pathology Cancer"` |  |
 | fhir.extensions.condition-asserted-date | string | `"http://hl7.org/fhir/StructureDefinition/condition-assertedDate"` |  |
+| fhir.extensions.condition-occurred-following | string | `"http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"` |  |
 | fhir.extensions.dataAbsentReason | string | `"http://hl7.org/fhir/StructureDefinition/data-absent-reason"` |  |
 | fhir.extensions.fernMetaExt | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"` |  |
 | fhir.extensions.genderAmtlich | string | `"http://fhir.de/StructureDefinition/gender-amtlich-de"` |  |
@@ -90,6 +95,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.extensions.mii-ex-onko-strahlentherapie-intention | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"` |  |
 | fhir.extensions.mii-ex-onko-systemische-therapie-intention | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"` |  |
+| fhir.extensions.mii-ex-onko-tnm-cp-praefix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix${fhir.profiles.versions.mii-onkologie}"` |  |
+| fhir.extensions.mii-ex-onko-tnm-itc-suffix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix${fhir.profiles.versions.mii-onkologie}"` |  |
+| fhir.extensions.mii-ex-onko-tnm-sn-suffix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.extensions.opIntention | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"` |  |
 | fhir.extensions.ordinal-value | string | `"http://hl7.org/fhir/StructureDefinition/ordinalValue"` |  |
 | fhir.extensions.stellungOP | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"` |  |
@@ -98,15 +106,6 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.modul.prostata.enabled | bool | `false` | Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile |
-| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.enabled | bool | `false` | use HTTP Basic Authentication for FHIR server authentication |
-| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.password | string | `""` | the password |
-| fhir.mappings.patient-reference-generation.fhir-server.auth.basic.username | string | `""` | the username |
-| fhir.mappings.patient-reference-generation.fhir-server.base-url | string | `""` | the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier. E.g. `https://fhir.example.com/fhir` |
-| fhir.mappings.patient-reference-generation.record-id-database.jdbc-url | string | `""` | JDBC url to connect to to query an internal RecordID from a Patient_ID |
-| fhir.mappings.patient-reference-generation.record-id-database.password | string | `""` | password for authentication |
-| fhir.mappings.patient-reference-generation.record-id-database.query | string | `"SELECT RecordID\nFROM lookup\nWHERE PatientID = ?\n"` | the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message. |
-| fhir.mappings.patient-reference-generation.record-id-database.username | string | `""` | username for authentication |
-| fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | fhir.profiles.condition | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"` |  |
 | fhir.profiles.deathObservation | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"` |  |
@@ -114,9 +113,6 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.profiles.genVariante | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"` |  |
 | fhir.profiles.grading | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"` |  |
 | fhir.profiles.histologie | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"` |  |
-| fhir.profiles.mii-ex-onko-tnm-cp-praefix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix${fhir.profiles.versions.mii-onkologie}"` |  |
-| fhir.profiles.mii-ex-onko-tnm-itc-suffix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix${fhir.profiles.versions.mii-onkologie}"` |  |
-| fhir.profiles.mii-ex-onko-tnm-sn-suffix | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-patient-pseudonymisiert | string | `"https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert${fhir.profiles.versions.mii-person}"` |  |
 | fhir.profiles.mii-pr-medication-statement | string | `"https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement${fhir.profiles.versions.mii-medikation}"` |  |
 | fhir.profiles.mii-pr-onko-allgemeiner-leistungszustand-ecog | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog${fhir.profiles.versions.mii-onkologie}"` |  |
@@ -127,6 +123,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.profiles.mii-pr-onko-befund | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-diagnose-primaertumor | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-fernmetastasen | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen${fhir.profiles.versions.mii-onkologie}"` |  |
+| fhir.profiles.mii-pr-onko-fruehere-tumorerkrankung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-genetische-variante | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-grading | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-histologie-icdo3 | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3${fhir.profiles.versions.mii-onkologie}"` |  |
@@ -178,6 +175,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.identifiers.base-url | string | `"https://bzkf.github.io/obds-to-fhir/identifiers"` |  |
 | fhir.systems.identifiers.erstdiagnose-evidenz-list-id | string | `"${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"` |  |
 | fhir.systems.identifiers.fernmetastasen-observation-id | string | `"${fhir.systems.identifiers.base-url}/fernmetastasen-id"` |  |
+| fhir.systems.identifiers.fruehere-tumorerkrankung-condition-id | string | `"${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"` |  |
 | fhir.systems.identifiers.genetische-variante-observation-id | string | `"${fhir.systems.identifiers.base-url}/genetische-variante-observation-id"` |  |
 | fhir.systems.identifiers.gleason-score-observation-id | string | `"${fhir.systems.identifiers.base-url}/gleason-score-observation-id"` |  |
 | fhir.systems.identifiers.grading-observation-id | string | `"${fhir.systems.identifiers.base-url}/grading-observation-id"` |  |
@@ -268,67 +266,3 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.ucum | string | `"http://unitsofmeasure.org"` |  |
 | fhir.systems.uicc | string | `"http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"` |  |
 | fhir.url.tnmPraefix | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"` |  |
-| logging.pattern.console | string | `"%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"` |  |
-| management.endpoint.health.probes.add-additional-paths | bool | `true` |  |
-| management.endpoint.health.probes.enabled | bool | `true` |  |
-| management.endpoint.health.show-details | string | `"always"` |  |
-| management.endpoints.web.exposure.include | string | `"health,prometheus,kafkastreamstopology"` |  |
-| management.health.livenessstate.enabled | bool | `true` |  |
-| management.health.readinessstate.enabled | bool | `true` |  |
-| obds.process-from-directory.enabled | bool | `false` | if enabled, read oBDS XML exports from a directory instead of from Kafka |
-| obds.process-from-directory.output-to-directory.enabled | bool | `false` | output the fir Bundles to a directory, 1 file per Bundle |
-| obds.process-from-directory.output-to-directory.path | string | `""` | path to the directory to write Bundles to |
-| obds.process-from-directory.output-to-kafka.enabled | bool | `false` | write the FHIR bundles to a Kafka topic |
-| obds.process-from-directory.output-to-kafka.topic | string | `""` | name of the topic to write to |
-| obds.process-from-directory.path | string | `""` | the folder path to read from. All XML files within this folder are read |
-| obds.write-grouped-obds-to-kafka.enabled | bool | `false` | the oBDS Einzelmeldungen are internally combined to a single oBDS Export. If enabled, write the combined oBDS exports to a topic: one message per Patient_ID+Tumor_ID |
-| obds.write-grouped-obds-to-kafka.topic | string | `"obds.v3.grouped"` | the name of the topic to write the combined oBDS export to. Helpful for debugging. |
-| obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
-| spring.application.name | string | `"obds-to-fhir"` |  |
-| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-1.destination | string | `"fhir.obds.Observation"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.destination | string | `"fhir.obds.MedicationStatement"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-1.destination | string | `"fhir.obds.Observation"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-1.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-2.destination | string | `"fhir.obds.Procedure"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-2.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-3.destination | string | `"fhir.obds.Condition"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-3.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-4.destination | string | `"fhir.obds.Patient"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-4.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-in-0.destination | string | `"${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}"` | Name of the topic where ONKOSTAR oBDS Meldungen are read from |
-| spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
-| spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration."cache.max.bytes.buffering" | int | `0` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration."max.request.size" | string | `"${MAX_REQUEST_SIZE:20971520}"` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration."num.stream.threads" | string | `"${NUM_STREAM_THREADS:1}"` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration.default."key.serde" | string | `"org.apache.kafka.common.serialization.Serdes$StringSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-0.consumer.application-id | string | `"obds-meldung-exp-grouped-processor"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-1.consumer.application-id | string | `"obds-meldung-exp-condition-processor"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-1.consumer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-1.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-1.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-2.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-2.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-3.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-3.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-4.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-4.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id | string | `"${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.kafka."security.protocol" | string | `"${SECURITY_PROTOCOL:PLAINTEXT}"` |  |
-| spring.kafka.bootstrapServers | string | `"${BOOTSTRAP_SERVERS:localhost:9094}"` |  |
-| spring.kafka.producer.compression-type | string | `"gzip"` |  |
-| spring.kafka.producer.value-serializer | string | `"org.miracum.kafka.serializers.KafkaFhirSerializer"` |  |
-| spring.kafka.ssl.key-store-location | string | `"file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}"` |  |
-| spring.kafka.ssl.key-store-password | string | `"${SSL_KEY_STORE_PASSWORD}"` |  |
-| spring.kafka.ssl.key-store-type | string | `"PKCS12"` |  |
-| spring.kafka.ssl.trust-store-location | string | `"file://${SSL_TRUST_STORE:/opt/kafka-certs/ca.p12}"` |  |
-| spring.kafka.ssl.trust-store-password | string | `"${SSL_TRUST_STORE_PASSWORD}"` |  |
-| spring.kafka.ssl.trust-store-type | string | `"PKCS12"` |  |
-| spring.profiles.active | string | `"${ACTIVE_PROFILE:default}"` |  |
