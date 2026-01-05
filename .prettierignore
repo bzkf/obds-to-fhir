@@ -1,3 +1,4 @@
 mappings/src/test/java/snapshots/**
+src/test/java/snapshots/**
 tests/k8s/**/templates
 dq/**/*.json

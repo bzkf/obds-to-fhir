@@ -2,7 +2,7 @@
 
 <!-- Update this file by running helm-docs --chart-search-root src/main/resources/ -f application.yml -f ../../../mappings/src/main/resources/application-mappings.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
 
-## FHIR identifier, CodeSystem, Profile, etc.
+## FHIR systems
 
 See [application-mappings.yml](../mappings/src/main/resources/application-mappings.yml) for FHIR systems configuration settings.
 
@@ -22,8 +22,6 @@ and pass it as an environment variable to the container.
 ## Configuration file
 
 You can also load extra configuration files. See the [official Spring Boot docs](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.files) for details.
-
-# Configuration
 
 ## Patient Reference Generation
 
