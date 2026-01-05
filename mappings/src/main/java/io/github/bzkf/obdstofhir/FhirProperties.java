@@ -53,8 +53,12 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieBestrahlungGesamtdosis;
     private String miiExOnkoStrahlentherapieBestrahlungBoost;
     private String miiExOnkoStrahlentherapieBestrahlungSeitenlokalisation;
+    private String miiExOnkoTnmItcSuffix;
+    private String miiExOnkoTnmSnSuffix;
+    private String miiExOnkoTnmCpPraefix;
     private String conditionAssertedDate;
     private String ordinalValue;
+    private String conditionOccurredFollowing;
   }
 
   @Data
@@ -95,6 +99,7 @@ public class FhirProperties {
     private String verlaufObservationId;
     private String todObservationId;
     private String nebenwirkungAdverseEventId;
+    private String fruehereTumorerkrankungConditionId;
   }
 
   @Data
@@ -106,6 +111,8 @@ public class FhirProperties {
     private String operationProcedureId;
     private String medicationStatementId;
     private String psaObservationId;
+
+    private String diagnosticServiceSectionId;
 
     private String identifierType;
     private String observationCategorySystem;
@@ -149,7 +156,7 @@ public class FhirProperties {
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
     private String miiCsOnkoResidualstatus;
-    private String miiCsTherapieGrundEnde;
+    private String miiCsOnkoTherapieEndeGrund;
     private String miiCsOnkoTodInterpretation;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
@@ -212,13 +219,9 @@ public class FhirProperties {
     private String miiPrOnkoVerlauf;
     private String miiPrOnkoTumorkonferenz;
     private String miiPrOnkoWeitereKlassifikationen;
-
     private String miiPrOnkoTnmKlassifikation;
     private String miiPrOnkoTnmTKategorie;
-    private String miiExOnkoTnmCpPraefix;
     private String miiPrOnkoTnmNKategorie;
-    private String miiExOnkoTnmItcSuffix;
-    private String miiExOnkoTnmSnSuffix;
     private String miiPrOnkoTnmMKategorie;
     private String miiPrOnkoTnmASymbol;
     private String miiPrOnkoTnmMSymbol;
@@ -231,6 +234,7 @@ public class FhirProperties {
     private String miiPrOnkoListeEvidenzErstdiagnose;
     private String miiPrOnkoStrahlentherapieBestrahlungStrahlentherapie;
     private String miiPrOnkoStrahlentherapieBestrahlungNuklearmedizin;
+    private String miiPrOnkoFruehereTumorerkrankung;
   }
 
   @Data

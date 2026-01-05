@@ -4,9 +4,11 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^mappings/src/main/resources/application.yml$/"],
+      "managerFilePatterns": [
+        "/^mappings/src/main/resources/application-mappings.yml$/"
+      ],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
+        "\\s.*# renovate: datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
       "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^(?<version>.*)${{/if}}",

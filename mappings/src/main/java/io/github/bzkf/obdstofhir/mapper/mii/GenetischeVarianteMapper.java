@@ -8,7 +8,6 @@ import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
@@ -116,14 +115,20 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       observation.setCode(codeCodeableConcept);
 
       // category
-      CodeableConcept categoryCodeableConcept =
+      observation.addCategory(
           new CodeableConcept()
               .addCoding(
                   new Coding()
                       .setSystem(fhirProperties.getSystems().getObservationCategory())
                       .setCode("laboratory")
-                      .setDisplay("Laboratory"));
-      observation.setCategory(Collections.singletonList(categoryCodeableConcept));
+                      .setDisplay("Laboratory")));
+      observation.addCategory(
+          new CodeableConcept()
+              .addCoding(
+                  new Coding()
+                      .setSystem(fhirProperties.getSystems().getDiagnosticServiceSectionId())
+                      .setCode("GE")
+                      .setDisplay("Genetics")));
 
       // subject reference
       observation.setSubject(patient);

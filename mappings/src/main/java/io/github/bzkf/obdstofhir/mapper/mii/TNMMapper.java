@@ -441,7 +441,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     if (extractedSuffixes.contains("sn")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmSnSuffix())
+              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmSnSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
@@ -451,7 +451,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     if (extractedSuffixes.contains("i+")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
+              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmItcSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
@@ -461,7 +461,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     if (extractedSuffixes.contains("i-")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmItcSuffix())
+              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmItcSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
@@ -489,7 +489,8 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {
-    var extension = new Extension().setUrl(fhirProperties.getProfiles().getMiiExOnkoTnmCpPraefix());
+    var extension =
+        new Extension().setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmCpPraefix());
     extension.setValue(
         new CodeableConcept(
             new Coding().setCode(cpuPraefixN).setSystem(fhirProperties.getSystems().getTnmUicc())));

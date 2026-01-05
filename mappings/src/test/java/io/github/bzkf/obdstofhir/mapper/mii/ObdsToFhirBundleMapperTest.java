@@ -53,6 +53,7 @@ import org.springframework.context.annotation.Configuration;
       NebenwirkungMapper.class,
       SubstanzToAtcMapper.class,
       ProfileTestConfig.class,
+      FruehereTumorerkrankungenMapper.class,
     },
     properties = {"fhir.mappings.modul.prostata.enabled=true"})
 @EnableConfigurationProperties

@@ -119,7 +119,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       var outcome = new CodeableConcept();
       outcome
           .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsTherapieGrundEnde())
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieEndeGrund())
           .setCode(syst.getEndeGrund().value());
       procedure.setOutcome(outcome);
     }

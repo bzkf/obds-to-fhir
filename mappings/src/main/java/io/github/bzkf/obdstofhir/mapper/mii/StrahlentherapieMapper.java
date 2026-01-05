@@ -152,7 +152,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (st.getEndeGrund() != null) {
       var outcome =
           new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsTherapieGrundEnde())
+              .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieEndeGrund())
               .setCode(st.getEndeGrund());
       procedure.setOutcome(new CodeableConcept(outcome));
     }
