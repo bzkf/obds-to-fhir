@@ -229,6 +229,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.mii-cs-onko-strahlentherapie-zielgebiet | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet"` |  |
 | fhir.systems.mii-cs-onko-studienteilnahme | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme"` |  |
 | fhir.systems.mii-cs-onko-systemische-therapie-art | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"` |  |
+| fhir.systems.mii-cs-onko-therapie-ende-grund | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund"` |  |
 | fhir.systems.mii-cs-onko-therapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop"` |  |
 | fhir.systems.mii-cs-onko-therapie-typ | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"` |  |
 | fhir.systems.mii-cs-onko-therapieabweichung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"` |  |
@@ -239,7 +240,6 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.mii-cs-onko-verlauf-gesamtbeurteilung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung"` |  |
 | fhir.systems.mii-cs-onko-verlauf-lymphknoten | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten"` |  |
 | fhir.systems.mii-cs-onko-verlauf-primaertumor | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor"` |  |
-| fhir.systems.mii-cs-therapie-grund-ende | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-grund-ende"` |  |
 | fhir.systems.observation-value | string | `"http://terminology.hl7.org/CodeSystem/v3-ObservationValue"` |  |
 | fhir.systems.observationCategory | string | `"http://terminology.hl7.org/CodeSystem/observation-category"` |  |
 | fhir.systems.observationCategorySystem | string | `"http://hl7.org/fhir/observation-category"` |  |

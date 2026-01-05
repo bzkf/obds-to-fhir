@@ -154,7 +154,7 @@ public class FhirProperties {
     private String miiCsOnkoSystemischeTherapieArt;
     private String miiCsOnkoSeitenlokalisation;
     private String miiCsOnkoResidualstatus;
-    private String miiCsTherapieGrundEnde;
+    private String miiCsOnkoTherapieEndeGrund;
     private String miiCsOnkoTodInterpretation;
     private String conditionVerStatus;
     private String icdo3MorphologieOid;
