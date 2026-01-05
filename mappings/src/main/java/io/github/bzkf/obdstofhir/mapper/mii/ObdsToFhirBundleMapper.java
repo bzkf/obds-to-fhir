@@ -495,6 +495,23 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
     }
 
+    var evidenzReferenceList =
+        mappedResources.stream().map(this::createReferenceFromResource).toList();
+
+    var evidenzListe =
+        erstdiagnoseEvidenzListMapper.map(
+            patientId,
+            meldung.getTumorzuordnung().getTumorID(),
+            patientReference,
+            evidenzReferenceList);
+
+    // It's not ideal to modify the Condition resource after it's creation in the
+    // mapper.
+    primaryCondition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
+
+    mappedResources.add(evidenzListe);
+
+    // we map these after the evidenz list since it may only contain Observation/DiagnosticReport resources.
     if (diagnose.getMengeFruehereTumorerkrankung() != null) {
       var fruehereTumorErkrankungen =
           fruehereTumorErkrankungenMapper.map(
@@ -521,22 +538,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         primaryCondition.addExtension(extension);
       }
     }
-
-    var evidenzReferenceList =
-        mappedResources.stream().map(this::createReferenceFromResource).toList();
-
-    var evidenzListe =
-        erstdiagnoseEvidenzListMapper.map(
-            patientId,
-            meldung.getTumorzuordnung().getTumorID(),
-            patientReference,
-            evidenzReferenceList);
-
-    // It's not ideal to modify the Condition resource after it's creation in the
-    // mapper.
-    primaryCondition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
-
-    mappedResources.add(evidenzListe);
 
     return mappedResources;
   }
