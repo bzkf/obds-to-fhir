@@ -230,7 +230,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.mii-cs-onko-studienteilnahme | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme"` |  |
 | fhir.systems.mii-cs-onko-systemische-therapie-art | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"` |  |
 | fhir.systems.mii-cs-onko-therapie-ende-grund | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund"` |  |
-| fhir.systems.mii-cs-onko-therapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-therapie-stellungzurop"` |  |
+| fhir.systems.mii-cs-onko-therapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop"` |  |
 | fhir.systems.mii-cs-onko-therapie-typ | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"` |  |
 | fhir.systems.mii-cs-onko-therapieabweichung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"` |  |
 | fhir.systems.mii-cs-onko-therapieplanung-typ | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ"` |  |
