@@ -21,7 +21,8 @@ env:
       "VerlaufObservationMapperTest",
       "ConditionMapperTest",
       "HistologiebefundMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest"
+      "SystemischeTherapieMedicationStatementMapperTest",
+      "FruehereTumorerkrankungenMapperTest"
     ]
 
 jobs:
