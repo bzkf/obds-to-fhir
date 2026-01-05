@@ -26,7 +26,9 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Extension;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -496,7 +498,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     var evidenzReferenceList =
-        mappedResources.stream().map(this::createReferenceFromResource).toList();
+        mappedResources.stream()
+            .filter(r -> r instanceof Observation || r instanceof DiagnosticReport)
+            .map(this::createReferenceFromResource)
+            .toList();
 
     var evidenzListe =
         erstdiagnoseEvidenzListMapper.map(
