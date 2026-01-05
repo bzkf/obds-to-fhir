@@ -4,7 +4,7 @@
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^mappings/src/main/resources/application.yml$/"],
+      "managerFilePatterns": ["/^mappings/src/main/resources/application-mappings.yml$/"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
       ],

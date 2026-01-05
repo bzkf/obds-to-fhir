@@ -1,0 +1,35 @@
+{
+  "resourceType": "Condition",
+  "id": "ff4b68daf489d00bdbc92d07987c7d2f1186a918790f28751f3522b928495d0e",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung" ]
+  },
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+    "valueDateTime": "2010"
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+    "value": "pd-id-1-C43-7-2010"
+  } ],
+  "category": [ {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "394593009",
+      "display": "Medical oncology (qualifier value)"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "2010",
+      "code": "C43.7"
+    } ],
+    "text": "Malignes Melanom rechtes Bein"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "recordedDate": "2024-09-19"
+}

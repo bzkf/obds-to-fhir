@@ -1,0 +1,35 @@
+{
+  "resourceType": "Condition",
+  "id": "06d83e9f474ef2c64fc30c725f09db0bc8ca53287e4ea1cbe3958df42a60b96d",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung" ]
+  },
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+    "valueDateTime": "2009"
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+    "value": "pd-id-1-C22-0-2009"
+  } ],
+  "category": [ {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "394593009",
+      "display": "Medical oncology (qualifier value)"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+      "version": "2008",
+      "code": "C22.0"
+    } ],
+    "text": "C22.0"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "recordedDate": "2024-09-19"
+}

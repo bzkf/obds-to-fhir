@@ -3,7 +3,7 @@ services:
     restart: "no"
     user: "${USER_ID:-65532}:${GROUP_ID:-65532}"
     environment:
-      SPRING_PROFILES_ACTIVE: "process-from-directory"
+      SPRING_PROFILES_ACTIVE: "mappings,process-from-directory"
     volumes:
       - type: bind
         source: ${INPUT_DIRECTORY:?}

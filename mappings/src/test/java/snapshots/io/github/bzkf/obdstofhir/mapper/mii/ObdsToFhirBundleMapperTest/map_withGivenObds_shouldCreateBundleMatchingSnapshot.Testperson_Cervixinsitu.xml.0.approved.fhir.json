@@ -59,6 +59,11 @@
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
         "valueDateTime": "2022-10-02"
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing",
+        "valueReference": {
+          "reference": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e"
+        }
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
@@ -1185,6 +1190,47 @@
       "url": "Observation/169b401f23a54870dfdce3c457bd6ab3d4cbef312215af7df7718dc51dc93e23"
     }
   }, {
+    "fullUrl": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung" ]
+      },
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2013"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
+        "value": "19-195-C50-9-2013"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "394593009",
+          "display": "Medical oncology (qualifier value)"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2013",
+          "code": "C50.9"
+        } ],
+        "text": "Mamma-Ca, links"
+      },
+      "subject": {
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+      },
+      "recordedDate": "2024-07-18"
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e"
+    }
+  }, {
     "fullUrl": "List/d1c7f88bae7347ce3687489f726bb619b240436ae19c7c5189a8d57de8b4c5c8",
     "resource": {
       "resourceType": "List",
@@ -1249,6 +1295,10 @@
       }, {
         "item": {
           "reference": "Observation/169b401f23a54870dfdce3c457bd6ab3d4cbef312215af7df7718dc51dc93e23"
+        }
+      }, {
+        "item": {
+          "reference": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e"
         }
       } ]
     },

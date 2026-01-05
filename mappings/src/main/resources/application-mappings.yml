@@ -18,6 +18,7 @@ fhir:
     dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
+    condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
     mii-ex-onko-strahlentherapie-intention: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"
     mii-ex-onko-strahlentherapie-stellungzurop: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"
@@ -29,6 +30,9 @@ fhir:
     mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis"
     mii-ex-onko-strahlentherapie-bestrahlung-boost: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-boost"
     mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-seitenlokalisation"
+    mii-ex-onko-tnm-itc-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix${fhir.profiles.versions.mii-onkologie}"
+    mii-ex-onko-tnm-sn-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix${fhir.profiles.versions.mii-onkologie}"
+    mii-ex-onko-tnm-cp-praefix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix${fhir.profiles.versions.mii-onkologie}"
   systems:
     identifiers:
       base-url: "https://bzkf.github.io/obds-to-fhir/identifiers"
@@ -67,6 +71,7 @@ fhir:
       tumorkonferenz-care-plan-id: "${fhir.systems.identifiers.base-url}/tumorkonferenz-care-plan-id"
       weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
       erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
+      fruehere-tumorerkrankung-condition-id: "${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"
 
     # DKTK
     observationId: "${fhir.systems.identifiers.base-url}/observation-id"
@@ -191,10 +196,7 @@ fhir:
     mii-pr-onko-tumorkonferenz: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-klassifikation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-t-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie${fhir.profiles.versions.mii-onkologie}"
-    mii-ex-onko-tnm-cp-praefix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-n-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie${fhir.profiles.versions.mii-onkologie}"
-    mii-ex-onko-tnm-itc-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-itc-suffix${fhir.profiles.versions.mii-onkologie}"
-    mii-ex-onko-tnm-sn-suffix: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-sn-suffix${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-m-kategorie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-a-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-a-symbol${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-tnm-m-symbol: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol${fhir.profiles.versions.mii-onkologie}"
@@ -210,7 +212,7 @@ fhir:
     mii-pr-onko-liste-evidenz-erstdiagnose: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin${fhir.profiles.versions.mii-onkologie}"
-
+    mii-pr-onko-fruehere-tumorerkrankung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung${fhir.profiles.versions.mii-onkologie}"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
