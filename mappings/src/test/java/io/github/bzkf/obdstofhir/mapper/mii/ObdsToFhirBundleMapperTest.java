@@ -55,8 +55,7 @@ import org.springframework.context.annotation.Configuration;
       SubstanzToAtcMapper.class,
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
-    },
-    properties = {"fhir.mappings.modul.prostata.enabled=true"})
+    })
 @EnableConfigurationProperties
 @Configuration
 class ObdsToFhirBundleMapperTest extends MapperTest {
