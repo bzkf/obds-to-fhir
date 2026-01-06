@@ -373,17 +373,17 @@ public class ObdsObservationMapper extends ObdsToFhirMapper {
               patientReference);
     }
 
-      for (var modulProstataParams : modulProstataList) {
-        if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
-          bundle =
-              createGleasonScoreObservation(
-                  bundle, metaSource, modulProstataParams, patientReference);
-        }
-
-        if (modulProstataParams.modulProstata.getPSA().isPresent()) {
-          bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
-        }
+    for (var modulProstataParams : modulProstataList) {
+      if (modulProstataParams.modulProstata.getGleasonScore().isPresent()) {
+        bundle =
+            createGleasonScoreObservation(
+                bundle, metaSource, modulProstataParams, patientReference);
       }
+
+      if (modulProstataParams.modulProstata.getPSA().isPresent()) {
+        bundle = createPsaObservation(bundle, metaSource, modulProstataParams, patientReference);
+      }
+    }
 
     if (death != null) {
       bundle =
