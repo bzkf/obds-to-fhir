@@ -43,7 +43,6 @@ fhir:
       lymphknotenuntersuchung-observation-id: "${fhir.systems.identifiers.base-url}/lymphknotenuntersuchung-observation-id"
       verlaufshistologie-observation-id: "${fhir.systems.identifiers.base-url}/verlaufshistologie-observation-id"
       verlauf-observation-id: "${fhir.systems.identifiers.base-url}/verlauf-observation-id"
-      gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/gleason-score-observation-id"
       strahlentherapie-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-procedure-id"
       strahlentherapie-bestrahlung-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-bestrahlung-procedure-id"
       systemische-therapie-procedure-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-procedure-id"
@@ -72,6 +71,13 @@ fhir:
       weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
       erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
       fruehere-tumorerkrankung-condition-id: "${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"
+      prostata-psa-observation-id: "${fhir.systems.identifiers.base-url}/prostata-psa-observation-id"
+      prostata-anzahl-stanzen-observation-id: "${fhir.systems.identifiers.base-url}/prostata-anzahl-stanzen-observation-id"
+      prostata-anzahl-positive-stanzen-observation-id: "${fhir.systems.identifiers.base-url}/prostata-anzahl-positive-stanzen-observation-id"
+      prostata-ca-befall-stanze-observation-id: "${fhir.systems.identifiers.base-url}/prostata-ca-befall-stanze-observation-id"
+      prostata-clavien-dindo-observation-id: "${fhir.systems.identifiers.base-url}/prostata-clavien-dindo-observation-id"
+      prostata-gleason-patterns-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-patterns-observation-id"
+      prostata-gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-score-observation-id"
 
     # DKTK
     observationId: "${fhir.systems.identifiers.base-url}/observation-id"
@@ -152,7 +158,7 @@ fhir:
     mii-cs-onko-therapie-typ: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ"
     mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
     mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
-
+    mii-cs-onko-prostata-postsurgical-complications: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications"
   profiles:
     histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
     grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
@@ -214,6 +220,13 @@ fhir:
     mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-fruehere-tumorerkrankung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-prostate-psa: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-psa"
+    mii-pr-onko-prostate-anzahl-stanzen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-stanzen"
+    mii-pr-onko-prostate-anzahl-positive-stanzen: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen"
+    mii-pr-onko-prostate-ca-befall-stanze: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze"
+    mii-pr-onko-prostate-clavien-dindo: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo"
+    mii-pr-onko-prostate-gleason-patterns: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns"
+    mii-pr-onko-prostate-gleason-grade-group: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"
@@ -231,10 +244,6 @@ fhir:
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""
-    modul:
-      prostata:
-        # -- Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile
-        enabled: false
     create-patient-resources:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.

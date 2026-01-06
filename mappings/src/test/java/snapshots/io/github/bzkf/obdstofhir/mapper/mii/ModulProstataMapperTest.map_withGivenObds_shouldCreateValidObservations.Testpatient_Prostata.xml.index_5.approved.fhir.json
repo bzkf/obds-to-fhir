@@ -1,0 +1,28 @@
+{
+  "resourceType": "Observation",
+  "id": "013c118fc9e6439dd67cb60aaae7d5a51312aee429422bb30aab6b510fde47fe",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-positive-stanzen-observation-id",
+    "value": "DIA_80106-modul-prostata-anzahl-positive-stanzen"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.80",
+      "code": "44651-8",
+      "display": "Tissue cores.positive.carcinoma in Tissue core"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-05-10",
+  "valueInteger": 4
+}

@@ -48,6 +48,7 @@ import org.springframework.context.annotation.Configuration;
       TumorkonferenzMapper.class,
       TNMMapper.class,
       GleasonScoreMapper.class,
+      ModulProstataMapper.class,
       WeitereKlassifikationMapper.class,
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,

@@ -64,7 +64,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
-  private final GleasonScoreMapper gleasonScoreMapper;
+  private final ModulProstataMapper modulProstataMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
@@ -72,9 +72,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
-
-  @Value("${fhir.mappings.modul.prostata.enabled}")
-  private boolean isModulProstataMappingEnabled;
 
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
@@ -103,7 +100,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       GenetischeVarianteMapper genetischeVarianteMapper,
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
-      GleasonScoreMapper gleasonScoreMapper,
+      ModulProstataMapper modulProstataMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
@@ -131,7 +128,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.genetischeVarianteMapper = genetischeVarianteMapper;
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
-    this.gleasonScoreMapper = gleasonScoreMapper;
+    this.modulProstataMapper = modulProstataMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
@@ -474,14 +471,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(pathologicTNMObservations);
     }
 
-    if (diagnose.getModulProstata() != null && isModulProstataMappingEnabled) {
+    if (diagnose.getModulProstata() != null) {
       var modulProstata = diagnose.getModulProstata();
-      if (modulProstata.getGleasonScore() != null) {
-        var gleasonScore =
-            gleasonScoreMapper.map(
-                modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
-        mappedResources.add(gleasonScore);
-      }
+      var diagnosedatum =
+          meldung.getTumorzuordnung().getDiagnosedatum() != null
+              ? meldung.getTumorzuordnung().getDiagnosedatum().getValue()
+              : null;
+      var modulProstataResources =
+          modulProstataMapper.map(
+              modulProstata,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              diagnosedatum);
+      mappedResources.addAll(modulProstataResources);
     }
 
     if (diagnose.getMengeWeitereKlassifikation() != null) {
@@ -516,7 +519,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     mappedResources.add(evidenzListe);
 
-    // we map these after the evidenz list since it may only contain Observation/DiagnosticReport
+    // we map these after the evidenz list since it may only contain
+    // Observation/DiagnosticReport
     // resources.
     if (diagnose.getMengeFruehereTumorerkrankung() != null) {
       var fruehereTumorErkrankungen =
@@ -644,14 +648,16 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(tnmObservations);
     }
 
-    if (verlauf.getModulProstata() != null && isModulProstataMappingEnabled) {
+    if (verlauf.getModulProstata() != null) {
       var modulProstata = verlauf.getModulProstata();
-      if (modulProstata.getGleasonScore() != null) {
-        var gleasonScore =
-            gleasonScoreMapper.map(
-                modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
-        mappedResources.add(gleasonScore);
-      }
+      var modulProstataResources =
+          modulProstataMapper.map(
+              modulProstata,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              verlauf.getUntersuchungsdatumVerlauf());
+      mappedResources.addAll(modulProstataResources);
     }
 
     if (verlauf.getMengeWeitereKlassifikation() != null) {
@@ -789,18 +795,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(tnmObservations);
     }
 
-    if (op.getModulProstata() != null && isModulProstataMappingEnabled) {
+    if (op.getModulProstata() != null) {
       var modulProstata = op.getModulProstata();
-      if (modulProstata.getGleasonScore() != null) {
-        var gleasonScore =
-            gleasonScoreMapper.map(
-                modulProstata,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference,
-                op.getDatum());
-        mappedResources.add(gleasonScore);
-      }
+      var opReferences = operations.stream().map(this::createReferenceFromResource).toList();
+      var modulProstataResources =
+          modulProstataMapper.map(
+              modulProstata,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              op.getDatum(),
+              opReferences);
+      mappedResources.addAll(modulProstataResources);
     }
 
     return mappedResources;
@@ -891,14 +897,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(pathologicTNMObservations);
     }
 
-    if (pathologie.getModulProstata() != null && isModulProstataMappingEnabled) {
+    if (pathologie.getModulProstata() != null) {
       var modulProstata = pathologie.getModulProstata();
-      if (modulProstata.getGleasonScore() != null) {
-        var gleasonScore =
-            gleasonScoreMapper.map(
-                modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
-        mappedResources.add(gleasonScore);
-      }
+      var modulProstataResources =
+          modulProstataMapper.map(
+              modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
+      mappedResources.addAll(modulProstataResources);
     }
 
     if (pathologie.getMengeWeitereKlassifikation() != null) {

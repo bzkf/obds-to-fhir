@@ -1,20 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4",
+  "id": "122754793404a436c9bd9b34a791109806c44e7d24a50cb88219d9119b465b0f",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "OP_80105-modul-prostata-primary-gleason-pattern"
+    "value": "PAT_70102-modul-prostata-gleason-grade-group"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
     } ]
   },
   "subject": {
@@ -27,13 +27,13 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-        "valueDecimal": 4
+        "valueDecimal": 9
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
-    } ]
+      "code": "1279720000"
+    } ],
+    "text": "4+5"
   },
   "method": {
     "coding": [ {
@@ -42,5 +42,10 @@
       "code": "65801008",
       "display": "Excision (procedure)"
     } ]
-  }
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/1e2145c174659bf62a7d211c17802368ff7abce21c052a1e72053f4b3af14858"
+  }, {
+    "reference": "Observation/d2e90ac2bdf02679db053fb5c603fe5785c390b9f3ddd56b454d9939ddde4883"
+  } ]
 }

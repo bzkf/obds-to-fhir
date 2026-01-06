@@ -27,12 +27,12 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-        "valueDecimal": 4
+        "valueDecimal": 3
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
+      "code": "369772003",
+      "display": "Gleason Pattern 3 (finding)"
     } ]
   },
   "method": {

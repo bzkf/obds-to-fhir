@@ -1,20 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4",
+  "id": "402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "OP_80105-modul-prostata-primary-gleason-pattern"
+    "value": "DIA_80106-modul-prostata-gleason-grade-group"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
     } ]
   },
   "subject": {
@@ -27,20 +27,25 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-        "valueDecimal": 4
+        "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
-    } ]
+      "code": "1279716004"
+    } ],
+    "text": "4+3"
   },
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "65801008",
-      "display": "Excision (procedure)"
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
     } ]
-  }
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b"
+  }, {
+    "reference": "Observation/ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec"
+  } ]
 }

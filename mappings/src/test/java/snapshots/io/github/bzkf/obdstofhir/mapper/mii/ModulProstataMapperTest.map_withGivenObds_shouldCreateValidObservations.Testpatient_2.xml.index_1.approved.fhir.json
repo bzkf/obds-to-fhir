@@ -1,0 +1,28 @@
+{
+  "resourceType": "Observation",
+  "id": "6a9ee34931c937d75900aa3b0f87bebcb59f9c8ac6717bdaabdb2172bf9256c3",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-stanzen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-stanzen-observation-id",
+    "value": "11_1_DI_1-modul-prostata-anzahl-stanzen"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.80",
+      "code": "44652-6",
+      "display": "Total number of cores in Tissue core"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-07-08",
+  "valueInteger": 8
+}

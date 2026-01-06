@@ -89,7 +89,6 @@ public class FhirProperties {
     private String tnmYSymbolObservationId;
     private String erstdiagnoseEvidenzListId;
     private String verlaufshistologieObservationId;
-    private String gleasonScoreObservationId;
     private String strahlentherapieProcedureId;
     private String strahlentherapieBestrahlungProcedureId;
     private String systemischeTherapieProcedureId;
@@ -100,6 +99,13 @@ public class FhirProperties {
     private String todObservationId;
     private String nebenwirkungAdverseEventId;
     private String fruehereTumorerkrankungConditionId;
+    private String prostataPsaObservationId;
+    private String prostataAnzahlStanzenObservationId;
+    private String prostataAnzahlPositiveStanzenObservationId;
+    private String prostataCaBefallStanzeObservationId;
+    private String prostataClavienDindoObservationId;
+    private String prostataGleasonPatternsObservationId;
+    private String prostataGleasonScoreObservationId;
   }
 
   @Data
@@ -179,6 +185,7 @@ public class FhirProperties {
     private String miiCsOnkoTherapieabweichung;
     private String miiCsOnkoTnmVersion;
     private String tnmUicc;
+    private String miiCsOnkoProstataPostsurgicalComplications;
   }
 
   @Data
@@ -235,6 +242,13 @@ public class FhirProperties {
     private String miiPrOnkoStrahlentherapieBestrahlungStrahlentherapie;
     private String miiPrOnkoStrahlentherapieBestrahlungNuklearmedizin;
     private String miiPrOnkoFruehereTumorerkrankung;
+    private String miiPrOnkoProstatePsa;
+    private String miiPrOnkoProstateAnzahlStanzen;
+    private String miiPrOnkoProstateAnzahlPositiveStanzen;
+    private String miiPrOnkoProstateCaBefallStanze;
+    private String miiPrOnkoProstateClavienDindo;
+    private String miiPrOnkoProstateGleasonPatterns;
+    private String miiPrOnkoProstateGleasonGradeGroup;
   }
 
   @Data

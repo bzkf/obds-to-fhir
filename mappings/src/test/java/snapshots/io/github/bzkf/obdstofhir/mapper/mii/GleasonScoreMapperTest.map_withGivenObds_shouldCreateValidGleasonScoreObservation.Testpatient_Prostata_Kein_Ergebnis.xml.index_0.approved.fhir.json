@@ -1,17 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "36a33df5231dcb1b597e02f82ebad5844bc7b7cea22ba76657d6b74e52e53617",
+  "id": "29b02cb04f540d0c482df61dd5e1fe1d310bfab4d982f043ed77713f8b953146",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+  },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
-    "value": "gleason-score-OP_80105"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "value": "OP_80105-modul-prostata-gleason-grade-group"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "385377005",
-      "display": "Gleason grade finding for prostatic cancer (finding)"
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
     } ]
   },
   "subject": {
@@ -28,9 +31,9 @@
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "57403001"
+      "code": "1279714001"
     } ],
-    "text": "7a"
+    "text": "3+4"
   },
   "method": {
     "coding": [ {
@@ -40,25 +43,9 @@
       "display": "Excision (procedure)"
     } ]
   },
-  "component": [ {
-    "code": {
-      "coding": [ {
-        "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-        "code": "384994009",
-        "display": "Primary Gleason pattern"
-      } ]
-    },
-    "valueInteger": 3
+  "derivedFrom": [ {
+    "reference": "Observation/aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4"
   }, {
-    "code": {
-      "coding": [ {
-        "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-        "code": "384995005",
-        "display": "Secondary Gleason pattern"
-      } ]
-    },
-    "valueInteger": 4
+    "reference": "Observation/29879cb58ad631b654efb760c935f4ea4a4016043ce8295fedef192a24a40f76"
   } ]
 }

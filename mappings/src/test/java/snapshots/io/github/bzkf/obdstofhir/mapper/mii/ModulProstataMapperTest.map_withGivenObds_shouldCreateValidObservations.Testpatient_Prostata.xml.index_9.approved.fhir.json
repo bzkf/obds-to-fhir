@@ -1,20 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4",
+  "id": "ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "OP_80105-modul-prostata-primary-gleason-pattern"
+    "value": "DIA_80106-modul-prostata-secondary-gleason-pattern"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "code": "384995005",
+      "display": "Secondary Gleason pattern (observable entity)"
     } ]
   },
   "subject": {
@@ -27,20 +27,20 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-        "valueDecimal": 4
+        "valueDecimal": 3
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
+      "code": "369772003",
+      "display": "Gleason Pattern 3 (finding)"
     } ]
   },
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "65801008",
-      "display": "Excision (procedure)"
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
     } ]
   }
 }

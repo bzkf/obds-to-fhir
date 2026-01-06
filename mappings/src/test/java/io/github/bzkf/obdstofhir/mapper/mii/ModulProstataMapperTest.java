@@ -15,20 +15,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class})
+@SpringBootTest(classes = {FhirProperties.class, GleasonScoreMapper.class})
 @EnableConfigurationProperties
-class GleasonScoreMapperTest extends MapperTest {
-  private static GleasonScoreMapper sut;
+class ModulProstataMapperTest extends MapperTest {
+  private static ModulProstataMapper sut;
 
   @BeforeAll
-  static void beforeEach(@Autowired FhirProperties fhirProps) {
-    sut = new GleasonScoreMapper(fhirProps);
+  static void beforeEach(
+      @Autowired FhirProperties fhirProps, @Autowired GleasonScoreMapper gleasonScoreMapper) {
+    sut = new ModulProstataMapper(fhirProps, gleasonScoreMapper);
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_Prostata.xml", "Testpatient_Prostata_Kein_Ergebnis.xml"})
-  void map_withGivenObds_shouldCreateValidGleasonScoreObservation(String sourceFile)
-      throws IOException {
+  @CsvSource({
+    "Priopatient_2.xml",
+    "Testpatient_2.xml",
+    "Testpatient_Patho2.xml",
+    "Testpatient_Prostata.xml",
+    "Testpatient_Prostata_Kein_Ergebnis.xml",
+    "Folgepaket_Testpatient_Patho2.xml"
+  })
+  void map_withGivenObds_shouldCreateValidObservations(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
 
@@ -40,7 +47,7 @@ class GleasonScoreMapperTest extends MapperTest {
 
     final var list = new ArrayList<Observation>();
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
-      if (meldung.getPathologie() != null) {
+      if (meldung.getPathologie() != null && meldung.getPathologie().getModulProstata() != null) {
         var observation =
             sut.map(
                 meldung.getPathologie().getModulProstata(),
@@ -49,7 +56,7 @@ class GleasonScoreMapperTest extends MapperTest {
                 diagnose);
         list.addAll(observation);
       }
-      if (meldung.getDiagnose() != null) {
+      if (meldung.getDiagnose() != null && meldung.getDiagnose().getModulProstata() != null) {
         var observation =
             sut.map(
                 meldung.getDiagnose().getModulProstata(),
@@ -58,7 +65,7 @@ class GleasonScoreMapperTest extends MapperTest {
                 diagnose);
         list.addAll(observation);
       }
-      if (meldung.getOP() != null) {
+      if (meldung.getOP() != null && meldung.getOP().getModulProstata() != null) {
         var observation =
             sut.map(meldung.getOP().getModulProstata(), meldung.getMeldungID(), subject, diagnose);
         list.addAll(observation);

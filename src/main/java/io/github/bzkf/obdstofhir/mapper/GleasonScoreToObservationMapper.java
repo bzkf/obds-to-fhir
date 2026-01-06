@@ -61,7 +61,8 @@ public class GleasonScoreToObservationMapper extends ObdsToFhirMapper {
 
     var identifier =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getGleasonScoreObservationId())
+            .setSystem(
+                fhirProperties.getSystems().getIdentifiers().getProstataGleasonScoreObservationId())
             .setValue(identifierValue);
 
     gleasonScoreObservation.setId(computeResourceIdFromIdentifier(identifier));
