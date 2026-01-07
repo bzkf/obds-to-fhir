@@ -45,7 +45,7 @@ dependencies {
 
     api 'org.slf4j:slf4j-api:2.0.17'
 
-    testImplementation platform('org.junit:junit-bom:5.14.1')
+    testImplementation platform('org.junit:junit-bom:6.0.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.27.6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
