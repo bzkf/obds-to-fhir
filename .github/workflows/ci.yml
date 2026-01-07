@@ -67,7 +67,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Download test image
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ needs.build.outputs.image-slug }}-test
           path: /tmp
@@ -135,7 +135,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -159,7 +159,7 @@ jobs:
             run obds-to-fhir
 
       - name: Upload mapped files
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: process-from-directory-mapped-resources
           path: ${{ env.OUTPUT_DIRECTORY }}
@@ -220,7 +220,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -244,7 +244,7 @@ jobs:
             run obds-to-fhir
 
       - name: Upload mapped files
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: process-from-directory-v2-to-v3-mapped-resources
           path: ${{ env.OUTPUT_DIRECTORY }}
@@ -295,7 +295,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -345,7 +345,7 @@ jobs:
 
       - name: Upload cluster dump
         if: always()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: kind-cluster-dump.txt
           path: |
