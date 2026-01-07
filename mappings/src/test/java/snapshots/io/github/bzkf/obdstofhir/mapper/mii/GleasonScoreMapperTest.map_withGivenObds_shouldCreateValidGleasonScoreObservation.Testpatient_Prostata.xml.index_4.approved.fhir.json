@@ -1,0 +1,46 @@
+{
+  "resourceType": "Observation",
+  "id": "c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "value": "DIA_80106-modul-prostata-primary-gleason-pattern"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "384994009",
+      "display": "Primary Gleason pattern (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+        "valueDecimal": 4
+      } ],
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "369773008",
+      "display": "Gleason Pattern 4 (finding)"
+    } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
+    } ]
+  }
+}

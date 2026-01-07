@@ -1,0 +1,32 @@
+{
+  "resourceType": "Observation",
+  "id": "63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-clavien-dindo-observation-id",
+    "value": "11_1_OP_1-modul-prostata-clavien-dindo"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "789279006",
+      "display": "Clavien-Dindo classification grade (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
+      "code": "N"
+    } ]
+  }
+}

@@ -21,7 +21,8 @@ env:
     [
       "HistologiebefundMapperTest",
       "SystemischeTherapieMedicationStatementMapperTest",
-      "StudienteilnahmeObservationMapperTest"
+      "StudienteilnahmeObservationMapperTest",
+      "ModulProstataMapperTest"
     ]
 
 jobs:

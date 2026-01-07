@@ -47,7 +47,7 @@ class GleasonScoreMapperTest extends MapperTest {
                 meldung.getMeldungID(),
                 subject,
                 diagnose);
-        list.add(observation);
+        list.addAll(observation);
       }
       if (meldung.getDiagnose() != null) {
         var observation =
@@ -56,12 +56,12 @@ class GleasonScoreMapperTest extends MapperTest {
                 meldung.getMeldungID(),
                 subject,
                 diagnose);
-        list.add(observation);
+        list.addAll(observation);
       }
       if (meldung.getOP() != null) {
         var observation =
             sut.map(meldung.getOP().getModulProstata(), meldung.getMeldungID(), subject, diagnose);
-        list.add(observation);
+        list.addAll(observation);
       }
     }
 

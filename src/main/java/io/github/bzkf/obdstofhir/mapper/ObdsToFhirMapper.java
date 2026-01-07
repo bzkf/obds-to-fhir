@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.github.slugify.Slugify;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
+import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
@@ -287,6 +288,31 @@ public abstract class ObdsToFhirMapper {
     var dateType = new DateType(dateTimeType.get().getValue());
     dateType.setPrecision(dateTimeType.get().getPrecision());
     return Optional.of(dateType);
+  }
+
+  public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
+      DatumTagOderMonatGenauTypSchaetzOptional obdsDatum) {
+    if (obdsDatum == null || obdsDatum.getValue() == null) {
+      return Optional.empty();
+    }
+
+    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+
+    // see the code for obdsDatum.getDatumsgenauigkeit(), the default value is 'E' (exakt)
+    // if the datumsgenauigkeit is not set.
+
+    switch (obdsDatum.getDatumsgenauigkeit()) {
+      // exakt (entspricht taggenau)
+      case E:
+        date.setPrecision(TemporalPrecisionEnum.DAY);
+        break;
+      // Tag geschätzt (entspricht monatsgenau)
+      case T:
+        date.setPrecision(TemporalPrecisionEnum.MONTH);
+        break;
+    }
+
+    return Optional.of(date);
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(

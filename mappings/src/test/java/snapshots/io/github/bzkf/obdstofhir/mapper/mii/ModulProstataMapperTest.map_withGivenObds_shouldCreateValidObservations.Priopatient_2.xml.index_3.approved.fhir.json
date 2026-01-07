@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "d076007745a1082f133c70051ee4d111876b5617544ee81a2ea3ae3782c109f7",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-ca-befall-stanze-observation-id",
+    "value": "10_1_DI_1-modul-prostata-ca-befall-stanze"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.80",
+      "code": "44654-2",
+      "display": "Tissue involved by tumor in Prostate tumor"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-07-08",
+  "valueQuantity": {
+    "value": 88,
+    "unit": "%",
+    "system": "http://unitsofmeasure.org",
+    "code": "%"
+  }
+}

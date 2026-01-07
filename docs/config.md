@@ -103,7 +103,6 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.extensions.systIntention | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"` |  |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
-| fhir.mappings.modul.prostata.enabled | bool | `false` | Enable mapping the oBDS Prostata Modul to FHIR resources - these currently use a custom profile |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | fhir.profiles.condition | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"` |  |
 | fhir.profiles.deathObservation | string | `"http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"` |  |
@@ -128,6 +127,13 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.profiles.mii-pr-onko-liste-evidenz-erstdiagnose | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-nebenwirkung-adverse-event | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-operation | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation${fhir.profiles.versions.mii-onkologie}"` |  |
+| fhir.profiles.mii-pr-onko-prostate-anzahl-positive-stanzen | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen"` |  |
+| fhir.profiles.mii-pr-onko-prostate-anzahl-stanzen | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-stanzen"` |  |
+| fhir.profiles.mii-pr-onko-prostate-ca-befall-stanze | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze"` |  |
+| fhir.profiles.mii-pr-onko-prostate-clavien-dindo | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo"` |  |
+| fhir.profiles.mii-pr-onko-prostate-gleason-grade-group | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group"` |  |
+| fhir.profiles.mii-pr-onko-prostate-gleason-patterns | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns"` |  |
+| fhir.profiles.mii-pr-onko-prostate-psa | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-psa"` |  |
 | fhir.profiles.mii-pr-onko-specimen | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-strahlentherapie | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin${fhir.profiles.versions.mii-onkologie}"` |  |
@@ -176,7 +182,6 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.identifiers.fernmetastasen-observation-id | string | `"${fhir.systems.identifiers.base-url}/fernmetastasen-id"` |  |
 | fhir.systems.identifiers.fruehere-tumorerkrankung-condition-id | string | `"${fhir.systems.identifiers.base-url}/fruehere-tumorerkrankung-condition-id"` |  |
 | fhir.systems.identifiers.genetische-variante-observation-id | string | `"${fhir.systems.identifiers.base-url}/genetische-variante-observation-id"` |  |
-| fhir.systems.identifiers.gleason-score-observation-id | string | `"${fhir.systems.identifiers.base-url}/gleason-score-observation-id"` |  |
 | fhir.systems.identifiers.grading-observation-id | string | `"${fhir.systems.identifiers.base-url}/grading-observation-id"` |  |
 | fhir.systems.identifiers.histologie-specimen-id | string | `"${fhir.systems.identifiers.base-url}/histologie-specimen-id"` |  |
 | fhir.systems.identifiers.histologiebefund-diagnostic-report-id | string | `"${fhir.systems.identifiers.base-url}/histologiebefund-diagnostic-report-id"` |  |
@@ -184,6 +189,13 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.identifiers.nebenwirkung-adverse-event-id | string | `"${fhir.systems.identifiers.base-url}/nebenwirkung-adverse-event-id"` |  |
 | fhir.systems.identifiers.patient-id | string | `"${fhir.systems.identifiers.base-url}/patient-id"` |  |
 | fhir.systems.identifiers.primaerdiagnose-condition-id | string | `"${fhir.systems.identifiers.base-url}/primaerdiagnose-condition-id"` |  |
+| fhir.systems.identifiers.prostata-anzahl-positive-stanzen-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-anzahl-positive-stanzen-observation-id"` |  |
+| fhir.systems.identifiers.prostata-anzahl-stanzen-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-anzahl-stanzen-observation-id"` |  |
+| fhir.systems.identifiers.prostata-ca-befall-stanze-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-ca-befall-stanze-observation-id"` |  |
+| fhir.systems.identifiers.prostata-clavien-dindo-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-clavien-dindo-observation-id"` |  |
+| fhir.systems.identifiers.prostata-gleason-patterns-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-gleason-patterns-observation-id"` |  |
+| fhir.systems.identifiers.prostata-gleason-score-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-gleason-score-observation-id"` |  |
+| fhir.systems.identifiers.prostata-psa-observation-id | string | `"${fhir.systems.identifiers.base-url}/prostata-psa-observation-id"` |  |
 | fhir.systems.identifiers.residualstatus-observation-id | string | `"${fhir.systems.identifiers.base-url}/residualstatus-observation-id"` |  |
 | fhir.systems.identifiers.strahlentherapie-bestrahlung-procedure-id | string | `"${fhir.systems.identifiers.base-url}/strahlentherapie-bestrahlung-procedure-id"` |  |
 | fhir.systems.identifiers.strahlentherapie-procedure-id | string | `"${fhir.systems.identifiers.base-url}/strahlentherapie-procedure-id"` |  |
@@ -220,6 +232,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.systems.mii-cs-onko-nebenwirkung-ctcae-grad | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad"` |  |
 | fhir.systems.mii-cs-onko-operation-residualstatus | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus"` |  |
 | fhir.systems.mii-cs-onko-primaertumor-diagnosesicherung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung"` |  |
+| fhir.systems.mii-cs-onko-prostata-postsurgical-complications | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications"` |  |
 | fhir.systems.mii-cs-onko-residualstatus | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus"` |  |
 | fhir.systems.mii-cs-onko-seitenlokalisation | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation"` |  |
 | fhir.systems.mii-cs-onko-strahlentherapie-applikationsart | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart"` |  |

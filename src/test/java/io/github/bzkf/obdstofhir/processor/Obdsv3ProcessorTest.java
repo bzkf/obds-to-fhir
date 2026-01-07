@@ -81,6 +81,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       TumorkonferenzMapper.class,
       TNMMapper.class,
       GleasonScoreMapper.class,
+      ModulProstataMapper.class,
       WeitereKlassifikationMapper.class,
       Obdsv2v3MapperConfig.class,
       Obdsv2v3MapperProperties.class,
@@ -189,15 +190,14 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(3);
 
-      var kafkaKeys = outputRecords.stream().map(record -> record.key).distinct().toList();
+      var kafkaKeys = outputRecords.stream().map(r -> r.key).distinct().toList();
       assertThat(kafkaKeys).hasSize(1); // Ensure all records have the same key
 
       var conditions =
           outputRecords.stream()
               .map(
-                  record ->
-                      BundleUtil.toListOfResourcesOfType(
-                              ctx, (Bundle) record.value, Condition.class)
+                  r ->
+                      BundleUtil.toListOfResourcesOfType(ctx, (Bundle) r.value, Condition.class)
                           .getFirst()
                           .getCode()
                           .getCoding()

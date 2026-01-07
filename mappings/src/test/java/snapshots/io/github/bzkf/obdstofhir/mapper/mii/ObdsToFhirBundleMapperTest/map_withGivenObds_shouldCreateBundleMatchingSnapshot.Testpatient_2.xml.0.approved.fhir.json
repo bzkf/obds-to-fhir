@@ -202,21 +202,65 @@
       "url": "Observation/490d7aa1400ec9cb226a135fc7580a254e670c6f530d1b8ec125e84d1f6cf151"
     }
   }, {
-    "fullUrl": "Observation/1cc8b3c99ff26a2d0087c1532eddb2620d33cda9b05bf331995f50dacaeaef66",
+    "fullUrl": "Observation/63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b",
     "resource": {
       "resourceType": "Observation",
-      "id": "1cc8b3c99ff26a2d0087c1532eddb2620d33cda9b05bf331995f50dacaeaef66",
+      "id": "63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo" ]
+      },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
-        "value": "gleason-score-11_1_OP_1"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-clavien-dindo-observation-id",
+        "value": "11_1_OP_1-modul-prostata-clavien-dindo"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "385377005",
-          "display": "Gleason grade finding for prostatic cancer (finding)"
+          "code": "789279006",
+          "display": "Clavien-Dindo classification grade (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      }, {
+        "reference": "Procedure/067bfc7458c9021869fe9907a7615a9b4da8b916a7172127b65ac15262eb341c"
+      } ],
+      "effectiveDateTime": "2021-09-09",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b"
+    }
+  }, {
+    "fullUrl": "Observation/7004c31b2464bda20c24b27837e80496a990c2ed7a3ba47bfe925df860989c4d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7004c31b2464bda20c24b27837e80496a990c2ed7a3ba47bfe925df860989c4d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_OP_1-modul-prostata-gleason-grade-group"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "1812491000004107",
+          "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
         } ]
       },
       "subject": {
@@ -234,9 +278,9 @@
           } ],
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "33013007"
+          "code": "1279717008"
         } ],
-        "text": "8"
+        "text": "4+4"
       },
       "method": {
         "coding": [ {
@@ -246,31 +290,121 @@
           "display": "Excision (procedure)"
         } ]
       },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384994009",
-            "display": "Primary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 4
+      "derivedFrom": [ {
+        "reference": "Observation/995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98"
       }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384995005",
-            "display": "Secondary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 4
+        "reference": "Observation/b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8"
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/1cc8b3c99ff26a2d0087c1532eddb2620d33cda9b05bf331995f50dacaeaef66"
+      "url": "Observation/7004c31b2464bda20c24b27837e80496a990c2ed7a3ba47bfe925df860989c4d"
+    }
+  }, {
+    "fullUrl": "Observation/995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_OP_1-modul-prostata-primary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384994009",
+          "display": "Primary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-09-09",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 4
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369773008",
+          "display": "Gleason Pattern 4 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98"
+    }
+  }, {
+    "fullUrl": "Observation/b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_OP_1-modul-prostata-secondary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384995005",
+          "display": "Secondary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-09-09",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 4
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369773008",
+          "display": "Gleason Pattern 4 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8"
     }
   }, {
     "fullUrl": "Procedure/c67a22480caccbb4d0bdaf182914e0df6b8e5aa27e4f4f736178fa6dda44d061",
@@ -867,21 +1001,170 @@
       "url": "Observation/b025f75c3b12ce095ccce95e1512174ca609d8cb2eac70487d315bc39aab4420"
     }
   }, {
-    "fullUrl": "Observation/313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78",
+    "fullUrl": "Observation/0594ec7b243d70f739a2d82d184ceeb6670f04452f262fe84c7b988e5f483499",
     "resource": {
       "resourceType": "Observation",
-      "id": "313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78",
+      "id": "0594ec7b243d70f739a2d82d184ceeb6670f04452f262fe84c7b988e5f483499",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-psa" ]
+      },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
-        "value": "gleason-score-11_1_VE_1"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-psa-observation-id",
+        "value": "11_1_VE_1-modul-prostata-psa"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "2857-1",
+          "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueQuantity": {
+        "value": 198.2,
+        "unit": "ng/mL",
+        "system": "http://unitsofmeasure.org",
+        "code": "ng/mL"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/0594ec7b243d70f739a2d82d184ceeb6670f04452f262fe84c7b988e5f483499"
+    }
+  }, {
+    "fullUrl": "Observation/e38e3341e9aac81eda1be837fe2310daf09d7072d3c8acdf73fea0668075d7c9",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e38e3341e9aac81eda1be837fe2310daf09d7072d3c8acdf73fea0668075d7c9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-stanzen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-stanzen-observation-id",
+        "value": "11_1_VE_1-modul-prostata-anzahl-stanzen"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44652-6",
+          "display": "Total number of cores in Tissue core"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueInteger": 5
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e38e3341e9aac81eda1be837fe2310daf09d7072d3c8acdf73fea0668075d7c9"
+    }
+  }, {
+    "fullUrl": "Observation/f3ae52bbc008d8ad896f176983a7349de70e3ab9b89c3340d4c30d615e793732",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "f3ae52bbc008d8ad896f176983a7349de70e3ab9b89c3340d4c30d615e793732",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-positive-stanzen-observation-id",
+        "value": "11_1_VE_1-modul-prostata-anzahl-positive-stanzen"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44651-8",
+          "display": "Tissue cores.positive.carcinoma in Tissue core"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueInteger": 4
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/f3ae52bbc008d8ad896f176983a7349de70e3ab9b89c3340d4c30d615e793732"
+    }
+  }, {
+    "fullUrl": "Observation/c0ebe767a627cd676ee250cbe2b2b9be7af8b4b4c07d486ba6917390c3942c09",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c0ebe767a627cd676ee250cbe2b2b9be7af8b4b4c07d486ba6917390c3942c09",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-ca-befall-stanze-observation-id",
+        "value": "11_1_VE_1-modul-prostata-ca-befall-stanze"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44654-2",
+          "display": "Tissue involved by tumor in Prostate tumor"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueQuantity": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c0ebe767a627cd676ee250cbe2b2b9be7af8b4b4c07d486ba6917390c3942c09"
+    }
+  }, {
+    "fullUrl": "Observation/e897eb848f80c21ed8da89f308cffbb82d9f37aee6eb11f7a3108a91682b6995",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e897eb848f80c21ed8da89f308cffbb82d9f37aee6eb11f7a3108a91682b6995",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_VE_1-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "385377005",
-          "display": "Gleason grade finding for prostatic cancer (finding)"
+          "code": "1812491000004107",
+          "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
         } ]
       },
       "subject": {
@@ -899,9 +1182,9 @@
           } ],
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "57403001"
+          "code": "1279714001"
         } ],
-        "text": "7"
+        "text": "3+4"
       },
       "method": {
         "coding": [ {
@@ -911,31 +1194,121 @@
           "display": "Biopsy (procedure)"
         } ]
       },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384994009",
-            "display": "Primary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 3
+      "derivedFrom": [ {
+        "reference": "Observation/1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db"
       }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384995005",
-            "display": "Secondary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 4
+        "reference": "Observation/5172ed43cf0a3687ec38a98377c5240d7ba118258a49c0e0b5fdb090f7354fb9"
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/313170f813148b19389bcc4133b10d2a7642c870555df35625dec1f8fce25f78"
+      "url": "Observation/e897eb848f80c21ed8da89f308cffbb82d9f37aee6eb11f7a3108a91682b6995"
+    }
+  }, {
+    "fullUrl": "Observation/1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_VE_1-modul-prostata-primary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384994009",
+          "display": "Primary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 3
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369772003",
+          "display": "Gleason Pattern 3 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "86273004",
+          "display": "Biopsy (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db"
+    }
+  }, {
+    "fullUrl": "Observation/5172ed43cf0a3687ec38a98377c5240d7ba118258a49c0e0b5fdb090f7354fb9",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "5172ed43cf0a3687ec38a98377c5240d7ba118258a49c0e0b5fdb090f7354fb9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_VE_1-modul-prostata-secondary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384995005",
+          "display": "Secondary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2022-01-20",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 4
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369773008",
+          "display": "Gleason Pattern 4 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "86273004",
+          "display": "Biopsy (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/5172ed43cf0a3687ec38a98377c5240d7ba118258a49c0e0b5fdb090f7354fb9"
     }
   }, {
     "fullUrl": "Observation/e058ce128aad62443a3b697b4ab50088b836ab2ee177fa3373c106280f1b5ec1",
@@ -978,21 +1351,170 @@
       "url": "Observation/e058ce128aad62443a3b697b4ab50088b836ab2ee177fa3373c106280f1b5ec1"
     }
   }, {
-    "fullUrl": "Observation/d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23",
+    "fullUrl": "Observation/2efecd10d0ac511f9fd26a7016c3b2a993b35d605beecfc7f3b6533275245d6c",
     "resource": {
       "resourceType": "Observation",
-      "id": "d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23",
+      "id": "2efecd10d0ac511f9fd26a7016c3b2a993b35d605beecfc7f3b6533275245d6c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-psa" ]
+      },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/gleason-score-observation-id",
-        "value": "gleason-score-11_1_DI_1"
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-psa-observation-id",
+        "value": "11_1_DI_1-modul-prostata-psa"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "2857-1",
+          "display": "Prostate specific Ag [Mass/volume] in Serum or Plasma"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueQuantity": {
+        "value": 20.51,
+        "unit": "ng/mL",
+        "system": "http://unitsofmeasure.org",
+        "code": "ng/mL"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/2efecd10d0ac511f9fd26a7016c3b2a993b35d605beecfc7f3b6533275245d6c"
+    }
+  }, {
+    "fullUrl": "Observation/6a9ee34931c937d75900aa3b0f87bebcb59f9c8ac6717bdaabdb2172bf9256c3",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "6a9ee34931c937d75900aa3b0f87bebcb59f9c8ac6717bdaabdb2172bf9256c3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-stanzen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-stanzen-observation-id",
+        "value": "11_1_DI_1-modul-prostata-anzahl-stanzen"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44652-6",
+          "display": "Total number of cores in Tissue core"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueInteger": 8
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/6a9ee34931c937d75900aa3b0f87bebcb59f9c8ac6717bdaabdb2172bf9256c3"
+    }
+  }, {
+    "fullUrl": "Observation/b9b8006cd73cb0b84ea50b4e60faa82fa8ccef62005871e7b0bb8ff7ff8cd976",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b9b8006cd73cb0b84ea50b4e60faa82fa8ccef62005871e7b0bb8ff7ff8cd976",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-positive-stanzen-observation-id",
+        "value": "11_1_DI_1-modul-prostata-anzahl-positive-stanzen"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44651-8",
+          "display": "Tissue cores.positive.carcinoma in Tissue core"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueInteger": 6
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b9b8006cd73cb0b84ea50b4e60faa82fa8ccef62005871e7b0bb8ff7ff8cd976"
+    }
+  }, {
+    "fullUrl": "Observation/e5147adda228938a8e5edb98cab4fe7a1d8217c0fcaeb94e1cca66a1af11e555",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "e5147adda228938a8e5edb98cab4fe7a1d8217c0fcaeb94e1cca66a1af11e555",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-ca-befall-stanze-observation-id",
+        "value": "11_1_DI_1-modul-prostata-ca-befall-stanze"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "44654-2",
+          "display": "Tissue involved by tumor in Prostate tumor"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueQuantity": {
+        "value": 88,
+        "unit": "%",
+        "system": "http://unitsofmeasure.org",
+        "code": "%"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/e5147adda228938a8e5edb98cab4fe7a1d8217c0fcaeb94e1cca66a1af11e555"
+    }
+  }, {
+    "fullUrl": "Observation/1478a0f20f39d4f74b12c52d2b235ff677cf9e844688423b8579142604838953",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1478a0f20f39d4f74b12c52d2b235ff677cf9e844688423b8579142604838953",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_DI_1-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "385377005",
-          "display": "Gleason grade finding for prostatic cancer (finding)"
+          "code": "1812491000004107",
+          "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
         } ]
       },
       "subject": {
@@ -1010,9 +1532,9 @@
           } ],
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "57403001"
+          "code": "1279714001"
         } ],
-        "text": "7"
+        "text": "3+4"
       },
       "method": {
         "coding": [ {
@@ -1022,31 +1544,121 @@
           "display": "Biopsy (procedure)"
         } ]
       },
-      "component": [ {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384994009",
-            "display": "Primary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 3
+      "derivedFrom": [ {
+        "reference": "Observation/eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e"
       }, {
-        "code": {
-          "coding": [ {
-            "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-            "code": "384995005",
-            "display": "Secondary Gleason pattern"
-          } ]
-        },
-        "valueInteger": 4
+        "reference": "Observation/099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e"
       } ]
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23"
+      "url": "Observation/1478a0f20f39d4f74b12c52d2b235ff677cf9e844688423b8579142604838953"
+    }
+  }, {
+    "fullUrl": "Observation/eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_DI_1-modul-prostata-primary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384994009",
+          "display": "Primary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 3
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369772003",
+          "display": "Gleason Pattern 3 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "86273004",
+          "display": "Biopsy (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e"
+    }
+  }, {
+    "fullUrl": "Observation/099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "value": "11_1_DI_1-modul-prostata-secondary-gleason-pattern"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "384995005",
+          "display": "Secondary Gleason pattern (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+      },
+      "focus": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ],
+      "effectiveDateTime": "2021-07-08",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "valueDecimal": 4
+          } ],
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "369773008",
+          "display": "Gleason Pattern 4 (finding)"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "86273004",
+          "display": "Biopsy (procedure)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e"
     }
   }, {
     "fullUrl": "List/6384c15ef79a9610a5b9f6f4b53e68292d378e87cc0454c2b30d77809e5d9641",
@@ -1072,7 +1684,31 @@
         }
       }, {
         "item": {
-          "reference": "Observation/d6d7a93572564880cd18a64696d540672a68b39e90204addd1f1cf77d6ad2a23"
+          "reference": "Observation/2efecd10d0ac511f9fd26a7016c3b2a993b35d605beecfc7f3b6533275245d6c"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/6a9ee34931c937d75900aa3b0f87bebcb59f9c8ac6717bdaabdb2172bf9256c3"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/b9b8006cd73cb0b84ea50b4e60faa82fa8ccef62005871e7b0bb8ff7ff8cd976"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/e5147adda228938a8e5edb98cab4fe7a1d8217c0fcaeb94e1cca66a1af11e555"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/1478a0f20f39d4f74b12c52d2b235ff677cf9e844688423b8579142604838953"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e"
         }
       } ]
     },

@@ -1,0 +1,51 @@
+{
+  "resourceType": "Observation",
+  "id": "402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "value": "DIA_80106-modul-prostata-gleason-grade-group"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+        "valueDecimal": 7
+      } ],
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "1279716004"
+    } ],
+    "text": "4+3"
+  },
+  "method": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
+    } ]
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b"
+  }, {
+    "reference": "Observation/ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec"
+  } ]
+}

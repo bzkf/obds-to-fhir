@@ -48,14 +48,14 @@ import org.springframework.context.annotation.Configuration;
       TumorkonferenzMapper.class,
       TNMMapper.class,
       GleasonScoreMapper.class,
+      ModulProstataMapper.class,
       WeitereKlassifikationMapper.class,
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,
       SubstanzToAtcMapper.class,
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
-    },
-    properties = {"fhir.mappings.modul.prostata.enabled=true"})
+    })
 @EnableConfigurationProperties
 @Configuration
 class ObdsToFhirBundleMapperTest extends MapperTest {
