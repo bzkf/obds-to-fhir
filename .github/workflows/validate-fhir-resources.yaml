@@ -65,6 +65,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Configure fhir cli
+        run: |
+          fhir config inflate All
+          fhir config validator Advanced
+
       - name: Cache FHIR packages
         id: fhir-package-cache
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
@@ -81,8 +86,6 @@ jobs:
         run: |
           fhir cache location --path
           fhir cache list
-          fhir config validator Advanced
-          fhir config inflate All
           fhir restore
 
       - name: Validate generated FHIR resources
@@ -112,6 +115,11 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Configure fhir cli
+        run: |
+          fhir config inflate All
+          fhir config validator Advanced
+
       - name: Cache FHIR packages
         id: fhir-package-cache
         uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
@@ -128,8 +136,6 @@ jobs:
         run: |
           fhir cache location --path
           fhir cache list
-          fhir config inflate All
-          fhir config validator Advanced
           fhir restore
 
       - name: Validate bundles
