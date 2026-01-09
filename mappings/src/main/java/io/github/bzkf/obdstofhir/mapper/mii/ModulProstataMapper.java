@@ -134,7 +134,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
     var valueQuantity =
         new Quantity()
             .setValue(modulProstata.getPSA())
-            .setUnit("ng/mL")
+            .setUnit("ng/ml")
             .setSystem("http://unitsofmeasure.org")
             .setCode("ng/mL");
 

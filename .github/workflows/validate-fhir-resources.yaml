@@ -19,10 +19,7 @@ env:
   # fatal: Internal logic failure: Unknown symbol 'resolve'
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "HistologiebefundMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest",
-      "StudienteilnahmeObservationMapperTest",
-      "ModulProstataMapperTest"
+      "TumorKonferenzMapperTest"
     ]
 
 jobs:
@@ -89,8 +86,7 @@ jobs:
           fhir restore
 
       - name: Validate generated FHIR resources
-        continue-on-error: true 
-        # ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
+        continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
         env:
           MAPPER_NAME: ${{ matrix.mapper }}
         run: |

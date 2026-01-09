@@ -22,6 +22,8 @@
   },
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
+  }, {
+    "reference": "Procedure/any"
   } ],
   "valueCodeableConcept": {
     "coding": [ {
