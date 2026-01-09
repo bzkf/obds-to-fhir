@@ -81,6 +81,7 @@ jobs:
         run: |
           fhir cache location --path
           fhir cache list
+          fhir config validator Advanced
           fhir config inflate All
           fhir restore
 
@@ -94,7 +95,7 @@ jobs:
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}" --vnext'
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
 
   validate-bundles:
     name: validate bundles
@@ -128,6 +129,7 @@ jobs:
           fhir cache location --path
           fhir cache list
           fhir config inflate All
+          fhir config validator Advanced
           fhir restore
 
       - name: Validate bundles
@@ -137,4 +139,4 @@ jobs:
           fhir cache list
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}" --vnext'
+            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}"'
