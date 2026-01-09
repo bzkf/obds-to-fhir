@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,6 +45,7 @@ class ModulProstataMapperTest extends MapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var subject = new Reference("Patient/any");
     var diagnose = new Reference("Condition/Primärdiagnose");
+    var op = new Reference("Procedure/any");
 
     final var list = new ArrayList<Observation>();
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
@@ -67,7 +69,13 @@ class ModulProstataMapperTest extends MapperTest {
       }
       if (meldung.getOP() != null && meldung.getOP().getModulProstata() != null) {
         var observation =
-            sut.map(meldung.getOP().getModulProstata(), meldung.getMeldungID(), subject, diagnose);
+            sut.map(
+                meldung.getOP().getModulProstata(),
+                meldung.getMeldungID(),
+                subject,
+                diagnose,
+                null,
+                List.of(op));
         list.addAll(observation);
       }
     }
