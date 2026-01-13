@@ -7,6 +7,14 @@ This project maps [oBDS XML reports](https://www.basisdatensatz.de/basisdatensat
 
 ## Getting Started
 
+### Hardware Requirements
+
+Around 400.000 oBDS reports can be processed in around 1 hour with the following resources:
+
+CPUs: 4
+Memory: 4 GiB
+Disk Space: 6 GiB
+
 ### Kubernetes
 
 To deploy to Kubernetes, we recommend the [stream-processors](https://github.com/miracum/charts/tree/master/charts/stream-processors) Helm chart.
