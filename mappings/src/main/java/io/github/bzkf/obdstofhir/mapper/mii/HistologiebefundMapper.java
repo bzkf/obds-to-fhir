@@ -28,7 +28,6 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
       Reference specimen) {
     Validate.notBlank(meldungsId);
     Objects.requireNonNull(pathologie, "pathologie must not be null");
-    Objects.requireNonNull(pathologie.getBefundtext(), "Befundtext must not be null");
     verifyReference(patient, ResourceType.Patient);
 
     // DiagnosticReport füllen
@@ -82,7 +81,16 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
     diagnosticReport.addSpecimen(specimen);
 
     // conclusion
-    diagnosticReport.setConclusion(pathologie.getBefundtext());
+    if (StringUtils.hasText(pathologie.getBefundtext())) {
+      diagnosticReport.setConclusion(pathologie.getBefundtext());
+    } else {
+      LOG.warn(
+          "Befundtext is unset for Histologiebefund. Setting data absent extension for conclusion.");
+      var absentString = new StringType();
+      absentString.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      diagnosticReport.setConclusionElement(absentString);
+    }
 
     return diagnosticReport;
   }

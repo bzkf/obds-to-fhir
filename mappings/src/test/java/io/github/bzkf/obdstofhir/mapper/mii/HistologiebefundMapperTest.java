@@ -26,7 +26,12 @@ class HistologiebefundMapperTest extends MapperTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_Patho.xml", "Testpatient_Patho2.xml", "Testpatient_1.xml"})
+  @CsvSource({
+    "Testpatient_Patho.xml",
+    "Testpatient_Patho2.xml",
+    "Testpatient_1.xml",
+    "Testpatient_Duplicate_OPS_ICDO_Substanzen.xml"
+  })
   void map_withGivenObds_shouldCreateValidDiagnosticReport(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
