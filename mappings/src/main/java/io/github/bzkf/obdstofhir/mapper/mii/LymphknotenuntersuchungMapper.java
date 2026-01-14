@@ -154,7 +154,16 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     observation.addFocus(diagnosisReference);
 
     // Effective Date
-    effectiveDate.ifPresent(observation::setEffective);
+    effectiveDate.ifPresentOrElse(
+        observation::setEffective,
+        () -> {
+          LOG.warn(
+              "TumorHistologiedatum is unset. Setting data absent extension for Observation.effective.");
+          var absentDateTime = new DateTimeType();
+          absentDateTime.addExtension(
+              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+          observation.setEffective(absentDateTime);
+        });
 
     observation.setSpecimen(specimenReference);
 
