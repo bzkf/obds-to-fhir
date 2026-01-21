@@ -48,13 +48,15 @@
           "valueCode": "unknown"
         } ]
       }
-    } ],
-    "text": "Stammzellmobilisierung (MM)"
+    } ]
   },
   "subject": {
     "reference": "Patient/any"
   },
   "performedPeriod": {
     "start": "2021-11-08"
-  }
+  },
+  "usedCode": [ {
+    "text": "Stammzellmobilisierung (MM)"
+  } ]
 }

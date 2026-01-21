@@ -1010,15 +1010,17 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
-        } ],
-        "text": "FOLFOX-4"
+        } ]
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
       },
       "performedPeriod": {
         "start": "2020-09-21"
-      }
+      },
+      "usedCode": [ {
+        "text": "FOLFOX-4"
+      } ]
     },
     "request": {
       "method": "PUT",
