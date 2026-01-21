@@ -1,7 +1,7 @@
 // groovylint-disable NestedBlockDepth
 
 plugins {
-    id 'org.springframework.boot' version '3.5.9'
+    id 'org.springframework.boot' version '3.5.8'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'java'
@@ -30,7 +30,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', '2025.1.0')
+    set('springCloudVersion', '2025.0.0')
     set('hapiVersion', '8.6.1')
 }
 
@@ -50,7 +50,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-core:1.16.2'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.8'
     implementation 'com.github.slugify:slugify:3.0.7'
-    implementation 'io.github.bzkf:obds2-to-obds3:0.1.14'
+    implementation 'io.github.bzkf:obds2-to-obds3:0.1.15'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
     // <https://github.com/FasterXML/jackson-modules-java8>
