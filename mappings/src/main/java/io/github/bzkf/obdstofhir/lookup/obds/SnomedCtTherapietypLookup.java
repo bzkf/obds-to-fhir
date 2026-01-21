@@ -1,7 +1,6 @@
 package io.github.bzkf.obdstofhir.lookup.obds;
 
 import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
-
 import java.util.EnumMap;
 
 public class SnomedCtTherapietypLookup {
