@@ -6,8 +6,8 @@ plugins {
     id 'jacoco'
     id 'java'
     id 'com.diffplug.spotless' version '8.1.0'
-    id 'io.freefair.lombok' version '9.1.0'
-    id 'net.ltgt.errorprone' version '4.3.0'
+    id 'io.freefair.lombok' version '9.2.0'
+    id 'net.ltgt.errorprone' version '4.4.0'
 }
 
 group = 'io.github.bzkf'
@@ -31,7 +31,7 @@ repositories {
 
 ext {
     set('springCloudVersion', '2025.0.0')
-    set('hapiVersion', '8.6.0')
+    set('hapiVersion', '8.6.1')
 }
 
 dependencies {
@@ -46,11 +46,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.0'
-    implementation 'io.micrometer:micrometer-core:1.16.0'
-    implementation 'org.miracum:kafka-fhir-serializer:2.0.7'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.2'
+    implementation 'io.micrometer:micrometer-core:1.16.2'
+    implementation 'org.miracum:kafka-fhir-serializer:2.0.8'
     implementation 'com.github.slugify:slugify:3.0.7'
-    implementation 'io.github.bzkf:obds2-to-obds3:0.1.14'
+    implementation 'io.github.bzkf:obds2-to-obds3:0.1.15'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
     // <https://github.com/FasterXML/jackson-modules-java8>
@@ -65,11 +65,11 @@ dependencies {
     testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
-    testImplementation 'com.approvaltests:approvaltests:26.2.0'
+    testImplementation 'com.approvaltests:approvaltests:26.5.0'
     testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
-    errorprone 'com.google.errorprone:error_prone_core:2.45.0'
-    errorprone 'com.uber.nullaway:nullaway:0.12.14'
+    errorprone 'com.google.errorprone:error_prone_core:2.46.0'
+    errorprone 'com.uber.nullaway:nullaway:0.13.0'
 
     runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
     runtimeOnly 'org.postgresql:postgresql'
