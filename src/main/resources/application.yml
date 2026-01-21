@@ -161,6 +161,8 @@ spring:
     producer:
       compression-type: gzip
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
+      properties:
+        max.request.size: ${MAX_REQUEST_SIZE:20971520}
 
 logging:
   pattern:
