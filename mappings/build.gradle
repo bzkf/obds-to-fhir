@@ -1,14 +1,14 @@
 // groovylint-disable NestedBlockDepth
 
 plugins {
-    id 'org.springframework.boot' version '3.5.8' apply false
+    id 'org.springframework.boot' version '3.5.9' apply false
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
     id 'jacoco'
-    id 'io.freefair.lombok' version '9.1.0'
+    id 'io.freefair.lombok' version '9.2.0'
     id 'com.diffplug.spotless' version '8.1.0'
     id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
 }
@@ -40,7 +40,7 @@ dependencies {
 
     // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.14'
-    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.0'
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.1'
     api 'io.github.java-diff-utils:java-diff-utils:4.16'
     api 'com.github.slugify:slugify:3.0.7'
 
@@ -50,7 +50,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.27.6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.approvaltests:approvaltests:26.2.0'
+    testImplementation 'com.approvaltests:approvaltests:26.5.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
