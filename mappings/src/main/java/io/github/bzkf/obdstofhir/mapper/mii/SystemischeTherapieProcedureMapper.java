@@ -95,7 +95,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     }
 
     if (syst.getProtokoll() != null) {
-      procedure.getCode().setText(syst.getProtokoll());
+      procedure.addUsedCode().setText(syst.getProtokoll());
     }
 
     var intention = new CodeableConcept();

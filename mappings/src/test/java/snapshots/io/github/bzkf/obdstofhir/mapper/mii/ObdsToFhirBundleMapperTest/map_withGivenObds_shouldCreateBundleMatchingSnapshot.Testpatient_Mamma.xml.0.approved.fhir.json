@@ -1677,15 +1677,17 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "CH"
-        } ],
-        "text": "Cisplatin"
+        } ]
       },
       "subject": {
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
       },
       "performedPeriod": {
         "start": "2020-04-03"
-      }
+      },
+      "usedCode": [ {
+        "text": "Cisplatin"
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1813,15 +1815,17 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "HO"
-        } ],
-        "text": "Anastrozol"
+        } ]
       },
       "subject": {
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
       },
       "performedPeriod": {
         "start": "2020-08-02"
-      }
+      },
+      "usedCode": [ {
+        "text": "Anastrozol"
+      } ]
     },
     "request": {
       "method": "PUT",

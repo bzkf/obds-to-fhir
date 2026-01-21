@@ -1,15 +1,15 @@
 package io.github.bzkf.obdstofhir.lookup.obds;
 
 import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
-import java.util.HashMap;
+import java.util.EnumMap;
 
 public class SnomedCtTherapietypLookup {
-  private static final HashMap<Therapieart, SnomedCt> lookup = new HashMap<>();
+  private static final EnumMap<Therapieart, SnomedCt> lookup = new EnumMap<>(Therapieart.class);
 
   static {
     lookup.put(Therapieart.CH, SnomedCt.of("367336001", "Chemotherapy (procedure)"));
     lookup.put(Therapieart.HO, SnomedCt.of("169413002", "Hormone therapy (procedure)"));
-    lookup.put(Therapieart.IM, SnomedCt.of("897713009", "Immunotherapy (procedure)"));
+    lookup.put(Therapieart.IM, SnomedCt.of("76334006", "Immunotherapy (procedure)"));
     lookup.put(
         Therapieart.ZS,
         SnomedCt.of(
@@ -36,6 +36,8 @@ public class SnomedCtTherapietypLookup {
     lookup.put(Therapieart.WS, SnomedCt.of("310341009", "Follow-up (wait and see) (finding)"));
     lookup.put(Therapieart.SO, SnomedCt.of("74964007", "Other (qualifier value)"));
   }
+
+  private SnomedCtTherapietypLookup() {}
 
   public static String lookupCode(Therapieart obdsCode) {
     return lookup.get(obdsCode) != null ? lookup.get(obdsCode).getCode() : null;

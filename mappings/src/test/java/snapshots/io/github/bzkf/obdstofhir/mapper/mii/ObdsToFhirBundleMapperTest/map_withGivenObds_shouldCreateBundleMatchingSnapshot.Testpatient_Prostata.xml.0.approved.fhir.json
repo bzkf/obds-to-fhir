@@ -389,15 +389,17 @@
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
           "code": "HO"
-        } ],
-        "text": "Hormontherapie Buserelin"
+        } ]
       },
       "subject": {
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "performedPeriod": {
         "start": "2020-05-10"
-      }
+      },
+      "usedCode": [ {
+        "text": "Hormontherapie Buserelin"
+      } ]
     },
     "request": {
       "method": "PUT",

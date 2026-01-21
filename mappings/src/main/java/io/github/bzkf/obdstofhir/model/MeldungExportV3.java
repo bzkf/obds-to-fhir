@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
-public class MeldungExportV3 extends OnkoResource {
+public class MeldungExportV3 {
 
   @EqualsAndHashCode.Include
   @JsonProperty("ID")
