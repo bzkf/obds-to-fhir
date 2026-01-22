@@ -139,6 +139,7 @@
           "mappings/build.gradle",
           "README.md",
           "deploy/compose.yaml",
+          "deploy/compose.dq-checks.yaml",
           "package.json"
         ]
       }
