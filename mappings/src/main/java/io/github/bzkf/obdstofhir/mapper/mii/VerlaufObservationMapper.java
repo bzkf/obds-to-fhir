@@ -1,6 +1,5 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
@@ -60,10 +59,8 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     observation.addFocus(condition);
 
     // Effective Date
-    var date =
-        new DateTimeType(verlauf.getUntersuchungsdatumVerlauf().toGregorianCalendar().getTime());
-    date.setPrecision(TemporalPrecisionEnum.DAY);
-    observation.setEffective(date);
+    convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf())
+        .ifPresent(observation::setEffective);
 
     // Components
     // Tumorstatus Primärtumor
