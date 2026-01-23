@@ -4,14 +4,13 @@ import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -70,20 +69,23 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      TodTyp tod, String meldungId, Reference patient, Reference condition) {
+      @NonNull TodTyp tod, @NonNull Reference patient, @NonNull Reference condition) {
     // Validation
-    Objects.requireNonNull(tod);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     String identifierValue;
 
     if (tod.getAbschlussID() != null) {
       identifierValue = tod.getAbschlussID();
     } else {
-      identifierValue = meldungId;
+      // if the AbschlussID is not set, fall back to creating the identifier based on
+      // the Patient ID and Condition ID. This is similar to what obds2-to-obds3 does,
+      // which uses patient_id + tumor_id
+      // XXX: we might want to consider using the Patient.identifier.value and
+      // Condition.identifier.value here instead for a shorter value.
+      identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
     }
-
-    verifyReference(patient, ResourceType.Patient);
-    verifyReference(condition, ResourceType.Condition);
 
     var observationList = new ArrayList<Observation>();
 
@@ -140,19 +142,12 @@ public class TodMapper extends ObdsToFhirMapper {
     } else {
       var observation = createBaseObservation(patient, condition, todesZeitpunkt, tod);
 
-      // Identifier: in this case there should only be one single death observation
-      // adding "sterbedatum" here because Abschluss_ID (if present, else Meldung_ID)
-      // might not be unique enough
-      String dateOnly = null;
-      if (todesZeitpunkt.isPresent()) {
-        DateTimeType sterbedatum = todesZeitpunkt.get();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        dateOnly = sdf.format(sterbedatum.getValue());
-      }
-      Identifier identifier =
+      // if the ICD cause of death is unset, use the plain identifier without icd code
+      // suffix
+      var identifier =
           new Identifier()
               .setSystem(fhirProperties.getSystems().getIdentifiers().getTodObservationId())
-              .setValue(slugifier.slugify(identifierValue + "-" + dateOnly));
+              .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
 

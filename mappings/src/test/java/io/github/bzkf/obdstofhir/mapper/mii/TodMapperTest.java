@@ -42,7 +42,7 @@ class TodMapperTest extends MapperTest {
             .get();
     var tMeldung = meldung.getTod();
 
-    var observations = tm.map(tMeldung, meldung.getMeldungID(), subject, condition);
+    var observations = tm.map(tMeldung, subject, condition);
 
     verifyAll(observations, sourceFile);
   }
