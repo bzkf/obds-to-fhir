@@ -276,11 +276,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Tod
         if (meldung.getTod() != null) {
           var deathObservations =
-              todMapper.map(
-                  meldung.getTod(),
-                  meldung.getMeldungID(),
-                  patientReference,
-                  primaryConditionReference);
+              todMapper.map(meldung.getTod(), patientReference, primaryConditionReference);
           addToBundle(bundle, deathObservations);
         }
 
