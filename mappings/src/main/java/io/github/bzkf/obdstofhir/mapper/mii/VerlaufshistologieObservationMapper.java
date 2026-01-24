@@ -46,7 +46,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       } else {
         var existing = distinctCodes.get(code);
         if (version == null) {
-          LOG.warn(
+          LOG.debug(
               "Multiple ICDO3 morphologies with code {} found, but new version is unset. "
                   + "Keeping one with existing version {}.",
               code,
@@ -55,14 +55,14 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
         }
 
         if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.warn(
+          LOG.debug(
               "Multiple ICDO3 morphologies with code {} found. Updating version {} over version {}.",
               code,
               version,
               existing.getVersion());
           distinctCodes.put(code, morph);
         } else {
-          LOG.warn(
+          LOG.debug(
               "Multiple ICDO3 morphologies with code {} found. Keeping largest version {} over version {}.",
               code,
               existing.getVersion(),

@@ -101,7 +101,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
               icd10Version);
         }
       } else {
-        LOG.warn("Fruehere_Tumorerkrankung ICD_Version is unset or contains only whitespaces");
+        LOG.debug("Fruehere_Tumorerkrankung ICD_Version is unset or contains only whitespaces");
       }
 
       if (versionElement == null) {

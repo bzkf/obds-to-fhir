@@ -150,7 +150,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       if (!substanzMap.containsKey(key)) {
         substanzMap.put(key, substanz);
       } else {
-        LOG.warn("Duplicate Substanz found with key: {}", key);
+        LOG.debug("Duplicate Substanz found with key: {}", key);
 
         if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
           // note that version is a mandatory field in oBDS
@@ -168,7 +168,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
           }
 
           if (version.compareTo(existingVersion) > 0) {
-            LOG.warn(
+            LOG.debug(
                 "Duplicate Substanzen with ATC code {} found. Updating version {} over version {}.",
                 key,
                 version,

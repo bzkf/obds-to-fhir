@@ -118,7 +118,7 @@ public class TodMapper extends ObdsToFhirMapper {
                 icd10Version);
           }
         } else {
-          LOG.warn("Todesursachen_ICD_Version is unset or contains only whitespaces");
+          LOG.debug("Todesursachen_ICD_Version is unset or contains only whitespaces");
         }
 
         if (versionElement == null) {
