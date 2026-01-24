@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.base.Strings;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
@@ -77,7 +78,7 @@ public class PatientMapper extends ObdsToFhirMapper {
 
     if (!deathReports.isEmpty()) {
       if (deathReports.size() > 1) {
-        var reportIds = deathReports.stream().map(m -> m.getMeldungID()).toList();
+        var reportIds = deathReports.stream().map(Meldung::getMeldungID).toList();
         LOG.warn("Meldungen contains more than one death report: {}", reportIds);
       }
 
@@ -123,6 +124,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       if (!Strings.isNullOrEmpty(land) && land.matches("[a-zA-Z]{2,3}")) {
         address.setCountry(land.toUpperCase());
       } else {
+        LOG.debug("Country code '{}' unset or doesn't match expected form", land);
         address
             .getCountryElement()
             .addExtension()

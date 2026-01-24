@@ -127,7 +127,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
             icd10Version);
       }
     } else {
-      LOG.warn("Primaertumor_ICD_Version is unset or contains only whitespaces");
+      LOG.debug("Primaertumor_ICD_Version is unset or contains only whitespaces");
     }
 
     if (versionElement == null) {
@@ -283,7 +283,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
       } else {
         var existing = distinctCodes.get(code);
         if (version == null) {
-          LOG.warn(
+          LOG.debug(
               "Multiple Morphologie ICD-O with code {} found, but new version is unset. "
                   + "Keeping one with existing version {}.",
               code,
@@ -292,14 +292,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
         }
 
         if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.warn(
+          LOG.debug(
               "Multiple Morphologie ICD-O with code {} found. Updating version {} over version {}.",
               code,
               version,
               existing.getVersion());
           distinctCodes.put(code, morph);
         } else {
-          LOG.warn(
+          LOG.debug(
               "Multiple Morphologie ICD-O with code {} found. Keeping largest version {} over version {}.",
               code,
               existing.getVersion(),

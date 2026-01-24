@@ -48,7 +48,7 @@ public class OperationMapper extends ObdsToFhirMapper {
         var existing = distinctCodes.get(code);
 
         if (version == null) {
-          LOG.warn(
+          LOG.debug(
               "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
               code,
               existing.getVersion());
@@ -56,14 +56,14 @@ public class OperationMapper extends ObdsToFhirMapper {
         }
 
         if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.warn(
+          LOG.debug(
               "Multiple OPS with code {} found. Updating version {} over version {}.",
               code,
               version,
               existing.getVersion());
           distinctCodes.put(code, ops);
         } else {
-          LOG.warn(
+          LOG.debug(
               "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
               code,
               existing.getVersion(),
@@ -98,7 +98,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       if (StringUtils.hasText(opsCode.getVersion())) {
         coding.setVersion(opsCode.getVersion());
       } else {
-        LOG.warn("Unset version for OPS Code");
+        LOG.debug("Unset version for OPS Code");
         var absentVersion = new StringType();
         absentVersion.addExtension(
             fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
@@ -142,18 +142,13 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.setSubject(subject);
 
       // performed
-      var dataAbsentExtension =
-          new Extension(
-              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-      var dataAbsentCode = new CodeType();
-      dataAbsentCode.addExtension(dataAbsentExtension);
-
       var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
       if (dateTime.isPresent()) {
         procedure.setPerformed(dateTime.get());
       } else {
         var performed = new DateTimeType();
-        performed.addExtension(dataAbsentExtension);
+        performed.addExtension(
+            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
         procedure.setPerformed(performed);
       }
 

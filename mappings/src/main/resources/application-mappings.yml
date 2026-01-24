@@ -15,7 +15,7 @@ fhir:
     stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
     systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
     sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
-    dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
+    data-absent-reason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
