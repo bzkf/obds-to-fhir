@@ -10,6 +10,7 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Observation map(OPTyp op, Reference patient, Reference focus) {
-    Objects.requireNonNull(op, "OP must not be null");
-
+  public Observation map(@NonNull OPTyp op, @NonNull Reference patient, Reference focus) {
     var rs = op.getResidualstatus();
     Objects.requireNonNull(rs, "Residualstatus must not be null");
     Objects.requireNonNull(
@@ -35,6 +34,9 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     verifyReference(patient, ResourceType.Patient);
 
     var observation = new Observation();
+    observation
+        .getMeta()
+        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoResidualstatus());
 
     // Identifiers
     var identifier =
