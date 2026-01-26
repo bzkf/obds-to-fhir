@@ -1083,6 +1083,15 @@
       } ],
       "status": "active",
       "medicationCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "_code": {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "as-text"
+            } ]
+          }
+        } ],
         "text": "5-Fluorouracil"
       },
       "subject": {
