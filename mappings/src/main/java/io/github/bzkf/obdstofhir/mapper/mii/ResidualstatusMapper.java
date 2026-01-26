@@ -34,9 +34,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     verifyReference(patient, ResourceType.Patient);
 
     var observation = new Observation();
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoResidualstatus());
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoResidualstatus());
 
     // Identifiers
     var identifier =
