@@ -4,6 +4,15 @@
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie" ]
   },
+  "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/procedure-method",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+        "code": "I"
+      } ]
+    }
+  } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/strahlentherapie-bestrahlung-procedure-id",
     "value": "1-0"
@@ -52,12 +61,6 @@
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
       "code": "1.2."
-    } ]
-  } ],
-  "usedCode": [ {
-    "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-      "code": "I"
     } ]
   } ]
 }

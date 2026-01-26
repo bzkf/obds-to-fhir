@@ -79,6 +79,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.extensions.condition-asserted-date | string | `"http://hl7.org/fhir/StructureDefinition/condition-assertedDate"` |  |
 | fhir.extensions.condition-occurred-following | string | `"http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"` |  |
 | fhir.extensions.ordinal-value | string | `"http://hl7.org/fhir/StructureDefinition/ordinalValue"` |  |
+| fhir.extensions.procedure-method | string | `"http://hl7.org/fhir/StructureDefinition/procedure-method"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-intention | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-intention"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-stellungzurop"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-bestrahlung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"` |  |

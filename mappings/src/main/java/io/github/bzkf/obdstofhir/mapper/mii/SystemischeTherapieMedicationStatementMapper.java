@@ -86,9 +86,17 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
           LOG.warn(
               "Substanz in Systemische Therapie with Bezeichnung '{}' could not be mapped to an ATC code.",
               substanz.getBezeichnung());
+          var absentCodeableConcept = new CodeableConcept();
+          absentCodeableConcept.setText(substanz.getBezeichnung());
+          var absentCode = new CodeType();
+          absentCode.addExtension(
+              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("as-text"));
+          absentCodeableConcept
+              .addCoding()
+              .setSystem(fhirProperties.getSystems().getAtcBfarm())
+              .setCodeElement(absentCode);
 
-          systMedicationStatement.setMedication(
-              new CodeableConcept().setText(substanz.getBezeichnung()));
+          systMedicationStatement.setMedication(absentCodeableConcept);
         }
       }
 

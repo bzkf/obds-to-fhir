@@ -59,6 +59,7 @@ public class FhirProperties {
     private String conditionAssertedDate;
     private String ordinalValue;
     private String conditionOccurredFollowing;
+    private String procedureMethod;
   }
 
   @Data

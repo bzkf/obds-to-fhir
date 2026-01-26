@@ -292,7 +292,9 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
           new Coding()
               .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
               .setCode(bestrahlungsData.applikationsart().getCode());
-      procedure.addUsedCode(new CodeableConcept(applikationsartCoding));
+      procedure.addExtension(
+          fhirProperties.getExtensions().getProcedureMethod(),
+          new CodeableConcept(applikationsartCoding));
     }
 
     // bodySite
@@ -306,8 +308,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     }
 
     // this ensures that if the zielgebiet is unset and only the seiteZielgebiet is
-    // set,
-    // we still create a bodySite element with just that extension.
+    // set, we still create a bodySite element with just that extension.
     if (bestrahlungsData.seiteZielgebiet() != null) {
       var sideCoding =
           new Coding()
