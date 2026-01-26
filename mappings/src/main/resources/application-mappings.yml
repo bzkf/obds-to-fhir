@@ -227,6 +227,7 @@ fhir:
     mii-pr-onko-prostate-clavien-dindo: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-prostate-gleason-patterns: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-prostate-gleason-grade-group: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group${fhir.profiles.versions.mii-onkologie}"
+    mii-pr-onko-residualstatus: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-residualstatus${fhir.profiles.versions.mii-onkologie}"
   display:
     histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
     gradingLoinc: "Grade pathology value Cancer"

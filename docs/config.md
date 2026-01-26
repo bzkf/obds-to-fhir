@@ -265,6 +265,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.profiles.mii-pr-onko-prostate-clavien-dindo | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-prostate-gleason-patterns | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.profiles.mii-pr-onko-prostate-gleason-grade-group | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group${fhir.profiles.versions.mii-onkologie}"` |  |
+| fhir.profiles.mii-pr-onko-residualstatus | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-residualstatus${fhir.profiles.versions.mii-onkologie}"` |  |
 | fhir.display.histologyLoinc | string | `"Histology and Behavior ICD-O-3 Cancer"` |  |
 | fhir.display.gradingLoinc | string | `"Grade pathology value Cancer"` |  |
 | fhir.display.tnmcLoinc | string | `"Stage group.clinical Cancer"` |  |

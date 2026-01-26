@@ -1,6 +1,9 @@
 {
   "resourceType": "Observation",
   "id": "daa3a29e56fbbdcdf2d899040e8a515eb5ae62414b7e1478d79d0b499469bbcc",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-residualstatus" ]
+  },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/residualstatus-observation-id",
     "value": "301"

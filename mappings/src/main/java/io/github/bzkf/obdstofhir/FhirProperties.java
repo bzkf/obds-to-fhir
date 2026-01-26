@@ -249,6 +249,7 @@ public class FhirProperties {
     private String miiPrOnkoProstateClavienDindo;
     private String miiPrOnkoProstateGleasonPatterns;
     private String miiPrOnkoProstateGleasonGradeGroup;
+    private String miiPrOnkoResidualstatus;
   }
 
   @Data
