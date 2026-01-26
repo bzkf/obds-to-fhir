@@ -18,7 +18,13 @@ import org.springframework.stereotype.Service;
 public class SubstanzToAtcMapper {
   private final Map<String, String> substanzToCode = new HashMap<>();
   private static CSVFormat csvFormat =
-      CSVFormat.DEFAULT.builder().setHeader().setSkipHeaderRecord(true).setDelimiter(";").get();
+      CSVFormat.DEFAULT
+          .builder()
+          .setHeader()
+          .setSkipHeaderRecord(true)
+          .setDelimiter(";")
+          .setCommentMarker('#')
+          .get();
 
   @Value("${fhir.mappings.substanz-to-atc.extra-mappings-file-path}")
   private Optional<Path> extraMappingsFilePath;
