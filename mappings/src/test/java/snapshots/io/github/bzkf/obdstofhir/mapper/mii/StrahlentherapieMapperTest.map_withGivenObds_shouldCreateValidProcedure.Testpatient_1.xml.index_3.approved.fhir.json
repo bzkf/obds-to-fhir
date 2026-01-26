@@ -5,6 +5,14 @@
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-nuklearmedizin" ]
   },
   "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/procedure-method",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+        "code": "MPRRT"
+      } ]
+    }
+  }, {
     "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis",
     "valueQuantity": {
       "value": 20,
@@ -71,11 +79,6 @@
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
       "code": "Y-90"
-    } ]
-  }, {
-    "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-      "code": "MPRRT"
     } ]
   } ]
 }

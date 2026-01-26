@@ -5,6 +5,14 @@
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie-bestrahlung-strahlentherapie" ]
   },
   "extension": [ {
+    "url": "http://hl7.org/fhir/StructureDefinition/procedure-method",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
+        "code": "PRCN-ST4D"
+      } ]
+    }
+  }, {
     "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis",
     "valueQuantity": {
       "value": 30.3,
@@ -79,11 +87,6 @@
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
       "code": "Co-60"
-    } ]
-  }, {
-    "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-      "code": "PRCN-ST4D"
     } ]
   } ]
 }
