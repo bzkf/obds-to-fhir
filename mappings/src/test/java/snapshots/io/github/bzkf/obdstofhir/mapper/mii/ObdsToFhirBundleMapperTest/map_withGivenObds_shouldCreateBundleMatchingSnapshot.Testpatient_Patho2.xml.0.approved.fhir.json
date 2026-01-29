@@ -243,7 +243,8 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c",
+        "type": "Condition"
       } ],
       "effectiveDateTime": "2021-08-01",
       "valueInteger": 21
@@ -277,7 +278,8 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c",
+        "type": "Condition"
       } ],
       "effectiveDateTime": "2021-08-01",
       "valueInteger": 9
@@ -311,7 +313,8 @@
         "reference": "Patient/1f3cbe89f02e77981b92928db4f8522ddd4be1d8d14a243e7fcc9834a0d35575"
       },
       "focus": [ {
-        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c"
+        "reference": "Condition/2092b4ae69451736986774ede97f1b85c9592e9176bd094c0f499ea197af582c",
+        "type": "Condition"
       } ],
       "effectiveDateTime": "2021-08-01",
       "valueQuantity": {

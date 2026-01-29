@@ -21,7 +21,8 @@
     "reference": "Patient/any"
   },
   "focus": [ {
-    "reference": "Condition/Primärdiagnose"
+    "reference": "Condition/Primärdiagnose",
+    "type": "Condition"
   } ],
   "effectiveDateTime": "2021-07-08",
   "valueQuantity": {

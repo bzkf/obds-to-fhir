@@ -21,9 +21,11 @@
     "reference": "Patient/any"
   },
   "focus": [ {
-    "reference": "Condition/Primärdiagnose"
+    "reference": "Condition/Primärdiagnose",
+    "type": "Condition"
   }, {
-    "reference": "Procedure/any"
+    "reference": "Procedure/any",
+    "type": "Procedure"
   } ],
   "valueCodeableConcept": {
     "coding": [ {
