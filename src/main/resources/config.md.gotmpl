@@ -48,14 +48,24 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 
     Query a FHIR server to get the logical ID of the Patient resource from the identifier value.
     This sends a `GET /Patient?identifier=<fhir.systems.identifiers.patient-id>|<Patient_ID>` query
-    to the server specified in `patient-reference-generation.fhir-server.base-url` and returns the
+    to the server specified in `fhir.mappings.patient-reference-generation.fhir-server.base-url` and returns the
     `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
     the job exits with an error.
 
 - `RECORD_ID_DATABASE_LOOKUP`
 
     Query a database table to lookup an internal ID from the given Patient_ID. The database connection
-    and SQL query to run can be configured in the `patient-reference-generation.record-id-database` settings.
+    and SQL query to run can be configured in the `fhir.mappings.patient-reference-generation.record-id-database`
+    settings.
+
+> [!IMPORTANT]
+> For both the `FHIR_SERVER_LOOKUP` and `RECORD_ID_DATABASE_LOOKUP` strategy, if the ID wasn't found in either the
+> or the record database and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `true`, a FHIR Patient
+> resource is still created and added to the resulting Bundle using the default
+> `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID` strategy to create its `Patient.id` and all references
+> to it.
+> If no ID is found and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `false`, an exception is thrown
+> and the application is stopped.
 
 ## All Available Settings
 

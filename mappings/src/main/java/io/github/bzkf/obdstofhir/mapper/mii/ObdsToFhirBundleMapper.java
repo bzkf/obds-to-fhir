@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -76,7 +77,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
 
-  private final Function<OBDS.MengePatient.Patient, Reference> patientReferenceGenerator;
+  private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -105,7 +106,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
-      Function<OBDS.MengePatient.Patient, Reference> patientReferenceGenerator) {
+      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -179,12 +180,31 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
 
-      var patientReference = patientReferenceGenerator.apply(obdsPatient);
+      var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
 
-      // only add patient resource to bundle if active profile is set to patient
+      // if the patient reference could not be generated, but the creation
+      // of patient resources in enabled, we add a patient resource anyway.
+      // this is helpful for cases where a patient should only be created if
+      // it doesn't exist yet on the FHIR server (e.g. FHIR_SERVER_LOOKUP strategy).
+      if (patientReferenceOptional.isEmpty() && !createPatientResources) {
+        throw new IllegalStateException(
+            "Unable to generate patient reference for patient with ID. "
+                + "The patient may be missing in the FHIR server or record database.");
+      } else if (patientReferenceOptional.isEmpty() && createPatientResources) {
+        LOG.debug(
+            "Unable to generate patient reference so using reference "
+                + "to patient to be created.");
+        // this uses the default mechanism of referencing the created patient resource
+        patientReferenceOptional = Optional.of(createReferenceFromResource(patient));
+      }
+
+      var patientReference = patientReferenceOptional.get();
+
+      // only add patient resource to bundle if enabled
       if (createPatientResources) {
         addToBundle(bundle, patient);
       }
+
       bundle.setId(patient.getId());
 
       for (var meldung : meldungen) {

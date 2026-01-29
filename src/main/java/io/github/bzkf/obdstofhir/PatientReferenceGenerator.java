@@ -38,6 +38,7 @@ import org.springframework.retry.backoff.ExponentialRandomBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -83,25 +84,26 @@ public class PatientReferenceGenerator {
   }
 
   @Bean
-  public Function<OBDS.MengePatient.Patient, Reference> getPatientReferenceGenerationFunction() {
-    Function<OBDS.MengePatient.Patient, String> idGenerator;
+  public Function<OBDS.MengePatient.Patient, Optional<Reference>>
+      getPatientReferenceGenerationFunction() {
+    Function<OBDS.MengePatient.Patient, Optional<String>> idGenerator;
     switch (strategy) {
       case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID:
         idGenerator =
             p -> {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
-              return DigestUtils.sha256Hex(system + "|" + value);
+              return Optional.of(DigestUtils.sha256Hex(system + "|" + value));
             };
         break;
       case MD5_HASHED_PATIENT_ID:
-        idGenerator = p -> DigestUtils.md5Hex(p.getPatientID());
+        idGenerator = p -> Optional.of(DigestUtils.md5Hex(p.getPatientID()));
         break;
       case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES:
-        idGenerator = p -> p.getPatientID().replace('_', '-');
+        idGenerator = p -> Optional.of(p.getPatientID().replace('_', '-'));
         break;
       case PATIENT_ID:
-        idGenerator = OBDS.MengePatient.Patient::getPatientID;
+        idGenerator = p -> Optional.of(p.getPatientID());
         break;
       case FHIR_SERVER_LOOKUP:
         if (fhirClient == null) {
@@ -116,8 +118,11 @@ public class PatientReferenceGenerator {
 
               var id =
                   findPatientIdByIdentifier(new Identifier().setSystem(system).setValue(value));
-
-              return id.getIdPart();
+              if (id.isPresent()) {
+                return Optional.of(id.get().getIdPart());
+              } else {
+                return Optional.empty();
+              }
             };
 
         break;
@@ -136,7 +141,13 @@ public class PatientReferenceGenerator {
 
     return p -> {
       Validate.notBlank(p.getPatientID());
-      return new Reference("Patient/" + idGenerator.apply(p));
+      var idPart = idGenerator.apply(p);
+
+      if (idPart.isPresent()) {
+        return Optional.of(new Reference("Patient/" + idPart.get()));
+      } else {
+        return Optional.empty();
+      }
     };
   }
 
@@ -155,12 +166,17 @@ public class PatientReferenceGenerator {
     return client;
   }
 
-  private String findRecordIdByPatientId(String patientId) {
-    return this.recordIdJdbcTemplate.queryForObject(
-        recordIdDbConfig.query(), String.class, patientId);
+  private Optional<String> findRecordIdByPatientId(String patientId) {
+    var id =
+        this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
+    if (StringUtils.hasText(id)) {
+      return Optional.of(id);
+    } else {
+      return Optional.empty();
+    }
   }
 
-  private IIdType findPatientIdByIdentifier(Identifier patientIdentifier) {
+  private Optional<IIdType> findPatientIdByIdentifier(Identifier patientIdentifier) {
     var result =
         retryTemplate.execute(
             context ->
@@ -178,15 +194,14 @@ public class PatientReferenceGenerator {
         BundleUtil.toListOfResourcesOfType(fhirClient.getFhirContext(), result, Patient.class);
 
     if (patients.isEmpty()) {
-      throw new IllegalArgumentException(
-          "Unable to find any patient resources on the FHIR server for the given identifier.");
+      return Optional.empty();
     }
 
     if (patients.size() > 1) {
       throw new IllegalArgumentException("More than one patient resource matches the identifier.");
     }
 
-    return patients.getFirst().getIdElement();
+    return Optional.of(patients.getFirst().getIdElement());
   }
 
   private static RetryTemplate createRetryTemplate(FhirContext fhirContext) {
