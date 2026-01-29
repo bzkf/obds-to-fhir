@@ -71,61 +71,94 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
-    observation.setCode(
-        new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .snomed()
-                .setCode("423740007")
-                .setDisplay(
-                    "Eastern Cooperative Oncology Group performance status (observable entity)")));
+    var codeConcept = new CodeableConcept();
+    codeConcept.addCoding(
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("423740007")
+            .setDisplay(
+                "Eastern Cooperative Oncology Group performance status (observable entity)"));
+    codeConcept.addCoding(
+        fhirProperties
+            .getCodings()
+            .loinc()
+            .setCode("89262-0")
+            .setDisplay("ECOG Performance Status [Interpretation]"));
+
+    observation.setCode(codeConcept);
 
     observation.setEffective(effective);
 
     observation.setFocus(Collections.singletonList(condition));
 
-    Coding value =
+    var miiValue =
         new Coding()
             .setSystem(fhirProperties.getSystems().getMiiCsOnkoAllgemeinerLeistungszustandEcog());
+    var loincValue = fhirProperties.getCodings().loinc();
     switch (allgemeinerLeistungszustand) {
       case ECOG_0, KARNOFSKY_90, KARNOFSKY_100:
-        value.setCode("0");
-        value.setDisplay(
+        miiValue.setCode("0");
+        miiValue.setDisplay(
             "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % "
                 + "nach Karnofsky)");
+        loincValue
+            .setCode("LA9622-7")
+            .setDisplay(
+                "Fully active, able to carry on all pre-disease performance without restriction");
         break;
       case ECOG_1, KARNOFSKY_70, KARNOFSKY_80:
-        value.setCode("1");
-        value.setDisplay(
+        miiValue.setCode("1");
+        miiValue.setDisplay(
             "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte "
                 + "körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) "
                 + "möglich (70 - 80 % nach Karnofsky)");
+        loincValue
+            .setCode("LA9623-5")
+            .setDisplay(
+                "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work");
         break;
       case ECOG_2, KARNOFSKY_50, KARNOFSKY_60:
-        value.setCode("2");
-        value.setDisplay(
+        miiValue.setCode("2");
+        miiValue.setDisplay(
             "Gehfähig, Selbstversorgung möglich, aber nicht arbeitsfähig; kann mehr "
                 + "als 50 % der Wachzeit aufstehen (50 - 60 % nach Karnofsky)");
+        loincValue
+            .setCode("LA9624-3")
+            .setDisplay(
+                "Ambulatory and capable of all selfcare but unable to carry out any work activities. Up and about more than 50% of waking hours");
         break;
       case ECOG_3, KARNOFSKY_30, KARNOFSKY_40:
-        value.setCode("3");
-        value.setDisplay(
+        miiValue.setCode("3");
+        miiValue.setDisplay(
             "Nur begrenzte Selbstversorgung möglich; ist 50 % oder mehr der Wachzeit"
                 + " an Bett oder Stuhl gebunden (30 40 % nach Karnofsky)");
+        loincValue
+            .setCode("LA9625-0")
+            .setDisplay(
+                "Capable of only limited selfcare, confined to bed or chair more than 50% of waking hours");
         break;
       case ECOG_4, KARNOFSKY_10, KARNOFSKY_20:
-        value.setCode("4");
-        value.setDisplay(
+        miiValue.setCode("4");
+        miiValue.setDisplay(
             "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an "
                 + "Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)");
+        loincValue
+            .setCode("LA9626-8")
+            .setDisplay(
+                "Completely disabled. Cannot carry on any selfcare. Totally confined to bed or chair");
         break;
       case U:
       default:
-        value.setCode("U");
-        value.setDisplay("Unbekannt");
+        miiValue.setCode("U");
+        miiValue.setDisplay("Unbekannt");
         break;
     }
-    observation.setValue(new CodeableConcept(value));
+
+    var valueConcept = new CodeableConcept();
+    valueConcept.addCoding(miiValue);
+    valueConcept.addCoding(loincValue);
+    observation.setValue(valueConcept);
 
     return observation;
   }

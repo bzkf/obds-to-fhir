@@ -1109,6 +1109,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -1123,6 +1128,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "4",
           "display": "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9626-8",
+          "display": "Completely disabled. Cannot carry on any selfcare. Totally confined to bed or chair"
         } ]
       }
     },
@@ -2519,6 +2529,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -2533,6 +2548,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "4",
           "display": "Völlig pflegebedürftig, keinerlei Selbstversorgung möglich; völlig an Bett oder Stuhl gebunden (10 - 20 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9626-8",
+          "display": "Completely disabled. Cannot carry on any selfcare. Totally confined to bed or chair"
         } ]
       }
     },
@@ -3435,6 +3455,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -3449,6 +3474,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "0",
           "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
         } ]
       }
     },
@@ -3564,6 +3594,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -3578,6 +3613,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "0",
           "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
         } ]
       }
     },
@@ -3604,6 +3644,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -3618,6 +3663,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "1",
           "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9623-5",
+          "display": "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work"
         } ]
       }
     },
@@ -4980,6 +5030,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -4994,6 +5049,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "0",
           "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
         } ]
       }
     },
@@ -5048,6 +5108,11 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250501",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
@@ -5062,6 +5127,11 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "0",
           "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.80",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
         } ]
       }
     },
