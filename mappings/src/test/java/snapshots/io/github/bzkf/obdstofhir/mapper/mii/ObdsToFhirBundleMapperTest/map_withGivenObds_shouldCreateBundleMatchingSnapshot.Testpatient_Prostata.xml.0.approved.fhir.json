@@ -1592,8 +1592,7 @@
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "focus": [ {
-        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc",
-        "type": "Condition"
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
       } ],
       "effectiveDateTime": "2020-10-14",
       "valueQuantity": {
@@ -2041,8 +2040,7 @@
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "focus": [ {
-        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc",
-        "type": "Condition"
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
       } ],
       "effectiveDateTime": "2020-05-02",
       "valueQuantity": {
@@ -2081,8 +2079,7 @@
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "focus": [ {
-        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc",
-        "type": "Condition"
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
       } ],
       "effectiveDateTime": "2020-05-10",
       "valueInteger": 6
@@ -2116,8 +2113,7 @@
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "focus": [ {
-        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc",
-        "type": "Condition"
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
       } ],
       "effectiveDateTime": "2020-05-10",
       "valueInteger": 4
@@ -2151,8 +2147,7 @@
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48"
       },
       "focus": [ {
-        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc",
-        "type": "Condition"
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
       } ],
       "effectiveDateTime": "2020-05-10",
       "valueQuantity": {

@@ -96,14 +96,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
     var observation = new Observation();
     observation.setSubject(patient);
     observation.setStatus(Observation.ObservationStatus.FINAL);
-
-    // create a copy of the condition reference with type set to ensure
-    // FHIR validation works correctly since it includes a slice
-    // on the reference's type. Copy to avoid modifying the original
-    // reference used elsewhere.
-    var conditionRef = condition.copy();
-    conditionRef.setType("Condition");
-    observation.addFocus(conditionRef);
+    observation.addFocus(condition);
 
     return observation;
   }
@@ -325,9 +318,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
 
     if (ops != null && !ops.isEmpty()) {
       for (var op : ops) {
-        var opRef = op.copy();
-        opRef.setType("Procedure");
-        observation.addFocus(opRef);
+        observation.addFocus(op);
       }
     } else {
       LOG.warn(

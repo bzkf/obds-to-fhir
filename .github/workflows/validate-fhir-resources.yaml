@@ -19,7 +19,8 @@ env:
   # fatal: Internal logic failure: Unknown symbol 'resolve'
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
-      "TumorKonferenzMapperTest"
+      "TumorKonferenzMapperTest",
+      "ModulProstataMapperTest"
     ]
 
 jobs:

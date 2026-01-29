@@ -229,11 +229,9 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       }, {
-        "reference": "Procedure/067bfc7458c9021869fe9907a7615a9b4da8b916a7172127b65ac15262eb341c",
-        "type": "Procedure"
+        "reference": "Procedure/067bfc7458c9021869fe9907a7615a9b4da8b916a7172127b65ac15262eb341c"
       } ],
       "effectiveDateTime": "2021-09-09",
       "valueCodeableConcept": {
@@ -1053,8 +1051,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2022-01-20",
       "valueQuantity": {
@@ -1093,8 +1090,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2022-01-20",
       "valueInteger": 5
@@ -1128,8 +1124,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2022-01-20",
       "valueInteger": 4
@@ -1163,8 +1158,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2022-01-20",
       "valueQuantity": {
@@ -1417,8 +1411,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueQuantity": {
@@ -1457,8 +1450,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueInteger": 8
@@ -1492,8 +1484,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueInteger": 6
@@ -1527,8 +1518,7 @@
         "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
       },
       "focus": [ {
-        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910",
-        "type": "Condition"
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       } ],
       "effectiveDateTime": "2021-07-08",
       "valueQuantity": {
