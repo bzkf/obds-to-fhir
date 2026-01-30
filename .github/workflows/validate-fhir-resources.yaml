@@ -20,7 +20,6 @@ env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest",
       "ModulProstataMapperTest"
     ]
 

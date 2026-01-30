@@ -95,8 +95,8 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient, @NonNull Reference condition) {
     var observation = new Observation();
     observation.setSubject(patient);
-    observation.addFocus(condition);
     observation.setStatus(Observation.ObservationStatus.FINAL);
+    observation.addFocus(condition);
 
     return observation;
   }
