@@ -50,5 +50,8 @@
   },
   "performedPeriod": {
     "start": "2021-11-08"
-  }
+  },
+  "reasonReference": [ {
+    "reference": "Condition/primärdiagnose"
+  } ]
 }

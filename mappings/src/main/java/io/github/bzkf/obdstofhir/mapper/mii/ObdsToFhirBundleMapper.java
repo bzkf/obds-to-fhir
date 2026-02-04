@@ -699,7 +699,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       Reference primaryConditionReference) {
     var mappedResources = new ArrayList<Resource>();
 
-    var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference);
+    var systProcedure = systemischeTherapieProcedureMapper.map(syst, patientReference, primaryConditionReference);
     mappedResources.add(systProcedure);
 
     var procedureReference = createReferenceFromResource(systProcedure);

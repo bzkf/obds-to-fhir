@@ -463,7 +463,10 @@
       },
       "performedPeriod": {
         "start": "2021-11-08"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+      } ]
     },
     "request": {
       "method": "PUT",

@@ -52,6 +52,9 @@
     "start": "2020-05",
     "end": "2020-10-15"
   },
+  "reasonReference": [ {
+    "reference": "Condition/primärdiagnose"
+  } ],
   "outcome": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",

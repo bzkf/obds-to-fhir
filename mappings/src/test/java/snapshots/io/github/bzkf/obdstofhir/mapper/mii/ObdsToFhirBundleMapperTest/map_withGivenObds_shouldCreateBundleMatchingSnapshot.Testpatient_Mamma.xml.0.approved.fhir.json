@@ -1688,6 +1688,9 @@
       "performedPeriod": {
         "start": "2020-04-03"
       },
+      "reasonReference": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
       "usedCode": [ {
         "text": "Cisplatin"
       } ]
@@ -1826,6 +1829,9 @@
       "performedPeriod": {
         "start": "2020-08-02"
       },
+      "reasonReference": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
       "usedCode": [ {
         "text": "Anastrozol"
       } ]

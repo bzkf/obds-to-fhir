@@ -403,6 +403,9 @@
       "performedPeriod": {
         "start": "2020-05-10"
       },
+      "reasonReference": [ {
+        "reference": "Condition/e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc"
+      } ],
       "usedCode": [ {
         "text": "Hormontherapie Buserelin"
       } ]

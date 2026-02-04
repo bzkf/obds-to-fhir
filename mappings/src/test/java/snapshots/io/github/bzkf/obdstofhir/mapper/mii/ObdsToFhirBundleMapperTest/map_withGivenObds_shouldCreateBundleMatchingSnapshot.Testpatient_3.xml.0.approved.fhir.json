@@ -165,7 +165,10 @@
       },
       "performedPeriod": {
         "start": "2018-03-17"
-      }
+      },
+      "reasonReference": [ {
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
+      } ]
     },
     "request": {
       "method": "PUT",

@@ -166,6 +166,9 @@
       "performedPeriod": {
         "start": "2020-09-01"
       },
+      "reasonReference": [ {
+        "reference": "Condition/c3a22e56e7713786dbec08325f6c9273d20f584f29e92ce20ff0983fc5cee9af"
+      } ],
       "usedCode": [ {
         "text": "FCR"
       } ]
@@ -442,6 +445,9 @@
         "start": "2015-07-15",
         "end": "2020-07-18"
       },
+      "reasonReference": [ {
+        "reference": "Condition/c3a22e56e7713786dbec08325f6c9273d20f584f29e92ce20ff0983fc5cee9af"
+      } ],
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
