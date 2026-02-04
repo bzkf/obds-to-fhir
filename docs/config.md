@@ -95,6 +95,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.extensions.mii-ex-onko-strahlentherapie-bestrahlung | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung"` |  |
 | fhir.extensions.mii-ex-onko-histology-morphology-behavior-icdo3 | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3"` |  |
 | fhir.extensions.mii-ex-onko-systemische-therapie-intention | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention"` |  |
+| fhir.extensions.mii-ex-onko-systemische-therapie-stellungzurop | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-stellungzurop"` |  |
 | fhir.extensions.mii-ex-onko-op-intention | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-einzeldosis"` |  |
 | fhir.extensions.mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis | string | `"https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-strahlentherapie-bestrahlung-gesamtdosis"` |  |
