@@ -49,6 +49,7 @@ public class FhirProperties {
     private String miiExOnkoStrahlentherapieBestrahlung;
     private String miiExOnkoHistologyMorphologyBehaviorIcdo3;
     private String miiExOnkoSystemischeTherapieIntention;
+    private String miiExOnkoSystemischeTherapieStellungzurop;
     private String miiExOnkoStrahlentherapieBestrahlungEinzeldosis;
     private String miiExOnkoStrahlentherapieBestrahlungGesamtdosis;
     private String miiExOnkoStrahlentherapieBestrahlungBoost;

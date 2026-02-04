@@ -112,7 +112,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
             .setCode(syst.getStellungOP());
     procedure
         .addExtension()
-        .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieStellungzurop())
+        .setUrl(fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieStellungzurop())
         .setValue(new CodeableConcept(stellungZurOp));
 
     if (null != syst.getEndeGrund()) {
