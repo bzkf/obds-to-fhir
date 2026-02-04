@@ -21,10 +21,11 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  public Procedure map(SYSTTyp syst, Reference subject) {
+  public Procedure map(SYSTTyp syst, Reference subject, Reference condition) {
     Objects.requireNonNull(syst, "Systemtherapie must not be null");
     Validate.notBlank(syst.getSYSTID(), "Required SYST_ID is unset");
     verifyReference(subject, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());
@@ -45,6 +46,8 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     }
 
     procedure.setSubject(subject);
+
+    procedure.addReasonReference(condition);
 
     var dataAbsentExtension =
         new Extension(
