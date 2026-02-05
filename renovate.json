@@ -25,5 +25,8 @@
     "ghcr.io/bzkf/obds-to-fhir-dq-checks",
     "ghcr.io/bzkf/obds-to-fhir"
   ],
-  "ignorePaths": ["**/node_modules/**", "**/bower_components/**"]
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**"
+  ]
 }
