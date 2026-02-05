@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -54,7 +55,7 @@ class TNMMapperTest extends MapperTest {
         tnmObservations.addAll(
             sut.map(
                 conMeldung.getDiagnose().getCTNM(),
-                "clinical",
+                TnmType.CLINICAL,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
@@ -63,7 +64,7 @@ class TNMMapperTest extends MapperTest {
         tnmObservations.addAll(
             sut.map(
                 conMeldung.getDiagnose().getPTNM(),
-                "pathologic",
+                TnmType.PATHOLOGIC,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
@@ -73,7 +74,7 @@ class TNMMapperTest extends MapperTest {
       tnmObservations.addAll(
           sut.map(
               conMeldung.getVerlauf().getTNM(),
-              "generic",
+              TnmType.GENERIC,
               conMeldung.getMeldungID(),
               new Reference("Patient/1"),
               new Reference("Condition/Primärdiagnose")));
@@ -82,7 +83,7 @@ class TNMMapperTest extends MapperTest {
       tnmObservations.addAll(
           sut.map(
               conMeldung.getOP().getTNM(),
-              "generic",
+              TnmType.GENERIC,
               conMeldung.getMeldungID(),
               new Reference("Patient/1"),
               new Reference("Condition/Primärdiagnose")));
@@ -92,7 +93,7 @@ class TNMMapperTest extends MapperTest {
         tnmObservations.addAll(
             sut.map(
                 conMeldung.getPathologie().getCTNM(),
-                "clinical",
+                TnmType.CLINICAL,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));
@@ -101,7 +102,7 @@ class TNMMapperTest extends MapperTest {
         tnmObservations.addAll(
             sut.map(
                 conMeldung.getPathologie().getPTNM(),
-                "pathologic",
+                TnmType.PATHOLOGIC,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
                 new Reference("Condition/Primärdiagnose")));

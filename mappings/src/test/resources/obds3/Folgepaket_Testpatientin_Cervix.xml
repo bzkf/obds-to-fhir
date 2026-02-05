@@ -69,7 +69,7 @@
               <Morphologie_Freitext>Zervikale intraepitheliale Neoplasie Grad 3</Morphologie_Freitext>
               <Grading>3</Grading>
             </Histologie>
-            <TNM ID="50">
+            <TNM>
               <Datum>2022-10-16</Datum>
               <Version>8</Version>
               <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
