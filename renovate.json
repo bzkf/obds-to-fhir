@@ -3,11 +3,30 @@
   "extends": [
     "github>miracum/.github//renovate/default"
   ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^mappings/src/main/resources/application-mappings.yml$/"
+      ],
+      "matchStrings": [
+        "\\s.*# renovate: datasource=(?<datasource>.*?)( registryUrl=(?<registryUrl>.*?))? depName=(?<depName>.*?)( extractVersion=(?<extractVersion>.*?))?\\s.*: \"\\|(?<currentValue>.*)\""
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      "extractVersionTemplate": "{{#if extractVersion}}{{{extractVersion}}}{{else}}^(?<version>.*)${{/if}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}https://packages.simplifier.net{{/if}}"
+    }
+  ],
   "baseBranchPatterns": [
     "beta",
     "master"
   ],
   "ignoreDeps": [
+    "ghcr.io/bzkf/obds-to-fhir-dq-checks",
     "ghcr.io/bzkf/obds-to-fhir"
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**"
   ]
 }
