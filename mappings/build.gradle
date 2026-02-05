@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
 
     // the lib also includes the oBDS model classes
-    api 'io.github.bzkf:obds2-to-obds3:0.1.17'
+    api 'io.github.bzkf:obds2-to-obds3:0.1.18'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.1'
     api 'io.github.java-diff-utils:java-diff-utils:4.16'
     api 'com.github.slugify:slugify:3.0.7'
