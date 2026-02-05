@@ -420,8 +420,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(diagnoseFM);
     }
 
+    String histologieId = null;
     if (diagnose.getHistologie() != null) {
       var histologie = diagnose.getHistologie();
+      histologieId = histologie.getHistologieID();
       var specimen = specimenMapper.map(histologie, patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
@@ -473,7 +475,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               TnmType.CLINICAL,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(clinicalTNMObservations);
     }
 
@@ -484,7 +487,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               TnmType.PATHOLOGIC,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(pathologicTNMObservations);
     }
 
@@ -906,24 +910,36 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (pathologie.getCTNM() != null) {
+      String histologieId = null;
+      if (diagnose.getHistologie() != null) {
+        histologieId = diagnose.getHistologie().getHistologieID();
+      }
+
       var clinicalTNMObservations =
           tnmMapper.map(
               pathologie.getCTNM(),
               TnmType.CLINICAL,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(clinicalTNMObservations);
     }
 
     if (pathologie.getPTNM() != null) {
+      String histologieId = null;
+      if (diagnose.getHistologie() != null) {
+        histologieId = diagnose.getHistologie().getHistologieID();
+      }
+
       var pathologicTNMObservations =
           tnmMapper.map(
               pathologie.getPTNM(),
               TnmType.PATHOLOGIC,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(pathologicTNMObservations);
     }
 
