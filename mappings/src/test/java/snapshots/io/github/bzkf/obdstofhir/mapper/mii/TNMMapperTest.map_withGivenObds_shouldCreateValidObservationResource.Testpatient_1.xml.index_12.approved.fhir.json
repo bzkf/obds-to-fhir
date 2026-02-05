@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "947d415bd95d6c184a15382b69893ccf22043acd1c640f389de173906271a273",
+  "id": "06f7b3acc4c1b094c0dde7a438cf648060d7a96355255c733bec6f71c3883ac0",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-    "value": "482-p-2020-03-05"
+    "value": "482-p"
   } ],
   "status": "final",
   "code": {
@@ -38,18 +38,18 @@
     } ]
   },
   "hasMember": [ {
-    "reference": "Observation/a95a081d67db5d491383f60561e247e6e8604f80bf86d01bed719a9049bd6252"
+    "reference": "Observation/48c3102ffe53478e905d80634aa2cf4fb530ae4e4df88b46cbaeeb3e3dacaa3c"
   }, {
-    "reference": "Observation/d22d18935c7cd8898d956f505d32a9cc3acaeb1256aa4a16977a27a221a5ec67"
+    "reference": "Observation/e46460e9590d1cb3eeff75bb53194656e4db2d58083b3a83e8eea4d93b0938d8"
   }, {
-    "reference": "Observation/533ea4d3420dbb60ac98ee1d351ca5f6d5ebacbd07360e188f5f5618e63af37d"
+    "reference": "Observation/3e0a4439e8d3c536787c6a70808286c1b9552090899b40ab5ec2e185ad2534d9"
   }, {
-    "reference": "Observation/18af7d35660e7ea8e4ad99ba2180f2b44efdab6291e2a5559d4ed6cda8713511"
+    "reference": "Observation/102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b"
   }, {
-    "reference": "Observation/f048922a5c4636d6168af130c9636930b112a827671e5034dd661a4c096e3c90"
+    "reference": "Observation/5554f6a616206a279c1809d1ca25da7bc946e33bf6fa0461566caa6518e16aa5"
   }, {
-    "reference": "Observation/83555d1ab576d4f95e4714927bdeb934342cd25ae33e948395c211dfbec5b7d1"
+    "reference": "Observation/49e6bb0492d24e370e4d992073c652cea9550d8019f0bbc21c9f5f601b408bb7"
   }, {
-    "reference": "Observation/0c3d24036fa04bc04f90ebbdfe2fd6996bc2607e34d60accea58408900b476fa"
+    "reference": "Observation/d4122370bc8bd68dde2c9201fd910520df5638447d6dd4182b0830ab50a650ea"
   } ]
 }

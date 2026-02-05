@@ -14,6 +14,7 @@ import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -469,7 +470,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var clinicalTNMObservations =
           tnmMapper.map(
               diagnose.getCTNM(),
-              "clinical",
+              TnmType.CLINICAL,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference);
@@ -480,7 +481,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var pathologicTNMObservations =
           tnmMapper.map(
               diagnose.getPTNM(),
-              "pathologic",
+              TnmType.PATHOLOGIC,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference);
@@ -654,13 +655,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (verlauf.getTNM() != null) {
+      String histologieId = null;
+      if (verlauf.getHistologie() != null) {
+        histologieId = verlauf.getHistologie().getHistologieID();
+      }
+
       var tnmObservations =
           tnmMapper.map(
               verlauf.getTNM(),
-              "generic",
+              TnmType.GENERIC,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(tnmObservations);
     }
 
@@ -802,13 +809,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (op.getTNM() != null) {
+      String histologieId = null;
+      if (op.getHistologie() != null) {
+        histologieId = op.getHistologie().getHistologieID();
+      }
+
       var tnmObservations =
           tnmMapper.map(
               op.getTNM(),
-              "generic",
+              TnmType.GENERIC,
               meldung.getMeldungID(),
               patientReference,
-              primaryConditionReference);
+              primaryConditionReference,
+              histologieId);
       mappedResources.addAll(tnmObservations);
     }
 
@@ -896,7 +909,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var clinicalTNMObservations =
           tnmMapper.map(
               pathologie.getCTNM(),
-              "clinical",
+              TnmType.CLINICAL,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference);
@@ -907,7 +920,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var pathologicTNMObservations =
           tnmMapper.map(
               pathologie.getPTNM(),
-              "pathologic",
+              TnmType.PATHOLOGIC,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference);

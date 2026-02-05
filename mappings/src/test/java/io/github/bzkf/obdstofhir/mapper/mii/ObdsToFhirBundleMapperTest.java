@@ -85,7 +85,8 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     "GroupSequence01.xml",
     "Folgepaket_Testpatient_Mamma.xml",
     "obdsv3_st_strahlenart.xml",
-    "obdsv3_missing_meldungen.xml"
+    "obdsv3_missing_meldungen.xml",
+    "Folgepaket_Testpatientin_Cervix.xml"
   })
   void map_withGivenObds_shouldCreateBundleMatchingSnapshot(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);

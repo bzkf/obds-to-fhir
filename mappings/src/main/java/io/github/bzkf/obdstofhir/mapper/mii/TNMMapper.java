@@ -6,14 +6,14 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -22,52 +22,55 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(TNMMapper.class);
 
+  public enum TnmType {
+    CLINICAL,
+    PATHOLOGIC,
+    GENERIC,
+  }
+
   protected TNMMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
   public List<Observation> map(
       @NonNull TNMTyp tnm,
-      @NonNull String tnmType,
+      @NonNull TnmType tnmSource,
       @NonNull String meldungsId,
       Reference patientReference,
       Reference primaryConditionReference) {
+    return map(tnm, tnmSource, meldungsId, patientReference, primaryConditionReference, null);
+  }
 
-    Objects.requireNonNull(tnm);
+  public List<Observation> map(
+      @NonNull TNMTyp tnm,
+      @NonNull TnmType tnmType,
+      @NonNull String meldungsId,
+      Reference patientReference,
+      Reference primaryConditionReference,
+      @Nullable String histologieId) {
     verifyReference(patientReference, ResourceType.Patient);
     verifyReference(primaryConditionReference, ResourceType.Condition);
 
     var idBase = tnm.getID();
     if (!StringUtils.hasText(idBase)) {
-      LOG.warn(
-          "TNM_ID is unset. Defaulting to Meldung_ID as the identifier for the created Observations");
-      idBase = meldungsId;
-    }
-    switch (tnmType) {
-      case "clinical":
-        idBase += "-c";
-        break;
-      case "pathologic":
-        idBase += "-p";
-        break;
-      case "generic":
-      default:
-        break;
+      if (StringUtils.hasText(histologieId)) {
+        LOG.debug("TNM_ID is unset, using Histologie_ID as a fallback");
+        idBase = histologieId;
+      } else {
+        LOG.warn("Both TNM_ID and Histologie_ID are unset. Falling back to Meldung_ID with prefix");
+        idBase = meldungsId;
+      }
     }
 
-    // we found that ONKOSTAR seems to re-use the TNM-ID multiple times for the
-    // same patient with different values/context. This causes multiple Observations
-    // with the same ID to be created that override each other. For now, we use the
-    // timestamp as an additional discriminator
-    if (tnm.getDatum() != null) {
-      var date = convertObdsDatumToDateTimeType(tnm.getDatum());
-      if (date.isPresent()) {
-        idBase += "-" + date.get().getValueAsString();
-      } else {
-        LOG.error("Unable to convert XML date.");
-      }
-    } else {
-      LOG.warn("TNM Datum is unset. This may cause duplicate Observations to be created.");
+    switch (tnmType) {
+      case CLINICAL:
+        idBase += "-c";
+        break;
+      case PATHOLOGIC:
+        idBase += "-p";
+        break;
+      case GENERIC:
+        break;
     }
 
     var memberObservations =
@@ -499,7 +502,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private Observation createTNMGroupingObservation(
       TNMTyp tnm,
-      String observationType,
+      TnmType observationType,
       String idBase,
       List<Reference> memberObservations,
       Reference patient,
@@ -552,19 +555,19 @@ public class TNMMapper extends ObdsToFhirMapper {
     return new CodeableConcept(method);
   }
 
-  private CodeableConcept getGroupingObservationCode(String observationType) {
+  private CodeableConcept getGroupingObservationCode(TnmType observationType) {
     var groupingObservationCode = fhirProperties.getCodings().snomed();
 
     switch (observationType) {
-      case "clinical":
+      case CLINICAL:
         groupingObservationCode.setCode("399537006");
         groupingObservationCode.setDisplay("Clinical TNM stage grouping");
         break;
-      case "pathologic":
+      case PATHOLOGIC:
         groupingObservationCode.setCode("399588009");
         groupingObservationCode.setDisplay("Pathologic TNM stage grouping");
         break;
-      case "generic":
+      case GENERIC:
       default:
         groupingObservationCode.setCode("399390009");
         groupingObservationCode.setDisplay("TNM stage grouping");
