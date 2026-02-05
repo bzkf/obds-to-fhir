@@ -50,7 +50,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-core:1.16.2'
     implementation 'org.miracum:kafka-fhir-serializer:2.0.8'
     implementation 'com.github.slugify:slugify:3.0.7'
-    implementation 'io.github.bzkf:obds2-to-obds3:0.1.16'
+    implementation 'io.github.bzkf:obds2-to-obds3:0.1.18'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
     // <https://github.com/FasterXML/jackson-modules-java8>
