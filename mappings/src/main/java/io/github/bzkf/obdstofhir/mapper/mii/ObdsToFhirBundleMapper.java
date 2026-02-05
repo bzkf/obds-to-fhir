@@ -911,8 +911,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (pathologie.getCTNM() != null) {
       String histologieId = null;
-      if (diagnose.getHistologie() != null) {
-        histologieId = diagnose.getHistologie().getHistologieID();
+      if (pathologie.getHistologie() != null) {
+        histologieId = pathologie.getHistologie().getHistologieID();
       }
 
       var clinicalTNMObservations =
@@ -928,8 +928,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (pathologie.getPTNM() != null) {
       String histologieId = null;
-      if (diagnose.getHistologie() != null) {
-        histologieId = diagnose.getHistologie().getHistologieID();
+      if (pathologie.getHistologie() != null) {
+        histologieId = pathologie.getHistologie().getHistologieID();
       }
 
       var pathologicTNMObservations =
