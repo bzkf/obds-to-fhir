@@ -58,7 +58,8 @@ class TNMMapperTest extends MapperTest {
                 TnmType.CLINICAL,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
-                new Reference("Condition/Primärdiagnose")));
+                new Reference("Condition/Primärdiagnose"),
+                null));
       }
       if (conMeldung.getDiagnose().getPTNM() != null) {
         tnmObservations.addAll(
@@ -67,7 +68,8 @@ class TNMMapperTest extends MapperTest {
                 TnmType.PATHOLOGIC,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
-                new Reference("Condition/Primärdiagnose")));
+                new Reference("Condition/Primärdiagnose"),
+                null));
       }
     }
     if (conMeldung.getVerlauf() != null && conMeldung.getVerlauf().getTNM() != null) {
@@ -77,7 +79,8 @@ class TNMMapperTest extends MapperTest {
               TnmType.GENERIC,
               conMeldung.getMeldungID(),
               new Reference("Patient/1"),
-              new Reference("Condition/Primärdiagnose")));
+              new Reference("Condition/Primärdiagnose"),
+              null));
     }
     if (conMeldung.getOP() != null && conMeldung.getOP().getTNM() != null) {
       tnmObservations.addAll(
@@ -86,7 +89,8 @@ class TNMMapperTest extends MapperTest {
               TnmType.GENERIC,
               conMeldung.getMeldungID(),
               new Reference("Patient/1"),
-              new Reference("Condition/Primärdiagnose")));
+              new Reference("Condition/Primärdiagnose"),
+              null));
     }
     if (conMeldung.getPathologie() != null) {
       if (conMeldung.getPathologie().getCTNM() != null) {
@@ -96,7 +100,8 @@ class TNMMapperTest extends MapperTest {
                 TnmType.CLINICAL,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
-                new Reference("Condition/Primärdiagnose")));
+                new Reference("Condition/Primärdiagnose"),
+                null));
       }
       if (conMeldung.getPathologie().getPTNM() != null) {
         tnmObservations.addAll(
@@ -105,7 +110,8 @@ class TNMMapperTest extends MapperTest {
                 TnmType.PATHOLOGIC,
                 conMeldung.getMeldungID(),
                 new Reference("Patient/1"),
-                new Reference("Condition/Primärdiagnose")));
+                new Reference("Condition/Primärdiagnose"),
+                null));
       }
     }
 

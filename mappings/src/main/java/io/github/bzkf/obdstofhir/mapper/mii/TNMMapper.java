@@ -34,15 +34,6 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   public List<Observation> map(
       @NonNull TNMTyp tnm,
-      @NonNull TnmType tnmSource,
-      @NonNull String meldungsId,
-      Reference patientReference,
-      Reference primaryConditionReference) {
-    return map(tnm, tnmSource, meldungsId, patientReference, primaryConditionReference, null);
-  }
-
-  public List<Observation> map(
-      @NonNull TNMTyp tnm,
       @NonNull TnmType tnmType,
       @NonNull String meldungsId,
       Reference patientReference,
