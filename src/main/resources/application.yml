@@ -25,6 +25,11 @@ fhir:
             username: ""
             # -- the password
             password: ""
+      fhir-pseudonymizer:
+        # -- the base URL of the FHIR Pseudonymizer used to pseudonymize the Patient_ID before
+        # looking up the actual Patient.id in the FHIR server. Invokes the `$de-identify` operation.
+        # E.g. `https://fhir.example.com/fhir`
+        base-url: ""
       record-id-database:
         # -- JDBC url to connect to to query an internal RecordID from a Patient_ID
         jdbc-url: ""
