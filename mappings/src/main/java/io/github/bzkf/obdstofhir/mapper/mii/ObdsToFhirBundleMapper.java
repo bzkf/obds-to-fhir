@@ -420,10 +420,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(diagnoseFM);
     }
 
-    String histologieId = null;
     if (diagnose.getHistologie() != null) {
       var histologie = diagnose.getHistologie();
-      histologieId = histologie.getHistologieID();
       var specimen = specimenMapper.map(histologie, patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
@@ -469,6 +467,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getCTNM() != null) {
+      String histologieId = null;
+      if (diagnose.getHistologie() != null) {
+        histologieId = diagnose.getHistologie().getHistologieID();
+      }
+
       var clinicalTNMObservations =
           tnmMapper.map(
               diagnose.getCTNM(),
@@ -481,6 +484,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getPTNM() != null) {
+      String histologieId = null;
+      if (diagnose.getHistologie() != null) {
+        histologieId = diagnose.getHistologie().getHistologieID();
+      }
+
       var pathologicTNMObservations =
           tnmMapper.map(
               diagnose.getPTNM(),
