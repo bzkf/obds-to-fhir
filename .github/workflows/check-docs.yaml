@@ -18,10 +18,10 @@ jobs:
   check-docs:
     name: Check if auto-generated docs are up-to-date
     runs-on: ubuntu-24.04
-    container: ghcr.io/chgl/kube-powertools:v2.4.40@sha256:be8fe63bf8f5dd84678df2934550d548573a784c21b66cf43585ec59b0e53150
+    container: ghcr.io/chgl/kube-powertools:v2.5.13@sha256:59b3b6c2cfaaeb854722ac61737fdeaa4d4ffa44a2e31f571e6ee8dfcaf5a6a6
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
         with:
           egress-policy: audit
           disable-sudo: true
@@ -32,7 +32,7 @@ jobs:
           git config --global --add safe.directory "$(pwd)"
 
       - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
           set-safe-directory: true
