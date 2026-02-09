@@ -1,17 +1,19 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
-import com.google.common.base.Strings;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.*;
+import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class PatientMapper extends ObdsToFhirMapper {
@@ -19,6 +21,9 @@ public class PatientMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(PatientMapper.class);
   private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
       genderMap;
+
+  @Value("${fhir.mappings.patient-id-regex:^(.*)$}")
+  private String patientIdRegex;
 
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -41,8 +46,21 @@ public class PatientMapper extends ObdsToFhirMapper {
     var patient = new Patient();
     patient.getMeta().addProfile(fhirProperties.getProfiles().getMiiPatientPseudonymisiert());
 
-    if (Strings.isNullOrEmpty(obdsPatient.getPatientID())) {
+    if (!StringUtils.hasText(obdsPatient.getPatientID())) {
       throw new IllegalArgumentException("Patient ID is unset.");
+    }
+
+    var patientId = obdsPatient.getPatientID();
+    if (StringUtils.hasText(patientIdRegex)) {
+      var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
+      var matcher = patientIdRegexMatcher.matcher(obdsPatient.getPatientID().trim());
+      if (matcher.matches()) {
+        patientId = matcher.group();
+      } else {
+        throw new IllegalArgumentException(
+            String.format(
+                "Regex %s failed to match against %s", patientIdRegex, obdsPatient.getPatientID()));
+      }
     }
 
     // TODO: this could be placed inside the application.yaml as well
@@ -62,8 +80,9 @@ public class PatientMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
-            .setValue(obdsPatient.getPatientID())
+            .setValue(patientId)
             .setType(mrTypeConcept);
+
     patient.addIdentifier(identifier);
     patient.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -82,7 +101,8 @@ public class PatientMapper extends ObdsToFhirMapper {
         LOG.warn("Meldungen contains more than one death report: {}", reportIds);
       }
 
-      // sorts ascending by default, so to most recent sterbedatum ist the last one in the
+      // sorts ascending by default, so to most recent sterbedatum ist the last one in
+      // the
       // list
       // first filter to find those where the sterbedatum is set
       var latestReports =
@@ -110,7 +130,7 @@ public class PatientMapper extends ObdsToFhirMapper {
     if (patAddress != null) {
       var address = new Address().setType(Address.AddressType.BOTH);
 
-      if (!Strings.isNullOrEmpty(patAddress.getPLZ())) {
+      if (StringUtils.hasText(patAddress.getPLZ())) {
         address.setPostalCode(patAddress.getPLZ());
       } else {
         address
@@ -121,7 +141,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       }
 
       var land = patAddress.getLand();
-      if (!Strings.isNullOrEmpty(land) && land.matches("[a-zA-Z]{2,3}")) {
+      if (StringUtils.hasText(land) && land.matches("[a-zA-Z]{2,3}")) {
         address.setCountry(land.toUpperCase());
       } else {
         LOG.debug("Country code '{}' unset or doesn't match expected form", land);

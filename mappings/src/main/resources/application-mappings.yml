@@ -247,6 +247,9 @@ fhir:
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""
+    ## -- regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group.
+    # Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s.
+    patient-id-regex: "^(.*)$"
     create-patient-resources:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.

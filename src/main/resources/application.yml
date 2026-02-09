@@ -8,6 +8,16 @@ app:
 
 fhir:
   mappings:
+    meta:
+      # -- Value to set for the meta.source field in all generated resources
+      source: ""
+    # -- regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group.
+    # Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s.
+    patient-id-regex: "^(.*)$"
+    create-patient-resources:
+      # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
+      # from a different source.
+      enabled: true
     patient-reference-generation:
       # -- How the Resource.subject.reference to the Patient resources should be generated.
       # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
@@ -25,11 +35,15 @@ fhir:
             username: ""
             # -- the password
             password: ""
-      fhir-pseudonymizer:
-        # -- the base URL of the FHIR Pseudonymizer used to pseudonymize the Patient_ID before
-        # looking up the actual Patient.id in the FHIR server. Invokes the `$de-identify` operation.
-        # E.g. `https://fhir.example.com/fhir`
-        base-url: ""
+      pseudonymize-patient-id:
+        # -- if enabled, before looking up the Patient resource from its identifier, the oBDS Patient_ID
+        # is first pseudonymized using the FHIR Pseudonymizer service at the `fhir-pseudonymizer.base-url`
+        enabled: false
+        fhir-pseudonymizer:
+          # -- the base URL of the FHIR Pseudonymizer used to pseudonymize the Patient_ID before
+          # looking up the actual Patient.id in the FHIR server. Invokes the `$de-identify` operation.
+          # E.g. `https://fhir.example.com/fhir`
+          base-url: ""
       record-id-database:
         # -- JDBC url to connect to to query an internal RecordID from a Patient_ID
         jdbc-url: ""
