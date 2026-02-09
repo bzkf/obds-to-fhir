@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.DataFormatException;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
+import ca.uhn.fhir.rest.client.api.ServerValidationModeEnum;
 import ca.uhn.fhir.rest.client.exceptions.FhirClientConnectionException;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
@@ -22,6 +23,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.Identifier;
+import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
 import org.jspecify.annotations.NonNull;
@@ -52,23 +54,30 @@ public class PatientReferenceGenerator {
     PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES,
     PATIENT_ID,
     FHIR_SERVER_LOOKUP,
-    RECORD_ID_DATABASE_LOOKUP,
+    RECORD_ID_DATABASE_LOOKUP
   }
 
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
 
+  private final boolean isPseudonymizePatientIdEnabled;
   private final @NonNull FhirProperties fhirProperties;
   private @Nullable IGenericClient fhirClient;
   private @Nullable RetryTemplate retryTemplate;
   private @Nullable JdbcTemplate recordIdJdbcTemplate;
   private @Nullable RecordIdDbConfig recordIdDbConfig;
+  private @Nullable IGenericClient fhirPseudonymizerClient;
 
   public PatientReferenceGenerator(
       FhirProperties fhirProperties,
       Optional<FhirServerConfig> fhirServerConfig,
       Optional<JdbcTemplate> recordIdJdbcTemplate,
-      Optional<RecordIdDbConfig> recordIdDbConfig) {
+      Optional<RecordIdDbConfig> recordIdDbConfig,
+      @Value("${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.enabled}")
+          boolean isPseudonymizePatientIdEnabled,
+      @Value(
+              "${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.fhir-pseudonymizer.base-url}")
+          String fhirPseudonymizerBaseUrl) {
     this.fhirProperties = fhirProperties;
 
     fhirServerConfig.ifPresent(
@@ -80,6 +89,17 @@ public class PatientReferenceGenerator {
     if (recordIdJdbcTemplate.isPresent() && recordIdDbConfig.isPresent()) {
       this.recordIdJdbcTemplate = recordIdJdbcTemplate.get();
       this.recordIdDbConfig = recordIdDbConfig.get();
+    }
+
+    this.isPseudonymizePatientIdEnabled = isPseudonymizePatientIdEnabled;
+    if (isPseudonymizePatientIdEnabled) {
+      if (!StringUtils.hasText(fhirPseudonymizerBaseUrl)) {
+        throw new IllegalArgumentException("Pseudonymizer base url is unset");
+      }
+
+      var fhirContext = FhirContext.forR4();
+      fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
+      this.fhirPseudonymizerClient = fhirContext.newRestfulGenericClient(fhirPseudonymizerBaseUrl);
     }
   }
 
@@ -116,8 +136,13 @@ public class PatientReferenceGenerator {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
 
-              var id =
-                  findPatientIdByIdentifier(new Identifier().setSystem(system).setValue(value));
+              var identifierToLookup = new Identifier().setSystem(system).setValue(value);
+
+              if (isPseudonymizePatientIdEnabled) {
+                identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
+              }
+
+              var id = findPatientIdByIdentifier(identifierToLookup);
               if (id.isPresent()) {
                 return Optional.of(id.get().getIdPart());
               } else {
@@ -153,7 +178,7 @@ public class PatientReferenceGenerator {
 
   static IGenericClient createFhirClient(FhirServerConfig fhirServerConfig) {
     var fhirContext = FhirContext.forR4();
-
+    fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
     var client = fhirContext.newRestfulGenericClient(fhirServerConfig.baseUrl().toString());
 
     if (fhirServerConfig.auth().basic().enabled()) {
@@ -202,6 +227,24 @@ public class PatientReferenceGenerator {
     }
 
     return Optional.of(patients.getFirst().getIdElement());
+  }
+
+  private Identifier pseudonymizeIdentifier(Identifier patientId) {
+    var patient = new Patient();
+    patient.addIdentifier(patientId);
+    var param = new Parameters();
+    param.addParameter().setName("resource").setResource(patient);
+    var result =
+        retryTemplate.execute(
+            context ->
+                fhirPseudonymizerClient
+                    .operation()
+                    .onServer()
+                    .named("de-identify")
+                    .withParameters(param)
+                    .returnResourceType(Patient.class)
+                    .execute());
+    return result.getIdentifierFirstRep();
   }
 
   private static RetryTemplate createRetryTemplate(FhirContext fhirContext) {
