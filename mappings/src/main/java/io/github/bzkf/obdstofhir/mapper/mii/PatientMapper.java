@@ -7,11 +7,9 @@ import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.*;
-import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,9 +19,6 @@ public class PatientMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(PatientMapper.class);
   private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
       genderMap;
-
-  @Value("${fhir.mappings.patient-id-regex:^(.*)$}")
-  private String patientIdRegex;
 
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -48,19 +43,6 @@ public class PatientMapper extends ObdsToFhirMapper {
 
     if (!StringUtils.hasText(obdsPatient.getPatientID())) {
       throw new IllegalArgumentException("Patient ID is unset.");
-    }
-
-    var patientId = obdsPatient.getPatientID();
-    if (StringUtils.hasText(patientIdRegex)) {
-      var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
-      var matcher = patientIdRegexMatcher.matcher(obdsPatient.getPatientID().trim());
-      if (matcher.matches()) {
-        patientId = matcher.group();
-      } else {
-        throw new IllegalArgumentException(
-            String.format(
-                "Regex %s failed to match against %s", patientIdRegex, obdsPatient.getPatientID()));
-      }
     }
 
     // TODO: this could be placed inside the application.yaml as well

@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
@@ -39,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
@@ -77,6 +79,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
+
+  @Value("${fhir.mappings.patient-id-regex:^(.*)$}")
+  private String patientIdRegex;
 
   private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
 
@@ -169,6 +174,21 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     for (var obdsPatient : obds.getMengePatient().getPatient()) {
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);
+
+      if (StringUtils.hasText(patientIdRegex)) {
+        var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
+        var matcher = patientIdRegexMatcher.matcher(obdsPatient.getPatientID().trim());
+        if (matcher.matches()) {
+          var patientId = matcher.group();
+          // mutating the obdsPatient is probably not ideal
+          obdsPatient.setPatientID(patientId);
+        } else {
+          throw new IllegalArgumentException(
+              String.format(
+                  "Regex %s failed to match against %s",
+                  patientIdRegex, obdsPatient.getPatientID()));
+        }
+      }
 
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
