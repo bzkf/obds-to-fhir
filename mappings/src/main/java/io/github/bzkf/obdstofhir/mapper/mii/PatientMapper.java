@@ -62,7 +62,7 @@ public class PatientMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
-            .setValue(patientId)
+            .setValue(obdsPatient.getPatientID())
             .setType(mrTypeConcept);
 
     patient.addIdentifier(identifier);
