@@ -178,16 +178,16 @@
       "url": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
     }
   }, {
-    "fullUrl": "MedicationStatement/bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7",
+    "fullUrl": "MedicationStatement/a5224bd97b92ed2cdc0ec0688b47d09b6d3c1317ebd984b0fd1fd090bf2cba4a",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7",
+      "id": "a5224bd97b92ed2cdc0ec0688b47d09b6d3c1317ebd984b0fd1fd090bf2cba4a",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Cyclophosphamid"
+        "value": "c3a22e56e7713786dbec08325f6c9273d20f584f29e92ce20ff0983fc5cee9af-993_syst1-Cyclophosphamid"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -212,19 +212,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/bb7efefc8f7767bc05cbf53c52e87dc27103005467654c1fc68a2d50f6ff97d7"
+      "url": "MedicationStatement/a5224bd97b92ed2cdc0ec0688b47d09b6d3c1317ebd984b0fd1fd090bf2cba4a"
     }
   }, {
-    "fullUrl": "MedicationStatement/fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb",
+    "fullUrl": "MedicationStatement/d0057082d8f7323ca3223b09665e0246d1e951379f1d278f2d560553f0a7eb37",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb",
+      "id": "d0057082d8f7323ca3223b09665e0246d1e951379f1d278f2d560553f0a7eb37",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Rituximab"
+        "value": "c3a22e56e7713786dbec08325f6c9273d20f584f29e92ce20ff0983fc5cee9af-993_syst1-Rituximab"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -249,19 +249,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/fb19e91891fe8e82d2f63448a7530ddb1c08702014f5ae9564a16c5c126ebcbb"
+      "url": "MedicationStatement/d0057082d8f7323ca3223b09665e0246d1e951379f1d278f2d560553f0a7eb37"
     }
   }, {
-    "fullUrl": "MedicationStatement/249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe",
+    "fullUrl": "MedicationStatement/b7af7d7d75d7f93c150f147ab8365821fd20894a703b505dee6c491b64f60ad3",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe",
+      "id": "b7af7d7d75d7f93c150f147ab8365821fd20894a703b505dee6c491b64f60ad3",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "993_syst1-Fludarabin"
+        "value": "c3a22e56e7713786dbec08325f6c9273d20f584f29e92ce20ff0983fc5cee9af-993_syst1-Fludarabin"
       } ],
       "partOf": [ {
         "reference": "Procedure/20e22fcd38d26f04e68c47a89593d87bd215142f6188e41d490c3d7d8ec6c3cc"
@@ -286,7 +286,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/249b1bb3399c0b0120f6e394d0bb52a7461e6008726db03ae0b6c3bb4496cabe"
+      "url": "MedicationStatement/b7af7d7d75d7f93c150f147ab8365821fd20894a703b505dee6c491b64f60ad3"
     }
   }, {
     "fullUrl": "Observation/791de91efd0db68e9d536e05b317b9c9c2416e3fd2e01bdb8e2a1dfc12979c9f",

@@ -47,6 +47,12 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
     MDC.put("SYST_ID", syst.getSYSTID());
 
+    // the condition reference is made from the patient_id + tumor_id so we can be
+    // sure that the created resource is now unique per patient, tumor, systid
+    var identifierBase =
+        String.format(
+            "%s-%s", primaryConditionReference.getReferenceElement().getIdPart(), syst.getSYSTID());
+
     var result = new ArrayList<MedicationStatement>();
 
     var distinctSubstanzen = getDistinctSubstanzen(syst.getMengeSubstanz().getSubstanz());
@@ -107,7 +113,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
                       .getSystems()
                       .getIdentifiers()
                       .getSystemischeTherapieMedicationStatementId())
-              .setValue(slugifier.slugify(syst.getSYSTID() + "-" + substanzId));
+              .setValue(slugifier.slugify(identifierBase + "-" + substanzId));
       systMedicationStatement.addIdentifier(identifier);
       systMedicationStatement.setId(computeResourceIdFromIdentifier(identifier));
 

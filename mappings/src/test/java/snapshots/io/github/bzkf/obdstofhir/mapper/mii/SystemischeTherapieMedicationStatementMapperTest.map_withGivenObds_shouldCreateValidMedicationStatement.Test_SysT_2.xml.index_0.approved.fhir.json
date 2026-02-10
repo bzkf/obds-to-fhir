@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "b8c951af3a7247d1cdc3629f8930284e6938f64b78fccfea5227b2e01241d107",
+  "id": "56b5b56584f3c3dafc15faa62d92aa124687e8a0dba46b25422005738f08932d",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "101_IN-2-Regorafenib"
+    "value": "any-101_IN-2-Regorafenib"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"
