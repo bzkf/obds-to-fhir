@@ -423,15 +423,15 @@
       "url": "Observation/8107ca91d649aeb8aa601bead187c25e77a60cdb64414ed81bcd722a86ecd662"
     }
   }, {
-    "fullUrl": "Observation/7df77964205346253bbdb46fe59d65a1ba53c8d67248d60995a97143b00fdffb",
+    "fullUrl": "Observation/e5db8a7330b8fbf22a32074e7a938e073f99086c979a5c9f9ff9b7ae39883344",
     "resource": {
       "resourceType": "Observation",
-      "id": "7df77964205346253bbdb46fe59d65a1ba53c8d67248d60995a97143b00fdffb",
+      "id": "e5db8a7330b8fbf22a32074e7a938e073f99086c979a5c9f9ff9b7ae39883344",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-observation-id",
         "value": "PAT_70101-Pathologie-0"
       } ],
       "status": "final",
@@ -459,7 +459,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/7df77964205346253bbdb46fe59d65a1ba53c8d67248d60995a97143b00fdffb"
+      "url": "Observation/e5db8a7330b8fbf22a32074e7a938e073f99086c979a5c9f9ff9b7ae39883344"
     }
   }, {
     "fullUrl": "Observation/9a03ccedb9da448d173547c3c973d1fabc6dbc7d0479d4f886e86c069969fd34",

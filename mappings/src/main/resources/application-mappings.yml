@@ -50,7 +50,7 @@ fhir:
       systemische-therapie-procedure-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-procedure-id"
       systemische-therapie-medication-statement-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-statement-id"
       allgemeiner-leistungszustand-ecog-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-ecog-id"
-      fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-id"
+      fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-observation-id"
       residualstatus-observation-id: "${fhir.systems.identifiers.base-url}/residualstatus-observation-id"
       histologiebefund-diagnostic-report-id: "${fhir.systems.identifiers.base-url}/histologiebefund-diagnostic-report-id"
       genetische-variante-observation-id: "${fhir.systems.identifiers.base-url}/genetische-variante-observation-id"
