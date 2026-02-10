@@ -2017,15 +2017,15 @@
       "url": "Observation/59a68b71c169b1e5ab256bd149915da265e2931416dba4fe5879527eaeecdd81"
     }
   }, {
-    "fullUrl": "Observation/7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30",
+    "fullUrl": "Observation/bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5",
     "resource": {
       "resourceType": "Observation",
-      "id": "7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30",
+      "id": "bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-observation-id",
         "value": "VER_60102-Verlauf-0"
       } ],
       "status": "final",
@@ -2053,18 +2053,18 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/7d9afbd70680a9fd458f4d21cb4be15181aacc3303ffdc1c34e6dd499ad94c30"
+      "url": "Observation/bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5"
     }
   }, {
-    "fullUrl": "Observation/ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528",
+    "fullUrl": "Observation/ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57",
     "resource": {
       "resourceType": "Observation",
-      "id": "ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528",
+      "id": "ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-observation-id",
         "value": "VER_60102-Verlauf-1"
       } ],
       "status": "final",
@@ -2092,7 +2092,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/ac06b804e9c8f79d11988bd00ef0c8d229a04b880a8b3a3237a7ef9e3ed60528"
+      "url": "Observation/ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57"
     }
   }, {
     "fullUrl": "Observation/e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11",

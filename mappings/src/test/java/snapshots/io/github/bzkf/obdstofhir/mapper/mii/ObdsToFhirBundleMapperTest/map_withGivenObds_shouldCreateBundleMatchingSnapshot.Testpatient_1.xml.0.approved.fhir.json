@@ -2475,15 +2475,15 @@
       "url": "Observation/fd48174ae15c6e75acac1468c04191577bb263cbb2f7e467742c83c54b799081"
     }
   }, {
-    "fullUrl": "Observation/ddbc380f1daef8dfac48e0cfea3a6c594bf1354ffdbb7a71eae13ab27e9b39ca",
+    "fullUrl": "Observation/82668baaffb56a64c1463dd5d7c772361838c2a958179976dd18c65599882faf",
     "resource": {
       "resourceType": "Observation",
-      "id": "ddbc380f1daef8dfac48e0cfea3a6c594bf1354ffdbb7a71eae13ab27e9b39ca",
+      "id": "82668baaffb56a64c1463dd5d7c772361838c2a958179976dd18c65599882faf",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-observation-id",
         "value": "10_1_VE-1-Verlauf-0"
       } ],
       "status": "final",
@@ -2511,7 +2511,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/ddbc380f1daef8dfac48e0cfea3a6c594bf1354ffdbb7a71eae13ab27e9b39ca"
+      "url": "Observation/82668baaffb56a64c1463dd5d7c772361838c2a958179976dd18c65599882faf"
     }
   }, {
     "fullUrl": "Observation/1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b",
@@ -3679,15 +3679,15 @@
       "url": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
     }
   }, {
-    "fullUrl": "Observation/ce9ac4ea209e8287513499093af316c9a589459a575f7fa6c4499530ceaed1da",
+    "fullUrl": "Observation/c13b3fe2cf64fd698384925c3920bd9d40b10a0d253dba569c2ab42f98f55d06",
     "resource": {
       "resourceType": "Observation",
-      "id": "ce9ac4ea209e8287513499093af316c9a589459a575f7fa6c4499530ceaed1da",
+      "id": "c13b3fe2cf64fd698384925c3920bd9d40b10a0d253dba569c2ab42f98f55d06",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fernmetastasen" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fernmetastasen-observation-id",
         "value": "10_1_DI_1-Diagnose-0"
       } ],
       "status": "final",
@@ -3715,7 +3715,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/ce9ac4ea209e8287513499093af316c9a589459a575f7fa6c4499530ceaed1da"
+      "url": "Observation/c13b3fe2cf64fd698384925c3920bd9d40b10a0d253dba569c2ab42f98f55d06"
     }
   }, {
     "fullUrl": "Specimen/a70e46fffb8c68f2c35dd1918786f61e59153831a4c73d69f74999c2a338de1f",
@@ -4840,7 +4840,7 @@
         }
       }, {
         "item": {
-          "reference": "Observation/ce9ac4ea209e8287513499093af316c9a589459a575f7fa6c4499530ceaed1da"
+          "reference": "Observation/c13b3fe2cf64fd698384925c3920bd9d40b10a0d253dba569c2ab42f98f55d06"
         }
       }, {
         "item": {
