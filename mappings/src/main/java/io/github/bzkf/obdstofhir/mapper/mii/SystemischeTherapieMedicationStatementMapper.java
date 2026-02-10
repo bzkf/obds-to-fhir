@@ -50,7 +50,8 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     // the condition reference is made from the patient_id + tumor_id so we can be
     // sure that the created resource is now unique per patient, tumor, systid
     var identifierBase =
-        String.format("%s-%s", primaryConditionReference.getReference(), syst.getSYSTID());
+        String.format(
+            "%s-%s", primaryConditionReference.getReferenceElement().getIdPart(), syst.getSYSTID());
 
     var result = new ArrayList<MedicationStatement>();
 

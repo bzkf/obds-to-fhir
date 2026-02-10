@@ -473,16 +473,16 @@
       "url": "Procedure/c67a22480caccbb4d0bdaf182914e0df6b8e5aa27e4f4f736178fa6dda44d061"
     }
   }, {
-    "fullUrl": "MedicationStatement/2ad0cc5dbbcb747ff9eb761a8504517ebfbea36bf861eea7de1430ac479d4973",
+    "fullUrl": "MedicationStatement/fa9bc978ae6f7dcd47200c3e19383c55164d509fc14206ce84603b5682d052db",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "2ad0cc5dbbcb747ff9eb761a8504517ebfbea36bf861eea7de1430ac479d4973",
+      "id": "fa9bc978ae6f7dcd47200c3e19383c55164d509fc14206ce84603b5682d052db",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "11_1_Innere-1-Bicalutamid"
+        "value": "9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910-11_1_Innere-1-Bicalutamid"
       } ],
       "partOf": [ {
         "reference": "Procedure/c67a22480caccbb4d0bdaf182914e0df6b8e5aa27e4f4f736178fa6dda44d061"
@@ -507,7 +507,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/2ad0cc5dbbcb747ff9eb761a8504517ebfbea36bf861eea7de1430ac479d4973"
+      "url": "MedicationStatement/fa9bc978ae6f7dcd47200c3e19383c55164d509fc14206ce84603b5682d052db"
     }
   }, {
     "fullUrl": "AdverseEvent/a8145ea75a1a24ec05e87c2c996e497aacf9ccb05e84a7498634b27c78b815b5",

@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "12f6c19cc24aa9dd1e1278e32635fb0e8db7c25219ac0fa228cda222ca955379",
+  "id": "9cf8454fde8e2493b2a98d61aeef517655190f3f6d75f74ee536f5371436781f",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "101_IN-2-Revumenib"
+    "value": "any-101_IN-2-Revumenib"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"

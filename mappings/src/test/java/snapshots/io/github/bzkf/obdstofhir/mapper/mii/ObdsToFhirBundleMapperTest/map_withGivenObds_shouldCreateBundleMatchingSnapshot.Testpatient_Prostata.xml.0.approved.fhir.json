@@ -415,16 +415,16 @@
       "url": "Procedure/177d21a6e24969e5a639921f0688163978547b64fd65195940969b759984b142"
     }
   }, {
-    "fullUrl": "MedicationStatement/12167c5b6338c99ac31dfdf34df6fd274ae77163662ff6b268cb2cccac183232",
+    "fullUrl": "MedicationStatement/aae7e9818615a5ec639d4b89a3647062cb5eef37d92c759a2771028fed79384e",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "12167c5b6338c99ac31dfdf34df6fd274ae77163662ff6b268cb2cccac183232",
+      "id": "aae7e9818615a5ec639d4b89a3647062cb5eef37d92c759a2771028fed79384e",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "80_1_IN_1-Buserelin"
+        "value": "e36f967b5391c0aa1a62a6303672b5415efaf3bfdd0b0be02a0739d43ae0b2dc-80_1_IN_1-Buserelin"
       } ],
       "partOf": [ {
         "reference": "Procedure/177d21a6e24969e5a639921f0688163978547b64fd65195940969b759984b142"
@@ -449,7 +449,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/12167c5b6338c99ac31dfdf34df6fd274ae77163662ff6b268cb2cccac183232"
+      "url": "MedicationStatement/aae7e9818615a5ec639d4b89a3647062cb5eef37d92c759a2771028fed79384e"
     }
   }, {
     "fullUrl": "AdverseEvent/076316e44da8abdb6ae031d4bf8c8a08c374edb81505a545c7575e4a8bc2baf0",

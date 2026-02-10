@@ -1,12 +1,12 @@
 {
   "resourceType": "MedicationStatement",
-  "id": "28c29e0648faa1da7251530ff73a20aa18f9845cedfe2b3652ee58ffeae6eea4",
+  "id": "5d7ad4f786b0f085c2311436e1d7bdd43bedf47c1f7e155ee8a13578b7b12429",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "12_1_Innere-1-Paclitaxel"
+    "value": "any-12_1_Innere-1-Paclitaxel"
   } ],
   "partOf": [ {
     "reference": "Procedure/any"

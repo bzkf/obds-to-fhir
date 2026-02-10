@@ -169,16 +169,16 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/95c3324f8745902a656aa5a465703f5efe88442a5dbf7d7e12877f69ce344469",
+    "fullUrl": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "95c3324f8745902a656aa5a465703f5efe88442a5dbf7d7e12877f69ce344469",
+      "id": "539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Cyclophosphamid"
+        "value": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae-60_1_IN_1-Cyclophosphamid"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
@@ -204,19 +204,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/95c3324f8745902a656aa5a465703f5efe88442a5dbf7d7e12877f69ce344469"
+      "url": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256"
     }
   }, {
-    "fullUrl": "MedicationStatement/12ea2a23257c2d7751d54589f1c56b64b584f653ac28c74e97d9ab2b1bb6beab",
+    "fullUrl": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "12ea2a23257c2d7751d54589f1c56b64b584f653ac28c74e97d9ab2b1bb6beab",
+      "id": "f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Epirubicin"
+        "value": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae-60_1_IN_1-Epirubicin"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
@@ -242,19 +242,19 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/12ea2a23257c2d7751d54589f1c56b64b584f653ac28c74e97d9ab2b1bb6beab"
+      "url": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9"
     }
   }, {
-    "fullUrl": "MedicationStatement/90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9",
+    "fullUrl": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
     "resource": {
       "resourceType": "MedicationStatement",
-      "id": "90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9",
+      "id": "a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-        "value": "60_1_IN_1-Taxotere"
+        "value": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae-60_1_IN_1-Taxotere"
       } ],
       "partOf": [ {
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
@@ -285,7 +285,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "MedicationStatement/90441685120f7afe4ef4cdce7fcda7d452ddf545ee47beaa69dd14abd87571e9"
+      "url": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04"
     }
   }, {
     "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
