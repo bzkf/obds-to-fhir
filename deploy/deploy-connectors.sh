@@ -25,3 +25,31 @@ curl -X POST \
     "value.converter.schemas.enable": "false"
   }
 }'
+
+
+curl -X POST \
+  http://localhost:8083/connectors \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+  "name": "onkostar-patient-connector",
+  "config": {
+    "tasks.max": "1",
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:oracle:thin:@//oracle:1521/FREEPDB1",
+    "connection.user": "DWH_ROUTINE",
+    "connection.password": "devPassword",
+    "schema.pattern": "DWH_ROUTINE",
+    "topic.prefix": "onkostar.patient",
+    "query": "SELECT * FROM (SELECT ID, LETZTE_INFORMATION, STERBEDATUM, STERBEDATUM_ACC, PATIENTEN_ID, ANGELEGT_AM, ZU_LOESCHEN, PATIENTEN_IDS_VORHER, BEARBEITET_AM FROM patient) o",
+    "mode": "timestamp",
+    "timestamp.column.name": "BEARBEITET_AM",
+    "validate.non.null": "true",
+    "numeric.mapping": "best_fit_eager_double",
+    "transforms": "ValueToKey",
+    "transforms.ValueToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.ValueToKey.fields": "PATIENTEN_ID",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}'
