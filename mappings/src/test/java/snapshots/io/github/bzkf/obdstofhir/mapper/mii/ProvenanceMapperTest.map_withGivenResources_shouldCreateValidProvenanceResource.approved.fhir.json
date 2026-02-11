@@ -1,0 +1,47 @@
+{
+  "resourceType": "Provenance",
+  "id": "715fbde83969cdbfe902ac1f815d7b557c0440bc9d8063a318682807b738e9d5",
+  "target": [ {
+    "reference": "Condition/any"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      }
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "123"
+      }
+    }
+  } ]
+}
