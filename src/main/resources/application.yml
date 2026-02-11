@@ -18,6 +18,10 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+    create-provenance-resources:
+      # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
+      # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
+      enabled: false
     patient-reference-generation:
       # -- How the Resource.subject.reference to the Patient resources should be generated.
       # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
