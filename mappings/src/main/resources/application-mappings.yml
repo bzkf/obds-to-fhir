@@ -1,3 +1,6 @@
+# @ignored
+lib-version: 3.0.0-beta.191
+
 fhir:
   codings:
     loinc:
@@ -80,6 +83,9 @@ fhir:
       prostata-clavien-dindo-observation-id: "${fhir.systems.identifiers.base-url}/prostata-clavien-dindo-observation-id"
       prostata-gleason-patterns-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-patterns-observation-id"
       prostata-gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-score-observation-id"
+      obds-meldung-id: "${fhir.systems.identifiers.base-url}/obds-meldung-id"
+      provenance-id: "${fhir.systems.identifiers.base-url}/provenance-id"
+      obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"
 
     # DKTK
     observationId: "${fhir.systems.identifiers.base-url}/observation-id"
@@ -89,6 +95,9 @@ fhir:
     psaObservationId: "${fhir.systems.identifiers.base-url}/psa-observation-id"
 
     # external systems
+    v3-data-operation: "http://terminology.hl7.org/CodeSystem/v3-DataOperation"
+    provenance-participant-type: "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+    v3-participation-type: "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
     observationCategorySystem: "http://hl7.org/fhir/observation-category"
     diagnostic-service-section-id: "http://terminology.hl7.org/CodeSystem/v2-0074"
@@ -254,6 +263,10 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+    create-provenance-resources:
+      # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
+      # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
+      enabled: false
     substanz-to-atc:
       # -- path to a CSV file containing additional Substanz -> ATC code mappings.
       # The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`.
