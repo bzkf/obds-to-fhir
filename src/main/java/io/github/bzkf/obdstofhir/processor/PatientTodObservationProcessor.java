@@ -70,7 +70,8 @@ public class PatientTodObservationProcessor {
       obdsPatient.setPatientID(onkoPatient.getPatientId());
       var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
 
-      var deathObservations = todMapper.map(tod, patientReferenceOptional.get(), null).getFirst();
+      var deathObservations =
+          todMapper.map(tod, patientReferenceOptional.get(), null, true).getFirst();
 
       var bundle = new Bundle();
       var url =

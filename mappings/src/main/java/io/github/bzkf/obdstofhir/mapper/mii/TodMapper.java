@@ -70,7 +70,10 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      @NonNull TodTyp tod, @NonNull Reference patient, Reference condition) {
+      @NonNull TodTyp tod,
+      @NonNull Reference patient,
+      Reference condition,
+      @NonNull Boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
@@ -91,6 +94,9 @@ public class TodMapper extends ObdsToFhirMapper {
         identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
       } else {
         identifierValue = patient.getReference();
+        if (fromOnkoPatientTable) {
+          identifierValue += "fromOnkoPatientTable";
+        }
       }
     }
 
