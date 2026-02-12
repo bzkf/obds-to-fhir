@@ -40,7 +40,7 @@ curl -X POST \
     "connection.user": "DWH_ROUTINE",
     "connection.password": "devPassword",
     "schema.pattern": "DWH_ROUTINE",
-    "topic.prefix": "onkostar.patient",
+    "topic.prefix": "onkostar.PATIENT",
     "query": "SELECT * FROM (SELECT ID, LETZTE_INFORMATION, STERBEDATUM, STERBEDATUM_ACC, PATIENTEN_ID, ANGELEGT_AM, ZU_LOESCHEN, PATIENTEN_IDS_VORHER, BEARBEITET_AM FROM patient) o",
     "mode": "timestamp",
     "timestamp.column.name": "BEARBEITET_AM",
@@ -50,6 +50,8 @@ curl -X POST \
     "transforms.ValueToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
     "transforms.ValueToKey.fields": "PATIENTEN_ID",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-    "value.converter.schemas.enable": "false"
+    "value.converter.schemas.enable": "false",
+    "db.timezone": "Europe/Berlin",
+    "timestamp.granularity": "micros_iso_datetime_string"
   }
 }'

@@ -74,12 +74,12 @@ obdsv2-to-v3:
 
 spring:
   profiles:
-    active: mappings,default
+    active: mappings,default,onkostarPatientTable
   application:
     name: obds-to-fhir
   cloud:
     function:
-      definition: "getMeldungExportObdsV3Processor"
+      definition: getMeldungExportObdsV3Processor;getPatientTodObservationProcessor
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
@@ -110,6 +110,14 @@ spring:
           # -- Name of the topic where ONKOSTAR oBDS Meldungen are read from
           destination: ${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}
         getMeldungExportObdsV3Processor-out-0:
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getPatientTodObservationProcessor-in-0:
+          # -- Name of the topic where ONKOSTAR Patients are read from
+          destination: ${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}
+        getPatientTodObservationProcessor-out-0:
           # -- Name of the topic where the FHIR resources are written to
           destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
@@ -162,6 +170,15 @@ spring:
                 # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
                 application-id: ${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}
             getMeldungExportObdsV3Processor-out-0:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getPatientTodObservationProcessor-in-0:
+              consumer:
+                # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
+                application-id: ${KAFKA_PATIENT_GROUP_ID:obds-patient-v3-processor}
+            getPatientTodObservationProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:

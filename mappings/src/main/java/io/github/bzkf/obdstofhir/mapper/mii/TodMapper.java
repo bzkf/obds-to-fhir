@@ -28,7 +28,10 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   private Observation createBaseObservation(
-      Reference patient, Reference condition, Optional<DateTimeType> todesZeitpunkt, TodTyp tod) {
+      Reference patient,
+      Optional<Reference> condition,
+      Optional<DateTimeType> todesZeitpunkt,
+      TodTyp tod) {
 
     var observation = new Observation();
 
@@ -48,12 +51,10 @@ public class TodMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
 
     // Effective | Sterbedatum
-    if (todesZeitpunkt.isPresent()) {
-      observation.setEffective(todesZeitpunkt.get());
-    }
+    todesZeitpunkt.ifPresent(observation::setEffective);
 
     // Focus | Bezugsdiagnose
-    observation.addFocus(condition);
+    condition.ifPresent(observation::addFocus);
 
     // Interpretation | Tod Tumorbedingt
     if (tod.getTodTumorbedingt() != null) {
@@ -69,10 +70,12 @@ public class TodMapper extends ObdsToFhirMapper {
   }
 
   public List<Observation> map(
-      @NonNull TodTyp tod, @NonNull Reference patient, @NonNull Reference condition) {
+      @NonNull TodTyp tod, @NonNull Reference patient, Reference condition) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
-    verifyReference(condition, ResourceType.Condition);
+    if (condition != null) {
+      verifyReference(condition, ResourceType.Condition);
+    }
 
     String identifierValue;
 
@@ -84,7 +87,11 @@ public class TodMapper extends ObdsToFhirMapper {
       // which uses patient_id + tumor_id
       // XXX: we might want to consider using the Patient.identifier.value and
       // Condition.identifier.value here instead for a shorter value.
-      identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
+      if (condition != null) {
+        identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
+      } else {
+        identifierValue = patient.getReference();
+      }
     }
 
     var observationList = new ArrayList<Observation>();
@@ -94,7 +101,8 @@ public class TodMapper extends ObdsToFhirMapper {
     if (tod.getMengeTodesursachen() != null) {
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
-        var observation = createBaseObservation(patient, condition, todesZeitpunkt, tod);
+        var observation =
+            createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
 
         // Identifier: set identifier per todesursache
         Identifier identifier =
@@ -140,7 +148,8 @@ public class TodMapper extends ObdsToFhirMapper {
       }
 
     } else {
-      var observation = createBaseObservation(patient, condition, todesZeitpunkt, tod);
+      var observation =
+          createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
 
       // if the ICD cause of death is unset, use the plain identifier without icd code
       // suffix
