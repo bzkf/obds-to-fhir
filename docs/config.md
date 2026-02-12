@@ -89,9 +89,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.patient-reference-generation.record-id-database.query | string | `"SELECT RecordID\nFROM lookup\nWHERE PatientID = ?\n"` | the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message. |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
-| spring.profiles.active | string | `"mappings,default"` |  |
+| spring.profiles.active | string | `"mappings,default,onkostarPatientTable"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
-| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor"` |  |
+| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientTodObservationProcessor"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-1.destination | string | `"fhir.obds.Observation"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.destination | string | `"fhir.obds.MedicationStatement"` |  |
@@ -107,6 +107,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-in-0.destination | string | `"${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}"` | Name of the topic where ONKOSTAR oBDS Meldungen are read from |
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
+| spring.cloud.stream.bindings.getPatientTodObservationProcessor-in-0.destination | string | `"${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}"` | Name of the topic where ONKOSTAR Patients are read from |
+| spring.cloud.stream.bindings.getPatientTodObservationProcessor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
+| spring.cloud.stream.bindings.getPatientTodObservationProcessor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."cache.max.bytes.buffering" | int | `0` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."max.request.size" | string | `"${MAX_REQUEST_SIZE:20971520}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."num.stream.threads" | string | `"${NUM_STREAM_THREADS:1}"` |  |
@@ -127,6 +130,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id | string | `"${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-in-0.consumer.application-id | string | `"${KAFKA_PATIENT_GROUP_ID:obds-patient-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
+| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
 | spring.kafka.bootstrapServers | string | `"${BOOTSTRAP_SERVERS:localhost:9094}"` |  |
 | spring.kafka."security.protocol" | string | `"${SECURITY_PROTOCOL:PLAINTEXT}"` |  |
 | spring.kafka.ssl.trust-store-type | string | `"PKCS12"` |  |
