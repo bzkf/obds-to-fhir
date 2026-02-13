@@ -73,7 +73,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
-      @NonNull Boolean fromOnkoPatientTable) {
+      @NonNull boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
