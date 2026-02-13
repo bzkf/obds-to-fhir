@@ -99,6 +99,7 @@ public class FhirProperties {
     private String gradingObservationId;
     private String verlaufObservationId;
     private String todObservationId;
+    private String todObservationOnkostarPatientTableId;
     private String nebenwirkungAdverseEventId;
     private String fruehereTumorerkrankungConditionId;
     private String prostataPsaObservationId;
