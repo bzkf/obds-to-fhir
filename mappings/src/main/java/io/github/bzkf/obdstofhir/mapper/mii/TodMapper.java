@@ -73,7 +73,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
-      @NonNull boolean fromOnkoPatientTable) {
+      boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
@@ -104,6 +104,13 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum());
 
+    var todObsIdentifierSytstem =
+        fhirProperties.getSystems().getIdentifiers().getTodObservationId();
+    if (fromOnkoPatientTable) {
+      todObsIdentifierSytstem =
+          fhirProperties.getSystems().getIdentifiers().getTodObservationOnkostarPatientTableId();
+    }
+
     if (tod.getMengeTodesursachen() != null) {
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
@@ -113,7 +120,7 @@ public class TodMapper extends ObdsToFhirMapper {
         // Identifier: set identifier per todesursache
         Identifier identifier =
             new Identifier()
-                .setSystem(fhirProperties.getSystems().getIdentifiers().getTodObservationId())
+                .setSystem(todObsIdentifierSytstem)
                 .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
@@ -161,7 +168,7 @@ public class TodMapper extends ObdsToFhirMapper {
       // suffix
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getIdentifiers().getTodObservationId())
+              .setSystem(todObsIdentifierSytstem)
               .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));

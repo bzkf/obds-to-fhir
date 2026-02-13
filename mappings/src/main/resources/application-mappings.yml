@@ -56,6 +56,7 @@ fhir:
       genetische-variante-observation-id: "${fhir.systems.identifiers.base-url}/genetische-variante-observation-id"
       nebenwirkung-adverse-event-id: "${fhir.systems.identifiers.base-url}/nebenwirkung-adverse-event-id"
       tod-observation-id: "${fhir.systems.identifiers.base-url}/tod-observation-id"
+      tod-observation-onkostar-patient-table-id: "${fhir.systems.identifiers.base-url}/onkostar-patient-table-tod-observation-id"
       grading-observation-id: "${fhir.systems.identifiers.base-url}/grading-observation-id"
       tnm-grouping-observation-id: "${fhir.systems.identifiers.base-url}/tnm-grouping-observation-id"
       tnm-t-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-t-kategorie-observation-id"

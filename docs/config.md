@@ -73,6 +73,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| fhir.mappings.from-onkostar-patient-table.enabled | bool | `true` | if enabled, tod observations will be created using the patient table from onkostar |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.patient-id-regex | string | `"^(.*)$"` | regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group. Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s. |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
@@ -89,7 +90,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.patient-reference-generation.record-id-database.query | string | `"SELECT RecordID\nFROM lookup\nWHERE PatientID = ?\n"` | the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message. |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
-| spring.profiles.active | string | `"mappings,default,onkostarPatientTable"` |  |
+| spring.profiles.active | string | `"mappings,default"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
 | spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientTodObservationProcessor"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |

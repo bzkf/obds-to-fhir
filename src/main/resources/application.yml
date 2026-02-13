@@ -8,6 +8,9 @@ app:
 
 fhir:
   mappings:
+    from-onkostar-patient-table:
+      # -- if enabled, tod observations will be created using the patient table from onkostar
+      enabled: true
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""
@@ -74,7 +77,7 @@ obdsv2-to-v3:
 
 spring:
   profiles:
-    active: mappings,default,onkostarPatientTable
+    active: mappings,default
   application:
     name: obds-to-fhir
   cloud:
