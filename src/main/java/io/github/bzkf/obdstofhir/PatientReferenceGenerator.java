@@ -12,6 +12,8 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator.ReferenceId;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator.StringId;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
 import java.io.IOException;
@@ -56,6 +58,12 @@ public class PatientReferenceGenerator {
     FHIR_SERVER_LOOKUP,
     RECORD_ID_DATABASE_LOOKUP
   }
+
+  sealed interface IdResult permits StringId, ReferenceId {}
+
+  record StringId(String value) implements IdResult {}
+
+  record ReferenceId(Reference value) implements IdResult {}
 
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
@@ -106,24 +114,24 @@ public class PatientReferenceGenerator {
   @Bean
   public Function<OBDS.MengePatient.Patient, Optional<Reference>>
       getPatientReferenceGenerationFunction() {
-    Function<OBDS.MengePatient.Patient, Optional<String>> idGenerator;
+    Function<OBDS.MengePatient.Patient, Optional<IdResult>> idGenerator;
     switch (strategy) {
       case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID:
         idGenerator =
             p -> {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
-              return Optional.of(DigestUtils.sha256Hex(system + "|" + value));
+              return Optional.of(new StringId(DigestUtils.sha256Hex(system + "|" + value)));
             };
         break;
       case MD5_HASHED_PATIENT_ID:
-        idGenerator = p -> Optional.of(DigestUtils.md5Hex(p.getPatientID()));
+        idGenerator = p -> Optional.of(new StringId(DigestUtils.md5Hex(p.getPatientID())));
         break;
       case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES:
-        idGenerator = p -> Optional.of(p.getPatientID().replace('_', '-'));
+        idGenerator = p -> Optional.of(new StringId(p.getPatientID().replace('_', '-')));
         break;
       case PATIENT_ID:
-        idGenerator = p -> Optional.of(p.getPatientID());
+        idGenerator = p -> Optional.of(new StringId(p.getPatientID()));
         break;
       case FHIR_SERVER_LOOKUP:
         if (fhirClient == null) {
@@ -144,9 +152,10 @@ public class PatientReferenceGenerator {
 
               var id = findPatientIdByIdentifier(identifierToLookup);
               if (id.isPresent()) {
-                return Optional.of(id.get().getIdPart());
+                return Optional.of(new StringId(id.get().getIdPart()));
               } else {
-                return Optional.empty();
+                var reference = new Reference().setIdentifier(identifierToLookup);
+                return Optional.of(new ReferenceId(reference));
               }
             };
 
@@ -166,13 +175,14 @@ public class PatientReferenceGenerator {
 
     return p -> {
       Validate.notBlank(p.getPatientID());
-      var idPart = idGenerator.apply(p);
-
-      if (idPart.isPresent()) {
-        return Optional.of(new Reference("Patient/" + idPart.get()));
-      } else {
-        return Optional.empty();
-      }
+      return idGenerator
+          .apply(p)
+          .flatMap(
+              id ->
+                  switch (id) {
+                    case StringId(var s) -> Optional.of(new Reference("Patient/" + s));
+                    case ReferenceId(var r) -> Optional.of(r);
+                  });
     };
   }
 
@@ -191,11 +201,11 @@ public class PatientReferenceGenerator {
     return client;
   }
 
-  private Optional<String> findRecordIdByPatientId(String patientId) {
+  private Optional<IdResult> findRecordIdByPatientId(String patientId) {
     var id =
         this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
     if (StringUtils.hasText(id)) {
-      return Optional.of(id);
+      return Optional.of(new StringId(id));
     } else {
       return Optional.empty();
     }
