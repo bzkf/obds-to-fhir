@@ -1,6 +1,6 @@
 services:
   obds-to-fhir-dq-checks:
-    image: ghcr.io/bzkf/obds-to-fhir-dq-checks:v3.0.0-beta.193
+    image: ghcr.io/bzkf/obds-to-fhir-dq-checks:v3.0.0-beta.194
     restart: "no"
     cap_drop:
       - ALL
