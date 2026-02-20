@@ -11,6 +11,7 @@ import io.github.bzkf.obdstofhir.Obdsv2v3MapperConfig;
 import io.github.bzkf.obdstofhir.Obdsv2v3MapperProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
+import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.mii.*;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
@@ -90,6 +91,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientReferenceGenerator.class,
       SubstanzToAtcMapper.class,
       FruehereTumorerkrankungenMapper.class,
+      WeitereKlassifikationCodingMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {

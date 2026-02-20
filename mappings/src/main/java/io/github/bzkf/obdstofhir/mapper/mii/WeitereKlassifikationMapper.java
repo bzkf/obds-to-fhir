@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,8 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
 
-  public WeitereKlassifikationMapper(FhirProperties fhirProperties) {
+  private final WeitereKlassifikationCodingMapper weitereKlassifikationCodingMapper;
+
+  public WeitereKlassifikationMapper(
+      FhirProperties fhirProperties,
+      WeitereKlassifikationCodingMapper weitereKlassifikationCodingMapper) {
     super(fhirProperties);
+    this.weitereKlassifikationCodingMapper = weitereKlassifikationCodingMapper;
   }
 
   public List<Observation> map(
@@ -68,12 +74,27 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
       convertObdsDatumToDateTimeType(klassifikation.getDatum())
           .ifPresent(observation::setEffective);
 
-      var code = new CodeableConcept().setText(klassifikation.getName());
-      observation.setCode(code);
+      var lookupResult =
+          weitereKlassifikationCodingMapper.lookup(
+              klassifikation.getName(), klassifikation.getStadium());
+      if (lookupResult.isPresent()) {
+        var codeValue = lookupResult.get();
 
-      var value = new CodeableConcept();
-      value.addCoding().setCode(klassifikation.getStadium());
-      observation.setValue(value);
+        var code = new CodeableConcept().setText(klassifikation.getName());
+        code.addCoding(codeValue.code());
+        observation.setCode(code);
+
+        var value = new CodeableConcept().setText(klassifikation.getStadium());
+        value.addCoding(codeValue.value());
+        observation.setValue(value);
+      } else {
+        var code = new CodeableConcept().setText(klassifikation.getName());
+        observation.setCode(code);
+
+        var value = new CodeableConcept();
+        value.addCoding().setCode(klassifikation.getStadium());
+        observation.setValue(value);
+      }
 
       observations.add(observation);
     }

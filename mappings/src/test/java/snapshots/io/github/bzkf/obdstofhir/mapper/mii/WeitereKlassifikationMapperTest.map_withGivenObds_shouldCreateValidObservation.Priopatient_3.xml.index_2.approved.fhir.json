@@ -1,0 +1,27 @@
+{
+  "resourceType": "Observation",
+  "id": "fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+    "value": "10_1_DI_1-ZNS-WHO-2021-2017-07-02"
+  } ],
+  "status": "final",
+  "code": {
+    "text": "ZNS-WHO-2021"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2017-07-02",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "code": "unbekannt"
+    } ]
+  }
+}

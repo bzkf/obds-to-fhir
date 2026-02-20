@@ -274,6 +274,39 @@
       "url": "Observation/fd98bdb4e128c7c15c49f7ccb96ae8f93dd0a74644507cc4ba2943a17199fef3"
     }
   }, {
+    "fullUrl": "Observation/fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "10_1_DI_1-ZNS-WHO-2021-2017-07-02"
+      } ],
+      "status": "final",
+      "code": {
+        "text": "ZNS-WHO-2021"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+      },
+      "focus": [ {
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "code": "unbekannt"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8"
+    }
+  }, {
     "fullUrl": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
     "resource": {
       "resourceType": "List",
@@ -302,6 +335,14 @@
       }, {
         "item": {
           "reference": "Observation/fd98bdb4e128c7c15c49f7ccb96ae8f93dd0a74644507cc4ba2943a17199fef3"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/fd9feefdcebd5354ae1f61e2c7666ca6303a0d11738d1a6014e79d70652756d8"
         }
       } ]
     },

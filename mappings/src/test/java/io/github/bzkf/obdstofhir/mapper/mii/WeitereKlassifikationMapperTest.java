@@ -4,29 +4,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class})
+@SpringBootTest(
+    classes = {
+      FhirProperties.class,
+      WeitereKlassifikationMapper.class,
+      WeitereKlassifikationCodingMapper.class
+    })
 @EnableConfigurationProperties
 class WeitereKlassifikationMapperTest extends MapperTest {
   private static WeitereKlassifikationMapper sut;
 
-  @BeforeAll
-  static void beforeEach(@Autowired FhirProperties fhirProps) {
-    sut = new WeitereKlassifikationMapper(fhirProps);
+  public WeitereKlassifikationMapperTest(
+      @Autowired FhirProperties fhirProperties,
+      @Autowired WeitereKlassifikationCodingMapper weitereKlassifikationCodingMapper) {
+    sut = new WeitereKlassifikationMapper(fhirProperties, weitereKlassifikationCodingMapper);
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_2.xml", "Testpatient_3.xml", "Priopatient_3.xml"})
   void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();

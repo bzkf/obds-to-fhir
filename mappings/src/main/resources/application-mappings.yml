@@ -261,3 +261,5 @@ fhir:
       # The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>,
       # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
       extra-mappings-file-path: ""
+    weitere-klassifikationen:
+      extra-mappings-file-path: ""
