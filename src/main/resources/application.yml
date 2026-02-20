@@ -1,5 +1,5 @@
 # @ignored
-app-version: 3.0.0-beta.193
+app-version: 3.0.0-beta.197
 
 # @ignored
 app:
@@ -8,6 +8,9 @@ app:
 
 fhir:
   mappings:
+    from-onkostar-patient-table:
+      # -- if enabled, tod observations will be created using the patient table from onkostar
+      enabled: true
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""
@@ -83,7 +86,7 @@ spring:
     name: obds-to-fhir
   cloud:
     function:
-      definition: "getMeldungExportObdsV3Processor"
+      definition: getMeldungExportObdsV3Processor;getPatientTodObservationProcessor
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
@@ -114,6 +117,14 @@ spring:
           # -- Name of the topic where ONKOSTAR oBDS Meldungen are read from
           destination: ${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}
         getMeldungExportObdsV3Processor-out-0:
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getPatientTodObservationProcessor-in-0:
+          # -- Name of the topic where ONKOSTAR Patients are read from
+          destination: ${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}
+        getPatientTodObservationProcessor-out-0:
           # -- Name of the topic where the FHIR resources are written to
           destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
@@ -166,6 +177,15 @@ spring:
                 # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
                 application-id: ${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}
             getMeldungExportObdsV3Processor-out-0:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${COMPRESSION_TYPE:gzip}
+            getPatientTodObservationProcessor-in-0:
+              consumer:
+                # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
+                application-id: ${KAFKA_PATIENT_GROUP_ID:obds-patient-v3-processor}
+            getPatientTodObservationProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
