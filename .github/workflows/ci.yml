@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@fc54adae638f776ca89a44f14fffc38c282da414 # v1.20.1
+    uses: miracum/.github/.github/workflows/standard-build.yaml@0fe32a245f1e9e2199a0293a3a5fea12774beef7 # v1.20.2
     permissions:
       contents: write
       id-token: write
@@ -289,7 +289,7 @@ jobs:
           persist-credentials: false
 
       - name: Create KinD cluster
-        uses: helm/kind-action@92086f6be054225fa813e0a4b13787fc9088faab # v1.13.0
+        uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
         with:
           cluster_name: kind
 
@@ -352,7 +352,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@fc54adae638f776ca89a44f14fffc38c282da414 # v1.20.1
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@0fe32a245f1e9e2199a0293a3a5fea12774beef7 # v1.20.2
     permissions:
       contents: read
       pull-requests: write
@@ -367,7 +367,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@fc54adae638f776ca89a44f14fffc38c282da414 # v1.20.1
+    uses: miracum/.github/.github/workflows/standard-release.yaml@0fe32a245f1e9e2199a0293a3a5fea12774beef7 # v1.20.2
     needs:
       - lint
       - build
