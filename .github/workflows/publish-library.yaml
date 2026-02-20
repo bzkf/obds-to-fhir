@@ -71,7 +71,7 @@ jobs:
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         run: |
           ./gradlew :mappings:publish --no-configuration-cache
-          ./gradlew :mappings:publishToMavenCentralPortal
+          ./gradlew :mappings:publishToMavenCentralPortal --no-configuration-cache
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
