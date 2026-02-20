@@ -70,7 +70,7 @@ jobs:
       - name: Publish to central
         if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
         run: |
-          ./gradlew :mappings:publish
+          ./gradlew :mappings:publish --no-configuration-cache
           ./gradlew :mappings:publishToMavenCentralPortal
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
