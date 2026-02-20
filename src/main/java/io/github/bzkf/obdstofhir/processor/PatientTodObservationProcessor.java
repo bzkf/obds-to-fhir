@@ -22,11 +22,11 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(
     value = "obds.process-from-directory.enabled",
     havingValue = "false",
-    matchIfMissing = true)
+    matchIfMissing = false)
 @ConditionalOnProperty(
     value = "fhir.mappings.from-onkostar-patient-table.enabled",
     havingValue = "true",
-    matchIfMissing = true)
+    matchIfMissing = false)
 @Configuration
 public class PatientTodObservationProcessor {
 
@@ -76,6 +76,7 @@ public class PatientTodObservationProcessor {
           todMapper.map(tod, patientReferenceOptional.get(), null, true).getFirst();
 
       var bundle = new Bundle();
+      bundle.setType(BundleType.TRANSACTION);
       var url =
           String.format(
               "%s/%s", deathObservations.getResourceType(), deathObservations.getIdBase());
