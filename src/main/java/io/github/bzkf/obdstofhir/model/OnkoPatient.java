@@ -19,7 +19,7 @@ public class OnkoPatient implements Serializable {
 
   @EqualsAndHashCode.Include
   @JsonProperty("ID")
-  Integer patid;
+  String patid;
 
   @JsonProperty("LETZTE_INFORMATION")
   LocalDate letzteInformation;
@@ -40,7 +40,7 @@ public class OnkoPatient implements Serializable {
   Integer zuLoeschen;
 
   @JsonProperty("PATIENTEN_IDS_VORHER")
-  Integer patientenIdsVorher;
+  String patientenIdsVorher;
 
   @JsonProperty("BEARBEITET_AM")
   LocalDateTime bearbeitetAm;
