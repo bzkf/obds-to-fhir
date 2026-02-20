@@ -109,6 +109,9 @@ public class FhirProperties {
     private String prostataClavienDindoObservationId;
     private String prostataGleasonPatternsObservationId;
     private String prostataGleasonScoreObservationId;
+    private String obdsMeldungId;
+    private String provenanceId;
+    private String obdsToFhirDeviceId;
   }
 
   @Data
@@ -123,6 +126,9 @@ public class FhirProperties {
 
     private String diagnosticServiceSectionId;
 
+    private String v3DataOperation;
+    private String v3ParticipationType;
+    private String provenanceParticipantType;
     private String identifierType;
     private String observationCategorySystem;
     private String loinc;
