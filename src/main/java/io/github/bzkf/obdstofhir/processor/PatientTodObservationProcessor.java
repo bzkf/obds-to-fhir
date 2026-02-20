@@ -13,6 +13,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,11 @@ import org.springframework.stereotype.Service;
 @ConditionalOnProperty(
     value = "obds.process-from-directory.enabled",
     havingValue = "false",
-    matchIfMissing = true)
+    matchIfMissing = false)
 @ConditionalOnProperty(
     value = "fhir.mappings.from-onkostar-patient-table.enabled",
     havingValue = "true",
-    matchIfMissing = true)
+    matchIfMissing = false)
 @Configuration
 public class PatientTodObservationProcessor {
 
@@ -76,6 +77,7 @@ public class PatientTodObservationProcessor {
           todMapper.map(tod, patientReferenceOptional.get(), null, true).getFirst();
 
       var bundle = new Bundle();
+      bundle.setType(BundleType.TRANSACTION);
       var url =
           String.format(
               "%s/%s", deathObservations.getResourceType(), deathObservations.getIdBase());
