@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -34,30 +35,25 @@ public class SubstanzToAtcMapper {
     var resource = new ClassPathResource("mappings/Umsetzungsleitfaden_Substanzen_2025-08.csv");
 
     try (var reader = new InputStreamReader(resource.getInputStream())) {
-      for (var row : csvFormat.parse(reader)) {
-        var substanz = row.get("Substanzbezeichnung").trim();
-        var code = row.get("ATC-Code").trim();
-
-        if (!code.equals("fehlt")) {
-          // this will automatically overwrite duplicates with the latest entry in the
-          // CSV, which should be the most recent one.
-          substanzToCode.put(substanz, code);
-        }
-      }
+      loadMappings(reader);
     }
 
-    if (this.extraMappingsFilePath.isPresent()) {
+    if (extraMappingsFilePath.isPresent()) {
       try (var reader = Files.newBufferedReader(extraMappingsFilePath.get())) {
-        for (var row : csvFormat.parse(reader)) {
-          var substanz = row.get("Substanzbezeichnung").trim();
-          var code = row.get("ATC-Code").trim();
+        loadMappings(reader);
+      }
+    }
+  }
 
-          if (!code.equals("fehlt")) {
-            // this will automatically overwrite duplicates with the latest entry in the
-            // CSV, which should be the most recent one.
-            substanzToCode.put(substanz, code);
-          }
-        }
+  private void loadMappings(Reader reader) throws IOException {
+    for (var row : csvFormat.parse(reader)) {
+      var substanz = row.get("Substanzbezeichnung").trim();
+      var code = row.get("ATC-Code").trim();
+
+      if (!"fehlt".equals(code)) {
+        // this will automatically overwrite duplicates with the latest entry in the
+        // CSV, which should be the most recent one.
+        substanzToCode.put(substanz, code);
       }
     }
   }

@@ -1,0 +1,22 @@
+name;stadium;snomed_code;snomed_display;value_snomed_code;value_snomed_display
+WHO-2013;IV;396921005;World Health Organization grade finding for central nervous system tumor (finding);396925001;World Health Organization grade IV central nervous system tumor (finding)
+WHO-2013;III;396921005;World Health Organization grade finding for central nervous system tumor (finding);396924002;World Health Organization grade III central nervous system tumor (finding)
+WHO-2013;II;396921005;World Health Organization grade finding for central nervous system tumor (finding);396923008;World Health Organization grade II central nervous system tumor (finding)
+WHO-2013;I;396921005;World Health Organization grade finding for central nervous system tumor (finding);396922003;World Health Organization grade I central nervous system tumor (finding)
+WHO-2016;unbekannt;;;;
+WHO-2016;IV;396921005;World Health Organization grade finding for central nervous system tumor (finding);396925001;World Health Organization grade IV central nervous system tumor (finding)
+WHO-2016;III;396921005;World Health Organization grade finding for central nervous system tumor (finding);396924002;World Health Organization grade III central nervous system tumor (finding)
+WHO-2016;II;396921005;World Health Organization grade finding for central nervous system tumor (finding);396923008;World Health Organization grade II central nervous system tumor (finding)
+WHO-2016;I;396921005;World Health Organization grade finding for central nervous system tumor (finding);396922003;World Health Organization grade I central nervous system tumor (finding)
+WHO-2016;CIN_II;;;;
+WHO-2016;;;;;
+WHO-2021;IV;396921005;World Health Organization grade finding for central nervous system tumor (finding);396925001;World Health Organization grade IV central nervous system tumor (finding)
+WHO-2021;III;396921005;World Health Organization grade finding for central nervous system tumor (finding);396924002;World Health Organization grade III central nervous system tumor (finding)
+WHO-2021;II;396921005;World Health Organization grade finding for central nervous system tumor (finding);396923008;World Health Organization grade II central nervous system tumor (finding)
+WHO-2021;I;396921005;World Health Organization grade finding for central nervous system tumor (finding);396922003;World Health Organization grade I central nervous system tumor (finding)
+ZNS-WHO-2021;unbekannt;;;;
+ZNS-WHO-2021;IV;396921005;World Health Organization grade finding for central nervous system tumor (finding);396925001;World Health Organization grade IV central nervous system tumor (finding)
+ZNS-WHO-2021;III;396921005;World Health Organization grade finding for central nervous system tumor (finding);396924002;World Health Organization grade III central nervous system tumor (finding)
+ZNS-WHO-2021;II;396921005;World Health Organization grade finding for central nervous system tumor (finding);396923008;World Health Organization grade II central nervous system tumor (finding)
+ZNS-WHO-2021;I;396921005;World Health Organization grade finding for central nervous system tumor (finding);396922003;World Health Organization grade I central nervous system tumor (finding)
+ZNS-WHO-2021;1;396921005;World Health Organization grade finding for central nervous system tumor (finding);396922003;World Health Organization grade I central nervous system tumor (finding)
