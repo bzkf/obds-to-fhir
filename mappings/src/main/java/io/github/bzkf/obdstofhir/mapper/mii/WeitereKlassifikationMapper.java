@@ -77,6 +77,9 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
       var lookupResult =
           weitereKlassifikationCodingMapper.lookup(
               klassifikation.getName(), klassifikation.getStadium());
+      // if the name and stadium are found in the mapping,
+      // use the mapped SNOMED codes for code and value,
+      // otherwise fall back to using the name as code and stadium as value without coding
       if (lookupResult.isPresent()) {
         var codeValue = lookupResult.get();
 
@@ -85,7 +88,12 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
         observation.setCode(code);
 
         var value = new CodeableConcept().setText(klassifikation.getStadium());
-        value.addCoding(codeValue.value());
+        // while the code is always present if the lookup is successful,
+        // the value is optional
+        if (codeValue.value().isPresent()) {
+          value.addCoding(codeValue.value().get());
+        }
+
         observation.setValue(value);
       } else {
         var code = new CodeableConcept().setText(klassifikation.getName());

@@ -262,4 +262,7 @@ fhir:
       # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
       extra-mappings-file-path: ""
     weitere-klassifikationen:
+      # -- ⚠️ Experimental! Path to a CSV file containing additional Weitere Klassifikationen -> SNOMED code mappings.
+      # The CSV file needs to have these columns: `name;stadium;snomed_code;snomed_display;value_snomed_code;value_snomed_display`, all columns must be seperated by `;`.
+      # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
       extra-mappings-file-path: ""

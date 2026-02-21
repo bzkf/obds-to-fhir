@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class WeitereKlassifikationCodingMapper {
           .setCommentMarker('#')
           .get();
 
-  public record ObservationCodeValue(Coding code, Coding value) {}
+  public record ObservationCodeValue(Coding code, Optional<Coding> value) {}
 
   @Value("${fhir.mappings.weitere-klassifikationen.extra-mappings-file-path}")
   private Optional<Path> extraMappingsFilePath;
@@ -43,53 +44,42 @@ public class WeitereKlassifikationCodingMapper {
     var resource = new ClassPathResource("mappings/weitere-klassifikationen-mappings.csv");
 
     try (var reader = new InputStreamReader(resource.getInputStream())) {
-      for (var row : csvFormat.parse(reader)) {
-        var name = row.get("name").trim();
-        var einstufung = row.get("stadium").trim();
-        var snomedCode = row.get("snomed_code").trim();
-        var snomedDisplay = row.get("snomed_display").trim();
-        var valueSnomedCode = row.get("value_snomed_code").trim();
-        var valueSnomedDisplay = row.get("value_snomed_display").trim();
-
-        if (StringUtils.hasText(snomedCode)) {
-          var code =
-              fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(snomedDisplay);
-          var value =
-              fhirProperties
-                  .getCodings()
-                  .snomed()
-                  .setCode(valueSnomedCode)
-                  .setDisplay(valueSnomedDisplay);
-
-          map.put(name, einstufung, new ObservationCodeValue(code, value));
-        }
-      }
+      loadMappings(reader);
     }
 
-    if (this.extraMappingsFilePath.isPresent()) {
+    if (extraMappingsFilePath.isPresent()) {
       try (var reader = Files.newBufferedReader(extraMappingsFilePath.get())) {
-        for (var row : csvFormat.parse(reader)) {
-          var name = row.get("name").trim();
-          var einstufung = row.get("stadium").trim();
-          var snomedCode = row.get("snomed_code").trim();
-          var snomedDisplay = row.get("snomed_display").trim();
-          var valueSnomedCode = row.get("value_snomed_code").trim();
-          var valueSnomedDisplay = row.get("value_snomed_display").trim();
-
-          if (StringUtils.hasText(snomedCode)) {
-            var code =
-                fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(snomedDisplay);
-            var value =
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode(valueSnomedCode)
-                    .setDisplay(valueSnomedDisplay);
-
-            map.put(name, einstufung, new ObservationCodeValue(code, value));
-          }
-        }
+        loadMappings(reader);
       }
+    }
+  }
+
+  private void loadMappings(Reader reader) throws IOException {
+    for (var row : csvFormat.parse(reader)) {
+      var name = row.get("name").trim();
+      var einstufung = row.get("stadium").trim();
+      var snomedCode = row.get("snomed_code").trim();
+      var snomedDisplay = row.get("snomed_display").trim();
+      var valueSnomedCode = row.get("value_snomed_code").trim();
+      var valueSnomedDisplay = row.get("value_snomed_display").trim();
+
+      if (!StringUtils.hasText(snomedCode)) {
+        continue;
+      }
+
+      var code = fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(snomedDisplay);
+
+      Coding value = null;
+      if (StringUtils.hasText(valueSnomedCode)) {
+        value =
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode(valueSnomedCode)
+                .setDisplay(valueSnomedDisplay);
+      }
+
+      map.put(name, einstufung, new ObservationCodeValue(code, Optional.ofNullable(value)));
     }
   }
 

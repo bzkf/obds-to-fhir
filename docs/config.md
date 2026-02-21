@@ -89,7 +89,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.patient-reference-generation.record-id-database.password | string | `""` | password for authentication |
 | fhir.mappings.patient-reference-generation.record-id-database.query | string | `"SELECT RecordID\nFROM lookup\nWHERE PatientID = ?\n"` | the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message. |
 | fhir.mappings.substanz-to-atc.extra-mappings-file-path | string | `""` | path to a CSV file containing additional Substanz -> ATC code mappings. The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`. The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>, if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
-| fhir.mappings.weitere-klassifikationen.extra-mappings-file-path | string | `""` |  |
+| fhir.mappings.weitere-klassifikationen.extra-mappings-file-path | string | `""` | ⚠️ Experimental! Path to a CSV file containing additional Weitere Klassifikationen -> SNOMED code mappings. The CSV file needs to have these columns: `name;stadium;snomed_code;snomed_display;value_snomed_code;value_snomed_display`, all columns must be seperated by `;`. if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence. |
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
 | spring.profiles.active | string | `"mappings,default"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
