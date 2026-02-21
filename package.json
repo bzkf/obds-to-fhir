@@ -1,6 +1,6 @@
 {
   "name": "obds-to-fhir",
-  "version": "3.0.0-beta.193",
+  "version": "3.0.0-beta.198",
   "description": "Creates FHIR resources from oBDS-XML data",
   "dependencies": {
     "hl7.fhir.r4.core": "4.0.1",

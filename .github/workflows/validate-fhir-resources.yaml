@@ -46,7 +46,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.27@sha256:ef0579d4a82b35974576fe215ce2b6e117af330545989ac0bce9ddd3f9388e64
     needs:
       - extract-mapper-names
     strategy:
@@ -101,7 +101,7 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.27@sha256:ef0579d4a82b35974576fe215ce2b6e117af330545989ac0bce9ddd3f9388e64
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
