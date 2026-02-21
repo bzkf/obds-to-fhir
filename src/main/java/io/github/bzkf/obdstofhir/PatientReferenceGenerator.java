@@ -24,10 +24,12 @@ import java.util.function.Function;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -76,6 +78,8 @@ public class PatientReferenceGenerator {
   private @Nullable RecordIdDbConfig recordIdDbConfig;
   private @Nullable IGenericClient fhirPseudonymizerClient;
 
+  private final CodeableConcept mrnType;
+
   public PatientReferenceGenerator(
       FhirProperties fhirProperties,
       Optional<FhirServerConfig> fhirServerConfig,
@@ -87,6 +91,13 @@ public class PatientReferenceGenerator {
               "${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.fhir-pseudonymizer.base-url}")
           String fhirPseudonymizerBaseUrl) {
     this.fhirProperties = fhirProperties;
+
+    mrnType = new CodeableConcept();
+    mrnType
+        .addCoding()
+        .setSystem(fhirProperties.getSystems().getIdentifierType())
+        .setCode("MR")
+        .setDisplay("Medical record number");
 
     fhirServerConfig.ifPresent(
         cfg -> {
@@ -144,19 +155,22 @@ public class PatientReferenceGenerator {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
 
-              var identifierToLookup = new Identifier().setSystem(system).setValue(value);
+              var identifierToLookup =
+                  new Identifier().setSystem(system).setValue(value).setType(mrnType);
 
               if (isPseudonymizePatientIdEnabled) {
                 identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
               }
 
               var id = findPatientIdByIdentifier(identifierToLookup);
+              // always add the identifier to the Reference
+              var reference = new Reference().setIdentifier(identifierToLookup);
+              // if the id is present, i.e. we found the resource on the FHIR server,
+              // set the reference to the resource as well
               if (id.isPresent()) {
-                return Optional.of(new StringId(id.get().getIdPart()));
-              } else {
-                var reference = new Reference().setIdentifier(identifierToLookup);
-                return Optional.of(new ReferenceId(reference));
+                reference.setReference(ResourceType.Patient + "/" + id.get().getIdPart());
               }
+              return Optional.of(new ReferenceId(reference));
             };
 
         break;
@@ -175,12 +189,19 @@ public class PatientReferenceGenerator {
 
     return p -> {
       Validate.notBlank(p.getPatientID());
+      var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
+      var value = p.getPatientID();
+      var identifier = new Identifier().setSystem(system).setValue(value).setType(mrnType);
+
       return idGenerator
           .apply(p)
           .flatMap(
               id ->
                   switch (id) {
-                    case StringId(var s) -> Optional.of(new Reference("Patient/" + s));
+                    case StringId(var s) ->
+                        Optional.of(
+                            new Reference(ResourceType.Patient + "/" + s)
+                                .setIdentifier(identifier));
                     case ReferenceId(var r) -> Optional.of(r);
                   });
     };
