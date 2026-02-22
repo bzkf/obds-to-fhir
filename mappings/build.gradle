@@ -50,7 +50,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.27.6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.approvaltests:approvaltests:26.5.0'
+    testImplementation 'com.approvaltests:approvaltests:28.0.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
