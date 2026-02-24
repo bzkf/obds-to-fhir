@@ -12,6 +12,8 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator.ReferenceId;
+import io.github.bzkf.obdstofhir.PatientReferenceGenerator.StringId;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
 import java.io.IOException;
@@ -22,10 +24,12 @@ import java.util.function.Function;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.instance.model.api.IIdType;
+import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.ResourceType;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -57,6 +61,12 @@ public class PatientReferenceGenerator {
     RECORD_ID_DATABASE_LOOKUP
   }
 
+  sealed interface IdResult permits StringId, ReferenceId {}
+
+  record StringId(String value) implements IdResult {}
+
+  record ReferenceId(Reference value) implements IdResult {}
+
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
 
@@ -67,6 +77,8 @@ public class PatientReferenceGenerator {
   private @Nullable JdbcTemplate recordIdJdbcTemplate;
   private @Nullable RecordIdDbConfig recordIdDbConfig;
   private @Nullable IGenericClient fhirPseudonymizerClient;
+
+  private final CodeableConcept mrnType;
 
   public PatientReferenceGenerator(
       FhirProperties fhirProperties,
@@ -79,6 +91,13 @@ public class PatientReferenceGenerator {
               "${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.fhir-pseudonymizer.base-url}")
           String fhirPseudonymizerBaseUrl) {
     this.fhirProperties = fhirProperties;
+
+    mrnType = new CodeableConcept();
+    mrnType
+        .addCoding()
+        .setSystem(fhirProperties.getSystems().getIdentifierType())
+        .setCode("MR")
+        .setDisplay("Medical record number");
 
     fhirServerConfig.ifPresent(
         cfg -> {
@@ -106,24 +125,24 @@ public class PatientReferenceGenerator {
   @Bean
   public Function<OBDS.MengePatient.Patient, Optional<Reference>>
       getPatientReferenceGenerationFunction() {
-    Function<OBDS.MengePatient.Patient, Optional<String>> idGenerator;
+    Function<OBDS.MengePatient.Patient, Optional<IdResult>> idGenerator;
     switch (strategy) {
       case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID:
         idGenerator =
             p -> {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
-              return Optional.of(DigestUtils.sha256Hex(system + "|" + value));
+              return Optional.of(new StringId(DigestUtils.sha256Hex(system + "|" + value)));
             };
         break;
       case MD5_HASHED_PATIENT_ID:
-        idGenerator = p -> Optional.of(DigestUtils.md5Hex(p.getPatientID()));
+        idGenerator = p -> Optional.of(new StringId(DigestUtils.md5Hex(p.getPatientID())));
         break;
       case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES:
-        idGenerator = p -> Optional.of(p.getPatientID().replace('_', '-'));
+        idGenerator = p -> Optional.of(new StringId(p.getPatientID().replace('_', '-')));
         break;
       case PATIENT_ID:
-        idGenerator = p -> Optional.of(p.getPatientID());
+        idGenerator = p -> Optional.of(new StringId(p.getPatientID()));
         break;
       case FHIR_SERVER_LOOKUP:
         if (fhirClient == null) {
@@ -136,18 +155,22 @@ public class PatientReferenceGenerator {
               var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
               var value = p.getPatientID();
 
-              var identifierToLookup = new Identifier().setSystem(system).setValue(value);
+              var identifierToLookup =
+                  new Identifier().setSystem(system).setValue(value).setType(mrnType);
 
               if (isPseudonymizePatientIdEnabled) {
                 identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
               }
 
               var id = findPatientIdByIdentifier(identifierToLookup);
+              // always add the identifier to the Reference
+              var reference = new Reference().setIdentifier(identifierToLookup);
+              // if the id is present, i.e. we found the resource on the FHIR server,
+              // set the reference to the resource as well
               if (id.isPresent()) {
-                return Optional.of(id.get().getIdPart());
-              } else {
-                return Optional.empty();
+                reference.setReference(ResourceType.Patient + "/" + id.get().getIdPart());
               }
+              return Optional.of(new ReferenceId(reference));
             };
 
         break;
@@ -166,13 +189,21 @@ public class PatientReferenceGenerator {
 
     return p -> {
       Validate.notBlank(p.getPatientID());
-      var idPart = idGenerator.apply(p);
+      var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
+      var value = p.getPatientID();
+      var identifier = new Identifier().setSystem(system).setValue(value).setType(mrnType);
 
-      if (idPart.isPresent()) {
-        return Optional.of(new Reference("Patient/" + idPart.get()));
-      } else {
-        return Optional.empty();
-      }
+      return idGenerator
+          .apply(p)
+          .flatMap(
+              id ->
+                  switch (id) {
+                    case StringId(var s) ->
+                        Optional.of(
+                            new Reference(ResourceType.Patient + "/" + s)
+                                .setIdentifier(identifier));
+                    case ReferenceId(var r) -> Optional.of(r);
+                  });
     };
   }
 
@@ -191,11 +222,11 @@ public class PatientReferenceGenerator {
     return client;
   }
 
-  private Optional<String> findRecordIdByPatientId(String patientId) {
+  private Optional<IdResult> findRecordIdByPatientId(String patientId) {
     var id =
         this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
     if (StringUtils.hasText(id)) {
-      return Optional.of(id);
+      return Optional.of(new StringId(id));
     } else {
       return Optional.empty();
     }
