@@ -131,7 +131,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id | string | `"${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-in-0.consumer.application-id | string | `"${KAFKA_PATIENT_GROUP_ID:obds-patient-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
+| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-in-0.consumer.application-id | string | `"${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
 | spring.kafka.bootstrapServers | string | `"${BOOTSTRAP_SERVERS:localhost:9094}"` |  |
