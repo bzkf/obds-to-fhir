@@ -1,6 +1,6 @@
 {
   "resourceType": "Procedure",
-  "id": "b959560fd8a22e9c0e1d8c9d6a21ef8804bd273557c7e48668210f106ecf285d",
+  "id": "c0405c3f5988bb62890676dd0e266673335f782c385822ab2bf355392aa59cc6",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
   },
@@ -15,22 +15,21 @@
   } ],
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
-    "value": "30-5-671-01"
+    "value": "30"
   } ],
   "status": "completed",
   "category": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-      "code": "387713003",
-      "display": "Surgical procedure"
+      "code": "394841004",
+      "display": "Other category"
     } ]
   },
   "code": {
     "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/ops",
-      "version": "2022",
-      "code": "5-671.01"
+      "system": "http://snomed.info/sct",
+      "code": "71388002"
     } ]
   },
   "subject": {

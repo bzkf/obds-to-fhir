@@ -71,10 +71,76 @@ public class OperationMapper extends ObdsToFhirMapper {
         }
       }
     }
-
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();
 
+    // create Parent Procedure
+    var parentProcedure = new Procedure();
+    // TODO: welchen Identifier für die Parent ID?
+    var parentIdentifer =
+        new Identifier()
+            .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+            .setValue(slugifier.slugify(op.getOPID()));
+    parentProcedure.addIdentifier(parentIdentifer);
+    parentProcedure.setId(computeResourceIdFromIdentifier(parentIdentifer));
+    parentProcedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
+    parentProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+
+    // TODO: welche Version nehmen wir für den Snomed Code?
+    var parentCoding =
+        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("71388002");
+    parentProcedure.setCode(new CodeableConcept(parentCoding));
+
+    // TODO: category: weglassen oder auf etwas bestimmtes setzen?
+    parentProcedure.setCategory(
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("394841004")
+                .setDisplay("Other category")));
+
+    parentProcedure.setSubject(subject);
+    var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
+    if (dateTime.isPresent()) {
+      parentProcedure.setPerformed(dateTime.get());
+    } else {
+      var performed = new DateTimeType();
+      performed.addExtension(
+          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      parentProcedure.setPerformed(performed);
+    }
+    // ReasonReference
+    parentProcedure.addReasonReference(condition);
+
+    // intention
+    var intention = new CodeableConcept();
+    intention
+        .addCoding()
+        .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
+        .setCode(op.getIntention());
+
+    var intentionExtens =
+        new Extension()
+            .setUrl(fhirProperties.getExtensions().getMiiExOnkoOPIntention())
+            .setValue(intention);
+
+    parentProcedure.addExtension(intentionExtens);
+
+    if (op.getResidualstatus() != null
+        && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
+      // outcome
+      var outcome = new CodeableConcept();
+      outcome
+          .addCoding()
+          .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
+          .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+
+      parentProcedure.setOutcome(outcome);
+    }
+    procedureList.add(parentProcedure);
+
+    // create child procedures
     for (var opsCode : distinctCodes.values()) {
       var procedure = new Procedure();
       MDC.put("opsCode", opsCode.getCode());
@@ -142,7 +208,6 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.setSubject(subject);
 
       // performed
-      var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
       if (dateTime.isPresent()) {
         procedure.setPerformed(dateTime.get());
       } else {
@@ -156,17 +221,6 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.addReasonReference(condition);
 
       // intention
-      var intention = new CodeableConcept();
-      intention
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-          .setCode(op.getIntention());
-
-      var intentionExtens =
-          new Extension()
-              .setUrl(fhirProperties.getExtensions().getMiiExOnkoOPIntention())
-              .setValue(intention);
-
       procedure.addExtension(intentionExtens);
 
       if (op.getResidualstatus() != null
@@ -183,6 +237,8 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       MDC.remove("opsCode");
 
+      var parentReference = new Reference("Procedure/" + parentProcedure.getId());
+      procedure.addPartOf(parentReference);
       // add procedure to procedure list here
       procedureList.add(procedure);
     }
