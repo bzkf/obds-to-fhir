@@ -76,7 +76,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     // create Parent Procedure
     var parentProcedure = new Procedure();
-    // TODO: welchen Identifier für die Parent ID?
+
     var parentIdentifer =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getOperationProcedureId())
@@ -86,19 +86,13 @@ public class OperationMapper extends ObdsToFhirMapper {
     parentProcedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
     parentProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
 
-    // TODO: welche Version nehmen wir für den Snomed Code?
-    var parentCoding =
-        new Coding().setSystem(fhirProperties.getSystems().getSnomed()).setCode("71388002");
-    parentProcedure.setCode(new CodeableConcept(parentCoding));
-
-    // TODO: category: weglassen oder auf etwas bestimmtes setzen?
-    parentProcedure.setCategory(
+    parentProcedure.setCode(
         new CodeableConcept(
             fhirProperties
                 .getCodings()
                 .snomed()
-                .setCode("394841004")
-                .setDisplay("Other category")));
+                .setCode("71388002")
+                .setDisplay("Procedure (procedure)")));
 
     parentProcedure.setSubject(subject);
     var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
