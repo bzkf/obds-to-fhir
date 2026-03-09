@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "ebe0468d56dc7c9aa380db860cc772c847f58c082eef47450652571a31093aef",
+  "id": "0a2f6b97230838fcfbb180a8537ea386c33f414c6d4652fd36cd455d4863a459",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-    "value": "161-T57-3"
+    "value": "123456-101-T57-3"
   } ],
   "status": "final",
   "code": {
@@ -18,7 +18,11 @@
     } ]
   },
   "subject": {
-    "reference": "Patient/any"
+    "reference": "Patient/any",
+    "identifier": {
+      "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+      "value": "123456"
+    }
   },
   "focus": [ {
     "reference": "Condition/any"

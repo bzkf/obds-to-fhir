@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,6 +36,10 @@ class TodMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
     var condition = new Reference("Condition/any");
+    subject.setIdentifier(
+        new Identifier()
+            .setSystem("https://bzkf.github.io/obds-to-fhir/identifiers/patient-id")
+            .setValue("123456"));
     var meldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getTod() != null)

@@ -74,7 +74,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
-      @NonNull TumorzuordnungTyp tumorzuordnungTyp,
+      TumorzuordnungTyp tumorzuordnungTyp,
       boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
@@ -84,26 +84,14 @@ public class TodMapper extends ObdsToFhirMapper {
 
     String identifierValue;
 
-    if (tod.getAbschlussID() != null) {
-      identifierValue = tod.getAbschlussID();
+    if (fromOnkoPatientTable) {
+      identifierValue =
+          String.format("%s-%s", patient.getIdentifier().getValue(), "fromOnkoPatientTable");
     } else {
-      // if the AbschlussID is not set, fall back to creating the identifier based on
-      // the Patient ID and Condition ID. This is similar to what obds2-to-obds3 does,
-      // which uses patient_id + tumor_id
-      // XXX: we might want to consider using the Patient.identifier.value and
-      // Condition.identifier.value here instead for a shorter value.
-      if (condition != null) {
-        identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
-      } else {
-        identifierValue = patient.getReference();
-        if (fromOnkoPatientTable) {
-          identifierValue += "fromOnkoPatientTable";
-        }
-      }
+      identifierValue =
+          String.format(
+              "%s-%s", patient.getIdentifier().getValue(), tumorzuordnungTyp.getTumorID());
     }
-    String id = patient.getId() + tumorzuordnungTyp.getTumorID();
-
-
 
     var observationList = new ArrayList<Observation>();
 
@@ -126,7 +114,7 @@ public class TodMapper extends ObdsToFhirMapper {
         Identifier identifier =
             new Identifier()
                 .setSystem(todObsIdentifierSytstem)
-                .setValue(slugifier.slugify( id + "-" + todesursache.getCode()));
+                .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -174,7 +162,7 @@ public class TodMapper extends ObdsToFhirMapper {
       var identifier =
           new Identifier()
               .setSystem(todObsIdentifierSytstem)
-              .setValue(slugifier.slugify(id));
+              .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
 

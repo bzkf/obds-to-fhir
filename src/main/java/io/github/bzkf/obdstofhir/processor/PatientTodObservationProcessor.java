@@ -74,7 +74,7 @@ public class PatientTodObservationProcessor {
       var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
 
       var deathObservations =
-          todMapper.map(tod, patientReferenceOptional.get(), null, true).getFirst();
+          todMapper.map(tod, patientReferenceOptional.get(), null, null, true).getFirst();
 
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);

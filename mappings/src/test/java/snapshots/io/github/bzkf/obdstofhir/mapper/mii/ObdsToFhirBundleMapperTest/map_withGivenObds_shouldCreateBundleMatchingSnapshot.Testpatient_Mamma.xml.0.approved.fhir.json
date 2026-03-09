@@ -118,16 +118,16 @@
       "url": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
     }
   }, {
-    "fullUrl": "Observation/5247729e16ad4a4a592c0f813d7115ccac8aa7d9bf42c03c48265c1917a86f1d",
+    "fullUrl": "Observation/ebf2c82d86070f13f3231cfb59c029ce81a4c4559fa8528c38cb4c128cdc0b0c",
     "resource": {
       "resourceType": "Observation",
-      "id": "5247729e16ad4a4a592c0f813d7115ccac8aa7d9bf42c03c48265c1917a86f1d",
+      "id": "ebf2c82d86070f13f3231cfb59c029ce81a4c4559fa8528c38cb4c128cdc0b0c",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-        "value": "Patient-9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730-Condition-57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+        "value": "null-601"
       } ],
       "status": "final",
       "code": {
@@ -154,7 +154,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/5247729e16ad4a4a592c0f813d7115ccac8aa7d9bf42c03c48265c1917a86f1d"
+      "url": "Observation/ebf2c82d86070f13f3231cfb59c029ce81a4c4559fa8528c38cb4c128cdc0b0c"
     }
   }, {
     "fullUrl": "Procedure/f9dd6936cc4f4e05f82a776a448666f6da719d7d5797239b06a5deaae7aab9a0",
