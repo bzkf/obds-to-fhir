@@ -16,7 +16,7 @@
     "reference": "Patient/any"
   },
   "focus": [ {
-    "reference": "Condition/PrimÃ¤rdiagnose"
+    "reference": "Condition/Primärdiagnose"
   } ],
   "effectiveDateTime": "2017-05-05",
   "valueCodeableConcept": {
