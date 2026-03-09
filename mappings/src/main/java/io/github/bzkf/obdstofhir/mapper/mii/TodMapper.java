@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
+import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.util.ArrayList;
@@ -73,6 +74,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
+      @NonNull TumorzuordnungTyp tumorzuordnungTyp,
       boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
@@ -99,6 +101,9 @@ public class TodMapper extends ObdsToFhirMapper {
         }
       }
     }
+    String id = patient.getId() + tumorzuordnungTyp.getTumorID();
+
+
 
     var observationList = new ArrayList<Observation>();
 
@@ -121,7 +126,7 @@ public class TodMapper extends ObdsToFhirMapper {
         Identifier identifier =
             new Identifier()
                 .setSystem(todObsIdentifierSytstem)
-                .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
+                .setValue(slugifier.slugify( id + "-" + todesursache.getCode()));
         observation.addIdentifier(identifier);
         observation.setId(computeResourceIdFromIdentifier(identifier));
 
@@ -169,7 +174,7 @@ public class TodMapper extends ObdsToFhirMapper {
       var identifier =
           new Identifier()
               .setSystem(todObsIdentifierSytstem)
-              .setValue(slugifier.slugify(identifierValue));
+              .setValue(slugifier.slugify(id));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
 

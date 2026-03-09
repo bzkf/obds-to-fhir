@@ -41,8 +41,9 @@ class TodMapperTest extends MapperTest {
             .findFirst()
             .get();
     var tMeldung = meldung.getTod();
+    var tumorzuordung = meldung.getTumorzuordnung();
 
-    var observations = tm.map(tMeldung, subject, condition, false);
+    var observations = tm.map(tMeldung, subject, condition, tumorzuordung, false);
 
     verifyAll(observations, sourceFile);
   }
