@@ -231,7 +231,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -1268,12 +1272,7 @@
       "medicationCodeableConcept": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_code": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "as-text"
-            } ]
-          }
+          "code": "V03AF03"
         } ],
         "text": "Folinsäure"
       },
