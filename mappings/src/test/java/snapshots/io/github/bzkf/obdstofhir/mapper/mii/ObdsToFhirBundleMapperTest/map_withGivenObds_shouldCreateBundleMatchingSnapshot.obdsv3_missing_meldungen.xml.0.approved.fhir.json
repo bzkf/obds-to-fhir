@@ -78,7 +78,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149"
+        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1"
+        }
       },
       "recordedDate": "2000-01-01"
     },

@@ -91,6 +91,7 @@ jacoco {
 spotless {
     java {
         target('**/*.java')
+        targetExclude('src/generated/java/**/*.java')
         importOrder()
         removeUnusedImports()
         googleJavaFormat()

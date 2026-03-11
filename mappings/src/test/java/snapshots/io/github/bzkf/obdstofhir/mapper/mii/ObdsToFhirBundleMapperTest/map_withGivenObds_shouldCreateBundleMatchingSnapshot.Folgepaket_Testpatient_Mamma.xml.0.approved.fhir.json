@@ -87,7 +87,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "recordedDate": "2024-02-16"
     },
@@ -145,7 +149,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "performedPeriod": {
         "start": "2020-04-03",
@@ -192,7 +200,11 @@
         "text": "Cyclophosphamid"
       },
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "effectivePeriod": {
         "start": "2020-04-03",
@@ -230,7 +242,11 @@
         "text": "Epirubicin"
       },
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "effectivePeriod": {
         "start": "2020-04-03",
@@ -273,7 +289,11 @@
         "text": "Taxotere"
       },
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "effectivePeriod": {
         "start": "2020-04-03",
@@ -307,7 +327,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
       },
       "seriousness": {
         "coding": [ {

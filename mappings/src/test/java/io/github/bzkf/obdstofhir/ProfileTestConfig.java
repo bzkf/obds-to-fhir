@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import java.util.Optional;
 import java.util.function.Function;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,11 @@ public class ProfileTestConfig {
     return p -> {
       var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
       var value = p.getPatientID();
-      return Optional.of(new Reference("Patient/" + DigestUtils.sha256Hex(system + "|" + value)));
+
+      var reference = new Reference("Patient/" + DigestUtils.sha256Hex(system + "|" + value));
+      var identifier = new Identifier().setSystem(system).setValue(value);
+      reference.setIdentifier(identifier);
+      return Optional.of(reference);
     };
   }
 }
