@@ -104,7 +104,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "recordedDate": "2024-07-18",
       "evidence": [ {
@@ -155,7 +159,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "performedDateTime": "2022-10-16",
       "reasonReference": [ {
@@ -194,7 +202,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -227,7 +239,11 @@
         "value": "X/98765/2"
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "collection": {
         "collectedDateTime": "2022-10-16"
@@ -259,7 +275,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -314,7 +334,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -365,7 +389,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -410,7 +438,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -459,7 +491,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -553,7 +589,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -577,16 +617,16 @@
       "url": "Observation/7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c"
     }
   }, {
-    "fullUrl": "Observation/b2969f8a2175adfaa32a128dd57c73598a2f36e8354832ac8f031655a21d5410",
+    "fullUrl": "Observation/78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5",
     "resource": {
       "resourceType": "Observation",
-      "id": "b2969f8a2175adfaa32a128dd57c73598a2f36e8354832ac8f031655a21d5410",
+      "id": "78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-        "value": "null-195"
+        "value": "19-195"
       } ],
       "status": "final",
       "code": {
@@ -598,7 +638,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -613,7 +657,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/b2969f8a2175adfaa32a128dd57c73598a2f36e8354832ac8f031655a21d5410"
+      "url": "Observation/78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5"
     }
   }, {
     "fullUrl": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
@@ -642,7 +686,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -681,7 +729,11 @@
         "value": "X/98765/1"
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "collection": {
         "collectedDateTime": "2022-10-03"
@@ -724,7 +776,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -766,7 +822,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -813,7 +873,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -867,7 +931,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -921,7 +989,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -966,7 +1038,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -1028,7 +1104,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -1082,7 +1162,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -1136,7 +1220,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -1181,7 +1269,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "focus": [ {
         "reference": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
@@ -1228,7 +1320,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "entry": [ {
         "item": {
@@ -1313,7 +1409,11 @@
         "text": "Mamma-Ca, links"
       },
       "subject": {
-        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
+        "reference": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "19"
+        }
       },
       "recordedDate": "2024-07-18"
     },

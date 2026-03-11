@@ -98,7 +98,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "recordedDate": "2024-02-16",
       "evidence": [ {
@@ -132,7 +136,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "created": "2020-08-20",
       "addresses": [ {
@@ -230,7 +238,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -285,7 +297,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -324,7 +340,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -354,7 +374,11 @@
         "value": "259"
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "collection": {
         "collectedDateTime": "2020-08-31"
@@ -386,7 +410,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -441,7 +469,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -492,7 +524,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -543,7 +579,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -594,7 +634,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -648,7 +692,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -702,7 +750,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -747,7 +799,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -792,7 +848,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -837,7 +897,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -882,7 +946,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -927,7 +995,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1016,7 +1088,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-09-21"
@@ -1056,7 +1132,11 @@
         "text": "Oxaliplatin"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1098,7 +1178,11 @@
         "text": "5-Fluorouracil"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1130,12 +1214,21 @@
       "medicationCodeableConcept": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "V03AF03"
+          "_code": {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "as-text"
+            } ]
+          }
         } ],
         "text": "Folinsäure"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1168,7 +1261,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -1233,7 +1330,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-10-05"
@@ -1288,7 +1389,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-10-05"
@@ -1333,7 +1438,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -1372,7 +1481,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "created": "2020-09-09",
       "addresses": [ {
@@ -1443,7 +1556,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1482,7 +1599,11 @@
         "value": "E/2020/20543"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "collection": {
         "collectedDateTime": "2020-08-02"
@@ -1525,7 +1646,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1576,7 +1701,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1630,7 +1759,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1684,7 +1817,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1729,7 +1866,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1776,7 +1917,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "entry": [ {
         "item": {

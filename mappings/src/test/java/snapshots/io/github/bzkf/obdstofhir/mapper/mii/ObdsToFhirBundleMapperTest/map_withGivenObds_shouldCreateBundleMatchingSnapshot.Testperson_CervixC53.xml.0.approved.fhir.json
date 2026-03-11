@@ -99,7 +99,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "recordedDate": "2024-06-14",
       "evidence": [ {
@@ -150,7 +154,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "performedDateTime": "2020-03-01",
       "reasonReference": [ {
@@ -211,7 +219,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "performedPeriod": {
         "start": "2018-06-15"
@@ -251,7 +263,11 @@
         "text": "Etoposid"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "effectivePeriod": {
         "start": "2018-06-15"
@@ -288,7 +304,11 @@
         "text": "Carboplatin"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "effectivePeriod": {
         "start": "2018-06-15"
@@ -321,7 +341,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -340,16 +364,16 @@
       "url": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59"
     }
   }, {
-    "fullUrl": "Observation/c36f247fca260d24606f021a36af47ddb8487d3e4fb06ae82661d645b5c20b67",
+    "fullUrl": "Observation/d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7",
     "resource": {
       "resourceType": "Observation",
-      "id": "c36f247fca260d24606f021a36af47ddb8487d3e4fb06ae82661d645b5c20b67",
+      "id": "d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-        "value": "null-171-T98-3"
+        "value": "17-171-T98-3"
       } ],
       "status": "final",
       "code": {
@@ -361,7 +385,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -383,7 +411,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/c36f247fca260d24606f021a36af47ddb8487d3e4fb06ae82661d645b5c20b67"
+      "url": "Observation/d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7"
     }
   }, {
     "fullUrl": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec",
@@ -435,7 +463,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "performedPeriod": {
         "start": "2018-04-07",
@@ -482,7 +514,11 @@
         "text": "Etoposid"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "effectivePeriod": {
         "start": "2018-04-07",
@@ -520,7 +556,11 @@
         "text": "Cisplatin"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "effectivePeriod": {
         "start": "2018-04-07",
@@ -555,7 +595,11 @@
         "text": "Übelkeit"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -595,7 +639,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -689,7 +737,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -739,7 +791,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -778,7 +834,11 @@
         "value": "1234/5"
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "collection": {
         "collectedDateTime": "2018-02-01"
@@ -821,7 +881,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -863,7 +927,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -910,7 +978,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -964,7 +1036,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -1018,7 +1094,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -1063,7 +1143,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "focus": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
@@ -1110,7 +1194,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
       },
       "entry": [ {
         "item": {

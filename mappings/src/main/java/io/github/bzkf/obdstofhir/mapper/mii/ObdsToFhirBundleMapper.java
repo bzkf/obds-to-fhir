@@ -321,7 +321,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   meldung.getTod(),
                   patientReference,
                   primaryConditionReference,
-                  meldung.getTumorzuordnung(),
+                  meldung.getTumorzuordnung().getTumorID(),
                   false);
           addToBundle(bundle, deathObservations);
         }

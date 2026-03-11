@@ -83,7 +83,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
       },
       "recordedDate": "2024-06-11",
       "evidence": [ {
@@ -123,7 +127,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
       },
       "focus": [ {
         "reference": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04"
@@ -161,7 +169,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
       },
       "entry": [ {
         "item": {

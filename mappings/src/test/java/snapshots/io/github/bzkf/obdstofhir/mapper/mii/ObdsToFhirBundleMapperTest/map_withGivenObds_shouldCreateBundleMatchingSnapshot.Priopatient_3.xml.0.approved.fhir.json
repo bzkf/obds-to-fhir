@@ -98,7 +98,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "recordedDate": "2024-02-16",
       "evidence": [ {
@@ -138,7 +142,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "focus": [ {
         "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
@@ -177,7 +185,11 @@
         "value": "H111/2017"
       },
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "collection": {
         "collectedDateTime": "2017-07-02"
@@ -220,7 +232,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "focus": [ {
         "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
@@ -257,7 +273,11 @@
         "text": "FIGO"
       },
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "focus": [ {
         "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
@@ -289,7 +309,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
       },
       "entry": [ {
         "item": {

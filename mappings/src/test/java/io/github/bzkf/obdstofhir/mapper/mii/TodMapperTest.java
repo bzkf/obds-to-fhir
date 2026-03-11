@@ -36,19 +36,16 @@ class TodMapperTest extends MapperTest {
 
     var subject = new Reference("Patient/any");
     var condition = new Reference("Condition/any");
-    subject.setIdentifier(
-        new Identifier()
-            .setSystem("https://bzkf.github.io/obds-to-fhir/identifiers/patient-id")
-            .setValue("123456"));
+    subject.setIdentifier(new Identifier().setValue("123456"));
     var meldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
             .filter(m -> m.getTod() != null)
             .findFirst()
             .get();
     var tMeldung = meldung.getTod();
-    var tumorzuordung = meldung.getTumorzuordnung();
+    var tumorId = "112233";
 
-    var observations = tm.map(tMeldung, subject, condition, tumorzuordung, false);
+    var observations = tm.map(tMeldung, subject, condition, tumorId, false);
 
     verifyAll(observations, sourceFile);
   }

@@ -2,13 +2,9 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
-import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -74,7 +70,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
-      TumorzuordnungTyp tumorzuordnungTyp,
+      String tumorId,
       boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
@@ -83,14 +79,13 @@ public class TodMapper extends ObdsToFhirMapper {
     }
 
     String identifierValue;
-
+    String patientIdentifier =
+        Objects.requireNonNull(
+            patient.getIdentifier().getValue(), "Patient identifier must not be null");
     if (fromOnkoPatientTable) {
-      identifierValue =
-          String.format("%s-%s", patient.getIdentifier().getValue(), "fromOnkoPatientTable");
+      identifierValue = String.format("%s-%s", patientIdentifier, "fromOnkoPatientTable");
     } else {
-      identifierValue =
-          String.format(
-              "%s-%s", patient.getIdentifier().getValue(), tumorzuordnungTyp.getTumorID());
+      identifierValue = String.format("%s-%s", patient.getIdentifier().getValue(), tumorId);
     }
 
     var observationList = new ArrayList<Observation>();
@@ -109,7 +104,6 @@ public class TodMapper extends ObdsToFhirMapper {
 
         var observation =
             createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
-
         // Identifier: set identifier per todesursache
         Identifier identifier =
             new Identifier()
