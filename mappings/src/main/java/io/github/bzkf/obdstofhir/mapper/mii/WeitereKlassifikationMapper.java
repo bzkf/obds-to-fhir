@@ -48,6 +48,10 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
         identifierBuilder.append("-").append(date);
       }
 
+      if (klassifikation.getStadium() != null) {
+        identifierBuilder.append("-").append(klassifikation.getStadium());
+      }
+
       var identifierValue = slugifier.slugify(identifierBuilder.toString());
 
       var identifier =

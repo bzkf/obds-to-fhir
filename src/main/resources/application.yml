@@ -1,5 +1,5 @@
 # @ignored
-app-version: 3.0.0-beta.197
+app-version: 3.0.0-beta.204
 
 # @ignored
 app:
@@ -184,8 +184,7 @@ spring:
                   compression.type: ${COMPRESSION_TYPE:gzip}
             getPatientTodObservationProcessor-in-0:
               consumer:
-                # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
-                application-id: ${KAFKA_PATIENT_GROUP_ID:obds-patient-v3-processor}
+                application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
             getPatientTodObservationProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde

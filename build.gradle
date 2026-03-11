@@ -7,11 +7,11 @@ plugins {
     id 'java'
     id 'com.diffplug.spotless' version '8.1.0'
     id 'io.freefair.lombok' version '9.2.0'
-    id 'net.ltgt.errorprone' version '4.4.0'
+    id 'net.ltgt.errorprone' version '5.0.0'
 }
 
 group = 'io.github.bzkf'
-version = '3.0.0-beta.197'
+version = '3.0.0-beta.204'
 
 java {
     toolchain {
@@ -48,7 +48,7 @@ dependencies {
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.2'
     implementation 'io.micrometer:micrometer-core:1.16.2'
-    implementation 'org.miracum:kafka-fhir-serializer:2.0.8'
+    implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
     implementation 'com.github.slugify:slugify:3.0.7'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
@@ -64,7 +64,7 @@ dependencies {
     testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
-    testImplementation 'com.approvaltests:approvaltests:26.5.0'
+    testImplementation 'com.approvaltests:approvaltests:28.0.0'
     testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
     errorprone 'com.google.errorprone:error_prone_core:2.46.0'

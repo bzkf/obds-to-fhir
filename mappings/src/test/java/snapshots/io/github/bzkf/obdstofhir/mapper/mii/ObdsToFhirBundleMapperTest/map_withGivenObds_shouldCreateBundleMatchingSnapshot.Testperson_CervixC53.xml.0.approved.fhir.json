@@ -113,6 +113,48 @@
       "url": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
     }
   }, {
+    "fullUrl": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
+        "value": "168"
+      } ],
+      "status": "completed",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "code": "71388002",
+          "display": "Procedure (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+      },
+      "performedDateTime": "2020-03-01",
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af"
+    }
+  }, {
     "fullUrl": "Procedure/313b791e4fba30e1696cf2cd2d09ec2a417569701722b705ee1653fe4968b755",
     "resource": {
       "resourceType": "Procedure",
@@ -132,6 +174,9 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
         "value": "168-5-672-0"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af"
       } ],
       "status": "completed",
       "category": {

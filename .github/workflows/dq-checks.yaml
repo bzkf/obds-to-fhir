@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@fc54adae638f776ca89a44f14fffc38c282da414 # v1.20.1
+    uses: miracum/.github/.github/workflows/standard-build.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
     permissions:
       contents: write
       id-token: write
@@ -47,7 +47,7 @@ jobs:
       - build
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
