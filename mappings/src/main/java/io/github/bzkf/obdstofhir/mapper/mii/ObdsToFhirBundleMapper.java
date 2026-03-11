@@ -864,7 +864,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (op.getModulProstata() != null) {
       var modulProstata = op.getModulProstata();
-      var opReferences = operations.stream().map(this::createReferenceFromResource).toList();
+      // the procedure that doesn't reference any other procedure is the
+      // primary/parent one
+      var opReferences =
+          operations.stream()
+              .filter(p -> !p.hasPartOf())
+              .map(this::createReferenceFromResource)
+              .toList();
+
+      if (opReferences.size() > 1) {
+        LOG.warn(
+            "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
+      }
+
       var modulProstataResources =
           modulProstataMapper.map(
               modulProstata,
@@ -872,7 +884,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               patientReference,
               primaryConditionReference,
               op.getDatum(),
-              opReferences);
+              opReferences.getFirst()); //  it should never be empty here.
       mappedResources.addAll(modulProstataResources);
     }
 

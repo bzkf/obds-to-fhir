@@ -75,7 +75,7 @@ class ModulProstataMapperTest extends MapperTest {
                 subject,
                 diagnose,
                 null,
-                List.of(op));
+                op);
         list.addAll(observation);
       }
     }

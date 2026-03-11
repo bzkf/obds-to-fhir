@@ -303,8 +303,6 @@
         "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
       }, {
         "reference": "Procedure/f7faa1c740ac0fbd9d487b10fe41ca8b625c319adc35d6a36c0b79c12a76e417"
-      }, {
-        "reference": "Procedure/067bfc7458c9021869fe9907a7615a9b4da8b916a7172127b65ac15262eb341c"
       } ],
       "effectiveDateTime": "2021-09-09",
       "valueCodeableConcept": {
