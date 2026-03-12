@@ -1,20 +1,20 @@
 {
   "resourceType": "Medication",
-  "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+  "id": "87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
-    "value": "L01AA01"
+    "value": "L01DB03"
   } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01AA01"
+      "code": "L01DB03"
     } ],
-    "text": "Cyclophosphamid"
+    "text": "Epirubicin"
   },
   "ingredient": [ {
     "itemCodeableConcept": {

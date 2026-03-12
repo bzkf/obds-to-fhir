@@ -1182,12 +1182,9 @@
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01XA03"
-        } ],
-        "text": "Oxaliplatin"
+      "medicationReference": {
+        "reference": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+        "display": "Oxaliplatin"
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
@@ -1206,6 +1203,43 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1"
+    }
+  }, {
+    "fullUrl": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01XA03"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01XA03"
+        } ],
+        "text": "Oxaliplatin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ],
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051"
     }
   }, {
     "fullUrl": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
@@ -1269,12 +1303,9 @@
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "V03AF03"
-        } ],
-        "text": "Folinsäure"
+      "medicationReference": {
+        "reference": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+        "display": "Folinsäure"
       },
       "subject": {
         "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
@@ -1293,6 +1324,43 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60"
+    }
+  }, {
+    "fullUrl": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "V03AF03"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "V03AF03"
+        } ],
+        "text": "Folinsäure"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ],
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea"
     }
   }, {
     "fullUrl": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",

@@ -198,12 +198,9 @@
         "reference": "Procedure/58e847089055423647e5d5516afb31726e684e0c3f9db8b2e4811deb6c8d1fb8"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01CD01"
-        } ],
-        "text": "Paclitaxel"
+      "medicationReference": {
+        "reference": "Medication/7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
+        "display": "Paclitaxel"
       },
       "subject": {
         "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57",
@@ -222,6 +219,43 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/8a0d0d8495f998ee494421b53f30b750f124b0a968aff0e75d7cb37f0f2b5418"
+    }
+  }, {
+    "fullUrl": "Medication/7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01CD01"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01CD01"
+        } ],
+        "text": "Paclitaxel"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ],
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a"
     }
   }, {
     "fullUrl": "AdverseEvent/dcf43497f15af4ec80e4798274aeb099c4420e1cb58e45021428ac4ef3dedccb",

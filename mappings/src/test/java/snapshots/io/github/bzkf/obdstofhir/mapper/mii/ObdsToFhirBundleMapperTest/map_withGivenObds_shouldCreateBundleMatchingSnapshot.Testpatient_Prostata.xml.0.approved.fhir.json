@@ -454,12 +454,9 @@
         "reference": "Procedure/177d21a6e24969e5a639921f0688163978547b64fd65195940969b759984b142"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L02AE01"
-        } ],
-        "text": "Buserelin"
+      "medicationReference": {
+        "reference": "Medication/e7a9a1cb5b3bfd4678f280ff31dfe0c4648e20d1d468493cbe60fe15c910f1b9",
+        "display": "Buserelin"
       },
       "subject": {
         "reference": "Patient/23283daf4d699cc4b3e9d01cd4ce1344cd94f9f9769dfd88da68b2b696332d48",
@@ -478,6 +475,43 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/aae7e9818615a5ec639d4b89a3647062cb5eef37d92c759a2771028fed79384e"
+    }
+  }, {
+    "fullUrl": "Medication/e7a9a1cb5b3bfd4678f280ff31dfe0c4648e20d1d468493cbe60fe15c910f1b9",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "e7a9a1cb5b3bfd4678f280ff31dfe0c4648e20d1d468493cbe60fe15c910f1b9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L02AE01"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L02AE01"
+        } ],
+        "text": "Buserelin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ],
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/e7a9a1cb5b3bfd4678f280ff31dfe0c4648e20d1d468493cbe60fe15c910f1b9"
     }
   }, {
     "fullUrl": "AdverseEvent/076316e44da8abdb6ae031d4bf8c8a08c374edb81505a545c7575e4a8bc2baf0",

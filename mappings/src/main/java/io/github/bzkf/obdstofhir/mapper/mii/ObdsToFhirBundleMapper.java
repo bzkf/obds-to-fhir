@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -557,7 +556,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var evidenzReferenceList =
         mappedResources.stream()
             .filter(r -> r instanceof Observation || r instanceof DiagnosticReport)
-            .map(this::createReferenceFromResource)
+            .map(ObdsToFhirMapper::createReferenceFromResource)
             .toList();
 
     var evidenzListe =
@@ -587,7 +586,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var fruehereTumorerkrankungenExtensions =
           fruehereTumorErkrankungen.stream()
-              .map(this::createReferenceFromResource)
+              .map(ObdsToFhirMapper::createReferenceFromResource)
               .map(
                   reference ->
                       new Extension(
@@ -750,10 +749,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var procedureReference = createReferenceFromResource(systProcedure);
 
     if (syst.getMengeSubstanz() != null) {
-      var systMedicationStatements =
+      var results =
           systemischeTherapieMedicationStatementMapper.map(
               syst, patientReference, procedureReference, primaryConditionReference);
-      mappedResources.addAll(systMedicationStatements);
+      for (var mapResults : results) {
+        mappedResources.add(mapResults.medicationStatement());
+        if (mapResults.medication().isPresent()) {
+          mappedResources.add(mapResults.medication().get());
+        }
+      }
     }
 
     if (syst.getModulAllgemein() != null) {
@@ -1117,10 +1121,5 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           .setUrl(url);
     }
     return bundle;
-  }
-
-  private Reference createReferenceFromResource(Resource resource) {
-    Objects.requireNonNull(resource.getId());
-    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }

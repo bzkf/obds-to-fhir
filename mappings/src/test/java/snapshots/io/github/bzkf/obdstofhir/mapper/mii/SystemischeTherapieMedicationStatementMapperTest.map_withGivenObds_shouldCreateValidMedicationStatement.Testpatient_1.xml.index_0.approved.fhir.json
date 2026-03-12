@@ -12,11 +12,8 @@
     "reference": "Procedure/any"
   } ],
   "status": "completed",
-  "medicationCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01FF05"
-    } ]
+  "medicationReference": {
+    "reference": "Medication/868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe"
   },
   "subject": {
     "reference": "Patient/any"

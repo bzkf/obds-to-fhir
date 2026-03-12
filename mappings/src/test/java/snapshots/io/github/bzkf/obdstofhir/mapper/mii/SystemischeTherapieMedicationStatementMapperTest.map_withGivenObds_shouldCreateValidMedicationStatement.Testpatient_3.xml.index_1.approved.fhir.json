@@ -1,20 +1,20 @@
 {
   "resourceType": "Medication",
-  "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+  "id": "7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
-    "value": "L01AA01"
+    "value": "L01CD01"
   } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01AA01"
+      "code": "L01CD01"
     } ],
-    "text": "Cyclophosphamid"
+    "text": "Paclitaxel"
   },
   "ingredient": [ {
     "itemCodeableConcept": {

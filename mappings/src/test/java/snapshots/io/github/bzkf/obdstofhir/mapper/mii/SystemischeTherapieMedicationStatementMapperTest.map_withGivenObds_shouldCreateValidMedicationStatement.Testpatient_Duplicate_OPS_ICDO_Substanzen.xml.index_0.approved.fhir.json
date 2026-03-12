@@ -12,12 +12,9 @@
     "reference": "Procedure/any"
   } ],
   "status": "active",
-  "medicationCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01AA01"
-    } ],
-    "text": "Cyclophosphamid"
+  "medicationReference": {
+    "reference": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+    "display": "Cyclophosphamid"
   },
   "subject": {
     "reference": "Patient/any"
