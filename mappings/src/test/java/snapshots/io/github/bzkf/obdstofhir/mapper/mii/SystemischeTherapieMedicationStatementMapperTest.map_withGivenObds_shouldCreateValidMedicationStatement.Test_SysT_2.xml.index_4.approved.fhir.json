@@ -18,12 +18,14 @@
   "ingredient": [ {
     "itemCodeableConcept": {
       "coding": [ {
-        "extension": [ {
-          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-          "valueCode": "unknown"
-        } ],
         "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250501"
+        "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          } ]
+        }
       } ]
     }
   } ]

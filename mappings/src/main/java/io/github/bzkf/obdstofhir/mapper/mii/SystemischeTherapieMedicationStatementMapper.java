@@ -132,8 +132,10 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
         var absentCodeableConcept = new CodeableConcept();
         var absentCode = fhirProperties.getCodings().snomed();
-        absentCode.addExtension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        absentCode
+            .getCodeElement()
+            .addExtension(
+                fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
         absentCodeableConcept.addCoding(absentCode);
         medication.addIngredient().setItem(absentCodeableConcept);
 
