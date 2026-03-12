@@ -12,7 +12,8 @@
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01DB03"
+      "code": "L01DB03",
+      "userSelected": false
     } ],
     "text": "Epirubicin"
   },

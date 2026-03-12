@@ -12,7 +12,8 @@
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L02BB03"
+      "code": "L02BB03",
+      "userSelected": false
     } ],
     "text": "Bicalutamid"
   },

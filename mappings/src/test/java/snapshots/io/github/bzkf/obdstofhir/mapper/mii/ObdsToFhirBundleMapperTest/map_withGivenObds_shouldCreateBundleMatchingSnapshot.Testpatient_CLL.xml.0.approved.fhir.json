@@ -239,7 +239,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01AA01"
+          "code": "L01AA01",
+          "userSelected": false
         } ],
         "text": "Cyclophosphamid"
       },
@@ -316,7 +317,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01FA01"
+          "code": "L01FA01",
+          "userSelected": false
         } ],
         "text": "Rituximab"
       },
@@ -393,7 +395,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01BB05"
+          "code": "L01BB05",
+          "userSelected": false
         } ],
         "text": "Fludarabin"
       },

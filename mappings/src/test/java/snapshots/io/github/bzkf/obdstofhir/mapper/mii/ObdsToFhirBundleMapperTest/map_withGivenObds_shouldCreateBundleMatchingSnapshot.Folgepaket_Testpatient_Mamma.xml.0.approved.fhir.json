@@ -231,7 +231,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01AA01"
+          "code": "L01AA01",
+          "userSelected": false
         } ],
         "text": "Cyclophosphamid"
       },
@@ -309,7 +310,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01DB03"
+          "code": "L01DB03",
+          "userSelected": false
         } ],
         "text": "Epirubicin"
       },

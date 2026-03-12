@@ -12,7 +12,8 @@
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01EX05"
+      "code": "L01EX05",
+      "userSelected": false
     } ],
     "text": "Regorafenib"
   },

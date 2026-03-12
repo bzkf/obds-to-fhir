@@ -1220,7 +1220,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01XA03"
+          "code": "L01XA03",
+          "userSelected": false
         } ],
         "text": "Oxaliplatin"
       },
@@ -1343,7 +1344,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "V03AF03"
+          "code": "V03AF03",
+          "userSelected": false
         } ],
         "text": "Folinsäure"
       },

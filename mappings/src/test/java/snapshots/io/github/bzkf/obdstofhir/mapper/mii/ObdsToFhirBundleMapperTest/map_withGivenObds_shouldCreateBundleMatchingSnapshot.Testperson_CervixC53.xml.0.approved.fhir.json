@@ -342,7 +342,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01CB01"
+          "code": "L01CB01",
+          "userSelected": false
         } ],
         "text": "Etoposid"
       },
@@ -419,7 +420,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01XA02"
+          "code": "L01XA02",
+          "userSelected": false
         } ],
         "text": "Carboplatin"
       },
@@ -705,7 +707,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01XA01"
+          "code": "L01XA01",
+          "userSelected": false
         } ],
         "text": "Cisplatin"
       },

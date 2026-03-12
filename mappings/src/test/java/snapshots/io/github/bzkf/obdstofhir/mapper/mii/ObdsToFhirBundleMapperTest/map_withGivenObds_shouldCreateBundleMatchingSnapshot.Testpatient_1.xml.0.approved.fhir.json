@@ -2638,7 +2638,8 @@
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
           "version": "2026",
-          "code": "L01FF05"
+          "code": "L01FF05",
+          "userSelected": true
         } ]
       },
       "ingredient": [ {
