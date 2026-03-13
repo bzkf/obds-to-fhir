@@ -1,12 +1,12 @@
 dependencies:
 - name: kube-prometheus-stack
   repository: oci://ghcr.io/prometheus-community/charts
-  version: 57.0.3
+  version: 57.2.1
 - name: stream-processors
   repository: oci://ghcr.io/miracum/charts
-  version: 1.6.1
+  version: 1.11.4
 - name: strimzi-kafka-operator
   repository: oci://quay.io/strimzi-helm
-  version: 0.48.0
-digest: sha256:fdd62a728f2397f9f72975e405260b66caa5ee20bfa0f70732693cbbd6d0ef20
-generated: "2025-11-05T21:10:33.618303624+01:00"
+  version: 0.51.0
+digest: sha256:4296f59f1fe40afcf0b14f7515f38fabe63b1a80974eff38a43d8224b9b074cb
+generated: "2026-03-13T20:10:24.806552Z"
