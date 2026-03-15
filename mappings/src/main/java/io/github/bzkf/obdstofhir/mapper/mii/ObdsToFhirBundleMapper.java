@@ -873,7 +873,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var opReferences =
           operations.stream()
               .filter(p -> !p.hasPartOf())
-              .map(this::createReferenceFromResource)
+              .map(ObdsToFhirMapper::createReferenceFromResource)
               .toList();
 
       if (opReferences.size() > 1) {
