@@ -168,7 +168,7 @@ public class PatientReferenceGenerator {
               // if the id is present, i.e. we found the resource on the FHIR server,
               // set the reference to the resource as well
               if (id.isPresent()) {
-                reference.setReference(ResourceType.Patient + "/" + id.get().getIdPart());
+                reference.setReference(ResourceType.Patient.name() + "/" + id.get().getIdPart());
               }
               return Optional.of(new ReferenceId(reference));
             };
