@@ -46,7 +46,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.37@sha256:266a9220545d0ac65ae0d201b2bb4e71a34de062603badb2c21102a3329f9d62
     needs:
       - extract-mapper-names
     strategy:
@@ -58,7 +58,7 @@ jobs:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -74,7 +74,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: |
             /github/home/.fhir/packages
@@ -105,10 +105,10 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.28@sha256:234c9e29eedd1e0bbf153399558d9c22b9d03d0f89549d11d6e06d3463a99049
+    container: ghcr.io/miracum/ig-build-tools:v2.2.37@sha256:266a9220545d0ac65ae0d201b2bb4e71a34de062603badb2c21102a3329f9d62
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -124,7 +124,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: |
             /github/home/.fhir/packages
