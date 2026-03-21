@@ -43,6 +43,26 @@ jobs:
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
 
+      # restore the fhir packages once per workflow run here to avoid multiple
+      # jobs running in parallel each restoring at the same time
+      - name: Cache FHIR packages
+        id: fhir-package-cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
+          key: fhir-packages-${{ hashFiles('package.json') }}
+          restore-keys: |
+            fhir-packages-
+
+      - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
+        run: |
+          fhir cache location --path
+          fhir cache list
+          fhir restore
+
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
@@ -82,13 +102,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
-
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
 
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
@@ -132,13 +145,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
-
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
 
       - name: Validate bundles
         continue-on-error: true
