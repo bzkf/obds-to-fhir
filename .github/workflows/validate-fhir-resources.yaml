@@ -27,6 +27,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
+    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
