@@ -149,17 +149,97 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
     assertThat(sj.toString())
         .hasToString(
-"""
-|original|new|
-|--------|---|
-|{|{|
-|  "resourceType": "Patient",|  "resourceType": "Patient",|
-|  "id": "1",|  "id": "1",|
-|  ~"active"~: ~false~|  **"identifier"**: **[ {**|
-||**    "system": "example",**|
-||**    "value": "123"**|
-||**  } ],**|
-||**  "active": true**|
-|}|}|""");
+            """
+                |original|new|
+                |--------|---|
+                |{|{|
+                |  "resourceType": "Patient",|  "resourceType": "Patient",|
+                |  "id": "1",|  "id": "1",|
+                |  ~"active"~: ~false~|  **"identifier"**: **[ {**|
+                ||**    "system": "example",**|
+                ||**    "value": "123"**|
+                ||**  } ],**|
+                ||**  "active": true**|
+                |}|}|""");
+  }
+
+  @SpringBootTest(
+      classes = {
+        FhirProperties.class,
+        ObdsToFhirBundleMapper.class,
+        PatientMapper.class,
+        ConditionMapper.class,
+        SystemischeTherapieProcedureMapper.class,
+        SystemischeTherapieMedicationStatementMapper.class,
+        StrahlentherapieMapper.class,
+        TodMapper.class,
+        LeistungszustandMapper.class,
+        OperationMapper.class,
+        ResidualstatusMapper.class,
+        HistologiebefundMapper.class,
+        FernmetastasenMapper.class,
+        GradingObservationMapper.class,
+        LymphknotenuntersuchungMapper.class,
+        SpecimenMapper.class,
+        VerlaufshistologieObservationMapper.class,
+        StudienteilnahmeObservationMapper.class,
+        VerlaufObservationMapper.class,
+        GenetischeVarianteMapper.class,
+        TumorkonferenzMapper.class,
+        TNMMapper.class,
+        GleasonScoreMapper.class,
+        ModulProstataMapper.class,
+        WeitereKlassifikationMapper.class,
+        ErstdiagnoseEvidenzListMapper.class,
+        NebenwirkungMapper.class,
+        SubstanzToAtcMapper.class,
+        ProfileTestConfig.class,
+        FruehereTumorerkrankungenMapper.class,
+        ProvenanceMapper.class,
+      },
+      properties = "fhir.mappings.create-provenance-resources.enabled=true")
+  @EnableConfigurationProperties
+  @Configuration
+  static class ObdsToFhirBundleMapperWithProvenanceEnabledTest extends MapperTest {
+    private static ObdsToFhirBundleMapper sut;
+
+    @BeforeAll
+    static void beforeAll(@Autowired ObdsToFhirBundleMapper bundleMapper) {
+      sut = bundleMapper;
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+      "Testpatient_1.xml",
+      "Testpatient_2.xml",
+    })
+    void map_withGivenObdsAndEnabledProvenance_shouldCreateBundleMatchingSnapshot(String sourceFile)
+        throws IOException {
+      final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
+      assertThat(resource).isNotNull();
+
+      final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+
+      final var bundles = sut.map(obds);
+
+      var caller = Caller.get(0);
+      var methodName = caller.getMethodName();
+      var className = this.getClass().getSimpleName();
+
+      var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
+
+      for (int i = 0; i < bundles.size(); i++) {
+        var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
+        Approvals.verify(
+            fhirJson,
+            Approvals.NAMES
+                .withParameters("")
+                .withScrubber(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER)
+                .forFile()
+                .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
+                .forFile()
+                .withExtension(".fhir.json"));
+      }
+    }
   }
 }

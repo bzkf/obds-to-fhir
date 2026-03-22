@@ -32,7 +32,8 @@
       "identifier": {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
         "value": "obds-to-fhir-0.0.0-test"
-      }
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
     }
   } ],
   "entity": [ {

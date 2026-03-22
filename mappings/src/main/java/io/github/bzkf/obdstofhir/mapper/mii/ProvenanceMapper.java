@@ -56,7 +56,10 @@ public class ProvenanceMapper extends ObdsToFhirMapper {
         .addRole(
             new CodeableConcept(
                 new Coding(fhirProperties.getSystems().getV3ParticipationType(), "AUT", "author")))
-        .setWho(new Reference().setIdentifier(deviceIdentifier));
+        .setWho(
+            new Reference()
+                .setIdentifier(deviceIdentifier)
+                .setDisplay("oBDS-to-FHIR v" + libVersion));
 
     provenance.setActivity(
         new CodeableConcept(
