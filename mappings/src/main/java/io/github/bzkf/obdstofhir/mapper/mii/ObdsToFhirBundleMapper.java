@@ -246,7 +246,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         var condition =
             conditionMapper.map(
                 meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
-        addToBundle(bundle, condition);
         resourcesMappedFromMeldung.add(condition);
 
         var primaryConditionReference = createReferenceFromResource(condition);
@@ -260,7 +259,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   patientReference,
                   condition,
                   obds.getMeldedatum());
-          addToBundle(bundle, resources);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
@@ -269,7 +267,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var resources =
               mapVerlauf(
                   meldung.getVerlauf(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
@@ -277,7 +274,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (meldung.getSYST() != null) {
           var resources =
               mapSyst(meldung.getSYST(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
@@ -287,7 +283,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var stProcedure =
               strahlentherapieMapper.map(
                   st, patientReference, primaryConditionReference, meldung.getMeldungID());
-          addToBundle(bundle, stProcedure);
           resourcesMappedFromMeldung.addAll(stProcedure);
 
           if (st.getModulAllgemein() != null) {
@@ -299,7 +294,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference,
                       meldung.getMeldungID());
-              addToBundle(bundle, studienteilnahmeObservation);
               resourcesMappedFromMeldung.add(studienteilnahmeObservation);
             }
           }
@@ -321,7 +315,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               var nebenwirkungen =
                   nebenwirkungMapper.map(
                       st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
-              addToBundle(bundle, nebenwirkungen);
               resourcesMappedFromMeldung.addAll(nebenwirkungen);
             } else {
               LOG.error("Unable to find the primary ST procedure");
@@ -338,7 +331,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   primaryConditionReference,
                   meldung.getTumorzuordnung().getTumorID(),
                   false);
-          addToBundle(bundle, deathObservations);
           resourcesMappedFromMeldung.addAll(deathObservations);
         }
 
@@ -346,7 +338,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (meldung.getOP() != null) {
           var resources =
               mapOP(meldung.getOP(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
@@ -355,7 +346,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var resources =
               mapPathologie(
                   meldung.getPathologie(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
@@ -364,11 +354,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var tumorkonferenz = meldung.getTumorkonferenz();
           var carePlan =
               tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
-          addToBundle(bundle, carePlan);
           resourcesMappedFromMeldung.add(carePlan);
         }
 
+        addToBundle(bundle, resourcesMappedFromMeldung);
+
         if (this.createProvenanceResources) {
+          // the items in resourcesMappedFromMeldung are processed in the same order that they were
+          // added to the list initially.
           var targets =
               resourcesMappedFromMeldung.stream().map(this::createReferenceFromResource).toList();
           var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
