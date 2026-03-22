@@ -70,6 +70,9 @@ public class PatientReferenceGenerator {
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
 
+  @Value("${fhir.mappings.patient-reference-generation.identifier-only-references-allowed}")
+  private boolean isIdentifierOnlyReferencesAllowed;
+
   private final boolean isPseudonymizePatientIdEnabled;
   private final @NonNull FhirProperties fhirProperties;
   private @Nullable IGenericClient fhirClient;
@@ -169,7 +172,14 @@ public class PatientReferenceGenerator {
               // set the reference to the resource as well
               if (id.isPresent()) {
                 reference.setReference(ResourceType.Patient.name() + "/" + id.get().getIdPart());
+                return Optional.of(new ReferenceId(reference));
+              } else if (!isIdentifierOnlyReferencesAllowed) {
+                // by default reference always contains at least the identifier reference.
+                // if the id is not present and identifier-only references are not allowed,
+                //  return empty to indicate that no reference could be generated.
+                return Optional.empty();
               }
+
               return Optional.of(new ReferenceId(reference));
             };
 

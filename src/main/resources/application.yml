@@ -26,6 +26,10 @@ fhir:
       # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
       # to avoid creating additional, unreferenced Patient resources.
       strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
+      # -- If set to true and the Patient doesn't exist on the FHIR server, the generated Patient reference
+      # will only contain the identifier (with system and value) without a logical reference to a Patient
+      # resource.
+      identifier-only-references-allowed: true
       fhir-server:
         # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier.
         # E.g. `https://fhir.example.com/fhir`
