@@ -31,7 +31,8 @@ class OperationMapperTest extends MapperTest {
   @CsvSource({
     "Testpatient_1.xml",
     "Testpatient_2.xml",
-    "Testpatient_Duplicate_OPS_ICDO_Substanzen.xml"
+    "Testpatient_Duplicate_OPS_ICDO_Substanzen.xml",
+    "GroupSequence04.xml"
   })
   void map_withGivenObds_shouldCreateValidProcedure(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);

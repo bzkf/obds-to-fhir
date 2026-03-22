@@ -4,10 +4,7 @@ import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -73,6 +70,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull TodTyp tod,
       @NonNull Reference patient,
       Reference condition,
+      String tumorId,
       boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
@@ -81,23 +79,13 @@ public class TodMapper extends ObdsToFhirMapper {
     }
 
     String identifierValue;
-
-    if (tod.getAbschlussID() != null) {
-      identifierValue = tod.getAbschlussID();
+    String patientIdentifier =
+        Objects.requireNonNull(
+            patient.getIdentifier().getValue(), "Patient identifier must not be null");
+    if (fromOnkoPatientTable) {
+      identifierValue = String.format("%s-%s", patientIdentifier, "fromOnkoPatientTable");
     } else {
-      // if the AbschlussID is not set, fall back to creating the identifier based on
-      // the Patient ID and Condition ID. This is similar to what obds2-to-obds3 does,
-      // which uses patient_id + tumor_id
-      // XXX: we might want to consider using the Patient.identifier.value and
-      // Condition.identifier.value here instead for a shorter value.
-      if (condition != null) {
-        identifierValue = String.format("%s-%s", patient.getReference(), condition.getReference());
-      } else {
-        identifierValue = patient.getReference();
-        if (fromOnkoPatientTable) {
-          identifierValue += "fromOnkoPatientTable";
-        }
-      }
+      identifierValue = String.format("%s-%s", patient.getIdentifier().getValue(), tumorId);
     }
 
     var observationList = new ArrayList<Observation>();
@@ -116,7 +104,6 @@ public class TodMapper extends ObdsToFhirMapper {
 
         var observation =
             createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
-
         // Identifier: set identifier per todesursache
         Identifier identifier =
             new Identifier()

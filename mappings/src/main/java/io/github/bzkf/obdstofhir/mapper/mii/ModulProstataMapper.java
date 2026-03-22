@@ -50,7 +50,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition,
       @Nullable XMLGregorianCalendar referenzDatum,
-      @Nullable List<Reference> ops) {
+      @Nullable Reference op) {
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
@@ -78,7 +78,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
 
     if (modulProstata.getKomplPostOPClavienDindo() != null) {
       var observation =
-          mapClavienDindoScore(modulProstata, meldungId, patient, condition, referenzDatum, ops);
+          mapClavienDindoScore(modulProstata, meldungId, patient, condition, referenzDatum, op);
       results.add(observation);
     }
 
@@ -283,7 +283,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition,
       @Nullable XMLGregorianCalendar referenceDate,
-      @Nullable List<Reference> ops) {
+      @Nullable Reference op) {
     Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
     var observation = createBaseObservation(patient, condition);
     observation
@@ -316,14 +316,10 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
 
     observation.setValue(value);
 
-    if (ops != null && !ops.isEmpty()) {
-      for (var op : ops) {
-        observation.addFocus(op);
-      }
+    if (op != null) {
+      observation.addFocus(op);
     } else {
-      LOG.warn(
-          "Procedure causing the Clavien-Dindo classification grade is unset. "
-              + "This causes non-compliance with the MII Onkologie profile");
+      LOG.warn("OP reference is null for Clavien-Dindo score observation");
     }
 
     return observation;

@@ -6,7 +6,6 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
@@ -75,7 +74,7 @@ class ModulProstataMapperTest extends MapperTest {
                 subject,
                 diagnose,
                 null,
-                List.of(op));
+                op);
         list.addAll(observation);
       }
     }

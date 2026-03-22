@@ -106,7 +106,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "recordedDate": "2024-11-30",
       "evidence": [ {
@@ -146,7 +150,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -180,7 +188,11 @@
         "value": "2103B5C5-123123-12312"
       } ],
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       }
     },
     "request": {
@@ -220,7 +232,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -267,7 +283,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -314,7 +334,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -368,7 +392,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -422,7 +450,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -467,7 +499,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -522,7 +558,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -567,7 +607,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -588,23 +632,27 @@
       "url": "Observation/94497da675770fb064e7f72257406f294378d985336fc545d4897262095ed1b0"
     }
   }, {
-    "fullUrl": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429",
+    "fullUrl": "Observation/a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7",
     "resource": {
       "resourceType": "Observation",
-      "id": "3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429",
+      "id": "a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
-        "value": "2103B5C5-123123-12312-AJCC-2023-12-09"
+        "value": "2103B5C5-123123-12312-AJCC-2023-12-09-IV"
       } ],
       "status": "final",
       "code": {
         "text": "AJCC"
       },
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "focus": [ {
         "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
@@ -618,7 +666,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429"
+      "url": "Observation/a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7"
     }
   }, {
     "fullUrl": "List/fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8",
@@ -636,7 +684,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d"
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
       },
       "entry": [ {
         "item": {
@@ -676,7 +728,7 @@
         }
       }, {
         "item": {
-          "reference": "Observation/3ad4c2254b6c6c999269ac1ded4437129dd36cd0238761da9827664610c49429"
+          "reference": "Observation/a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7"
         }
       } ]
     },
