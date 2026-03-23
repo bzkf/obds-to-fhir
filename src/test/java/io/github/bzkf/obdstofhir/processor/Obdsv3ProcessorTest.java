@@ -90,6 +90,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientReferenceGenerator.class,
       SubstanzToAtcMapper.class,
       FruehereTumorerkrankungenMapper.class,
+      ProvenanceMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {

@@ -76,6 +76,17 @@
             ]
           },
           {
+            "files": ["mappings/src/main/resources/application-mappings.yml"],
+            "from": "^lib-version: .*$",
+            "to": "lib-version: ${nextRelease.version}",
+            "results": [
+              {
+                "file": "mappings/src/main/resources/application-mappings.yml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
             "files": ["README.md", "deploy/compose.yaml"],
             "from": "ghcr.io/bzkf/obds-to-fhir:v.*",
             "to": "ghcr.io/bzkf/obds-to-fhir:v${nextRelease.version}",
@@ -134,6 +145,7 @@
       "@semantic-release/git",
       {
         "assets": [
+          "mappings/src/main/resources/application-mappings.yml",
           "src/main/resources/application.yml",
           "build.gradle",
           "mappings/build.gradle",
