@@ -32,6 +32,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -48,10 +49,30 @@ jobs:
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
 
+      # restore the fhir packages once per workflow run here to avoid multiple
+      # jobs running in parallel each restoring at the same time
+      - name: Cache FHIR packages
+        id: fhir-package-cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
+          key: fhir-packages-${{ hashFiles('package.json') }}
+          restore-keys: |
+            fhir-packages-
+
+      - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
+        run: |
+          fhir cache location --path
+          fhir cache list
+          fhir restore
+
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
     needs:
       - extract-mapper-names
     strategy:
@@ -88,13 +109,6 @@ jobs:
           restore-keys: |
             fhir-packages-
 
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
-
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
         env:
@@ -110,7 +124,7 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
@@ -137,13 +151,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
-
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
 
       - name: Validate bundles
         continue-on-error: true
