@@ -221,7 +221,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             "Unable to generate patient reference so using reference "
                 + "to patient to be created.");
         // this uses the default mechanism of referencing the created patient resource
-        patientReferenceOptional = Optional.of(createReferenceFromResource(patient));
+        var reference = createReferenceFromResource(patient);
+        // be sure to add the Reference.identifier as e.g. the TodMapper depends on it.
+        // XXX: this smells like a responsibility leak for reference generation spread
+        // across here and the patientReferenceGenerator.
+        reference.setIdentifier(patient.getIdentifierFirstRep());
+        patientReferenceOptional = Optional.of(reference);
       }
 
       var patientReference = patientReferenceOptional.get();
