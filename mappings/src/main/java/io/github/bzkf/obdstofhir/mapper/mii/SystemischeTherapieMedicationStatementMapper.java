@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -21,6 +22,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapper {
+  public record SystemischeTherapieMappingResults(
+      MedicationStatement medicationStatement, Optional<Medication> medication) {}
 
   private static final Logger LOG =
       LoggerFactory.getLogger(SystemischeTherapieMedicationStatementMapper.class);
@@ -34,7 +37,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     this.substanzToAtcMapper = substanzToAtcMapper;
   }
 
-  public List<MedicationStatement> map(
+  public List<SystemischeTherapieMappingResults> map(
       @NonNull SYSTTyp syst,
       @NonNull Reference patient,
       @NonNull Reference procedure,
@@ -53,7 +56,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         String.format(
             "%s-%s", primaryConditionReference.getReferenceElement().getIdPart(), syst.getSYSTID());
 
-    var result = new ArrayList<MedicationStatement>();
+    var result = new ArrayList<SystemischeTherapieMappingResults>();
 
     var distinctSubstanzen = getDistinctSubstanzen(syst.getMengeSubstanz().getSubstanz());
 
@@ -68,26 +71,35 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         LOG.warn("Substanz in Systemische Therapie is missing ATC code or Bezeichnung.");
       }
 
+      var mapping =
+          new SystemischeTherapieMappingResults(systMedicationStatement, Optional.empty());
+
       var substanzId = "";
+      Coding atcCode = null;
+
       if (null != substanz.getATC() && StringUtils.hasText(substanz.getATC().getCode())) {
         substanzId = substanz.getATC().getCode();
-        var atcCoding =
-            new Coding(fhirProperties.getSystems().getAtcBfarm(), substanz.getATC().getCode(), "");
-        systMedicationStatement.setMedication(new CodeableConcept(atcCoding));
+        atcCode =
+            fhirProperties
+                .getCodings()
+                .atc()
+                .setCode(substanz.getATC().getCode())
+                .setUserSelected(true);
       } else {
-        // previously, we overwrote substanzId with the ATC code if it was present in the mapping,
-        // however this will also end up changing the resource ID, in particular if we update
-        // the mapping table, then multiple MedicationStatements would be created for the same
-        // Substanz (a new one with the ATC code as its identifier, the old one with just the
-        // Substanz).
+        // previously, we overwrote substanzId with the ATC code if it was present in
+        // the mapping, however this will also end up changing the resource ID, in
+        // particular if we update the mapping table, then multiple MedicationStatements
+        // would be
+        // created
+        // for the same Substanz (a new one with the ATC code as its identifier, the old
+        // one
+        // with just the Substanz).
         substanzId = substanz.getBezeichnung();
 
         var mappedCode = substanzToAtcMapper.getCode(substanz.getBezeichnung());
         if (mappedCode.isPresent()) {
-          var atcCode = mappedCode.get();
-          var atcCoding = new Coding(fhirProperties.getSystems().getAtcBfarm(), atcCode, "");
-          systMedicationStatement.setMedication(
-              new CodeableConcept(atcCoding).setText(substanz.getBezeichnung()));
+          atcCode =
+              fhirProperties.getCodings().atc().setCode(mappedCode.get()).setUserSelected(false);
         } else {
           LOG.warn(
               "Substanz in Systemische Therapie with Bezeichnung '{}' could not be mapped to an ATC code.",
@@ -104,6 +116,41 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
           systMedicationStatement.setMedication(absentCodeableConcept);
         }
+      }
+
+      // if the atc code is present, then the MedicationStatement
+      // should reference a Medication resource, otherwise a CodeableConcept
+      // with the Bezeichnung as text is already set
+      if (atcCode != null) {
+        var medication = new Medication();
+        medication.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrMedication());
+        var medicationIdentifier =
+            new Identifier()
+                .setSystem(
+                    fhirProperties
+                        .getSystems()
+                        .getIdentifiers()
+                        .getSystemischeTherapieMedicationId())
+                .setValue(atcCode.getCode());
+        medication.addIdentifier(medicationIdentifier);
+        medication.setId(computeResourceIdFromIdentifier(medicationIdentifier));
+
+        medication.setCode(new CodeableConcept(atcCode).setText(substanz.getBezeichnung()));
+
+        var absentCodeableConcept = new CodeableConcept();
+        var absentCode = fhirProperties.getCodings().snomed();
+        absentCode
+            .getCodeElement()
+            .addExtension(
+                fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        absentCodeableConcept.addCoding(absentCode);
+        medication.addIngredient().setItem(absentCodeableConcept);
+
+        systMedicationStatement.setMedication(
+            ObdsToFhirMapper.createReferenceFromResource(medication)
+                .setDisplay(substanz.getBezeichnung()));
+        mapping =
+            new SystemischeTherapieMappingResults(systMedicationStatement, Optional.of(medication));
       }
 
       var identifier =
@@ -141,7 +188,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
       systMedicationStatement.addReasonReference(primaryConditionReference);
 
-      result.add(systMedicationStatement);
+      result.add(mapping);
     }
 
     MDC.remove("SYST_ID");

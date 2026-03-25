@@ -191,4 +191,9 @@ public abstract class ObdsToFhirMapper {
 
     return true;
   }
+
+  public static Reference createReferenceFromResource(Resource resource) {
+    Objects.requireNonNull(resource.getId());
+    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
+  }
 }

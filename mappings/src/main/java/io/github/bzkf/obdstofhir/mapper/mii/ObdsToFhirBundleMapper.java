@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -363,7 +362,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // the items in resourcesMappedFromMeldung are processed in the same order that they were
           // added to the list initially.
           var targets =
-              resourcesMappedFromMeldung.stream().map(this::createReferenceFromResource).toList();
+              resourcesMappedFromMeldung.stream()
+                  .map(ObdsToFhirMapper::createReferenceFromResource)
+                  .toList();
           var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
           addToBundle(bundle, provenance);
         }
@@ -576,7 +577,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var evidenzReferenceList =
         mappedResources.stream()
             .filter(r -> r instanceof Observation || r instanceof DiagnosticReport)
-            .map(this::createReferenceFromResource)
+            .map(ObdsToFhirMapper::createReferenceFromResource)
             .toList();
 
     var evidenzListe =
@@ -606,7 +607,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var fruehereTumorerkrankungenExtensions =
           fruehereTumorErkrankungen.stream()
-              .map(this::createReferenceFromResource)
+              .map(ObdsToFhirMapper::createReferenceFromResource)
               .map(
                   reference ->
                       new Extension(
@@ -769,10 +770,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var procedureReference = createReferenceFromResource(systProcedure);
 
     if (syst.getMengeSubstanz() != null) {
-      var systMedicationStatements =
+      var results =
           systemischeTherapieMedicationStatementMapper.map(
               syst, patientReference, procedureReference, primaryConditionReference);
-      mappedResources.addAll(systMedicationStatements);
+      for (var mapResults : results) {
+        mappedResources.add(mapResults.medicationStatement());
+        if (mapResults.medication().isPresent()) {
+          mappedResources.add(mapResults.medication().get());
+        }
+      }
     }
 
     if (syst.getModulAllgemein() != null) {
@@ -888,7 +894,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var opReferences =
           operations.stream()
               .filter(p -> !p.hasPartOf())
-              .map(this::createReferenceFromResource)
+              .map(ObdsToFhirMapper::createReferenceFromResource)
               .toList();
 
       if (opReferences.size() > 1) {
@@ -1136,10 +1142,5 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           .setUrl(url);
     }
     return bundle;
-  }
-
-  private Reference createReferenceFromResource(Resource resource) {
-    Objects.requireNonNull(resource.getId());
-    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }

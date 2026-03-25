@@ -1,21 +1,21 @@
 {
   "resourceType": "Medication",
-  "id": "317703f51717316b41f1dd7062cd1870ffa33b8946456e1789d1b6f863f0c857",
+  "id": "87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
-    "value": "L01EX05"
+    "value": "L01DB03"
   } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01EX05",
+      "code": "L01DB03",
       "userSelected": false
     } ],
-    "text": "Regorafenib"
+    "text": "Epirubicin"
   },
   "ingredient": [ {
     "itemCodeableConcept": {

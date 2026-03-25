@@ -1,21 +1,21 @@
 {
   "resourceType": "Medication",
-  "id": "317703f51717316b41f1dd7062cd1870ffa33b8946456e1789d1b6f863f0c857",
+  "id": "7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
-    "value": "L01EX05"
+    "value": "L01CD01"
   } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
       "version": "2026",
-      "code": "L01EX05",
+      "code": "L01CD01",
       "userSelected": false
     } ],
-    "text": "Regorafenib"
+    "text": "Paclitaxel"
   },
   "ingredient": [ {
     "itemCodeableConcept": {

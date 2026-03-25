@@ -12,12 +12,9 @@
     "reference": "Procedure/any"
   } ],
   "status": "completed",
-  "medicationCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01EX05"
-    } ],
-    "text": "Regorafenib"
+  "medicationReference": {
+    "reference": "Medication/317703f51717316b41f1dd7062cd1870ffa33b8946456e1789d1b6f863f0c857",
+    "display": "Regorafenib"
   },
   "subject": {
     "reference": "Patient/any"

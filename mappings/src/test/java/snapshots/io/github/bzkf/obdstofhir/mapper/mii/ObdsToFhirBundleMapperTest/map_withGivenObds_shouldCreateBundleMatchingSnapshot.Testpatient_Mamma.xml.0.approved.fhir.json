@@ -1963,12 +1963,9 @@
         "reference": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01XA01"
-        } ],
-        "text": "Cisplatin"
+      "medicationReference": {
+        "reference": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+        "display": "Cisplatin"
       },
       "subject": {
         "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
@@ -1987,6 +1984,46 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/0e921f5dbce98f86c8652a24e9c50d54edf3ae18fc6479d76932b21ed24f4f6e"
+    }
+  }, {
+    "fullUrl": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01XA01"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01XA01",
+          "userSelected": false
+        } ],
+        "text": "Cisplatin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "unknown"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f"
     }
   }, {
     "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",

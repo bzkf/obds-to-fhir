@@ -16,7 +16,7 @@ public class FhirProperties {
   private FhirUrl url;
   private Codings codings;
 
-  public static record Codings(Coding loinc, Coding snomed, Coding ops) {
+  public static record Codings(Coding loinc, Coding snomed, Coding ops, Coding atc) {
     @Override
     public Coding loinc() {
       // return a fresh copy, otherwise the original instance will be modified
@@ -31,6 +31,11 @@ public class FhirProperties {
     @Override
     public Coding ops() {
       return ops.copy();
+    }
+
+    @Override
+    public Coding atc() {
+      return atc.copy();
     }
   }
 
@@ -95,6 +100,7 @@ public class FhirProperties {
     private String strahlentherapieBestrahlungProcedureId;
     private String systemischeTherapieProcedureId;
     private String systemischeTherapieMedicationStatementId;
+    private String systemischeTherapieMedicationId;
     private String histologiebefundDiagnosticReportId;
     private String gradingObservationId;
     private String verlaufObservationId;
@@ -209,8 +215,12 @@ public class FhirProperties {
     private String opProcedure;
     private String stProcedure;
     private String systMedStatement;
-    private String miiPatientPseudonymisiert;
     private String deathObservation;
+
+    private String miiPatientPseudonymisiert;
+
+    private String miiPrMedicationStatement;
+    private String miiPrMedication;
 
     private String miiPrOnkoDiagnosePrimaertumor;
     private String miiPrOnkoOperation;
@@ -218,7 +228,6 @@ public class FhirProperties {
     private String miiPrOnkoSystemischeTherapie;
     private String miiPrOnkoSystemischeTherapieMedikation;
     private String miiPrOnkoFernmetastasen;
-    private String miiPrMedicationStatement;
     private String miiPrOnkoBefund;
     private String miiPrOnkoGrading;
     private String miiPrOnkoAnzahlBefalleneLymphknoten;

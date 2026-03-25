@@ -3000,11 +3000,8 @@
         "reference": "Procedure/8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf"
       } ],
       "status": "completed",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01FF05"
-        } ]
+      "medicationReference": {
+        "reference": "Medication/868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe"
       },
       "subject": {
         "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
@@ -3024,6 +3021,45 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/cd3abf0af509cd7840467ecb8b7a34a701f096853b1ebe1cc3b615ad7163b6d5"
+    }
+  }, {
+    "fullUrl": "Medication/868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01FF05"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01FF05",
+          "userSelected": true
+        } ]
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "unknown"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe"
     }
   }, {
     "fullUrl": "AdverseEvent/9eefba6a73667c8e8eae98bf8bfc392d328655d334c739ed2fa74ab6b04ca957",
@@ -3079,6 +3115,8 @@
         "reference": "Procedure/8e5a61d808bb30074e894fc702086b24763c410267b91c86f75de0b3b6507ccf"
       }, {
         "reference": "MedicationStatement/cd3abf0af509cd7840467ecb8b7a34a701f096853b1ebe1cc3b615ad7163b6d5"
+      }, {
+        "reference": "Medication/868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe"
       }, {
         "reference": "AdverseEvent/9eefba6a73667c8e8eae98bf8bfc392d328655d334c739ed2fa74ab6b04ca957"
       } ],
