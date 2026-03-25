@@ -1,5 +1,5 @@
 # @ignored
-app-version: 3.0.0-beta.210
+app-version: 3.0.0-beta.212
 
 # @ignored
 app:
@@ -21,11 +21,19 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+    create-provenance-resources:
+      # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
+      # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
+      enabled: false
     patient-reference-generation:
       # -- How the Resource.subject.reference to the Patient resources should be generated.
       # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
       # to avoid creating additional, unreferenced Patient resources.
       strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
+      # -- If set to true and the Patient doesn't exist on the FHIR server, the generated Patient reference
+      # will only contain the identifier (with system and value) without a logical reference to a Patient
+      # resource.
+      identifier-only-references-allowed: true
       fhir-server:
         # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier.
         # E.g. `https://fhir.example.com/fhir`
