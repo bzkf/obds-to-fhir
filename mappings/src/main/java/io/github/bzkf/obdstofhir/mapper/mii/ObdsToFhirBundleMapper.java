@@ -362,7 +362,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // the items in resourcesMappedFromMeldung are processed in the same order that they were
           // added to the list initially.
           var targets =
-              resourcesMappedFromMeldung.stream().map(this::createReferenceFromResource).toList();
+              resourcesMappedFromMeldung.stream()
+                  .map(ObdsToFhirMapper::createReferenceFromResource)
+                  .toList();
           var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
           addToBundle(bundle, provenance);
         }
