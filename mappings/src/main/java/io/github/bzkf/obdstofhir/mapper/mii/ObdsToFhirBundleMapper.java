@@ -83,7 +83,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
 
-  @Value("${fhir.mappings.patient-id-regex:^(.*)$}")
+  @Value("${fhir.mappings.patient-id-regex}")
   private String patientIdRegex;
 
   private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
