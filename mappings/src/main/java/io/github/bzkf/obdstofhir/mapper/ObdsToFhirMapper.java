@@ -187,7 +187,9 @@ public abstract class ObdsToFhirMapper {
         String.format("Reference to a %s resource must not be null", resourceType.toString()));
     Validate.isTrue(
         Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toString()),
-        String.format("The reference should point to a %s resource", resourceType));
+        String.format(
+            "The reference %s should point to a %s resource",
+            reference.getReference(), resourceType));
 
     return true;
   }
