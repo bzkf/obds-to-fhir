@@ -33,11 +33,6 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     MDC.put("OP_ID", op.getOPID());
 
-    if (op.getMengeOPS() == null || op.getMengeOPS().getOPS().isEmpty()) {
-      LOG.warn("No OPS codes set for OP. Not creating Procedure resources.");
-      return List.of();
-    }
-
     var distinctCodes = new HashMap<String, OPS>();
     for (var ops : op.getMengeOPS().getOPS()) {
       var code = ops.getCode();
