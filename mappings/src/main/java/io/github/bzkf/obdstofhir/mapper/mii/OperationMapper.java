@@ -34,35 +34,40 @@ public class OperationMapper extends ObdsToFhirMapper {
     MDC.put("OP_ID", op.getOPID());
 
     var distinctCodes = new HashMap<String, OPS>();
-    for (var ops : op.getMengeOPS().getOPS()) {
-      var code = ops.getCode();
-      var version = ops.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, ops);
-      } else {
-        var existing = distinctCodes.get(code);
-
-        if (version == null) {
-          LOG.debug(
-              "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
-
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple OPS with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
+    // if no OPS codes are set, it's fine for the distinctCodes list to be empty
+    // we will then only create the parent procedure, not the child ones with
+    // any codes.
+    if (op.getMengeOPS() != null) {
+      for (var ops : op.getMengeOPS().getOPS()) {
+        var code = ops.getCode();
+        var version = ops.getVersion();
+        if (!distinctCodes.containsKey(code)) {
           distinctCodes.put(code, ops);
         } else {
-          LOG.debug(
-              "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
+          var existing = distinctCodes.get(code);
+
+          if (version == null) {
+            LOG.debug(
+                "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
+                code,
+                existing.getVersion());
+            continue;
+          }
+
+          if (version.compareTo(existing.getVersion()) > 0) {
+            LOG.debug(
+                "Multiple OPS with code {} found. Updating version {} over version {}.",
+                code,
+                version,
+                existing.getVersion());
+            distinctCodes.put(code, ops);
+          } else {
+            LOG.debug(
+                "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
+                code,
+                existing.getVersion(),
+                version);
+          }
         }
       }
     }
