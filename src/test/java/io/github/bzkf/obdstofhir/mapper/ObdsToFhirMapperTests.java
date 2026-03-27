@@ -250,7 +250,8 @@ class ObdsToFhirMapperTests {
             () -> {
               ObdsToFhirMapper.verifyReference(reference, ResourceType.Condition);
             });
-    assertThat(excpetion).hasMessage("The reference should point to a Condition resource");
+    assertThat(excpetion)
+        .hasMessage("The reference 'Patient/any' should point to a Condition resource");
   }
 
   @Test
