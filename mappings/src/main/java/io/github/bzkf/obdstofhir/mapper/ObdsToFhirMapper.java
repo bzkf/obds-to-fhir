@@ -189,11 +189,7 @@ public abstract class ObdsToFhirMapper {
         String.format("Reference to a %s resource must not be null", resourceType.toString()));
 
     // extra handling for patients: allow logical-only references
-<<<<<<< HEAD
     if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
-=======
-    if (resourceType == ResourceType.Patient) {
->>>>>>> 4ae6c63 (fix: allow references to patients to be logical-identifier only)
       Objects.requireNonNull(reference.getIdentifier());
       Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
       return true;
