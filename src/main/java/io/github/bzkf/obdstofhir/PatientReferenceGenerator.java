@@ -210,7 +210,7 @@ public class PatientReferenceGenerator {
                   switch (id) {
                     case StringId(var s) ->
                         Optional.of(
-                            new Reference(ResourceType.Patient + "/" + s)
+                            new Reference(ResourceType.Patient.name() + "/" + s)
                                 .setIdentifier(identifier));
                     case ReferenceId(var r) -> Optional.of(r);
                   });
