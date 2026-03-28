@@ -410,9 +410,19 @@ public abstract class ObdsToFhirMapper {
     Objects.requireNonNull(
         reference,
         String.format("Reference to a %s resource must not be null", resourceType.toString()));
+
+    // extra handling for patients: allow logical-only references
+    if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
+      Objects.requireNonNull(reference.getIdentifier());
+      Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
+      return true;
+    }
+
     Validate.isTrue(
         Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toString()),
-        String.format("The reference should point to a %s resource", resourceType));
+        String.format(
+            "The reference '%s' should point to a %s resource",
+            reference.getReference(), resourceType));
 
     return true;
   }
