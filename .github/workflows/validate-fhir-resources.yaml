@@ -126,6 +126,8 @@ jobs:
     name: validate bundles
     runs-on: ubuntu-24.04
     container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
+    needs:
+      - extract-mapper-names
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
