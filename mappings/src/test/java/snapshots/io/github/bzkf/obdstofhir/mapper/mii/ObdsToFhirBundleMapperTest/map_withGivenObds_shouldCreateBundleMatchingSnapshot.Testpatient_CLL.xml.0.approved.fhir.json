@@ -252,7 +252,7 @@
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-                "valueCode": "unknown"
+                "valueCode": "not-applicable"
               } ]
             }
           } ]
@@ -330,7 +330,7 @@
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-                "valueCode": "unknown"
+                "valueCode": "not-applicable"
               } ]
             }
           } ]
@@ -408,7 +408,7 @@
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-                "valueCode": "unknown"
+                "valueCode": "not-applicable"
               } ]
             }
           } ]
