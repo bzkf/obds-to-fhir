@@ -9,6 +9,8 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.StringJoiner;
@@ -55,7 +57,8 @@ import org.springframework.context.annotation.Configuration;
       SubstanzToAtcMapper.class,
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
-      ProvenanceMapper.class,
+        ProvenanceMapper.class,
+          DeviceMapper.class,
     })
 @EnableConfigurationProperties
 @Configuration

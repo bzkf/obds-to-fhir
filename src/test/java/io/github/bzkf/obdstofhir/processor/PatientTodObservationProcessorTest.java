@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
 import io.github.bzkf.obdstofhir.serde.OnkoPatientSerde;
@@ -41,6 +42,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientTodObservationProcessor.class,
       FhirProperties.class,
       TodMapper.class,
+      DeviceMapper.class,
       PatientReferenceGenerator.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})

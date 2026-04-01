@@ -55,7 +55,7 @@ public class PatientMapper extends ObdsToFhirMapper {
         .setDisplay("Medical record number");
     mrTypeConcept
         .addCoding()
-        .setSystem(fhirProperties.getSystems().getObservationValue())
+        .setSystem(fhirProperties.getSystems().getV3ObservationValue())
         .setCode("PSEUDED")
         .setDisplay("pseudonymized");
 

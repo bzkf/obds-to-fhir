@@ -12,6 +12,8 @@ import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperConfig;
 import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.*;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
@@ -91,6 +93,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       SubstanzToAtcMapper.class,
       FruehereTumorerkrankungenMapper.class,
       ProvenanceMapper.class,
+      DeviceMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {

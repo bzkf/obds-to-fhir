@@ -2,8 +2,10 @@ package io.github.bzkf.obdstofhir.processor;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TodTyp;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
+import io.github.dizuker.tofhir.ReferenceUtils;
 import io.github.dizuker.tofhir.TransactionBuilder;
 import java.util.*;
 import java.util.function.Function;
@@ -13,6 +15,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.hl7.fhir.r4.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,11 +35,17 @@ public class PatientTodObservationProcessor {
 
   private final TodMapper todMapper;
   private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
+  private final DeviceMapper deviceMapper;
+
+  @Value("${fhir.mappings.create-provenance-resources.enabled}")
+  private boolean createProvenanceResources;
 
   public PatientTodObservationProcessor(
       TodMapper todMapper,
+      DeviceMapper deviceMapper,
       Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
     this.todMapper = todMapper;
+    this.deviceMapper = deviceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
@@ -82,10 +91,19 @@ public class PatientTodObservationProcessor {
 
       var deathObservations = todMapper.map(tod, patientReferenceOptional.get(), null, null, true);
 
-      return new TransactionBuilder()
-          .addEntries(deathObservations)
-          .failOnDuplicateEntries()
-          .build();
+      var builder = new TransactionBuilder().addEntries(deathObservations).failOnDuplicateEntries();
+
+      if (createProvenanceResources) {
+        var device = deviceMapper.map();
+        var who =
+            ReferenceUtils.createReferenceTo(device)
+                .setDisplay("oBDS-to-FHIR " + device.getVersion());
+        var what =
+            new Reference().setDisplay("ONKOSTAR 'patient' table row id " + onkoPatient.getId());
+        builder.withProvenance(what, who);
+      }
+
+      return builder.build();
     };
   }
 }

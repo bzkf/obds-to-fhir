@@ -39,13 +39,7 @@ public class FhirProperties {
 
   @Data
   public static class FhirExtensions {
-    private String fernMetaExt;
-    private String opIntention;
-    private String stellungOP;
-    private String systIntention;
-    private String sysTheraProto;
     private String dataAbsentReason;
-    private String genderAmtlich;
     private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieStellungzurop;
@@ -128,7 +122,7 @@ public class FhirProperties {
     private String v3ParticipationType;
     private String provenanceParticipantType;
     private String identifierType;
-    private String observationCategorySystem;
+    private String v3ObservationValue;
     private String loinc;
     private String icdo3Morphologie;
     private String uicc;
@@ -151,11 +145,8 @@ public class FhirProperties {
     private String gesamtBeurtResidualCS;
     private String systIntention;
     private String systStellungOP;
-    private String ctcaeGrading;
     private String sideEffectTypeOid;
     private String opComplication;
-    private String observationValue;
-    private String genderAmtlichDe;
     private String ucum;
     private String miiCsOnkoIntention;
     private String miiCsOnkoPrimaertumorDiagnosesicherung;
