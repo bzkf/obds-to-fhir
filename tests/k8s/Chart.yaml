@@ -7,7 +7,7 @@ kubeVersion: ">= 1.21.0"
 dependencies:
   - name: kube-prometheus-stack
     repository: oci://ghcr.io/prometheus-community/charts
-    version: 57.2.1
+    version: 82.16.0
   - name: stream-processors
     repository: oci://ghcr.io/miracum/charts
     version: 1.11.4
