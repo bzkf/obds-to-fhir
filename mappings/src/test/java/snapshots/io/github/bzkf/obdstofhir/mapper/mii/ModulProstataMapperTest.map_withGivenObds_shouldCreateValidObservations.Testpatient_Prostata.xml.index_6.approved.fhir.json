@@ -12,7 +12,7 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "version": "2.80",
+      "version": "2.82",
       "code": "44654-2",
       "display": "Tissue involved by tumor in Prostate tumor"
     } ]

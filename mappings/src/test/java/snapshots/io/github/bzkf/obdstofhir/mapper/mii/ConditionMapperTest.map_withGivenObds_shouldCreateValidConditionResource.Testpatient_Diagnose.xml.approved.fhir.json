@@ -51,7 +51,7 @@
       "code": "R"
     }, {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "24028007",
       "display": "Right (qualifier value)"
     } ]

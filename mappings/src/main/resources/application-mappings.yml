@@ -5,13 +5,13 @@ fhir:
   codings:
     loinc:
       system: "${fhir.systems.loinc}"
-      version: "2.80"
+      version: "2.82"
     snomed:
       system: "${fhir.systems.snomed}"
-      version: "http://snomed.info/sct/900000000000207008/version/20250501"
+      version: "http://snomed.info/sct/900000000000207008/version/20250701"
     ops:
       system: "${fhir.systems.ops}"
-      version: "2025"
+      version: "2026"
     atc:
       system: "${fhir.systems.atcBfarm}"
       version: "2026"

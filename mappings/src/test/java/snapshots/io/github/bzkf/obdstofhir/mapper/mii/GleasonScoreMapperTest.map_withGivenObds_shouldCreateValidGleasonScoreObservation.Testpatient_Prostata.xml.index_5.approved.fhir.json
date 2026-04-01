@@ -12,7 +12,7 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "384995005",
       "display": "Secondary Gleason pattern (observable entity)"
     } ]
@@ -30,7 +30,7 @@
         "valueDecimal": 3
       } ],
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "369772003",
       "display": "Gleason Pattern 3 (finding)"
     } ]
@@ -38,7 +38,7 @@
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
