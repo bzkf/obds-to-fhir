@@ -37,13 +37,13 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
+    implementation 'com.github.slugify:slugify:3.0.7'
 
     // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.21'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.8.0'
-    api 'io.github.java-diff-utils:java-diff-utils:4.16'
-    api 'com.github.slugify:slugify:3.0.7'
-
+    api 'io.github.diz-uker:to-fhir:0.1.8'
     api 'org.slf4j:slf4j-api:2.0.17'
 
     testImplementation platform('org.junit:junit-bom:6.0.3')

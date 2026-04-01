@@ -7,7 +7,7 @@ import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
-import io.github.bzkf.obdstofhir.WriteGroupedObdsToKafkaConfig;
+import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;

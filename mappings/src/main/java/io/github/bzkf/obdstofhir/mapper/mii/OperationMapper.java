@@ -79,7 +79,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     var parentIdentifer =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
             .setValue(slugifier.slugify(op.getOPID()));
     parentProcedure.addIdentifier(parentIdentifer);
     parentProcedure.setId(computeResourceIdFromIdentifier(parentIdentifer));
@@ -141,7 +141,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+              .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
               .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
       procedure.addIdentifier(identifier);
       procedure.setId(computeResourceIdFromIdentifier(identifier));

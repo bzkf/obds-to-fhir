@@ -44,7 +44,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientReferenceGenerator.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
-public class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
+class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "patient-table";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
@@ -75,7 +75,7 @@ public class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhi
           BundleUtil.toListOfResourcesOfType(
                   ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
               .getFirst();
-      assertThat(firstObs.getEffective().toString()).isEqualTo("DateTimeType[2011-01-01]");
+      assertThat(firstObs.getEffective()).hasToString("DateTimeType[2011-01-01]");
 
     } catch (JSONException e) {
       throw new RuntimeException(e);
