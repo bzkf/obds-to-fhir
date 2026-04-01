@@ -18,12 +18,12 @@
   "code": {
     "coding": [ {
       "system": "http://loinc.org",
-      "version": "2.80",
+      "version": "2.82",
       "code": "33732-9",
       "display": "Histology grade [Identifier] in Cancer specimen"
     }, {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "371469007",
       "display": "Histologic grade of neoplasm (observable entity)"
     } ]

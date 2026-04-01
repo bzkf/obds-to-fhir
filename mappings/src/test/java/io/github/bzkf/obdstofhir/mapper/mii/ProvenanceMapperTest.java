@@ -2,6 +2,8 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.context.FhirContext;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import java.util.List;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Options;
@@ -15,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class, ProvenanceMapper.class})
+@SpringBootTest(classes = {FhirProperties.class, DeviceMapper.class, ProvenanceMapper.class})
 @EnableConfigurationProperties
 class ProvenanceMapperTest extends MapperTest {
 

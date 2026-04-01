@@ -29,7 +29,7 @@
   "category": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "18629005",
       "display": "Administration of drug or medicament (procedure)"
     } ]
@@ -37,7 +37,7 @@
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/ops",
-      "version": "2025",
+      "version": "2026",
       "code": "8-54",
       "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
     }, {

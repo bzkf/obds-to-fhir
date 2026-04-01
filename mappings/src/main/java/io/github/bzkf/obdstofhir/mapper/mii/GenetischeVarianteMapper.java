@@ -126,7 +126,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
           new CodeableConcept()
               .addCoding(
                   new Coding()
-                      .setSystem(fhirProperties.getSystems().getDiagnosticServiceSectionId())
+                      .setSystem(fhirProperties.getSystems().getDiagnosticServiceSection())
                       .setCode("GE")
                       .setDisplay("Genetics")));
 

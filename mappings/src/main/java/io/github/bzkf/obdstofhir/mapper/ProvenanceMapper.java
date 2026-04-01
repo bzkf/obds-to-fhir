@@ -1,7 +1,6 @@
-package io.github.bzkf.obdstofhir.mapper.mii;
+package io.github.bzkf.obdstofhir.mapper;
 
 import io.github.bzkf.obdstofhir.FhirProperties;
-import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;

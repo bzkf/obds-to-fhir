@@ -1,4 +1,4 @@
-package io.github.bzkf.obdstofhir;
+package io.github.bzkf.obdstofhir.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

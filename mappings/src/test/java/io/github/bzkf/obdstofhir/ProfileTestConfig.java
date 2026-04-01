@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProfileTestConfig {
 
   @Bean
-  public Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator(
+  Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator(
       FhirProperties fhirProperties) {
     return p -> {
       var system = fhirProperties.getSystems().getIdentifiers().getPatientId();

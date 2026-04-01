@@ -17,7 +17,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class RecordIdDbConfigAutoConfiguration {
 
   @Bean
-  public DataSource recordIdDataSource(RecordIdDbConfig cfg) {
+  DataSource recordIdDataSource(RecordIdDbConfig cfg) {
     return DataSourceBuilder.create()
         .url(cfg.jdbcUrl())
         .username(cfg.username())
@@ -26,7 +26,7 @@ public class RecordIdDbConfigAutoConfiguration {
   }
 
   @Bean
-  public JdbcTemplate recordIdJdbcTemplate(DataSource recordIdDataSource) {
+  JdbcTemplate recordIdJdbcTemplate(DataSource recordIdDataSource) {
     return new JdbcTemplate(recordIdDataSource);
   }
 }

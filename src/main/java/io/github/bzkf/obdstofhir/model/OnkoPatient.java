@@ -19,7 +19,7 @@ public class OnkoPatient implements Serializable {
 
   @EqualsAndHashCode.Include
   @JsonProperty("ID")
-  String patid;
+  String id;
 
   @JsonProperty("LETZTE_INFORMATION")
   LocalDate letzteInformation;

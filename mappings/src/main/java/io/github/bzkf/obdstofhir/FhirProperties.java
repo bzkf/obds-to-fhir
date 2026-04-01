@@ -11,9 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class FhirProperties {
   private FhirExtensions extensions;
   private FhirSystems systems;
-  private FhirDisplay display;
   private FhirProfiles profiles;
-  private FhirUrl url;
   private Codings codings;
 
   public static record Codings(Coding loinc, Coding snomed, Coding ops, Coding atc) {
@@ -41,13 +39,7 @@ public class FhirProperties {
 
   @Data
   public static class FhirExtensions {
-    private String fernMetaExt;
-    private String opIntention;
-    private String stellungOP;
-    private String systIntention;
-    private String sysTheraProto;
     private String dataAbsentReason;
-    private String genderAmtlich;
     private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieStellungzurop;
@@ -118,28 +110,21 @@ public class FhirProperties {
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;
+    private String operationProcedureId;
   }
 
   @Data
   public static class FhirSystems {
     private FhirIdentifierSystems identifiers;
 
-    private String observationId;
-    private String procedureId;
-    private String operationProcedureId;
-    private String medicationStatementId;
-    private String psaObservationId;
-
-    private String diagnosticServiceSectionId;
-
+    private String diagnosticServiceSection;
     private String v3DataOperation;
     private String v3ParticipationType;
     private String provenanceParticipantType;
     private String identifierType;
-    private String observationCategorySystem;
+    private String v3ObservationValue;
     private String loinc;
     private String icdo3Morphologie;
-    private String gradingDktk;
     private String uicc;
     private String tnmPraefix;
     private String tnmTCs;
@@ -160,11 +145,8 @@ public class FhirProperties {
     private String gesamtBeurtResidualCS;
     private String systIntention;
     private String systStellungOP;
-    private String ctcaeGrading;
     private String sideEffectTypeOid;
     private String opComplication;
-    private String observationValue;
-    private String genderAmtlichDe;
     private String ucum;
     private String miiCsOnkoIntention;
     private String miiCsOnkoPrimaertumorDiagnosesicherung;
@@ -205,18 +187,6 @@ public class FhirProperties {
 
   @Data
   public static class FhirProfiles {
-    private String histologie;
-    private String grading;
-    private String tnmC;
-    private String tnmP;
-    private String fernMeta;
-    private String condition;
-    private String genVariante;
-    private String opProcedure;
-    private String stProcedure;
-    private String systMedStatement;
-    private String deathObservation;
-
     private String miiPatientPseudonymisiert;
 
     private String miiPrMedicationStatement;
@@ -268,23 +238,5 @@ public class FhirProperties {
     private String miiPrOnkoProstateGleasonPatterns;
     private String miiPrOnkoProstateGleasonGradeGroup;
     private String miiPrOnkoResidualstatus;
-  }
-
-  @Data
-  public static class FhirDisplay {
-    private String histologyLoinc;
-    private String gradingLoinc;
-    private String tnmcLoinc;
-    private String tnmpLoinc;
-    private String fernMetaLoinc;
-    private String deathLoinc;
-    private String gleasonScoreSct;
-    private String gleasonScoreLoinc;
-    private String psaLoinc;
-  }
-
-  @Data
-  public static class FhirUrl {
-    private String tnmPraefix;
   }
 }

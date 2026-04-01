@@ -79,7 +79,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     var parentIdentifer =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
             .setValue(slugifier.slugify(op.getOPID()));
     parentProcedure.addIdentifier(parentIdentifer);
     parentProcedure.setId(computeResourceIdFromIdentifier(parentIdentifer));
@@ -91,8 +91,8 @@ public class OperationMapper extends ObdsToFhirMapper {
             fhirProperties
                 .getCodings()
                 .snomed()
-                .setCode("71388002")
-                .setDisplay("Procedure (procedure)")));
+                .setCode("387713003")
+                .setDisplay("Surgical procedure (procedure)")));
 
     parentProcedure.setSubject(subject);
     var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
@@ -141,7 +141,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+              .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
               .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
       procedure.addIdentifier(identifier);
       procedure.setId(computeResourceIdFromIdentifier(identifier));

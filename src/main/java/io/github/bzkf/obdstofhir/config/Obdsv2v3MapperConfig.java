@@ -1,4 +1,4 @@
-package io.github.bzkf.obdstofhir;
+package io.github.bzkf.obdstofhir.config;
 
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,7 +16,7 @@ public class Obdsv2v3MapperConfig {
   }
 
   @Bean
-  public ObdsMapper obdsMapper() {
+  ObdsMapper obdsMapper() {
     return ObdsMapper.builder()
         .ignoreUnmappable(obdsv2v3MapperProperties.isIgnoreUnmappable())
         .fixMissingId(obdsv2v3MapperProperties.isFixMissingId())

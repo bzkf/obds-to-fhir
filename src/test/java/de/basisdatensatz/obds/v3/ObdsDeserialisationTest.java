@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModu
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-public class ObdsDeserialisationTest {
+class ObdsDeserialisationTest {
 
   @Test
   void testShouldDeserializeObds3() throws IOException {

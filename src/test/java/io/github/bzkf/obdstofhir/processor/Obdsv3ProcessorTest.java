@@ -7,11 +7,13 @@ import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.FhirProperties;
-import io.github.bzkf.obdstofhir.Obdsv2v3MapperConfig;
-import io.github.bzkf.obdstofhir.Obdsv2v3MapperProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
-import io.github.bzkf.obdstofhir.WriteGroupedObdsToKafkaConfig;
+import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperConfig;
+import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperProperties;
+import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.*;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
@@ -91,6 +93,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       SubstanzToAtcMapper.class,
       FruehereTumorerkrankungenMapper.class,
       ProvenanceMapper.class,
+      DeviceMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
@@ -172,7 +175,7 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
   }
 
   @Test
-  public void testVersionsnummerPrioritization() throws IOException {
+  void testVersionsnummerPrioritization() throws IOException {
     try (var driver =
         buildStream(
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
@@ -243,16 +246,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             .put("VERSIONSNUMMER", versionsnummer)
             .put("XML_DATEN", xmlObds.getContentAsString(StandardCharsets.UTF_8))
             .toString();
-
-    var mapper = new ObjectMapper();
-    return mapper.readValue(meldung, MeldungExportV3.class);
-  }
-
-  private MeldungExportV3 getTestObdsFromString(int id, String testObds)
-      throws IOException, JSONException {
-
-    var meldung =
-        new JSONObject().put("ID", String.valueOf(id)).put("XML_DATEN", testObds).toString();
 
     var mapper = new ObjectMapper();
     return mapper.readValue(meldung, MeldungExportV3.class);
@@ -334,7 +327,7 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
   }
 
   @Test
-  public void testMultipleStMeldungen() throws IOException {
+  void testMultipleStMeldungen() throws IOException {
     try (var driver =
         buildStream(
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
@@ -412,28 +405,27 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             getResourceByName("Test_SysT_2.xml", obdsResources), "3", "12356789", "125", 1));
     var result = processor.getSystemtherapieMeldungen(meldungExportListV3);
 
-    assertThat(result).as(description).isNotNull();
-    assertThat(result.size()).as(description).isEqualTo(2);
-    final Optional<Meldung> firstMeldung_Id1 =
+    assertThat(result).as(description).isNotNull().hasSize(2);
+    final Optional<Meldung> firstMeldungId1 =
         result.stream()
             .filter(meldung -> "101_IN-1".equals(meldung.getSYST().getSYSTID()))
             .findAny();
-    assertThat(firstMeldung_Id1)
+    assertThat(firstMeldungId1)
         .as("Meldung zu SystemTherapie mit ID 101_IN-1 muss vorhanden sein.")
         .isNotEmpty();
-    assertThat(firstMeldung_Id1.get().getSYST().getMeldeanlass().name())
+    assertThat(firstMeldungId1.get().getSYST().getMeldeanlass().name())
         .as(
             "Meldeanlass 'behandlungsende' wird Meldung mit Meldeanlass 'behandlungsbeginn' vorgezogen.")
         .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
 
-    final Optional<Meldung> secondMeldung_Id1 =
+    final Optional<Meldung> secondMeldungId1 =
         result.stream()
             .filter(meldung -> "101_IN-2".equals(meldung.getSYST().getSYSTID()))
             .findAny();
-    assertThat(secondMeldung_Id1)
+    assertThat(secondMeldungId1)
         .as("Meldung zu SystemTherapie mit ID 101_IN-2 muss vorhanden sein.")
         .isNotEmpty();
-    assertThat(firstMeldung_Id1.get().getSYST().getMeldeanlass().name())
+    assertThat(firstMeldungId1.get().getSYST().getMeldeanlass().name())
         .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
   }
 }
