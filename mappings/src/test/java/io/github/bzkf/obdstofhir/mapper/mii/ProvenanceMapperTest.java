@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = {FhirProperties.class, DeviceMapper.class,ProvenanceMapper.class})
+@SpringBootTest(classes = {FhirProperties.class, DeviceMapper.class, ProvenanceMapper.class})
 @EnableConfigurationProperties
 class ProvenanceMapperTest extends MapperTest {
 

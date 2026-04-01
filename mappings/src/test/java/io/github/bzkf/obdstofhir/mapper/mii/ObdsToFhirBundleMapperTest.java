@@ -57,8 +57,8 @@ import org.springframework.context.annotation.Configuration;
       SubstanzToAtcMapper.class,
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
-        ProvenanceMapper.class,
-          DeviceMapper.class,
+      ProvenanceMapper.class,
+      DeviceMapper.class,
     })
 @EnableConfigurationProperties
 @Configuration
