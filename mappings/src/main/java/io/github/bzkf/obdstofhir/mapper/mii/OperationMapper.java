@@ -91,8 +91,8 @@ public class OperationMapper extends ObdsToFhirMapper {
             fhirProperties
                 .getCodings()
                 .snomed()
-                .setCode("71388002")
-                .setDisplay("Procedure (procedure)")));
+                .setCode("387713003")
+                .setDisplay("Surgical procedure (procedure)")));
 
     parentProcedure.setSubject(subject);
     var dateTime = convertObdsDatumToDateTimeType(op.getDatum());

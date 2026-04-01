@@ -125,8 +125,8 @@
         "coding": [ {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "71388002",
-          "display": "Procedure (procedure)"
+          "code": "387713003",
+          "display": "Surgical procedure (procedure)"
         } ]
       },
       "subject": {
