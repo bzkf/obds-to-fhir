@@ -41,7 +41,7 @@ curl -X POST \
     "connection.password": "devPassword",
     "schema.pattern": "DWH_ROUTINE",
     "topic.prefix": "onkostar.PATIENT",
-    "query": "SELECT * FROM (SELECT ID, LETZTE_INFORMATION, STERBEDATUM, STERBEDATUM_ACC, PATIENTEN_ID, ANGELEGT_AM, ZU_LOESCHEN, PATIENTEN_IDS_VORHER, BEARBEITET_AM FROM patient) o",
+    "query": "SELECT pat.ID, pat.LETZTE_INFORMATION, pat.STERBEDATUM, pat.STERBEDATUM_ACC, pat.PATIENTEN_ID, pat.ANGELEGT_AM, pat.ZU_LOESCHEN, pat.PATIENTEN_IDS_VORHER, pat.BEARBEITET_AM, b.STERBEDATUM AS BT_STERBEDATUM, b.LETZTEINFORMATION AS BT_LETZTEINFORMATION FROM patient pat JOIN prozedur pr ON (pr.patient_id = pat.id) JOIN dk_bestoftumor b ON (b.id = pr.id)",
     "mode": "timestamp",
     "timestamp.column.name": "BEARBEITET_AM",
     "validate.non.null": "true",

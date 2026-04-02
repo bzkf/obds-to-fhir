@@ -8,8 +8,8 @@ app:
 
 fhir:
   mappings:
-    from-onkostar-patient-table:
-      # -- if enabled, tod observations will be created using the patient table from onkostar
+    from-onkostar-table:
+      # -- if enabled, tod observations will be created using the tables from onkostar
       enabled: true
     meta:
       # -- Value to set for the meta.source field in all generated resources
