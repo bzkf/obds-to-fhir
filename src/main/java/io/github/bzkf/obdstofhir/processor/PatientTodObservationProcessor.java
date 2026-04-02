@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
     havingValue = "false",
     matchIfMissing = false)
 @ConditionalOnProperty(
-    value = "fhir.mappings.from-onkostar-patient-table.enabled",
+    value = "fhir.mappings.from-onkostar-table.enabled",
     havingValue = "true",
     matchIfMissing = false)
 @Configuration
