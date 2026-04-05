@@ -198,9 +198,11 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
         ErstdiagnoseEvidenzListMapper.class,
         NebenwirkungMapper.class,
         SubstanzToAtcMapper.class,
+        WeitereKlassifikationCodingMapper.class,
         ProfileTestConfig.class,
         FruehereTumorerkrankungenMapper.class,
         ProvenanceMapper.class,
+        DeviceMapper.class,
       },
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
   @EnableConfigurationProperties

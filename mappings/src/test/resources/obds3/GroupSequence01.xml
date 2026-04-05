@@ -80,6 +80,11 @@
                                 <Name>AJCC</Name>
                                 <Stadium>IV</Stadium>
                             </Weitere_Klassifikation>
+                            <Weitere_Klassifikation>
+                                <Datum Datumsgenauigkeit="E">2023-12-09</Datum>
+                                <Name>FAB-Klassifikation</Name>
+                                <Stadium>L1</Stadium>
+                            </Weitere_Klassifikation>
                         </Menge_Weitere_Klassifikation>
                         <Allgemeiner_Leistungszustand>U</Allgemeiner_Leistungszustand>
                         <Modul_Allgemein>

@@ -10,6 +10,8 @@ import java.util.List;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
 
+import ca.uhn.fhir.util.ResourceUtil;
+
 @Service
 public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
 
