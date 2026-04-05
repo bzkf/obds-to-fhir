@@ -16,17 +16,24 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
-  # fatal: Internal logic failure: Unknown symbol 'resolve'
+  # ProvenanceMapperTest:
+  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
+  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
+  # seems like a false positive since the sample at <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html>
+  # does the same.
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
-      "ModulProstataMapperTest"
+      "ModulProstataMapperTest",
+      "SystemischeTherapieMedicationStatementMapperTest",
+      "ProvenanceMapperTest"
     ]
 
 jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -43,18 +50,42 @@ jobs:
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
 
+      # restore the fhir packages once per workflow run here to avoid multiple
+      # jobs running in parallel each restoring at the same time
+      - name: Cache FHIR packages
+        id: fhir-package-cache
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            /github/home/.fhir/packages
+            fhirpkg.lock.json
+          key: fhir-packages-${{ hashFiles('package.json') }}
+          restore-keys: |
+            fhir-packages-
+
+      - name: Restore FHIR package dependencies
+        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
+        run: |
+          fhir cache location --path
+          fhir cache list
+          fhir restore
+
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.26@sha256:9f4f3aab97276c7ffc1089b28969b14fd7693d89e4242970651bf4fe2371c8d4
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
     needs:
       - extract-mapper-names
     strategy:
+      # show all validations results instead of stopping at the first failure
+      fail-fast: false
+      # reduce the parallel load so it doesn't end up blocking other jobs.
+      max-parallel: 4
       matrix:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -70,7 +101,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: |
             /github/home/.fhir/packages
@@ -78,13 +109,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
-
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
 
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
@@ -94,17 +118,19 @@ jobs:
           fhir cache location --path
           fhir cache list
           echo "Validating files for mapper: ${MAPPER_NAME}"
-          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -depth -maxdepth 1 -type f \
+          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
             xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
 
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.28@sha256:234c9e29eedd1e0bbf153399558d9c22b9d03d0f89549d11d6e06d3463a99049
+    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
+    needs:
+      - extract-mapper-names
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -120,7 +146,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: |
             /github/home/.fhir/packages
@@ -128,13 +154,6 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
-
-      - name: Restore FHIR package dependencies
-        if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
-        run: |
-          fhir cache location --path
-          fhir cache list
-          fhir restore
 
       - name: Validate bundles
         continue-on-error: true

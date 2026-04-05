@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
 import io.github.bzkf.obdstofhir.serde.OnkoPatientSerde;
@@ -41,10 +42,11 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientTodObservationProcessor.class,
       FhirProperties.class,
       TodMapper.class,
+      DeviceMapper.class,
       PatientReferenceGenerator.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
-public class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
+class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "patient-table";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
@@ -75,7 +77,7 @@ public class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhi
           BundleUtil.toListOfResourcesOfType(
                   ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
               .getFirst();
-      assertThat(firstObs.getEffective().toString()).isEqualTo("DateTimeType[2011-01-01]");
+      assertThat(firstObs.getEffective()).hasToString("DateTimeType[2011-01-01]");
 
     } catch (JSONException e) {
       throw new RuntimeException(e);

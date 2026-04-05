@@ -1,7 +1,7 @@
 // groovylint-disable NestedBlockDepth
 
 plugins {
-    id 'org.springframework.boot' version '3.5.8' apply false
+    id 'org.springframework.boot' version '3.5.11' apply false
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'java-library'
@@ -9,12 +9,12 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'io.freefair.lombok' version '9.2.0'
-    id 'com.diffplug.spotless' version '8.1.0'
+    id 'com.diffplug.spotless' version '8.3.0'
     id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
 }
 
 group = 'io.github.bzkf'
-version = '3.0.0-beta.204'
+version = '3.0.0-beta.222'
 
 dependencyManagement {
   imports {
@@ -37,18 +37,18 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
+    implementation 'com.github.slugify:slugify:3.0.7'
 
     // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.21'
-    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.6.1'
-    api 'io.github.java-diff-utils:java-diff-utils:4.16'
-    api 'com.github.slugify:slugify:3.0.7'
-
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.8.0'
+    api 'io.github.diz-uker:to-fhir:0.1.8'
     api 'org.slf4j:slf4j-api:2.0.17'
 
-    testImplementation platform('org.junit:junit-bom:6.0.2')
+    testImplementation platform('org.junit:junit-bom:6.0.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation 'org.assertj:assertj-core:3.27.6'
+    testImplementation 'org.assertj:assertj-core:3.27.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.approvaltests:approvaltests:28.0.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

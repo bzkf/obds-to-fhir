@@ -1,24 +1,27 @@
 {
   "resourceType": "Observation",
-  "id": "ebe0468d56dc7c9aa380db860cc772c847f58c082eef47450652571a31093aef",
+  "id": "a02cb9921a7fd96132952660a0d460ee50fc2b1f443048709a2516a11bafe154",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
-    "value": "161-T57-3"
+    "value": "123456-112233-T57-3"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "184305005",
       "display": "Cause of death (observable entity)"
     } ]
   },
   "subject": {
-    "reference": "Patient/any"
+    "reference": "Patient/any",
+    "identifier": {
+      "value": "123456"
+    }
   },
   "focus": [ {
     "reference": "Condition/any"

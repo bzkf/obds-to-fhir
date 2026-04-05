@@ -1,22 +1,22 @@
+# @ignored
+lib-version: 3.0.0-beta.222
+
 fhir:
   codings:
     loinc:
       system: "${fhir.systems.loinc}"
-      version: "2.80"
+      version: "2.82"
     snomed:
       system: "${fhir.systems.snomed}"
-      version: "http://snomed.info/sct/900000000000207008/version/20250501"
+      version: "http://snomed.info/sct/900000000000207008/version/20250701"
     ops:
       system: "${fhir.systems.ops}"
-      version: "2025"
+      version: "2026"
+    atc:
+      system: "${fhir.systems.atcBfarm}"
+      version: "2026"
   extensions:
-    fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
-    opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
-    stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
-    systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
-    sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
     data-absent-reason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-    genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
@@ -49,6 +49,7 @@ fhir:
       strahlentherapie-bestrahlung-procedure-id: "${fhir.systems.identifiers.base-url}/strahlentherapie-bestrahlung-procedure-id"
       systemische-therapie-procedure-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-procedure-id"
       systemische-therapie-medication-statement-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-statement-id"
+      systemische-therapie-medication-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-id"
       allgemeiner-leistungszustand-ecog-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-ecog-id"
       fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-observation-id"
       residualstatus-observation-id: "${fhir.systems.identifiers.base-url}/residualstatus-observation-id"
@@ -81,55 +82,28 @@ fhir:
       prostata-clavien-dindo-observation-id: "${fhir.systems.identifiers.base-url}/prostata-clavien-dindo-observation-id"
       prostata-gleason-patterns-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-patterns-observation-id"
       prostata-gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-score-observation-id"
-
-    # DKTK
-    observationId: "${fhir.systems.identifiers.base-url}/observation-id"
-    procedureId: "${fhir.systems.identifiers.base-url}/procedure-id"
-    operationProcedureId: "${fhir.systems.identifiers.base-url}/operation-procedure-id"
-    medicationStatementId: "${fhir.systems.identifiers.base-url}/medication-statement-id"
-    psaObservationId: "${fhir.systems.identifiers.base-url}/psa-observation-id"
+      obds-meldung-id: "${fhir.systems.identifiers.base-url}/obds-meldung-id"
+      provenance-id: "${fhir.systems.identifiers.base-url}/provenance-id"
+      obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"
+      operation-procedure-id: "${fhir.systems.identifiers.base-url}/operation-procedure-id"
 
     # external systems
+    v3-data-operation: "http://terminology.hl7.org/CodeSystem/v3-DataOperation"
+    provenance-participant-type: "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+    v3-participation-type: "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+    v3-observation-value: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
     identifier-type: "http://terminology.hl7.org/CodeSystem/v2-0203"
-    observationCategorySystem: "http://hl7.org/fhir/observation-category"
-    diagnostic-service-section-id: "http://terminology.hl7.org/CodeSystem/v2-0074"
+    diagnostic-service-section: "http://terminology.hl7.org/CodeSystem/v2-0074"
     loinc: "http://loinc.org"
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
-    icdo3MorphologieOid: "urn:oid:2.16.840.1.113883.6.43.1"
-
-    # DKTK
-    gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
-    uicc: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"
-    tnmPraefix: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS"
-    tnmTCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"
-    tnmNCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS"
-    tnmMCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS"
-    tnmYSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"
-    tnmRSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"
-    tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
-    fMLokalisationCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"
-    jnuCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"
-    lokalBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"
-    gesamtBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
-    systIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS"
-    systStellungOP: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS"
-    opIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS"
-    systTherapieart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"
-    adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
 
     icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
     snomed: "http://snomed.info/sct"
     ops: "http://fhir.de/CodeSystem/bfarm/ops"
-    ctcaeGrading: "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"
-    sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
-    opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
-    observation-value: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
-    genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
     ucum: "http://unitsofmeasure.org"
     condition-ver-status: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
     tnm-uicc: "https://www.uicc.org/resources/tnm"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
-    atcWho: "http://www.whocc.no/atc"
     observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
     meddra: "https://www.meddra.org"
 
@@ -163,28 +137,18 @@ fhir:
     mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
     mii-cs-onko-prostata-postsurgical-complications: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications"
   profiles:
-    histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
-    grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
-    tnmC: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
-    tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
-    fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
-    condition: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
-    genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
-    opProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation"
-    stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
-    systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
-    deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
     # MII
     # @ignored
     versions:
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.base
       mii-base: "|2026.0.0"
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.onkologie
-      mii-onkologie: "|2026.0.1"
+      mii-onkologie: "|2026.0.3"
       # renovate: datasource=npm depName=de.medizininformatikinitiative.kerndatensatz.medikation
       mii-medikation: "|2026.0.1"
     mii-patient-pseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert${fhir.profiles.versions.mii-base}"
     mii-pr-medication-statement: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/MedicationStatement${fhir.profiles.versions.mii-medikation}"
+    mii-pr-medication: "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication${fhir.profiles.versions.mii-medikation}"
     mii-pr-onko-operation: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-diagnose-primaertumor: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-strahlentherapie: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-strahlentherapie${fhir.profiles.versions.mii-onkologie}"
@@ -231,18 +195,6 @@ fhir:
     mii-pr-onko-prostate-gleason-patterns: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-prostate-gleason-grade-group: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group${fhir.profiles.versions.mii-onkologie}"
     mii-pr-onko-residualstatus: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-residualstatus${fhir.profiles.versions.mii-onkologie}"
-  display:
-    histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
-    gradingLoinc: "Grade pathology value Cancer"
-    tnmcLoinc: "Stage group.clinical Cancer"
-    tnmpLoinc: "Stage group.pathology Cancer"
-    fernMetaLoinc: "Distant metastases.clinical"
-    deathLoinc: "Primary cause of death"
-    gleasonScoreSct: "Gleason score (observable entity)"
-    gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
-    psaLoinc: "Prostate specific Ag [Mass/volume] in Serum or Plasma"
-  url:
-    tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
 
   mappings:
     meta:
@@ -255,6 +207,10 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+    create-provenance-resources:
+      # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
+      # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
+      enabled: false
     substanz-to-atc:
       # -- path to a CSV file containing additional Substanz -> ATC code mappings.
       # The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`.

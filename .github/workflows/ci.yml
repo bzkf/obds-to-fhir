@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
+    uses: miracum/.github/.github/workflows/standard-build.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: write
       id-token: write
@@ -51,7 +51,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -60,6 +60,7 @@ jobs:
       - name: Set up containerd image store
         shell: bash
         run: |
+          [ -f /etc/docker/daemon.json ] || echo "{}" | sudo tee /etc/docker/daemon.json
           jq '. | .+{"features": {"containerd-snapshotter": true}}' /etc/docker/daemon.json > /tmp/docker-daemon-with-containerd.json
           sudo mv /tmp/docker-daemon-with-containerd.json /etc/docker/daemon.json
           cat /etc/docker/daemon.json
@@ -67,7 +68,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Download test image
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}-test
           path: /tmp
@@ -112,7 +113,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -135,7 +136,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -159,7 +160,7 @@ jobs:
             run obds-to-fhir
 
       - name: Upload mapped files
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: process-from-directory-mapped-resources
           path: ${{ env.OUTPUT_DIRECTORY }}
@@ -197,7 +198,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -220,7 +221,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -244,7 +245,7 @@ jobs:
             run obds-to-fhir
 
       - name: Upload mapped files
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: process-from-directory-v2-to-v3-mapped-resources
           path: ${{ env.OUTPUT_DIRECTORY }}
@@ -279,7 +280,7 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -295,7 +296,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -345,14 +346,14 @@ jobs:
 
       - name: Upload cluster dump
         if: always()
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: kind-cluster-dump.txt
           path: |
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: read
       pull-requests: write
@@ -367,7 +368,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
+    uses: miracum/.github/.github/workflows/standard-release.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     needs:
       - lint
       - build

@@ -15,6 +15,7 @@ import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
@@ -73,7 +74,8 @@ public abstract class ObdsToFhirMapper {
 
     var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
 
-    // see the code for obdsDatum.getDatumsgenauigkeit(), the default value is 'E' (exakt)
+    // see the code for obdsDatum.getDatumsgenauigkeit(), the default value is 'E'
+    // (exakt)
     // if the datumsgenauigkeit is not set.
 
     switch (obdsDatum.getDatumsgenauigkeit()) {
@@ -185,10 +187,25 @@ public abstract class ObdsToFhirMapper {
     Objects.requireNonNull(
         reference,
         String.format("Reference to a %s resource must not be null", resourceType.toString()));
+
+    // extra handling for patients: allow logical-only references
+    if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
+      Objects.requireNonNull(reference.getIdentifier());
+      Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
+      return true;
+    }
+
     Validate.isTrue(
         Objects.equals(reference.getReferenceElement().getResourceType(), resourceType.toString()),
-        String.format("The reference should point to a %s resource", resourceType));
+        String.format(
+            "The reference '%s' should point to a %s resource",
+            reference.getReference(), resourceType));
 
     return true;
+  }
+
+  public static Reference createReferenceFromResource(Resource resource) {
+    Objects.requireNonNull(resource.getId());
+    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }

@@ -33,41 +33,41 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     MDC.put("OP_ID", op.getOPID());
 
-    if (op.getMengeOPS() == null || op.getMengeOPS().getOPS().isEmpty()) {
-      LOG.warn("No OPS codes set for OP. Not creating Procedure resources.");
-      return List.of();
-    }
-
     var distinctCodes = new HashMap<String, OPS>();
-    for (var ops : op.getMengeOPS().getOPS()) {
-      var code = ops.getCode();
-      var version = ops.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, ops);
-      } else {
-        var existing = distinctCodes.get(code);
-
-        if (version == null) {
-          LOG.debug(
-              "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
-
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple OPS with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
+    // if no OPS codes are set, it's fine for the distinctCodes list to be empty
+    // we will then only create the parent procedure, not the child ones with
+    // any codes.
+    if (op.getMengeOPS() != null) {
+      for (var ops : op.getMengeOPS().getOPS()) {
+        var code = ops.getCode();
+        var version = ops.getVersion();
+        if (!distinctCodes.containsKey(code)) {
           distinctCodes.put(code, ops);
         } else {
-          LOG.debug(
-              "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
+          var existing = distinctCodes.get(code);
+
+          if (version == null) {
+            LOG.debug(
+                "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
+                code,
+                existing.getVersion());
+            continue;
+          }
+
+          if (version.compareTo(existing.getVersion()) > 0) {
+            LOG.debug(
+                "Multiple OPS with code {} found. Updating version {} over version {}.",
+                code,
+                version,
+                existing.getVersion());
+            distinctCodes.put(code, ops);
+          } else {
+            LOG.debug(
+                "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
+                code,
+                existing.getVersion(),
+                version);
+          }
         }
       }
     }
@@ -79,7 +79,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     var parentIdentifer =
         new Identifier()
-            .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+            .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
             .setValue(slugifier.slugify(op.getOPID()));
     parentProcedure.addIdentifier(parentIdentifer);
     parentProcedure.setId(computeResourceIdFromIdentifier(parentIdentifer));
@@ -91,8 +91,8 @@ public class OperationMapper extends ObdsToFhirMapper {
             fhirProperties
                 .getCodings()
                 .snomed()
-                .setCode("71388002")
-                .setDisplay("Procedure (procedure)")));
+                .setCode("387713003")
+                .setDisplay("Surgical procedure (procedure)")));
 
     parentProcedure.setSubject(subject);
     var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
@@ -141,7 +141,7 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       var identifier =
           new Identifier()
-              .setSystem(fhirProperties.getSystems().getOperationProcedureId())
+              .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
               .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
       procedure.addIdentifier(identifier);
       procedure.setId(computeResourceIdFromIdentifier(identifier));

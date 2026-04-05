@@ -6,7 +6,10 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Stream;
 import org.hl7.fhir.r4.model.Reference;
+import org.hl7.fhir.r4.model.Resource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -54,6 +57,13 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
             .get();
     var list = sut.map(systMeldung.getSYST(), patient, procedure, primaryCondition);
 
-    verifyAll(list, sourceFile);
+    List<Resource> flattened =
+        list.stream()
+            .flatMap(
+                r -> Stream.concat(Stream.of(r.medicationStatement()), r.medication().stream()))
+            .map(Resource.class::cast)
+            .toList();
+
+    verifyAll(flattened, sourceFile);
   }
 }

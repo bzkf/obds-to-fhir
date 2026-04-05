@@ -92,13 +92,17 @@
           "code": "T"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "385432009",
           "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "recordedDate": "2024-02-16",
       "evidence": [ {
@@ -132,7 +136,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "created": "2020-08-20",
       "addresses": [ {
@@ -217,13 +225,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
-          "code": "71388002",
-          "display": "Procedure (procedure)"
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "387713003",
+          "display": "Surgical procedure (procedure)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -268,7 +280,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -281,7 +293,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -326,7 +342,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -339,7 +355,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedDateTime": "2020-08-31",
       "reasonReference": [ {
@@ -372,13 +392,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "84892-9",
           "display": "Residual tumor classification [Type] in Cancer specimen"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -408,7 +432,11 @@
         "value": "259"
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "collection": {
         "collectedDateTime": "2020-08-31"
@@ -434,13 +462,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "59847-4",
           "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -484,18 +516,22 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "33732-9",
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -537,16 +573,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "443527007"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -588,16 +628,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "444025001"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -642,13 +686,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -696,13 +744,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -750,13 +802,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -795,13 +851,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "42030-7",
           "display": "Multiple tumors reported as single primary Cancer"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -840,13 +900,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "395715009",
           "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -885,13 +949,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371513001",
           "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -930,13 +998,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371493002",
           "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -975,13 +1047,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399390009",
           "display": "TNM stage grouping"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1053,7 +1129,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "18629005",
           "display": "Administration of drug or medicament (procedure)"
         } ]
@@ -1061,7 +1137,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "version": "2025",
+          "version": "2026",
           "code": "8-54",
           "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
@@ -1070,7 +1146,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-09-21"
@@ -1102,15 +1182,16 @@
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "L01XA03"
-        } ],
-        "text": "Oxaliplatin"
+      "medicationReference": {
+        "reference": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+        "display": "Oxaliplatin"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1122,6 +1203,46 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1"
+    }
+  }, {
+    "fullUrl": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01XA03"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01XA03",
+          "userSelected": false
+        } ],
+        "text": "Oxaliplatin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "not-applicable"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051"
     }
   }, {
     "fullUrl": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
@@ -1152,7 +1273,11 @@
         "text": "5-Fluorouracil"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1181,15 +1306,16 @@
         "reference": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
       } ],
       "status": "active",
-      "medicationCodeableConcept": {
-        "coding": [ {
-          "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "code": "V03AF03"
-        } ],
-        "text": "Folinsäure"
+      "medicationReference": {
+        "reference": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+        "display": "Folinsäure"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "effectivePeriod": {
         "start": "2020-09-21"
@@ -1201,6 +1327,46 @@
     "request": {
       "method": "PUT",
       "url": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60"
+    }
+  }, {
+    "fullUrl": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "V03AF03"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "V03AF03",
+          "userSelected": false
+        } ],
+        "text": "Folinsäure"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "not-applicable"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea"
     }
   }, {
     "fullUrl": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
@@ -1222,7 +1388,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -1273,7 +1443,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -1281,13 +1451,17 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "version": "2025",
+          "version": "2026",
           "code": "8-52",
           "display": "Strahlentherapie"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-10-05"
@@ -1328,7 +1502,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -1336,13 +1510,17 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/ops",
-          "version": "2025",
+          "version": "2026",
           "code": "8-52",
           "display": "Strahlentherapie"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "performedPeriod": {
         "start": "2020-10-05"
@@ -1387,7 +1565,11 @@
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "seriousness": {
         "coding": [ {
@@ -1426,7 +1608,11 @@
         } ]
       } ],
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "created": "2020-09-09",
       "addresses": [ {
@@ -1486,18 +1672,22 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "89262-0",
           "display": "ECOG Performance Status [Interpretation]"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1510,7 +1700,7 @@
           "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
         }, {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "LA9623-5",
           "display": "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work"
         } ]
@@ -1536,7 +1726,11 @@
         "value": "E/2020/20543"
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "collection": {
         "collectedDateTime": "2020-08-02"
@@ -1568,18 +1762,22 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "33732-9",
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1624,13 +1822,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399504009",
           "display": "cT category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1678,13 +1880,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1732,13 +1938,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1777,13 +1987,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399537006",
           "display": "Clinical TNM stage grouping"
         } ]
       },
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "focus": [ {
         "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
@@ -1830,7 +2044,11 @@
       "mode": "snapshot",
       "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
       "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
       },
       "entry": [ {
         "item": {

@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -81,13 +81,17 @@
           "code": "R"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "24028007",
           "display": "Right (qualifier value)"
         } ]
       } ],
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "recordedDate": "2024-02-16"
     },
@@ -111,7 +115,11 @@
         "value": "H000520-22"
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "collection": {
         "collectedDateTime": "2022-08-05"
@@ -137,13 +145,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "59847-4",
           "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -187,18 +199,22 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "33732-9",
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -240,16 +256,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "443527007"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -291,16 +311,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "444025001"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -342,16 +366,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "92832-5"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "1264491009"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -393,16 +421,20 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "85347-3"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "444411008"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -438,13 +470,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "385421009",
           "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -490,13 +526,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "69548-6",
           "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -545,13 +585,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "69548-6",
           "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -597,13 +641,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -651,13 +699,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -705,13 +757,17 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371497001",
           "display": "pM category (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -750,13 +806,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "42030-7",
           "display": "Multiple tumors reported as single primary Cancer"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -795,13 +855,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "395715009",
           "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -840,13 +904,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371513001",
           "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -885,13 +953,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "101659-1",
           "display": "Cancer staging after tumor recurrence"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -900,7 +972,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "421188008",
           "display": "Tumor staging descriptor r (tumor staging)"
         } ]
@@ -932,13 +1004,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371493002",
           "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -977,13 +1053,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "101658-3",
           "display": "Cancer staging after multimodality therapy"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -992,7 +1072,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "421755005",
           "display": "Tumor staging descriptor y (tumor staging)"
         } ]
@@ -1024,13 +1104,17 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "399588009",
           "display": "Pathologic TNM stage grouping"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
@@ -1089,13 +1173,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "22034-3",
           "display": "Pathology report Cancer Narrative"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "specimen": [ {
         "reference": "Specimen/672474313ca5986e078b00ef7b58c29e0d9d64f538cc11c9e8d40db5a668eb6a"
@@ -1115,7 +1203,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -1150,13 +1238,17 @@
           "code": "T"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "385432009",
           "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "recordedDate": "2024-02-16"
     },
@@ -1193,13 +1285,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "69548-6",
           "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
@@ -1248,13 +1344,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "69548-6",
           "display": "Genetic variant assessment"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
@@ -1291,13 +1391,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "22034-3",
           "display": "Pathology report Cancer Narrative"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "conclusion": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exercitation ulliam corper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem veleum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel willum lunombro dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi."
     },
@@ -1314,7 +1418,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -1349,13 +1453,17 @@
           "code": "L"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "7771000",
           "display": "Left (qualifier value)"
         } ]
       } ],
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "recordedDate": "2024-02-16"
     },
@@ -1379,7 +1487,11 @@
         "value": "H000123-22"
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "collection": {
         "collectedDateTime": "2020-01-01"
@@ -1405,13 +1517,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "59847-4",
           "display": "Histology and Behavior ICD-O-3 Cancer"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
@@ -1455,18 +1571,22 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "33732-9",
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "focus": [ {
         "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
@@ -1502,13 +1622,17 @@
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
-          "version": "2.80",
+          "version": "2.82",
           "code": "22034-3",
           "display": "Pathology report Cancer Narrative"
         } ]
       },
       "subject": {
-        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5"
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
       },
       "specimen": [ {
         "reference": "Specimen/e3e6521b805fce540da3b3780eac8edb561bf3270d53e98a250235a51134f4cd"

@@ -12,12 +12,9 @@
     "reference": "Procedure/any"
   } ],
   "status": "active",
-  "medicationCodeableConcept": {
-    "coding": [ {
-      "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L02BB03"
-    } ],
-    "text": "Bicalutamid"
+  "medicationReference": {
+    "reference": "Medication/dd88dcab2cd66c28691f4444db4a801fbf7abce423cc8cf8fff980cd9be41eed",
+    "display": "Bicalutamid"
   },
   "subject": {
     "reference": "Patient/any"

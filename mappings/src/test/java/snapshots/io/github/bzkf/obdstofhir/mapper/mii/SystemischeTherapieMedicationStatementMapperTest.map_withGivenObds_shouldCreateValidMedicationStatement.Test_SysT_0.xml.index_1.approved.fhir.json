@@ -1,0 +1,34 @@
+{
+  "resourceType": "Medication",
+  "id": "dd88dcab2cd66c28691f4444db4a801fbf7abce423cc8cf8fff980cd9be41eed",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+    "value": "L02BB03"
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+      "version": "2026",
+      "code": "L02BB03",
+      "userSelected": false
+    } ],
+    "text": "Bicalutamid"
+  },
+  "ingredient": [ {
+    "itemCodeableConcept": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "not-applicable"
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

@@ -1,5 +1,9 @@
 # obds-to-fhir
 
+> [!IMPORTANT]
+> Looking for the latest version supporting oBDS version 3 and the MII FHIR Profiles?
+> Head to the `beta` branch: <https://github.com/bzkf/obds-to-fhir/tree/beta>
+
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/bzkf/obds-to-fhir/badge)](https://scorecard.dev/viewer/?uri=github.com/bzkf/obds-to-fhir)
 [![SLSA 3](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev)
 
@@ -188,7 +192,7 @@ Prerequisites:
 All released container images are signed using [cosign](https://github.com/sigstore/cosign) and SLSA Level 3 provenance is available for verification.
 
 ```sh
-IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.204
+IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.222
 DIGEST=$(crane digest "${IMAGE}")
 IMAGE_DIGEST_PINNED="ghcr.io/bzkf/obds-to-fhir@${DIGEST}"
 IMAGE_TAG="${IMAGE#*:}"

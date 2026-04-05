@@ -1,17 +1,17 @@
 // groovylint-disable NestedBlockDepth
 
 plugins {
-    id 'org.springframework.boot' version '3.5.8'
+    id 'org.springframework.boot' version '3.5.11'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'java'
-    id 'com.diffplug.spotless' version '8.1.0'
+    id 'com.diffplug.spotless' version '8.3.0'
     id 'io.freefair.lombok' version '9.2.0'
-    id 'net.ltgt.errorprone' version '5.0.0'
+    id 'net.ltgt.errorprone' version '5.1.0'
 }
 
 group = 'io.github.bzkf'
-version = '3.0.0-beta.204'
+version = '3.0.0-beta.222'
 
 java {
     toolchain {
@@ -30,8 +30,8 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', '2025.0.0')
-    set('hapiVersion', '8.6.1')
+    set('springCloudVersion', '2025.0.1')
+    set('hapiVersion', '8.8.0')
 }
 
 dependencies {
@@ -46,8 +46,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
-    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.2'
-    implementation 'io.micrometer:micrometer-core:1.16.2'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.4'
+    implementation 'io.micrometer:micrometer-core:1.16.4'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
     implementation 'com.github.slugify:slugify:3.0.7'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
@@ -67,8 +67,8 @@ dependencies {
     testImplementation 'com.approvaltests:approvaltests:28.0.0'
     testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
-    errorprone 'com.google.errorprone:error_prone_core:2.46.0'
-    errorprone 'com.uber.nullaway:nullaway:0.13.0'
+    errorprone 'com.google.errorprone:error_prone_core:2.48.0'
+    errorprone 'com.uber.nullaway:nullaway:0.13.1'
 
     runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
     runtimeOnly 'org.postgresql:postgresql'
@@ -91,6 +91,7 @@ jacoco {
 spotless {
     java {
         target('**/*.java')
+        targetExclude('src/generated/java/**/*.java')
         importOrder()
         removeUnusedImports()
         googleJavaFormat()

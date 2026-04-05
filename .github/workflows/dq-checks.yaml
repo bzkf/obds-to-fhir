@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@e80245abb031a27f87d0e07eeb6f5f54a82a46b8 # v1.20.4
+    uses: miracum/.github/.github/workflows/standard-build.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: write
       id-token: write
@@ -47,7 +47,7 @@ jobs:
       - build
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -70,7 +70,7 @@ jobs:
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -96,7 +96,7 @@ jobs:
             "${DQ_CHECKS_IMAGE}"
 
       - name: Upload data docs
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: gx-data-docs
           path: data-docs/

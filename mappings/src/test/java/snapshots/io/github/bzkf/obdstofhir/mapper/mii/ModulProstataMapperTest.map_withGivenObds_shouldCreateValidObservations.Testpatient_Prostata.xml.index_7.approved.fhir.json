@@ -12,7 +12,7 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "1812491000004107",
       "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
     } ]
@@ -30,7 +30,7 @@
         "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "1279716004"
     } ],
     "text": "4+3"
@@ -38,7 +38,7 @@
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250501",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]

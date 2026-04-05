@@ -1,37 +1,34 @@
 {
-  "resourceType": "MedicationStatement",
-  "id": "9cf8454fde8e2493b2a98d61aeef517655190f3f6d75f74ee536f5371436781f",
+  "resourceType": "Medication",
+  "id": "317703f51717316b41f1dd7062cd1870ffa33b8946456e1789d1b6f863f0c857",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "any-101_IN-2-Revumenib"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+    "value": "L01EX05"
   } ],
-  "partOf": [ {
-    "reference": "Procedure/any"
-  } ],
-  "status": "completed",
-  "medicationCodeableConcept": {
+  "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "_code": {
-        "extension": [ {
-          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-          "valueCode": "as-text"
-        } ]
-      }
+      "version": "2026",
+      "code": "L01EX05",
+      "userSelected": false
     } ],
-    "text": "Revumenib"
+    "text": "Regorafenib"
   },
-  "subject": {
-    "reference": "Patient/any"
-  },
-  "effectivePeriod": {
-    "start": "2023-06",
-    "end": "2023-10-15"
-  },
-  "reasonReference": [ {
-    "reference": "Condition/any"
+  "ingredient": [ {
+    "itemCodeableConcept": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "not-applicable"
+          } ]
+        }
+      } ]
+    }
   } ]
 }

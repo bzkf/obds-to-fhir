@@ -1,30 +1,34 @@
 {
-  "resourceType": "MedicationStatement",
-  "id": "d5109d196ba5e8edeb547307d06ee988a1f7715380c90d7cbebe048c7dc04fa0",
+  "resourceType": "Medication",
+  "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
-    "value": "any-60_1_IN_1-L01FF05"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+    "value": "L01AA01"
   } ],
-  "partOf": [ {
-    "reference": "Procedure/any"
-  } ],
-  "status": "active",
-  "medicationCodeableConcept": {
+  "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "code": "L01FF05"
-    } ]
+      "version": "2026",
+      "code": "L01AA01",
+      "userSelected": false
+    } ],
+    "text": "Cyclophosphamid"
   },
-  "subject": {
-    "reference": "Patient/any"
-  },
-  "effectivePeriod": {
-    "start": "2020-04-03"
-  },
-  "reasonReference": [ {
-    "reference": "Condition/any"
+  "ingredient": [ {
+    "itemCodeableConcept": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "not-applicable"
+          } ]
+        }
+      } ]
+    }
   } ]
 }

@@ -14,12 +14,12 @@ import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -73,14 +73,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
   private final FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper;
+  private final ProvenanceMapper provenanceMapper;
 
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
 
+  @Value("${fhir.mappings.create-provenance-resources.enabled}")
+  private boolean createProvenanceResources;
+
   @Value("${fhir.mappings.meta.source}")
   private String metaSource;
 
-  @Value("${fhir.mappings.patient-id-regex:^(.*)$}")
+  @Value("${fhir.mappings.patient-id-regex}")
   private String patientIdRegex;
 
   private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
@@ -112,6 +116,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
+      ProvenanceMapper provenanceMapper,
       Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
@@ -140,6 +145,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
     this.fruehereTumorErkrankungenMapper = fruehereTumorErkrankungenMapper;
+    this.provenanceMapper = provenanceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
@@ -216,7 +222,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             "Unable to generate patient reference so using reference "
                 + "to patient to be created.");
         // this uses the default mechanism of referencing the created patient resource
-        patientReferenceOptional = Optional.of(createReferenceFromResource(patient));
+        var reference = createReferenceFromResource(patient);
+        // be sure to add the Reference.identifier as e.g. the TodMapper depends on it.
+        // XXX: this smells like a responsibility leak for reference generation spread
+        // across here and the patientReferenceGenerator.
+        reference.setIdentifier(patient.getIdentifierFirstRep());
+        patientReferenceOptional = Optional.of(reference);
       }
 
       var patientReference = patientReferenceOptional.get();
@@ -232,13 +243,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
 
+        var resourcesMappedFromMeldung = new ArrayList<Resource>();
+
         // Diagnose
         // this _always_ creates a Condition resource, even if just the Tumorzuordnung
         // is known
         var condition =
             conditionMapper.map(
                 meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
-        addToBundle(bundle, condition);
+        resourcesMappedFromMeldung.add(condition);
 
         var primaryConditionReference = createReferenceFromResource(condition);
 
@@ -251,7 +264,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   patientReference,
                   condition,
                   obds.getMeldedatum());
-          addToBundle(bundle, resources);
+          resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Verlauf
@@ -259,14 +272,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var resources =
               mapVerlauf(
                   meldung.getVerlauf(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
+          resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Systemtherapie
         if (meldung.getSYST() != null) {
           var resources =
               mapSyst(meldung.getSYST(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
+          resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Strahlenterhapie
@@ -275,7 +288,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var stProcedure =
               strahlentherapieMapper.map(
                   st, patientReference, primaryConditionReference, meldung.getMeldungID());
-          addToBundle(bundle, stProcedure);
+          resourcesMappedFromMeldung.addAll(stProcedure);
 
           if (st.getModulAllgemein() != null) {
             var allgemein = st.getModulAllgemein();
@@ -286,7 +299,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                       patientReference,
                       primaryConditionReference,
                       meldung.getMeldungID());
-              addToBundle(bundle, studienteilnahmeObservation);
+              resourcesMappedFromMeldung.add(studienteilnahmeObservation);
             }
           }
 
@@ -307,7 +320,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               var nebenwirkungen =
                   nebenwirkungMapper.map(
                       st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
-              addToBundle(bundle, nebenwirkungen);
+              resourcesMappedFromMeldung.addAll(nebenwirkungen);
             } else {
               LOG.error("Unable to find the primary ST procedure");
             }
@@ -317,15 +330,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // Tod
         if (meldung.getTod() != null) {
           var deathObservations =
-              todMapper.map(meldung.getTod(), patientReference, primaryConditionReference, false);
-          addToBundle(bundle, deathObservations);
+              todMapper.map(
+                  meldung.getTod(),
+                  patientReference,
+                  primaryConditionReference,
+                  meldung.getTumorzuordnung().getTumorID(),
+                  false);
+          resourcesMappedFromMeldung.addAll(deathObservations);
         }
 
         // Operation
         if (meldung.getOP() != null) {
           var resources =
               mapOP(meldung.getOP(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
+          resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Pathologie
@@ -333,7 +351,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var resources =
               mapPathologie(
                   meldung.getPathologie(), meldung, patientReference, primaryConditionReference);
-          addToBundle(bundle, resources);
+          resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Tumorkonferenz
@@ -341,7 +359,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           var tumorkonferenz = meldung.getTumorkonferenz();
           var carePlan =
               tumorkonferenzMapper.map(tumorkonferenz, patientReference, primaryConditionReference);
-          addToBundle(bundle, carePlan);
+          resourcesMappedFromMeldung.add(carePlan);
+        }
+
+        addToBundle(bundle, resourcesMappedFromMeldung);
+
+        if (this.createProvenanceResources) {
+          // the items in resourcesMappedFromMeldung are processed in the same order that they were
+          // added to the list initially.
+          var targets =
+              resourcesMappedFromMeldung.stream()
+                  .map(ObdsToFhirMapper::createReferenceFromResource)
+                  .toList();
+          var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
+          addToBundle(bundle, provenance);
         }
       }
 
@@ -552,7 +583,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var evidenzReferenceList =
         mappedResources.stream()
             .filter(r -> r instanceof Observation || r instanceof DiagnosticReport)
-            .map(this::createReferenceFromResource)
+            .map(ObdsToFhirMapper::createReferenceFromResource)
             .toList();
 
     var evidenzListe =
@@ -582,7 +613,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var fruehereTumorerkrankungenExtensions =
           fruehereTumorErkrankungen.stream()
-              .map(this::createReferenceFromResource)
+              .map(ObdsToFhirMapper::createReferenceFromResource)
               .map(
                   reference ->
                       new Extension(
@@ -745,10 +776,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var procedureReference = createReferenceFromResource(systProcedure);
 
     if (syst.getMengeSubstanz() != null) {
-      var systMedicationStatements =
+      var results =
           systemischeTherapieMedicationStatementMapper.map(
               syst, patientReference, procedureReference, primaryConditionReference);
-      mappedResources.addAll(systMedicationStatements);
+      for (var mapResults : results) {
+        mappedResources.add(mapResults.medicationStatement());
+        if (mapResults.medication().isPresent()) {
+          mappedResources.add(mapResults.medication().get());
+        }
+      }
     }
 
     if (syst.getModulAllgemein() != null) {
@@ -859,7 +895,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (op.getModulProstata() != null) {
       var modulProstata = op.getModulProstata();
-      var opReferences = operations.stream().map(this::createReferenceFromResource).toList();
+      // the procedure that doesn't reference any other procedure is the
+      // primary/parent one
+      var opReferences =
+          operations.stream()
+              .filter(p -> !p.hasPartOf())
+              .map(ObdsToFhirMapper::createReferenceFromResource)
+              .toList();
+
+      if (opReferences.size() > 1) {
+        LOG.warn(
+            "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
+      }
+
       var modulProstataResources =
           modulProstataMapper.map(
               modulProstata,
@@ -867,7 +915,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               patientReference,
               primaryConditionReference,
               op.getDatum(),
-              opReferences);
+              opReferences.getFirst()); //  it should never be empty here.
       mappedResources.addAll(modulProstataResources);
     }
 
@@ -1100,10 +1148,5 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           .setUrl(url);
     }
     return bundle;
-  }
-
-  private Reference createReferenceFromResource(Resource resource) {
-    Objects.requireNonNull(resource.getId());
-    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }
