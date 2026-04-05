@@ -9,6 +9,7 @@ import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
+import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperConfig;
 import io.github.bzkf.obdstofhir.config.Obdsv2v3MapperProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
@@ -92,6 +93,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientReferenceGenerator.class,
       SubstanzToAtcMapper.class,
       FruehereTumorerkrankungenMapper.class,
+      WeitereKlassifikationCodingMapper.class,
       ProvenanceMapper.class,
       DeviceMapper.class,
     })

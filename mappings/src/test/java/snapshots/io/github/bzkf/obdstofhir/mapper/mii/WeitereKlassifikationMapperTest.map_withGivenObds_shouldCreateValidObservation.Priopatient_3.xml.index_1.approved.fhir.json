@@ -1,0 +1,37 @@
+{
+  "resourceType": "Observation",
+  "id": "1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+    "value": "10_1_DI_1-ZNS-WHO-2021-2017-07-02-II"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "396921005",
+      "display": "World Health Organization grade finding for central nervous system tumor (finding)"
+    } ],
+    "text": "ZNS-WHO-2021"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2017-07-02",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "396923008",
+      "display": "World Health Organization grade II central nervous system tumor (finding)"
+    } ],
+    "text": "II"
+  }
+}

@@ -294,6 +294,90 @@
       "url": "Observation/1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c"
     }
   }, {
+    "fullUrl": "Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "10_1_DI_1-ZNS-WHO-2021-2017-07-02-II"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "396921005",
+          "display": "World Health Organization grade finding for central nervous system tumor (finding)"
+        } ],
+        "text": "ZNS-WHO-2021"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "396923008",
+          "display": "World Health Organization grade II central nervous system tumor (finding)"
+        } ],
+        "text": "II"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546"
+    }
+  }, {
+    "fullUrl": "Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "10_1_DI_1-ZNS-WHO-2021-2017-07-02-unbekannt"
+      } ],
+      "status": "final",
+      "code": {
+        "text": "ZNS-WHO-2021"
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
+      } ],
+      "effectiveDateTime": "2017-07-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "code": "unbekannt"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3"
+    }
+  }, {
     "fullUrl": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
     "resource": {
       "resourceType": "List",
@@ -326,6 +410,14 @@
       }, {
         "item": {
           "reference": "Observation/1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3"
         }
       } ]
     },

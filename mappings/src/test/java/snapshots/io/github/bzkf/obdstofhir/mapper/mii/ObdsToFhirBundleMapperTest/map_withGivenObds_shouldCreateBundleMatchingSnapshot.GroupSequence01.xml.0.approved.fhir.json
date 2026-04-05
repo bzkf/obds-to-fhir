@@ -669,6 +669,53 @@
       "url": "Observation/a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7"
     }
   }, {
+    "fullUrl": "Observation/5646436110ebaf595bb540409f3f4858a3f4a56e64d8db9b1cbe2b092584805f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "5646436110ebaf595bb540409f3f4858a3f4a56e64d8db9b1cbe2b092584805f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-weitere-klassifikationen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/weitere-klassifikation-observation-id",
+        "value": "2103B5C5-123123-12312-FAB-Klassifikation-2023-12-09-L1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "1287958009",
+          "display": "French-American-British classification system (tumor staging)"
+        } ],
+        "text": "FAB-Klassifikation"
+      },
+      "subject": {
+        "reference": "Patient/3919f05c9c061487bab3c8f0c50212061d29d4a31d6709c14955d3e551f9ab6d",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "9876543"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/c2935c32db1b60a23befcb37fa4d1dd87ba73b03622a88f40adcae741e3ae4e5"
+      } ],
+      "effectiveDateTime": "2023-12-09",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "278160007",
+          "display": "French-American-British type L1 (qualifier value)"
+        } ],
+        "text": "L1"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/5646436110ebaf595bb540409f3f4858a3f4a56e64d8db9b1cbe2b092584805f"
+    }
+  }, {
     "fullUrl": "List/fd0104c122547eac7ebccfdfc69292eb81e23a3eb29221c9f186e8fd3d3480e8",
     "resource": {
       "resourceType": "List",
@@ -729,6 +776,10 @@
       }, {
         "item": {
           "reference": "Observation/a51d300b5638c532f795dafed82d42aa321fc3e7ec2b61be88efb2b89f3e0aa7"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/5646436110ebaf595bb540409f3f4858a3f4a56e64d8db9b1cbe2b092584805f"
         }
       } ]
     },

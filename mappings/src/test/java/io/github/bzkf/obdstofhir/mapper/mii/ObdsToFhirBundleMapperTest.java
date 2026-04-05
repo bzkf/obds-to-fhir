@@ -9,6 +9,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
+import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import java.io.IOException;
@@ -55,6 +56,7 @@ import org.springframework.context.annotation.Configuration;
       ErstdiagnoseEvidenzListMapper.class,
       NebenwirkungMapper.class,
       SubstanzToAtcMapper.class,
+      WeitereKlassifikationCodingMapper.class,
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
       ProvenanceMapper.class,
@@ -196,9 +198,11 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
         ErstdiagnoseEvidenzListMapper.class,
         NebenwirkungMapper.class,
         SubstanzToAtcMapper.class,
+        WeitereKlassifikationCodingMapper.class,
         ProfileTestConfig.class,
         FruehereTumorerkrankungenMapper.class,
         ProvenanceMapper.class,
+        DeviceMapper.class,
       },
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
   @EnableConfigurationProperties

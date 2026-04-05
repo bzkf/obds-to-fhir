@@ -74,6 +74,16 @@
                 <Name>FIGO</Name>
                 <Stadium>IIIB</Stadium>
               </Weitere_Klassifikation>
+              <Weitere_Klassifikation>
+                <Datum Datumsgenauigkeit="E">2017-07-02</Datum>
+                <Name>ZNS-WHO-2021</Name>
+                <Stadium>II</Stadium>
+              </Weitere_Klassifikation>
+              <Weitere_Klassifikation>
+                <Datum Datumsgenauigkeit="E">2017-07-02</Datum>
+                <Name>ZNS-WHO-2021</Name>
+                <Stadium>unbekannt</Stadium>
+              </Weitere_Klassifikation>
             </Menge_Weitere_Klassifikation>
             <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
           </Diagnose>
