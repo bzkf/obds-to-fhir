@@ -58,25 +58,24 @@ public class WeitereKlassifikationCodingMapper {
     for (var row : csvFormat.parse(reader)) {
       var name = row.get("name").trim();
       var einstufung = row.get("stadium").trim();
-      var snomedCode = row.get("snomed_code").trim();
-      var snomedDisplay = row.get("snomed_display").trim();
-      var valueSnomedCode = row.get("value_snomed_code").trim();
-      var valueSnomedDisplay = row.get("value_snomed_display").trim();
+      var codeSystem = row.get("code_system").trim();
+      var codeVersion = row.get("code_version").trim();
+      var codeCode = row.get("code_code").trim();
+      var codeDisplay = row.get("code_display").trim();
+      var valueSystem = row.get("value_system").trim();
+      var valueVersion = row.get("value_version").trim();
+      var valueCode = row.get("value_code").trim();
+      var valueDisplay = row.get("value_display").trim();
 
-      if (!StringUtils.hasText(snomedCode)) {
+      if (!StringUtils.hasText(codeCode)) {
         continue;
       }
 
-      var code = fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(snomedDisplay);
+      var code = new Coding(codeSystem, codeCode, codeDisplay).setVersion(codeVersion);
 
       Coding value = null;
-      if (StringUtils.hasText(valueSnomedCode)) {
-        value =
-            fhirProperties
-                .getCodings()
-                .snomed()
-                .setCode(valueSnomedCode)
-                .setDisplay(valueSnomedDisplay);
+      if (StringUtils.hasText(valueCode)) {
+        value = new Coding(valueSystem, valueCode, valueDisplay).setVersion(valueVersion);
       }
 
       map.put(name, einstufung, new ObservationCodeValue(code, Optional.ofNullable(value)));
