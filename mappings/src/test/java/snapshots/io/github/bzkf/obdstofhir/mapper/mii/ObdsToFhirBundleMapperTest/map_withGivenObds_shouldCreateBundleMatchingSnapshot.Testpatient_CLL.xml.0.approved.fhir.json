@@ -1027,6 +1027,12 @@
       } ],
       "status": "final",
       "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "1149099005",
+          "display": "Binet staging classification for chronic lymphocytic leukemia (tumor staging)"
+        } ],
         "text": "Binet"
       },
       "subject": {
@@ -1042,8 +1048,12 @@
       "effectiveDateTime": "2018-04-03",
       "valueCodeableConcept": {
         "coding": [ {
-          "code": "A"
-        } ]
+          "system": "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
+          "version": "3.0.0",
+          "code": "C80134",
+          "display": "Binet Stage A"
+        } ],
+        "text": "A"
       }
     },
     "request": {
