@@ -166,7 +166,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | obds.write-grouped-obds-to-kafka.topic                                                                                       | string | `"obds.v3.grouped"`                                                                                                                                                                                          | the name of the topic to write the combined oBDS export to. Helpful for debugging.                                                                                                                                                                                                                                                                                                                                             |
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| fhir.mappings.from-onkostar-patient-table.enabled | bool | `true` | if enabled, tod observations will be created using the patient table from onkostar |
+| fhir.mappings.from-onkostar-patient-data.enabled | bool | `true` | if enabled, tod observations will be created using additional data from onkostar |
+| fhir.mappings.from-onkostar-patient-data.csv.enabled | bool | `false` | if enabled additionally, onkostar.PATIENT topic will be filled using a bestOfTumor-export-csv from Onkostar The CSV file needs to have 3 headings: `Patienten-ID;Letzte Information (LetzteInformation);Sterbedatum` |
+| fhir.mappings.from-onkostar-patient-data.csv.file | string | `""` |  |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.patient-id-regex | string | `"^(.*)$"` | regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group. Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s. |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
