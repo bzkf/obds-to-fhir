@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
     havingValue = "false",
     matchIfMissing = false)
 @ConditionalOnProperty(
-    value = "fhir.mappings.from-onkostar-table.enabled",
+    value = "fhir.mappings.from-onkostar-patient-data.enabled",
     havingValue = "true",
     matchIfMissing = false)
 @Configuration
@@ -92,8 +92,13 @@ public class PatientTodObservationProcessor {
         var who =
             ReferenceUtils.createReferenceTo(device)
                 .setDisplay("oBDS-to-FHIR " + device.getVersion());
-        var what =
-            new Reference().setDisplay("ONKOSTAR 'patient' table row id " + onkoPatient.getId());
+
+        var sourceDisplay =
+            onkoPatient.getId() != null
+                ? "ONKOSTAR patient row id " + onkoPatient.getId()
+                : "ONKOSTAR CSV export";
+
+        var what = new Reference().setDisplay(sourceDisplay);
         builder.withProvenance(who, what);
       }
 
