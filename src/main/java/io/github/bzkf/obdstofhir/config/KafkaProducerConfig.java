@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,19 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
-public class OnkoPatientKafkaProducerConfig {
+public class KafkaProducerConfig {
+
+  /** Default Template for ProcessFromDirectory */
+  @Bean
+  public ProducerFactory<String, IBaseResource> producerFactory(KafkaProperties kafkaProperties) {
+    return new DefaultKafkaProducerFactory<>(kafkaProperties.buildProducerProperties());
+  }
+
+  @Bean
+  public KafkaTemplate<String, IBaseResource> kafkaTemplate(
+      ProducerFactory<String, IBaseResource> producerFactory) {
+    return new KafkaTemplate<>(producerFactory);
+  }
 
   /** Edits default Kafka producer config Json serialization for OnkoPatient for csv-input option */
   @Bean
