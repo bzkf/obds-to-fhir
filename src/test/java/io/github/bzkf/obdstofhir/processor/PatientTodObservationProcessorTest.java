@@ -90,13 +90,9 @@ class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.Mappe
     var onkoPatient =
         new JSONObject()
             .put("ID", id)
-            .put("LETZTE_INFORMATION", null)
+            .put("LETZTEINFORMATION", null)
             .put("STERBEDATUM", sterbedatum)
-            .put("STERBEDATUM_ACC", "exact")
             .put("PATIENTEN_ID", patId)
-            .put("ANGELEGT_AM", null)
-            .put("ZU_LOESCHEN", 0)
-            .put("PATIENTEN_IDS_VORHER", null)
             .put("BEARBEITET_AM", null)
             .toString();
 

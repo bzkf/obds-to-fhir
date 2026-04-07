@@ -72,7 +72,7 @@ public class TodMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @Nullable Reference condition,
       String tumorId,
-      boolean fromOnkoPatientTable) {
+      boolean fromAdditionalOnkoPatientInfo) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
@@ -84,8 +84,8 @@ public class TodMapper extends ObdsToFhirMapper {
     String patientIdentifier =
         Objects.requireNonNull(
             patient.getIdentifier().getValue(), "Patient identifier must not be null");
-    if (fromOnkoPatientTable) {
-      identifierValue = String.format("%s-%s", patientIdentifier, "fromOnkoPatientTable");
+    if (fromAdditionalOnkoPatientInfo) {
+      identifierValue = String.format("%s-%s", patientIdentifier, "fromAdditionalOnkoPatientInfo");
     } else {
       identifierValue = String.format("%s-%s", patient.getIdentifier().getValue(), tumorId);
     }
@@ -96,7 +96,7 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var todObsIdentifierSytstem =
         fhirProperties.getSystems().getIdentifiers().getTodObservationId();
-    if (fromOnkoPatientTable) {
+    if (fromAdditionalOnkoPatientInfo) {
       todObsIdentifierSytstem =
           fhirProperties.getSystems().getIdentifiers().getTodObservationOnkostarPatientTableId();
     }

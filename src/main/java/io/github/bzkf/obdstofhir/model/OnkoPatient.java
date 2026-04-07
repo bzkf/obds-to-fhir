@@ -21,33 +21,15 @@ public class OnkoPatient implements Serializable {
   @JsonProperty("ID")
   String id;
 
-  @JsonProperty("LETZTE_INFORMATION")
+  @JsonProperty("PATIENTEN_ID")
+  String patientId;
+
+  @JsonProperty("LETZTEINFORMATION")
   LocalDate letzteInformation;
 
   @JsonProperty("STERBEDATUM")
   LocalDate sterbeDatum;
 
-  @JsonProperty("STERBEDATUM_ACC")
-  String sterbedatumAcc;
-
-  @JsonProperty("PATIENTEN_ID")
-  String patientId;
-
-  @JsonProperty("ANGELEGT_AM")
-  LocalDateTime angelegtAm;
-
-  @JsonProperty("ZU_LOESCHEN")
-  Integer zuLoeschen;
-
-  @JsonProperty("PATIENTEN_IDS_VORHER")
-  String patientenIdsVorher;
-
   @JsonProperty("BEARBEITET_AM")
   LocalDateTime bearbeitetAm;
-
-  @JsonProperty("BT_STERBEDATUM")
-  LocalDate bestOfTumorSterbeDatum;
-
-  @JsonProperty("BT_LETZTEINFORMATION")
-  LocalDate bestOfTumorLetzteInformation;
 }
