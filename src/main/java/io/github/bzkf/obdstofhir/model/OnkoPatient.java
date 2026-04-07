@@ -32,10 +32,4 @@ public class OnkoPatient implements Serializable {
 
   @JsonProperty("BEARBEITET_AM")
   LocalDateTime bearbeitetAm;
-
-  @JsonProperty("BT_STERBEDATUM")
-  LocalDate bestOfTumorSterbeDatum;
-
-  @JsonProperty("BT_LETZTEINFORMATION")
-  LocalDate bestOfTumorLetzteInformation;
 }
