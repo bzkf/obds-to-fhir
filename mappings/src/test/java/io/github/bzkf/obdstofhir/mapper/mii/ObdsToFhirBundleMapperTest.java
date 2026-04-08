@@ -250,7 +250,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     }
   }
 
-    @SpringBootTest(
+  @SpringBootTest(
       classes = {
         FhirProperties.class,
         ObdsToFhirBundleMapper.class,
