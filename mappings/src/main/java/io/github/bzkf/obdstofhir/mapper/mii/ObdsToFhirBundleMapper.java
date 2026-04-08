@@ -119,7 +119,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
       ProvenanceMapper provenanceMapper,
-      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator, DeviceMapper deviceMapper) {
+      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator,
+      DeviceMapper deviceMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
