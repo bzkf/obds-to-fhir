@@ -186,6 +186,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         var matcher = patientIdRegexMatcher.matcher(obdsPatient.getPatientID().trim());
         if (matcher.matches()) {
           var patientId = matcher.group();
+          LOG.info(
+              "Patient_ID {} matched {} as {}",
+              obdsPatient.getPatientID(),
+              patientIdRegex,
+              patientId);
           // mutating the obdsPatient is probably not ideal
           obdsPatient.setPatientID(patientId);
         } else {
