@@ -13,7 +13,6 @@ import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
-import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
@@ -45,7 +44,6 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
-  private final DeviceMapper deviceMapper;
   private static final Logger LOG = LoggerFactory.getLogger(ObdsToFhirBundleMapper.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
 
@@ -119,8 +117,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
       ProvenanceMapper provenanceMapper,
-      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator,
-      DeviceMapper deviceMapper) {
+      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -150,7 +147,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.fruehereTumorErkrankungenMapper = fruehereTumorErkrankungenMapper;
     this.provenanceMapper = provenanceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
-    this.deviceMapper = deviceMapper;
   }
 
   /**
