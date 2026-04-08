@@ -5,6 +5,7 @@ import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
+import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import io.github.dizuker.tofhir.ReferenceUtils;
 import io.github.dizuker.tofhir.TransactionBuilder;
 import java.util.*;
@@ -34,7 +35,7 @@ import org.springframework.stereotype.Service;
 public class PatientTodObservationProcessor {
 
   private final TodMapper todMapper;
-  private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
+  private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
   private final DeviceMapper deviceMapper;
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
@@ -43,7 +44,7 @@ public class PatientTodObservationProcessor {
   public PatientTodObservationProcessor(
       TodMapper todMapper,
       DeviceMapper deviceMapper,
-      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
+      Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator) {
     this.todMapper = todMapper;
     this.deviceMapper = deviceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
@@ -80,16 +81,9 @@ public class PatientTodObservationProcessor {
       var obdsPatient = new OBDS.MengePatient.Patient();
 
       obdsPatient.setPatientID(onkoPatient.getPatientId());
-      var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
+      var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
-      if (patientReferenceOptional.isEmpty()) {
-        throw new IllegalArgumentException(
-            "Unable to build patient reference for patient from ONKOSTAR patient table. "
-                + "The patient may not exist in the FHIR server or record database. "
-                + "Creating dedicated Patient resources is not yet implemented.");
-      }
-
-      var deathObservations = todMapper.map(tod, patientReferenceOptional.get(), null, null, true);
+      var deathObservations = todMapper.map(tod, patientLookupResult.reference(), null, null, true);
 
       var builder = new TransactionBuilder().addEntries(deathObservations).failOnDuplicateEntries();
 
@@ -100,7 +94,7 @@ public class PatientTodObservationProcessor {
                 .setDisplay("oBDS-to-FHIR " + device.getVersion());
         var what =
             new Reference().setDisplay("ONKOSTAR 'patient' table row id " + onkoPatient.getId());
-        builder.withProvenance(what, who);
+        builder.withProvenance(who, what);
       }
 
       return builder.build();

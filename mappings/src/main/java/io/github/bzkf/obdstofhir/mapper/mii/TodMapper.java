@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,12 +70,13 @@ public class TodMapper extends ObdsToFhirMapper {
   public List<Observation> map(
       @NonNull TodTyp tod,
       @NonNull Reference patient,
-      Reference condition,
+      @Nullable Reference condition,
       String tumorId,
       boolean fromOnkoPatientTable) {
     // Validation
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
+      // fine to be null if called from the extra patient table processor
       verifyReference(condition, ResourceType.Condition);
     }
 
