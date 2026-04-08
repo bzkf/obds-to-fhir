@@ -13,6 +13,7 @@ import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
@@ -44,6 +45,7 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
+  private final DeviceMapper deviceMapper;
   private static final Logger LOG = LoggerFactory.getLogger(ObdsToFhirBundleMapper.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
 
@@ -117,7 +119,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
       ProvenanceMapper provenanceMapper,
-      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
+      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator, DeviceMapper deviceMapper) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -147,6 +149,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.fruehereTumorErkrankungenMapper = fruehereTumorErkrankungenMapper;
     this.provenanceMapper = provenanceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
+    this.deviceMapper = deviceMapper;
   }
 
   /**
@@ -214,6 +217,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
 
+      // by default, only add patient resource to bundle if enabled
+      var shouldAddPatientResourceToBundle = createPatientResources;
+
       // if the patient reference could not be generated, but the creation
       // of patient resources in enabled, we add a patient resource anyway.
       // this is helpful for cases where a patient should only be created if
@@ -233,12 +239,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // across here and the patientReferenceGenerator.
         reference.setIdentifier(patient.getIdentifierFirstRep());
         patientReferenceOptional = Optional.of(reference);
+      } else if (patientReferenceOptional.isPresent()) {
+        LOG.debug(
+            "A patient already exists in the FHIR server as {}",
+            patientReferenceOptional.get().getReference());
+        // if we already have a reference to a patient, i.e. it already exists,
+        // we don't add the patient resource to the bundle at all.
+        // this is true even if it's just an identifier-only reference
+        shouldAddPatientResourceToBundle = false;
       }
 
       var patientReference = patientReferenceOptional.get();
 
-      // only add patient resource to bundle if enabled
-      if (createPatientResources) {
+      if (shouldAddPatientResourceToBundle) {
         addToBundle(bundle, patient);
       }
 
