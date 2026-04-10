@@ -55,7 +55,7 @@ class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.Mappe
   @Autowired private PatientTodObservationProcessor processor;
 
   @Test
-  void testPatientTodObservationProcessor_MapsPatientToObsvBundle() throws IOException {
+  void testPatientTodObservationProcessor_MapsPatientToObsBundle() throws IOException {
     try (var driver =
         buildStream(
             processor.getPatientTodObservationProcessor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {

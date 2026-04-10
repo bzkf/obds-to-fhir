@@ -1,7 +1,7 @@
 package io.github.bzkf.obdstofhir;
 
 import de.basisdatensatz.obds.v3.OBDS;
-import java.util.Optional;
+import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import java.util.function.Function;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.hl7.fhir.r4.model.Identifier;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProfileTestConfig {
 
   @Bean
-  Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator(
+  Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator(
       FhirProperties fhirProperties) {
     return p -> {
       var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
@@ -22,7 +22,7 @@ public class ProfileTestConfig {
       var reference = new Reference("Patient/" + DigestUtils.sha256Hex(system + "|" + value));
       var identifier = new Identifier().setSystem(system).setValue(value);
       reference.setIdentifier(identifier);
-      return Optional.of(reference);
+      return new PatientLookupResult(reference, false);
     };
   }
 }

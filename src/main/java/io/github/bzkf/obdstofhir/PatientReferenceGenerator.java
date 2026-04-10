@@ -12,10 +12,11 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
-import io.github.bzkf.obdstofhir.PatientReferenceGenerator.ReferenceId;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator.StringId;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
+import io.github.bzkf.obdstofhir.model.PatientLookupResult;
+import io.github.dizuker.tofhir.IdUtils;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Parameters;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
-import org.hl7.fhir.r4.model.ResourceType;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -61,11 +61,7 @@ public class PatientReferenceGenerator {
     RECORD_ID_DATABASE_LOOKUP
   }
 
-  sealed interface IdResult permits StringId, ReferenceId {}
-
-  record StringId(String value) implements IdResult {}
-
-  record ReferenceId(Reference value) implements IdResult {}
+  record StringId(String value) {}
 
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
@@ -126,94 +122,98 @@ public class PatientReferenceGenerator {
   }
 
   @Bean
-  public Function<OBDS.MengePatient.Patient, Optional<Reference>>
-      getPatientReferenceGenerationFunction() {
-    Function<OBDS.MengePatient.Patient, Optional<IdResult>> idGenerator;
-    switch (strategy) {
-      case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID:
-        idGenerator =
-            p -> {
-              var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-              var value = p.getPatientID();
-              return Optional.of(new StringId(DigestUtils.sha256Hex(system + "|" + value)));
-            };
-        break;
-      case MD5_HASHED_PATIENT_ID:
-        idGenerator = p -> Optional.of(new StringId(DigestUtils.md5Hex(p.getPatientID())));
-        break;
-      case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES:
-        idGenerator = p -> Optional.of(new StringId(p.getPatientID().replace('_', '-')));
-        break;
-      case PATIENT_ID:
-        idGenerator = p -> Optional.of(new StringId(p.getPatientID()));
-        break;
-      case FHIR_SERVER_LOOKUP:
-        if (fhirClient == null) {
-          throw new IllegalArgumentException(
-              "ID generation strategy set to FHIR_SERVER_LOOKUP, but config is unset.");
-        }
-
-        idGenerator =
-            p -> {
-              var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-              var value = p.getPatientID();
-
-              var identifierToLookup =
-                  new Identifier().setSystem(system).setValue(value).setType(mrnType);
-
-              if (isPseudonymizePatientIdEnabled) {
-                identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
-              }
-
-              var id = findPatientIdByIdentifier(identifierToLookup);
-              // always add the identifier to the Reference
-              var reference = new Reference().setIdentifier(identifierToLookup);
-              // if the id is present, i.e. we found the resource on the FHIR server,
-              // set the reference to the resource as well
-              if (id.isPresent()) {
-                reference.setReference(ResourceType.Patient.name() + "/" + id.get().getIdPart());
-                return Optional.of(new ReferenceId(reference));
-              } else if (!isIdentifierOnlyReferencesAllowed) {
-                // by default reference always contains at least the identifier reference.
-                // if the id is not present and identifier-only references are not allowed,
-                //  return empty to indicate that no reference could be generated.
-                return Optional.empty();
-              }
-
-              return Optional.of(new ReferenceId(reference));
-            };
-
-        break;
-      case RECORD_ID_DATABASE_LOOKUP:
-        if (recordIdJdbcTemplate == null) {
-          throw new IllegalArgumentException(
-              "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
-        }
-
-        idGenerator = p -> findRecordIdByPatientId(p.getPatientID());
-        break;
-      default:
-        throw new IllegalStateException(
-            "Unsupported patient reference generation strategy: " + strategy);
-    }
-
+  Function<OBDS.MengePatient.Patient, PatientLookupResult> getPatientReferenceGenerationFunction() {
     return p -> {
       Validate.notBlank(p.getPatientID());
-      var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-      var value = p.getPatientID();
-      var identifier = new Identifier().setSystem(system).setValue(value).setType(mrnType);
 
-      return idGenerator
-          .apply(p)
-          .flatMap(
-              id ->
-                  switch (id) {
-                    case StringId(var s) ->
-                        Optional.of(
-                            new Reference(ResourceType.Patient.name() + "/" + s)
-                                .setIdentifier(identifier));
-                    case ReferenceId(var r) -> Optional.of(r);
-                  });
+      final var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
+      final var value = p.getPatientID();
+
+      final var identifier = new Identifier().setSystem(system).setValue(value).setType(mrnType);
+
+      switch (strategy) {
+        case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID -> {
+          var id = IdUtils.fromIdentifier(identifier);
+          return new PatientLookupResult(
+              new Reference("Patient/" + id).setIdentifier(identifier),
+              false // basically just a default value here
+              );
+        }
+
+        case MD5_HASHED_PATIENT_ID -> {
+          var id = DigestUtils.md5Hex(value);
+          return new PatientLookupResult(
+              new Reference("Patient/" + id).setIdentifier(identifier), false);
+        }
+
+        case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES -> {
+          var id = value.replace('_', '-');
+          return new PatientLookupResult(
+              new Reference("Patient/" + id).setIdentifier(identifier), false);
+        }
+
+        case PATIENT_ID -> {
+          return new PatientLookupResult(
+              new Reference("Patient/" + value).setIdentifier(identifier), false);
+        }
+
+        case FHIR_SERVER_LOOKUP -> {
+          if (fhirClient == null) {
+            throw new IllegalArgumentException(
+                "ID generation strategy set to FHIR_SERVER_LOOKUP, but config is unset.");
+          }
+
+          // we start by looking up the plain patient identifier
+          var identifierToLookup = identifier;
+
+          if (isPseudonymizePatientIdEnabled) {
+            // if enabled, first pseudonymize the identifier and then use this as the
+            // identifier to look up
+            identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
+          }
+
+          var id = findPatientIdByIdentifier(identifierToLookup);
+
+          // always set the (pseudonymized) identifier as part of the reference
+          var reference = new Reference().setIdentifier(identifierToLookup);
+
+          if (id.isPresent()) {
+            reference.setReference("Patient/" + id.get().getIdPart());
+            return new PatientLookupResult(reference, true);
+          }
+
+          if (!isIdentifierOnlyReferencesAllowed) {
+            throw new IllegalStateException(
+                "Patient not found on FHIR server and identifier-only references are disabled.");
+          }
+
+          return new PatientLookupResult(reference, false);
+        }
+
+        case RECORD_ID_DATABASE_LOOKUP -> {
+          if (recordIdJdbcTemplate == null) {
+            throw new IllegalArgumentException(
+                "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
+          }
+
+          var idResult = findRecordIdByPatientId(value);
+
+          if (idResult.isEmpty()) {
+            throw new IllegalStateException("No record ID found for patient: " + value);
+          }
+
+          var id = idResult.get().value();
+
+          return new PatientLookupResult(
+              new Reference("Patient/" + id).setIdentifier(identifier),
+              true // DB lookup implies existence
+              );
+        }
+
+        default ->
+            throw new IllegalStateException(
+                "Unsupported patient reference generation strategy: " + strategy);
+      }
     };
   }
 
@@ -232,7 +232,7 @@ public class PatientReferenceGenerator {
     return client;
   }
 
-  private Optional<IdResult> findRecordIdByPatientId(String patientId) {
+  private Optional<StringId> findRecordIdByPatientId(String patientId) {
     var id =
         this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
     if (StringUtils.hasText(id)) {

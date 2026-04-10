@@ -16,11 +16,11 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
+import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -87,7 +87,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.patient-id-regex}")
   private String patientIdRegex;
 
-  private final Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator;
+  private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
 
   public ObdsToFhirBundleMapper(
       FhirProperties fhirProperties,
@@ -117,7 +117,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       NebenwirkungMapper nebenwirkungMapper,
       FruehereTumorerkrankungenMapper fruehereTumorErkrankungenMapper,
       ProvenanceMapper provenanceMapper,
-      Function<OBDS.MengePatient.Patient, Optional<Reference>> patientReferenceGenerator) {
+      Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator) {
     super(fhirProperties);
     this.patientMapper = patientMapper;
     this.conditionMapper = conditionMapper;
@@ -212,33 +212,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       // the Patient.deceased information which is not present in every single Paket.
       var patient = patientMapper.map(obdsPatient, meldungen);
 
-      var patientReferenceOptional = patientReferenceGenerator.apply(obdsPatient);
+      var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
-      // if the patient reference could not be generated, but the creation
-      // of patient resources in enabled, we add a patient resource anyway.
-      // this is helpful for cases where a patient should only be created if
-      // it doesn't exist yet on the FHIR server (e.g. FHIR_SERVER_LOOKUP strategy).
-      if (patientReferenceOptional.isEmpty() && !createPatientResources) {
-        throw new IllegalStateException(
-            "Unable to generate patient reference for patient with ID. "
-                + "The patient may be missing in the FHIR server or record database.");
-      } else if (patientReferenceOptional.isEmpty() && createPatientResources) {
-        LOG.debug(
-            "Unable to generate patient reference so using reference "
-                + "to patient to be created.");
-        // this uses the default mechanism of referencing the created patient resource
-        var reference = createReferenceFromResource(patient);
-        // be sure to add the Reference.identifier as e.g. the TodMapper depends on it.
-        // XXX: this smells like a responsibility leak for reference generation spread
-        // across here and the patientReferenceGenerator.
-        reference.setIdentifier(patient.getIdentifierFirstRep());
-        patientReferenceOptional = Optional.of(reference);
-      }
+      var patientReference = patientLookupResult.reference();
 
-      var patientReference = patientReferenceOptional.get();
-
-      // only add patient resource to bundle if enabled
-      if (createPatientResources) {
+      if (!patientLookupResult.existsOnServer() && createPatientResources) {
         addToBundle(bundle, patient);
       }
 
