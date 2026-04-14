@@ -13,17 +13,17 @@ import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @ConditionalOnProperty(
     value = "fhir.mappings.from-onkostar-patient-data.csv.enabled",
     havingValue = "true")
-public class OnkoPatientCsvImporter implements ApplicationRunner {
+public class OnkoPatientCsvImporter {
 
   private static final Logger LOG = LoggerFactory.getLogger(OnkoPatientCsvImporter.class);
 
@@ -41,18 +41,21 @@ public class OnkoPatientCsvImporter implements ApplicationRunner {
   public OnkoPatientCsvImporter(
       KafkaTemplate<String, OnkoPatient> kafkaTemplate,
       @Value("${fhir.mappings.from-onkostar-patient-data.csv.file}") String csvFile,
-      @Value("${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}") String patientTopic) {
+      @Value("${spring.cloud.stream.bindings.getPatientTodObservationProcessor-in-0.destination}")
+          String patientTopic) {
     this.kafkaTemplate = kafkaTemplate;
     this.csvFile = csvFile;
     this.patientTopic = patientTopic;
   }
 
-  @Override
-  public void run(ApplicationArguments args) throws Exception {
+  @EventListener
+  public void processCsvDeathData(ApplicationReadyEvent readyEvent) throws Exception {
     var csvPath = Path.of(csvFile);
     if (!Files.exists(csvPath)) {
       throw new IllegalStateException("CSV file does not exist: " + csvPath);
     }
+
+    LOG.info("loading death CSV files");
 
     try (Reader reader = Files.newBufferedReader(csvPath);
         CSVParser parser = buildCsvFormat().parse(reader)) {
@@ -63,6 +66,7 @@ public class OnkoPatientCsvImporter implements ApplicationRunner {
         var onkoPatient = mapRecord(record);
 
         if (onkoPatient == null) {
+          LOG.warn("patient row is unmappable, skipping.");
           continue;
         }
 
