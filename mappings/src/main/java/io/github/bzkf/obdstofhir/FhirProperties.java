@@ -64,6 +64,7 @@ public class FhirProperties {
   public static class FhirIdentifierSystems {
     // local systems
     private String patientId;
+    private String vitalStatusId;
     private String primaerdiagnoseConditionId;
     private String fernmetastasenObservationId;
     private String residualstatusObservationId;
@@ -183,11 +184,13 @@ public class FhirProperties {
     private String miiCsOnkoTnmVersion;
     private String tnmUicc;
     private String miiCsOnkoProstataPostsurgicalComplications;
+    private String miiVSVitalStatus;
   }
 
   @Data
   public static class FhirProfiles {
     private String miiPatientPseudonymisiert;
+    private String miiVitalStatus;
 
     private String miiPrMedicationStatement;
     private String miiPrMedication;
