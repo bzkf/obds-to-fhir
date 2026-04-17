@@ -8,9 +8,14 @@ app:
 
 fhir:
   mappings:
-    from-onkostar-table:
-      # -- if enabled, tod observations will be created using the tables from onkostar
+    from-onkostar-patient-data:
+      # -- if enabled, tod observations will be created using additional data from onkostar
       enabled: true
+      csv:
+      # -- if enabled additionally, onkostar.PATIENT topic will be filled using a bestOfTumor-export-csv from Onkostar
+      # The CSV file needs to have 3 headings: `Patienten-ID;Letzte Information (LetzteInformation);Sterbedatum`
+        enabled: false
+        file: "" #./deploy/test-data/onkostar-bestoftumor-test.csv
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""

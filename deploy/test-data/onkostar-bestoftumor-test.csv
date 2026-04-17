@@ -1,0 +1,2 @@
+Patienten-ID;Prüfstatus;Bearbeitungsstatus;Dokumentierende Fachabteilung;Letzte Information (LetzteInformation);Letzte Information Dokumentation (LetzteInfoDoku);Letzte Information Krankheitsverlauf (LetzteInfoKrankheit);Letzter Verlauf (LetzterVerlauf);Letzter Verlauf Gesamtbeurteilung (LetzterVerlaufStatus);Sterbedatum;Letzter Verlauf Gesamtbeurteilung (LetzterVerlaufStatus) Kurzbeschreibung
+9876543;gültig;Abgeschlossen;Tumordokumentation;13.04.2025;15.07.2021;08.01.2025;08.01.2025;P;09.09.2025;Progression
