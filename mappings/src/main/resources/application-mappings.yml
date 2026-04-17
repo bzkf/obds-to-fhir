@@ -40,6 +40,7 @@ fhir:
       base-url: "https://bzkf.github.io/obds-to-fhir/identifiers"
       patient-id: "${fhir.systems.identifiers.base-url}/patient-id"
       vital-status-id: "${fhir.systems.identifiers.base-url}/vital-status-id"
+      vital-status-onkostar-patient-table-id: "${fhir.systems.identifiers.base-url}/onkostar-patient-table-vital-status-id"
       primaerdiagnose-condition-id: "${fhir.systems.identifiers.base-url}/primaerdiagnose-condition-id"
       histologie-specimen-id: "${fhir.systems.identifiers.base-url}/histologie-specimen-id"
       studienteilnahme-observation-id: "${fhir.systems.identifiers.base-url}/studienteilnahme-observation-id"

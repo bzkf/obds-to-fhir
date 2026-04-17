@@ -17,15 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
 class VitalStatusMapperTest extends MapperTest {
-  private static TodMapper tm;
+  private static VitalStatusMapper vsm;
 
   @BeforeAll
   static void beforeEach(@Autowired FhirProperties fhirProps) {
-    tm = new TodMapper(fhirProps);
+    vsm = new VitalStatusMapper(fhirProps);
   }
 
   @ParameterizedTest
-  @CsvSource({"Testpatient_1.xml", "Testpatient_Mamma.xml"})
+  @CsvSource({"Testpatient_1.xml", "Testpatient_Mamma.xml", "Testpatient_2.xml"})
   void map_withGivenObds_shouldCreateValidObservation(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
@@ -35,18 +35,17 @@ class VitalStatusMapperTest extends MapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
 
     var subject = new Reference("Patient/any");
-    var condition = new Reference("Condition/any");
     subject.setIdentifier(new Identifier().setValue("123456"));
     var meldung =
       obdsPatient.getMengeMeldung().getMeldung().stream()
         .filter(m -> m.getTod() != null)
         .findFirst()
-        .get();
-    var tMeldung = meldung.getTod();
-    var tumorId = "112233";
+        .orElse(null);
+    var tMeldung = (meldung != null) ? meldung.getTod() : null;
+    var meldeDatum = obds.getMeldedatum();
 
-    var observations = tm.map(tMeldung, subject, condition, tumorId, false);
+    var observation = vsm.map(meldeDatum, subject, tMeldung, false);
 
-    verifyAll(observations, sourceFile);
+    verify(observation, sourceFile);
   }
 }

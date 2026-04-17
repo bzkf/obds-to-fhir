@@ -65,6 +65,7 @@ public class FhirProperties {
     // local systems
     private String patientId;
     private String vitalStatusId;
+    private String vitalStatusOnkostarPatientTableId;
     private String primaerdiagnoseConditionId;
     private String fernmetastasenObservationId;
     private String residualstatusObservationId;

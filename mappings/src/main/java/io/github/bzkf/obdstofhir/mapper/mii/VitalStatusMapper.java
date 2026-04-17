@@ -10,8 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.Date;
-
+import java.util.Objects;
 
 public class VitalStatusMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(TodMapper.class);
@@ -20,57 +19,77 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  Observation observation = new Observation();
 
-public Observation map(@NonNull XMLGregorianCalendar meldeDatum ,
-                       @NonNull Reference patient,
-                       TodTyp tod){
 
-  observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiVitalStatus());
-  observation.setSubject(patient);
-  //TODO: Identifer überlegen
-  Identifier identifier =
-    new Identifier()
-      .setSystem(fhirProperties.getSystems().getIdentifiers().getVitalStatusId())
-      .setValue("");
-  observation.addIdentifier(identifier);
-  //TODO: status amended, bei Tod final
-  observation.setStatus(Observation.ObservationStatus.AMENDED);
+  public Observation map(@NonNull XMLGregorianCalendar meldeDatum,
+                         @NonNull Reference patient,
+                         TodTyp tod,
+                         boolean fromAdditionalOnkoPatientInfo) {
 
-  //set category to survey
-  CodeableConcept category = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getObservationCategory()).setCode("survey"));
-  observation.addCategory(category);
+    Observation observation = new Observation();
+    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiVitalStatus());
+    observation.setSubject(patient);
 
-  //set code
-  CodeableConcept code = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getLoinc()).setCode("67162-8"));
+    // Identifer
+    var vitalStatusObsIdentifierSytstem =
+      fhirProperties.getSystems().getIdentifiers().getVitalStatusId();
+    if (fromAdditionalOnkoPatientInfo) {
+      vitalStatusObsIdentifierSytstem =
+        fhirProperties.getSystems().getIdentifiers().getTodObservationOnkostarPatientTableId();
+    }
 
-  //set effectiveDateTime aus Meldung bzw. aus Onkostar-Tabelle
-  //var dateOptional = convertObdsDatumToDateTimeType(meldeDatum);
-  //dateOptional.ifPresent(observation::setEffective);
+    String identifierValue;
+    String patientIdentifier =
+      Objects.requireNonNull(
+        patient.getIdentifier().getValue(), "Patient identifier must not be null");
+    if (fromAdditionalOnkoPatientInfo) {
+      identifierValue = String.format(patientIdentifier);
+    } else {
+      identifierValue = String.format( patient.getIdentifier().getValue());
+    }
 
-  // set value CodeableConcept  T or L
-  //if Todesdatum aus Meldung, dann "T"
+    // Identifier
+    Identifier identifier =
+      new Identifier()
+        .setSystem(vitalStatusObsIdentifierSytstem)
+        .setValue(slugifier.slugify(identifierValue + "-" + "VS"));
+    observation.addIdentifier(identifier);
+    observation.setId(computeResourceIdFromIdentifier(identifier));
 
-  if(tod.getSterbedatum() != null){
-    var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
-    todesdatum.ifPresent(observation::setEffective);
+    // status amended, bei Tod final
+    if (tod != null) {
+      if (tod.getSterbedatum() != null) {
+        observation.setStatus(Observation.ObservationStatus.FINAL);
+      }
+    } else {
+      observation.setStatus(Observation.ObservationStatus.AMENDED);
+    }
 
-    CodeableConcept value = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getMiiVSVitalStatus()).setCode("T"));
-    observation.setValue(value);
+    //set category to survey
+    CodeableConcept category = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getObservationCategory()).setCode("survey"));
+    observation.addCategory(category);
+
+    //set code to 67162-8
+    CodeableConcept code = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getLoinc()).setCode("67162-8"));
+
+    //set effectiveDateTime
+    //if Todesdatum aus Meldung, dann "T", sonst L
+    CodeableConcept codeableConceptvalue = new CodeableConcept();
+    if (tod != null) {
+      if (tod.getSterbedatum() != null) {
+        var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
+        todesdatum.ifPresent(observation::setEffective);
+        codeableConceptvalue.addCoding(new Coding().setSystem(fhirProperties.getSystems().getMiiVSVitalStatus()).setCode("T"));
+        observation.setValue(codeableConceptvalue);
+      }
+    } else {
+      var date = convertObdsDatumToDateTimeType(meldeDatum);
+      date.ifPresent(observation::setEffective);
+      codeableConceptvalue.addCoding(new Coding().setSystem(fhirProperties.getSystems().getMiiVSVitalStatus()).setCode("L"));
+      observation.setValue(codeableConceptvalue);
+    }
+
+    return observation;
   }
-
-  CodeableConcept value = new CodeableConcept(new Coding().setSystem(fhirProperties.getSystems().getMiiVSVitalStatus()).setCode(""));
-
-
-
-
-  /*
-  TODO: if Todesdatum aus oBDS -> T; ansonsten erstmal Meldedatum
-  TODO: dann prüfen, ob aus bestOfTumor letzteInformation oder Todesdatum vorhanden ist
-   */
-
-  return null;
-}
-
 
 }
