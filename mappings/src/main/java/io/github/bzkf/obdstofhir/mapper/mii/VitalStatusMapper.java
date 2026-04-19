@@ -46,12 +46,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(computeResourceIdFromIdentifier(identifier));
 
-    // status amended, bei Tod final
-    if (tod != null && tod.getSterbedatum() != null) {
-      observation.setStatus(Observation.ObservationStatus.FINAL);
-    } else {
-      observation.setStatus(Observation.ObservationStatus.AMENDED);
-    }
+    observation.setStatus(Observation.ObservationStatus.FINAL);
 
     // set category to survey
     var category =
