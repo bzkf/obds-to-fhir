@@ -35,7 +35,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
         fhirProperties.getSystems().getIdentifiers().getVitalStatusId();
     if (isFromAdditionalOnkoPatientInfo) {
       vitalStatusObsIdentifierSytstem =
-          fhirProperties.getSystems().getIdentifiers().getTodObservationOnkostarPatientTableId();
+          fhirProperties.getSystems().getIdentifiers().getVitalStatusOnkostarPatientTableId();
     }
 
     // Identifier
