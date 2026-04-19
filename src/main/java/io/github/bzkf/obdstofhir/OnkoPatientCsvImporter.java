@@ -1,12 +1,13 @@
 package io.github.bzkf.obdstofhir;
 
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
-import java.io.Reader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -49,7 +50,8 @@ public class OnkoPatientCsvImporter {
   }
 
   @EventListener
-  public void processCsvDeathData(ApplicationReadyEvent readyEvent) throws Exception {
+  public void processCsvDeathData(ApplicationReadyEvent readyEvent)
+      throws IOException, InterruptedException, ExecutionException {
     var csvPath = Path.of(csvFile);
     if (!Files.exists(csvPath)) {
       throw new IllegalStateException("CSV file does not exist: " + csvPath);
@@ -57,13 +59,13 @@ public class OnkoPatientCsvImporter {
 
     LOG.info("loading death CSV files");
 
-    try (Reader reader = Files.newBufferedReader(csvPath);
-        CSVParser parser = buildCsvFormat().parse(reader)) {
+    try (var reader = Files.newBufferedReader(csvPath);
+        var parser = buildCsvFormat().parse(reader)) {
 
       validateRequiredHeaders(parser);
 
-      for (CSVRecord record : parser) {
-        var onkoPatient = mapRecord(record);
+      for (var row : parser) {
+        var onkoPatient = mapRecord(row);
 
         if (onkoPatient == null) {
           LOG.warn("patient row is unmappable, skipping.");
@@ -96,20 +98,20 @@ public class OnkoPatientCsvImporter {
     }
   }
 
-  private OnkoPatient mapRecord(CSVRecord record) {
-    var patientId = record.get(HEADER_PATIENT_ID);
-    var letzteInformation = parseDate(record.get(HEADER_LETZTE_INFORMATION));
-    var sterbeDatum = parseDate(record.get(HEADER_STERBEDATUM));
+  private OnkoPatient mapRecord(CSVRecord row) {
+    var patientId = row.get(HEADER_PATIENT_ID);
+    var letzteInformation = parseDate(row.get(HEADER_LETZTE_INFORMATION));
+    var sterbeDatum = parseDate(row.get(HEADER_STERBEDATUM));
 
     if (patientId.isBlank()) {
-      LOG.warn("Skip CSV row {} because Patienten-ID is missing.", record.getRecordNumber());
+      LOG.warn("Skip CSV row {} because Patienten-ID is missing.", row.getRecordNumber());
       return null;
     }
 
     if (sterbeDatum == null) {
       LOG.debug(
           "Skip CSV row {} for patientId {} because Sterbedatum is missing",
-          record.getRecordNumber(),
+          row.getRecordNumber(),
           patientId);
       return null;
     }
