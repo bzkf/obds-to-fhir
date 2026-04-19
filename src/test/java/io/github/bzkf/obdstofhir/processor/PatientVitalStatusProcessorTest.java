@@ -2,8 +2,6 @@ package io.github.bzkf.obdstofhir.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -50,7 +48,6 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
 
   private static final String INPUT_TOPIC_NAME = "patient-table-vs";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir-vs";
-  private static final FhirContext ctx = FhirContext.forR4();
 
   @Autowired private PatientVitalStatusProcessor processor;
 
@@ -68,19 +65,26 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
 
       // pipe test data
       inputTopic.pipeInput(
-          "key1", buildOnkoPatient("1", "12356789", "", "2010-01-01T00:00:00.000000"));
+          "key1", buildOnkoPatient("1", "12356789", null, "2010-01-01T00:00:00.000000"));
       inputTopic.pipeInput(
-          "key1", buildOnkoPatient("2", "22356789", "", "2023-01-01T00:00:00.000000"));
+          "key1", buildOnkoPatient("2", "22356789", "2023-01-01T00:00:00.000000", null));
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(2);
 
-      var firstObs =
-          BundleUtil.toListOfResourcesOfType(
-                  ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
-              .getFirst();
-      assertThat(firstObs.getEffective()).hasToString("DateTimeType[2010-01-01]");
+      var bundles = outputRecords.stream().map(kv -> (Bundle) kv.value).toList();
 
+      assertThat(bundles.get(0).getEntry()).hasSize(1);
+      var obs1 = (Observation) bundles.get(0).getEntry().get(0).getResource();
+      assertThat(obs1.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
+      assertThat(obs1.getEffectiveDateTimeType().getValue())
+          .isEqualTo("2010-01-01T00:00:00.000000");
+
+      assertThat(bundles.get(1).getEntry()).hasSize(1);
+      var obs2 = (Observation) bundles.get(1).getEntry().get(0).getResource();
+      assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("T");
+      assertThat(obs2.getEffectiveDateTimeType().getValue())
+          .isEqualTo("2023-01-01T00:00:00.000000");
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }

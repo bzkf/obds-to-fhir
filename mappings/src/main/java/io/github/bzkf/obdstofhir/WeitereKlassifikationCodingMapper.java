@@ -33,10 +33,8 @@ public class WeitereKlassifikationCodingMapper {
   @Value("${fhir.mappings.weitere-klassifikationen.extra-mappings-file-path}")
   private Optional<Path> extraMappingsFilePath;
 
-  private final FhirProperties fhirProperties;
-
-  public WeitereKlassifikationCodingMapper(FhirProperties fhirProperties) {
-    this.fhirProperties = fhirProperties;
+  public WeitereKlassifikationCodingMapper() {
+    // no-args constructor
   }
 
   @PostConstruct

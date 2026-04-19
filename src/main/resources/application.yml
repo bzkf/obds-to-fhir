@@ -149,7 +149,7 @@ spring:
           binder:
             configuration:
               cache.max.bytes.buffering: 0
-              max.request.size: ${MAX_REQUEST_SIZE:20971520}
+              max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
               num.stream.threads: ${NUM_STREAM_THREADS:1}
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
@@ -165,27 +165,27 @@ spring:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-1:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-2:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-3:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-4:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsV3Processor-in-0:
               consumer:
                 # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
@@ -194,7 +194,7 @@ spring:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getPatientTodObservationProcessor-in-0:
               consumer:
                 application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
@@ -202,7 +202,7 @@ spring:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
 
   kafka:
     bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9094}
@@ -215,10 +215,10 @@ spring:
       key-store-location: file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
-      compression-type: gzip
+      compression-type: ${KAFKA_COMPRESSION_TYPE:zstd}
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
       properties:
-        max.request.size: ${MAX_REQUEST_SIZE:20971520}
+        max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
 
 logging:
   pattern:

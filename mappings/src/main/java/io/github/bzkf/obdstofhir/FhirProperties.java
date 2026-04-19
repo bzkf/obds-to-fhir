@@ -185,7 +185,7 @@ public class FhirProperties {
     private String miiCsOnkoTnmVersion;
     private String tnmUicc;
     private String miiCsOnkoProstataPostsurgicalComplications;
-    private String miiVSVitalStatus;
+    private String miiCsVitalStatus;
   }
 
   @Data

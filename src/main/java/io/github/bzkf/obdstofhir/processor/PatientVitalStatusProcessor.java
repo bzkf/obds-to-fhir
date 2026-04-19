@@ -17,6 +17,8 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +36,7 @@ import org.springframework.stereotype.Service;
     matchIfMissing = false)
 @Configuration
 public class PatientVitalStatusProcessor {
+  private static final Logger LOG = LoggerFactory.getLogger(PatientVitalStatusProcessor.class);
 
   private final VitalStatusMapper vitalStatusMapper;
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
@@ -65,18 +68,19 @@ public class PatientVitalStatusProcessor {
     return onkoPatient -> {
       if (onkoPatient.getPatientId() == null
           || (onkoPatient.getSterbeDatum() == null && onkoPatient.getLetzteInformation() == null)) {
+        LOG.warn("Skipping patient with null patient ID or dates: {}", onkoPatient.getPatientId());
         return null;
       }
-      var tod = new TodTyp();
-      XMLGregorianCalendar xmlDateLastInfo;
+
+      TodTyp tod = null;
+      XMLGregorianCalendar xmlDateLastInfo = null;
       if (onkoPatient.getSterbeDatum() != null) {
         try {
           var xmlDateTod =
               DatatypeFactory.newInstance()
                   .newXMLGregorianCalendar(onkoPatient.getSterbeDatum().toString());
+          tod = new TodTyp();
           tod.setSterbedatum(xmlDateTod);
-          xmlDateLastInfo = null;
-
         } catch (DatatypeConfigurationException e) {
           throw new IllegalArgumentException(
               "Invalid date format for SterbeDatum: " + onkoPatient.getSterbeDatum(), e);
@@ -89,7 +93,7 @@ public class PatientVitalStatusProcessor {
 
         } catch (DatatypeConfigurationException e) {
           throw new IllegalArgumentException(
-              "Invalid date format for LastInfo: " + onkoPatient.getSterbeDatum(), e);
+              "Invalid date format for LastInfo: " + onkoPatient.getLetzteInformation(), e);
         }
       }
 
@@ -98,6 +102,7 @@ public class PatientVitalStatusProcessor {
       obdsPatient.setPatientID(onkoPatient.getPatientId());
       var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
+      // TODO: clarify if we should create patients if they don't already exist here
       var vitalStatus =
           vitalStatusMapper.map(xmlDateLastInfo, patientLookupResult.reference(), tod, true);
       var builder = new TransactionBuilder().addEntry(vitalStatus).failOnDuplicateEntries();

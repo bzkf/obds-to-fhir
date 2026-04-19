@@ -107,7 +107,7 @@ fhir:
     condition-ver-status: "http://terminology.hl7.org/CodeSystem/condition-ver-status"
     tnm-uicc: "https://www.uicc.org/resources/tnm"
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
-    observationCategory: "http://terminology.hl7.org/CodeSystem/observation-category"
+    observation-category: "http://terminology.hl7.org/CodeSystem/observation-category"
     meddra: "https://www.meddra.org"
 
     # MII
@@ -139,7 +139,7 @@ fhir:
     mii-cs-onko-therapieabweichung: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung"
     mii-cs-onko-tnm-version: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version"
     mii-cs-onko-prostata-postsurgical-complications: "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications"
-    mii-VS-vitalstatus: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/ValueSet/Vitalstatus"
+    mii-cs-vitalstatus: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/CodeSystem/Vitalstatus"
   profiles:
     # MII
     # @ignored

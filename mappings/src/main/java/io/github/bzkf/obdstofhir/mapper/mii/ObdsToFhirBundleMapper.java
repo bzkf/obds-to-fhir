@@ -348,8 +348,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         addToBundle(bundle, resourcesMappedFromMeldung);
 
         if (this.createProvenanceResources) {
-          // the items in resourcesMappedFromMeldung are processed in the same order that they were
-          // added to the list initially.
+          // the items in resourcesMappedFromMeldung are processed in the same order that
+          // they were added to the list initially.
           var targets =
               resourcesMappedFromMeldung.stream()
                   .map(ObdsToFhirMapper::createReferenceFromResource)
@@ -898,7 +898,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               patientReference,
               primaryConditionReference,
               op.getDatum(),
-              opReferences.getFirst()); //  it should never be empty here.
+              opReferences.getFirst()); // it should never be empty here.
       mappedResources.addAll(modulProstataResources);
     }
 

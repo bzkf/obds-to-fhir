@@ -60,6 +60,7 @@ import org.springframework.context.annotation.Configuration;
       ProfileTestConfig.class,
       FruehereTumorerkrankungenMapper.class,
       ProvenanceMapper.class,
+      VitalStatusMapper.class,
       DeviceMapper.class,
     })
 @EnableConfigurationProperties
@@ -203,6 +204,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
         FruehereTumorerkrankungenMapper.class,
         ProvenanceMapper.class,
         DeviceMapper.class,
+        VitalStatusMapper.class,
       },
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
   @EnableConfigurationProperties
@@ -285,6 +287,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
         FruehereTumorerkrankungenMapper.class,
         ProvenanceMapper.class,
         DeviceMapper.class,
+        VitalStatusMapper.class,
       },
       properties = "fhir.mappings.patient-id-regex=^(\\\\d)\\\\d*$")
   @EnableConfigurationProperties
