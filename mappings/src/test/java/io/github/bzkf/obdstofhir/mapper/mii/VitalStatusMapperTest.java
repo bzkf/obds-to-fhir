@@ -37,10 +37,10 @@ class VitalStatusMapperTest extends MapperTest {
     var subject = new Reference("Patient/any");
     subject.setIdentifier(new Identifier().setValue("123456"));
     var meldung =
-      obdsPatient.getMengeMeldung().getMeldung().stream()
-        .filter(m -> m.getTod() != null)
-        .findFirst()
-        .orElse(null);
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getTod() != null)
+            .findFirst()
+            .orElse(null);
     var tMeldung = (meldung != null) ? meldung.getTod() : null;
     var meldeDatum = obds.getMeldedatum();
 

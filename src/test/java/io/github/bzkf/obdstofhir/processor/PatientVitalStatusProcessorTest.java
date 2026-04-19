@@ -38,13 +38,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @SpringBootTest(
-  classes = {
-    PatientVitalStatusProcessor.class,
-    FhirProperties.class,
-    VitalStatusMapper.class,
-    DeviceMapper.class,
-    PatientReferenceGenerator.class
-  })
+    classes = {
+      PatientVitalStatusProcessor.class,
+      FhirProperties.class,
+      VitalStatusMapper.class,
+      DeviceMapper.class,
+      PatientReferenceGenerator.class
+    })
 @EnableConfigurationProperties(value = {FhirProperties.class})
 class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
@@ -57,26 +57,28 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
   @Test
   void testPatientVitalStatusProcessor_MapsPatientToObsBundle() throws IOException {
     try (var driver =
-           buildStream(
-             processor.getPatientVitalStatusProcessor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+        buildStream(
+            processor.getPatientVitalStatusProcessor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-        driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
       var outputTopic =
-        driver.createOutputTopic(
-          OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput("key1", buildOnkoPatient("1", "12356789", "", "2010-01-01T00:00:00.000000"));
-      inputTopic.pipeInput("key1", buildOnkoPatient("2", "22356789", "", "2023-01-01T00:00:00.000000"));
+      inputTopic.pipeInput(
+          "key1", buildOnkoPatient("1", "12356789", "", "2010-01-01T00:00:00.000000"));
+      inputTopic.pipeInput(
+          "key1", buildOnkoPatient("2", "22356789", "", "2023-01-01T00:00:00.000000"));
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(2);
 
       var firstObs =
-        BundleUtil.toListOfResourcesOfType(
-            ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
-          .getFirst();
+          BundleUtil.toListOfResourcesOfType(
+                  ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
+              .getFirst();
       assertThat(firstObs.getEffective()).hasToString("DateTimeType[2010-01-01]");
 
     } catch (JSONException e) {
@@ -85,16 +87,16 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
   }
 
   private OnkoPatient buildOnkoPatient(String id, String patId, String sterbedatum, String lastInfo)
-    throws IOException, JSONException {
+      throws IOException, JSONException {
 
     var onkoPatient =
-      new JSONObject()
-        .put("ID", id)
-        .put("LETZTEINFORMATION", lastInfo)
-        .put("STERBEDATUM", sterbedatum)
-        .put("PATIENTEN_ID", patId)
-        .put("BEARBEITET_AM", null)
-        .toString();
+        new JSONObject()
+            .put("ID", id)
+            .put("LETZTEINFORMATION", lastInfo)
+            .put("STERBEDATUM", sterbedatum)
+            .put("PATIENTEN_ID", patId)
+            .put("BEARBEITET_AM", null)
+            .toString();
 
     var mapper = new ObjectMapper();
     mapper.registerModule(new JavaTimeModule());
@@ -103,9 +105,9 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
   }
 
   private TopologyTestDriver buildStream(
-    Function<KTable<String, OnkoPatient>, KStream<String, Bundle>> processor,
-    String inputTopic,
-    String outputTopic) {
+      Function<KTable<String, OnkoPatient>, KStream<String, Bundle>> processor,
+      String inputTopic,
+      String outputTopic) {
 
     // StreamConfig props
     var props = new Properties();
@@ -114,7 +116,7 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
 
     var builder = new StreamsBuilder();
     final KTable<String, OnkoPatient> stream =
-      builder.table(inputTopic, Consumed.with(Serdes.String(), new OnkoPatientSerde()));
+        builder.table(inputTopic, Consumed.with(Serdes.String(), new OnkoPatientSerde()));
 
     processor.apply(stream).to(outputTopic);
 
