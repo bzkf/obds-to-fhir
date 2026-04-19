@@ -53,9 +53,18 @@ public class OnkoPatientCsvImporter {
   @EventListener
   public void processCsvDeathData(ApplicationReadyEvent readyEvent)
       throws IOException, InterruptedException, ExecutionException {
+    if (csvFile == null || csvFile.isBlank()) {
+      throw new IllegalStateException(
+          "CSV file path is not configured. Please set "
+              + "'fhir.mappings.from-onkostar-patient-data.csv.file' to a valid file path.");
+    }
+
     var csvPath = Path.of(csvFile);
     if (!Files.exists(csvPath)) {
       throw new IllegalStateException("CSV file does not exist: " + csvPath);
+    }
+    if (!Files.isRegularFile(csvPath)) {
+      throw new IllegalStateException("CSV path is not a regular file: " + csvPath);
     }
 
     LOG.info("loading death CSV files");
