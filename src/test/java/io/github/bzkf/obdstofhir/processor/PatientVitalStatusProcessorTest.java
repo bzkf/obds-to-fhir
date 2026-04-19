@@ -64,10 +64,8 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput(
-          "key1", buildOnkoPatient("1", "12356789", null, "2010-01-01T00:00:00.000000"));
-      inputTopic.pipeInput(
-          "key1", buildOnkoPatient("2", "22356789", "2023-01-01T00:00:00.000000", null));
+      inputTopic.pipeInput("key1", buildOnkoPatient("1", "12356789", null, "2010-01-01"));
+      inputTopic.pipeInput("key1", buildOnkoPatient("2", "22356789", "2023-01-01", null));
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(2);
@@ -77,14 +75,12 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
       assertThat(bundles.get(0).getEntry()).hasSize(1);
       var obs1 = (Observation) bundles.get(0).getEntry().get(0).getResource();
       assertThat(obs1.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
-      assertThat(obs1.getEffectiveDateTimeType().getValue())
-          .isEqualTo("2010-01-01T00:00:00.000000");
+      assertThat(obs1.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2010-01-01");
 
       assertThat(bundles.get(1).getEntry()).hasSize(1);
       var obs2 = (Observation) bundles.get(1).getEntry().get(0).getResource();
       assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("T");
-      assertThat(obs2.getEffectiveDateTimeType().getValue())
-          .isEqualTo("2023-01-01T00:00:00.000000");
+      assertThat(obs2.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2023-01-01");
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }

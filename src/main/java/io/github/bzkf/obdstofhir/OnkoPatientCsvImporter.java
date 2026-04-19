@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -124,7 +125,7 @@ public class OnkoPatientCsvImporter {
   }
 
   private LocalDate parseDate(String value) {
-    if (value == null) {
+    if (StringUtils.isBlank(value)) {
       return null;
     }
     return LocalDate.parse(value, DATE_FORMATTER);

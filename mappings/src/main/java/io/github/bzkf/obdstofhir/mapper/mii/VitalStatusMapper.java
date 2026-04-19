@@ -18,7 +18,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
   }
 
   public Observation map(
-      @NonNull XMLGregorianCalendar effectiveTime,
+      @Nullable XMLGregorianCalendar effectiveTime,
       @NonNull Reference patient,
       @Nullable TodTyp tod,
       boolean isFromAdditionalOnkoPatientInfo) {
@@ -79,7 +79,10 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
               .setCode("T")
               .setDisplay("Patient verstorben"));
     } else {
-      var date = convertObdsDatumToDateTimeType(effectiveTime);
+      var date =
+          convertObdsDatumToDateTimeType(
+              Objects.requireNonNull(
+                  effectiveTime, "effectiveTime must not be null when tod is null"));
       date.ifPresent(observation::setEffective);
 
       valueCodeableConcept.addCoding(
