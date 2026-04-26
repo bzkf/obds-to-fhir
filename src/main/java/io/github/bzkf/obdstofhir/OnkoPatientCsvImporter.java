@@ -50,9 +50,8 @@ public class OnkoPatientCsvImporter {
     this.patientTopic = patientTopic;
   }
 
-  @EventListener
-  public void processCsvDeathData(ApplicationReadyEvent readyEvent)
-      throws IOException, InterruptedException, ExecutionException {
+  @EventListener(ApplicationReadyEvent.class)
+  public void processCsvDeathData() throws IOException, InterruptedException, ExecutionException {
     if (csvFile == null || csvFile.isBlank()) {
       throw new IllegalStateException(
           "CSV file path is not configured. Please set "
