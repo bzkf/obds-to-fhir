@@ -6,12 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,7 +67,7 @@ public class OnkoPatientCsvImporter {
       throw new IllegalStateException("CSV path is not a regular file: " + csvPath);
     }
 
-    LOG.info("loading death CSV files");
+    LOG.info("Loading death CSV file: {}", csvPath);
 
     try (var reader = Files.newBufferedReader(csvPath);
         var parser = buildCsvFormat().parse(reader)) {
@@ -78,7 +78,6 @@ public class OnkoPatientCsvImporter {
         var onkoPatient = mapRecord(row);
 
         if (onkoPatient == null) {
-          LOG.warn("patient row is unmappable, skipping.");
           continue;
         }
 
@@ -110,17 +109,17 @@ public class OnkoPatientCsvImporter {
 
   private OnkoPatient mapRecord(CSVRecord row) {
     var patientId = row.get(HEADER_PATIENT_ID);
-    var letzteInformation = parseDate(row.get(HEADER_LETZTE_INFORMATION));
-    var sterbeDatum = parseDate(row.get(HEADER_STERBEDATUM));
+    var letzteInformation = parseDate(row, HEADER_LETZTE_INFORMATION);
+    var sterbeDatum = parseDate(row, HEADER_STERBEDATUM);
 
     if (patientId.isBlank()) {
-      LOG.warn("Skip CSV row {} because Patienten-ID is missing.", row.getRecordNumber());
+      LOG.warn("Skipped CSV row {} because Patienten-ID is missing.", row.getRecordNumber());
       return null;
     }
 
     if (sterbeDatum == null) {
-      LOG.debug(
-          "Skip CSV row {} for patientId {} because Sterbedatum is missing",
+      LOG.info(
+          "Skipped CSV row {} for patientId {} because Sterbedatum is missing or invalid.",
           row.getRecordNumber(),
           patientId);
       return null;
@@ -133,10 +132,19 @@ public class OnkoPatientCsvImporter {
         .build();
   }
 
-  private LocalDate parseDate(String value) {
-    if (StringUtils.isBlank(value)) {
+  private LocalDate parseDate(CSVRecord row, String header) {
+    var value = row.get(header);
+
+    if (value == null || value.isBlank()) {
       return null;
     }
-    return LocalDate.parse(value, DATE_FORMATTER);
+
+    try {
+      return LocalDate.parse(value, DATE_FORMATTER);
+    } catch (DateTimeParseException e) {
+      LOG.warn(
+          "Invalid date in CSV row {}, column '{}': '{}'", row.getRecordNumber(), header, value);
+      return null;
+    }
   }
 }
