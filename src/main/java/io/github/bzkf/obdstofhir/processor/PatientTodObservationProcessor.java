@@ -16,11 +16,13 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.ValueMapper;
 import org.hl7.fhir.r4.model.*;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
 
 @Service
 @ConditionalOnProperty(
@@ -37,6 +39,7 @@ public class PatientTodObservationProcessor {
   private final TodMapper todMapper;
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
   private final DeviceMapper deviceMapper;
+  private static final Logger LOG = LoggerFactory.getLogger(PatientTodObservationProcessor.class);
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
@@ -63,6 +66,9 @@ public class PatientTodObservationProcessor {
 
   public ValueMapper<OnkoPatient, Bundle> getTodObsBundleMapper() {
     return onkoPatient -> {
+      LOG.info("Patient: id={}, sterbedatum={}",
+        onkoPatient.getPatientId(),
+        onkoPatient.getSterbeDatum());
       if (onkoPatient.getPatientId() == null || onkoPatient.getSterbeDatum() == null) {
         return null;
       }
