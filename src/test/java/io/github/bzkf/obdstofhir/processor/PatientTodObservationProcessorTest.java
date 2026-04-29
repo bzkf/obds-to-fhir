@@ -11,6 +11,7 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.VitalStatusMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
 import io.github.bzkf.obdstofhir.serde.OnkoPatientSerde;
 import java.io.IOException;
@@ -42,6 +43,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientTodObservationProcessor.class,
       FhirProperties.class,
       TodMapper.class,
+      VitalStatusMapper.class,
       DeviceMapper.class,
       PatientReferenceGenerator.class
     })
@@ -67,8 +69,12 @@ class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.Mappe
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput("key1", buildOnkoPatient("1", "12356789", "2011-01-01T00:00:00.000000"));
-      inputTopic.pipeInput("key1", buildOnkoPatient("2", "22356789", "2022-02-02T00:00:00.000000"));
+      inputTopic.pipeInput(
+          "key1",
+          buildOnkoPatient(
+              "1", "12356789", "2011-01-01T00:00:00.000000", "2011-01-01T00:00:00.000000"));
+      inputTopic.pipeInput(
+          "key1", buildOnkoPatient("2", "22356789", null, "2022-02-02T00:00:00.000000"));
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(2);
@@ -78,19 +84,31 @@ class PatientTodObservationProcessorTest extends io.github.bzkf.obdstofhir.Mappe
                   ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
               .getFirst();
       assertThat(firstObs.getEffective()).hasToString("DateTimeType[2011-01-01]");
+      var bundles = outputRecords.stream().map(kv -> (Bundle) kv.value).toList();
+
+      assertThat(bundles.get(0).getEntry()).hasSize(2);
+      var obs1 = (Observation) bundles.get(0).getEntry().get(0).getResource();
+      assertThat(obs1.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("T");
+      assertThat(obs1.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2011-01-01");
+
+      assertThat(bundles.get(1).getEntry()).hasSize(1);
+      var obs2 = (Observation) bundles.get(1).getEntry().get(0).getResource();
+      assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
+      assertThat(obs2.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2022-02-02");
 
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private OnkoPatient buildOnkoPatient(String id, String patId, String sterbedatum)
+  private OnkoPatient buildOnkoPatient(
+      String id, String patId, String sterbedatum, String letzteIformation)
       throws IOException, JSONException {
 
     var onkoPatient =
         new JSONObject()
             .put("ID", id)
-            .put("LETZTEINFORMATION", null)
+            .put("LETZTEINFORMATION", letzteIformation)
             .put("STERBEDATUM", sterbedatum)
             .put("PATIENTEN_ID", patId)
             .put("BEARBEITET_AM", null)
