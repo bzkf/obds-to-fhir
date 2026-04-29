@@ -143,6 +143,14 @@ spring:
           destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getPatientVitalStatusProcessor-in-0:
+          # -- Name of the topic where ONKOSTAR Patients are read from
+          destination: ${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}
+        getPatientVitalStatusProcessor-out-0:
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
       kafka:
         streams:
@@ -199,6 +207,14 @@ spring:
               consumer:
                 application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
             getPatientTodObservationProcessor-out-0:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+            getPatientVitalStatusProcessor-in-0:
+              consumer:
+                application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
+            getPatientVitalStatusProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
