@@ -1,5 +1,6 @@
 package io.github.bzkf.obdstofhir.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -28,6 +29,7 @@ public class OnkoPatient implements Serializable {
   LocalDate letzteInformation;
 
   @JsonProperty("STERBEDATUM")
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   LocalDate sterbeDatum;
 
   @JsonProperty("BEARBEITET_AM")
