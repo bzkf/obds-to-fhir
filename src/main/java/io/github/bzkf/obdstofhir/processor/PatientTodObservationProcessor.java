@@ -58,17 +58,17 @@ public class PatientTodObservationProcessor {
       getPatientTodObservationProcessor() {
     return stringOnkoPatTable ->
         stringOnkoPatTable
-          .mapValues(value -> {
+            .mapValues(
+                value -> {
+                  LOG.info(
+                      "MapValue Input: patientId={}, sterbedatum={}",
+                      value.getPatientId(),
+                      value.getSterbeDatum());
 
-            LOG.info("MapValue Input: patientId={}, sterbedatum={}",
-              value.getPatientId(),
-              value.getSterbeDatum());
-
-            return getTodObsBundleMapper().apply(value);
-          })
+                  return getTodObsBundleMapper().apply(value);
+                })
             .toStream()
-          .peek((key, value) ->
-            LOG.info("Stream received key={}, value={}", key, value))
+            .peek((key, value) -> LOG.info("Stream received key={}, value={}", key, value))
             .filter((key, value) -> value != null)
             .selectKey((key, value) -> value.getEntry().getFirst().getFullUrl());
   }
