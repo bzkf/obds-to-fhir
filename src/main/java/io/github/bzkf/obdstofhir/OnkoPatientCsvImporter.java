@@ -124,11 +124,14 @@ public class OnkoPatientCsvImporter {
       return null;
     }
 
-    return OnkoPatient.builder()
-        .patientId(patientId)
-        .letzteInformation(letzteInformation)
-        .sterbeDatum(sterbeDatum)
-        .build();
+    var onkoPatient =
+        OnkoPatient.builder()
+            .patientId(patientId)
+            .letzteInformation(letzteInformation)
+            .sterbeDatum(sterbeDatum)
+            .build();
+    LOG.info("After parseDate: {}", onkoPatient.getSterbeDatum());
+    return onkoPatient;
   }
 
   private LocalDate parseDate(CSVRecord row, String header) {
