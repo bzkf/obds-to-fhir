@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "b229c716f54a85591d802ef0af53d032d13153c7ca4ca0db2c13190a02c65be7",
+  "id": "3bf489767236fdfe33eb21965431e29da184642376a09706373824246d281dbd",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/Vitalstatus" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/vital-status-id",
-    "value": "123456-vs"
+    "value": "123456-vs-T"
   } ],
   "status": "final",
   "category": [ {

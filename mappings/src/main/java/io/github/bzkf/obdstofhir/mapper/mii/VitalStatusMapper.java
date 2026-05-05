@@ -38,14 +38,6 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
           fhirProperties.getSystems().getIdentifiers().getVitalStatusOnkostarPatientTableId();
     }
 
-    // Identifier
-    var identifier =
-        new Identifier()
-            .setSystem(vitalStatusObsIdentifierSytstem)
-            .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-" + "vs"));
-    observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
-
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     // set category to survey
@@ -65,11 +57,17 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
                 .setDisplay("Patient Disposition"));
 
     observation.setCode(code);
-
+    Identifier identifier = new Identifier();
     // set effectiveDateTime
     // if Todesdatum aus Meldung, dann "T", sonst L
     var valueCodeableConcept = new CodeableConcept();
     if (tod != null) {
+      // Identifier
+      identifier
+          .setSystem(vitalStatusObsIdentifierSytstem)
+          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-" + "vs-" + "T"));
+      observation.addIdentifier(identifier);
+      observation.setId(computeResourceIdFromIdentifier(identifier));
       var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
       todesdatum.ifPresent(observation::setEffective);
 
@@ -79,6 +77,12 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
               .setCode("T")
               .setDisplay("Patient verstorben"));
     } else {
+
+      identifier
+          .setSystem(vitalStatusObsIdentifierSytstem)
+          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-" + "vs-" + "L"));
+      observation.addIdentifier(identifier);
+      observation.setId(computeResourceIdFromIdentifier(identifier));
       var date =
           convertObdsDatumToDateTimeType(
               Objects.requireNonNull(
