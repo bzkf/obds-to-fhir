@@ -26,6 +26,7 @@ public class OnkoPatient implements Serializable {
   String patientId;
 
   @JsonProperty("LETZTEINFORMATION")
+  @JsonFormat(shape = JsonFormat.Shape.STRING)
   LocalDate letzteInformation;
 
   @JsonProperty("STERBEDATUM")

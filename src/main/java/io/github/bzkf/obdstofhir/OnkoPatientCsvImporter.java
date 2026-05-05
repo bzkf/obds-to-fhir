@@ -116,14 +116,6 @@ public class OnkoPatientCsvImporter {
       return null;
     }
 
-    if (sterbeDatum == null) {
-      LOG.info(
-          "Skipped CSV row {} for patientId {} because Sterbedatum is missing or invalid.",
-          row.getRecordNumber(),
-          patientId);
-      return null;
-    }
-
     var onkoPatient =
         OnkoPatient.builder()
             .patientId(patientId)
