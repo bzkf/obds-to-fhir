@@ -3,12 +3,13 @@ package io.github.bzkf.obdstofhir.processor;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.VitalStatusMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import io.github.dizuker.tofhir.ReferenceUtils;
 import io.github.dizuker.tofhir.TransactionBuilder;
-import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -35,66 +36,43 @@ import org.springframework.stereotype.Service;
     havingValue = "true",
     matchIfMissing = false)
 @Configuration
-public class PatientVitalStatusProcessor {
-  private static final Logger LOG = LoggerFactory.getLogger(PatientVitalStatusProcessor.class);
+public class PatientVSObservationProcessor {
 
+  private final TodMapper todMapper;
   private final VitalStatusMapper vitalStatusMapper;
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
   private final DeviceMapper deviceMapper;
+  private static final Logger LOG = LoggerFactory.getLogger(PatientVSObservationProcessor.class);
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
 
-  public PatientVitalStatusProcessor(
+  public PatientVSObservationProcessor(
+      TodMapper todMapper,
       VitalStatusMapper vitalStatusMapper,
       DeviceMapper deviceMapper,
       Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator) {
+    this.todMapper = todMapper;
     this.vitalStatusMapper = vitalStatusMapper;
     this.deviceMapper = deviceMapper;
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
   @Bean
-  Function<KTable<String, OnkoPatient>, KStream<String, Bundle>> getPatientVitalStatusProcessor() {
+  Function<KTable<String, OnkoPatient>, KStream<String, Bundle>>
+      getPatientVSObservationProcessor() {
     return stringOnkoPatTable ->
         stringOnkoPatTable
-            .mapValues(getVitalStatusObsBundleMapper())
+            .mapValues(getTodObsBundleMapper())
             .toStream()
             .filter((key, value) -> value != null)
             .selectKey((key, value) -> value.getEntry().getFirst().getFullUrl());
   }
 
-  public ValueMapper<OnkoPatient, Bundle> getVitalStatusObsBundleMapper() {
+  public ValueMapper<OnkoPatient, Bundle> getTodObsBundleMapper() {
     return onkoPatient -> {
-      if (onkoPatient.getPatientId() == null
-          || (onkoPatient.getSterbeDatum() == null && onkoPatient.getLetzteInformation() == null)) {
-        LOG.warn("Skipping patient with null patient ID or dates: {}", onkoPatient.getPatientId());
+      if (onkoPatient.getPatientId() == null) {
         return null;
-      }
-
-      TodTyp tod = null;
-      XMLGregorianCalendar xmlDateLastInfo = null;
-      if (onkoPatient.getSterbeDatum() != null) {
-        try {
-          var xmlDateTod =
-              DatatypeFactory.newInstance()
-                  .newXMLGregorianCalendar(onkoPatient.getSterbeDatum().toString());
-          tod = new TodTyp();
-          tod.setSterbedatum(xmlDateTod);
-        } catch (DatatypeConfigurationException e) {
-          throw new IllegalArgumentException(
-              "Invalid date format for SterbeDatum: " + onkoPatient.getSterbeDatum(), e);
-        }
-      } else {
-        try {
-          xmlDateLastInfo =
-              DatatypeFactory.newInstance()
-                  .newXMLGregorianCalendar(onkoPatient.getLetzteInformation().toString());
-
-        } catch (DatatypeConfigurationException e) {
-          throw new IllegalArgumentException(
-              "Invalid date format for LastInfo: " + onkoPatient.getLetzteInformation(), e);
-        }
       }
 
       var obdsPatient = new OBDS.MengePatient.Patient();
@@ -102,10 +80,21 @@ public class PatientVitalStatusProcessor {
       obdsPatient.setPatientID(onkoPatient.getPatientId());
       var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
+      if (onkoPatient.getSterbeDatum() == null && onkoPatient.getLetzteInformation() == null) {
+        LOG.warn("Skipping patient without dates: {}", onkoPatient.getPatientId());
+        return null;
+      }
+
+      TransactionBuilder builder = new TransactionBuilder();
       // TODO: clarify if we should create patients if they don't already exist here
-      var vitalStatus =
-          vitalStatusMapper.map(xmlDateLastInfo, patientLookupResult.reference(), tod, true);
-      var builder = new TransactionBuilder().addEntry(vitalStatus).failOnDuplicateEntries();
+
+      builder.addEntry(buildVitalStatus(onkoPatient, patientLookupResult)).failOnDuplicateEntries();
+
+      if (onkoPatient.getSterbeDatum() != null) {
+        builder
+            .addEntries(buildTodBundle(onkoPatient, patientLookupResult))
+            .failOnDuplicateEntries();
+      }
 
       if (createProvenanceResources) {
         var device = deviceMapper.map();
@@ -121,7 +110,57 @@ public class PatientVitalStatusProcessor {
         var what = new Reference().setDisplay(sourceDisplay);
         builder.withProvenance(who, what);
       }
+
       return builder.build();
     };
+  }
+
+  private List<Observation> buildTodBundle(OnkoPatient onkoPatient, PatientLookupResult ref) {
+
+    var tod = new TodTyp();
+
+    try {
+      var xmlDate =
+          DatatypeFactory.newInstance()
+              .newXMLGregorianCalendar(onkoPatient.getSterbeDatum().toString());
+      tod.setSterbedatum(xmlDate);
+    } catch (DatatypeConfigurationException e) {
+      throw new IllegalArgumentException(
+          "Invalid date format for SterbeDatum: " + onkoPatient.getSterbeDatum(), e);
+    }
+
+    var deathObservations = todMapper.map(tod, ref.reference(), null, null, true);
+
+    return deathObservations;
+  }
+
+  private Observation buildVitalStatus(OnkoPatient onkoPatient, PatientLookupResult ref) {
+
+    XMLGregorianCalendar xmlDateLastInfo = null;
+    TodTyp tod = null;
+
+    if (onkoPatient.getSterbeDatum() != null) {
+      try {
+        var xmlDateTod =
+            DatatypeFactory.newInstance()
+                .newXMLGregorianCalendar(onkoPatient.getSterbeDatum().toString());
+        tod = new TodTyp();
+        tod.setSterbedatum(xmlDateTod);
+      } catch (DatatypeConfigurationException e) {
+        throw new IllegalArgumentException(
+            "Invalid date format for SterbeDatum: " + onkoPatient.getSterbeDatum(), e);
+      }
+    } else {
+      try {
+        xmlDateLastInfo =
+            DatatypeFactory.newInstance()
+                .newXMLGregorianCalendar(onkoPatient.getLetzteInformation().toString());
+
+      } catch (DatatypeConfigurationException e) {
+        throw new IllegalArgumentException(
+            "Invalid date format for LastInfo: " + onkoPatient.getLetzteInformation(), e);
+      }
+    }
+    return vitalStatusMapper.map(xmlDateLastInfo, ref.reference(), tod, true);
   }
 }
