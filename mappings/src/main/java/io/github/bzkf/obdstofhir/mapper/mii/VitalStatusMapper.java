@@ -65,7 +65,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
       // Identifier
       identifier
           .setSystem(vitalStatusObsIdentifierSytstem)
-          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-" + "vs-" + "T"));
+          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "T"));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
       var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
@@ -80,7 +80,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
 
       identifier
           .setSystem(vitalStatusObsIdentifierSytstem)
-          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-" + "vs-" + "L"));
+          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "L"));
       observation.addIdentifier(identifier);
       observation.setId(computeResourceIdFromIdentifier(identifier));
       var date =

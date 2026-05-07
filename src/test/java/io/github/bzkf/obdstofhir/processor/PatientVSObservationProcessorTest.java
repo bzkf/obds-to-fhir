@@ -2,12 +2,15 @@ package io.github.bzkf.obdstofhir.processor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.VitalStatusMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
 import io.github.bzkf.obdstofhir.serde.OnkoPatientSerde;
@@ -37,25 +40,27 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @SpringBootTest(
     classes = {
-      PatientVitalStatusProcessor.class,
+      PatientVSObservationProcessor.class,
       FhirProperties.class,
+      TodMapper.class,
       VitalStatusMapper.class,
       DeviceMapper.class,
       PatientReferenceGenerator.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
-class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
+class PatientVSObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
-  private static final String INPUT_TOPIC_NAME = "patient-table-vs";
-  private static final String OUTPUT_TOPIC_NAME = "onko-fhir-vs";
+  private static final String INPUT_TOPIC_NAME = "patient-table";
+  private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
+  private static final FhirContext ctx = FhirContext.forR4();
 
-  @Autowired private PatientVitalStatusProcessor processor;
+  @Autowired private PatientVSObservationProcessor processor;
 
   @Test
-  void testPatientVitalStatusProcessor_MapsPatientToObsBundle() throws IOException {
+  void testPatientVSObservationProcessor_MapsPatientToObsBundle() throws IOException {
     try (var driver =
         buildStream(
-            processor.getPatientVitalStatusProcessor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+            processor.getPatientVSObservationProcessor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
           driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
@@ -64,35 +69,46 @@ class PatientVitalStatusProcessorTest extends io.github.bzkf.obdstofhir.MapperTe
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
       // pipe test data
-      inputTopic.pipeInput("key1", buildOnkoPatient("1", "12356789", null, "2010-01-01"));
-      inputTopic.pipeInput("key1", buildOnkoPatient("2", "22356789", "2023-01-01", null));
+      inputTopic.pipeInput(
+          "key1",
+          buildOnkoPatient(
+              "1", "12356789", "2011-01-01T00:00:00.000000", "2011-01-01T00:00:00.000000"));
+      inputTopic.pipeInput(
+          "key1", buildOnkoPatient("2", "22356789", null, "2022-02-02T00:00:00.000000"));
 
       var outputRecords = outputTopic.readKeyValuesToList();
       assertThat(outputRecords).hasSize(2);
 
+      var firstObs =
+          BundleUtil.toListOfResourcesOfType(
+                  ctx, (Bundle) outputRecords.getFirst().value, Observation.class)
+              .getFirst();
+      assertThat(firstObs.getEffective()).hasToString("DateTimeType[2011-01-01]");
       var bundles = outputRecords.stream().map(kv -> (Bundle) kv.value).toList();
 
-      assertThat(bundles.get(0).getEntry()).hasSize(1);
+      assertThat(bundles.get(0).getEntry()).hasSize(2);
       var obs1 = (Observation) bundles.get(0).getEntry().get(0).getResource();
-      assertThat(obs1.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
-      assertThat(obs1.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2010-01-01");
+      assertThat(obs1.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("T");
+      assertThat(obs1.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2011-01-01");
 
       assertThat(bundles.get(1).getEntry()).hasSize(1);
       var obs2 = (Observation) bundles.get(1).getEntry().get(0).getResource();
-      assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("T");
-      assertThat(obs2.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2023-01-01");
+      assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
+      assertThat(obs2.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2022-02-02");
+
     } catch (JSONException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private OnkoPatient buildOnkoPatient(String id, String patId, String sterbedatum, String lastInfo)
+  private OnkoPatient buildOnkoPatient(
+      String id, String patId, String sterbedatum, String letzteInformation)
       throws IOException, JSONException {
 
     var onkoPatient =
         new JSONObject()
             .put("ID", id)
-            .put("LETZTEINFORMATION", lastInfo)
+            .put("LETZTEINFORMATION", letzteInformation)
             .put("STERBEDATUM", sterbedatum)
             .put("PATIENTEN_ID", patId)
             .put("BEARBEITET_AM", null)

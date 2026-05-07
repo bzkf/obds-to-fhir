@@ -36,18 +36,18 @@ import org.springframework.stereotype.Service;
     havingValue = "true",
     matchIfMissing = false)
 @Configuration
-public class PatientTodObservationProcessor {
+public class PatientVSObservationProcessor {
 
   private final TodMapper todMapper;
   private final VitalStatusMapper vitalStatusMapper;
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
   private final DeviceMapper deviceMapper;
-  private static final Logger LOG = LoggerFactory.getLogger(PatientTodObservationProcessor.class);
+  private static final Logger LOG = LoggerFactory.getLogger(PatientVSObservationProcessor.class);
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
 
-  public PatientTodObservationProcessor(
+  public PatientVSObservationProcessor(
       TodMapper todMapper,
       VitalStatusMapper vitalStatusMapper,
       DeviceMapper deviceMapper,
@@ -60,12 +60,11 @@ public class PatientTodObservationProcessor {
 
   @Bean
   Function<KTable<String, OnkoPatient>, KStream<String, Bundle>>
-      getPatientTodObservationProcessor() {
+      getPatientVSObservationProcessor() {
     return stringOnkoPatTable ->
         stringOnkoPatTable
             .mapValues(getTodObsBundleMapper())
             .toStream()
-            .peek((key, value) -> LOG.info("Stream received key={}, value={}", key, value))
             .filter((key, value) -> value != null)
             .selectKey((key, value) -> value.getEntry().getFirst().getFullUrl());
   }
@@ -89,13 +88,12 @@ public class PatientTodObservationProcessor {
       TransactionBuilder builder = new TransactionBuilder();
       // TODO: clarify if we should create patients if they don't already exist here
 
-      builder.addEntry(buildVitalStatus(onkoPatient, patientLookupResult));
+      builder.addEntry(buildVitalStatus(onkoPatient, patientLookupResult)).failOnDuplicateEntries();
 
       if (onkoPatient.getSterbeDatum() != null) {
-        builder.addEntries(
-            buildTodBundle(
-                onkoPatient,
-                patientLookupResult)); // buildTodBundle(onkoPatient, patientLookupResult);
+        builder
+            .addEntries(buildTodBundle(onkoPatient, patientLookupResult))
+            .failOnDuplicateEntries();
       }
 
       if (createProvenanceResources) {
@@ -134,9 +132,6 @@ public class PatientTodObservationProcessor {
     var deathObservations = todMapper.map(tod, ref.reference(), null, null, true);
 
     return deathObservations;
-    //      new TransactionBuilder()
-    //      .addEntries(deathObservations)
-    //      .failOnDuplicateEntries();
   }
 
   private Observation buildVitalStatus(OnkoPatient onkoPatient, PatientLookupResult ref) {

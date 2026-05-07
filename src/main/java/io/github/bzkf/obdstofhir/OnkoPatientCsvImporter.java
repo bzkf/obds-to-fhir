@@ -43,7 +43,7 @@ public class OnkoPatientCsvImporter {
   public OnkoPatientCsvImporter(
       KafkaTemplate<String, OnkoPatient> kafkaTemplate,
       @Value("${fhir.mappings.from-onkostar-patient-data.csv.file}") String csvFile,
-      @Value("${spring.cloud.stream.bindings.getPatientTodObservationProcessor-in-0.destination}")
+      @Value("${spring.cloud.stream.bindings.getPatientVSObservationProcessor-in-0.destination}")
           String patientTopic) {
     this.kafkaTemplate = kafkaTemplate;
     this.csvFile = csvFile;
@@ -122,7 +122,6 @@ public class OnkoPatientCsvImporter {
             .letzteInformation(letzteInformation)
             .sterbeDatum(sterbeDatum)
             .build();
-    LOG.info("After parseDate: {}", onkoPatient.getSterbeDatum());
     return onkoPatient;
   }
 
