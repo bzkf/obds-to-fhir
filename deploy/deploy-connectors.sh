@@ -32,7 +32,7 @@ curl -X POST \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json' \
   -d '{
-  "name": "onkostar-patient-connector",
+  "name": "onkostar-db-connector",
   "config": {
     "tasks.max": "1",
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
@@ -41,7 +41,7 @@ curl -X POST \
     "connection.password": "devPassword",
     "schema.pattern": "DWH_ROUTINE",
     "topic.prefix": "onkostar.PATIENT",
-    "query": "SELECT * FROM (SELECT ID, LETZTE_INFORMATION, STERBEDATUM, STERBEDATUM_ACC, PATIENTEN_ID, ANGELEGT_AM, ZU_LOESCHEN, PATIENTEN_IDS_VORHER, BEARBEITET_AM FROM patient) o",
+    "query": "SELECT pat.ID, pat.PATIENTEN_ID, b.LETZTEINFORMATION, b.STERBEDATUM, pat.BEARBEITET_AM FROM patient pat JOIN prozedur pr ON (pr.patient_id = pat.id) JOIN dk_bestoftumor b ON (b.id = pr.id)",
     "mode": "timestamp",
     "timestamp.column.name": "BEARBEITET_AM",
     "validate.non.null": "true",

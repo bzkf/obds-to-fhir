@@ -96,6 +96,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       WeitereKlassifikationCodingMapper.class,
       ProvenanceMapper.class,
       DeviceMapper.class,
+      VitalStatusMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
 class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {

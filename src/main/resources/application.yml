@@ -8,9 +8,14 @@ app:
 
 fhir:
   mappings:
-    from-onkostar-patient-table:
-      # -- if enabled, tod observations will be created using the patient table from onkostar
+    from-onkostar-patient-data:
+      # -- if enabled, tod observations will be created using additional data from onkostar
       enabled: true
+      csv:
+      # -- if enabled additionally, onkostar.PATIENT topic will be filled using a bestOfTumor-export-csv from Onkostar
+      # The CSV file needs to have 3 headings: `Patienten-ID;Letzte Information (LetzteInformation);Sterbedatum`
+        enabled: false
+        file: "" #./deploy/test-data/onkostar-bestoftumor-test.csv
     meta:
       # -- Value to set for the meta.source field in all generated resources
       source: ""
@@ -95,7 +100,7 @@ spring:
     name: obds-to-fhir
   cloud:
     function:
-      definition: getMeldungExportObdsV3Processor;getPatientTodObservationProcessor
+      definition: getMeldungExportObdsV3Processor;getPatientVSObservationProcessor;
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
@@ -130,10 +135,10 @@ spring:
           destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getPatientTodObservationProcessor-in-0:
+        getPatientVSObservationProcessor-in-0:
           # -- Name of the topic where ONKOSTAR Patients are read from
           destination: ${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}
-        getPatientTodObservationProcessor-out-0:
+        getPatientVSObservationProcessor-out-0:
           # -- Name of the topic where the FHIR resources are written to
           destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
@@ -144,7 +149,7 @@ spring:
           binder:
             configuration:
               cache.max.bytes.buffering: 0
-              max.request.size: ${MAX_REQUEST_SIZE:20971520}
+              max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
               num.stream.threads: ${NUM_STREAM_THREADS:1}
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
@@ -160,27 +165,27 @@ spring:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-1:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-2:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-3:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-4:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsV3Processor-in-0:
               consumer:
                 # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
@@ -189,15 +194,15 @@ spring:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
-            getPatientTodObservationProcessor-in-0:
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+            getPatientVSObservationProcessor-in-0:
               consumer:
                 application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
-            getPatientTodObservationProcessor-out-0:
+            getPatientVSObservationProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
 
   kafka:
     bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9094}
@@ -210,10 +215,10 @@ spring:
       key-store-location: file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
-      compression-type: gzip
+      compression-type: ${KAFKA_COMPRESSION_TYPE:zstd}
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
       properties:
-        max.request.size: ${MAX_REQUEST_SIZE:20971520}
+        max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
 
 logging:
   pattern:

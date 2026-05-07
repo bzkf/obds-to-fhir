@@ -73,7 +73,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| fhir.mappings.from-onkostar-patient-table.enabled | bool | `true` | if enabled, tod observations will be created using the patient table from onkostar |
+| fhir.mappings.from-onkostar-patient-data.enabled | bool | `true` | if enabled, tod observations will be created using additional data from onkostar |
+| fhir.mappings.from-onkostar-patient-data.csv.enabled | bool | `false` | if enabled additionally, onkostar.PATIENT topic will be filled using a bestOfTumor-export-csv from Onkostar The CSV file needs to have 3 headings: `Patienten-ID;Letzte Information (LetzteInformation);Sterbedatum` |
+| fhir.mappings.from-onkostar-patient-data.csv.file | string | `""` |  |
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.patient-id-regex | string | `"^(.*)$"` | regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group. Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s. |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
@@ -95,7 +97,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
 | spring.profiles.active | string | `"mappings,default"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
-| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientTodObservationProcessor"` |  |
+| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientVSObservationProcessor;"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-1.destination | string | `"fhir.obds.Observation"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.destination | string | `"fhir.obds.MedicationStatement"` |  |
@@ -111,32 +113,32 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-in-0.destination | string | `"${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}"` | Name of the topic where ONKOSTAR oBDS Meldungen are read from |
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
 | spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.bindings.getPatientTodObservationProcessor-in-0.destination | string | `"${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}"` | Name of the topic where ONKOSTAR Patients are read from |
-| spring.cloud.stream.bindings.getPatientTodObservationProcessor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
-| spring.cloud.stream.bindings.getPatientTodObservationProcessor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
+| spring.cloud.stream.bindings.getPatientVSObservationProcessor-in-0.destination | string | `"${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}"` | Name of the topic where ONKOSTAR Patients are read from |
+| spring.cloud.stream.bindings.getPatientVSObservationProcessor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
+| spring.cloud.stream.bindings.getPatientVSObservationProcessor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."cache.max.bytes.buffering" | int | `0` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration."max.request.size" | string | `"${MAX_REQUEST_SIZE:20971520}"` |  |
+| spring.cloud.stream.kafka.streams.binder.configuration."max.request.size" | string | `"${KAFKA_MAX_REQUEST_SIZE:20971520}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."num.stream.threads" | string | `"${NUM_STREAM_THREADS:1}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration.default."key.serde" | string | `"org.apache.kafka.common.serialization.Serdes$StringSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-0.consumer.application-id | string | `"obds-meldung-exp-grouped-processor"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-1.consumer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-in-1.consumer.application-id | string | `"obds-meldung-exp-condition-processor"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-0.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-1.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-1.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-1.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-2.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-2.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-2.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-3.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-3.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-3.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-4.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-4.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsProcessor-out-4.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id | string | `"${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-in-0.consumer.application-id | string | `"${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientTodObservationProcessor-out-0.producer.configuration."compression.type" | string | `"${COMPRESSION_TYPE:gzip}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-in-0.consumer.application-id | string | `"${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
+| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.kafka.bootstrapServers | string | `"${BOOTSTRAP_SERVERS:localhost:9094}"` |  |
 | spring.kafka."security.protocol" | string | `"${SECURITY_PROTOCOL:PLAINTEXT}"` |  |
 | spring.kafka.ssl.trust-store-type | string | `"PKCS12"` |  |
@@ -145,9 +147,9 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | spring.kafka.ssl.key-store-type | string | `"PKCS12"` |  |
 | spring.kafka.ssl.key-store-location | string | `"file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}"` |  |
 | spring.kafka.ssl.key-store-password | string | `"${SSL_KEY_STORE_PASSWORD}"` |  |
-| spring.kafka.producer.compression-type | string | `"gzip"` |  |
+| spring.kafka.producer.compression-type | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
 | spring.kafka.producer.value-serializer | string | `"org.miracum.kafka.serializers.KafkaFhirSerializer"` |  |
-| spring.kafka.producer.properties."max.request.size" | string | `"${MAX_REQUEST_SIZE:20971520}"` |  |
+| spring.kafka.producer.properties."max.request.size" | string | `"${KAFKA_MAX_REQUEST_SIZE:20971520}"` |  |
 | logging.pattern.console | string | `"%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"` |  |
 | management.endpoint.health.show-details | string | `"always"` |  |
 | management.endpoint.health.probes.enabled | bool | `true` |  |
