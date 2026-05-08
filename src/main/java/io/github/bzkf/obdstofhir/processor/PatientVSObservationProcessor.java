@@ -100,7 +100,7 @@ public class PatientVSObservationProcessor {
         var device = deviceMapper.map();
         var who =
             ReferenceUtils.createReferenceTo(device)
-                .setDisplay("oBDS-to-FHIR " + device.getVersion());
+                .setDisplay("oBDS-to-FHIR " + device.getVersionFirstRep().getValue());
 
         var sourceDisplay =
             onkoPatient.getId() != null
