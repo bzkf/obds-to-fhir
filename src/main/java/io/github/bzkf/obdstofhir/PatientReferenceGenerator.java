@@ -207,6 +207,12 @@ public class PatientReferenceGenerator {
           }
 
           LOG.warn("No record ID found for patient: {}", value);
+
+          if (!isIdentifierOnlyReferencesAllowed) {
+            throw new IllegalStateException(
+                "No record ID found for patient and identifier-only references are disabled.");
+          }
+
           return new PatientLookupResult(reference, false);
         }
 
