@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
@@ -233,11 +234,16 @@ public class PatientReferenceGenerator {
   }
 
   private Optional<StringId> findRecordIdByPatientId(String patientId) {
-    var id =
-        this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
-    if (StringUtils.hasText(id)) {
-      return Optional.of(new StringId(id));
-    } else {
+    try {
+      var id =
+          this.recordIdJdbcTemplate.queryForObject(
+              recordIdDbConfig.query(), String.class, patientId);
+      if (StringUtils.hasText(id)) {
+        return Optional.of(new StringId(id));
+      } else {
+        return Optional.empty();
+      }
+    } catch (EmptyResultDataAccessException e) {
       return Optional.empty();
     }
   }
