@@ -197,18 +197,17 @@ public class PatientReferenceGenerator {
                 "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
           }
 
+          var reference = new Reference().setIdentifier(identifier);
+
           var idResult = findRecordIdByPatientId(value);
 
-          if (idResult.isEmpty()) {
-            throw new IllegalStateException("No record ID found for patient: " + value);
+          if (idResult.isPresent()) {
+            reference.setReference("Patient/" + idResult.get().value());
+            return new PatientLookupResult(reference, true);
           }
 
-          var id = idResult.get().value();
-
-          return new PatientLookupResult(
-              new Reference("Patient/" + id).setIdentifier(identifier),
-              true // DB lookup implies existence
-              );
+          LOG.warn("No record ID found for patient: {}", value);
+          return new PatientLookupResult(reference, false);
         }
 
         default ->
