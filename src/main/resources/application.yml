@@ -26,6 +26,12 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+      # -- If set to true, a Patient resource is always created and added to the bundle, even if the patient
+      # already exists on the FHIR server (i.e. the patient reference generator returns existsOnServer=true).
+      # The Patient.identifier.value is set to the Patient_ID, and the patient reference for all other resources
+      # in the bundle is overridden to refer to Patient.id (the locally-computed hash-based ID).
+      # The logical references to the Patient via the identifier are preserved.
+      if-already-exists: false
     create-provenance-resources:
       # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
       # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.

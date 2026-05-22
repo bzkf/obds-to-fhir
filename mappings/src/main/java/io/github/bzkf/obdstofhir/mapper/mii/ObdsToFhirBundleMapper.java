@@ -78,6 +78,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
 
+  @Value("${fhir.mappings.create-patient-resources.if-already-exists:false}")
+  private boolean createPatientIfAlreadyExists;
+
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
 
@@ -216,8 +219,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var patientReference = patientLookupResult.reference();
 
-      if (!patientLookupResult.existsOnServer() && createPatientResources) {
+      if (createPatientResources
+          && (!patientLookupResult.existsOnServer() || createPatientIfAlreadyExists)) {
         addToBundle(bundle, patient);
+        if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
+          var overrideRef = new Reference("Patient/" + patient.getId());
+          overrideRef.setIdentifier(patient.getIdentifierFirstRep());
+          patientReference = overrideRef;
+        }
       }
 
       bundle.setId(patient.getId());
