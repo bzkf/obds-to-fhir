@@ -224,7 +224,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         addToBundle(bundle, patient);
         if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
           var overrideRef = new Reference("Patient/" + patient.getId());
-          overrideRef.setIdentifier(patient.getIdentifierFirstRep());
+          if (patientReference.hasIdentifier()) {
+            overrideRef.setIdentifier(patientReference.getIdentifier().copy());
+          }
           patientReference = overrideRef;
         }
       }
