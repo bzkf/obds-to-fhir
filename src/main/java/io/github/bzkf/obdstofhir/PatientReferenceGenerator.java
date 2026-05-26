@@ -204,6 +204,10 @@ public class PatientReferenceGenerator {
 
           var id = idResult.get().value();
 
+          // extra handling: the identifier should also be set to the record id from the
+          // database
+          identifier.setValue(id);
+
           return new PatientLookupResult(
               new Reference("Patient/" + id).setIdentifier(identifier),
               true // DB lookup implies existence
