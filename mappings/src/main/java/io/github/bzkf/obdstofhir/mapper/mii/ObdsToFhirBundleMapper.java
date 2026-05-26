@@ -78,6 +78,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
 
+  @Value("${fhir.mappings.create-patient-resources.always-reference-created-patient-resource:false}")
+  private boolean alwaysReferenceCreatedPatientResource;
+
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
 
@@ -217,6 +220,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var patientReference = patientLookupResult.reference();
 
       if (!patientLookupResult.existsOnServer() && createPatientResources) {
+        if (alwaysReferenceCreatedPatientResource) {
+          patientReference = createReferenceFromResource(patient);
+        }
         addToBundle(bundle, patient);
       }
 
