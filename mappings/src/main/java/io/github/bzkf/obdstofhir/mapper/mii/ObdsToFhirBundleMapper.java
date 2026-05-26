@@ -78,7 +78,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.create-patient-resources.enabled}")
   private boolean createPatientResources;
 
-  @Value("${fhir.mappings.create-patient-resources.always-reference-created-patient-resource:false}")
+  @Value(
+      "${fhir.mappings.create-patient-resources.always-reference-created-patient-resource:false}")
   private boolean alwaysReferenceCreatedPatientResource;
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
