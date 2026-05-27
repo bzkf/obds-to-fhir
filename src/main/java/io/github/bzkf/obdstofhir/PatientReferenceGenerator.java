@@ -20,7 +20,9 @@ import io.github.dizuker.tofhir.IdUtils;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
@@ -76,6 +78,8 @@ public class PatientReferenceGenerator {
   private @Nullable JdbcTemplate recordIdJdbcTemplate;
   private @Nullable RecordIdDbConfig recordIdDbConfig;
   private @Nullable IGenericClient fhirPseudonymizerClient;
+  private final Map<String, Optional<StringId>> recordIdByPatientIdCache =
+      new ConcurrentHashMap<>();
 
   private final CodeableConcept mrnType;
 
@@ -204,6 +208,10 @@ public class PatientReferenceGenerator {
 
           var id = idResult.get().value();
 
+          // extra handling: the identifier should also be set to the record id from the
+          // database
+          identifier.setValue(id);
+
           return new PatientLookupResult(
               new Reference("Patient/" + id).setIdentifier(identifier),
               true // DB lookup implies existence
@@ -233,6 +241,10 @@ public class PatientReferenceGenerator {
   }
 
   private Optional<StringId> findRecordIdByPatientId(String patientId) {
+    return recordIdByPatientIdCache.computeIfAbsent(patientId, this::queryRecordIdByPatientId);
+  }
+
+  private Optional<StringId> queryRecordIdByPatientId(String patientId) {
     var id =
         this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
     if (StringUtils.hasText(id)) {

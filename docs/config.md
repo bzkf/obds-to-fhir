@@ -79,6 +79,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.patient-id-regex | string | `"^(.*)$"` | regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group. Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s. |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
+| fhir.mappings.create-patient-resources.if-already-exists | bool | `false` | If set to true, a Patient resource is always created and added to the bundle, even if the patient already exists on the FHIR server (i.e. the patient reference generator returns existsOnServer=true). The Patient.identifier.value is set to the Patient_ID, and the patient reference for all other resources in the bundle is overridden to refer to Patient.id (the locally-computed hash-based ID). The logical references to the Patient via the identifier are preserved. |
 | fhir.mappings.create-provenance-resources.enabled | bool | `false` | Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID. |
 | fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |
 | fhir.mappings.patient-reference-generation.identifier-only-references-allowed | bool | `true` | If set to true and the Patient doesn't exist on the FHIR server, the generated Patient reference will only contain the identifier (with system and value) without a logical reference to a Patient resource. |
@@ -97,7 +98,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
 | spring.profiles.active | string | `"mappings,default"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
-| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientVSObservationProcessor;"` |  |
+| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientVSObservationProcessor"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-1.destination | string | `"fhir.obds.Observation"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.destination | string | `"fhir.obds.MedicationStatement"` |  |
