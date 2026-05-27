@@ -98,7 +98,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 | obdsv2-to-v3.mapper.disable-schema-validation | bool | `false` | Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen |
 | spring.profiles.active | string | `"mappings,default"` |  |
 | spring.application.name | string | `"obds-to-fhir"` |  |
-| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientVSObservationProcessor;"` |  |
+| spring.cloud.function.definition | string | `"getMeldungExportObdsV3Processor;getPatientVSObservationProcessor"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-0.destination | string | `"onkostar.MELDUNG_EXPORT"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-in-1.destination | string | `"fhir.obds.Observation"` |  |
 | spring.cloud.stream.bindings.getMeldungExportObdsProcessor-out-0.destination | string | `"fhir.obds.MedicationStatement"` |  |
