@@ -106,7 +106,7 @@ spring:
     name: obds-to-fhir
   cloud:
     function:
-      definition: getMeldungExportObdsV3Processor;getPatientVSObservationProcessor;
+      definition: getMeldungExportObdsV3Processor;getPatientVSObservationProcessor
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
