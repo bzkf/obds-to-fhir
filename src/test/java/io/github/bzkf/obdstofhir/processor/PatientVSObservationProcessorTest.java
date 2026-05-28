@@ -111,7 +111,10 @@ class PatientVSObservationProcessorTest extends io.github.bzkf.obdstofhir.Mapper
             .put("LETZTEINFORMATION", letzteInformation)
             .put("STERBEDATUM", sterbedatum)
             .put("PATIENTEN_ID", patId)
-            .put("BEARBEITET_AM", null)
+            .put(
+                "BEARBEITET_AM",
+                "2020-01-01T00:00:00") // keep it here to test @JsonIgnoreProperties handling of
+            // unknown fields
             .toString();
 
     var mapper = new ObjectMapper();
