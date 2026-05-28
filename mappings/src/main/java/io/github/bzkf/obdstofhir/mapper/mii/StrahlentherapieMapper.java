@@ -111,6 +111,42 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
       idBase = meldungsId;
     }
 
+    var procedure = createMainProcedure(st, subject, condition, idBase);
+
+    var mainStrahlentherapieProcedureReference =
+        new Reference(procedure.getResourceType().name() + "/" + procedure.getId());
+
+    var result = new ArrayList<Procedure>();
+    result.add(procedure);
+
+    for (int i = 0; i < st.getMengeBestrahlung().getBestrahlung().size(); i++) {
+      var bestrahlung = st.getMengeBestrahlung().getBestrahlung().get(i);
+      if (bestrahlung.getApplikationsart() == null) {
+        LOG.warn("Skipping Bestrahlung with unset Applikationsart");
+        continue;
+      }
+
+      // we could also try to construct the identifier value from ST_ID +
+      // Bestrahlung.beginn() +
+      // Applikationsart, but it's possible that all those values are unset or even
+      // change
+      // across multiple reports. Still, the use of indices feels fragile, similar to
+      // how
+      // we're handling multiple Fernmetastasen right now.
+      var identifierValue = idBase + "-" + i;
+
+      var bestrahlungsProcedure =
+          mapBestrahlung(
+              bestrahlung, subject, identifierValue, mainStrahlentherapieProcedureReference);
+
+      result.add(bestrahlungsProcedure);
+    }
+
+    return result;
+  }
+
+  private Procedure createMainProcedure(
+      STTyp st, Reference subject, Reference condition, String idBase) {
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
 
@@ -130,7 +166,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     }
 
     procedure.setSubject(subject);
-
     procedure.addReasonReference(condition);
 
     var performed =
@@ -142,7 +177,6 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
           fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
       performed.setStartElement(absentDateTime);
     }
-
     procedure.setPerformed(performed);
 
     var categoryAndCode =
@@ -176,37 +210,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
         .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieStellungzurop())
         .setValue(new CodeableConcept(stellungZurOp));
 
-    var mainStrahlentherapieProcedureReference =
-        new Reference(procedure.getResourceType().name() + "/" + procedure.getId());
-
-    var result = new ArrayList<Procedure>();
-
-    result.add(procedure);
-
-    for (int i = 0; i < st.getMengeBestrahlung().getBestrahlung().size(); i++) {
-      var bestrahlung = st.getMengeBestrahlung().getBestrahlung().get(i);
-      if (bestrahlung.getApplikationsart() == null) {
-        LOG.warn("Skipping Bestrahlung with unset Applikationsart");
-        continue;
-      }
-
-      // we could also try to construct the identifier value from ST_ID +
-      // Bestrahlung.beginn() +
-      // Applikationsart, but it's possible that all those values are unset or even
-      // change
-      // across multiple reports. Still, the use of indices feels fragile, similar to
-      // how
-      // we're handling multiple Fernmetastasen right now.
-      var identifierValue = idBase + "-" + i;
-
-      var bestrahlungsProcedure =
-          mapBestrahlung(
-              bestrahlung, subject, identifierValue, mainStrahlentherapieProcedureReference);
-
-      result.add(bestrahlungsProcedure);
-    }
-
-    return result;
+    return procedure;
   }
 
   private Procedure mapBestrahlung(
@@ -430,33 +434,14 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var data = getBestrahlungsData(bestrahlung.getApplikationsart());
 
-    var gesamtdosis = data.gesamtdosis();
-    if (gesamtdosis != null) {
-      var value =
-          new Quantity()
-              .setUnit(gesamtdosis.getEinheit())
-              .setValue(gesamtdosis.getDosis())
-              .setSystem(fhirProperties.getSystems().getUcum())
-              .setCode(gesamtdosis.getEinheit());
-      extensions.add(
-          new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
-              value));
-    }
-
-    var einzeldosis = data.einzeldosis();
-    if (einzeldosis != null) {
-      var value =
-          new Quantity()
-              .setUnit(einzeldosis.getEinheit())
-              .setValue(einzeldosis.getDosis())
-              .setSystem(fhirProperties.getSystems().getUcum())
-              .setCode(einzeldosis.getEinheit());
-      extensions.add(
-          new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
-              value));
-    }
+    mapDosisExtension(
+        data.gesamtdosis(),
+        fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
+        extensions);
+    mapDosisExtension(
+        data.einzeldosis(),
+        fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
+        extensions);
 
     var boost = data.boost();
     if (boost != null) {
@@ -470,8 +455,25 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
               new CodeableConcept(value)));
     }
 
-    // extra handling for metabolisch, quite ugly, should instead be moved to a
-    // "StrahlentherapieBestrahlung"-based type hierarchy
+    mapMetabolischDosisExtensions(bestrahlung, extensions);
+
+    return extensions;
+  }
+
+  private void mapDosisExtension(
+      StrahlendosisTyp dosis, String extensionUrl, List<Extension> extensions) {
+    if (dosis != null) {
+      var value =
+          new Quantity()
+              .setUnit(dosis.getEinheit())
+              .setValue(dosis.getDosis())
+              .setSystem(fhirProperties.getSystems().getUcum())
+              .setCode(dosis.getEinheit());
+      extensions.add(new Extension(extensionUrl, value));
+    }
+  }
+
+  private void mapMetabolischDosisExtensions(Bestrahlung bestrahlung, List<Extension> extensions) {
     if (bestrahlung.getApplikationsart() != null
         && bestrahlung.getApplikationsart().getMetabolisch() != null) {
       var metabolisch = bestrahlung.getApplikationsart().getMetabolisch();
@@ -495,15 +497,12 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
                 .setValue(metabolisch.getGesamtdosis().getDosis())
                 .setSystem(fhirProperties.getSystems().getUcum())
                 .setCode(metabolisch.getGesamtdosis().getEinheit());
-
         extensions.add(
             new Extension(
                 fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
                 value));
       }
     }
-
-    return extensions;
   }
 
   private static StrahlentherapieBestrahlung getBestrahlungsData(Applikationsart applikationsart) {
