@@ -44,6 +44,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 - Unit tests only: `./gradlew test`
 
+### Refactoring Guidelines
+
+- IMPORTANT: Always run relevant tests after any code changes
+- Prefer incremental changes over large rewrites
+- When extracting methods, preserve original function signatures as wrappers initially
+- Document any behavior changes in commit messages
+
 ## Documentation
 
 User-facing documentation is in `docs/` folder (Markdown format):
