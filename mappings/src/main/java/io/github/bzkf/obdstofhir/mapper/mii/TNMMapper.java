@@ -89,208 +89,269 @@ public class TNMMapper extends ObdsToFhirMapper {
     var memberObservationList = new ArrayList<Observation>();
 
     if (tnmTyp.getT() != null) {
-      String identifierValue = idBase + "-T";
-      var tKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmTKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-
-      // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixT = Optional.ofNullable(tnmTyp.getCPUPraefixT()).orElse("c");
-      tKategorieObservation.setCode(createTKategorieCode(cpuPraefixT));
-      tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
-      memberObservationList.add(tKategorieObservation);
+      memberObservationList.add(
+          createTKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getN() != null) {
-      String identifierValue = idBase + "-N";
-      var nKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmNKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-
-      // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixN = Optional.ofNullable(tnmTyp.getCPUPraefixN()).orElse("c");
-      nKategorieObservation.setCode(createNKategorieCode(cpuPraefixN));
-      nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
-      memberObservationList.add(nKategorieObservation);
+      memberObservationList.add(
+          createNKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getM() != null) {
-      String identifierValue = idBase + "-M";
-      var mKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmMKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-
-      // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixM = Optional.ofNullable(tnmTyp.getCPUPraefixM()).orElse("c");
-      mKategorieObservation.setCode(createMKategorieCode(cpuPraefixM));
-      mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
-      memberObservationList.add(mKategorieObservation);
+      memberObservationList.add(
+          createMKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getASymbol() != null) {
-      String identifierValue = idBase + "-a";
-      var aSymbolObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmASymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      aSymbolObservation.setCode(
-          getCodeableConceptLoinc("101660-9", "Cancer staging during autopsy"));
-      aSymbolObservation.setValue(
-          getCodeableConceptSnomed("421426001", "Tumor staging descriptor a (tumor staging)"));
-      memberObservationList.add(aSymbolObservation);
+      memberObservationList.add(
+          createASymbolObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getMSymbol() != null) {
-      String identifierValue = idBase + "-m";
-      var mSymbolObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmMSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      mSymbolObservation.setCode(
-          getCodeableConceptLoinc("42030-7", "Multiple tumors reported as single primary Cancer"));
-      mSymbolObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
-      memberObservationList.add(mSymbolObservation);
+      memberObservationList.add(
+          createMSymbolObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getL() != null) {
-      String identifierValue = idBase + "-L";
-      var lKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmLKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      lKategorieObservation.setCode(
-          getCodeableConceptSnomed(
-              "395715009",
-              "Status of lymphatic (small vessel) invasion by tumor (observable entity)"));
-      lKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getL()));
-      memberObservationList.add(lKategorieObservation);
+      memberObservationList.add(
+          createLKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getPn() != null) {
-      String identifierValue = idBase + "-Pn";
-      var pnKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmPnKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      pnKategorieObservation.setCode(
-          getCodeableConceptSnomed(
-              "371513001",
-              "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"));
-      pnKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getPn()));
-      memberObservationList.add(pnKategorieObservation);
+      memberObservationList.add(
+          createPnKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getRSymbol() != null) {
-      String identifierValue = idBase + "-r";
-      var rSymbolObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmRSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      rSymbolObservation.setCode(
-          getCodeableConceptLoinc("101659-1", "Cancer staging after tumor recurrence"));
-      rSymbolObservation.setValue(
-          getCodeableConceptSnomed("421188008", "Tumor staging descriptor r (tumor staging)"));
-      memberObservationList.add(rSymbolObservation);
+      memberObservationList.add(
+          createRSymbolObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getS() != null) {
-      String identifierValue = idBase + "-S";
-      var sKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmSKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      sKategorieObservation.setCode(
-          getCodeableConceptSnomed("399424006", "Serum tumor marker category (observable entity)"));
-      sKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getS()));
-      memberObservationList.add(sKategorieObservation);
+      memberObservationList.add(
+          createSKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getV() != null) {
-      String identifierValue = idBase + "-V";
-      var vKategorieObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmVKategorieObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      vKategorieObservation.setCode(
-          getCodeableConceptSnomed(
-              "371493002",
-              "Status of venous (large vessel) invasion by tumor (observable entity)"));
-      vKategorieObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getV()));
-      memberObservationList.add(vKategorieObservation);
+      memberObservationList.add(
+          createVKategorieObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     if (tnmTyp.getYSymbol() != null) {
-      String identifierValue = idBase + "-y";
-      var ySymbolObservation =
-          createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmYSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      ySymbolObservation.setCode(
-          getCodeableConceptLoinc("101658-3", "Cancer staging after multimodality therapy"));
-      ySymbolObservation.setValue(
-          getCodeableConceptSnomed("421755005", "Tumor staging descriptor y (tumor staging)"));
-      memberObservationList.add(ySymbolObservation);
+      memberObservationList.add(
+          createYSymbolObservation(tnmTyp, idBase, patient, primaryConditionReference));
     }
 
     return memberObservationList;
+  }
+
+  private Observation createTKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-T";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmTKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    // Das Weglassen des Prefix wird als "c" interpretiert
+    var cpuPraefixT = Optional.ofNullable(tnmTyp.getCPUPraefixT()).orElse("c");
+    observation.setCode(createTKategorieCode(cpuPraefixT));
+    observation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
+    return observation;
+  }
+
+  private Observation createNKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-N";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmNKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    // Das Weglassen des Prefix wird als "c" interpretiert
+    var cpuPraefixN = Optional.ofNullable(tnmTyp.getCPUPraefixN()).orElse("c");
+    observation.setCode(createNKategorieCode(cpuPraefixN));
+    observation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
+    return observation;
+  }
+
+  private Observation createMKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-M";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmMKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    // Das Weglassen des Prefix wird als "c" interpretiert
+    var cpuPraefixM = Optional.ofNullable(tnmTyp.getCPUPraefixM()).orElse("c");
+    observation.setCode(createMKategorieCode(cpuPraefixM));
+    observation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
+    return observation;
+  }
+
+  private Observation createASymbolObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-a";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmASymbolObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(getCodeableConceptLoinc("101660-9", "Cancer staging during autopsy"));
+    observation.setValue(
+        getCodeableConceptSnomed("421426001", "Tumor staging descriptor a (tumor staging)"));
+    return observation;
+  }
+
+  private Observation createMSymbolObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-m";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmMSymbolObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptLoinc("42030-7", "Multiple tumors reported as single primary Cancer"));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
+    return observation;
+  }
+
+  private Observation createLKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-L";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmLKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptSnomed(
+            "395715009",
+            "Status of lymphatic (small vessel) invasion by tumor (observable entity)"));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getL()));
+    return observation;
+  }
+
+  private Observation createPnKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-Pn";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmPnKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptSnomed(
+            "371513001",
+            "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getPn()));
+    return observation;
+  }
+
+  private Observation createRSymbolObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-r";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmRSymbolObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptLoinc("101659-1", "Cancer staging after tumor recurrence"));
+    observation.setValue(
+        getCodeableConceptSnomed("421188008", "Tumor staging descriptor r (tumor staging)"));
+    return observation;
+  }
+
+  private Observation createSKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-S";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmSKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptSnomed("399424006", "Serum tumor marker category (observable entity)"));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getS()));
+    return observation;
+  }
+
+  private Observation createVKategorieObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-V";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmVKategorieObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptSnomed(
+            "371493002", "Status of venous (large vessel) invasion by tumor (observable entity)"));
+    observation.setValue(getCodeableConceptTnmUicc(tnmTyp.getV()));
+    return observation;
+  }
+
+  private Observation createYSymbolObservation(
+      TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
+    String identifierValue = idBase + "-y";
+    var observation =
+        createTNMBaseResource(
+            fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
+            identifierValue,
+            fhirProperties.getSystems().getIdentifiers().getTnmYSymbolObservationId(),
+            tnmTyp.getVersion(),
+            tnmTyp.getDatum(),
+            patient,
+            primaryConditionReference);
+    observation.setCode(
+        getCodeableConceptLoinc("101658-3", "Cancer staging after multimodality therapy"));
+    observation.setValue(
+        getCodeableConceptSnomed("421755005", "Tumor staging descriptor y (tumor staging)"));
+    return observation;
   }
 
   private List<Reference> createObservationReferences(List<Observation> observations) {

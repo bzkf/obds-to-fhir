@@ -38,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
       OperationMapper.class,
       ResidualstatusMapper.class,
       HistologiebefundMapper.class,
+      HistologieCompositeMapper.class,
       FernmetastasenMapper.class,
       GradingObservationMapper.class,
       LymphknotenuntersuchungMapper.class,

@@ -75,6 +75,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       FernmetastasenMapper.class,
       GradingObservationMapper.class,
       HistologiebefundMapper.class,
+      HistologieCompositeMapper.class,
       LymphknotenuntersuchungMapper.class,
       SpecimenMapper.class,
       VerlaufshistologieObservationMapper.class,
