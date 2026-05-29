@@ -81,8 +81,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.create-patient-resources.if-already-exists:false}")
   private boolean createPatientIfAlreadyExists;
 
-  @Value("${fhir.mappings.create-bundles-if-patient-does-not-already-exist:true}")
-  private boolean createBundlesIfPatientDoesNotAlreadyExist;
+  @Value("${fhir.mappings.skip-patient-if-it-does-not-already-exist:false}")
+  private boolean skipPatientIfItDoesNotAlreadyExist;
 
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
@@ -222,9 +222,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var patientReference = patientLookupResult.reference();
 
-      if (!patientLookupResult.existsOnServer() && !createBundlesIfPatientDoesNotAlreadyExist) {
+      if (!patientLookupResult.existsOnServer() && skipPatientIfItDoesNotAlreadyExist) {
         LOG.warn(
-            "Patient {} does not exist on server and createBundlesIfPatientDoesNotAlreadyExist is false, skipping this patient",
+            "Patient {} does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient",
             obdsPatient.getPatientID());
         continue;
       }
