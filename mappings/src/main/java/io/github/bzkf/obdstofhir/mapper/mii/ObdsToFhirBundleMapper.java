@@ -222,7 +222,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var patientReference = patientLookupResult.reference();
 
-      if (!patientLookupResult.existsOnServer() && skipPatientIfItDoesNotAlreadyExist) {
+      if (skipPatientIfItDoesNotAlreadyExist
+          && !patientLookupResult.existsOnServer()
+          && !patientReference.hasReference()) {
         LOG.warn(
             "Patient {} does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient",
             obdsPatient.getPatientID());
