@@ -12,7 +12,6 @@ import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
-import io.github.bzkf.obdstofhir.PatientReferenceGenerator.StringId;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
@@ -38,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
@@ -200,22 +200,18 @@ public class PatientReferenceGenerator {
                 "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
           }
 
+          var reference = new Reference().setIdentifier(identifier);
+
           var idResult = findRecordIdByPatientId(value);
 
-          if (idResult.isEmpty()) {
-            throw new IllegalStateException("No record ID found for patient: " + value);
+          if (idResult.isPresent()) {
+            reference.setReference("Patient/" + idResult.get().value());
+            return new PatientLookupResult(reference, true);
           }
 
-          var id = idResult.get().value();
+          LOG.warn("No record ID found for patient: {}", value);
 
-          // extra handling: the identifier should also be set to the record id from the
-          // database
-          identifier.setValue(id);
-
-          return new PatientLookupResult(
-              new Reference("Patient/" + id).setIdentifier(identifier),
-              true // DB lookup implies existence
-              );
+          return new PatientLookupResult(reference, false);
         }
 
         default ->
@@ -245,11 +241,16 @@ public class PatientReferenceGenerator {
   }
 
   private Optional<StringId> queryRecordIdByPatientId(String patientId) {
-    var id =
-        this.recordIdJdbcTemplate.queryForObject(recordIdDbConfig.query(), String.class, patientId);
-    if (StringUtils.hasText(id)) {
-      return Optional.of(new StringId(id));
-    } else {
+    try {
+      var id =
+          this.recordIdJdbcTemplate.queryForObject(
+              recordIdDbConfig.query(), String.class, patientId);
+      if (StringUtils.hasText(id)) {
+        return Optional.of(new StringId(id));
+      } else {
+        return Optional.empty();
+      }
+    } catch (EmptyResultDataAccessException _) {
       return Optional.empty();
     }
   }
