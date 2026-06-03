@@ -1,7 +1,7 @@
 #checkov:skip=CKV_SECRET_6: all dev setup
 services:
   oracle:
-    image: docker.io/gvenzl/oracle-free:23.5-slim-faststart@sha256:a628d0978579ff8cdc8cc68192ed79d2ab1b27ab78be9ae8fc40d5235838b84c
+    image: docker.io/gvenzl/oracle-free:23.9-slim-faststart@sha256:862d740d2b083bd6331677c7d220e2e8113c633052eb4cdc07360d934dbdf4cd
     cap_drop:
       - ALL
     privileged: false
@@ -42,7 +42,7 @@ services:
       - 127.0.0.1:9094:9094
 
   kafka-connect:
-    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.1@sha256:9a5db59dcb79f53d1526fcab7cd78d9dc430af0258f96dddc53694f3f266070d
+    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.7.5@sha256:82c75fd1c73e64e222978091f5e6212deaf55c1cde44646476528e483befa0ce
     restart: unless-stopped
     cap_drop:
       - ALL
@@ -69,7 +69,7 @@ services:
       - kafka
 
   akhq:
-    image: docker.io/tchiotludo/akhq:0.25.1@sha256:cfaef8f419c4e4b78c583597d6428b63166e90eeb194af890264d68051a22180
+    image: docker.io/tchiotludo/akhq:0.27.1@sha256:66a43e84a3355f0a13f3b165a48f515c72a5344ea7ea0575a3e4efe2d3ac9a91
     restart: unless-stopped
     cap_drop:
       - ALL
