@@ -1,9 +1,5 @@
 package io.github.bzkf.obdstofhir.serde;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -14,9 +10,10 @@ import io.github.bzkf.obdstofhir.model.ObdsOrAdt;
 import java.io.IOException;
 import java.util.Locale;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ValueDeserializer;
 
 @Service
-public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
+public class Obdsv3Deserializer extends ValueDeserializer<ObdsOrAdt>
     implements org.apache.kafka.common.serialization.Deserializer<OBDS> {
 
   private final XmlMapper mapper;
@@ -32,12 +29,13 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
             .build();
   }
 
-  private static class SchemaLocationPropertyHandler extends DeserializationProblemHandler {
+  private static class SchemaLocationPropertyHandler
+      extends com.fasterxml.jackson.databind.deser.DeserializationProblemHandler {
     @Override
     public boolean handleUnknownProperty(
-        DeserializationContext ctxt,
-        JsonParser p,
-        JsonDeserializer<?> deserializer,
+        com.fasterxml.jackson.databind.DeserializationContext ctxt,
+        com.fasterxml.jackson.core.JsonParser p,
+        com.fasterxml.jackson.databind.JsonDeserializer<?> deserializer,
         Object beanOrClass,
         String propertyName) {
       // returning true here means that we handled the unknown property
@@ -47,12 +45,15 @@ public class Obdsv3Deserializer extends JsonDeserializer<ObdsOrAdt>
   }
 
   @Override
-  public ObdsOrAdt deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-      throws IOException {
-
+  public ObdsOrAdt deserialize(
+      tools.jackson.core.JsonParser jsonParser,
+      tools.jackson.databind.DeserializationContext deserializationContext) {
     String xml = jsonParser.getValueAsString();
-
-    return deserializeAsObdsOrAdt(xml);
+    try {
+      return deserializeAsObdsOrAdt(xml);
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to deserialize XML_DATEN", e);
+    }
   }
 
   public ObdsOrAdt deserializeAsObdsOrAdt(String xml) throws IOException {

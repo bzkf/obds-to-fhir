@@ -3,12 +3,12 @@ package io.github.bzkf.obdstofhir.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Serializer;
 import lombok.*;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 @Data
 @AllArgsConstructor
