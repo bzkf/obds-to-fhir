@@ -141,7 +141,7 @@ of not-yet implemented modules.
 - Kafka Broker: `localhost:9094`
 - Kafka Connect: `http://localhost:8083`
 - AKHQ: `http://localhost:8084`
-- Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/FREEPDB1` (User: `DWH_ROUTINE`, Password: `devPassword`)
+- Oracle DB: `jdbc:oracle:thin:@//localhost:1521/FREEPDB1` (User: `DWH_ROUTINE`, Password: `devPassword`)
 
 ### Run with
 
