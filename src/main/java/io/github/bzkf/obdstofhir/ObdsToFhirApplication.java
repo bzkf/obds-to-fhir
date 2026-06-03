@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication(
-    exclude = {org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class})
+    exclude = {org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration.class})
 @ConfigurationPropertiesScan
 public class ObdsToFhirApplication {
 
