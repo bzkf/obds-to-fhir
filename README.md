@@ -148,7 +148,7 @@ of not-yet implemented modules.
 From the ./deploy folder:
 
 ```sh
-docker compose -f compose.dev.yaml up
+docker compose -f compose.dev.yaml up -d
 ```
 
 Tear-down the setup:
