@@ -1,13 +1,9 @@
 # obds-to-fhir
 
-> [!IMPORTANT]
-> Looking for the latest version supporting oBDS version 3 and the MII FHIR Profiles?
-> Head to the `beta` branch: <https://github.com/bzkf/obds-to-fhir/tree/beta>
-
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/bzkf/obds-to-fhir/badge)](https://scorecard.dev/viewer/?uri=github.com/bzkf/obds-to-fhir)
 [![SLSA 3](https://slsa.dev/images/gh-badge-level3.svg)](https://slsa.dev)
 
-This project maps [oBDS XML reports](https://www.basisdatensatz.de/basisdatensatz) to FHIR® resources conforming to the [Medizininformatik Initiative - Modul Onkologie](https://simplifier.net/guide/mii-ig-modul-onkologie-2024-de?version=current) profiles.
+This project maps [oBDS XML reports](https://www.basisdatensatz.de/basisdatensatz) to FHIR® resources conforming to the [Medizininformatik Initiative - Modul Onkologie](https://simplifier.net/guide/mii-ig-onkologie-de-v2026?version=current) profiles.
 
 ## Getting Started
 
@@ -132,41 +128,33 @@ parameters:
 The application also logs to stdout and the output always include the currently processed `Meldung_ID` and potentially other information
 extracted directly from the source data. If this is a concern, we recommend disabling logging by in the container runtime used.
 
+## Known Issues & Limitations
+
+See <https://github.com/bzkf/obds-to-fhir/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug>
+for a list of known bugs and <https://github.com/bzkf/obds-to-fhir/issues/553> for the list
+of not-yet implemented modules.
+
 ## Development
 
-### oBDS v3 code generation
+### Development Stack
 
-This task is included in default build task. In case you want to just generate oBDS v3 classes run:
-
-```sh
-./gradlew xsd2java
-```
-
-### Topology
-
-![Stream Topology generated via https://zz85.github.io/kafka-streams-viz/ using http://localhost:8080/actuator/kafkastreamstopology](docs/img/obds-to-fhir-topology-v3.png)
-
-### Dev Stack
-
-- Kafka Broker: `$DOCKER_HOST_IP:9094`
-- Kafka Connect: `$DOCKER_HOST_IP:8083`
-- AKHQ: `$DOCKER_HOST_IP:8084`
-- Oracle DB: `jdbc:oracle:thin:@//$DOCKER_HOST_IP:1521/FREEPDB1` (User: `DWH_ROUTINE`, Password: `devPassword`)
+- Kafka Broker: `localhost:9094`
+- Kafka Connect: `http://localhost:8083`
+- AKHQ: `http://localhost:8084`
+- Oracle DB: `jdbc:oracle:thin:@//localhost:1521/FREEPDB1` (User: `DWH_ROUTINE`, Password: `devPassword`)
 
 ### Run with
 
 From the ./deploy folder:
 
-dc up:
-
 ```sh
-sh up.sh
+docker compose -f compose.dev.yaml up -d
 ```
 
-dc down
+Tear-down the setup:
 
 ```sh
-sh down.sh
+docker compose -f compose.dev.yaml down -v
 ```
 
 deploy connectors
@@ -174,6 +162,15 @@ deploy connectors
 ```sh
 sh deploy-connectors.sh
 ```
+
+start obds-to-fhir:
+
+```sh
+./gradlew bootRun
+```
+
+visit <http://localhost:8084/ui/kafka/topic> and you should see the generated
+FHIR resources in the Kafka topics.
 
 reset topics
 
