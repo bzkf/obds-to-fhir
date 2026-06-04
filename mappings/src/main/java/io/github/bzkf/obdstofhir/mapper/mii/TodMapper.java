@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
@@ -112,7 +113,7 @@ public class TodMapper extends ObdsToFhirMapper {
                 .setSystem(todObsIdentifierSytstem)
                 .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
         observation.addIdentifier(identifier);
-        observation.setId(computeResourceIdFromIdentifier(identifier));
+        observation.setId(IdUtils.fromIdentifier(identifier));
 
         // Value | Todesursache(n) ICD10GM
         var icd10Version = todesursache.getVersion();
@@ -160,7 +161,7 @@ public class TodMapper extends ObdsToFhirMapper {
               .setSystem(todObsIdentifierSytstem)
               .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
 
       observationList.add(observation);
     }

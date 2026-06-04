@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.OPTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.CodeableConcept;
@@ -42,7 +43,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
             .setSystem(
                 fhirProperties.getSystems().getIdentifiers().getResidualstatusObservationId())
             .setValue(slugifier.slugify(op.getOPID()));
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
     observation.setIdentifier(List.of(identifier));
 
     // Subject

@@ -7,6 +7,7 @@ import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
@@ -92,7 +93,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
               .setValue(slugifier.slugify(value));
 
       observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
 
       // meta
       observation

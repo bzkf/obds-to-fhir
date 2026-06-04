@@ -6,15 +6,12 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
-import java.security.MessageDigest;
 import java.util.*;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
@@ -25,30 +22,8 @@ public abstract class ObdsToFhirMapper {
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
-  private MessageDigest getMessageDigest() {
-    if (null != idHashAlgorithm && idHashAlgorithm.equalsIgnoreCase("md5")) {
-      return DigestUtils.getMd5Digest();
-    }
-    return DigestUtils.getSha256Digest();
-  }
-
-  @Value("${fhir.mappings.idHashAlgorithm:sha256}")
-  void setIdHashAlgorithm(String idHashAlgorithm) {
-    ObdsToFhirMapper.idHashAlgorithm = idHashAlgorithm;
-  }
-
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
-  }
-
-  protected String computeResourceIdFromIdentifier(Identifier identifier) {
-    Validate.notBlank(identifier.getSystem());
-    Validate.notBlank(
-        identifier.getValue(),
-        "Identifier value must not be blank. System: %s",
-        identifier.getSystem());
-    return new DigestUtils(getMessageDigest())
-        .digestAsHex(identifier.getSystem() + "|" + identifier.getValue());
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(
@@ -178,11 +153,10 @@ public abstract class ObdsToFhirMapper {
    *
    * @param reference The reference to be validated
    * @param resourceType The required resource type of the reference
-   * @return Will return `true` if reference is usable
    * @throws NullPointerException if reference is null
    * @throws IllegalArgumentException if reference is not of required reesource type.
    */
-  public static boolean verifyReference(Reference reference, ResourceType resourceType)
+  public static void verifyReference(Reference reference, ResourceType resourceType)
       throws NullPointerException, IllegalArgumentException {
     Objects.requireNonNull(
         reference,
@@ -192,7 +166,6 @@ public abstract class ObdsToFhirMapper {
     if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
       Objects.requireNonNull(reference.getIdentifier());
       Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
-      return true;
     }
 
     Validate.isTrue(
@@ -200,12 +173,5 @@ public abstract class ObdsToFhirMapper {
         String.format(
             "The reference '%s' should point to a %s resource",
             reference.getReference(), resourceType));
-
-    return true;
-  }
-
-  public static Reference createReferenceFromResource(Resource resource) {
-    Objects.requireNonNull(resource.getId());
-    return new Reference(resource.getResourceType().name() + "/" + resource.getId());
   }
 }

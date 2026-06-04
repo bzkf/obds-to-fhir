@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -156,7 +157,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
                     .getProstataGleasonPatternsObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-gleason-grade-group"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     if (modulProstata.getAnlassGleasonScore() != null) {
       var coding =
@@ -322,7 +323,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
                       .getProstataGleasonPatternsObservationId())
               .setValue(slugifier.slugify(meldungId + "-modul-prostata-primary-gleason-pattern"));
       primaryPattern.addIdentifier(identifier);
-      primaryPattern.setId(computeResourceIdFromIdentifier(identifier));
+      primaryPattern.setId(IdUtils.fromIdentifier(identifier));
 
       var coding =
           fhirProperties
@@ -359,7 +360,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
                       .getProstataGleasonPatternsObservationId())
               .setValue(slugifier.slugify(meldungId + "-modul-prostata-secondary-gleason-pattern"));
       secondaryPattern.addIdentifier(identifier);
-      secondaryPattern.setId(computeResourceIdFromIdentifier(identifier));
+      secondaryPattern.setId(IdUtils.fromIdentifier(identifier));
 
       var coding =
           fhirProperties

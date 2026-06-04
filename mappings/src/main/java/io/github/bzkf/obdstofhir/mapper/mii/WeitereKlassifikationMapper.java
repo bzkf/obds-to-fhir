@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
                       .getIdentifiers()
                       .getWeitereKlassifikationObservationId())
               .setValue(identifierValue);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
       observation.setIdentifier(List.of(identifier));
 
       // Subject

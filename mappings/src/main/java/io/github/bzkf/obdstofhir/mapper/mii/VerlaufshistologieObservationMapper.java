@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +95,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
               .setValue(slugifier.slugify(identifierValue));
       observation.addIdentifier(identifier);
       // Id
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
 
       // Status
       observation.setStatus(Observation.ObservationStatus.FINAL);

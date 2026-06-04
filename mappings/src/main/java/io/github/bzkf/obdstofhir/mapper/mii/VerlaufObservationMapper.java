@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import lombok.Getter;
 import org.hl7.fhir.r4.model.*;
@@ -38,7 +39,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getVerlaufObservationId())
             .setValue(slugifier.slugify(verlauf.getVerlaufID()));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);

@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -118,7 +119,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getProstataPsaObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-psa"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     convertObdsDatumToDateTimeType(modulProstata.getDatumPSA())
         .ifPresent(observation::setEffective);
@@ -163,7 +164,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                     .getProstataAnzahlStanzenObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-anzahl-stanzen"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
         .ifPresent(observation::setEffective);
@@ -202,7 +203,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                     .getProstataAnzahlPositiveStanzenObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-anzahl-positive-stanzen"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
         .ifPresent(observation::setEffective);
@@ -241,7 +242,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                     .getProstataCaBefallStanzeObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-ca-befall-stanze"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
         .ifPresent(observation::setEffective);
@@ -296,7 +297,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                 fhirProperties.getSystems().getIdentifiers().getProstataClavienDindoObservationId())
             .setValue(slugifier.slugify(meldungId + "-modul-prostata-clavien-dindo"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
 

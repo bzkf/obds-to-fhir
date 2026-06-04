@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.NebenwirkungTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +59,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
                 .setValue(
                     slugifier.slugify("mii-pr-onko-nebenwirkung-" + sourceElementId + "-" + i));
         adverseEvent.setIdentifier(identifier);
-        adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
+        adverseEvent.setId(IdUtils.fromIdentifier(identifier));
         // event
         var code = new CodeableConcept();
         var nb = nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i);
@@ -105,7 +106,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
                 slugifier.slugify(
                     "mii-pr-onko-nebenwirkung-" + sourceElementId + "-Grad-maximal-2-unbekannt"));
     adverseEvent.setIdentifier(identifier);
-    adverseEvent.setId(computeResourceIdFromIdentifier(identifier));
+    adverseEvent.setId(IdUtils.fromIdentifier(identifier));
     // event
     // If the element used to create the AdverseEvent is of type `Grad_maximal_2_unbekannt`,
     // we can't fill the event code with a MedDRA code or similar.

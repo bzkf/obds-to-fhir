@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper;
 
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.dizuker.tofhir.IdUtils;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,7 @@ public class ProvenanceMapper extends ObdsToFhirMapper {
             .setValue(slugifier.slugify(deviceIdentifier.getValue() + "-" + meldungId));
     // weirdly, the Provenance resource does not have an identifier element,
     // we still create it to compute the Provenance.id.
-    provenance.setId(computeResourceIdFromIdentifier(identifier));
+    provenance.setId(IdUtils.fromIdentifier(identifier));
 
     provenance.setTarget(targets);
     provenance.setOccurred(new DateTimeType(Date.from(Instant.now())));

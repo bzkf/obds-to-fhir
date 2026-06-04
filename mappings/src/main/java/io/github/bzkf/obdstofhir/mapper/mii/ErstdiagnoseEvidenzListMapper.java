@@ -2,13 +2,14 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.List;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ListResource;
 import org.hl7.fhir.r4.model.ListResource.ListMode;
 import org.hl7.fhir.r4.model.ListResource.ListStatus;
 import org.hl7.fhir.r4.model.Reference;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,7 +32,7 @@ public class ErstdiagnoseEvidenzListMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getErstdiagnoseEvidenzListId())
             .setValue(slugifier.slugify(patientId + "-" + tumorId));
     list.addIdentifier(identifier);
-    list.setId(computeResourceIdFromIdentifier(identifier));
+    list.setId(IdUtils.fromIdentifier(identifier));
 
     list.setSubject(patient);
 

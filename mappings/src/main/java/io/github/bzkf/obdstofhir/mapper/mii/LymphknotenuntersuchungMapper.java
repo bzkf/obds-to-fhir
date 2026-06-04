@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.*;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -126,7 +127,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
 
     // Id
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     // Meta
     observation.getMeta().addProfile(profileUrl);

@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class SpecimenMapper extends ObdsToFhirMapper {
         .setValue(slugifier.slugify(identifierValue));
     specimen.addIdentifier(identifier);
     // Id
-    specimen.setId(computeResourceIdFromIdentifier(identifier));
+    specimen.setId(IdUtils.fromIdentifier(identifier));
     // Meta
     specimen.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSpecimen());
 

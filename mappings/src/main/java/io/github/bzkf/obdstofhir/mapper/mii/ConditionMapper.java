@@ -1,11 +1,12 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
-import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -14,9 +15,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -77,7 +78,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
   }
 
   public Condition map(
-      @NonNull OBDS.MengePatient.Patient.MengeMeldung.Meldung meldung,
+      @NonNull Meldung meldung,
       @NonNull Reference patient,
       @NonNull XMLGregorianCalendar meldeDatum,
       @NonNull String patientId) {
@@ -102,7 +103,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var identifier = buildConditionIdentifier(meldung.getTumorzuordnung(), patientId);
     condition.addIdentifier(identifier);
-    condition.setId(computeResourceIdFromIdentifier(identifier));
+    condition.setId(IdUtils.fromIdentifier(identifier));
 
     condition.setSubject(patient);
     condition.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoDiagnosePrimaertumor());

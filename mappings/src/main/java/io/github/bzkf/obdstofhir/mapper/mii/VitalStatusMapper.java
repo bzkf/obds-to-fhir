@@ -3,11 +3,12 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.TodTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -67,7 +68,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
           .setSystem(vitalStatusObsIdentifierSytstem)
           .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "T"));
       observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
       var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
       todesdatum.ifPresent(observation::setEffective);
 
@@ -82,7 +83,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
           .setSystem(vitalStatusObsIdentifierSytstem)
           .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "L"));
       observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
       var date =
           convertObdsDatumToDateTimeType(
               Objects.requireNonNull(

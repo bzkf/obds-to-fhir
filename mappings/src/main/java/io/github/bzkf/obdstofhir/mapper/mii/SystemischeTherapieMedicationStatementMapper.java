@@ -6,6 +6,8 @@ import de.basisdatensatz.obds.v3.SYSTTyp.MengeSubstanz;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
+import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -133,7 +135,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
                         .getSystemischeTherapieMedicationId())
                 .setValue(atcCode.getCode());
         medication.addIdentifier(medicationIdentifier);
-        medication.setId(computeResourceIdFromIdentifier(medicationIdentifier));
+        medication.setId(IdUtils.fromIdentifier(medicationIdentifier));
 
         medication.setCode(new CodeableConcept(atcCode).setText(substanz.getBezeichnung()));
 
@@ -148,8 +150,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         medication.addIngredient().setItem(absentCodeableConcept);
 
         systMedicationStatement.setMedication(
-            ObdsToFhirMapper.createReferenceFromResource(medication)
-                .setDisplay(substanz.getBezeichnung()));
+            ReferenceUtils.createReferenceTo(medication).setDisplay(substanz.getBezeichnung()));
         mapping =
             new SystemischeTherapieMappingResults(systMedicationStatement, Optional.of(medication));
       }
@@ -163,7 +164,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
                       .getSystemischeTherapieMedicationStatementId())
               .setValue(slugifier.slugify(identifierBase + "-" + substanzId));
       systMedicationStatement.addIdentifier(identifier);
-      systMedicationStatement.setId(computeResourceIdFromIdentifier(identifier));
+      systMedicationStatement.setId(IdUtils.fromIdentifier(identifier));
 
       // Status
       var meldeanlass = syst.getMeldeanlass();

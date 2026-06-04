@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
@@ -59,7 +60,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
           .setSystem(fhirProperties.getSystems().getIdentifiers().getFernmetastasenObservationId())
           .setValue(slugifier.slugify(source + "-" + i));
       observation.addIdentifier(identifier);
-      observation.setId(computeResourceIdFromIdentifier(identifier));
+      observation.setId(IdUtils.fromIdentifier(identifier));
 
       // Meta-Daten
       observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoFernmetastasen());

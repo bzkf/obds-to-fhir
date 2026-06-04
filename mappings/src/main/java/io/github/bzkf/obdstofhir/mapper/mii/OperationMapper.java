@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.OPTyp.MengeOPS.OPS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +83,7 @@ public class OperationMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
             .setValue(slugifier.slugify(op.getOPID()));
     parentProcedure.addIdentifier(parentIdentifer);
-    parentProcedure.setId(computeResourceIdFromIdentifier(parentIdentifer));
+    parentProcedure.setId(IdUtils.fromIdentifier(parentIdentifer));
     parentProcedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
     parentProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
 
@@ -144,7 +145,7 @@ public class OperationMapper extends ObdsToFhirMapper {
               .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
               .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
       procedure.addIdentifier(identifier);
-      procedure.setId(computeResourceIdFromIdentifier(identifier));
+      procedure.setId(IdUtils.fromIdentifier(identifier));
 
       procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
 

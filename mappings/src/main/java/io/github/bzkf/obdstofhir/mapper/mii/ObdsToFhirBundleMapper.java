@@ -17,6 +17,7 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
+import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -261,7 +262,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                 meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
         resourcesMappedFromMeldung.add(condition);
 
-        var primaryConditionReference = createReferenceFromResource(condition);
+        var primaryConditionReference = ReferenceUtils.createReferenceTo(condition);
 
         if (meldung.getDiagnose() != null) {
           var resources =
@@ -324,7 +325,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                     .findFirst();
 
             if (primaryProcedure.isPresent()) {
-              var stProcedureReference = createReferenceFromResource(primaryProcedure.get());
+              var stProcedureReference = ReferenceUtils.createReferenceTo(primaryProcedure.get());
               var nebenwirkungen =
                   nebenwirkungMapper.map(
                       st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
@@ -376,9 +377,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // the items in resourcesMappedFromMeldung are processed in the same order that
           // they were added to the list initially.
           var targets =
-              resourcesMappedFromMeldung.stream()
-                  .map(ObdsToFhirMapper::createReferenceFromResource)
-                  .toList();
+              resourcesMappedFromMeldung.stream().map(ReferenceUtils::createReferenceTo).toList();
           var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
           addToBundle(bundle, provenance);
         }
@@ -459,7 +458,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     var mappedResources = new ArrayList<Resource>();
 
-    var primaryConditionReference = createReferenceFromResource(primaryCondition);
+    var primaryConditionReference = ReferenceUtils.createReferenceTo(primaryCondition);
 
     if (diagnose.getAllgemeinerLeistungszustand() != null) {
       var leistungszustand =
@@ -484,7 +483,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var specimen = specimenMapper.map(histologie, patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
-      var specimenReference = createReferenceFromResource(specimen);
+      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
 
       if (histologie.getGrading() != null) {
         var grading =
@@ -591,7 +590,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var evidenzReferenceList =
         mappedResources.stream()
             .filter(r -> r instanceof Observation || r instanceof DiagnosticReport)
-            .map(ObdsToFhirMapper::createReferenceFromResource)
+            .map(ReferenceUtils::createReferenceTo)
             .toList();
 
     var evidenzListe =
@@ -603,7 +602,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     // It's not ideal to modify the Condition resource after it's creation in the
     // mapper.
-    primaryCondition.addEvidence().addDetail(createReferenceFromResource(evidenzListe));
+    primaryCondition.addEvidence().addDetail(ReferenceUtils.createReferenceTo(evidenzListe));
 
     mappedResources.add(evidenzListe);
 
@@ -621,7 +620,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       var fruehereTumorerkrankungenExtensions =
           fruehereTumorErkrankungen.stream()
-              .map(ObdsToFhirMapper::createReferenceFromResource)
+              .map(ReferenceUtils::createReferenceTo)
               .map(
                   reference ->
                       new Extension(
@@ -674,7 +673,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           specimenMapper.map(verlauf.getHistologie(), patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
-      var specimenReference = createReferenceFromResource(specimen);
+      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
 
       var verlaufsHistologie =
           verlaufshistologieObservationMapper.map(
@@ -781,7 +780,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         systemischeTherapieProcedureMapper.map(syst, patientReference, primaryConditionReference);
     mappedResources.add(systProcedure);
 
-    var procedureReference = createReferenceFromResource(systProcedure);
+    var procedureReference = ReferenceUtils.createReferenceTo(systProcedure);
 
     if (syst.getMengeSubstanz() != null) {
       var results =
@@ -834,7 +833,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           specimenMapper.map(op.getHistologie(), patientReference, meldung.getMeldungID());
       mappedResources.add(specimen);
 
-      var specimenReference = createReferenceFromResource(specimen);
+      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
 
       var verlaufsHistologie =
           verlaufshistologieObservationMapper.map(
@@ -908,7 +907,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var opReferences =
           operations.stream()
               .filter(p -> !p.hasPartOf())
-              .map(ObdsToFhirMapper::createReferenceFromResource)
+              .map(ReferenceUtils::createReferenceTo)
               .toList();
 
       if (opReferences.size() > 1) {
@@ -945,7 +944,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       mappedResources.add(specimen);
 
-      specimenReference = createReferenceFromResource(specimen);
+      specimenReference = ReferenceUtils.createReferenceTo(specimen);
 
       var verlaufsHistologie =
           verlaufshistologieObservationMapper.map(
