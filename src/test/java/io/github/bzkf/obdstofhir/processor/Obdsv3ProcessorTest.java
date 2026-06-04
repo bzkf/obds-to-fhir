@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
@@ -42,8 +41,6 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ResourceType;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -54,7 +51,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 
 @SpringBootTest(
     classes = {
@@ -71,7 +68,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       OperationMapper.class,
       ResidualstatusMapper.class,
       Obdsv3Deserializer.class,
-      JsonSerializer.class,
+      JacksonJsonSerializer.class,
       FernmetastasenMapper.class,
       GradingObservationMapper.class,
       HistologiebefundMapper.class,
@@ -128,7 +125,7 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
       Resource[] resources,
       String lkrnum,
       int versnum)
-      throws IOException, JSONException {
+      throws IOException {
     inputTopic.pipeInput(
         key,
         buildMeldungExport(
@@ -142,7 +139,8 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
@@ -151,8 +149,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
       pipeInput(inputTopic, "key1", "test1.xml", obdsResources, "123", 1);
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -163,7 +159,8 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
@@ -172,8 +169,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
       pipeInput(inputTopic, "key1", "Testpatient_ADT_Diagnose.xml", adtResources, "123", 1);
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -184,7 +179,8 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
@@ -214,8 +210,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
       // validate prioritization
       assertThat(conditions).containsExactly("C50.9", "C61", "C61");
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -240,18 +234,16 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
 
   private MeldungExportV3 buildMeldungExport(
       Resource xmlObds, String id, String refNummer, String lkrMeldung, int versionsnummer)
-      throws IOException, JSONException {
-    var meldung =
-        new JSONObject()
-            .put("ID", id)
-            .put("REFERENZ_NUMMER", refNummer)
-            .put("LKR_MELDUNG", lkrMeldung)
-            .put("VERSIONSNUMMER", versionsnummer)
-            .put("XML_DATEN", xmlObds.getContentAsString(StandardCharsets.UTF_8))
-            .toString();
-
-    var mapper = new ObjectMapper();
-    return mapper.readValue(meldung, MeldungExportV3.class);
+      throws IOException {
+    var xml = xmlObds.getContentAsString(StandardCharsets.UTF_8);
+    var obdsOrAdt = new Obdsv3Deserializer().deserializeAsObdsOrAdt(xml);
+    return MeldungExportV3.builder()
+        .id(id)
+        .referenzNummer(refNummer)
+        .lkrMeldung(lkrMeldung)
+        .versionsnummer(versionsnummer)
+        .obdsOrAdt(obdsOrAdt)
+        .build();
   }
 
   @Test
@@ -261,7 +253,8 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
@@ -304,9 +297,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             }
           });
       assertThat(dulpicateKeyCount.get()).isLessThan(2);
-
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -318,7 +308,7 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
       },
       delimiter = ':')
   void testTumorkonferenz(String inputXmlResourceName, String expectedMeldeAnlass)
-      throws IOException, JSONException {
+      throws IOException {
     final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
     meldungExportListV3.add(
         buildMeldungExport(
@@ -336,7 +326,8 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
             processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
 
       var inputTopic =
-          driver.createInputTopic(INPUT_TOPIC_NAME, new StringSerializer(), new JsonSerializer<>());
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
       var outputTopic =
           driver.createOutputTopic(
               OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
@@ -373,8 +364,6 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
           Procedure.ProcedureStatus.COMPLETED);
 
       verifyAll(outputRecords.stream().map(r -> r.value).toList(), "Test_ST");
-    } catch (JSONException e) {
-      throw new RuntimeException(e);
     }
   }
 
@@ -391,7 +380,7 @@ class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
   }
 
   @Test
-  void testMultiSystTherapieIds() throws IOException, JSONException {
+  void testMultiSystTherapieIds() throws IOException {
     final String description =
         "Es wurden 2 Systemtherapie mit unterschiedlicher Id durchgeführt. "
             + "Daher auch 2 Meldungen erwartet";

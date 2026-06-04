@@ -160,7 +160,7 @@ docker compose -f compose.dev.yaml down -v
 deploy connectors
 
 ```sh
-sh deploy-connectors.sh
+./deploy-connectors.sh
 ```
 
 start obds-to-fhir:
@@ -175,7 +175,7 @@ FHIR resources in the Kafka topics.
 reset topics
 
 ```sh
-sh reset-topics.sh
+./reset-topics.sh
 ```
 
 ## Image signature and provenance verification

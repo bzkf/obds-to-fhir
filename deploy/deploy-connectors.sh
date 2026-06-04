@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 curl -X POST \
   http://localhost:8083/connectors \
   -H 'Content-Type: application/json' \

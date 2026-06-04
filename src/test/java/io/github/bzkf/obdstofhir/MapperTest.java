@@ -3,14 +3,12 @@ package io.github.bzkf.obdstofhir;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import org.approvaltests.Approvals;
 import org.hl7.fhir.instance.model.api.IBaseResource;
+import tools.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 
 /** Abstract class to provide common methods for mapping tests */
 public abstract class MapperTest {
@@ -23,11 +21,10 @@ public abstract class MapperTest {
   protected XmlMapper xmlMapper() {
     return XmlMapper.builder()
         .defaultUseWrapper(false)
-        .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
         .addModule(new JakartaXmlBindAnnotationModule())
-        .addModule(new Jdk8Module())
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        // .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
+        .build()
+        .rebuild()
+        .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
         .build();
   }
 

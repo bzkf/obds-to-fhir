@@ -1,7 +1,7 @@
 // groovylint-disable NestedBlockDepth
 
 plugins {
-    id 'org.springframework.boot' version '3.5.11'
+    id 'org.springframework.boot' version '4.0.6'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id 'java'
@@ -30,7 +30,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', '2025.0.1')
+    set('springCloudVersion', '2025.1.1')
     set('hapiVersion', '8.8.0')
 }
 
@@ -44,17 +44,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.4'
     implementation 'io.micrometer:micrometer-core:1.16.4'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
     implementation 'com.github.slugify:slugify:3.0.7'
-    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-    // Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
-    // <https://github.com/FasterXML/jackson-modules-java8>
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
-    implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
+    implementation 'org.springframework.retry:spring-retry'
     // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
     implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
 
