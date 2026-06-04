@@ -153,7 +153,6 @@ public abstract class ObdsToFhirMapper {
    *
    * @param reference The reference to be validated
    * @param resourceType The required resource type of the reference
-   * @return Will return `true` if reference is usable
    * @throws NullPointerException if reference is null
    * @throws IllegalArgumentException if reference is not of required reesource type.
    */
