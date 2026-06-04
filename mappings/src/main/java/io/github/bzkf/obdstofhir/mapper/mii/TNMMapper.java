@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.TNMTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -319,7 +320,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     observation.setSubject(patient);
     observation.setFocus(Collections.singletonList(primaryConditionReference));
@@ -509,7 +510,7 @@ public class TNMMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getTnmGroupingObservationId())
             .setValue(slugifier.slugify(idBase));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     observation.setSubject(patient);
 

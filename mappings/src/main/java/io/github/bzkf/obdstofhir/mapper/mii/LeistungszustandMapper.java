@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.AllgemeinerLeistungszustand;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Collections;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -65,7 +66,7 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
                     .getAllgemeinerLeistungszustandEcogObservationId())
             .setValue(slugifier.slugify("ECOG-" + meldungsId));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     observation.setSubject(patient);
 

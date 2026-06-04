@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -36,7 +37,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
                 fhirProperties.getSystems().getIdentifiers().getSystemischeTherapieProcedureId())
             .setValue(slugifier.slugify(syst.getSYSTID()));
     procedure.addIdentifier(identifier);
-    procedure.setId(computeResourceIdFromIdentifier(identifier));
+    procedure.setId(IdUtils.fromIdentifier(identifier));
 
     // Status
     if (syst.getMeldeanlass() == SYSTTyp.Meldeanlass.BEHANDLUNGSENDE) {

@@ -9,6 +9,7 @@ import de.basisdatensatz.obds.v3.StrahlendosisTyp;
 import de.basisdatensatz.obds.v3.ZielgebietTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -120,7 +121,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
                 fhirProperties.getSystems().getIdentifiers().getStrahlentherapieProcedureId())
             .setValue(slugifier.slugify(idBase));
     procedure.addIdentifier(identifier);
-    procedure.setId(computeResourceIdFromIdentifier(identifier));
+    procedure.setId(IdUtils.fromIdentifier(identifier));
 
     // Status
     if (st.getMeldeanlass() == STTyp.Meldeanlass.BEHANDLUNGSENDE) {
@@ -236,7 +237,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
                     .getStrahlentherapieBestrahlungProcedureId())
             .setValue(slugifier.slugify(identifierValue));
     procedure.addIdentifier(identifier);
-    procedure.setId(computeResourceIdFromIdentifier(identifier));
+    procedure.setId(IdUtils.fromIdentifier(identifier));
 
     // Status
     if (bestrahlung.getEnde() != null) {

@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.PathologieTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -52,7 +53,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
             .setValue(slugifier.slugify(identifierValue));
     diagnosticReport.addIdentifier(identifier);
     // Id
-    diagnosticReport.setId(computeResourceIdFromIdentifier(identifier));
+    diagnosticReport.setId(IdUtils.fromIdentifier(identifier));
 
     // basedOn Tumorkonferenz
     if (tumorkonferenz != null) {

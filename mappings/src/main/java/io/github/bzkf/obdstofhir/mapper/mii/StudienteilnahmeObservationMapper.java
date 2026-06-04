@@ -4,6 +4,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
                 fhirProperties.getSystems().getIdentifiers().getStudienteilnahmeObservationId())
             .setValue(slugifier.slugify(meldungsID + "-Studienteilnahme"));
     observation.addIdentifier(identifier);
-    observation.setId(computeResourceIdFromIdentifier(identifier));
+    observation.setId(IdUtils.fromIdentifier(identifier));
 
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);

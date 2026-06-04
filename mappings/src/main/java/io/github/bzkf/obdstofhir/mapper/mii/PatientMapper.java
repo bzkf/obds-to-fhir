@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class PatientMapper extends ObdsToFhirMapper {
             .setType(mrTypeConcept);
 
     patient.addIdentifier(identifier);
-    patient.setId(computeResourceIdFromIdentifier(identifier));
+    patient.setId(IdUtils.fromIdentifier(identifier));
 
     patient.setGender(
         genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));

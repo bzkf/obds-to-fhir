@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung;
 import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.FruehereTumorerkrankung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.IdUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
     var condition = new Condition();
     var identifier = buildConditionIdentifier(fruehereTumorerkrankung, primaerdiagnoseIdentifier);
     condition.addIdentifier(identifier);
-    condition.setId(computeResourceIdFromIdentifier(identifier));
+    condition.setId(IdUtils.fromIdentifier(identifier));
 
     condition.setSubject(patient);
     condition

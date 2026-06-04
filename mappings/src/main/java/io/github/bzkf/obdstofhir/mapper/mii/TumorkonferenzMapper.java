@@ -4,9 +4,10 @@ import de.basisdatensatz.obds.v3.JNU;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.micrometer.common.lang.NonNull;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getTumorkonferenzCarePlanId())
             .setValue(slugifier.slugify("Tumorkonferenz-" + tk.getTumorkonferenzID()));
     carePlan.addIdentifier(identifier);
-    carePlan.setId(computeResourceIdFromIdentifier(identifier));
+    carePlan.setId(IdUtils.fromIdentifier(identifier));
     // Status
     if (tk.getMeldeanlass().equals(TumorkonferenzTyp.Meldeanlass.BEHANDLUNGSENDE)) {
       carePlan.setStatus(CarePlan.CarePlanStatus.COMPLETED);

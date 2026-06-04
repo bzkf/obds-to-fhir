@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper;
 
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.dizuker.tofhir.IdUtils;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.ContactPoint.ContactPointSystem;
 import org.hl7.fhir.r4.model.Device;
@@ -27,7 +28,7 @@ public class DeviceMapper extends ObdsToFhirMapper {
             .setSystem(fhirProperties.getSystems().getIdentifiers().getObdsToFhirDeviceId())
             .setValue("obds-to-fhir-v" + libVersion);
     device.addIdentifier(identifier);
-    device.setId(computeResourceIdFromIdentifier(identifier));
+    device.setId(IdUtils.fromIdentifier(identifier));
     device.setStatus(FHIRDeviceStatus.ACTIVE);
     device.setManufacturer("https://github.com/bzkf/");
     device.addDeviceName().setName("oBDS-to-FHIR").setType(DeviceNameType.USERFRIENDLYNAME);
