@@ -37,9 +37,6 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
-    // Jackson 3 (tools.jackson) is required for ValueDeserializer/ValueSerializer base classes
-    // used by Spring Kafka 4.x's JacksonJsonDeserializer
-    implementation 'tools.jackson.core:jackson-databind'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
     implementation 'com.github.slugify:slugify:3.0.7'
 

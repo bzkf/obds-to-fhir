@@ -2,11 +2,11 @@ package de.basisdatensatz.obds.v3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import org.junit.jupiter.api.Test;
+import tools.jackson.dataformat.xml.XmlMapper;
+import tools.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 
 class ObdsDeserialisationTest {
 
@@ -17,7 +17,9 @@ class ObdsDeserialisationTest {
         XmlMapper.builder()
             .defaultUseWrapper(false)
             .addModule(new JakartaXmlBindAnnotationModule())
-            .addModule(new Jdk8Module())
+            .build()
+            .rebuild()
+            .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
             .build();
 
     final var actual = xmlMapper.readValue(resource.openStream(), OBDS.class);
