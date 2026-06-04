@@ -6,8 +6,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import org.apache.commons.collections4.map.MultiKeyMap;
 import org.apache.commons.csv.CSVFormat;
 import org.hl7.fhir.r4.model.Coding;
 import org.jspecify.annotations.NonNull;
@@ -18,15 +19,18 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class WeitereKlassifikationCodingMapper {
-  private final MultiKeyMap<String, ObservationCodeValue> map = new MultiKeyMap<>();
-  private static CSVFormat csvFormat =
+  private final Map<MappingKey, ObservationCodeValue> map = new HashMap<>();
+
+  private static final CSVFormat CSV_FORMAT =
       CSVFormat.DEFAULT
           .builder()
           .setHeader()
           .setSkipHeaderRecord(true)
-          .setDelimiter(";")
+          .setDelimiter(';')
           .setCommentMarker('#')
           .get();
+
+  private record MappingKey(String name, String einstufung) {}
 
   public record ObservationCodeValue(Coding code, Optional<Coding> value) {}
 
@@ -53,13 +57,15 @@ public class WeitereKlassifikationCodingMapper {
   }
 
   private void loadMappings(Reader reader) throws IOException {
-    for (var row : csvFormat.parse(reader)) {
+    for (var row : CSV_FORMAT.parse(reader)) {
       var name = row.get("name").trim();
       var einstufung = row.get("stadium").trim();
+
       var codeSystem = row.get("code_system").trim();
       var codeVersion = row.get("code_version").trim();
       var codeCode = row.get("code_code").trim();
       var codeDisplay = row.get("code_display").trim();
+
       var valueSystem = row.get("value_system").trim();
       var valueVersion = row.get("value_version").trim();
       var valueCode = row.get("value_code").trim();
@@ -76,12 +82,13 @@ public class WeitereKlassifikationCodingMapper {
         value = new Coding(valueSystem, valueCode, valueDisplay).setVersion(valueVersion);
       }
 
-      map.put(name, einstufung, new ObservationCodeValue(code, Optional.ofNullable(value)));
+      map.put(
+          new MappingKey(name, einstufung),
+          new ObservationCodeValue(code, Optional.ofNullable(value)));
     }
   }
 
   public Optional<ObservationCodeValue> lookup(@NonNull String name, @NonNull String einstufung) {
-    var result = map.get(name, einstufung);
-    return Optional.ofNullable(result);
+    return Optional.ofNullable(map.get(new MappingKey(name, einstufung)));
   }
 }
