@@ -240,6 +240,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // because in the Vitalstatus processor we reference the patient by this
           // id.
           patient.setId(patientReference.getReferenceElement().getIdPart());
+          if (patientReference.hasIdentifier()) {
+            patient.getIdentifierFirstRep().setValue(patientReference.getIdentifier().getValue());
+          }
         }
 
         addToBundle(bundle, patient);

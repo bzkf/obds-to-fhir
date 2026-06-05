@@ -11,7 +11,6 @@ import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import java.io.IOException;
 import java.util.function.Function;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
@@ -74,10 +73,9 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
         FhirProperties fhirProperties) {
       return p -> {
         var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-        var value = p.getPatientID();
         // Simulate a patient that already exists on the server with a server-side id
         var reference = new Reference("Patient/" + SERVER_PATIENT_ID);
-        reference.setIdentifier(new Identifier().setSystem(system).setValue(value));
+        reference.setIdentifier(new Identifier().setSystem(system).setValue(SERVER_PATIENT_ID));
         return new PatientLookupResult(reference, true);
       };
     }
@@ -94,8 +92,9 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
   }
 
   @Test
-  void map_whenPatientExistsOnServer_shouldAddPatientToBundleAndUseLocallyComputedReference()
-      throws IOException {
+  void
+      map_whenPatientExistsOnServer_shouldAddPatientToBundleAndUseAlreadyExistingPatientIdAsReference()
+          throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/Testpatient_leer.xml");
     assertThat(resource).isNotNull();
 
@@ -114,16 +113,17 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
             .toList();
     assertThat(patientEntries).hasSize(1);
 
-    // The patient's id should be the locally computed hash (not the server-generated one)
+    // The patient's id should be the server-generated one
     var patientInBundle = (Patient) patientEntries.getFirst().getResource();
     var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-    var expectedId = DigestUtils.sha256Hex(system + "|" + patientId);
-    assertThat(patientInBundle.getId()).isEqualTo(expectedId);
-    assertThat(patientInBundle.getIdentifierFirstRep().getValue()).isEqualTo(patientId);
+
+    assertThat(patientInBundle.getId()).isEqualTo(SERVER_PATIENT_ID);
+    assertThat(patientInBundle.getIdentifierFirstRep().getValue()).isEqualTo(SERVER_PATIENT_ID);
+    assertThat(patientInBundle.getIdentifierFirstRep().getSystem()).isEqualTo(system);
 
     // Verify that non-Patient resources that have a subject/patient reference
     // use the locally computed Patient.id, not the server-generated id
-    var expectedPatientRef = "Patient/" + expectedId;
+    var expectedPatientRef = "Patient/" + SERVER_PATIENT_ID;
     bundle.getEntry().stream()
         .map(e -> e.getResource())
         .filter(r -> r.getResourceType() != ResourceType.Patient)
@@ -132,14 +132,11 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
               var ref = extractPatientReference(r);
               if (ref != null && ref.hasReference()) {
                 assertThat(ref.getReference())
-                    .as(
-                        "Patient reference in %s should use locally computed id",
-                        r.getResourceType())
-                    .isEqualTo(expectedPatientRef)
-                    .doesNotContain(SERVER_PATIENT_ID);
+                    .as("Patient reference in %s should use existing id", r.getResourceType())
+                    .isEqualTo(expectedPatientRef);
                 // Logical identifier should still be present
                 assertThat(ref.getIdentifier()).isNotNull();
-                assertThat(ref.getIdentifier().getValue()).isEqualTo(patientId);
+                assertThat(ref.getIdentifier().getValue()).isEqualTo(SERVER_PATIENT_ID);
               }
             });
   }
