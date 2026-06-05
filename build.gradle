@@ -8,10 +8,11 @@ plugins {
     id 'com.diffplug.spotless' version '8.3.0'
     id 'io.freefair.lombok' version '9.2.0'
     id 'net.ltgt.errorprone' version '5.1.0'
+    id 'name.remal.jacoco-to-cobertura' version '2.0.3'
 }
 
 group = 'io.github.bzkf'
-version = '3.0.0-beta.233'
+version = '3.0.0-beta.234'
 
 java {
     toolchain {
@@ -31,7 +32,7 @@ repositories {
 
 ext {
     set('springCloudVersion', '2025.1.1')
-    set('hapiVersion', '8.8.0')
+    set('hapiVersion', '8.10.0')
 }
 
 dependencies {
@@ -52,7 +53,6 @@ dependencies {
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
     implementation 'com.github.slugify:slugify:3.0.7'
     implementation 'org.springframework.retry:spring-retry'
-    // https://mvnrepository.com/artifact/io.github.java-diff-utils/java-diff-utils
     implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
