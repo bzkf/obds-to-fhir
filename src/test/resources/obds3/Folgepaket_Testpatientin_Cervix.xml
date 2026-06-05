@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.2.xsd">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-04-22</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="19">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Szyjka</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Franziska</Vornamen>
+        <Geburtsname>Macicy</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Maier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Dort</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="9876_#Aa/m" Meldung_ID="10_5_OP-1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="195">
+            <Primaertumor_ICD>
+              <Code>D06.9</Code>
+              <Version>10 2022 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2022-10-02</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8077/2</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="30">
+            <Intention>K</Intention>
+            <Datum>2022-10-16</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-671.01</Code>
+                <Version>2022</Version>
+              </OPS>
+            </Menge_OPS>
+            <Histologie Histologie_ID="55">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2022-10-16</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/98765/2</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8077/2</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Zervikale intraepitheliale Neoplasie Grad 3</Morphologie_Freitext>
+              <Grading>3</Grading>
+            </Histologie>
+            <TNM ID="50">
+              <Datum>2022-10-16</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>is</T>
+              <UICC_Stadium>0</UICC_Stadium>
+            </TNM>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R0</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R0</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Menge_Komplikation>
+                <Komplikation>
+                  <Kuerzel>RNB</Kuerzel>
+                </Komplikation>
+              </Menge_Komplikation>
+            </Komplikationen>
+          </OP>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="9876_#Aa/m">
+      <Ident_Nummern>
+        <LANR>123456789</LANR>
+        <BSNR>987654321</BSNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Praxis</KH_Abt_Station_Praxis>
+      <Arztname>Hippokrates</Arztname>
+      <Anschrift>Kos Str. 1</Anschrift>
+      <PLZ>98765</PLZ>
+      <Ort>Kos</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Hippokrates</Kontoinhaber>
+      <BIC>98765432198</BIC>
+      <IBAN>DE21345678912345678912345678912345</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

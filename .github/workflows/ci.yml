@@ -6,17 +6,27 @@ on:
       - master
       - beta
   release:
-    types: [created]
+    types:
+      - created
   pull_request:
     branches:
       - master
       - beta
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch: {}
 
-permissions: read-all
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-build.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: write
       id-token: write
@@ -31,7 +41,8 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   add-test-coverage:
-    runs-on: ubuntu-22.04
+    name: add test coverage to PR
+    runs-on: ubuntu-24.04
     needs:
       - build
     permissions:
@@ -39,6 +50,11 @@ jobs:
       pull-requests: write
     if: ${{ github.event_name == 'pull_request' }}
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
       # <https://docs.docker.com/storage/containerd/>
       # via <https://github.com/docker/setup-buildx-action/issues/257>
       - name: Set up containerd image store
@@ -52,7 +68,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Download test image
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}-test
           path: /tmp
@@ -65,42 +81,222 @@ jobs:
       - name: Copy unit test coverage reports from test container
         env:
           UNIT_TEST_IMAGE: ${{ fromJson(needs.build.outputs.test-image-meta-json).tags[0] }}
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         run: |
           docker create --name=unit-test-container "${UNIT_TEST_IMAGE}"
-          docker cp unit-test-container:/test ${{ github.workspace }}/test
+          docker cp unit-test-container:/test "${GITHUB_WORKSPACE}/test"
 
       - name: Add coverage to PR
         id: jacoco
-        uses: madrapps/jacoco-report@7c362aca34caf958e7b1c03464bd8781db9f8da7 # v1.7.1
+        uses: madrapps/jacoco-report@50d3aff4548aa991e6753342d9ba291084e63848 # v1.7.2
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
         with:
           paths: |
-            ${{ github.workspace }}/test/jacoco/test/jacocoTestReport.xml
+            ${GITHUB_WORKSPACE}/test/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 40
           min-coverage-changed-files: 60
           update-comment: true
           title: "## Code Coverage Report"
 
+  test-compose-process-from-directory:
+    name: test compose processing files from directory
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'pull_request' || github.ref_name == 'beta' }}
+    needs:
+      - build
+    permissions:
+      contents: read
+    env:
+      INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/obds3/
+      OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      # <https://docs.docker.com/storage/containerd/>
+      # via <https://github.com/docker/setup-buildx-action/issues/257>
+      - name: Set up containerd image store
+        shell: bash
+        run: |
+          [ -f /etc/docker/daemon.json ] || echo "{}" | sudo tee /etc/docker/daemon.json
+          jq '. | .+{"features": {"containerd-snapshotter": true}}' /etc/docker/daemon.json > /tmp/docker-daemon-with-containerd.json
+          sudo mv /tmp/docker-daemon-with-containerd.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          docker info -f '{{ .DriverStatus }}'
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Download image
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.image-slug }}
+          path: /tmp
+
+      - name: Load image
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker load --input /tmp/image.tar
+          docker image ls
+
+      - name: Run obds-to-fhir
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+        run: |
+          mkdir -p "${OUTPUT_DIRECTORY}"
+          USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
+            docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml \
+            run obds-to-fhir
+
+      - name: Upload mapped files
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: process-from-directory-mapped-resources
+          path: ${{ env.OUTPUT_DIRECTORY }}
+
+      - name: Make sure the FHIR bundles appear in the output dir
+        run: |
+          ls -lsa "$OUTPUT_DIRECTORY"
+          if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
+              echo "Output FHIR bundles found"
+          else
+              echo "No files found"
+              exit 1
+          fi
+
+      - name: Print compose logs
+        if: always()
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+        run: |
+          docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml logs
+
+  test-compose-process-from-directory-v2-to-v3:
+    name: test compose processing files from directory with v2 to v3 conversion
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'pull_request' || github.ref_name == 'beta' }}
+    needs:
+      - build
+    permissions:
+      contents: read
+    env:
+      INPUT_DIRECTORY: ${{ github.workspace }}/src/test/resources/adt/
+      OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      # <https://docs.docker.com/storage/containerd/>
+      # via <https://github.com/docker/setup-buildx-action/issues/257>
+      - name: Set up containerd image store
+        shell: bash
+        run: |
+          [ -f /etc/docker/daemon.json ] || echo "{}" | sudo tee /etc/docker/daemon.json
+          jq '. | .+{"features": {"containerd-snapshotter": true}}' /etc/docker/daemon.json > /tmp/docker-daemon-with-containerd.json
+          sudo mv /tmp/docker-daemon-with-containerd.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          docker info -f '{{ .DriverStatus }}'
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Download image
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ needs.build.outputs.image-slug }}
+          path: /tmp
+
+      - name: Load image
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          docker load --input /tmp/image.tar
+          docker image ls
+
+      - name: Run obds-to-fhir
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+        run: |
+          mkdir -p "${OUTPUT_DIRECTORY}"
+          USER_ID="$(id -u)" GROUP_ID="$(id -g)" \
+            docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml \
+            run obds-to-fhir
+
+      - name: Upload mapped files
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: process-from-directory-v2-to-v3-mapped-resources
+          path: ${{ env.OUTPUT_DIRECTORY }}
+
+      - name: Make sure the FHIR bundles appear in the output dir
+        run: |
+          ls -lsa "$OUTPUT_DIRECTORY"
+          if find "$OUTPUT_DIRECTORY" -type f -name "*.fhir.json" -print -quit | grep -q .; then
+              echo "Output FHIR bundles found"
+          else
+              echo "No files found"
+              exit 1
+          fi
+
+      - name: Print compose logs
+        if: always()
+        env:
+          OBDS_TO_FHIR_VERSION: ${{ needs.build.outputs.image-version }}
+        run: |
+          docker compose \
+            -f deploy/compose.yaml \
+            -f tests/compose/compose.yaml \
+            -f deploy/compose.process-from-directory.yaml logs
+
   test:
     name: run k8s smoke test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ github.event_name == 'pull_request' || github.ref_name == 'beta' }}
     needs:
       - build
     permissions:
       contents: read
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Create KinD cluster
-        uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # v1.10.0
+        uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
         with:
           cluster_name: kind
 
       - name: Download image
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: ${{ needs.build.outputs.image-slug }}
           path: /tmp
@@ -121,9 +317,9 @@ jobs:
           # start by first installing the Strimzi and Prometheus operators
           helm upgrade --install \
             --set "stream-processors.enabled=false" \
-            --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
             --wait \
             --timeout=10m \
+            --debug \
             obds-to-fhir-test \
             tests/k8s
 
@@ -135,6 +331,7 @@ jobs:
             --set "stream-processors.processors.obds-to-fhir.container.image.tag=${IMAGE_TAG}" \
             --wait \
             --timeout=10m \
+            --debug \
             obds-to-fhir-test \
             tests/k8s
 
@@ -149,14 +346,14 @@ jobs:
 
       - name: Upload cluster dump
         if: always()
-        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: kind-cluster-dump.txt
           path: |
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     permissions:
       contents: read
       pull-requests: write
@@ -171,7 +368,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@fc8f3798e3b8537a350cf51438e01a906811532c # v1.12.7
+    uses: miracum/.github/.github/workflows/standard-release.yaml@1478f7e298f11e96e4585dee4afdce8fabc2e162 # v1.20.5
     needs:
       - lint
       - build
@@ -179,5 +376,8 @@ jobs:
       contents: write
       pull-requests: write
       issues: write
+    with:
+      use-app-token: true
     secrets:
-      semantic-release-token: ${{ secrets.MIRACUM_BOT_SEMANTIC_RELEASE_TOKEN }}
+      app-token-app-id: ${{ secrets.RELEASER_APP_ID }}
+      app-token-private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}

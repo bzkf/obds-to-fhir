@@ -1,0 +1,79 @@
+name: Publish to Maven Central
+
+on:
+  push:
+    branches:
+      - master
+      - beta
+  release:
+    types:
+      - created
+  pull_request:
+    branches:
+      - master
+      - beta
+  merge_group:
+    types:
+      - checks_requested
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    name: Build and publish
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          java-version: "25"
+          distribution: "temurin"
+          cache: "gradle"
+
+      - uses: gradle/actions/wrapper-validation@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+
+      - name: Build with Gradle
+        run: |
+          ./gradlew build
+
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: package
+          path: build/
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Run Test Coverage
+        run: ./gradlew jacocoTestReport
+
+      - uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: libs
+          path: |
+            mappings/build/libs/
+            build/libs/
+
+      - name: Publish to central
+        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        run: |
+          ./gradlew :mappings:publish --no-configuration-cache
+          ./gradlew :mappings:publishToMavenCentralPortal --no-configuration-cache
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_KEY_PASSPHRASE: ${{ secrets.SIGNING_KEY_PASSPHRASE }}

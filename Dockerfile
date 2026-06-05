@@ -1,13 +1,15 @@
-FROM docker.io/library/gradle:8.11.0-jdk21@sha256:09f2f9448e8d490fc7d8f041cf03502c9749ec72aef6307a0042e5d03494b044 AS build
+FROM docker.io/library/gradle:9.5.1-jdk25@sha256:8de3543f1772bb66be3b275893e5977b6d8bd2b0d25551faa5846a821d1f0600 AS build
 SHELL ["/bin/bash", "-eo", "pipefail", "-c"]
 WORKDIR /home/gradle/project
 
-COPY --chown=gradle:gradle . .
+COPY . .
 
 RUN --mount=type=cache,target=/home/gradle/.gradle/caches <<EOF
-gradle clean build --info --no-daemon
-gradle jacocoTestReport --no-daemon
-java -Djarmode=layertools -jar build/libs/obds-to-fhir-*.jar extract
+set -e
+gradle clean build --info
+gradle jacocoTestReport
+PROJECT_VERSION="$(gradle --no-configuration-cache -q printVersion)"
+java -Djarmode=layertools -jar "build/libs/obds-to-fhir-${PROJECT_VERSION}.jar" extract
 EOF
 
 FROM scratch AS test
@@ -15,20 +17,21 @@ WORKDIR /test
 COPY --from=build /home/gradle/project/build/reports/ .
 ENTRYPOINT [ "true" ]
 
-FROM docker.io/library/debian:12.8-slim@sha256:ca3372ce30b03a591ec573ea975ad8b0ecaf0eb17a354416741f8001bbcae33d AS jemalloc
+FROM docker.io/library/debian:13.5-slim@sha256:b6e2a152f22a40ff69d92cb397223c906017e1391a73c952b588e51af8883bf8 AS jemalloc
 # hadolint ignore=DL3008
 RUN <<EOF
+set -e
 apt-get update
-apt-get install -y --no-install-recommends libjemalloc-dev
+apt-get install -y --no-install-recommends libjemalloc2
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 EOF
 
-FROM gcr.io/distroless/java21-debian12:nonroot@sha256:2985410a80560b788c15694d9dba8da051db5087f6e2a7cff64358650fdd91f5
+FROM gcr.io/distroless/java25-debian13:nonroot@sha256:dade01b669efd3bea3977f73cc196c56f1ee678a71ec8305f84ec15fd5a23c8d
 WORKDIR /opt/obds-to-fhir
-ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so"
+ENV LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
 
-COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so /usr/lib/x86_64-linux-gnu/libjemalloc.so
+COPY --from=jemalloc /usr/lib/x86_64-linux-gnu/libjemalloc.so.2 /usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 COPY --from=build /home/gradle/project/dependencies/ ./
 COPY --from=build /home/gradle/project/spring-boot-loader/ ./

@@ -1,90 +1,125 @@
+// groovylint-disable NestedBlockDepth
+
 plugins {
-	id 'org.springframework.boot' version '3.3.5'
-	id 'io.spring.dependency-management' version '1.1.6'
-	id 'jacoco'
-	id 'java'
-	id 'com.diffplug.spotless' version '6.25.0'
-	id "io.freefair.lombok" version "8.11"
+    id 'org.springframework.boot' version '4.0.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+    id 'java'
+    id 'com.diffplug.spotless' version '8.3.0'
+    id 'io.freefair.lombok' version '9.2.0'
+    id 'net.ltgt.errorprone' version '5.1.0'
+    id 'name.remal.jacoco-to-cobertura' version '2.0.3'
 }
 
-group = 'org.miracum.streams.ume'
-version = '2.6.1'
-sourceCompatibility = '21'
-targetCompatibility = '21'
+group = 'io.github.bzkf'
+version = '3.0.0-beta.235'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', "2023.0.3")
-	set('hapiVersion', "7.4.5")
+    set('springCloudVersion', '2025.1.1')
+    set('hapiVersion', '8.10.0')
 }
 
 dependencies {
-	implementation 'org.apache.kafka:kafka-streams'
-	implementation 'org.springframework.cloud:spring-cloud-stream'
-	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
-	implementation "org.springframework.boot:spring-boot-starter-actuator"
-	implementation "org.springframework.boot:spring-boot-starter-web"
-	implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-	implementation 'io.micrometer:micrometer-registry-prometheus:1.14.1'
-	implementation 'io.micrometer:micrometer-core:1.14.1'
-	implementation "org.miracum:kafka-fhir-serializer:1.0.8"
-	implementation "org.apache.commons:commons-text:1.12.0"
-	implementation "org.scala-lang:scala-library:2.13.15"
+    implementation project(':mappings')
 
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-	// Jackson v3 supports Optional out-of-the-box but isn't yet provided by Spring Boot by default
-	// <https://github.com/FasterXML/jackson-modules-java8>
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'org.apache.kafka:kafka-streams'
+    implementation 'org.springframework.cloud:spring-cloud-stream'
+    implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.16.4'
+    implementation 'io.micrometer:micrometer-core:1.16.4'
+    implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
+    implementation 'com.github.slugify:slugify:3.0.7'
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'io.github.java-diff-utils:java-diff-utils:4.16'
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation:${hapiVersion}"
+    testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
+    testImplementation 'com.approvaltests:approvaltests:28.0.0'
+    testImplementation 'org.apache.kafka:kafka-streams-test-utils'
 
-	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation:${hapiVersion}"
-	testImplementation "ca.uhn.hapi.fhir:hapi-fhir-validation-resources-r4:${hapiVersion}"
-	testImplementation "org.springframework.boot:spring-boot-starter-test"
-	testImplementation "org.springframework.cloud:spring-cloud-stream-test-support"
-	testImplementation "com.approvaltests:approvaltests:24.9.0"
+    errorprone 'com.google.errorprone:error_prone_core:2.48.0'
+    errorprone 'com.uber.nullaway:nullaway:0.13.1'
+
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    runtimeOnly 'org.postgresql:postgresql'
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jacoco {
-	toolVersion = "0.8.12"
+    toolVersion = '0.8.14'
 }
 
 spotless {
-	java {
-		importOrder()
-		removeUnusedImports()
-		googleJavaFormat()
-	}
+    java {
+        target('**/*.java')
+        targetExclude('src/generated/java/**/*.java')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
 }
 
 jacocoTestReport {
-	reports {
-		csv.required = true
-		html.required = true
-		xml.required = true
-	}
+    reports {
+        csv.required = true
+        html.required = true
+        xml.required = true
+    }
 }
 
-jar {
-	enabled = false
+import net.ltgt.gradle.errorprone.CheckSeverity
+
+tasks.withType(JavaCompile).configureEach {
+    options.errorprone {
+        check('NullAway', CheckSeverity.WARN)
+        option('NullAway:AnnotatedPackages', 'io.github.bzkf.obdstofhir')
+    }
+    options.errorprone.disableWarningsInGeneratedCode = true
+    // ignore legacy mappers code
+    // MeldungExportV3 causes an errorprone exception - likely because it can't handle all the lombok annotations
+    options.errorprone.errorproneArgs.add('-XepExcludedPaths:(.*/ADT_GEKID\\.java|.*/MeldungExportV3\\.java'
+        + '|.*/lookup/.*|.*/mapper/\\w*\\.java)')
+}
+
+// via <https://stackoverflow.com/questions/24936781/gradle-plugin-project-version-number>
+task printVersion {
+    doLast {
+        println project.version
+    }
 }

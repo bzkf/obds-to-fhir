@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-09-19</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="10">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lator</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Wendy</Vornamen>
+        <Geburtsname>Müller</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Meier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Hier</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_DI_1">
+          <Tumorzuordnung Tumor_ID="101">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Mamma-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C50.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+          </Diagnose>
+          <Anmerkung>Anmerkung zur Meldung!</Anmerkung>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+</oBDS>

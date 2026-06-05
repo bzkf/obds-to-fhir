@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-09-19</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="10">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101097008</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lator</Nachname>
+        <Titel>Dr.</Titel>
+        <Namenszusatz>sen.</Namenszusatz>
+        <Namensvorsatz>von</Namensvorsatz>
+        <Vornamen>Wendy</Vornamen>
+        <Geburtsname>Müller</Geburtsname>
+        <Menge_Frueherer_Name>
+          <Frueherer_Name>Meier</Frueherer_Name>
+        </Menge_Frueherer_Name>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1950-05-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Hinter dem Horizont</Strasse>
+          <Hausnummer>1a</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>12345</PLZ>
+          <Ort>Hier</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="10_1_DI_1">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Einwilligung_nicht_meldepflichtig>J</Einwilligung_nicht_meldepflichtig>
+          <Zertifizierung>1</Zertifizierung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="1">
+            <Primaertumor_ICD>
+              <Code>C50.9</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8010/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Mamma-Ca</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C50.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>rechte Brust</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Menge_Fruehere_Tumorerkrankung>
+              <Fruehere_Tumorerkrankung>
+                <Freitext>Malignes Melanom rechtes Bein</Freitext>
+                <ICD>
+                  <Code>C43.7</Code>
+                  <Version>10 2010 GM</Version>
+                </ICD>
+                <Diagnosedatum>2010</Diagnosedatum>
+              </Fruehere_Tumorerkrankung>
+            </Menge_Fruehere_Tumorerkrankung>
+            <Histologie Histologie_ID="521">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2020-03-05</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>X/123456/1</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8010/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Karzinom o.n.A.</Morphologie_Freitext>
+              <Grading>2</Grading>
+              <LK_untersucht>10</LK_untersucht>
+              <LK_befallen>2</LK_befallen>
+              <Sentinel_LK_untersucht>2</Sentinel_LK_untersucht>
+              <Sentinel_LK_befallen>1</Sentinel_LK_befallen>
+            </Histologie>
+            <Menge_FM>
+              <Fernmetastase>
+                <Diagnosedatum Datumsgenauigkeit="E">2020-03-01</Diagnosedatum>
+                <Lokalisation>OSS</Lokalisation>
+              </Fernmetastase>
+            </Menge_FM>
+            <cTNM ID="481">
+              <Datum>2020-03-01</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>c</c_p_u_Praefix_T>
+              <T>2</T>
+              <m_Symbol>m</m_Symbol>
+              <c_p_u_Praefix_N>c</c_p_u_Praefix_N>
+              <N>1</N>
+              <c_p_u_Praefix_M>c</c_p_u_Praefix_M>
+              <M>1</M>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </cTNM>
+            <pTNM ID="482">
+              <Datum>2020-03-05</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>2</T>
+              <m_Symbol>3</m_Symbol>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>1</N>
+              <c_p_u_Praefix_M>p</c_p_u_Praefix_M>
+              <M>1</M>
+              <L>LX</L>
+              <V>VX</V>
+              <Pn>PnX</Pn>
+              <UICC_Stadium>IV</UICC_Stadium>
+            </pTNM>
+            <Menge_Genetik>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-03-01</Datum>
+                <Bezeichnung>BRCA 1</Bezeichnung>
+                <Auspraegung>M</Auspraegung>
+              </Genetische_Variante>
+              <Genetische_Variante>
+                <Datum Datumsgenauigkeit="E">2020-03-01</Datum>
+                <Bezeichnung>BRCA 2</Bezeichnung>
+                <Sonstige_Auspraegung>Translation</Sonstige_Auspraegung>
+              </Genetische_Variante>
+            </Menge_Genetik>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <Datum>2020-03-15</Datum>
+              </Sozialdienstkontakt>
+              <Psychoonkologiekontakt>
+                <Datum>2020-03-16</Datum>
+              </Psychoonkologiekontakt>
+              <Studienteilnahme>
+                <Datum>2020-03-17</Datum>
+              </Studienteilnahme>
+            </Modul_Allgemein>
+            <Modul_Mamma>
+              <Praetherapeutischer_Menopausenstatus>3</Praetherapeutischer_Menopausenstatus>
+              <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>18</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>0</TumorgroesseDCIS>
+            </Modul_Mamma>
+          </Diagnose>
+          <Anmerkung>Anmerkung zur Meldung!</Anmerkung>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+    <Melder ID="9876_#Aa/m">
+      <Ident_Nummern>
+        <LANR>123456789</LANR>
+        <BSNR>987654321</BSNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Praxis</KH_Abt_Station_Praxis>
+      <Arztname>Hippokrates</Arztname>
+      <Anschrift>Kos Str. 1</Anschrift>
+      <PLZ>98765</PLZ>
+      <Ort>Kos</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Hippokrates</Kontoinhaber>
+      <BIC>98765432198</BIC>
+      <IBAN>DE41500105172332627618</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

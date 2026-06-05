@@ -1,0 +1,3 @@
+services:
+  obds-to-fhir:
+    image: ghcr.io/bzkf/obds-to-fhir:${OBDS_TO_FHIR_VERSION:?}

@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "id": "71eae9714fdea07a7ecedbf4ab1d589c7850660610a82e5bb9b1a304a9c429e8",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-observation-id",
+    "value": "10_1_DI_1-Studienteilnahme"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "709491003",
+      "display": "Enrollment in clinical trial (procedure)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-17",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+      "code": "J",
+      "display": "Ja"
+    } ]
+  }
+}

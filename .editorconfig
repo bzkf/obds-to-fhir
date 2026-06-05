@@ -17,3 +17,6 @@ insert_final_newline = true
 
 [*.fhir.json]
 insert_final_newline = unset
+
+[dq/**/*.json]
+insert_final_newline = unset

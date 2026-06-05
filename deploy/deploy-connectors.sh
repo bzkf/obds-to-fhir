@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 curl -X POST \
   http://localhost:8083/connectors \
   -H 'Content-Type: application/json' \
@@ -20,6 +21,38 @@ curl -X POST \
     "numeric.mapping": "best_fit",
     "transforms": "ValueToKey",
     "transforms.ValueToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
-    "transforms.ValueToKey.fields": "ID"
+    "transforms.ValueToKey.fields": "ID",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false"
+  }
+}'
+
+
+curl -X POST \
+  http://localhost:8083/connectors \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{
+  "name": "onkostar-db-connector",
+  "config": {
+    "tasks.max": "1",
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "connection.url": "jdbc:oracle:thin:@//oracle:1521/FREEPDB1",
+    "connection.user": "DWH_ROUTINE",
+    "connection.password": "devPassword",
+    "schema.pattern": "DWH_ROUTINE",
+    "topic.prefix": "onkostar.PATIENT",
+    "query": "SELECT pat.ID, pat.PATIENTEN_ID, b.LETZTEINFORMATION, b.STERBEDATUM, pat.BEARBEITET_AM FROM patient pat JOIN prozedur pr ON (pr.patient_id = pat.id) JOIN dk_bestoftumor b ON (b.id = pr.id)",
+    "mode": "timestamp",
+    "timestamp.column.name": "BEARBEITET_AM",
+    "validate.non.null": "true",
+    "numeric.mapping": "best_fit_eager_double",
+    "transforms": "ValueToKey",
+    "transforms.ValueToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.ValueToKey.fields": "PATIENTEN_ID",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "db.timezone": "Europe/Berlin",
+    "timestamp.granularity": "micros_iso_datetime_string"
   }
 }'

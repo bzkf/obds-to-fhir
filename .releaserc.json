@@ -66,8 +66,8 @@
         "replacements": [
           {
             "files": ["src/main/resources/application.yml"],
-            "from": "version: .*",
-            "to": "version: ${nextRelease.version}",
+            "from": "^app-version: .*$",
+            "to": "app-version: ${nextRelease.version}",
             "results": [
               {
                 "file": "src/main/resources/application.yml",
@@ -76,12 +76,53 @@
             ]
           },
           {
-            "files": ["build.gradle"],
+            "files": ["mappings/src/main/resources/application-mappings.yml"],
+            "from": "^lib-version: .*$",
+            "to": "lib-version: ${nextRelease.version}",
+            "results": [
+              {
+                "file": "mappings/src/main/resources/application-mappings.yml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
+            "files": ["README.md", "deploy/compose.yaml"],
+            "from": "ghcr.io/bzkf/obds-to-fhir:v.*",
+            "to": "ghcr.io/bzkf/obds-to-fhir:v${nextRelease.version}",
+            "results": [
+              {
+                "file": "README.md",
+                "hasChanged": true
+              },
+              {
+                "file": "deploy/compose.yaml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
+            "files": ["deploy/compose.dq-checks.yaml"],
+            "from": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v.*",
+            "to": "ghcr.io/bzkf/obds-to-fhir-dq-checks:v${nextRelease.version}",
+            "results": [
+              {
+                "file": "deploy/compose.dq-checks.yaml",
+                "hasChanged": true
+              }
+            ]
+          },
+          {
+            "files": ["build.gradle", "mappings/build.gradle"],
             "from": "version = '.*'",
             "to": "version = '${nextRelease.version}'",
             "results": [
               {
                 "file": "build.gradle",
+                "hasChanged": true
+              },
+              {
+                "file": "mappings/build.gradle",
                 "hasChanged": true
               }
             ]
@@ -103,7 +144,16 @@
     [
       "@semantic-release/git",
       {
-        "assets": ["src/main/resources/application.yml", "build.gradle"]
+        "assets": [
+          "mappings/src/main/resources/application-mappings.yml",
+          "src/main/resources/application.yml",
+          "build.gradle",
+          "mappings/build.gradle",
+          "README.md",
+          "deploy/compose.yaml",
+          "deploy/compose.dq-checks.yaml",
+          "package.json"
+        ]
       }
     ]
   ]

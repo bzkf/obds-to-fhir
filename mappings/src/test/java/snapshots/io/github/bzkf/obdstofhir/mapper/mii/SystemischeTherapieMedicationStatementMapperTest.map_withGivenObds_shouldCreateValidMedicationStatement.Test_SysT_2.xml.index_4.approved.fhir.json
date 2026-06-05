@@ -1,0 +1,33 @@
+{
+  "resourceType": "Medication",
+  "id": "868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+    "value": "L01FF05"
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+      "version": "2026",
+      "code": "L01FF05",
+      "userSelected": true
+    } ]
+  },
+  "ingredient": [ {
+    "itemCodeableConcept": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "not-applicable"
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

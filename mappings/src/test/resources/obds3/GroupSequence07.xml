@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+    <Absender Absender_ID="12345/12345" Software_ID="ONKOSTAR" Software_Version="2.13.0" Installations_ID="2">
+        <Bezeichnung>CCC</Bezeichnung>
+        <Ansprechpartner>Dr. Absender</Ansprechpartner>
+        <Anschrift>musterstrasse 1, 123456 Musterstadt</Anschrift>
+    </Absender>
+    <Meldedatum>2024-11-30</Meldedatum>
+    <Menge_Patient>
+        <Patient Patient_ID="9876543">
+            <Patienten_Stammdaten>
+                <Versichertendaten_GKV>
+                    <IKNR>222333444</IKNR>
+                    <GKV_Versichertennummer>X121212121</GKV_Versichertennummer>
+                </Versichertendaten_GKV>
+                <Nachname>Musterfrau</Nachname>
+                <Vornamen>Maxi</Vornamen>
+                <Geschlecht>W</Geschlecht>
+                <Geburtsdatum Datumsgenauigkeit="E">1960-01-16</Geburtsdatum>
+                <Adresse>
+                    <Strasse>Musterweg 11</Strasse>
+                    <Land>DE</Land>
+                    <PLZ>12345</PLZ>
+                    <Ort>Musterstadt</Ort>
+                </Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung Meldung_ID="0003A603-555555/12345" Melder_ID="555555/12345">
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD>
+                            <Code>C43.5</Code>
+                            <Version>10 2023 GM</Version>
+                        </Primaertumor_ICD>
+                        <Diagnosedatum Datumsgenauigkeit="E">2023-10-11</Diagnosedatum>
+                        <Seitenlokalisation>T</Seitenlokalisation>
+                        <Morphologie_ICD_O>
+                            <Code>8720/3</Code>
+                            <Version>33</Version>
+                        </Morphologie_ICD_O>
+                    </Tumorzuordnung>
+                    <SYST SYST_ID="5555555">
+                        <Meldeanlass>behandlungsbeginn</Meldeanlass>
+                        <Intention>K</Intention>
+                        <Stellung_OP>A</Stellung_OP>
+                        <Therapieart>CI</Therapieart>
+                        <Beginn Datumsgenauigkeit="E">2024-02-12</Beginn>
+                        <Menge_Substanz>
+                            <Substanz>
+                                <Bezeichnung>Ipilimumab</Bezeichnung>
+                            </Substanz>
+                        </Menge_Substanz>
+                        <Nebenwirkungen>
+                            <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
+                        </Nebenwirkungen>
+                        <Modul_Allgemein>
+                            <Sozialdienstkontakt>
+                                <Datum>2024-03-21</Datum>
+                            </Sozialdienstkontakt>
+                            <Studienteilnahme>
+                                <NU>N</NU>
+                            </Studienteilnahme>
+                        </Modul_Allgemein>
+                    </SYST>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+    <Menge_Melder>
+        <Melder ID="555555/12345">
+            <KH_Abt_Station_Praxis>CCC</KH_Abt_Station_Praxis>
+            <Anschrift>Musterstrasse 1</Anschrift>
+            <PLZ>12345</PLZ>
+            <Ort>Musterstadt</Ort>
+        </Melder>
+    </Menge_Melder>
+</oBDS>

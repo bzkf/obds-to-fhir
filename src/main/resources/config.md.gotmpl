@@ -1,0 +1,72 @@
+# Configuration
+
+<!-- Update this file by running helm-docs --sort-values-order file --chart-search-root src/main/resources/ -f ../../../mappings/src/main/resources/application-mappings.yml -f application.yml -t config.md.gotmpl -o config.md && mv src/main/resources/config.md docs/config.md -->
+
+## FHIR systems
+
+See [application-mappings.yml](../mappings/src/main/resources/application-mappings.yml) for FHIR systems configuration settings.
+
+## Environment Variables
+
+The config values below can be set as environment variables by replacing all `.` and `-` with `_`
+and optionally upper-casing the value. E.g. to change the default system for the Specimen.id, change:
+
+`fhir.systems.identifiers.histologie-specimen-id`
+
+to
+
+`FHIR_SYSTEMS_IDENTIFIERS_HISTOLOGIE_SPECIMEN_ID`
+
+and pass it as an environment variable to the container.
+
+## Configuration file
+
+You can also load extra configuration files. See the [official Spring Boot docs](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.files) for details.
+
+## Patient Reference Generation
+
+By default, the job creates FHIR Patient resources which are referenced by each resource.
+If you already create Patient resources from a different source, you may want to set
+`FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED=false` and specify a Reference generation
+strategy that allows for creating matching logical IDs to your existing Patient resources:
+
+Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values below:
+
+- `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID` (default)
+
+    The reference is computed as the SHA-256 hash of `fhir.systems.identifiers.patient-id` + "|" + Patient_ID.
+- `MD5_HASHED_PATIENT_ID`
+
+    The reference is computed as the MD5 hash of Patient_ID.
+- `PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES`
+
+    Patient_ID and any occurrence of `_` is replaced by `-`.
+- `PATIENT_ID`
+
+    Patient_ID is taken as-is.
+- `FHIR_SERVER_LOOKUP`
+
+    Query a FHIR server to get the logical ID of the Patient resource from the identifier value.
+    This sends a `GET /Patient?identifier=<fhir.systems.identifiers.patient-id>|<Patient_ID>` query
+    to the server specified in `fhir.mappings.patient-reference-generation.fhir-server.base-url` and returns the
+    `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
+    the job exits with an error.
+
+- `RECORD_ID_DATABASE_LOOKUP`
+
+    Query a database table to lookup an internal ID from the given Patient_ID. The database connection
+    and SQL query to run can be configured in the `fhir.mappings.patient-reference-generation.record-id-database`
+    settings.
+
+> [!IMPORTANT]
+> For both the `FHIR_SERVER_LOOKUP` and `RECORD_ID_DATABASE_LOOKUP` strategy, if the ID wasn't found in either the
+> or the record database and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `true`, a FHIR Patient
+> resource is still created and added to the resulting Bundle using the default
+> `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID` strategy to create its `Patient.id` and all references
+> to it.
+> If no ID is found and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `false`, an exception is thrown
+> and the application is stopped.
+
+## All Available Settings
+
+{{ template "chart.valuesSection" . }}

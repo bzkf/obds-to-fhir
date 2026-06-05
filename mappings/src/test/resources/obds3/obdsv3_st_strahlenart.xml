@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.4">
+  <Absender Absender_ID="TEST" Software_ID="obds2-to-obds3" Software_Version="0.1.0">
+    <Bezeichnung>TEST</Bezeichnung>
+    <Anschrift>Test 2, 00000 Teststadt</Anschrift>
+  </Absender>
+  <Meldedatum>2021-11-10</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="1055555999">
+      <Patienten_Stammdaten>
+        <Versichertendaten_PKV>
+          <IKNR>950123456</IKNR>
+          <PKV_Versichertennummer>123456789</PKV_Versichertennummer>
+        </Versichertendaten_PKV>
+        <Nachname>Doe</Nachname>
+        <Vornamen>John</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1900-09-11</Geburtsdatum>
+        <Adresse>
+          <Strasse>Johnstr. 7</Strasse>
+          <Land>DE</Land>
+          <PLZ>91000</PLZ>
+          <Ort>Johncity</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Meldung_ID="ST0001238_45900" Melder_ID="ST">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="1">
+            <Primaertumor_ICD>
+              <Code>C72.0</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-05-18</Diagnosedatum>
+            <Seitenlokalisation>R</Seitenlokalisation>
+          </Tumorzuordnung>
+          <ST ST_ID="45900">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>P</Intention>
+            <Stellung_OP>N</Stellung_OP>
+            <Menge_Bestrahlung>
+              <Bestrahlung>
+                <Applikationsart>
+                  <Kontakt>
+                    <Interstitiell_endokavitaer>K</Interstitiell_endokavitaer>
+                    <Zielgebiet>
+                      <CodeVersion2014>5.4.-</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>L</Seite_Zielgebiet>
+                  </Kontakt>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Ende>2021-12-02</Ende>
+                <Applikationsart>
+                  <Perkutan>
+                    <Zielgebiet>
+                      <CodeVersion2014>1.2.</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>R</Seite_Zielgebiet>
+                  </Perkutan>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Applikationsart>
+                  <Kontakt>
+                    <Interstitiell_endokavitaer>I</Interstitiell_endokavitaer>
+                    <Zielgebiet>
+                      <CodeVersion2014>1.2.</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>R</Seite_Zielgebiet>
+                  </Kontakt>
+                </Applikationsart>
+              </Bestrahlung>
+              <Bestrahlung>
+                <Applikationsart>
+                  <Metabolisch>
+                    <Metabolisch_Typ>M</Metabolisch_Typ>
+                    <Zielgebiet>
+                      <CodeVersion2014>1.2.</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>R</Seite_Zielgebiet>
+                  </Metabolisch>
+                </Applikationsart>
+              </Bestrahlung>
+            </Menge_Bestrahlung>
+            <Ende_Grund>E</Ende_Grund>
+            <Nebenwirkungen>
+              <Menge_Nebenwirkung>
+                <Nebenwirkung>
+                  <Art>
+                    <Bezeichnung>Sonstige</Bezeichnung>
+                  </Art>
+                  <Grad>4</Grad>
+                  <Version>Sonstige</Version>
+                </Nebenwirkung>
+              </Menge_Nebenwirkung>
+            </Nebenwirkungen>
+          </ST>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="ST">
+      <Ident_Nummern/>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

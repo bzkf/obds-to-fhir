@@ -1,0 +1,45 @@
+{
+  "resourceType": "Observation",
+  "id": "97d55e3c5474a1cefc5025e41958bb468caa173ff93bc80e2d6c056881861258",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-befallene-lymphknoten" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
+    "value": "522-befallen"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "21893-3"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "443527007"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueQuantity": {
+    "value": 2,
+    "unit": "#",
+    "system": "http://unitsofmeasure.org",
+    "code": "1"
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  }
+}

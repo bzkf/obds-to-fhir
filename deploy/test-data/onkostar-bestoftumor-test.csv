@@ -1,0 +1,9 @@
+Patienten-ID;Prüfstatus;Bearbeitungsstatus;Dokumentierende Fachabteilung;Letzte Information (LetzteInformation);Letzte Information Dokumentation (LetzteInfoDoku);Letzte Information Krankheitsverlauf (LetzteInfoKrankheit);Letzter Verlauf (LetzterVerlauf);Letzter Verlauf Gesamtbeurteilung (LetzterVerlaufStatus);Sterbedatum;Letzter Verlauf Gesamtbeurteilung (LetzterVerlaufStatus) Kurzbeschreibung
+9876543;gültig;Abgeschlossen;Tumordokumentation;13.04.2025;15.07.2021;08.01.2025;08.01.2025;P;09.09.2025;Progression
+1234567;gültig;Abgeschlossen;Onkologie;;02.02.2024;03.02.2024;04.02.2024;V;15.03.2024;Vollremission
+2345678;gültig;Abgeschlossen;Onkologie;"";02.02.2024;03.02.2024;04.02.2024;V;15.03.2024;Vollremission
+3456789;gültig;Abgeschlossen;Onkologie;55.55.2026;02.02.2024;03.02.2024;04.02.2024;V;15.03.2024;Vollremission
+4567890;gültig;In Bearbeitung;Tumordokumentation;20.06.2025;21.06.2025;22.06.2025;23.06.2025;S;;Progression
+4567890;gültig;In Bearbeitung;Tumordokumentation;20.06.2025;21.06.2025;22.06.2025;23.06.2025;S;"";Progression
+5678901;gültig;In Bearbeitung;Tumordokumentation;20.06.2025;21.06.2025;22.06.2025;23.06.2025;S;44.44.2025;Progression
+;gültig;Abgeschlossen;Tumordokumentation;10.01.2025;11.01.2025;12.01.2025;13.01.2025;P;14.01.2025;Progression

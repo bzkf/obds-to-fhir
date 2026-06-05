@@ -1,0 +1,167 @@
+# Welcome to Great Expectations! Always know what to expect from your data.
+#
+# Here you can define datasources, batch kwargs generators, integrations and
+# more. This file is intended to be committed to your repo. For help with
+# configuration please:
+#   - Read our docs: https://docs.greatexpectations.io/docs/guides/connecting_to_your_data/connect_to_data_overview/#2-configure-your-datasource
+#   - Join our slack channel: http://greatexpectations.io/slack
+
+# config_version refers to the syntactic version of this config file, and is used in maintaining backwards compatibility
+# It is auto-generated and usually does not need to be changed.
+config_version: 4.0
+
+# This config file supports variable substitution which enables: 1) keeping
+# secrets out of source control & 2) environment-based configuration changes
+# such as staging vs prod.
+#
+# When GX encounters substitution syntax (like `my_key: ${my_value}` or
+# `my_key: $my_value`) in the great_expectations.yml file, it will attempt
+# to replace the value of `my_key` with the value from an environment
+# variable `my_value` or a corresponding key read from this config file,
+# which is defined through the `config_variables_file_path`.
+# Environment variables take precedence over variables defined here.
+#
+# Substitution values defined here can be a simple (non-nested) value,
+# nested value such as a dictionary, or an environment variable (i.e. ${ENV_VAR})
+#
+#
+# https://docs.greatexpectations.io/docs/guides/setup/configuring_data_contexts/how_to_configure_credentials
+
+config_variables_file_path: uncommitted/config_variables.yml
+
+# The plugins_directory will be added to your python path for custom modules
+# used to override and extend Great Expectations.
+plugins_directory: plugins/
+
+stores:
+  # Stores are configurable places to store things like Expectations, Validations
+  # Data Docs, and more. These are for advanced users only - most users can simply
+  # leave this section alone.
+  expectations_store:
+    class_name: ExpectationsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: expectations/
+
+  validation_results_store:
+    class_name: ValidationResultsStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/validations/
+
+  checkpoint_store:
+    class_name: CheckpointStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      suppress_store_backend_id: true
+      base_directory: checkpoints/
+
+  validation_definition_store:
+    class_name: ValidationDefinitionStore
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: validation_definitions/
+
+expectations_store_name: expectations_store
+validation_results_store_name: validation_results_store
+checkpoint_store_name: checkpoint_store
+
+data_docs_sites:
+  # Data Docs make it simple to visualize data quality in your project. These
+  # include Expectations, Validations & Profiles. The are built for all
+  # Datasources from JSON artifacts in the local repo including validations &
+  # profiles from the uncommitted directory. Read more at https://docs.greatexpectations.io/docs/terms/data_docs
+  local_site:
+    class_name: SiteBuilder
+    show_how_to_buttons: true
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/data_docs/local_site/
+    site_index_builder:
+      class_name: DefaultSiteIndexBuilder
+  obds_to_fhir_data_docs_site:
+    class_name: SiteBuilder
+    store_backend:
+      class_name: TupleFilesystemStoreBackend
+      base_directory: uncommitted/data_docs/local_site/
+    site_index_builder:
+      class_name: DefaultSiteIndexBuilder
+fluent_datasources:
+  snapshot_bundles:
+    type: spark
+    id: a6742224-253f-47fd-80e7-6db8b5ec02ba
+    assets:
+      patients_and_conditions:
+        type: dataframe
+        id: 341228bf-d731-4381-9cb9-558c6e1e381d
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_conditions_all_rows:
+            id: 3742c2dd-c2fa-4acf-a691-7d743971dc2e
+            partitioner:
+      patients_and_observations:
+        type: dataframe
+        id: 68b4e782-a615-4fdc-9a80-7067d636a5f1
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_observations_all_rows:
+            id: 23b55cc5-78cf-4d41-b593-aca4ae87a992
+            partitioner:
+      patients_and_procedures:
+        type: dataframe
+        id: 86caff82-9be0-4ba1-ba6c-e5a3cc281587
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_procedure_all_rows:
+            id: ce91b225-5555-4467-9c02-a1c4c10706b2
+            partitioner:
+      patients_and_MedicationStatements:
+        type: dataframe
+        id: b900f243-546b-4575-8658-c86452aa3a71
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_medicationStatements_all_rows:
+            id: 9037319e-8b9b-4e0d-acac-f40f676734f4
+            partitioner:
+      condition_with_procedure:
+        type: dataframe
+        id: a00e0792-5214-46ee-9bf5-2d36c52f6919
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_condition_procedure_all_rows:
+            id: a8ba2e89-4898-489b-8c2c-65101a805bc3
+            partitioner:
+      patients_and_fernmetastasen:
+        type: dataframe
+        id: 9467a63a-2fda-4491-b450-4436cf91c381
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_fernmetastasen_all_rows:
+            id: 9b258f83-3522-4088-b7aa-1b19ffb52e61
+            partitioner:
+      patients_and_ecog_death:
+        type: dataframe
+        id: 352dacfe-2de5-4c58-9aa9-418244b87a1a
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_ecog_death_all_rows:
+            id: 0bfe292e-5c9e-45bd-a007-8d324a69e3be
+            partitioner:
+      death_observations:
+        type: dataframe
+        id: 86635916-9f6b-4ec7-8246-1aa2834e35e1
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_death_observations_completeness_all_rows:
+            id: 3de9eea1-a501-4b2b-9953-11b090358980
+            partitioner:
+      death_observations_distinct_dates_count_by_patient:
+        type: dataframe
+        id: 6de2a125-3d1c-4a41-a60b-18f622078e3f
+        batch_metadata: {}
+        batch_definitions:
+          patients_and_death_observations_correctness_all_rows:
+            id: 517ab0c2-5bc1-4c41-a6ee-3e9ecb0c2c58
+            partitioner:
+analytics_enabled:
+data_context_id: e1086299-0733-48cb-bec8-ad674bb90426

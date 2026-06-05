@@ -9,7 +9,7 @@ By contributing, you agree that your contributions will be licensed under the [G
 This is the process we suggest for contributions. This process is designed to reduce the burden on project reviewers,
 impact on other contributors, and to keep the amount of rework from the contributor to a minimum.
 
-1. Start a discussion by creating a GitHub issue, or asking on Slack (unless the change is trivial, for example a spelling fix in the documentation).
+1. Start a discussion by creating a GitHub issue, or asking on Zulip (unless the change is trivial, for example a spelling fix in the documentation).
 
    1. This step helps you identify possible collaborators and reviewers.
    1. Does the change align with technical vision and project values?

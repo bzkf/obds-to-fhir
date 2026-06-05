@@ -1,11 +1,11 @@
 {
   "name": "obds-to-fhir",
-  "version": "0.1.0",
+  "version": "3.0.0-beta.235",
   "description": "Creates FHIR resources from oBDS-XML data",
   "dependencies": {
     "hl7.fhir.r4.core": "4.0.1",
-    "de.dktk.oncology": "1.8.0",
-    "de.medizininformatikinitiative.kerndatensatz.person": "2024.0.0"
+    "de.medizininformatikinitiative.kerndatensatz.base": "2026.0.0",
+    "de.medizininformatikinitiative.kerndatensatz.onkologie": "2026.0.3"
   },
   "fhirVersions": [
     "4.0.1"

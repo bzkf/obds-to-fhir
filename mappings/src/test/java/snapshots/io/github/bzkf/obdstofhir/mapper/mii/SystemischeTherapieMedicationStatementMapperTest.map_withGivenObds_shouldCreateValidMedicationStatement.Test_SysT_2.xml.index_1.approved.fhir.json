@@ -1,0 +1,34 @@
+{
+  "resourceType": "Medication",
+  "id": "317703f51717316b41f1dd7062cd1870ffa33b8946456e1789d1b6f863f0c857",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+    "value": "L01EX05"
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/atc",
+      "version": "2026",
+      "code": "L01EX05",
+      "userSelected": false
+    } ],
+    "text": "Regorafenib"
+  },
+  "ingredient": [ {
+    "itemCodeableConcept": {
+      "coding": [ {
+        "system": "http://snomed.info/sct",
+        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "_code": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "not-applicable"
+          } ]
+        }
+      } ]
+    }
+  } ]
+}

@@ -1,0 +1,20 @@
+{
+  "resourceType": "Specimen",
+  "id": "0bff7444308f734311de0b6811953da5d79150e6dbbb09083d79b142b36ef659",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+    "value": "522"
+  } ],
+  "accessionIdentifier": {
+    "value": "X/123456/1"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "collection": {
+    "collectedDateTime": "2020-03-05"
+  }
+}

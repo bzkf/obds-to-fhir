@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="9" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="50">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101575519</IKNR>
+          <GKV_Versichertennummer>K018506488</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Mustermann</Nachname>
+        <Vornamen>Hans</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1948-03-05</Geburtsdatum>
+        <Adresse>
+          <Strasse>Fabriciusstraße</Strasse>
+          <Hausnummer>105c</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>30175</PLZ>
+          <Ort>Hannover</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="STR_50111">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="501">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-08-02</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <ST ST_ID="50_1_ST_1">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>A</Stellung_OP>
+            <Menge_Bestrahlung>
+              <Bestrahlung>
+                <Beginn>2020-10-05</Beginn>
+                <Ende>2020-11-11</Ende>
+                <Applikationsart>
+                  <Perkutan>
+                    <Radiochemo>RCN</Radiochemo>
+                    <Zielgebiet>
+                      <CodeVersion2014>5.1.+</CodeVersion2014>
+                    </Zielgebiet>
+                    <Seite_Zielgebiet>B</Seite_Zielgebiet>
+                    <Gesamtdosis>
+                      <Dosis>50.4</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Gesamtdosis>
+                    <Einzeldosis>
+                      <Dosis>1.8</Dosis>
+                      <Einheit>Gy</Einheit>
+                    </Einzeldosis>
+                    <Boost>SEQ</Boost>
+                  </Perkutan>
+                </Applikationsart>
+              </Bestrahlung>
+            </Menge_Bestrahlung>
+            <Ende_Grund>E</Ende_Grund>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>1</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </ST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_50112">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="501">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-08-02</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="50_1_IN_1">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>A</Stellung_OP>
+            <Therapieart>CH</Therapieart>
+            <Protokoll>FOLFOX-4</Protokoll>
+            <Beginn Datumsgenauigkeit="E">2020-09-21</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <Bezeichnung>Folinsäure</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>5-Fluorouracil</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>Oxaliplatin</Bezeichnung>
+              </Substanz>
+            </Menge_Substanz>
+            <Ende_Grund>E</Ende_Grund>
+            <Ende>2021-02-23</Ende>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

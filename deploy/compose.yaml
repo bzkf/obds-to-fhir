@@ -1,23 +1,30 @@
-#checkov:skip=CKV_SECRET_6: all dev setup
 services:
-  oracle:
-    image: docker.io/gvenzl/oracle-free:23.5-slim-faststart@sha256:a628d0978579ff8cdc8cc68192ed79d2ab1b27ab78be9ae8fc40d5235838b84c
+  obds-to-fhir:
+    image: ghcr.io/bzkf/obds-to-fhir:v3.0.0-beta.235
+    restart: "unless-stopped"
     cap_drop:
       - ALL
     privileged: false
     ipc: none
     security_opt:
       - "no-new-privileges:true"
+    user: "65532:65532"
     environment:
-      # kics-scan ignore-line
-      ORACLE_PASSWORD: "devPassword" # gitleaks:allow
-    ports:
-      - "127.0.0.1:1521:1521"
-    volumes:
-      - ./oracle/init:/docker-entrypoint-initdb.d/setup
+      SECURITY_PROTOCOL: PLAINTEXT
+      BOOTSTRAP_SERVERS: kafka:9092
+      FHIR_OUTPUT_TOPIC_PARTITION_COUNT: "1"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_MINPARTITIONCOUNT: "1"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_AUTOADDPARTITIONS: "true"
+      NUM_STREAM_THREADS: "1"
+    depends_on:
+      kafka:
+        condition: service_started
+    env_file:
+      - path: .obds-to-fhir.env
+        required: false
 
   kafka:
-    image: docker.io/bitnami/kafka:3.9.0@sha256:978583d0859444d3bc6b6592b38b5af5a834d473db51441071a20e67e0afb945
+    image: docker.io/apache/kafka:4.2.0@sha256:9516fb7634bad307d17c33b589fde9023003b0cb761374f500002b980a3149b9
     restart: unless-stopped
     cap_drop:
       - ALL
@@ -26,68 +33,25 @@ services:
     security_opt:
       - "no-new-privileges:true"
     environment:
-      KAFKA_CFG_NODE_ID: "0"
-      KAFKA_RAFT_CLUSTER_ID: "diz-in-a-box"
-      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "0@kafka:9093"
-      KAFKA_CFG_PROCESS_ROLES: "controller,broker"
+      KAFKA_NODE_ID: "0"
+      KAFKA_KRAFT_CLUSTER_ID: "obds-to-fhir"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "0@kafka:9093"
+      KAFKA_PROCESS_ROLES: "controller,broker"
       ALLOW_PLAINTEXT_LISTENER: "yes"
-      KAFKA_CFG_MESSAGE_MAX_BYTES: "31457280"
-      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094"
-      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094"
-      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT"
-      KAFKA_CFG_LOG_CLEANUP_POLICY: compact
-      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-    ports:
-      - 127.0.0.1:9094:9094
+      KAFKA_MESSAGE_MAX_BYTES: "31457280"
+      KAFKA_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_LOG_CLEANUP_POLICY: compact
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+    volumes:
+      - "kafka_data:/var/lib/kafka/data:rw"
 
-  kafka-connect:
-    image: ghcr.io/miracum/util-images/cricketeerone-kafka-connect:v1.6.1@sha256:9a5db59dcb79f53d1526fcab7cd78d9dc430af0258f96dddc53694f3f266070d
-    restart: unless-stopped
-    cap_drop:
-      - ALL
-    privileged: false
-    ipc: none
-    security_opt:
-      - "no-new-privileges:true"
-    environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
-      CONNECT_GROUP_ID: kafka-connect-group
-      CONNECT_KEY_CONVERTER: "org.apache.kafka.connect.storage.StringConverter"
-      CONNECT_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
-      CONNECT_CONFIG_STORAGE_TOPIC: __kafka-connect-config
-      CONNECT_OFFSET_STORAGE_TOPIC: __kafka-connect-offsets
-      CONNECT_STATUS_STORAGE_TOPIC: __kafka-connect-status
-      CONNECT_PLUGIN_PATH: /app/libs
-    ports:
-      - "127.0.0.1:8083:8083"
-    depends_on:
-      - kafka
-
-  akhq:
-    image: docker.io/tchiotludo/akhq:0.25.1@sha256:cfaef8f419c4e4b78c583597d6428b63166e90eeb194af890264d68051a22180
-    restart: unless-stopped
-    cap_drop:
-      - ALL
-    privileged: false
-    ipc: none
-    security_opt:
-      - "no-new-privileges:true"
-    environment:
-      AKHQ_CONFIGURATION: |
-        akhq:
-          connections:
-            kafka:
-              properties:
-                bootstrap.servers: "kafka:9092"
-              connect:
-                - name: "kafka-connect"
-                  url: "http://kafka-connect:8083"
-    ports:
-      - "127.0.0.1:8084:8080"
-    depends_on:
-      - kafka
+volumes:
+  kafka_data:
+    driver: local

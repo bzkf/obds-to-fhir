@@ -1,0 +1,45 @@
+{
+  "resourceType": "Observation",
+  "id": "b5b4fd11f7396e29ba8cca0afe8525e6f34af67d52926e307a5be1c07620b546",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-anzahl-untersuchte-sentinel-lymphknoten" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/lymphknotenuntersuchung-observation-id",
+    "value": "521-untersucht-sentinel"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "85347-3"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "444411008"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-05",
+  "valueQuantity": {
+    "value": 2,
+    "unit": "#",
+    "system": "http://unitsofmeasure.org",
+    "code": "1"
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  }
+}

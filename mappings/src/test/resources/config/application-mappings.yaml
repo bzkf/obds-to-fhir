@@ -1,0 +1,9 @@
+lib-version: 0.0.0-test
+
+fhir:
+  profiles:
+    # this sets the profile versions for the tests to "". Otherwise, any update to the profile version would invalidate all snapshots.
+    versions:
+      mii-base: ""
+      mii-onkologie: ""
+      mii-medikation: ""

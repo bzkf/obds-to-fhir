@@ -1,0 +1,52 @@
+{
+  "resourceType": "Procedure",
+  "id": "18fb67db801dee62cc17da1e84584e36e30a3cde91a797adaec07bbc0d296992",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+        "code": "P"
+      } ]
+    }
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
+    "value": "1277663-5-322-h4"
+  } ],
+  "partOf": [ {
+    "reference": "Procedure/f22f1f8bf62013adfc550f77111509041857fceb3354ba1030af0ebd9628c8ec"
+  } ],
+  "status": "completed",
+  "category": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "387713003",
+      "display": "Surgical procedure"
+    } ]
+  },
+  "code": {
+    "coding": [ {
+      "system": "http://fhir.de/CodeSystem/bfarm/ops",
+      "version": "2023",
+      "code": "5-322.h4"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "performedDateTime": "2024-01-07",
+  "reasonReference": [ {
+    "reference": "Condition/any"
+  } ],
+  "outcome": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
+      "code": "RX"
+    } ]
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "resourceType": "Bundle",
+  "id": "6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
+      },
+      "identifier": [ {
+        "type": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }, {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "PSEUDED",
+            "display": "pseudonymized"
+          } ]
+        },
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+        "value": "00001234"
+      } ],
+      "address": [ {
+        "type": "both",
+        "_postalCode": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          } ]
+        },
+        "_country": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140"
+    }
+  }, {
+    "fullUrl": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+      },
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "_valueDateTime": {
+          "extension": [ {
+            "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+            "valueCode": "unknown"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
+        "value": "00001234-1"
+      } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "1"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2015",
+          "code": "C17.1"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
+      },
+      "recordedDate": "2024-06-11",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04"
+    }
+  }, {
+    "fullUrl": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-TEST1727528"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/a56068621516844e7dadc17cab34cf1366619284a1783ee1d7d63ff54e555e04"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "0",
+          "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11"
+    }
+  }, {
+    "fullUrl": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64",
+    "resource": {
+      "resourceType": "List",
+      "id": "f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "00001234-1"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
+      "subject": {
+        "reference": "Patient/6f424ee5291002f165045bea52722a1c9f78e7537d60d446e8e3f08dfc303140",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "00001234"
+        }
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/4d3197d5f09f9d565efc1ef2b7e628b6dc2a36bc6e5a79472a872b06fb026f11"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/f54c4f5bce5eccb6c7199e656448f60069d106ce162ca6a890d54002af61ae64"
+    }
+  } ]
+}

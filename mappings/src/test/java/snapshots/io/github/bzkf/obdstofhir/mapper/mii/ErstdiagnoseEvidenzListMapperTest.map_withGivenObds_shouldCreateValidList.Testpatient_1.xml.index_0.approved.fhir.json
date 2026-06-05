@@ -1,0 +1,26 @@
+{
+  "resourceType": "List",
+  "id": "483f7b24cb55c6ac1fb6e384e77182e488eab7ee9c8b7c9200350db806a0b0bb",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+    "value": "10-101"
+  } ],
+  "status": "current",
+  "mode": "snapshot",
+  "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "entry": [ {
+    "item": {
+      "reference": "Observation/any"
+    }
+  }, {
+    "item": {
+      "reference": "DiagnosticReport/any"
+    }
+  } ]
+}

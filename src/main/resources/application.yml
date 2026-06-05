@@ -1,120 +1,153 @@
+# @ignored
+app-version: 3.0.0-beta.235
+
+# @ignored
 app:
-  version: 2.6.1
   enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
   patient-id-pattern: "[^0]\\d{8}"
 
 fhir:
-  extensions:
-    fernMetaExt: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-Fernmetastasen"
-    opIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-OPIntention"
-    stellungOP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-StellungZurOp"
-    systIntention: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SYSTIntention"
-    sysTheraProto: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-SystemischeTherapieProtokoll"
-    dataAbsentReason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
-    genderAmtlich: "http://fhir.de/StructureDefinition/gender-amtlich-de"
-  systems:
-    patientId: "https://fhir.diz.uk-erlangen.de/identifiers/patient-id"
-    identifierType: "http://terminology.hl7.org/CodeSystem/v2-0203"
-    conditionId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-condition-id"
-    observationId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-observation-id"
-    procedureId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-procedure-id"
-    medicationStatementId: "https://fhir.diz.uk-erlangen.de/identifiers/onkostar-xml-medication-statement-id"
-    observationCategorySystem: "http://hl7.org/fhir/observation-category"
-    gleasonScoreObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/gleason-score-observation-id"
-    psaObservationId: "https://fhir.diz.uk-erlangen.de/identifiers/obds/psa-observation-id"
-    loinc: "http://loinc.org"
-    idco3Morphologie: "urn:oid:2.16.840.1.113883.6.43.1"
-    gradingDktk: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GradingCS"
-    uicc: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/UiccstadiumCS"
-    tnmPraefix: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMcpuPraefixTCS"
-    tnmTCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMTCS"
-    tnmNCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMNCS"
-    tnmMCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMMCS"
-    tnmYSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMySymbolCS"
-    tnmRSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMrSymbolCS"
-    tnmMSymbolCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/TNMmSymbolCS"
-    fMLokalisationCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/FMLokalisationCS"
-    jnuCs: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/JNUCS"
-    icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
-    adtSeitenlokalisation: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SeitenlokalisationCS"
-    snomed: "http://snomed.info/sct"
-    opIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/OPIntentionCS"
-    systTherapieart: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTTherapieartCS"
-    ops: "http://fhir.de/CodeSystem/bfarm/ops"
-    lokalBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/LokaleBeurteilungResidualstatusCS"
-    gesamtBeurtResidualCS: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/GesamtbeurteilungResidualstatusCS"
-    systIntention: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTIntentionCS"
-    systStellungOP: "http://dktk.dkfz.de/fhir/onco/core/CodeSystem/SYSTStellungOPCS"
-    ctcaeGrading: "http://hl7.org/fhir/us/ctcae/CodeSystem/ctcae-grade-code-system"
-    sideEffectTypeOid: "urn:oid:1.2.276.0.76.3.1.131.1.5.20"
-    opComplication: "urn:oid:1.2.276.0.76.3.1.131.1.5.122"
-    observationValue: "http://terminology.hl7.org/CodeSystem/v3-ObservationValue"
-    genderAmtlichDe: "http://fhir.de/CodeSystem/gender-amtlich-de"
-    ucum: http://unitsofmeasure.org
-  profiles:
-    histologie: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Histologie"
-    grading: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Grading"
-    tnmC: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMc"
-    tnmP: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TNMp"
-    fernMeta: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-Fernmetastasen"
-    condition: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Condition-Primaerdiagnose"
-    genVariante: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-GenetischeVariante"
-    opProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Operation"
-    stProcedure: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Procedure-Strahlentherapie"
-    systMedStatement: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-MedicationStatement-Systemtherapie"
-    miiPatientPseudonymisiert: "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert"
-    deathObservation: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Observation-TodUrsache"
-    fruehereTumorerkrankung: "http://bzkf.github.io/obds-to-fhir/fhir/StructureDefinition/fruehere-tumorerkrankung"
-  display:
-    histologyLoinc: "Histology and Behavior ICD-O-3 Cancer"
-    gradingLoinc: "Grade pathology value Cancer"
-    tnmcLoinc: "Stage group.clinical Cancer"
-    tnmpLoinc: "Stage group.pathology Cancer"
-    fernMetaLoinc: "Distant metastases.clinical"
-    deathLoinc: "Primary cause of death"
-    gleasonScoreSct: "Gleason score (observable entity)"
-    gleasonScoreLoinc: "Gleason score in Specimen Qualitative"
-    psaLoinc: "Prostate specific Ag [Mass/volume] in Serum or Plasma"
-  url:
-    tnmPraefix: "http://dktk.dkfz.de/fhir/StructureDefinition/onco-core-Extension-TNMcpuPraefix"
   mappings:
-    fruehere-tumorerkrankung:
-      enabled: false
-    modul:
-      prostata:
+    from-onkostar-patient-data:
+      # -- if enabled, vital status observations will be created using additional data from onkostar
+      enabled: true
+      csv:
+        # -- if enabled read a CSV file with the three ;-seperated columns `Patienten-ID;Letzte Information (LetzteInformation);Sterbedatum`
+        # to create additional vital status Observations.
         enabled: false
+        # -- path to the CSV file. The CSV file needs to have a header row, all columns must be seperated by `;`.
+        file: "" #./deploy/test-data/onkostar-bestoftumor-test.csv
+    meta:
+      # -- Value to set for the meta.source field in all generated resources
+      source: ""
+    # -- regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group.
+    # Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s.
+    patient-id-regex: "^(.*)$"
+    create-patient-resources:
+      # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
+      # from a different source.
+      enabled: true
+      # -- If set to true, a Patient resource is always created and added to the bundle, even if the patient
+      # already exists on the FHIR server (i.e. the patient reference generator returns existsOnServer=true).
+      # The Patient.identifier.value is set to the Patient_ID, and the patient reference for all other resources
+      # in the bundle is overridden to refer to Patient.id (the locally-computed hash-based ID).
+      # The logical references to the Patient via the identifier are preserved.
+      if-already-exists: false
+    create-provenance-resources:
+      # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
+      # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
+      enabled: false
+    patient-reference-generation:
+      # -- How the Resource.subject.reference to the Patient resources should be generated.
+      # You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default
+      # to avoid creating additional, unreferenced Patient resources.
+      strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
+      # -- If set to true and the Patient doesn't exist on the FHIR server, the generated Patient reference
+      # will only contain the identifier (with system and value) without a logical reference to a Patient
+      # resource.
+      identifier-only-references-allowed: true
+      fhir-server:
+        # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier.
+        # E.g. `https://fhir.example.com/fhir`
+        base-url: ""
+        auth:
+          basic:
+            # -- use HTTP Basic Authentication for FHIR server authentication
+            enabled: false
+            # -- the username
+            username: ""
+            # -- the password
+            password: ""
+      pseudonymize-patient-id:
+        # -- if enabled, before looking up the Patient resource from its identifier, the oBDS Patient_ID
+        # is first pseudonymized using the FHIR Pseudonymizer service at the `fhir-pseudonymizer.base-url`
+        enabled: false
+        fhir-pseudonymizer:
+          # -- the base URL of the FHIR Pseudonymizer used to pseudonymize the Patient_ID before
+          # looking up the actual Patient.id in the FHIR server. Invokes the `$de-identify` operation.
+          # E.g. `https://fhir.example.com/fhir`
+          base-url: ""
+      record-id-database:
+        # -- JDBC url to connect to to query an internal RecordID from a Patient_ID
+        jdbc-url: ""
+        # -- username for authentication
+        username: ""
+        # -- password for authentication
+        password: ""
+        # -- the SQL query to run. It should include one `?` placeholder which is replaced with the Patient_ID from the oBDS message.
+        query: |
+          SELECT RecordID
+          FROM lookup
+          WHERE PatientID = ?
+    substanz-to-atc:
+      # -- path to a CSV file containing additional Substanz -> ATC code mappings.
+      # The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`.
+      # The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>,
+      # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
+      extra-mappings-file-path: ""
+    weitere-klassifikationen:
+      # -- ⚠️ Experimental! Path to a CSV file containing additional Weitere Klassifikationen -> SNOMED code mappings.
+      # The CSV file needs to have these columns: `name;stadium;snomed_code;snomed_display;value_snomed_code;value_snomed_display`, all columns must be seperated by `;`.
+      # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
+      extra-mappings-file-path: ""
+
+obdsv2-to-v3:
+  mapper:
+    # @ignored
+    ignore-unmappable: false
+    # @ignored
+    fix-missing-id: false
+    # -- Disable XML Schema validation for oBDS v2 -> v3 mapped Meldungen
+    disable-schema-validation: false
+
 spring:
   profiles:
-    active: ${ACTIVE_PROFILE:default}
+    active: mappings,default
   application:
     name: obds-to-fhir
   cloud:
     function:
-      definition: getMeldungExportObdsProcessor
+      definition: getMeldungExportObdsV3Processor;getPatientVSObservationProcessor
     stream:
       bindings:
         getMeldungExportObdsProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT${YEAR_LIMITATION_SUFFIX:}
+          destination: onkostar.MELDUNG_EXPORT
         getMeldungExportObdsProcessor-in-1:
-          destination: fhir.obds.Observation${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Observation
         getMeldungExportObdsProcessor-out-0:
-          destination: fhir.obds.MedicationStatement${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.MedicationStatement
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-1:
-          destination: fhir.obds.Observation${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Observation
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-2:
-          destination: fhir.obds.Procedure${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Procedure
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-3:
-          destination: fhir.obds.Condition${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Condition
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsProcessor-out-4:
-          destination: fhir.obds.Patient${YEAR_LIMITATION_SUFFIX:}
+          destination: fhir.obds.Patient
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getMeldungExportObdsV3Processor-in-0:
+          # -- Name of the topic where ONKOSTAR oBDS Meldungen are read from
+          destination: ${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}
+        getMeldungExportObdsV3Processor-out-0:
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
+          producer:
+            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
+        getPatientVSObservationProcessor-in-0:
+          # -- Name of the topic where ONKOSTAR Patients are read from
+          destination: ${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}
+        getPatientVSObservationProcessor-out-0:
+          # -- Name of the topic where the FHIR resources are written to
+          destination: ${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}
           producer:
             partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
 
@@ -123,43 +156,60 @@ spring:
           binder:
             configuration:
               cache.max.bytes.buffering: 0
-              max.request.size: ${MAX_REQUEST_SIZE:20971520}
+              max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
               num.stream.threads: ${NUM_STREAM_THREADS:1}
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           bindings:
             getMeldungExportObdsProcessor-in-0:
               consumer:
-                application-id: obds-meldung-exp-grouped-processor${YEAR_LIMITATION_SUFFIX:}
+                application-id: obds-meldung-exp-grouped-processor
             getMeldungExportObdsProcessor-in-1:
               consumer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                application-id: obds-meldung-exp-condition-processor${YEAR_LIMITATION_SUFFIX:}
+                application-id: obds-meldung-exp-condition-processor
             getMeldungExportObdsProcessor-out-0:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-1:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-2:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-3:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsProcessor-out-4:
               producer:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
-                  compression.type: ${COMPRESSION_TYPE:gzip}
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+            getMeldungExportObdsV3Processor-in-0:
+              consumer:
+                # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently
+                application-id: ${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}
+            getMeldungExportObdsV3Processor-out-0:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+            getPatientVSObservationProcessor-in-0:
+              consumer:
+                application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
+            getPatientVSObservationProcessor-out-0:
+              producer:
+                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
+                configuration:
+                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
 
   kafka:
     bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9094}
@@ -172,7 +222,14 @@ spring:
       key-store-location: file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}
       key-store-password: ${SSL_KEY_STORE_PASSWORD}
     producer:
-      compression-type: gzip
+      compression-type: ${KAFKA_COMPRESSION_TYPE:zstd}
+      value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
+      properties:
+        max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
 
 management:
   endpoint:
@@ -184,9 +241,32 @@ management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus"
+        include: "health,prometheus,kafkastreamstopology"
   health:
     livenessstate:
       enabled: true
     readinessstate:
       enabled: true
+
+obds:
+  process-from-directory:
+    # -- if enabled, read oBDS XML exports from a directory instead of from Kafka
+    enabled: false
+    # -- the folder path to read from. All XML files within this folder are read
+    path: ""
+    output-to-kafka:
+      # -- write the FHIR bundles to a Kafka topic
+      enabled: false
+      # -- name of the topic to write to
+      topic: ""
+    output-to-directory:
+      # -- output the fir Bundles to a directory, 1 file per Bundle
+      enabled: false
+      # -- path to the directory to write Bundles to
+      path: ""
+  write-grouped-obds-to-kafka:
+    # -- the oBDS Einzelmeldungen are internally combined to a single oBDS Export.
+    # If enabled, write the combined oBDS exports to a topic: one message per Patient_ID+Tumor_ID
+    enabled: false
+    # -- the name of the topic to write the combined oBDS export to. Helpful for debugging.
+    topic: "obds.v3.grouped"

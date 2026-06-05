@@ -1,5 +1,6 @@
 *
-!src
+!src/
+!mappings/
 !*.gradle
 !gradle.properties
 !lombok.config

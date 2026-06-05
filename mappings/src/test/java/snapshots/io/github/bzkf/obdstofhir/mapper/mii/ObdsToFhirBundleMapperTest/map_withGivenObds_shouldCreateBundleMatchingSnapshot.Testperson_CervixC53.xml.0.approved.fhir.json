@@ -1,0 +1,1395 @@
+{
+  "resourceType": "Bundle",
+  "id": "5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
+      },
+      "identifier": [ {
+        "type": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }, {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "PSEUDED",
+            "display": "pseudonymized"
+          } ]
+        },
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+        "value": "17"
+      } ],
+      "gender": "female",
+      "birthDate": "1969-06-01",
+      "deceasedDateTime": "2023-09-01",
+      "address": [ {
+        "type": "both",
+        "postalCode": "35287",
+        "country": "DE"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203"
+    }
+  }, {
+    "fullUrl": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "31",
+            "code": "8085/3"
+          } ],
+          "text": "Plattenepithelkarzinom, HPV-positiv"
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2018-02-01"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
+        "value": "17-171"
+      } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2018",
+          "code": "C53.9"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "33",
+          "code": "C53.9"
+        } ],
+        "text": "Cervix"
+      }, {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "T"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "recordedDate": "2024-06-14",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/5b3d7580703cbe7929a5c6b066ab02400c32d8171e3b130f47f104f2e5a47ac0"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+    }
+  }, {
+    "fullUrl": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
+        "value": "168"
+      } ],
+      "status": "completed",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "387713003",
+          "display": "Surgical procedure (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "performedDateTime": "2020-03-01",
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af"
+    }
+  }, {
+    "fullUrl": "Procedure/313b791e4fba30e1696cf2cd2d09ec2a417569701722b705ee1653fe4968b755",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "313b791e4fba30e1696cf2cd2d09ec2a417569701722b705ee1653fe4968b755",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/operation-procedure-id",
+        "value": "168-5-672-0"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/072c48ad7849a5554468e5919a92bd36d98cd4ae031f6eb59fd3467e3aa3a6af"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "387713003",
+          "display": "Surgical procedure"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2020",
+          "code": "5-672.0"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "performedDateTime": "2020-03-01",
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/313b791e4fba30e1696cf2cd2d09ec2a417569701722b705ee1653fe4968b755"
+    }
+  }, {
+    "fullUrl": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "value": "17_1_IN_2"
+      } ],
+      "status": "in-progress",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2026",
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "CH"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "performedPeriod": {
+        "start": "2018-06-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "usedCode": [ {
+        "text": "Carboplatin/Etoposid"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/64098b6c260a31a6737d959f21410e82f10cefb28f1a76750b64344dd6ba018c",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "64098b6c260a31a6737d959f21410e82f10cefb28f1a76750b64344dd6ba018c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284-17_1_IN_2-Etoposid"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+      } ],
+      "status": "active",
+      "medicationReference": {
+        "reference": "Medication/aec52f3249a58c0807f9504196b0dcbfc8b713b288ddf9b476e38061dfeb32c9",
+        "display": "Etoposid"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "effectivePeriod": {
+        "start": "2018-06-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/64098b6c260a31a6737d959f21410e82f10cefb28f1a76750b64344dd6ba018c"
+    }
+  }, {
+    "fullUrl": "Medication/aec52f3249a58c0807f9504196b0dcbfc8b713b288ddf9b476e38061dfeb32c9",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "aec52f3249a58c0807f9504196b0dcbfc8b713b288ddf9b476e38061dfeb32c9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01CB01"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01CB01",
+          "userSelected": false
+        } ],
+        "text": "Etoposid"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "not-applicable"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/aec52f3249a58c0807f9504196b0dcbfc8b713b288ddf9b476e38061dfeb32c9"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/6f75ee6387826510ccfe5b0ab7d9ddc2b4f0d65b46b6997cc05f312dd9731afa",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "6f75ee6387826510ccfe5b0ab7d9ddc2b4f0d65b46b6997cc05f312dd9731afa",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284-17_1_IN_2-Carboplatin"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+      } ],
+      "status": "active",
+      "medicationReference": {
+        "reference": "Medication/84ba1327578cfb33f3e890fc68945aa9e5d8974b853d1817533f42a849b5d7bf",
+        "display": "Carboplatin"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "effectivePeriod": {
+        "start": "2018-06-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/6f75ee6387826510ccfe5b0ab7d9ddc2b4f0d65b46b6997cc05f312dd9731afa"
+    }
+  }, {
+    "fullUrl": "Medication/84ba1327578cfb33f3e890fc68945aa9e5d8974b853d1817533f42a849b5d7bf",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "84ba1327578cfb33f3e890fc68945aa9e5d8974b853d1817533f42a849b5d7bf",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01XA02"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01XA02",
+          "userSelected": false
+        } ],
+        "text": "Carboplatin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "not-applicable"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/84ba1327578cfb33f3e890fc68945aa9e5d8974b853d1817533f42a849b5d7bf"
+    }
+  }, {
+    "fullUrl": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59",
+    "resource": {
+      "resourceType": "AdverseEvent",
+      "id": "ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+      },
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-17_1_IN_2-Grad-maximal-2-unbekannt"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "not-applicable"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "seriousness": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "U"
+        } ]
+      },
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/ccdd51a21130b11d65b4e5e496e12de49fb70218f9c355d487f9b453a57a7ec0"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "AdverseEvent/ac2c5654b5c1850fdbb1e720fdae811ea798b01192c05fd51b05b8a2ebd64f59"
+    }
+  }, {
+    "fullUrl": "Observation/d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tod" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tod-observation-id",
+        "value": "17-171-T98-3"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "184305005",
+          "display": "Cause of death (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2023-09-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2020",
+          "code": "T98.3"
+        } ]
+      },
+      "interpretation": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
+          "code": "N"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/d2d37a8143486dbde3599397a71bbe64770f605594662c81d2613d89528811e7"
+    }
+  }, {
+    "fullUrl": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "K"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-systemische-therapie-stellungzurop",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
+            "code": "A"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-procedure-id",
+        "value": "70_1_IN_1"
+      } ],
+      "status": "completed",
+      "category": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "18629005",
+          "display": "Administration of drug or medicament (procedure)"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/ops",
+          "version": "2026",
+          "code": "8-54",
+          "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
+          "code": "CH"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "performedPeriod": {
+        "start": "2018-04-07",
+        "end": "2018-05-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "outcome": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
+          "code": "A"
+        } ]
+      },
+      "usedCode": [ {
+        "text": "Cisplatin/Etoposid"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/8175a89b989aab7322ab89eed0b2b50f4461be6c20a15178e8ffeb8bc2a28cdf",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "8175a89b989aab7322ab89eed0b2b50f4461be6c20a15178e8ffeb8bc2a28cdf",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284-70_1_IN_1-Etoposid"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+      } ],
+      "status": "completed",
+      "medicationReference": {
+        "reference": "Medication/aec52f3249a58c0807f9504196b0dcbfc8b713b288ddf9b476e38061dfeb32c9",
+        "display": "Etoposid"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "effectivePeriod": {
+        "start": "2018-04-07",
+        "end": "2018-05-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/8175a89b989aab7322ab89eed0b2b50f4461be6c20a15178e8ffeb8bc2a28cdf"
+    }
+  }, {
+    "fullUrl": "MedicationStatement/269829e89b5fafaba0966c8fa8478d7706d77f5e1fe8b6606aaa4b4150e0a8c2",
+    "resource": {
+      "resourceType": "MedicationStatement",
+      "id": "269829e89b5fafaba0966c8fa8478d7706d77f5e1fe8b6606aaa4b4150e0a8c2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-systemische-therapie-medikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-statement-id",
+        "value": "f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284-70_1_IN_1-Cisplatin"
+      } ],
+      "partOf": [ {
+        "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+      } ],
+      "status": "completed",
+      "medicationReference": {
+        "reference": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+        "display": "Cisplatin"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "effectivePeriod": {
+        "start": "2018-04-07",
+        "end": "2018-05-15"
+      },
+      "reasonReference": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "MedicationStatement/269829e89b5fafaba0966c8fa8478d7706d77f5e1fe8b6606aaa4b4150e0a8c2"
+    }
+  }, {
+    "fullUrl": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+    "resource": {
+      "resourceType": "Medication",
+      "id": "2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
+        "value": "L01XA01"
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/atc",
+          "version": "2026",
+          "code": "L01XA01",
+          "userSelected": false
+        } ],
+        "text": "Cisplatin"
+      },
+      "ingredient": [ {
+        "itemCodeableConcept": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "_code": {
+              "extension": [ {
+                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                "valueCode": "not-applicable"
+              } ]
+            }
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f"
+    }
+  }, {
+    "fullUrl": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3",
+    "resource": {
+      "resourceType": "AdverseEvent",
+      "id": "d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
+      },
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
+        "value": "mii-pr-onko-nebenwirkung-70_1_IN_1-0"
+      },
+      "actuality": "actual",
+      "event": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ],
+        "text": "Übelkeit"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "seriousness": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
+          "code": "3"
+        } ]
+      },
+      "suspectEntity": [ {
+        "instance": {
+          "reference": "Procedure/097d5ab597fa27e4ce45bb8930a97a8b1bafd93273dc2f41fb5ac7a3656337ec"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "AdverseEvent/d916ae51de7314643ebad9d85a9aaf5b181ed8b430adc1c769ee6cb18eb4fbc3"
+    }
+  }, {
+    "fullUrl": "Observation/2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-verlauf" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlauf-observation-id",
+        "value": "195"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "396432002",
+          "display": "Status of regression of tumor (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-08-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
+          "code": "V",
+          "display": "Vollremission"
+        } ]
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "code": "277062004",
+            "display": "Status des Residualtumors"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-primaertumor",
+            "code": "K",
+            "display": "kein Tumor nachweisbar"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "code": "399656008",
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-lymphknoten",
+            "code": "K",
+            "display": "kein Lymphknotenbefall nachweisbar"
+          } ]
+        }
+      }, {
+        "code": {
+          "coding": [ {
+            "system": "http://snomed.info/sct",
+            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "code": "399608002",
+            "display": "Status of distant metastasis (observable entity)"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-fernmetastasen",
+            "code": "K",
+            "display": "keine Fernmetastasen nachweisbar"
+          } ]
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/2e14f5b761eac84279c1f6eedb34293397150cd1163ec6e448b54d88882f24dd"
+    }
+  }, {
+    "fullUrl": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-VER_17105"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-08-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "1",
+          "display": "Einschränkung bei körperlicher Anstrengung, aber gehfähig; leichte körperliche Arbeit bzw. Arbeit im Sitzen (z. B. leichte Hausarbeit oder Büroarbeit) möglich (70 - 80 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA9623-5",
+          "display": "Restricted in physically strenuous activity but ambulatory and able to carry out work of a light or sedentary nature, e.g., light house work, office work"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a63d7c6f9d11baff4c48250580b878e76082b61d8a947258e639a8e2e1fe5b4d"
+    }
+  }, {
+    "fullUrl": "Observation/d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-DIA_17101"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2018-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "0",
+          "display": "Normale, uneingeschränkte Aktivität wie vor der Erkrankung (90 - 100 % nach Karnofsky)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA9622-7",
+          "display": "Fully active, able to carry on all pre-disease performance without restriction"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193"
+    }
+  }, {
+    "fullUrl": "Specimen/12ec5a80fb76558638fc41d677ada747766be89a7e137988e7a0a6913250fb2f",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "12ec5a80fb76558638fc41d677ada747766be89a7e137988e7a0a6913250fb2f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+        "value": "291"
+      } ],
+      "accessionIdentifier": {
+        "value": "1234/5"
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "collection": {
+        "collectedDateTime": "2018-02-01"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/12ec5a80fb76558638fc41d677ada747766be89a7e137988e7a0a6913250fb2f"
+    }
+  }, {
+    "fullUrl": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
+        "value": "291-grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2018-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "3"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/12ec5a80fb76558638fc41d677ada747766be89a7e137988e7a0a6913250fb2f"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f"
+    }
+  }, {
+    "fullUrl": "Observation/4510682c29cc3b917b158ad5f92e311d522af7e121be58e55663aadd4951a583",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4510682c29cc3b917b158ad5f92e311d522af7e121be58e55663aadd4951a583",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-studienteilnahme" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/studienteilnahme-observation-id",
+        "value": "DIA_17101-Studienteilnahme"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "709491003",
+          "display": "Enrollment in clinical trial (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
+          "code": "N"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4510682c29cc3b917b158ad5f92e311d522af7e121be58e55663aadd4951a583"
+    }
+  }, {
+    "fullUrl": "Observation/c308aa4b51dcbebfb128e6162664e71b2bec4d0cb504460400ec1fb3ad770fc2",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c308aa4b51dcbebfb128e6162664e71b2bec4d0cb504460400ec1fb3ad770fc2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
+        "value": "264-p-T"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "384625004",
+          "display": "pT category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "T2"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c308aa4b51dcbebfb128e6162664e71b2bec4d0cb504460400ec1fb3ad770fc2"
+    }
+  }, {
+    "fullUrl": "Observation/43885f935a98e2fd38e0e3680e36240c2e89c3b39d67a6ee82f410e4b9208351",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "43885f935a98e2fd38e0e3680e36240c2e89c3b39d67a6ee82f410e4b9208351",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id",
+        "value": "264-p-N"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "p"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "371494008",
+          "display": "pN category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "N0"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/43885f935a98e2fd38e0e3680e36240c2e89c3b39d67a6ee82f410e4b9208351"
+    }
+  }, {
+    "fullUrl": "Observation/46b8749655484be0cf194d5949e7685075d973747bb132e8af040888873960fd",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "46b8749655484be0cf194d5949e7685075d973747bb132e8af040888873960fd",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id",
+        "value": "264-p-M"
+      } ],
+      "status": "final",
+      "code": {
+        "extension": [ {
+          "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+          "valueCodeableConcept": {
+            "coding": [ {
+              "system": "https://www.uicc.org/resources/tnm",
+              "code": "c"
+            } ]
+          }
+        } ],
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "399387003",
+          "display": "cM category (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "M0"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/46b8749655484be0cf194d5949e7685075d973747bb132e8af040888873960fd"
+    }
+  }, {
+    "fullUrl": "Observation/5d6770585c8f29ba01cdc6fb0dd2c41ddb9543ab9782b4a103e6770d1c74c960",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "5d6770585c8f29ba01cdc6fb0dd2c41ddb9543ab9782b4a103e6770d1c74c960",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+        "value": "264-p"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "399588009",
+          "display": "Pathologic TNM stage grouping"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "effectiveDateTime": "2020-02-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "II",
+          "display": "Stadium II"
+        } ]
+      },
+      "method": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
+          "code": "8"
+        } ]
+      },
+      "hasMember": [ {
+        "reference": "Observation/c308aa4b51dcbebfb128e6162664e71b2bec4d0cb504460400ec1fb3ad770fc2"
+      }, {
+        "reference": "Observation/43885f935a98e2fd38e0e3680e36240c2e89c3b39d67a6ee82f410e4b9208351"
+      }, {
+        "reference": "Observation/46b8749655484be0cf194d5949e7685075d973747bb132e8af040888873960fd"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/5d6770585c8f29ba01cdc6fb0dd2c41ddb9543ab9782b4a103e6770d1c74c960"
+    }
+  }, {
+    "fullUrl": "List/5b3d7580703cbe7929a5c6b066ab02400c32d8171e3b130f47f104f2e5a47ac0",
+    "resource": {
+      "resourceType": "List",
+      "id": "5b3d7580703cbe7929a5c6b066ab02400c32d8171e3b130f47f104f2e5a47ac0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "17-171"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
+      "subject": {
+        "reference": "Patient/5098a39800d97f3939da3ee42943b863a227d051c05789f223880279dc077203",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "17"
+        }
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/d8da9e230494224c1f567f73dd9ea9fddfb8a3115276d5f6205416ed1ccc4193"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/4a7a22ed7475d2cd34a72eb4ef645dee8a4ae29a828263c3778288c5e4bfc01f"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/4510682c29cc3b917b158ad5f92e311d522af7e121be58e55663aadd4951a583"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/c308aa4b51dcbebfb128e6162664e71b2bec4d0cb504460400ec1fb3ad770fc2"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/43885f935a98e2fd38e0e3680e36240c2e89c3b39d67a6ee82f410e4b9208351"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/46b8749655484be0cf194d5949e7685075d973747bb132e8af040888873960fd"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/5d6770585c8f29ba01cdc6fb0dd2c41ddb9543ab9782b4a103e6770d1c74c960"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/5b3d7580703cbe7929a5c6b066ab02400c32d8171e3b130f47f104f2e5a47ac0"
+    }
+  } ]
+}

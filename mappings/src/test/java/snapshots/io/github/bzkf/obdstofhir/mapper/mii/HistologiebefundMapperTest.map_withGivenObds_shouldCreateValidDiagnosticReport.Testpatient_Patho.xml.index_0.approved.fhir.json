@@ -1,0 +1,30 @@
+{
+  "resourceType": "DiagnosticReport",
+  "id": "dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
+    "value": "PAT_70101"
+  } ],
+  "basedOn": [ {
+    "reference": "CarePlan/Tumorkonferenz"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "22034-3",
+      "display": "Pathology report Cancer Narrative"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "specimen": [ {
+    "reference": "Specimen/Onko"
+  } ],
+  "conclusion": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+}

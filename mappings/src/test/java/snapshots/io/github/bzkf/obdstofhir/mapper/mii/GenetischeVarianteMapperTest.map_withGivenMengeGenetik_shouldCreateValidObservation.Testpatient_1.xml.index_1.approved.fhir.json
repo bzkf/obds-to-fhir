@@ -1,0 +1,50 @@
+{
+  "resourceType": "Observation",
+  "id": "cfcc09d8519640a5e84fcdb3be6f9ac71c53cee1af7642eb9260deff4979e457",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-genetische-variante" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/genetische-variante-observation-id",
+    "value": "GenetischeAuspraegung-Diagnose-10_1_DI_1-1"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  }, {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+      "code": "GE",
+      "display": "Genetics"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "69548-6",
+      "display": "Genetic variant assessment"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
+  "effectiveDateTime": "2020-03-01",
+  "interpretation": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
+      "code": "S"
+    } ],
+    "text": "Translation"
+  } ],
+  "note": [ {
+    "text": "BRCA 2"
+  } ]
+}

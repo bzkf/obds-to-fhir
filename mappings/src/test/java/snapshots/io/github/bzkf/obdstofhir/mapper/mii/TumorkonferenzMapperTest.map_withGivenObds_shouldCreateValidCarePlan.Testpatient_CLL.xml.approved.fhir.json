@@ -1,0 +1,26 @@
+{
+  "resourceType": "CarePlan",
+  "id": "ad6a7cc21281b70cfaf484a8ced0b8361cb3f0c0f4510c4a51b5367e078b3011",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorkonferenz" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorkonferenz-care-plan-id",
+    "value": "Tumorkonferenz-111"
+  } ],
+  "status": "active",
+  "intent": "plan",
+  "category": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
+      "code": "praeth"
+    } ]
+  } ],
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "created": "2020-08-17",
+  "addresses": [ {
+    "reference": "Condition/any"
+  } ]
+}

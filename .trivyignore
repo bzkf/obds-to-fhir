@@ -1,4 +1,4 @@
-CVE-2023-28465
-# remove when Spring (Boot) uses SnakeYAML 2.0+
-# https://github.com/spring-projects/spring-framework/pull/30048
-CVE-2022-1471
+# Message: The instruction 'RUN <package-manager> update' should always be followed by '<package-manager> install' in the same RUN statement.
+# Link: [DS017](https://avd.aquasec.com/misconfig/ds017)
+# False positive since trivy doesn't work with HEREDOC syntax apparantly
+DS017

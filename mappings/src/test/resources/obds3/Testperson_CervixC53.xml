@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.2" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.2.xsd">
+  <Absender Absender_ID="aA1._/" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-06-14</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="17">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>107815772</IKNR>
+          <GKV_Versichertennummer>A123456780</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Lohse</Nachname>
+        <Vornamen>Leonie</Vornamen>
+        <Geschlecht>W</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1969-06-01</Geburtsdatum>
+        <Adresse>
+          <Strasse>Unterleibsgasse.</Strasse>
+          <Hausnummer>6</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>35287</PLZ>
+          <Ort>Amöneburg</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="DIA_17101">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Bösartige Neubildung: Cervix uteri, nicht näher bezeichnet</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C53.9</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Cervix</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="291">
+              <Tumor_Histologiedatum Datumsgenauigkeit="E">2018-02-01</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>1234/5</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8085/3</Code>
+                <Version>31</Version>
+              </Morphologie_ICD_O>
+              <Morphologie_Freitext>Plattenepithelkarzinom, HPV-positiv</Morphologie_Freitext>
+              <Grading>3</Grading>
+            </Histologie>
+            <pTNM ID="264">
+              <Datum>2020-02-01</Datum>
+              <Version>8</Version>
+              <c_p_u_Praefix_T>p</c_p_u_Praefix_T>
+              <T>2</T>
+              <c_p_u_Praefix_N>p</c_p_u_Praefix_N>
+              <N>0</N>
+              <c_p_u_Praefix_M>c</c_p_u_Praefix_M>
+              <M>0</M>
+              <UICC_Stadium>II</UICC_Stadium>
+            </pTNM>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <N>N</N>
+              </Sozialdienstkontakt>
+              <Psychoonkologiekontakt>
+                <N>N</N>
+              </Psychoonkologiekontakt>
+              <Studienteilnahme>
+                <NU>N</NU>
+              </Studienteilnahme>
+            </Modul_Allgemein>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="OP_17101">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="168">
+            <Intention>K</Intention>
+            <Datum>2020-03-01</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-672.0</Code>
+                <Version>2020</Version>
+              </OPS>
+            </Menge_OPS>
+            <Komplikationen>
+              <Komplikation_nein_oder_unbekannt>U</Komplikation_nein_oder_unbekannt>
+            </Komplikationen>
+          </OP>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_17103">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="70_1_IN_1">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>A</Stellung_OP>
+            <Therapieart>CH</Therapieart>
+            <Protokoll>Cisplatin/Etoposid</Protokoll>
+            <Beginn Datumsgenauigkeit="E">2018-04-07</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <Bezeichnung>Cisplatin</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>Etoposid</Bezeichnung>
+              </Substanz>
+            </Menge_Substanz>
+            <Ende_Grund>A</Ende_Grund>
+            <Ende>2018-05-15</Ende>
+            <Nebenwirkungen>
+              <Menge_Nebenwirkung>
+                <Nebenwirkung>
+                  <Art>
+                    <Bezeichnung>Übelkeit</Bezeichnung>
+                  </Art>
+                  <Grad>3</Grad>
+                  <Version>4.03</Version>
+                </Nebenwirkung>
+              </Menge_Nebenwirkung>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_17104">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <SYST SYST_ID="17_1_IN_2">
+            <Meldeanlass>behandlungsbeginn</Meldeanlass>
+            <Intention>K</Intention>
+            <Stellung_OP>A</Stellung_OP>
+            <Therapieart>CH</Therapieart>
+            <Protokoll>Carboplatin/Etoposid</Protokoll>
+            <Beginn Datumsgenauigkeit="E">2018-06-15</Beginn>
+            <Menge_Substanz>
+              <Substanz>
+                <Bezeichnung>Carboplatin</Bezeichnung>
+              </Substanz>
+              <Substanz>
+                <Bezeichnung>Etoposid</Bezeichnung>
+              </Substanz>
+            </Menge_Substanz>
+            <Nebenwirkungen>
+              <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
+            </Nebenwirkungen>
+          </SYST>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="VER_17105">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="195">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2020-08-05</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>V</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>K</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="AB_17106">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="171">
+            <Primaertumor_ICD>
+              <Code>C53.9</Code>
+              <Version>10 2018 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2018-02-01</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8085/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tod Abschluss_ID="67">
+            <Sterbedatum>2023-09-01</Sterbedatum>
+            <Tod_tumorbedingt>N</Tod_tumorbedingt>
+            <Menge_Todesursachen>
+              <Todesursache_ICD>
+                <Code>T98.3</Code>
+                <Version>10 2020 GM</Version>
+              </Todesursache_ICD>
+            </Menge_Todesursachen>
+          </Tod>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>
