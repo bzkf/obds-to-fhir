@@ -235,12 +235,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       if (createPatientResources
           && (!patientLookupResult.existsOnServer() || createPatientIfAlreadyExists)) {
         if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
-          var overrideRef = new Reference("Patient/" + patient.getId());
-          if (patientReference.hasIdentifier()) {
-            overrideRef.setIdentifier(patientReference.getIdentifier().copy());
-            patient.getIdentifierFirstRep().setValue(patientReference.getIdentifier().getValue());
-          }
-          patientReference = overrideRef;
+          // very hacky extra handling for one specific site requirements.
+          // set the Patient.id to the already referenced one. This is necessary,
+          // because in the Vitalstatus processor we reference the patient by this
+          // id.
+          patient.setId(patientReference.getReferenceElement().getIdPart());
         }
 
         addToBundle(bundle, patient);
