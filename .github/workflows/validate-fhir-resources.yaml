@@ -33,7 +33,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
+    container: ghcr.io/miracum/ig-build-tools:v2.2.42@sha256:99149098bc5e16f165dc0c742405ebe986498828ab372002d49a331b30256ee1
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -73,7 +73,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
+    container: ghcr.io/miracum/ig-build-tools:v2.2.42@sha256:99149098bc5e16f165dc0c742405ebe986498828ab372002d49a331b30256ee1
     needs:
       - extract-mapper-names
     strategy:
@@ -125,7 +125,7 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
+    container: ghcr.io/miracum/ig-build-tools:v2.2.42@sha256:99149098bc5e16f165dc0c742405ebe986498828ab372002d49a331b30256ee1
     needs:
       - extract-mapper-names
     steps:
