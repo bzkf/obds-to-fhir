@@ -33,7 +33,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
+    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -54,7 +54,7 @@ jobs:
       # jobs running in parallel each restoring at the same time
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             /github/home/.fhir/packages
@@ -73,7 +73,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
+    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
     needs:
       - extract-mapper-names
     strategy:
@@ -85,7 +85,7 @@ jobs:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -101,7 +101,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             /github/home/.fhir/packages
@@ -125,12 +125,12 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.41@sha256:60bfe761c45852cf505b68c5176df0171cdbf818c4cc9e4279b9c64aba527c70
+    container: ghcr.io/miracum/ig-build-tools:v2.2.43@sha256:241f4ee5bd08df2e55d655416abb5c3065df6746397351b9f600c61c389ee8b8
     needs:
       - extract-mapper-names
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -146,7 +146,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
           path: |
             /github/home/.fhir/packages
