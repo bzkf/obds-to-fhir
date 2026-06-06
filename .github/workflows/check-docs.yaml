@@ -18,10 +18,10 @@ jobs:
   check-docs:
     name: Check if auto-generated docs are up-to-date
     runs-on: ubuntu-24.04
-    container: ghcr.io/chgl/kube-powertools:v2.5.20@sha256:a33bdb7dbbc64288ec3163990e7dd86add2a85fea3fb19421cf7141b4ee5a617
+    container: ghcr.io/chgl/kube-powertools:v2.5.45@sha256:a095be8d2426f498e64141c1d9a44e9aab96cbe480ca494a004858a87164dc24
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
