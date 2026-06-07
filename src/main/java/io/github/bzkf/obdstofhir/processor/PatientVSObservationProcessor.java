@@ -85,7 +85,7 @@ public class PatientVSObservationProcessor {
         return null;
       }
 
-      TransactionBuilder builder = new TransactionBuilder();
+      var builder = new TransactionBuilder();
       // TODO: clarify if we should create patients if they don't already exist here
 
       builder.addEntry(buildVitalStatus(onkoPatient, patientLookupResult)).failOnDuplicateEntries();
@@ -104,7 +104,7 @@ public class PatientVSObservationProcessor {
 
         var sourceDisplay =
             onkoPatient.getId() != null
-                ? "ONKOSTAR patient row id " + onkoPatient.getId()
+                ? "ONKOSTAR BestOfTumor ID " + onkoPatient.getId()
                 : "ONKOSTAR CSV export";
 
         var what = new Reference().setDisplay(sourceDisplay);
