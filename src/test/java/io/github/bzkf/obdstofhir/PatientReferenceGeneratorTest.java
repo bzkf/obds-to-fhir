@@ -18,8 +18,7 @@ class PatientReferenceGeneratorTest {
   @Test
   void shouldUseCachedRecordIdForRepeatedPatientIdLookups() {
     var jdbcTemplate = mock(JdbcTemplate.class);
-    var query =
-        "SELECT record_id FROM patients WHERE patient_id = ? ORDER BY changed_at DESC LIMIT 1";
+    var query = "SELECT record_id FROM patients WHERE patient_id = ?";
     when(jdbcTemplate.queryForObject(query, String.class, "patient-1")).thenReturn("record-1");
 
     var generator =
@@ -43,6 +42,38 @@ class PatientReferenceGeneratorTest {
     assertThat(first.reference().getReference()).isEqualTo("Patient/record-1");
     assertThat(second.reference().getReference()).isEqualTo("Patient/record-1");
     verify(jdbcTemplate, times(1)).queryForObject(query, String.class, "patient-1");
+  }
+
+  @Test
+  void shouldSetIdentifierValueToRecordIdFromDatabase() {
+    var jdbcTemplate = mock(JdbcTemplate.class);
+    var query = "SELECT record_id FROM patients WHERE patient_id = ?";
+
+    when(jdbcTemplate.queryForObject(query, String.class, "patient-1")).thenReturn("record-1");
+
+    var generator =
+        new PatientReferenceGenerator(
+            createFhirProperties(),
+            Optional.empty(),
+            Optional.of(jdbcTemplate),
+            Optional.of(new RecordIdDbConfig("jdbc:test", "user", "pwd", query)),
+            false,
+            "");
+
+    ReflectionTestUtils.setField(
+        generator, "strategy", PatientReferenceGenerator.Strategy.RECORD_ID_DATABASE_LOOKUP);
+
+    var function = generator.getPatientReferenceGenerationFunction();
+
+    var patient = new OBDS.MengePatient.Patient();
+    patient.setPatientID("patient-1");
+
+    var result = function.apply(patient);
+
+    assertThat(result.reference().getReference()).isEqualTo("Patient/record-1");
+    assertThat(result.reference().getIdentifier().getValue()).isEqualTo("record-1");
+    assertThat(result.reference().getIdentifier().getSystem())
+        .isEqualTo(createFhirProperties().getSystems().getIdentifiers().getPatientId());
   }
 
   private FhirProperties createFhirProperties() {
