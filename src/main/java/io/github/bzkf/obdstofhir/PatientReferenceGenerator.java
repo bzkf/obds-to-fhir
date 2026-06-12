@@ -206,6 +206,7 @@ public class PatientReferenceGenerator {
 
           if (idResult.isPresent()) {
             reference.setReference("Patient/" + idResult.get().value());
+            reference.getIdentifier().setValue(idResult.get().value());
             return new PatientLookupResult(reference, true);
           }
 

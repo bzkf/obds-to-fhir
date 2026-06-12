@@ -241,6 +241,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // id.
           patient.setId(patientReference.getReferenceElement().getIdPart());
           if (patientReference.hasIdentifier()) {
+            // really hacky, at least make sure that Patient only has one identifier.
+            if (patient.getIdentifier().size() > 1) {
+              throw new IllegalStateException(
+                  "Patient has more than one identifier, cannot set the identifier value to the record id from database");
+            }
             patient.getIdentifierFirstRep().setValue(patientReference.getIdentifier().getValue());
           }
         }
