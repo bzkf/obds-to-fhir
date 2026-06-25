@@ -110,30 +110,6 @@ spring:
       definition: getMeldungExportObdsV3Processor;getPatientVSObservationProcessor
     stream:
       bindings:
-        getMeldungExportObdsProcessor-in-0:
-          destination: onkostar.MELDUNG_EXPORT
-        getMeldungExportObdsProcessor-in-1:
-          destination: fhir.obds.Observation
-        getMeldungExportObdsProcessor-out-0:
-          destination: fhir.obds.MedicationStatement
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportObdsProcessor-out-1:
-          destination: fhir.obds.Observation
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportObdsProcessor-out-2:
-          destination: fhir.obds.Procedure
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportObdsProcessor-out-3:
-          destination: fhir.obds.Condition
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
-        getMeldungExportObdsProcessor-out-4:
-          destination: fhir.obds.Patient
-          producer:
-            partition-count: ${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}
         getMeldungExportObdsV3Processor-in-0:
           # -- Name of the topic where ONKOSTAR oBDS Meldungen are read from
           destination: ${INPUT_TOPIC_NAME:onkostar.MELDUNG_EXPORT}
@@ -161,38 +137,6 @@ spring:
               default:
                 key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
           bindings:
-            getMeldungExportObdsProcessor-in-0:
-              consumer:
-                application-id: obds-meldung-exp-grouped-processor
-            getMeldungExportObdsProcessor-in-1:
-              consumer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                application-id: obds-meldung-exp-condition-processor
-            getMeldungExportObdsProcessor-out-0:
-              producer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                configuration:
-                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
-            getMeldungExportObdsProcessor-out-1:
-              producer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                configuration:
-                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
-            getMeldungExportObdsProcessor-out-2:
-              producer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                configuration:
-                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
-            getMeldungExportObdsProcessor-out-3:
-              producer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                configuration:
-                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
-            getMeldungExportObdsProcessor-out-4:
-              producer:
-                valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
-                configuration:
-                  compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
             getMeldungExportObdsV3Processor-in-0:
               consumer:
                 # -- the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently

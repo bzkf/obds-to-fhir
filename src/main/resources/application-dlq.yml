@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        streams:
+          binder:
+            configuration:
+              errors.dead.letter.queue.topic.name: errors.${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}.${spring.cloud.stream.bindings.getMeldungExportObdsV3Processor-in-0.destination}
+              deserialization.exception.handler: org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
+              processing.exception.handler: org.springframework.kafka.streams.RecoveringProcessingExceptionHandler
+              production.exception.handler: org.springframework.kafka.streams.RecoveringProductionExceptionHandler
