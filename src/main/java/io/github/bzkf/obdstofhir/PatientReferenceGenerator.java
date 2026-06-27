@@ -10,34 +10,32 @@ import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceVersionConflictException;
-import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
-import io.github.dizuker.tofhir.IdUtils;
+import io.github.bzkf.obdstofhir.patientreference.FhirServerLookupPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.IdentifierPseudonymizer;
+import io.github.bzkf.obdstofhir.patientreference.Md5HashedPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.PatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.PlainPatientIdReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.RecordIdDatabaseLookupPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.Sha256HashedPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.UnderscoresToDashesPatientReferenceStrategy;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Identifier;
-import org.hl7.fhir.r4.model.Parameters;
-import org.hl7.fhir.r4.model.Patient;
-import org.hl7.fhir.r4.model.Reference;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
@@ -50,6 +48,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
+/**
+ * Builds the {@code Resource.subject.reference} to the Patient resource for every mapped oBDS
+ * patient, according to the configured {@link Strategy}. Each strategy is implemented as its own
+ * {@link PatientReferenceStrategy} in the {@code patientreference} package; this class only wires
+ * up the strategy instances and picks the active one.
+ */
 @Service
 public class PatientReferenceGenerator {
   private static final Logger LOG = LoggerFactory.getLogger(PatientReferenceGenerator.class);
@@ -63,31 +67,31 @@ public class PatientReferenceGenerator {
     RECORD_ID_DATABASE_LOOKUP
   }
 
-  record StringId(String value) {}
-
   @Value("${fhir.mappings.patient-reference-generation.strategy}")
   private Strategy strategy;
 
-  @Value("${fhir.mappings.patient-reference-generation.identifier-only-references-allowed}")
-  private boolean isIdentifierOnlyReferencesAllowed;
-
-  private final boolean isPseudonymizePatientIdEnabled;
   private final @NonNull FhirProperties fhirProperties;
-  private @Nullable IGenericClient fhirClient;
-  private @Nullable RetryTemplate retryTemplate;
-  private @Nullable JdbcTemplate recordIdJdbcTemplate;
-  private @Nullable RecordIdDbConfig recordIdDbConfig;
-  private @Nullable IGenericClient fhirPseudonymizerClient;
-  private final Map<String, Optional<StringId>> recordIdByPatientIdCache =
-      new ConcurrentHashMap<>();
-
   private final CodeableConcept mrnType;
+
+  private final PatientReferenceStrategy sha256HashedStrategy =
+      new Sha256HashedPatientReferenceStrategy();
+  private final PatientReferenceStrategy md5HashedStrategy =
+      new Md5HashedPatientReferenceStrategy();
+  private final PatientReferenceStrategy underscoresToDashesStrategy =
+      new UnderscoresToDashesPatientReferenceStrategy();
+  private final PatientReferenceStrategy plainPatientIdStrategy =
+      new PlainPatientIdReferenceStrategy();
+
+  private @Nullable FhirServerLookupPatientReferenceStrategy fhirServerLookupStrategy;
+  private @Nullable RecordIdDatabaseLookupPatientReferenceStrategy recordIdDatabaseLookupStrategy;
 
   public PatientReferenceGenerator(
       FhirProperties fhirProperties,
       Optional<FhirServerConfig> fhirServerConfig,
       Optional<JdbcTemplate> recordIdJdbcTemplate,
       Optional<RecordIdDbConfig> recordIdDbConfig,
+      @Value("${fhir.mappings.patient-reference-generation.identifier-only-references-allowed}")
+          boolean isIdentifierOnlyReferencesAllowed,
       @Value("${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.enabled}")
           boolean isPseudonymizePatientIdEnabled,
       @Value(
@@ -104,24 +108,33 @@ public class PatientReferenceGenerator {
 
     fhirServerConfig.ifPresent(
         cfg -> {
-          this.fhirClient = createFhirClient(cfg);
-          this.retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
+          var fhirClient = createFhirClient(cfg);
+          var retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
+
+          IdentifierPseudonymizer pseudonymizer = null;
+          if (isPseudonymizePatientIdEnabled) {
+            if (!StringUtils.hasText(fhirPseudonymizerBaseUrl)) {
+              throw new IllegalArgumentException("Pseudonymizer base url is unset");
+            }
+
+            var pseudonymizerContext = FhirContext.forR4();
+            pseudonymizerContext
+                .getRestfulClientFactory()
+                .setServerValidationMode(ServerValidationModeEnum.NEVER);
+            var fhirPseudonymizerClient =
+                pseudonymizerContext.newRestfulGenericClient(fhirPseudonymizerBaseUrl);
+            pseudonymizer = new IdentifierPseudonymizer(fhirPseudonymizerClient, retryTemplate);
+          }
+
+          this.fhirServerLookupStrategy =
+              new FhirServerLookupPatientReferenceStrategy(
+                  fhirClient, retryTemplate, isIdentifierOnlyReferencesAllowed, pseudonymizer);
         });
 
     if (recordIdJdbcTemplate.isPresent() && recordIdDbConfig.isPresent()) {
-      this.recordIdJdbcTemplate = recordIdJdbcTemplate.get();
-      this.recordIdDbConfig = recordIdDbConfig.get();
-    }
-
-    this.isPseudonymizePatientIdEnabled = isPseudonymizePatientIdEnabled;
-    if (isPseudonymizePatientIdEnabled) {
-      if (!StringUtils.hasText(fhirPseudonymizerBaseUrl)) {
-        throw new IllegalArgumentException("Pseudonymizer base url is unset");
-      }
-
-      var fhirContext = FhirContext.forR4();
-      fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
-      this.fhirPseudonymizerClient = fhirContext.newRestfulGenericClient(fhirPseudonymizerBaseUrl);
+      this.recordIdDatabaseLookupStrategy =
+          new RecordIdDatabaseLookupPatientReferenceStrategy(
+              recordIdJdbcTemplate.get(), recordIdDbConfig.get());
     }
   }
 
@@ -131,93 +144,32 @@ public class PatientReferenceGenerator {
       Validate.notBlank(p.getPatientID());
 
       final var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
-      final var value = p.getPatientID();
+      final var identifier =
+          new Identifier().setSystem(system).setValue(p.getPatientID()).setType(mrnType);
 
-      final var identifier = new Identifier().setSystem(system).setValue(value).setType(mrnType);
+      return resolveStrategy().resolve(identifier);
+    };
+  }
 
-      switch (strategy) {
-        case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID -> {
-          var id = IdUtils.fromIdentifier(identifier);
-          return new PatientLookupResult(
-              new Reference("Patient/" + id).setIdentifier(identifier),
-              false // basically just a default value here
-              );
+  private PatientReferenceStrategy resolveStrategy() {
+    return switch (strategy) {
+      case SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID -> sha256HashedStrategy;
+      case MD5_HASHED_PATIENT_ID -> md5HashedStrategy;
+      case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES -> underscoresToDashesStrategy;
+      case PATIENT_ID -> plainPatientIdStrategy;
+      case FHIR_SERVER_LOOKUP -> {
+        if (fhirServerLookupStrategy == null) {
+          throw new IllegalArgumentException(
+              "ID generation strategy set to FHIR_SERVER_LOOKUP, but config is unset.");
         }
-
-        case MD5_HASHED_PATIENT_ID -> {
-          var id = DigestUtils.md5Hex(value);
-          return new PatientLookupResult(
-              new Reference("Patient/" + id).setIdentifier(identifier), false);
+        yield fhirServerLookupStrategy;
+      }
+      case RECORD_ID_DATABASE_LOOKUP -> {
+        if (recordIdDatabaseLookupStrategy == null) {
+          throw new IllegalArgumentException(
+              "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
         }
-
-        case PATIENT_ID_UNDERSCORES_REPLACED_WITH_DASHES -> {
-          var id = value.replace('_', '-');
-          return new PatientLookupResult(
-              new Reference("Patient/" + id).setIdentifier(identifier), false);
-        }
-
-        case PATIENT_ID -> {
-          return new PatientLookupResult(
-              new Reference("Patient/" + value).setIdentifier(identifier), false);
-        }
-
-        case FHIR_SERVER_LOOKUP -> {
-          if (fhirClient == null) {
-            throw new IllegalArgumentException(
-                "ID generation strategy set to FHIR_SERVER_LOOKUP, but config is unset.");
-          }
-
-          // we start by looking up the plain patient identifier
-          var identifierToLookup = identifier;
-
-          if (isPseudonymizePatientIdEnabled) {
-            // if enabled, first pseudonymize the identifier and then use this as the
-            // identifier to look up
-            identifierToLookup = pseudonymizeIdentifier(identifierToLookup);
-          }
-
-          var id = findPatientIdByIdentifier(identifierToLookup);
-
-          // always set the (pseudonymized) identifier as part of the reference
-          var reference = new Reference().setIdentifier(identifierToLookup);
-
-          if (id.isPresent()) {
-            reference.setReference("Patient/" + id.get().getIdPart());
-            return new PatientLookupResult(reference, true);
-          }
-
-          if (!isIdentifierOnlyReferencesAllowed) {
-            throw new IllegalStateException(
-                "Patient not found on FHIR server and identifier-only references are disabled.");
-          }
-
-          return new PatientLookupResult(reference, false);
-        }
-
-        case RECORD_ID_DATABASE_LOOKUP -> {
-          if (recordIdJdbcTemplate == null) {
-            throw new IllegalArgumentException(
-                "ID generation strategy set to RECORD_ID_DATABASE_LOOKUP, but config is unset.");
-          }
-
-          var reference = new Reference().setIdentifier(identifier);
-
-          var idResult = findRecordIdByPatientId(value);
-
-          if (idResult.isPresent()) {
-            reference.setReference("Patient/" + idResult.get().value());
-            reference.getIdentifier().setValue(idResult.get().value());
-            return new PatientLookupResult(reference, true);
-          }
-
-          LOG.warn("No record ID found for patient: {}", value);
-
-          return new PatientLookupResult(reference, false);
-        }
-
-        default ->
-            throw new IllegalStateException(
-                "Unsupported patient reference generation strategy: " + strategy);
+        yield recordIdDatabaseLookupStrategy;
       }
     };
   }
@@ -235,71 +187,6 @@ public class PatientReferenceGenerator {
     }
 
     return client;
-  }
-
-  private Optional<StringId> findRecordIdByPatientId(String patientId) {
-    return recordIdByPatientIdCache.computeIfAbsent(patientId, this::queryRecordIdByPatientId);
-  }
-
-  private Optional<StringId> queryRecordIdByPatientId(String patientId) {
-    try {
-      var id =
-          this.recordIdJdbcTemplate.queryForObject(
-              recordIdDbConfig.query(), String.class, patientId);
-      if (StringUtils.hasText(id)) {
-        return Optional.of(new StringId(id));
-      } else {
-        return Optional.empty();
-      }
-    } catch (EmptyResultDataAccessException _) {
-      return Optional.empty();
-    }
-  }
-
-  private Optional<IIdType> findPatientIdByIdentifier(Identifier patientIdentifier) {
-    var result =
-        retryTemplate.execute(
-            context ->
-                fhirClient
-                    .search()
-                    .forResource(Patient.class)
-                    .where(
-                        Patient.IDENTIFIER
-                            .exactly()
-                            .systemAndIdentifier(
-                                patientIdentifier.getSystem(), patientIdentifier.getValue()))
-                    .execute());
-
-    var patients =
-        BundleUtil.toListOfResourcesOfType(fhirClient.getFhirContext(), result, Patient.class);
-
-    if (patients.isEmpty()) {
-      return Optional.empty();
-    }
-
-    if (patients.size() > 1) {
-      throw new IllegalArgumentException("More than one patient resource matches the identifier.");
-    }
-
-    return Optional.of(patients.getFirst().getIdElement());
-  }
-
-  private Identifier pseudonymizeIdentifier(Identifier patientId) {
-    var patient = new Patient();
-    patient.addIdentifier(patientId);
-    var param = new Parameters();
-    param.addParameter().setName("resource").setResource(patient);
-    var result =
-        retryTemplate.execute(
-            context ->
-                fhirPseudonymizerClient
-                    .operation()
-                    .onServer()
-                    .named("de-identify")
-                    .withParameters(param)
-                    .returnResourceType(Patient.class)
-                    .execute());
-    return result.getIdentifierFirstRep();
   }
 
   private static RetryTemplate createRetryTemplate(FhirContext fhirContext) {

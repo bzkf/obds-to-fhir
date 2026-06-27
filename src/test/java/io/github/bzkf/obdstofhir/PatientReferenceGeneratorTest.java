@@ -27,6 +27,7 @@ class PatientReferenceGeneratorTest {
             Optional.empty(),
             Optional.of(jdbcTemplate),
             Optional.of(new RecordIdDbConfig("jdbc:test", "user", "pwd", query)),
+            true,
             false,
             "");
     ReflectionTestUtils.setField(
@@ -57,6 +58,7 @@ class PatientReferenceGeneratorTest {
             Optional.empty(),
             Optional.of(jdbcTemplate),
             Optional.of(new RecordIdDbConfig("jdbc:test", "user", "pwd", query)),
+            true,
             false,
             "");
 
