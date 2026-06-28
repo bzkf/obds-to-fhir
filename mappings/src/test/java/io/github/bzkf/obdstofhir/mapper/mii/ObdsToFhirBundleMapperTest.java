@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import org.approvaltests.Approvals;
+import org.approvaltests.scrubbers.Scrubbers;
 import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -115,6 +116,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
           fhirJson,
           Approvals.NAMES
               .withParameters("")
+              .withScrubber(PROFILE_VERSION_SCRUBBER)
               .forFile()
               .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
               .forFile()
@@ -243,7 +245,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
             fhirJson,
             Approvals.NAMES
                 .withParameters("")
-                .withScrubber(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER)
+                .withScrubber(
+                    Scrubbers.scrubAll(
+                        ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER))
                 .forFile()
                 .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
                 .forFile()
@@ -325,7 +329,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
             fhirJson,
             Approvals.NAMES
                 .withParameters("")
-                .withScrubber(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER)
+                .withScrubber(
+                    Scrubbers.scrubAll(
+                        ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER))
                 .forFile()
                 .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
                 .forFile()

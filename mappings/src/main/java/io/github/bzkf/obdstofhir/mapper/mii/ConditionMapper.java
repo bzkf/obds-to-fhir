@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
@@ -106,7 +107,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setId(IdUtils.fromIdentifier(identifier));
 
     condition.setSubject(patient);
-    condition.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoDiagnosePrimaertumor());
+    condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoDiagnosePrimaertumor());
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
