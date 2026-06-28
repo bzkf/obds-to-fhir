@@ -5,15 +5,16 @@ import de.basisdatensatz.obds.v3.MengeGenetikTyp;
 import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -96,9 +97,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       observation.setId(IdUtils.fromIdentifier(identifier));
 
       // meta
-      observation
-          .getMeta()
-          .addProfile(fhirProperties.getProfiles().getMiiPrOnkoGenetischeVariante());
+      observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoGenetischeVariante());
 
       // status
       observation.setStatus(Observation.ObservationStatus.FINAL);
@@ -145,18 +144,17 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
 
       // Genetische Variante Ausprägung = interpretation
 
-      var coding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoGenetischeVarianteAuspraegung());
-      var interpretationCodeableConcept = new CodeableConcept(coding);
+      var interpretationCodeableConcept = new CodeableConcept();
       if (genetischeVariante.getAuspraegung() != null) {
-        coding.setCode(genetischeVariante.getAuspraegung().value());
+        interpretationCodeableConcept.addCoding(
+            Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.fromValue(
+                    genetischeVariante.getAuspraegung().value())
+                .coding());
       } else if (genetischeVariante.getSonstigeAuspraegung() != null) {
-        coding.setCode("S");
+        interpretationCodeableConcept.addCoding(
+            Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.S.coding());
         interpretationCodeableConcept.setText(genetischeVariante.getSonstigeAuspraegung());
       } else {
-        // this resets the concept so no incomplete codings are shown.
-        interpretationCodeableConcept = new CodeableConcept();
         LOG.warn("Neither Auspraegung nor Sonstige_Auspraegung are set.");
       }
 

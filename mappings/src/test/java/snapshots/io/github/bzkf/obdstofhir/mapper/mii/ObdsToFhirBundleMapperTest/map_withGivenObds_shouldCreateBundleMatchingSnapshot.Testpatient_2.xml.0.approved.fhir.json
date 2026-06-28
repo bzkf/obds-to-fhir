@@ -68,7 +68,8 @@
           "code": "confirmed"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-          "code": "7"
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
       "code": {
@@ -88,7 +89,8 @@
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "T"
+          "code": "T",
+          "display": "trifft nicht zu"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -308,7 +310,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
-          "code": "N"
+          "code": "N",
+          "display": "keine oder höchstens Grad II"
         } ]
       }
     },
@@ -666,7 +669,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       },
       "suspectEntity": [ {
@@ -857,7 +861,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       },
       "suspectEntity": [ {
@@ -902,7 +907,8 @@
           "code": "confirmed"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-          "code": "7"
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
       "code": {
@@ -922,7 +928,8 @@
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "T"
+          "code": "T",
+          "display": "trifft nicht zu"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -2083,7 +2090,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -2113,7 +2121,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "T"
+          "code": "T",
+          "display": "trifft nicht zu"
         } ]
       },
       "specimen": {

@@ -40,7 +40,8 @@
   "interpretation": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
-      "code": "W"
+      "code": "W",
+      "display": "Wildtyp/nicht mutiert/ negativ"
     } ]
   } ],
   "note": [ {
