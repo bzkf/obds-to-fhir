@@ -14,7 +14,7 @@ fhir:
       version: "2026"
     atc:
       system: "${fhir.systems.atcBfarm}"
-      version: "2026"
+      version: "2025"
   extensions:
     data-absent-reason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
