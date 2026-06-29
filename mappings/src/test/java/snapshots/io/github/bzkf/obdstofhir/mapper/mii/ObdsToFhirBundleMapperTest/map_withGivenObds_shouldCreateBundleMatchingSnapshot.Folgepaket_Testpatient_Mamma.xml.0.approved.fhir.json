@@ -113,7 +113,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -121,7 +122,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -146,7 +148,8 @@
           "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
+          "code": "CH",
+          "display": "Chemotherapie"
         } ]
       },
       "subject": {
@@ -166,7 +169,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-          "code": "E"
+          "code": "E",
+          "display": "reguläres Ende"
         } ]
       },
       "usedCode": [ {

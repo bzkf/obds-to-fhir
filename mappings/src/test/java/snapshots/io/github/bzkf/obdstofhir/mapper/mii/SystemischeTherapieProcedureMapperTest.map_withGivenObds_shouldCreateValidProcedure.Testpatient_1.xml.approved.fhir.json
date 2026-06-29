@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-        "code": "P"
+        "code": "P",
+        "display": "palliativ"
       } ]
     }
   }, {
@@ -17,7 +18,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-        "code": "S"
+        "code": "S",
+        "display": "Sonstiges"
       } ]
     }
   } ],
@@ -42,7 +44,8 @@
       "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
     }, {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-      "code": "IM"
+      "code": "IM",
+      "display": "Immun-/Antikörpertherapie"
     } ]
   },
   "subject": {
@@ -58,7 +61,8 @@
   "outcome": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-      "code": "V"
+      "code": "V",
+      "display": "Patient verweigert weitere Therapie"
     } ]
   },
   "usedCode": [ {

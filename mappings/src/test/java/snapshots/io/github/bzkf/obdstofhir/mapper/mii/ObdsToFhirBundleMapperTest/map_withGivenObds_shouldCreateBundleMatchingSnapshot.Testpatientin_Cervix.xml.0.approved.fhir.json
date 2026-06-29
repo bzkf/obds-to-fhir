@@ -135,7 +135,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -166,7 +167,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -187,7 +189,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -228,7 +231,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -271,7 +275,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -704,7 +709,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },

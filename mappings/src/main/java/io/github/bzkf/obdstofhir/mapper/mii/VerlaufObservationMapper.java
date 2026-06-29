@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.VerlaufTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -31,7 +32,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     var observation = new Observation();
 
     // Meta
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoVerlauf());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoVerlauf());
 
     // Identifier
     var identifier =
@@ -80,7 +81,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
               .setValue(
                   new CodeableConcept(
                       new Coding(
-                          fhirProperties.getSystems().getMiiCsOnkoVerlaufPrimaertumor(),
+                          Onkologie.CodeSystems.miiCsOnkoVerlaufPrimaertumor(),
                           tumorstatusPrimaertumor.getCode(),
                           tumorstatusPrimaertumor.getDisplay()))));
     }
@@ -102,7 +103,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
               .setValue(
                   new CodeableConcept(
                       new Coding(
-                          fhirProperties.getSystems().getMiiCsOnkoVerlaufLymphknoten(),
+                          Onkologie.CodeSystems.miiCsOnkoVerlaufLymphknoten(),
                           tumorstatusLymphknoten.getCode(),
                           tumorstatusLymphknoten.getDisplay()))));
     }
@@ -124,7 +125,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
               .setValue(
                   new CodeableConcept(
                       new Coding(
-                          fhirProperties.getSystems().getMiiCsOnkoVerlaufFernmetastasen(),
+                          Onkologie.CodeSystems.miiCsOnkoVerlaufFernmetastasen(),
                           tumorstatusFernmetastasen.getCode(),
                           tumorstatusFernmetastasen.getDisplay()))));
     }
@@ -136,7 +137,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
       observation.setValue(
           new CodeableConcept(
               new Coding(
-                  fhirProperties.getSystems().getMiiCsOnkoVerlaufGesamtbeurteilung(),
+                  Onkologie.CodeSystems.miiCsOnkoVerlaufGesamtbeurteilung(),
                   value.getCode(),
                   value.getDisplay())));
     }

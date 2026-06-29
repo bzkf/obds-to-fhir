@@ -129,7 +129,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -160,7 +161,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -181,7 +183,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -222,7 +225,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -265,7 +269,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -576,7 +581,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -584,7 +590,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "O"
+            "code": "O",
+            "display": "ohne Bezug zur operativen Therapie"
           } ]
         }
       } ],
@@ -609,7 +616,8 @@
           "display": "Applikation von Medikamenten"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "HO"
+          "code": "HO",
+          "display": "Hormontherapie"
         } ]
       },
       "subject": {
@@ -826,7 +834,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -834,7 +843,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "O"
+            "code": "O",
+            "display": "ohne Bezug zur operativen Therapie"
           } ]
         }
       } ],
@@ -890,7 +900,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "PRCN-ST4D"
+            "code": "PRCN-ST4D",
+            "display": "perkutan, stereotaktisch, atemgetriggert, ohne Chemotherapie/Sensitizer"
           } ]
         }
       }, {
@@ -942,7 +953,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "T"
+              "code": "T",
+              "display": "trifft nicht zu"
             } ]
           }
         } ],
@@ -954,7 +966,8 @@
       "usedCode": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-          "code": "NE"
+          "code": "NE",
+          "display": "Neutronen"
         } ]
       } ]
     },

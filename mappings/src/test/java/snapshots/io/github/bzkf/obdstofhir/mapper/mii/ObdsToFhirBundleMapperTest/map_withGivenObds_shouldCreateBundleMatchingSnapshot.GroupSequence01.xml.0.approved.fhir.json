@@ -299,7 +299,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },

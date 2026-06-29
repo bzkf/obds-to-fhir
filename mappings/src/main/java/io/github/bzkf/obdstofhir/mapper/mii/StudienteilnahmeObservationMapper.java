@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -32,7 +33,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     var observation = new Observation();
 
     // Meta
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStudienteilnahme());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoStudienteilnahme());
 
     // Identifier
     var identifier =
@@ -59,7 +60,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
     observation.addFocus(diagnose);
 
-    var coding = new Coding().setSystem(fhirProperties.getSystems().getMiiCsOnkoStudienteilnahme());
+    Coding coding;
 
     if (modulAllgemein.getStudienteilnahme().getDatum() != null) {
       // Effective Date
@@ -70,10 +71,13 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
       observation.setEffective(date);
 
       // always yes, if the date is set
-      coding.setCode("J").setDisplay("Ja");
+      coding = Onkologie.CodeSystems.MiiCsOnkoStudienteilnahme.J.coding();
     } else {
       // either no or unknown depending on the data
-      coding.setCode(modulAllgemein.getStudienteilnahme().getNU().value());
+      coding =
+          Onkologie.CodeSystems.MiiCsOnkoStudienteilnahme.fromValue(
+                  modulAllgemein.getStudienteilnahme().getNU().value())
+              .coding();
     }
 
     // Value

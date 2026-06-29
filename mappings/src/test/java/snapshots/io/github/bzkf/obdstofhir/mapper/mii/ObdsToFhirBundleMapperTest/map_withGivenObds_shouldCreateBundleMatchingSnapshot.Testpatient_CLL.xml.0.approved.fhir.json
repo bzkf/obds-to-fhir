@@ -130,7 +130,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -138,7 +139,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "O"
+            "code": "O",
+            "display": "ohne Bezug zur operativen Therapie"
           } ]
         }
       } ],
@@ -163,7 +165,8 @@
           "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CI"
+          "code": "CI",
+          "display": "Chemo- + Immun-/Antikörpertherapie"
         } ]
       },
       "subject": {
@@ -455,7 +458,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },
@@ -524,7 +528,8 @@
       "category": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "praeth"
+          "code": "praeth",
+          "display": "prätherapeutische Tumorkonferenz (Festlegung der Therapiestrategie)"
         } ]
       } ],
       "subject": {
@@ -556,7 +561,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "S"
+            "code": "S",
+            "display": "Sonstiges"
           } ]
         }
       }, {
@@ -564,7 +570,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "O"
+            "code": "O",
+            "display": "ohne Bezug zur operativen Therapie"
           } ]
         }
       } ],
@@ -581,7 +588,8 @@
           "display": "No anti-cancer treatment - watchful waiting (finding)"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "WW"
+          "code": "WW",
+          "display": "Watchful Waiting"
         } ]
       },
       "subject": {
@@ -601,7 +609,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-          "code": "P"
+          "code": "P",
+          "display": "Abbruch wegen Progress"
         } ]
       }
     },
@@ -643,7 +652,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },
@@ -826,7 +836,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },
@@ -1011,7 +1022,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-studienteilnahme",
-          "code": "N"
+          "code": "N",
+          "display": "Nein"
         } ]
       }
     },

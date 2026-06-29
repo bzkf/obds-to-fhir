@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-        "code": "P"
+        "code": "P",
+        "display": "palliativ"
       } ]
     }
   } ],
@@ -46,7 +47,8 @@
   "outcome": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-      "code": "RX"
+      "code": "RX",
+      "display": "Vorhandensein von Residualtumor kann nicht beurteilt werden"
     } ]
   }
 }

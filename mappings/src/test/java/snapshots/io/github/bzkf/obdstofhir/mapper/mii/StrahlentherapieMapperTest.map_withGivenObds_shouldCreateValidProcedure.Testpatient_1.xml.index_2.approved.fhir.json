@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-        "code": "IHDR"
+        "code": "IHDR",
+        "display": "intersitielle Kontakttherapie, high dose rate therapy"
       } ]
     }
   }, {
@@ -33,7 +34,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-        "code": "N"
+        "code": "N",
+        "display": "nein, ohne Boost"
       } ]
     }
   } ],
@@ -74,7 +76,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "L"
+          "code": "L",
+          "display": "links"
         } ]
       }
     } ],
@@ -86,7 +89,8 @@
   "usedCode": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-      "code": "SO"
+      "code": "SO",
+      "display": "Sonstige (inklusive Mixed Beams, exklusive Nuklide)"
     } ]
   } ]
 }

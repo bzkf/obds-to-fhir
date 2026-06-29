@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-        "code": "I"
+        "code": "I",
+        "display": "intersitielle Kontakttherapie"
       } ]
     }
   } ],
@@ -54,7 +55,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       }
     } ],

@@ -177,8 +177,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
             .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
 
         condition.addExtension(
-            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
-            morphologie);
+            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
       }
     }
 

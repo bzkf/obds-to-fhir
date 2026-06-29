@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-        "code": "PRCN-ST4D"
+        "code": "PRCN-ST4D",
+        "display": "perkutan, stereotaktisch, atemgetriggert, ohne Chemotherapie/Sensitizer"
       } ]
     }
   }, {
@@ -25,7 +26,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-        "code": "J"
+        "code": "J",
+        "display": "ja, mit Boost o. n. A."
       } ]
     }
   } ],
@@ -65,7 +67,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "T"
+          "code": "T",
+          "display": "trifft nicht zu"
         } ]
       }
     } ],
@@ -77,7 +80,8 @@
   "usedCode": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-strahlenart",
-      "code": "NE"
+      "code": "NE",
+      "display": "Neutronen"
     } ]
   } ]
 }

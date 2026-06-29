@@ -134,7 +134,8 @@
       "category": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "praeth"
+          "code": "praeth",
+          "display": "prätherapeutische Tumorkonferenz (Festlegung der Therapiestrategie)"
         } ]
       } ],
       "subject": {
@@ -153,14 +154,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "CH"
+              "code": "CH",
+              "display": "Chemotherapie"
             } ]
           },
           "status": "cancelled",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "J"
+              "code": "J",
+              "display": "ja"
             } ]
           }
         }
@@ -169,14 +172,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "ST"
+              "code": "ST",
+              "display": "Strahlentherapie"
             } ]
           },
           "status": "cancelled",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "J"
+              "code": "J",
+              "display": "ja"
             } ]
           }
         }
@@ -185,14 +190,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "OP"
+              "code": "OP",
+              "display": "Operation"
             } ]
           },
           "status": "cancelled",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "J"
+              "code": "J",
+              "display": "ja"
             } ]
           }
         }
@@ -215,7 +222,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -246,7 +254,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -267,7 +276,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -308,7 +318,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -329,7 +340,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -370,7 +382,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -413,7 +426,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -1115,7 +1129,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -1123,7 +1138,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -1148,7 +1164,8 @@
           "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
+          "code": "CH",
+          "display": "Chemotherapie"
         } ]
       },
       "subject": {
@@ -1430,7 +1447,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -1438,7 +1456,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -1494,7 +1513,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "PRCN"
+            "code": "PRCN",
+            "display": "perkutan ohne Chemotherapie/Sensitizer"
           } ]
         }
       } ],
@@ -1538,7 +1558,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "B"
+              "code": "B",
+              "display": "beidseitig"
             } ]
           }
         } ],
@@ -1612,7 +1633,8 @@
       "category": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "postop"
+          "code": "postop",
+          "display": "postoperative Tumorkonferenz (Planung der postoperativen Therapie, z. B. zur Frage adjuvante Therapie)"
         } ]
       } ],
       "subject": {
@@ -1631,14 +1653,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "CH"
+              "code": "CH",
+              "display": "Chemotherapie"
             } ]
           },
           "status": "completed",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "N"
+              "code": "N",
+              "display": "nein"
             } ]
           }
         }
@@ -1647,14 +1671,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "ST"
+              "code": "ST",
+              "display": "Strahlentherapie"
             } ]
           },
           "status": "completed",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "N"
+              "code": "N",
+              "display": "nein"
             } ]
           }
         }

@@ -3,6 +3,8 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Meldeanlass;
 import de.basisdatensatz.obds.v3.SYSTTyp.MengeSubstanz;
+import de.medizininformatikinitiative.kerndatensatz.medikation.Medikation;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
@@ -66,7 +68,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       var systMedicationStatement = new MedicationStatement();
       systMedicationStatement
           .getMeta()
-          .addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapieMedikation());
+          .addProfile(Onkologie.Profiles.miiPrOnkoSystemischeTherapieMedikation());
 
       if ((substanz.getATC() == null || !StringUtils.hasText(substanz.getATC().getCode()))
           && !StringUtils.hasText(substanz.getBezeichnung())) {
@@ -125,7 +127,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       // with the Bezeichnung as text is already set
       if (atcCode != null) {
         var medication = new Medication();
-        medication.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrMedication());
+        medication.getMeta().addProfile(Medikation.Profiles.miiPrMedikationMedication());
         var medicationIdentifier =
             new Identifier()
                 .setSystem(

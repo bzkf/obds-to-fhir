@@ -104,7 +104,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "P"
+            "code": "P",
+            "display": "palliativ"
           } ]
         }
       }, {
@@ -112,7 +113,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "N"
+            "code": "N",
+            "display": "neoadjuvant"
           } ]
         }
       } ],
@@ -159,7 +161,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-          "code": "E"
+          "code": "E",
+          "display": "reguläres Ende"
         } ]
       }
     },
@@ -180,7 +183,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "K"
+            "code": "K",
+            "display": "endokavitäre Kontakttherapie"
           } ]
         }
       } ],
@@ -229,7 +233,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "L"
+              "code": "L",
+              "display": "links"
             } ]
           }
         } ],
@@ -256,7 +261,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "P"
+            "code": "P",
+            "display": "perkutan (Teletherapie)"
           } ]
         }
       } ],
@@ -306,7 +312,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
+              "code": "R",
+              "display": "rechts"
             } ]
           }
         } ],
@@ -333,7 +340,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "I"
+            "code": "I",
+            "display": "intersitielle Kontakttherapie"
           } ]
         }
       } ],
@@ -382,7 +390,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
+              "code": "R",
+              "display": "rechts"
             } ]
           }
         } ],
@@ -409,7 +418,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "M"
+            "code": "M",
+            "display": "sonstige metabolische Radionuklidtherapie"
           } ]
         }
       } ],
@@ -458,7 +468,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
+              "code": "R",
+              "display": "rechts"
             } ]
           }
         } ],
