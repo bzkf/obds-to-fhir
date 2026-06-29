@@ -235,7 +235,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2026",
+          "version": "2025",
           "code": "L01AA01",
           "userSelected": false
         } ],
@@ -314,7 +314,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2026",
+          "version": "2025",
           "code": "L01DB03",
           "userSelected": false
         } ],

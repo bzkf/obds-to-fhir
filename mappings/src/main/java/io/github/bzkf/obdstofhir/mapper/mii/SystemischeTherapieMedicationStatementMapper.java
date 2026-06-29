@@ -81,13 +81,14 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       var substanzId = "";
       Coding atcCode = null;
 
-      if (null != substanz.getATC() && StringUtils.hasText(substanz.getATC().getCode())) {
+      if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
         substanzId = substanz.getATC().getCode();
         atcCode =
             fhirProperties
                 .getCodings()
                 .atc()
                 .setCode(substanz.getATC().getCode())
+                .setVersion(substanz.getATC().getVersion())
                 .setUserSelected(true);
       } else {
         // previously, we overwrote substanzId with the ATC code if it was present in
