@@ -341,7 +341,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2026",
+          "version": "2025",
           "code": "L01CB01",
           "userSelected": false
         } ],
@@ -419,7 +419,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2026",
+          "version": "2025",
           "code": "L01XA02",
           "userSelected": false
         } ],
@@ -706,7 +706,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2026",
+          "version": "2025",
           "code": "L01XA01",
           "userSelected": false
         } ],

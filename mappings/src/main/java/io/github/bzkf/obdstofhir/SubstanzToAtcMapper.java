@@ -50,7 +50,7 @@ public class SubstanzToAtcMapper {
       var substanz = row.get("Substanzbezeichnung").trim();
       var code = row.get("ATC-Code").trim();
 
-      if (!"fehlt".equals(code)) {
+      if (!code.isEmpty() && !"fehlt".equals(code)) {
         // this will automatically overwrite duplicates with the latest entry in the
         // CSV, which should be the most recent one.
         substanzToCode.put(substanz, code);

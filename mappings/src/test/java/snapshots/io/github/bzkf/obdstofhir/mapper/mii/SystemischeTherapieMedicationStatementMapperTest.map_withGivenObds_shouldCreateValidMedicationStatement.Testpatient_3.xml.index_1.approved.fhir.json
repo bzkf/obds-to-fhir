@@ -11,7 +11,7 @@
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "version": "2026",
+      "version": "2025",
       "code": "L01CD01",
       "userSelected": false
     } ],
