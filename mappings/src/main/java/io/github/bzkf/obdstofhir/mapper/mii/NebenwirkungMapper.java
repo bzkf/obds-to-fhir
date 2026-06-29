@@ -129,9 +129,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
 
   private AdverseEvent createAdverseEventBase(Reference patient, Reference suspectedEntity) {
     var adverseEvent = new AdverseEvent();
-    adverseEvent
-        .getMeta()
-        .addProfile(Onkologie.Profiles.miiPrOnkoNebenwirkungAdverseEvent());
+    adverseEvent.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoNebenwirkungAdverseEvent());
     adverseEvent.setActuality(AdverseEvent.AdverseEventActuality.ACTUAL);
     adverseEvent.setSubject(patient);
     adverseEvent.addSuspectEntity(
