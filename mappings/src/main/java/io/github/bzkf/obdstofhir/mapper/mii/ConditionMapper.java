@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
 import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -106,7 +107,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setId(IdUtils.fromIdentifier(identifier));
 
     condition.setSubject(patient);
-    condition.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoDiagnosePrimaertumor());
+    condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoDiagnosePrimaertumor());
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
@@ -163,8 +164,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
         condition.addExtension(
-            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
-            morphologie);
+            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
       }
     } else {
       if (tumorzuordnung.getMorphologieICDO() != null
@@ -177,8 +177,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
             .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
 
         condition.addExtension(
-            fhirProperties.getExtensions().getMiiExOnkoHistologyMorphologyBehaviorIcdo3(),
-            morphologie);
+            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
       }
     }
 
@@ -206,24 +205,23 @@ public class ConditionMapper extends ObdsToFhirMapper {
       if (diagnoseMeldung.getDiagnosesicherung() != null) {
         Coding verStatus =
             new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
-        Coding diagnosesicherung =
-            new Coding(
-                fhirProperties.getSystems().getMiiCsOnkoPrimaertumorDiagnosesicherung(),
-                meldung.getDiagnose().getDiagnosesicherung().value(),
-                "");
+        var diagnosesicherung =
+            Onkologie.CodeSystems.MiiCsOnkoPrimaertumorDiagnosesicherung.fromValue(
+                    meldung.getDiagnose().getDiagnosesicherung().value())
+                .coding();
 
-        CodeableConcept verificationStatus = new CodeableConcept();
-        verificationStatus.addCoding(verStatus).addCoding(diagnosesicherung);
+        var verificationStatus =
+            new CodeableConcept().addCoding(verStatus).addCoding(diagnosesicherung);
         condition.setVerificationStatus(verificationStatus);
       }
     }
 
     if (tumorzuordnung.getSeitenlokalisation() != null) {
-      CodeableConcept seitenlokalisation =
+      var seitenlokalisation =
           new CodeableConcept(
-              new Coding()
-                  .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
-                  .setCode(tumorzuordnung.getSeitenlokalisation().value()));
+              Onkologie.CodeSystems.MiiCsOnkoSeitenlokalisation.fromValue(
+                      tumorzuordnung.getSeitenlokalisation().value())
+                  .coding());
 
       var snomedBodySite =
           seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());

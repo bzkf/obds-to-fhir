@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.MengeFMTyp.Fernmetastase;
 import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -63,7 +64,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       observation.setId(IdUtils.fromIdentifier(identifier));
 
       // Meta-Daten
-      observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoFernmetastasen());
+      observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoFernmetastasen());
       observation.setStatus(Observation.ObservationStatus.FINAL);
 
       // Code
@@ -97,10 +98,9 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       // Lokalisation
       var lokalisation = new CodeableConcept();
       if (StringUtils.hasText(fernmetastase.getLokalisation())) {
-        lokalisation
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoFernmetastasen())
-            .setCode(fernmetastase.getLokalisation());
+        lokalisation.addCoding(
+            Onkologie.CodeSystems.MiiCsOnkoFernmetastasen.fromValue(fernmetastase.getLokalisation())
+                .coding());
         observation.setValue(lokalisation);
       } else {
         LOG.warn("Fernmetastase Lokalisation is unset. Setting data absent extension.");

@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
@@ -35,9 +36,7 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
 
     for (var klassifikation : mengeWeitereKlassifikation.getWeitereKlassifikation()) {
       var observation = new Observation();
-      observation
-          .getMeta()
-          .addProfile(fhirProperties.getProfiles().getMiiPrOnkoWeitereKlassifikationen());
+      observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoWeitereKlassifikationen());
 
       // Identifiers
       var identifierBuilder = new StringBuilder();

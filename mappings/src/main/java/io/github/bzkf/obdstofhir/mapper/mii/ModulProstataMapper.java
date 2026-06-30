@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -109,7 +110,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getPSA());
     var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstatePsa());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstatePsa());
 
     // for creating the identifier, we can use the meldungId plus a fixed suffix
     // as a single Meldung can only have one of the elements that may contain the
@@ -151,9 +152,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlStanzen());
     var observation = createBaseObservation(patient, condition);
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateAnzahlStanzen());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen());
 
     var identifier =
         new Identifier()
@@ -190,9 +189,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlPosStanzen());
     var observation = createBaseObservation(patient, condition);
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateAnzahlPositiveStanzen());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen());
 
     var identifier =
         new Identifier()
@@ -229,9 +226,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getCaBefallStanze());
     var observation = createBaseObservation(patient, condition);
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateCaBefallStanze());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze());
 
     var identifier =
         new Identifier()
@@ -287,9 +282,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @Nullable Reference op) {
     Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
     var observation = createBaseObservation(patient, condition);
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateClavienDindo());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateClavienDindo());
 
     var identifier =
         new Identifier()
@@ -309,12 +302,12 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                 .setCode("789279006")
                 .setDisplay("Clavien-Dindo classification grade (observable entity)")));
 
-    var value = new CodeableConcept();
-    value
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoProstataPostsurgicalComplications())
-        .setCode(modulProstata.getKomplPostOPClavienDindo().toString());
+    var coding =
+        Onkologie.CodeSystems.MiiCsOnkoProstataPostsurgicalComplications.fromValue(
+                modulProstata.getKomplPostOPClavienDindo().toString())
+            .coding();
 
+    var value = new CodeableConcept(coding);
     observation.setValue(value);
 
     if (op != null) {

@@ -78,7 +78,8 @@
       "bodySite": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "R"
+          "code": "R",
+          "display": "rechts"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -119,7 +120,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -127,7 +129,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -190,7 +193,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "PRCN"
+            "code": "PRCN",
+            "display": "perkutan ohne Chemotherapie/Sensitizer"
           } ]
         }
       } ],
@@ -241,7 +245,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "T"
+              "code": "T",
+              "display": "trifft nicht zu"
             } ]
           }
         } ],
@@ -291,7 +296,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       },
       "suspectEntity": [ {
@@ -317,7 +323,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -325,7 +332,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -374,7 +382,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-          "code": "E"
+          "code": "E",
+          "display": "reguläres Ende"
         } ]
       }
     },
@@ -395,7 +404,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "PRCN"
+            "code": "PRCN",
+            "display": "perkutan ohne Chemotherapie/Sensitizer"
           } ]
         }
       }, {
@@ -419,7 +429,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-            "code": "SIB"
+            "code": "SIB",
+            "display": "simultan integrierter Boost"
           } ]
         }
       } ],
@@ -471,7 +482,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
+              "code": "R",
+              "display": "rechts"
             } ]
           }
         } ],
@@ -522,7 +534,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "3"
+          "code": "3",
+          "display": "schwerwiegend"
         } ]
       },
       "suspectEntity": [ {

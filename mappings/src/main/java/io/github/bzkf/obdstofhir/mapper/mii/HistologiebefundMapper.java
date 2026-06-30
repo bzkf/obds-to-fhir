@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.PathologieTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -60,7 +61,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
       diagnosticReport.addBasedOn(tumorkonferenz);
     }
     // Meta
-    diagnosticReport.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoBefund());
+    diagnosticReport.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoBefund());
 
     // Status
     diagnosticReport.setStatus(DiagnosticReport.DiagnosticReportStatus.FINAL);

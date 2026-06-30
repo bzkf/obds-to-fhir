@@ -1,5 +1,6 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -25,7 +26,7 @@ public class ErstdiagnoseEvidenzListMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull List<Reference> evidenceReferences) {
     var list = new ListResource();
-    list.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoListeEvidenzErstdiagnose());
+    list.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoListeEvidenzErstdiagnose());
 
     var identifier =
         new Identifier()

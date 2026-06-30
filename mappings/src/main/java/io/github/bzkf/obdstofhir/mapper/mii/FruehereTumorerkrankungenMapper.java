@@ -4,6 +4,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import com.google.common.hash.Hashing;
 import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung;
 import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.FruehereTumorerkrankung;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -72,9 +73,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
     condition.setId(IdUtils.fromIdentifier(identifier));
 
     condition.setSubject(patient);
-    condition
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoFruehereTumorerkrankung());
+    condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoFruehereTumorerkrankung());
 
     condition.addCategory(
         new CodeableConcept(

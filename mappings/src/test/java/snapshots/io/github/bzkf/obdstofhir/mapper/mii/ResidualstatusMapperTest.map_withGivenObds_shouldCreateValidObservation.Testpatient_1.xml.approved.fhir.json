@@ -27,7 +27,8 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-      "code": "R2"
+      "code": "R2",
+      "display": "Makroskopischer Residualtumor"
     } ]
   }
 }

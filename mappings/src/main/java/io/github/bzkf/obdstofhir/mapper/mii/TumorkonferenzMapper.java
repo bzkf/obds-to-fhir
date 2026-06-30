@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.JNU;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -28,7 +29,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
 
     CarePlan carePlan = new CarePlan();
     // Meta
-    carePlan.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTumorkonferenz());
+    carePlan.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoTumorkonferenz());
     // Identifier + Id
     final Identifier identifier =
         new Identifier()
@@ -47,9 +48,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     // category
     CodeableConcept codeableConcept =
         new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieplanungTyp())
-                .setCode(tk.getTyp()));
+            Onkologie.CodeSystems.MiiCsOnkoTherapieplanungTyp.fromValue(tk.getTyp()).coding());
     carePlan.addCategory(codeableConcept);
     // subject
     carePlan.setSubject(patient);
@@ -66,10 +65,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
       for (String typ :
           tk.getTherapieempfehlung().getMengeTypTherapieempfehlung().getTypTherapieempfehlung()) {
         CodeableConcept therapieEmpfehlungen =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieTyp())
-                    .setCode(typ));
+            new CodeableConcept(Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValue(typ).coding());
 
         CarePlan.CarePlanActivityDetailComponent cpadc =
             new CarePlan.CarePlanActivityDetailComponent();
@@ -77,9 +73,9 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
         // detail.Status
         CodeableConcept statusReason =
             new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieabweichung())
-                    .setCode(tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value()));
+                Onkologie.CodeSystems.MiiCsOnkoTherapieabweichung.fromValue(
+                        tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())
+                    .coding());
         switch (tk.getTherapieempfehlung().getAbweichungPatientenwunsch()) {
           case JNU.J -> cpadc.setStatus(CarePlan.CarePlanActivityStatus.CANCELLED);
           case JNU.N -> {

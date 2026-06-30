@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.AllgemeinICDTyp;
 import de.basisdatensatz.obds.v3.TodTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -34,7 +35,7 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
 
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTod());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoTod());
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     // Code | 184305005 | Cause of death (observable entity)
@@ -57,11 +58,11 @@ public class TodMapper extends ObdsToFhirMapper {
 
     // Interpretation | Tod Tumorbedingt
     if (tod.getTodTumorbedingt() != null) {
-      var interpretation = new CodeableConcept();
-      interpretation
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTodInterpretation())
-          .setCode(tod.getTodTumorbedingt().value());
+      var interpretation =
+          new CodeableConcept()
+              .addCoding(
+                  Onkologie.CodeSystems.MiiCsOnkoTod.fromValue(tod.getTodTumorbedingt().value())
+                      .coding());
       observation.setInterpretation(Arrays.asList(interpretation));
     }
 

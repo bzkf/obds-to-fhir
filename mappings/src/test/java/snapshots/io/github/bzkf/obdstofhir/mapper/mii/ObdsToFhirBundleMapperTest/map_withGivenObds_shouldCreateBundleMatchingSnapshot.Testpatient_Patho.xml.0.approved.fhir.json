@@ -78,7 +78,8 @@
       "bodySite": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "R"
+          "code": "R",
+          "display": "rechts"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -193,7 +194,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -223,7 +225,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "3"
+          "code": "3",
+          "display": "schlecht differenziert"
         } ]
       },
       "specimen": {
@@ -250,7 +253,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -305,7 +309,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -360,7 +365,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -415,7 +421,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -489,7 +496,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen",
-          "code": "PUL"
+          "code": "PUL",
+          "display": "Lunge"
         } ]
       }
     },
@@ -545,7 +553,8 @@
       "interpretation": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
-          "code": "M"
+          "code": "M",
+          "display": "Mutation/positiv"
         } ]
       } ],
       "note": [ {
@@ -604,7 +613,8 @@
       "interpretation": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
-          "code": "S"
+          "code": "S",
+          "display": "Sonstiges"
         } ],
         "text": "Translation"
       } ],
@@ -1235,7 +1245,8 @@
       "bodySite": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "T"
+          "code": "T",
+          "display": "trifft nicht zu"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -1304,7 +1315,8 @@
       "interpretation": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
-          "code": "W"
+          "code": "W",
+          "display": "Wildtyp/nicht mutiert/ negativ"
         } ]
       } ],
       "note": [ {
@@ -1363,7 +1375,8 @@
       "interpretation": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-genetische-variante-auspraegung",
-          "code": "S"
+          "code": "S",
+          "display": "Sonstiges"
         } ],
         "text": "foo"
       } ],
@@ -1450,7 +1463,8 @@
       "bodySite": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "L"
+          "code": "L",
+          "display": "links"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -1565,7 +1579,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -1595,7 +1610,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       },
       "specimen": {

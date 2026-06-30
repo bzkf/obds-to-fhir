@@ -22,7 +22,8 @@
   "seriousness": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-      "code": "5"
+      "code": "5",
+      "display": "tödlich"
     } ]
   },
   "suspectEntity": [ {

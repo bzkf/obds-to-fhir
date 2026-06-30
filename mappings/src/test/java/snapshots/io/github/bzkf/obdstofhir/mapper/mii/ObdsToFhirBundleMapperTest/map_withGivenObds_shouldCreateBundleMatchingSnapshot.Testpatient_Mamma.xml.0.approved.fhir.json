@@ -75,7 +75,8 @@
           "code": "confirmed"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-          "code": "7"
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
       "code": {
@@ -95,7 +96,8 @@
       }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "R"
+          "code": "R",
+          "display": "rechts"
         }, {
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
@@ -156,7 +158,8 @@
       "interpretation": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
-          "code": "J"
+          "code": "J",
+          "display": "Ja, die Person ist an einer Tumorerkrankung oder Folge einer Tumorerkrankung (einschließlich Behandlungskomplikation) verstorben."
         } ]
       } ]
     },
@@ -177,7 +180,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -208,7 +212,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -229,7 +234,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -270,7 +276,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -291,7 +298,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -332,7 +340,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -375,7 +384,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R0"
+          "code": "R0",
+          "display": "Kein Residualtumor"
         } ]
       }
     },
@@ -477,7 +487,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -507,7 +518,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "2"
+          "code": "2",
+          "display": "mäßig differenziert"
         } ]
       },
       "specimen": {
@@ -534,7 +546,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -589,7 +602,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -1076,7 +1090,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -1107,7 +1122,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R1"
+          "code": "R1",
+          "display": "Mikroskopischer Residualtumor"
         } ]
       }
     },
@@ -1128,7 +1144,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -1169,7 +1186,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R1"
+          "code": "R1",
+          "display": "Mikroskopischer Residualtumor"
         } ]
       }
     },
@@ -1190,7 +1208,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       } ],
@@ -1231,7 +1250,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-residualstatus",
-          "code": "R1"
+          "code": "R1",
+          "display": "Mikroskopischer Residualtumor"
         } ]
       }
     },
@@ -1333,7 +1353,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -1363,7 +1384,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "2"
+          "code": "2",
+          "display": "mäßig differenziert"
         } ]
       },
       "specimen": {
@@ -1390,7 +1412,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -1445,7 +1468,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -1890,7 +1914,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -1898,7 +1923,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -1923,7 +1949,8 @@
           "display": "Zytostatische Chemotherapie, Immuntherapie und antiretrovirale Therapie"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
+          "code": "CH",
+          "display": "Chemotherapie"
         } ]
       },
       "subject": {
@@ -2054,7 +2081,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "2"
+          "code": "2",
+          "display": "moderat"
         } ]
       },
       "suspectEntity": [ {
@@ -2080,7 +2108,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -2088,7 +2117,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -2113,7 +2143,8 @@
           "display": "Applikation von Medikamenten"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "HO"
+          "code": "HO",
+          "display": "Hormontherapie"
         } ]
       },
       "subject": {
@@ -2166,7 +2197,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       },
       "suspectEntity": [ {
@@ -2196,7 +2228,8 @@
       "category": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "praeth"
+          "code": "praeth",
+          "display": "prätherapeutische Tumorkonferenz (Festlegung der Therapiestrategie)"
         } ]
       } ],
       "subject": {
@@ -2215,14 +2248,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "CH"
+              "code": "CH",
+              "display": "Chemotherapie"
             } ]
           },
           "status": "cancelled",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "J"
+              "code": "J",
+              "display": "ja"
             } ]
           }
         }
@@ -2360,7 +2395,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen",
-          "code": "HEP"
+          "code": "HEP",
+          "display": "Leber"
         } ]
       }
     },
@@ -2403,7 +2439,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-fernmetastasen",
-          "code": "PUL"
+          "code": "PUL",
+          "display": "Lunge"
         } ]
       }
     },
@@ -2559,7 +2596,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -2589,7 +2627,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "3"
+          "code": "3",
+          "display": "schlecht differenziert"
         } ]
       },
       "specimen": {
@@ -3050,7 +3089,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
-            "code": "K"
+            "code": "K",
+            "display": "kurativ"
           } ]
         }
       }, {
@@ -3058,7 +3098,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-stellungzurop",
-            "code": "A"
+            "code": "A",
+            "display": "adjuvant"
           } ]
         }
       } ],
@@ -3100,7 +3141,8 @@
       "outcome": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-ende-grund",
-          "code": "E"
+          "code": "E",
+          "display": "reguläres Ende"
         } ]
       }
     },
@@ -3121,7 +3163,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-            "code": "PRCN"
+            "code": "PRCN",
+            "display": "perkutan ohne Chemotherapie/Sensitizer"
           } ]
         }
       }, {
@@ -3145,7 +3188,8 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-            "code": "SIB"
+            "code": "SIB",
+            "display": "simultan integrierter Boost"
           } ]
         }
       } ],
@@ -3190,7 +3234,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-              "code": "R"
+              "code": "R",
+              "display": "rechts"
             } ]
           }
         } ],
@@ -3234,7 +3279,8 @@
       "seriousness": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-grad",
-          "code": "3"
+          "code": "3",
+          "display": "schwerwiegend"
         } ]
       },
       "suspectEntity": [ {
@@ -3264,7 +3310,8 @@
       "category": [ {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-          "code": "postop"
+          "code": "postop",
+          "display": "postoperative Tumorkonferenz (Planung der postoperativen Therapie, z. B. zur Frage adjuvante Therapie)"
         } ]
       } ],
       "subject": {
@@ -3283,14 +3330,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "CH"
+              "code": "CH",
+              "display": "Chemotherapie"
             } ]
           },
           "status": "completed",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "N"
+              "code": "N",
+              "display": "nein"
             } ]
           }
         }
@@ -3299,14 +3348,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "ST"
+              "code": "ST",
+              "display": "Strahlentherapie"
             } ]
           },
           "status": "completed",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "N"
+              "code": "N",
+              "display": "nein"
             } ]
           }
         }
@@ -3315,14 +3366,16 @@
           "code": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-              "code": "HO"
+              "code": "HO",
+              "display": "Hormontherapie"
             } ]
           },
           "status": "completed",
           "statusReason": {
             "coding": [ {
               "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-              "code": "N"
+              "code": "N",
+              "display": "nein"
             } ]
           }
         }
@@ -3432,7 +3485,8 @@
       "category": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-          "code": "laboratory"
+          "code": "laboratory",
+          "display": "Laboratory"
         } ]
       } ],
       "code": {
@@ -3462,7 +3516,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
-          "code": "2"
+          "code": "2",
+          "display": "mäßig differenziert"
         } ]
       },
       "specimen": {

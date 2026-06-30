@@ -9,7 +9,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-applikationsart",
-        "code": "PRCN"
+        "code": "PRCN",
+        "display": "perkutan ohne Chemotherapie/Sensitizer"
       } ]
     }
   }, {
@@ -33,7 +34,8 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-boost",
-        "code": "SIB"
+        "code": "SIB",
+        "display": "simultan integrierter Boost"
       } ]
     }
   } ],
@@ -74,7 +76,8 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-          "code": "R"
+          "code": "R",
+          "display": "rechts"
         } ]
       }
     } ],

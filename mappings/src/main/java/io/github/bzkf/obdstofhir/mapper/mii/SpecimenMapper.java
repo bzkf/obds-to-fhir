@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -42,7 +43,7 @@ public class SpecimenMapper extends ObdsToFhirMapper {
     // Id
     specimen.setId(IdUtils.fromIdentifier(identifier));
     // Meta
-    specimen.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSpecimen());
+    specimen.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoSpecimen());
 
     // accessionIdentifier=Histologie-Einsendenummer
     var accessionIdentifier = new Identifier();

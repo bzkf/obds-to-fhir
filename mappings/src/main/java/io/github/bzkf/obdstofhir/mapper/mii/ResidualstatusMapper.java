@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OPTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -35,7 +36,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     verifyReference(patient, ResourceType.Patient);
 
     var observation = new Observation();
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoResidualstatus());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoResidualstatus());
 
     // Identifiers
     var identifier =
@@ -56,11 +57,12 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     convertObdsDatumToDateTimeType(op.getDatum()).ifPresent(observation::setEffective);
 
     // Gesamtbeurteilung des Residualstatus
-    var value = new CodeableConcept();
-    value
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoResidualstatus())
-        .setCode(rs.getGesamtbeurteilungResidualstatus().value());
+    var value =
+        new CodeableConcept()
+            .addCoding(
+                Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                        rs.getGesamtbeurteilungResidualstatus().value())
+                    .coding());
     observation.setValue(value);
 
     // See: https://loinc.org/84892-9/

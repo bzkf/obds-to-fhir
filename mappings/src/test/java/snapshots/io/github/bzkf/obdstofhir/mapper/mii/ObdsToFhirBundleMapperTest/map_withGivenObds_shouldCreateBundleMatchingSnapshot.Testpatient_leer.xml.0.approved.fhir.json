@@ -72,7 +72,8 @@
           "code": "confirmed"
         }, {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-          "code": "1"
+          "code": "1",
+          "display": "klinisch"
         } ]
       },
       "code": {

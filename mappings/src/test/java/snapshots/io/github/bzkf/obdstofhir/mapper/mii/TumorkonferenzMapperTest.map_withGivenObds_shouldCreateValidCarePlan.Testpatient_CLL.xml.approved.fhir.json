@@ -13,7 +13,8 @@
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-      "code": "praeth"
+      "code": "praeth",
+      "display": "prätherapeutische Tumorkonferenz (Festlegung der Therapiestrategie)"
     } ]
   } ],
   "subject": {

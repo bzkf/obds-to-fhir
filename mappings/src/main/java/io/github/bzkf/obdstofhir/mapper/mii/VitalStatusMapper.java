@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.TodTyp;
+import de.medizininformatikinitiative.kerndatensatz.base.Base;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -28,7 +29,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
         patient.getIdentifier().getValue(), "Patient identifier in reference must not be null");
 
     var observation = new Observation();
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiVitalStatus());
+    observation.getMeta().addProfile(Base.Profiles.miiPrPersonVitalstatus());
     observation.setSubject(patient);
 
     // Identifer
@@ -72,11 +73,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
       var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
       todesdatum.ifPresent(observation::setEffective);
 
-      valueCodeableConcept.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsVitalStatus())
-              .setCode("T")
-              .setDisplay("Patient verstorben"));
+      valueCodeableConcept.addCoding(Base.CodeSystems.MiiCsPersonVitalstatus.T.coding());
     } else {
 
       identifier
@@ -90,11 +87,7 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
                   effectiveTime, "effectiveTime must not be null when tod is null"));
       date.ifPresent(observation::setEffective);
 
-      valueCodeableConcept.addCoding(
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsVitalStatus())
-              .setCode("L")
-              .setDisplay("Patient lebt"));
+      valueCodeableConcept.addCoding(Base.CodeSystems.MiiCsPersonVitalstatus.L.coding());
     }
 
     observation.setValue(valueCodeableConcept);

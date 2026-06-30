@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -76,7 +77,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       var observation = new Observation();
 
       // Meta
-      observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoHistologieIcdo3());
+      observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoHistologieIcdo3());
 
       var identifierValue = histologie.getHistologieID();
       if (!StringUtils.hasText(identifierValue)) {
