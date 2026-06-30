@@ -1,4 +1,4 @@
-pathling==7.2.0
+pathling==9.7.1
 loguru==0.7.3
 great-expectations==1.17.2
 numpy==2.4.6
