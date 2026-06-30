@@ -4,6 +4,9 @@ import ca.uhn.fhir.context.FhirContext;
 import com.github.difflib.text.DiffRow.Tag;
 import com.github.difflib.text.DiffRowGenerator;
 import de.basisdatensatz.obds.v3.DiagnoseTyp;
+import de.basisdatensatz.obds.v3.HistologieTyp;
+import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
+import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.OPTyp;
@@ -455,6 +458,95 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return meldeanlass.equals(ende) ? 2 : 0; // "ende" at the end, everything else at the front
   }
 
+  /**
+   * Maps the Histologie/Specimen/Grading/Lymphknotenuntersuchung resources shared by Diagnose,
+   * Verlauf, OP and Pathologie. {@code includeVerlaufshistologie} is {@code false} only for
+   * Diagnose, which doesn't produce a VerlaufshistologieObservation.
+   */
+  private HistologieResources mapHistologieSection(
+      HistologieTyp histologie,
+      String meldungId,
+      Reference patientReference,
+      Reference primaryConditionReference,
+      boolean includeVerlaufshistologie) {
+    var resources = new ArrayList<Resource>();
+
+    var specimen = specimenMapper.map(histologie, patientReference, meldungId);
+    resources.add(specimen);
+
+    var specimenReference = ReferenceUtils.createReferenceTo(specimen);
+
+    if (includeVerlaufshistologie) {
+      var verlaufsHistologie =
+          verlaufshistologieObservationMapper.map(
+              histologie,
+              meldungId,
+              patientReference,
+              specimenReference,
+              primaryConditionReference);
+      resources.addAll(verlaufsHistologie);
+    }
+
+    if (histologie.getGrading() != null) {
+      var grading =
+          gradingObservationMapper.map(
+              histologie,
+              meldungId,
+              patientReference,
+              primaryConditionReference,
+              specimenReference);
+      resources.add(grading);
+    }
+
+    var lymphknotenuntersuchungen =
+        lymphknotenuntersuchungMapper.map(
+            histologie, patientReference, primaryConditionReference, specimenReference, meldungId);
+    resources.addAll(lymphknotenuntersuchungen);
+
+    return new HistologieResources(resources, specimenReference);
+  }
+
+  private record HistologieResources(List<Resource> resources, Reference specimenReference) {}
+
+  /** Maps the Studienteilnahme observation shared by Diagnose, Verlauf, SYST and OP, if present. */
+  private void mapStudienteilnahme(
+      ModulAllgemeinTyp allgemein,
+      Reference patientReference,
+      Reference primaryConditionReference,
+      String meldungId,
+      List<Resource> mappedResources) {
+    if (allgemein == null || allgemein.getStudienteilnahme() == null) {
+      return;
+    }
+
+    var studienteilnahmeObservation =
+        studienteilnahmeObservationMapper.map(
+            allgemein, patientReference, primaryConditionReference, meldungId);
+    mappedResources.add(studienteilnahmeObservation);
+  }
+
+  /** Maps the WeitereKlassifikation resources shared by Diagnose, Verlauf and Pathologie. */
+  private void mapWeitereKlassifikationen(
+      MengeWeitereKlassifikationTyp menge,
+      String meldungId,
+      Reference patientReference,
+      Reference primaryConditionReference,
+      List<Resource> mappedResources) {
+    if (menge == null || menge.getWeitereKlassifikation() == null) {
+      return;
+    }
+
+    var weitereKlassifikationen =
+        weitereKlassifikationMapper.map(
+            menge, meldungId, patientReference, primaryConditionReference);
+    mappedResources.addAll(weitereKlassifikationen);
+  }
+
+  /** The Histologie_ID to pass to the TNM mapper, or {@code null} if no Histologie is present. */
+  private static String histologieIdOf(HistologieTyp histologie) {
+    return histologie != null ? histologie.getHistologieID() : null;
+  }
+
   private List<Resource> mapDiagnose(
       DiagnoseTyp diagnose,
       Meldung meldung,
@@ -486,42 +578,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getHistologie() != null) {
-      var histologie = diagnose.getHistologie();
-      var specimen = specimenMapper.map(histologie, patientReference, meldung.getMeldungID());
-      mappedResources.add(specimen);
-
-      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
-
-      if (histologie.getGrading() != null) {
-        var grading =
-            gradingObservationMapper.map(
-                histologie,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference,
-                specimenReference);
-        mappedResources.add(grading);
-      }
-
-      var lymphknotenuntersuchungen =
-          lymphknotenuntersuchungMapper.map(
-              histologie,
+      var histologieResources =
+          mapHistologieSection(
+              diagnose.getHistologie(),
+              meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              specimenReference,
-              meldung.getMeldungID());
-      mappedResources.addAll(lymphknotenuntersuchungen);
+              false);
+      mappedResources.addAll(histologieResources.resources());
     }
 
-    if (diagnose.getModulAllgemein() != null) {
-      var allgemein = diagnose.getModulAllgemein();
-      if (allgemein.getStudienteilnahme() != null) {
-        var studienteilnahmeObservation =
-            studienteilnahmeObservationMapper.map(
-                allgemein, patientReference, primaryConditionReference, meldung.getMeldungID());
-        mappedResources.add(studienteilnahmeObservation);
-      }
-    }
+    mapStudienteilnahme(
+        diagnose.getModulAllgemein(),
+        patientReference,
+        primaryConditionReference,
+        meldung.getMeldungID(),
+        mappedResources);
 
     if (diagnose.getMengeGenetik() != null
         && diagnose.getMengeGenetik().getGenetischeVariante() != null) {
@@ -532,10 +604,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getCTNM() != null) {
-      String histologieId = null;
-      if (diagnose.getHistologie() != null) {
-        histologieId = diagnose.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(diagnose.getHistologie());
 
       var clinicalTNMObservations =
           tnmMapper.map(
@@ -549,10 +618,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getPTNM() != null) {
-      String histologieId = null;
-      if (diagnose.getHistologie() != null) {
-        histologieId = diagnose.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(diagnose.getHistologie());
 
       var pathologicTNMObservations =
           tnmMapper.map(
@@ -581,18 +647,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
-    if (diagnose.getMengeWeitereKlassifikation() != null) {
-      var weitereKlassifikation = diagnose.getMengeWeitereKlassifikation();
-      if (weitereKlassifikation.getWeitereKlassifikation() != null) {
-        var weitereKlassifikationen =
-            weitereKlassifikationMapper.map(
-                weitereKlassifikation,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference);
-        mappedResources.addAll(weitereKlassifikationen);
-      }
-    }
+    mapWeitereKlassifikationen(
+        diagnose.getMengeWeitereKlassifikation(),
+        meldung.getMeldungID(),
+        patientReference,
+        primaryConditionReference,
+        mappedResources);
 
     var evidenzReferenceList =
         mappedResources.stream()
@@ -675,53 +735,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (verlauf.getHistologie() != null) {
-      var histologie = verlauf.getHistologie();
-      var specimen =
-          specimenMapper.map(verlauf.getHistologie(), patientReference, meldung.getMeldungID());
-      mappedResources.add(specimen);
-
-      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
-
-      var verlaufsHistologie =
-          verlaufshistologieObservationMapper.map(
-              histologie,
+      var histologieResources =
+          mapHistologieSection(
+              verlauf.getHistologie(),
               meldung.getMeldungID(),
               patientReference,
-              specimenReference,
-              primaryConditionReference);
-
-      mappedResources.addAll(verlaufsHistologie);
-
-      if (histologie.getGrading() != null) {
-        var grading =
-            gradingObservationMapper.map(
-                histologie,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference,
-                specimenReference);
-        mappedResources.add(grading);
-      }
-
-      var lymphknotenuntersuchungen =
-          lymphknotenuntersuchungMapper.map(
-              histologie,
-              patientReference,
               primaryConditionReference,
-              specimenReference,
-              meldung.getMeldungID());
-      mappedResources.addAll(lymphknotenuntersuchungen);
+              true);
+      mappedResources.addAll(histologieResources.resources());
     }
 
-    if (verlauf.getModulAllgemein() != null) {
-      var allgemein = verlauf.getModulAllgemein();
-      if (allgemein.getStudienteilnahme() != null) {
-        var studienteilnahmeObservation =
-            studienteilnahmeObservationMapper.map(
-                allgemein, patientReference, primaryConditionReference, meldung.getMeldungID());
-        mappedResources.add(studienteilnahmeObservation);
-      }
-    }
+    mapStudienteilnahme(
+        verlauf.getModulAllgemein(),
+        patientReference,
+        primaryConditionReference,
+        meldung.getMeldungID(),
+        mappedResources);
 
     if (verlauf.getMengeGenetik() != null
         && verlauf.getMengeGenetik().getGenetischeVariante() != null) {
@@ -732,10 +761,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (verlauf.getTNM() != null) {
-      String histologieId = null;
-      if (verlauf.getHistologie() != null) {
-        histologieId = verlauf.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(verlauf.getHistologie());
 
       var tnmObservations =
           tnmMapper.map(
@@ -760,18 +786,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
-    if (verlauf.getMengeWeitereKlassifikation() != null) {
-      var weitereKlassifikation = verlauf.getMengeWeitereKlassifikation();
-      if (weitereKlassifikation.getWeitereKlassifikation() != null) {
-        var weitereKlassifikationen =
-            weitereKlassifikationMapper.map(
-                weitereKlassifikation,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference);
-        mappedResources.addAll(weitereKlassifikationen);
-      }
-    }
+    mapWeitereKlassifikationen(
+        verlauf.getMengeWeitereKlassifikation(),
+        meldung.getMeldungID(),
+        patientReference,
+        primaryConditionReference,
+        mappedResources);
 
     return mappedResources;
   }
@@ -801,15 +821,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
     }
 
-    if (syst.getModulAllgemein() != null) {
-      var allgemein = syst.getModulAllgemein();
-      if (allgemein.getStudienteilnahme() != null) {
-        var studienteilnahmeObservation =
-            studienteilnahmeObservationMapper.map(
-                allgemein, patientReference, primaryConditionReference, meldung.getMeldungID());
-        mappedResources.add(studienteilnahmeObservation);
-      }
-    }
+    mapStudienteilnahme(
+        syst.getModulAllgemein(),
+        patientReference,
+        primaryConditionReference,
+        meldung.getMeldungID(),
+        mappedResources);
 
     if (syst.getNebenwirkungen() != null) {
       var nebenwirkungen =
@@ -835,53 +852,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (op.getHistologie() != null) {
-      var histologie = op.getHistologie();
-      var specimen =
-          specimenMapper.map(op.getHistologie(), patientReference, meldung.getMeldungID());
-      mappedResources.add(specimen);
-
-      var specimenReference = ReferenceUtils.createReferenceTo(specimen);
-
-      var verlaufsHistologie =
-          verlaufshistologieObservationMapper.map(
-              histologie,
+      var histologieResources =
+          mapHistologieSection(
+              op.getHistologie(),
               meldung.getMeldungID(),
               patientReference,
-              specimenReference,
-              primaryConditionReference);
-
-      mappedResources.addAll(verlaufsHistologie);
-
-      if (histologie.getGrading() != null) {
-        var grading =
-            gradingObservationMapper.map(
-                histologie,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference,
-                specimenReference);
-        mappedResources.add(grading);
-      }
-
-      var lymphknotenuntersuchungen =
-          lymphknotenuntersuchungMapper.map(
-              histologie,
-              patientReference,
               primaryConditionReference,
-              specimenReference,
-              meldung.getMeldungID());
-      mappedResources.addAll(lymphknotenuntersuchungen);
+              true);
+      mappedResources.addAll(histologieResources.resources());
     }
 
-    if (op.getModulAllgemein() != null) {
-      var allgemein = op.getModulAllgemein();
-      if (allgemein.getStudienteilnahme() != null) {
-        var studienteilnahmeObservation =
-            studienteilnahmeObservationMapper.map(
-                allgemein, patientReference, primaryConditionReference, meldung.getMeldungID());
-        mappedResources.add(studienteilnahmeObservation);
-      }
-    }
+    mapStudienteilnahme(
+        op.getModulAllgemein(),
+        patientReference,
+        primaryConditionReference,
+        meldung.getMeldungID(),
+        mappedResources);
 
     if (op.getMengeGenetik() != null && op.getMengeGenetik().getGenetischeVariante() != null) {
       var genetischeVarianten =
@@ -891,10 +877,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (op.getTNM() != null) {
-      String histologieId = null;
-      if (op.getHistologie() != null) {
-        histologieId = op.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(op.getHistologie());
 
       var tnmObservations =
           tnmMapper.map(
@@ -945,43 +928,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var specimenReference = new Reference();
 
     if (pathologie.getHistologie() != null) {
-      var histologie = pathologie.getHistologie();
-      var specimen =
-          specimenMapper.map(pathologie.getHistologie(), patientReference, meldung.getMeldungID());
-
-      mappedResources.add(specimen);
-
-      specimenReference = ReferenceUtils.createReferenceTo(specimen);
-
-      var verlaufsHistologie =
-          verlaufshistologieObservationMapper.map(
-              histologie,
+      var histologieResources =
+          mapHistologieSection(
+              pathologie.getHistologie(),
               meldung.getMeldungID(),
               patientReference,
-              specimenReference,
-              primaryConditionReference);
-
-      mappedResources.addAll(verlaufsHistologie);
-
-      if (histologie.getGrading() != null) {
-        var grading =
-            gradingObservationMapper.map(
-                histologie,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference,
-                specimenReference);
-        mappedResources.add(grading);
-      }
-
-      var lymphknotenuntersuchungen =
-          lymphknotenuntersuchungMapper.map(
-              histologie,
-              patientReference,
               primaryConditionReference,
-              specimenReference,
-              meldung.getMeldungID());
-      mappedResources.addAll(lymphknotenuntersuchungen);
+              true);
+      mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     if (pathologie.getMengeFM() != null && pathologie.getMengeFM().getFernmetastase() != null) {
@@ -1000,10 +955,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (pathologie.getCTNM() != null) {
-      String histologieId = null;
-      if (pathologie.getHistologie() != null) {
-        histologieId = pathologie.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(pathologie.getHistologie());
 
       var clinicalTNMObservations =
           tnmMapper.map(
@@ -1017,10 +969,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (pathologie.getPTNM() != null) {
-      String histologieId = null;
-      if (pathologie.getHistologie() != null) {
-        histologieId = pathologie.getHistologie().getHistologieID();
-      }
+      var histologieId = histologieIdOf(pathologie.getHistologie());
 
       var pathologicTNMObservations =
           tnmMapper.map(
@@ -1041,18 +990,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
-    if (pathologie.getMengeWeitereKlassifikation() != null) {
-      var weitereKlassifikation = pathologie.getMengeWeitereKlassifikation();
-      if (weitereKlassifikation.getWeitereKlassifikation() != null) {
-        var weitereKlassifikationen =
-            weitereKlassifikationMapper.map(
-                weitereKlassifikation,
-                meldung.getMeldungID(),
-                patientReference,
-                primaryConditionReference);
-        mappedResources.addAll(weitereKlassifikationen);
-      }
-    }
+    mapWeitereKlassifikationen(
+        pathologie.getMengeWeitereKlassifikation(),
+        meldung.getMeldungID(),
+        patientReference,
+        primaryConditionReference,
+        mappedResources);
 
     // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz
     // the histologiebefund is based on. Unless every befund is always a
