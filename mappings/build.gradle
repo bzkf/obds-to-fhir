@@ -9,7 +9,7 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'io.freefair.lombok' version '9.5.0'
-    id 'com.diffplug.spotless' version '8.6.0'
+    id 'com.diffplug.spotless' version '8.7.0'
     id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
 }
 
