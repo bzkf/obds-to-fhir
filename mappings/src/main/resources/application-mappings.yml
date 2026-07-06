@@ -212,6 +212,8 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+      # -- If enabled, sets Patient.id to the mapped Patient_ID value instead of a hash of the identifier.
+      use-obds-patient-id-as-resource-id: false
     create-provenance-resources:
       # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
       # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
