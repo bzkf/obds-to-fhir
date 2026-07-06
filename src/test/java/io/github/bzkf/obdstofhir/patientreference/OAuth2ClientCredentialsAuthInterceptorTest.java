@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.oauth2.core.OAuth2AuthorizationException;
 
 class OAuth2ClientCredentialsAuthInterceptorTest {
 
@@ -25,7 +26,8 @@ class OAuth2ClientCredentialsAuthInterceptorTest {
   @BeforeEach
   void startServer() throws IOException {
     tokenRequestCount = new AtomicInteger();
-    tokenResponseBody = "{\"access_token\":\"token-1\",\"expires_in\":3600}";
+    tokenResponseBody =
+        "{\"access_token\":\"token-1\",\"token_type\":\"Bearer\",\"expires_in\":3600}";
     tokenResponseStatus = 200;
 
     server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
@@ -78,7 +80,7 @@ class OAuth2ClientCredentialsAuthInterceptorTest {
 
   @Test
   void shouldRefetchTokenOnceExpired() {
-    tokenResponseBody = "{\"access_token\":\"token-1\",\"expires_in\":0}";
+    tokenResponseBody = "{\"access_token\":\"token-1\",\"token_type\":\"Bearer\",\"expires_in\":0}";
     var interceptor =
         new OAuth2ClientCredentialsAuthInterceptor(tokenUrl(), "client-id", "client-secret", null);
 
@@ -96,7 +98,7 @@ class OAuth2ClientCredentialsAuthInterceptorTest {
         new OAuth2ClientCredentialsAuthInterceptor(tokenUrl(), "client-id", "client-secret", null);
 
     assertThatThrownBy(() -> interceptor.interceptRequest(mock(IHttpRequest.class)))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("401");
+        .isInstanceOf(OAuth2AuthorizationException.class)
+        .hasMessageContaining("invalid_client");
   }
 }

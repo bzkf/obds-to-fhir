@@ -2,105 +2,70 @@ package io.github.bzkf.obdstofhir.patientreference;
 
 import ca.uhn.fhir.rest.client.api.IHttpRequest;
 import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.locks.ReentrantLock;
 import org.jspecify.annotations.Nullable;
+import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.StringUtils;
 
 /**
  * A HAPI FHIR client interceptor that authenticates using the OAuth2 client credentials grant.
- * Fetches an access token from the configured token endpoint, caches it, and transparently
- * refreshes it once it is about to expire.
+ * Delegates token acquisition, caching, and refresh to Spring Security's OAuth2 client support.
  */
 public class OAuth2ClientCredentialsAuthInterceptor extends BearerTokenAuthInterceptor {
-  // re-fetch the token this long before it actually expires, to avoid using a token that expires
-  // mid-flight
-  private static final Duration EXPIRY_SAFETY_MARGIN = Duration.ofSeconds(30);
+  private static final String REGISTRATION_ID = "fhir-server";
+  private static final String PRINCIPAL_NAME = "fhir-server-client";
 
-  private final String tokenUrl;
-  private final String clientId;
-  private final String clientSecret;
-  private final @Nullable String scope;
-  private final HttpClient httpClient;
-  private final ObjectMapper objectMapper = new ObjectMapper();
-  private final ReentrantLock lock = new ReentrantLock();
-
-  private volatile Instant expiresAt = Instant.MIN;
+  private final OAuth2AuthorizedClientManager authorizedClientManager;
+  private final OAuth2AuthorizeRequest authorizeRequest;
 
   public OAuth2ClientCredentialsAuthInterceptor(
       String tokenUrl, String clientId, String clientSecret, @Nullable String scope) {
-    this.tokenUrl = tokenUrl;
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
-    this.scope = scope;
-    this.httpClient = HttpClient.newHttpClient();
+    var clientRegistrationBuilder =
+        ClientRegistration.withRegistrationId(REGISTRATION_ID)
+            .tokenUri(tokenUrl)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS);
+
+    if (StringUtils.hasText(scope)) {
+      clientRegistrationBuilder.scope(scope.trim().split("\\s+"));
+    }
+
+    var clientRegistrationRepository =
+        new InMemoryClientRegistrationRepository(clientRegistrationBuilder.build());
+    var authorizedClientService =
+        new InMemoryOAuth2AuthorizedClientService(clientRegistrationRepository);
+
+    var manager =
+        new AuthorizedClientServiceOAuth2AuthorizedClientManager(
+            clientRegistrationRepository, authorizedClientService);
+    manager.setAuthorizedClientProvider(
+        OAuth2AuthorizedClientProviderBuilder.builder().clientCredentials().build());
+
+    this.authorizedClientManager = manager;
+    this.authorizeRequest =
+        OAuth2AuthorizeRequest.withClientRegistrationId(REGISTRATION_ID)
+            .principal(PRINCIPAL_NAME)
+            .build();
   }
 
   @Override
   public void interceptRequest(IHttpRequest theRequest) {
-    ensureValidAccessToken();
+    var authorizedClient = authorizedClientManager.authorize(authorizeRequest);
+    if (authorizedClient == null) {
+      throw new IllegalStateException(
+          "Failed to obtain an OAuth2 access token for the FHIR server client.");
+    }
+
+    setToken(authorizedClient.getAccessToken().getTokenValue());
     super.interceptRequest(theRequest);
-  }
-
-  private void ensureValidAccessToken() {
-    if (getToken() == null || Instant.now().isAfter(expiresAt)) {
-      lock.lock();
-      try {
-        if (getToken() == null || Instant.now().isAfter(expiresAt)) {
-          fetchAccessToken();
-        }
-      } finally {
-        lock.unlock();
-      }
-    }
-  }
-
-  private void fetchAccessToken() {
-    var formBody = new StringBuilder("grant_type=client_credentials");
-    formBody.append("&client_id=").append(urlEncode(clientId));
-    formBody.append("&client_secret=").append(urlEncode(clientSecret));
-    if (StringUtils.hasText(scope)) {
-      formBody.append("&scope=").append(urlEncode(scope));
-    }
-
-    var request =
-        HttpRequest.newBuilder()
-            .uri(URI.create(tokenUrl))
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(formBody.toString()))
-            .build();
-
-    try {
-      var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-      if (response.statusCode() != 200) {
-        throw new IllegalStateException(
-            "Failed to obtain OAuth2 access token from '%s', server responded with status %d"
-                .formatted(tokenUrl, response.statusCode()));
-      }
-
-      JsonNode json = objectMapper.readTree(response.body());
-      setToken(json.required("access_token").asText());
-      long expiresInSeconds = json.path("expires_in").asLong(60);
-      expiresAt = Instant.now().plusSeconds(expiresInSeconds).minus(EXPIRY_SAFETY_MARGIN);
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new IllegalStateException("Failed to obtain OAuth2 access token from " + tokenUrl, e);
-    } catch (IOException e) {
-      throw new IllegalStateException("Failed to obtain OAuth2 access token from " + tokenUrl, e);
-    }
-  }
-
-  private static String urlEncode(String value) {
-    return URLEncoder.encode(value, StandardCharsets.UTF_8);
   }
 }
