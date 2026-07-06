@@ -104,6 +104,11 @@ error topic.
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.enabled | bool | `false` | use HTTP Basic Authentication for FHIR server authentication |
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.username | string | `""` | the username |
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.password | string | `""` | the password |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.oauth2.enabled | bool | `false` | use OAuth2 client credentials grant authentication for FHIR server authentication. Mutually exclusive with `auth.basic`. |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.oauth2.token-url | string | `""` | the URL of the OAuth2/OIDC token endpoint. E.g. `https://auth.example.com/realms/example/protocol/openid-connect/token` |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.oauth2.client-id | string | `""` | the OAuth2 client id |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.oauth2.client-secret | string | `""` | the OAuth2 client secret |
+| fhir.mappings.patient-reference-generation.fhir-server.auth.oauth2.scope | string | `""` | the OAuth2 scope(s) to request, space-separated. Optional, may be left empty. |
 | fhir.mappings.patient-reference-generation.pseudonymize-patient-id.enabled | bool | `false` | if enabled, before looking up the Patient resource from its identifier, the oBDS Patient_ID is first pseudonymized using the FHIR Pseudonymizer service at the `fhir-pseudonymizer.base-url` |
 | fhir.mappings.patient-reference-generation.pseudonymize-patient-id.fhir-pseudonymizer.base-url | string | `""` | the base URL of the FHIR Pseudonymizer used to pseudonymize the Patient_ID before looking up the actual Patient.id in the FHIR server. Invokes the `$de-identify` operation. E.g. `https://fhir.example.com/fhir` |
 | fhir.mappings.patient-reference-generation.record-id-database.jdbc-url | string | `""` | JDBC url to connect to to query an internal RecordID from a Patient_ID |

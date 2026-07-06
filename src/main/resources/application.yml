@@ -58,6 +58,18 @@ fhir:
             username: ""
             # -- the password
             password: ""
+          oauth2:
+            # -- use OAuth2 client credentials grant authentication for FHIR server authentication.
+            # Mutually exclusive with `auth.basic`.
+            enabled: false
+            # -- the URL of the OAuth2/OIDC token endpoint. E.g. `https://auth.example.com/realms/example/protocol/openid-connect/token`
+            token-url: ""
+            # -- the OAuth2 client id
+            client-id: ""
+            # -- the OAuth2 client secret
+            client-secret: ""
+            # -- the OAuth2 scope(s) to request, space-separated. Optional, may be left empty.
+            scope: ""
       pseudonymize-patient-id:
         # -- if enabled, before looking up the Patient resource from its identifier, the oBDS Patient_ID
         # is first pseudonymized using the FHIR Pseudonymizer service at the `fhir-pseudonymizer.base-url`
