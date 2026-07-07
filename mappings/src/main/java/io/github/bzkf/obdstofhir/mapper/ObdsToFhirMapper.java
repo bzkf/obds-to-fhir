@@ -7,6 +7,7 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.util.*;
+import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -22,8 +23,43 @@ public abstract class ObdsToFhirMapper {
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
+  /** Matches oBDS ICD-10 version strings, e.g. {@code "10 2023 GM"}, capturing the year. */
+  protected static final Pattern ICD_VERSION_PATTERN =
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
+  }
+
+  /**
+   * Extracts the version year from an oBDS ICD-10 version string (see {@link
+   * #ICD_VERSION_PATTERN}), falling back to a data-absent-reason extension if it is unset or
+   * doesn't match the expected format.
+   *
+   * @param icdVersion the raw ICD version string, e.g. from {@code *_ICD_Version}
+   * @param fieldName the oBDS field name, used only for the log message on a failed match
+   * @param mapperLog the calling mapper's logger, so the message is attributed correctly
+   */
+  protected StringType extractIcdVersionYear(
+      String icdVersion, String fieldName, Logger mapperLog) {
+    if (StringUtils.hasText(icdVersion)) {
+      var matcher = ICD_VERSION_PATTERN.matcher(icdVersion);
+      if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
+        return new StringType(matcher.group("versionYear"));
+      }
+      mapperLog.debug(
+          "Unable to extract year from {} via RegEx '{}', actual: '{}'",
+          fieldName,
+          ICD_VERSION_PATTERN.pattern(),
+          icdVersion);
+    } else {
+      mapperLog.debug("{} is unset or contains only whitespaces", fieldName);
+    }
+
+    var versionElement = new StringType();
+    versionElement.addExtension(
+        fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+    return versionElement;
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(

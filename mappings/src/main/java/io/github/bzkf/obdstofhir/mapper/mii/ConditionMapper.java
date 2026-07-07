@@ -12,21 +12,17 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class ConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
-  public static final Pattern ICD_VERSION_PATTERN =
-      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
   private final EnumMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
   public ConditionMapper(FhirProperties fhirProperties) {
@@ -116,28 +112,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
             .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
 
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
-    StringType versionElement = null;
-    if (StringUtils.hasText(icd10Version)) {
-      var matcher = ICD_VERSION_PATTERN.matcher(icd10Version);
-      if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
-        versionElement = new StringType(matcher.group("versionYear"));
-      } else {
-        LOG.debug(
-            "Unable to extract year from Primaertumor_ICD_Version via RegEx '{}', actual: '{}'",
-            ICD_VERSION_PATTERN.pattern(),
-            icd10Version);
-      }
-    } else {
-      LOG.debug("Primaertumor_ICD_Version is unset or contains only whitespaces");
-    }
-
-    if (versionElement == null) {
-      versionElement = new StringType();
-      versionElement.addExtension(
-          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-    }
-
-    icd.setVersionElement(versionElement);
+    icd.setVersionElement(extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG));
 
     condition.setCode(new CodeableConcept(icd));
 
