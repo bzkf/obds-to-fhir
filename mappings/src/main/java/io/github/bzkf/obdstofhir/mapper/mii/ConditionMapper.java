@@ -10,7 +10,6 @@ import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -249,39 +248,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
   private Collection<MorphologieICDOTyp> getDistinctMorphologies(
       List<MorphologieICDOTyp> morphologies) {
-    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
-    for (var morph : morphologies) {
-      var code = morph.getCode();
-      var version = morph.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, morph);
-      } else {
-        var existing = distinctCodes.get(code);
-        if (version == null) {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found, but new version is unset. "
-                  + "Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
-
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
-          distinctCodes.put(code, morph);
-        } else {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
-        }
-      }
-    }
-    return distinctCodes.values();
+    return keepHighestVersionByCode(
+        morphologies, MorphologieICDOTyp::getCode, MorphologieICDOTyp::getVersion);
   }
 }

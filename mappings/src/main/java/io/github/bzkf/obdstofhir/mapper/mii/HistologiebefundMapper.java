@@ -35,13 +35,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
     // DiagnosticReport füllen
     var diagnosticReport = new DiagnosticReport();
 
-    var identifierValue = pathologie.getBefundID();
-
-    if (!StringUtils.hasText(identifierValue)) {
-      LOG.debug(
-          "Befund_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologiebefund.");
-      identifierValue = meldungsId;
-    }
+    var identifierValue = orMeldungId(pathologie.getBefundID(), meldungsId);
 
     // Identifier
     var identifier =

@@ -6,20 +6,13 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(VerlaufshistologieObservationMapper.class);
 
   public VerlaufshistologieObservationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -38,54 +31,21 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
     var observations = new ArrayList<Observation>();
 
-    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
-    for (var morph : histologie.getMorphologieICDO()) {
-      var code = morph.getCode();
-      var version = morph.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, morph);
-      } else {
-        var existing = distinctCodes.get(code);
-        if (version == null) {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found, but new version is unset. "
-                  + "Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
+    var distinctMorphologies =
+        keepHighestVersionByCode(
+            histologie.getMorphologieICDO(),
+            MorphologieICDOTyp::getCode,
+            MorphologieICDOTyp::getVersion);
 
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
-          distinctCodes.put(code, morph);
-        } else {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
-        }
-      }
-    }
+    var identifierBase = orMeldungId(histologie.getHistologieID(), meldungsId);
 
-    for (var morph : distinctCodes.values()) {
+    for (var morph : distinctMorphologies) {
       var observation = new Observation();
 
       // Meta
       observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoHistologieIcdo3());
 
-      var identifierValue = histologie.getHistologieID();
-      if (!StringUtils.hasText(identifierValue)) {
-        LOG.debug(
-            "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Verlaufshistologie Observation.");
-        identifierValue = meldungsId;
-      }
-
-      identifierValue += "-ICDO3-" + morph.getCode();
+      var identifierValue = identifierBase + "-ICDO3-" + morph.getCode();
 
       // Identifer
       var identifier =

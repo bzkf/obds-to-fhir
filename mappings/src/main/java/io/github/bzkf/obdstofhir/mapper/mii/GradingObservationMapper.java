@@ -7,15 +7,10 @@ import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class GradingObservationMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG = LoggerFactory.getLogger(GradingObservationMapper.class);
 
   public GradingObservationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -36,12 +31,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // Meta
     observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
 
-    var identifierValue = histologie.getHistologieID();
-    if (!StringUtils.hasText(identifierValue)) {
-      LOG.debug(
-          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Grading Observation.");
-      identifierValue = meldungsId;
-    }
+    var identifierValue = orMeldungId(histologie.getHistologieID(), meldungsId);
 
     // Identifer
     var identifier =

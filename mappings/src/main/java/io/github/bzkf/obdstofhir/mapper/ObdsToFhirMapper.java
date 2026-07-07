@@ -8,6 +8,7 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
@@ -60,6 +61,67 @@ public abstract class ObdsToFhirMapper {
     var versionElement = new StringType();
     versionElement.addExtension(DataAbsentReason.unknown());
     return versionElement;
+  }
+
+  /**
+   * Deduplicates {@code items} by their code, keeping only the highest version per code. Used where
+   * oBDS allows multiple entries of the same code (e.g. ICD-O morphologies, OPS codes) but only the
+   * newest version per code should be mapped to FHIR.
+   *
+   * @param items the raw, possibly duplicate-by-code items
+   * @param codeOf extracts the code items are deduplicated by
+   * @param versionOf extracts the lexicographically comparable version of an item
+   */
+  protected static <T> Collection<T> keepHighestVersionByCode(
+      List<T> items, Function<T, String> codeOf, Function<T, String> versionOf) {
+    var distinctCodes = new HashMap<String, T>();
+    for (var item : items) {
+      var code = codeOf.apply(item);
+      var version = versionOf.apply(item);
+      if (!distinctCodes.containsKey(code)) {
+        distinctCodes.put(code, item);
+        continue;
+      }
+
+      var existing = distinctCodes.get(code);
+      var existingVersion = versionOf.apply(existing);
+      if (version == null) {
+        log.debug(
+            "Multiple items with code {} found, but new version is unset. "
+                + "Keeping one with existing version {}.",
+            code,
+            existingVersion);
+      } else if (version.compareTo(existingVersion) > 0) {
+        log.debug(
+            "Multiple items with code {} found. Updating version {} over version {}.",
+            code,
+            version,
+            existingVersion);
+        distinctCodes.put(code, item);
+      } else {
+        log.debug(
+            "Multiple items with code {} found. Keeping largest version {} over version {}.",
+            code,
+            existingVersion,
+            version);
+      }
+    }
+    return distinctCodes.values();
+  }
+
+  /**
+   * Falls back to {@code meldungsId} as the identifier base when the oBDS-provided id field is
+   * unset.
+   *
+   * @param value the oBDS id field, e.g. {@code Histologie_ID}
+   * @param meldungsId the enclosing Meldung's id, used as a fallback
+   */
+  protected static String orMeldungId(String value, String meldungsId) {
+    if (StringUtils.hasText(value)) {
+      return value;
+    }
+    log.debug("Identifier field is unset, falling back to Meldung_ID '{}'.", meldungsId);
+    return meldungsId;
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(

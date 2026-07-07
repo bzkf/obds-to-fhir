@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
@@ -159,31 +160,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
-    if (modulProstata.getAnlassGleasonScore() != null) {
-      var coding =
-          switch (modulProstata.getAnlassGleasonScore()) {
-            case O ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("65801008")
-                    .setDisplay("Excision (procedure)");
-            case S ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("86273004")
-                    .setDisplay("Biopsy (procedure)");
-            case U ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("261665006")
-                    .setDisplay("Unknown (qualifier value)");
-          };
-
-      observation.setMethod(new CodeableConcept(coding));
-    }
+    setAnlassGleasonScoreMethod(observation, modulProstata);
 
     observation.setCode(
         new CodeableConcept(
@@ -285,106 +262,102 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
 
     convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
 
-    if (modulProstata.getAnlassGleasonScore() != null) {
-      var coding =
-          switch (modulProstata.getAnlassGleasonScore()) {
-            case O ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("65801008")
-                    .setDisplay("Excision (procedure)");
-            case S ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("86273004")
-                    .setDisplay("Biopsy (procedure)");
-            case U ->
-                fhirProperties
-                    .getCodings()
-                    .snomed()
-                    .setCode("261665006")
-                    .setDisplay("Unknown (qualifier value)");
-          };
+    setAnlassGleasonScoreMethod(observation, modulProstata);
 
-      observation.setMethod(new CodeableConcept(coding));
-    }
+    mapGleasonPattern(
+            observation,
+            modulProstata.getGleasonScore().getGradPrimaer(),
+            meldungId,
+            "primary-gleason-pattern",
+            "384994009",
+            "Primary Gleason pattern (observable entity)")
+        .ifPresent(results::add);
 
-    if (modulProstata.getGleasonScore().getGradPrimaer() != null) {
-      var pattern = modulProstata.getGleasonScore().getGradPrimaer();
-      var primaryPattern = observation.copy();
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties
-                      .getSystems()
-                      .getIdentifiers()
-                      .getProstataGleasonPatternsObservationId())
-              .setValue(slugifier.slugify(meldungId + "-modul-prostata-primary-gleason-pattern"));
-      primaryPattern.addIdentifier(identifier);
-      primaryPattern.setId(IdUtils.fromIdentifier(identifier));
-
-      var coding =
-          fhirProperties
-              .getCodings()
-              .snomed()
-              .setCode("384994009")
-              .setDisplay("Primary Gleason pattern (observable entity)");
-      primaryPattern.setCode(new CodeableConcept(coding));
-
-      var snomedCode = GLEASON_PATTERN_TO_SNOMED.get(pattern);
-      var valueCoding =
-          fhirProperties
-              .getCodings()
-              .snomed()
-              .setCode(snomedCode)
-              .setDisplay(String.format("Gleason Pattern %s (finding)", pattern));
-      valueCoding.addExtension(
-          fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(pattern));
-
-      primaryPattern.setValue(new CodeableConcept(valueCoding));
-
-      results.add(primaryPattern);
-    }
-
-    if (modulProstata.getGleasonScore().getGradSekundaer() != null) {
-      var pattern = modulProstata.getGleasonScore().getGradSekundaer();
-      var secondaryPattern = observation.copy();
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties
-                      .getSystems()
-                      .getIdentifiers()
-                      .getProstataGleasonPatternsObservationId())
-              .setValue(slugifier.slugify(meldungId + "-modul-prostata-secondary-gleason-pattern"));
-      secondaryPattern.addIdentifier(identifier);
-      secondaryPattern.setId(IdUtils.fromIdentifier(identifier));
-
-      var coding =
-          fhirProperties
-              .getCodings()
-              .snomed()
-              .setCode("384995005")
-              .setDisplay("Secondary Gleason pattern (observable entity)");
-      secondaryPattern.setCode(new CodeableConcept(coding));
-
-      var snomedCode = GLEASON_PATTERN_TO_SNOMED.get(pattern);
-      var valueCoding =
-          fhirProperties
-              .getCodings()
-              .snomed()
-              .setCode(snomedCode)
-              .setDisplay(String.format("Gleason Pattern %s (finding)", pattern));
-      valueCoding.addExtension(
-          fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(pattern));
-
-      secondaryPattern.setValue(new CodeableConcept(valueCoding));
-
-      results.add(secondaryPattern);
-    }
+    mapGleasonPattern(
+            observation,
+            modulProstata.getGleasonScore().getGradSekundaer(),
+            meldungId,
+            "secondary-gleason-pattern",
+            "384995005",
+            "Secondary Gleason pattern (observable entity)")
+        .ifPresent(results::add);
 
     return results;
+  }
+
+  /**
+   * Builds a primary/secondary Gleason pattern Observation by copying {@code base} and filling in
+   * the pattern-specific identifier, code and value. Returns empty if {@code pattern} is unset.
+   */
+  private Optional<Observation> mapGleasonPattern(
+      Observation base,
+      String pattern,
+      String meldungId,
+      String identifierSuffix,
+      String code,
+      String codeDisplay) {
+    if (pattern == null) {
+      return Optional.empty();
+    }
+
+    var result = base.copy();
+    var identifier =
+        new Identifier()
+            .setSystem(
+                fhirProperties
+                    .getSystems()
+                    .getIdentifiers()
+                    .getProstataGleasonPatternsObservationId())
+            .setValue(slugifier.slugify(meldungId + "-modul-prostata-" + identifierSuffix));
+    result.addIdentifier(identifier);
+    result.setId(IdUtils.fromIdentifier(identifier));
+
+    var coding = fhirProperties.getCodings().snomed().setCode(code).setDisplay(codeDisplay);
+    result.setCode(new CodeableConcept(coding));
+
+    var snomedCode = GLEASON_PATTERN_TO_SNOMED.get(pattern);
+    var valueCoding =
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode(snomedCode)
+            .setDisplay(String.format("Gleason Pattern %s (finding)", pattern));
+    valueCoding.addExtension(
+        fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(pattern));
+
+    result.setValue(new CodeableConcept(valueCoding));
+
+    return Optional.of(result);
+  }
+
+  private void setAnlassGleasonScoreMethod(
+      Observation observation, ModulProstataTyp modulProstata) {
+    if (modulProstata.getAnlassGleasonScore() == null) {
+      return;
+    }
+
+    var coding =
+        switch (modulProstata.getAnlassGleasonScore()) {
+          case O ->
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("65801008")
+                  .setDisplay("Excision (procedure)");
+          case S ->
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("86273004")
+                  .setDisplay("Biopsy (procedure)");
+          case U ->
+              fhirProperties
+                  .getCodings()
+                  .snomed()
+                  .setCode("261665006")
+                  .setDisplay("Unknown (qualifier value)");
+        };
+
+    observation.setMethod(new CodeableConcept(coding));
   }
 }

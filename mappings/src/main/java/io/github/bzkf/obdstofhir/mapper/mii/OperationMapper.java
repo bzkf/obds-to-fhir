@@ -7,7 +7,6 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -35,44 +34,12 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     MDC.put("OP_ID", op.getOPID());
 
-    var distinctCodes = new HashMap<String, OPS>();
-    // if no OPS codes are set, it's fine for the distinctCodes list to be empty
-    // we will then only create the parent procedure, not the child ones with
-    // any codes.
-    if (op.getMengeOPS() != null) {
-      for (var ops : op.getMengeOPS().getOPS()) {
-        var code = ops.getCode();
-        var version = ops.getVersion();
-        if (!distinctCodes.containsKey(code)) {
-          distinctCodes.put(code, ops);
-        } else {
-          var existing = distinctCodes.get(code);
-
-          if (version == null) {
-            LOG.debug(
-                "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
-                code,
-                existing.getVersion());
-            continue;
-          }
-
-          if (version.compareTo(existing.getVersion()) > 0) {
-            LOG.debug(
-                "Multiple OPS with code {} found. Updating version {} over version {}.",
-                code,
-                version,
-                existing.getVersion());
-            distinctCodes.put(code, ops);
-          } else {
-            LOG.debug(
-                "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
-                code,
-                existing.getVersion(),
-                version);
-          }
-        }
-      }
-    }
+    // if no OPS codes are set, it's fine for distinctCodes to be empty; we will then
+    // only create the parent procedure, not the child ones with any codes.
+    var distinctCodes =
+        op.getMengeOPS() == null
+            ? List.<OPS>of()
+            : keepHighestVersionByCode(op.getMengeOPS().getOPS(), OPS::getCode, OPS::getVersion);
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();
 
@@ -136,7 +103,7 @@ public class OperationMapper extends ObdsToFhirMapper {
     procedureList.add(parentProcedure);
 
     // create child procedures
-    for (var opsCode : distinctCodes.values()) {
+    for (var opsCode : distinctCodes) {
       var procedure = new Procedure();
       MDC.put("opsCode", opsCode.getCode());
 

@@ -11,6 +11,7 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +30,6 @@ import org.hl7.fhir.r4.model.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class StrahlentherapieMapper extends ObdsToFhirMapper {
@@ -105,12 +105,9 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     verifyReference(subject, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
 
+    // ST_ID is guaranteed non-blank by the Validate.notBlank check above, so unlike the other
+    // oBDS id fields mapped in this package, this one never needs a Meldung_ID fallback.
     var idBase = st.getSTID();
-    if (!StringUtils.hasText(st.getSTID())) {
-      LOG.warn(
-          "ST_ID is unset. Defaulting to Meldung_ID as the identifier for the created Procedures");
-      idBase = meldungsId;
-    }
 
     var procedure = new Procedure();
     procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
@@ -431,30 +428,20 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     var gesamtdosis = data.gesamtdosis();
     if (gesamtdosis != null) {
-      var value =
-          new Quantity()
-              .setUnit(gesamtdosis.getEinheit())
-              .setValue(gesamtdosis.getDosis())
-              .setSystem(fhirProperties.getSystems().getUcum())
-              .setCode(gesamtdosis.getEinheit());
       extensions.add(
-          new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
-              value));
+          dosisExtension(
+              gesamtdosis.getDosis(),
+              gesamtdosis.getEinheit(),
+              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis()));
     }
 
     var einzeldosis = data.einzeldosis();
     if (einzeldosis != null) {
-      var value =
-          new Quantity()
-              .setUnit(einzeldosis.getEinheit())
-              .setValue(einzeldosis.getDosis())
-              .setSystem(fhirProperties.getSystems().getUcum())
-              .setCode(einzeldosis.getEinheit());
       extensions.add(
-          new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
-              value));
+          dosisExtension(
+              einzeldosis.getDosis(),
+              einzeldosis.getEinheit(),
+              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis()));
     }
 
     var boost = data.boost();
@@ -475,34 +462,39 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
         && bestrahlung.getApplikationsart().getMetabolisch() != null) {
       var metabolisch = bestrahlung.getApplikationsart().getMetabolisch();
       if (metabolisch.getEinzeldosis() != null) {
-        var value =
-            new Quantity()
-                .setUnit(metabolisch.getEinzeldosis().getEinheit())
-                .setValue(metabolisch.getEinzeldosis().getDosis())
-                .setSystem(fhirProperties.getSystems().getUcum())
-                .setCode(metabolisch.getEinzeldosis().getEinheit());
         extensions.add(
-            new Extension(
-                fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
-                value));
+            dosisExtension(
+                metabolisch.getEinzeldosis().getDosis(),
+                metabolisch.getEinzeldosis().getEinheit(),
+                fhirProperties
+                    .getExtensions()
+                    .getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis()));
       }
 
       if (metabolisch.getGesamtdosis() != null) {
-        var value =
-            new Quantity()
-                .setUnit(metabolisch.getGesamtdosis().getEinheit())
-                .setValue(metabolisch.getGesamtdosis().getDosis())
-                .setSystem(fhirProperties.getSystems().getUcum())
-                .setCode(metabolisch.getGesamtdosis().getEinheit());
-
         extensions.add(
-            new Extension(
-                fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
-                value));
+            dosisExtension(
+                metabolisch.getGesamtdosis().getDosis(),
+                metabolisch.getGesamtdosis().getEinheit(),
+                fhirProperties
+                    .getExtensions()
+                    .getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis()));
       }
     }
 
     return extensions;
+  }
+
+  // dosis/einheit are taken as separate values rather than a StrahlendosisTyp because the
+  // metabolisch case reuses this for AktivitaetsTyp, an unrelated but structurally identical type
+  private Extension dosisExtension(BigDecimal dosis, String einheit, String extensionUrl) {
+    var value =
+        new Quantity()
+            .setUnit(einheit)
+            .setValue(dosis)
+            .setSystem(fhirProperties.getSystems().getUcum())
+            .setCode(einheit);
+    return new Extension(extensionUrl, value);
   }
 
   private static StrahlentherapieBestrahlung getBestrahlungsData(Applikationsart applikationsart) {

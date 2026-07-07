@@ -13,7 +13,6 @@ import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
@@ -39,12 +38,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
 
     var effectiveDate = convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum());
 
-    var identifierValueBase = histologie.getHistologieID();
-    if (!StringUtils.hasText(identifierValueBase)) {
-      LOG.debug(
-          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologie Specimen.");
-      identifierValueBase = meldungsId;
-    }
+    var identifierValueBase = orMeldungId(histologie.getHistologieID(), meldungsId);
 
     if (histologie.getLKBefallen() != null) {
       result.add(

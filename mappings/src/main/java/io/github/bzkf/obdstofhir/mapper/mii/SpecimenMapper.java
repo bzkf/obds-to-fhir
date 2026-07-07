@@ -6,15 +6,10 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class SpecimenMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG = LoggerFactory.getLogger(SpecimenMapper.class);
 
   public SpecimenMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -26,12 +21,7 @@ public class SpecimenMapper extends ObdsToFhirMapper {
 
     var specimen = new Specimen();
 
-    var identifierValue = histologie.getHistologieID();
-    if (!StringUtils.hasText(identifierValue)) {
-      LOG.debug(
-          "Histologie_ID is unset. Defaulting to Meldung_ID as the identifier for the Histologie Specimen.");
-      identifierValue = meldungsId;
-    }
+    var identifierValue = orMeldungId(histologie.getHistologieID(), meldungsId);
 
     // Identifier = HistologieId
     var identifier = new Identifier();
