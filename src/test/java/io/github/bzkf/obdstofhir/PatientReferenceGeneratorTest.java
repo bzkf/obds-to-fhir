@@ -1,19 +1,49 @@
 package io.github.bzkf.obdstofhir;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
+import java.net.URI;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
 class PatientReferenceGeneratorTest {
+
+  @Test
+  void shouldThrowWhenCreatingFhirClientWithBasicAndOAuth2BothEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(true, "user", "pwd"),
+                new FhirServerConfig.OAuth2(
+                    true, "http://example.org/token", "client-id", "client-secret", null)));
+
+    assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void shouldCreateFhirClientWhenOnlyOAuth2IsEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(false, "", ""),
+                new FhirServerConfig.OAuth2(
+                    true, "http://example.org/token", "client-id", "client-secret", null)));
+
+    assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
+  }
 
   @Test
   void shouldUseCachedRecordIdForRepeatedPatientIdLookups() {

@@ -47,6 +47,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
     implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
+    implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.5'
     implementation 'io.micrometer:micrometer-core:1.16.5'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
