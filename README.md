@@ -189,7 +189,7 @@ Prerequisites:
 All released container images are signed using [cosign](https://github.com/sigstore/cosign) and SLSA Level 3 provenance is available for verification.
 
 ```sh
-IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.1.1
+IMAGE=ghcr.io/bzkf/obds-to-fhir:v3.1.2
 DIGEST=$(crane digest "${IMAGE}")
 IMAGE_DIGEST_PINNED="ghcr.io/bzkf/obds-to-fhir@${DIGEST}"
 IMAGE_TAG="${IMAGE#*:}"
