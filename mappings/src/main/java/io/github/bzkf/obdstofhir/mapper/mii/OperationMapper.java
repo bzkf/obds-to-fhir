@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.OPTyp.MengeOPS.OPS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,8 +102,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       parentProcedure.setPerformed(dateTime.get());
     } else {
       var performed = new DateTimeType();
-      performed.addExtension(
-          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      performed.addExtension(DataAbsentReason.unknown());
       parentProcedure.setPerformed(performed);
     }
     // ReasonReference
@@ -161,8 +161,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       } else {
         LOG.debug("Unset version for OPS Code");
         var absentVersion = new StringType();
-        absentVersion.addExtension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        absentVersion.addExtension(DataAbsentReason.unknown());
         coding.setVersionElement(absentVersion);
       }
 
@@ -207,8 +206,7 @@ public class OperationMapper extends ObdsToFhirMapper {
         procedure.setPerformed(dateTime.get());
       } else {
         var performed = new DateTimeType();
-        performed.addExtension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        performed.addExtension(DataAbsentReason.unknown());
         procedure.setPerformed(performed);
       }
 

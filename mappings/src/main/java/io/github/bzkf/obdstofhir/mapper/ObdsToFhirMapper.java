@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.*;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -57,8 +58,7 @@ public abstract class ObdsToFhirMapper {
     }
 
     var versionElement = new StringType();
-    versionElement.addExtension(
-        fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+    versionElement.addExtension(DataAbsentReason.unknown());
     return versionElement;
   }
 

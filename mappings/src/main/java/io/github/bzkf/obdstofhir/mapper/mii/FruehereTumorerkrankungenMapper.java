@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung;
 import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.FruehereTumorerkrankung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
@@ -113,8 +113,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             () -> {
               LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
               var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(
-                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.addExtension(
                   fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
             });
@@ -125,8 +124,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             () -> {
               LOG.warn("MeldeDatum is unset. Setting data absent extension.");
               var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(
-                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.setRecordedDateElement(absentDateTime);
             });
 

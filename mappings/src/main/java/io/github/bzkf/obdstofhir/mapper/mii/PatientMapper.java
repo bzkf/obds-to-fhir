@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
@@ -116,11 +117,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       if (StringUtils.hasText(patAddress.getPLZ())) {
         address.setPostalCode(patAddress.getPLZ());
       } else {
-        address
-            .getPostalCodeElement()
-            .addExtension()
-            .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-            .setValue(new CodeType("unknown"));
+        address.getPostalCodeElement().addExtension(DataAbsentReason.unknown());
       }
 
       var land = patAddress.getLand();
@@ -128,11 +125,7 @@ public class PatientMapper extends ObdsToFhirMapper {
         address.setCountry(land.toUpperCase());
       } else {
         LOG.debug("Country code '{}' unset or doesn't match expected form", land);
-        address
-            .getCountryElement()
-            .addExtension()
-            .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-            .setValue(new CodeType("unknown"));
+        address.getCountryElement().addExtension(DataAbsentReason.unknown());
       }
 
       patient.addAddress(address);
