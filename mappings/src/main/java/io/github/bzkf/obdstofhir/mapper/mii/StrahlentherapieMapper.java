@@ -9,13 +9,13 @@ import de.basisdatensatz.obds.v3.StrahlendosisTyp;
 import de.basisdatensatz.obds.v3.ZielgebietTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
-import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
@@ -139,8 +139,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (!performed.hasStart()) {
       LOG.warn("Bestrahlung Beginn is unset. Setting data absent extension.");
       var absentDateTime = new DateTimeType();
-      absentDateTime.addExtension(
-          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      absentDateTime.addExtension(DataAbsentReason.unknown());
       performed.setStartElement(absentDateTime);
     }
 
@@ -265,8 +264,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     } else {
       LOG.warn("Bestrahlung Beginn is unset. Setting data absent extension.");
       var absentDateTime = new DateTimeType();
-      absentDateTime.addExtension(
-          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      absentDateTime.addExtension(DataAbsentReason.unknown());
       performed.setStartElement(absentDateTime);
     }
 

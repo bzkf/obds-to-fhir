@@ -3,6 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -257,10 +258,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
 
     if (modulProstata.getCaBefallStanze().getU() != null) {
       var valueQuantity = new Quantity();
-      valueQuantity.addExtension(
-          new Extension()
-              .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-              .setValue(new CodeType("unknown")));
+      valueQuantity.addExtension(DataAbsentReason.unknown());
       observation.setValue(valueQuantity);
     }
 

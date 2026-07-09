@@ -39,7 +39,6 @@ public class FhirProperties {
 
   @Data
   public static class FhirExtensions {
-    private String dataAbsentReason;
     private String miiExOnkoOPIntention;
     private String miiExOnkoStrahlentherapieIntention;
     private String miiExOnkoStrahlentherapieStellungzurop;
