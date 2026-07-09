@@ -38,7 +38,6 @@ public class FhirProperties {
 
   @Data
   public static class FhirExtensions {
-    private String dataAbsentReason;
     private String conditionAssertedDate;
     private String ordinalValue;
     private String conditionOccurredFollowing;

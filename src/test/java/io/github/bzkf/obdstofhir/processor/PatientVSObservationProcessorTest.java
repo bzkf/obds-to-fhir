@@ -14,7 +14,6 @@ import io.github.bzkf.obdstofhir.mapper.mii.MapperTest;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.VitalStatusMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
-import io.github.bzkf.obdstofhir.serde.OnkoPatientSerde;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.function.Function;
@@ -37,6 +36,7 @@ import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @SpringBootTest(
@@ -136,7 +136,8 @@ class PatientVSObservationProcessorTest extends MapperTest {
 
     var builder = new StreamsBuilder();
     final KTable<String, OnkoPatient> stream =
-        builder.table(inputTopic, Consumed.with(Serdes.String(), new OnkoPatientSerde()));
+        builder.table(
+            inputTopic, Consumed.with(Serdes.String(), new JacksonJsonSerde<>(OnkoPatient.class)));
 
     processor.apply(stream).to(outputTopic);
 

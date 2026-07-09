@@ -5,6 +5,7 @@ import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -51,11 +52,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
     procedure.addReasonReference(condition);
 
-    var dataAbsentExtension =
-        new Extension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-    var dataAbsentCode = new CodeType();
-    dataAbsentCode.addExtension(dataAbsentExtension);
+    var dataAbsentExtension = DataAbsentReason.unknown();
 
     if (syst.getBeginn() == null && syst.getEnde() == null) {
       var performedStart = new DateTimeType();

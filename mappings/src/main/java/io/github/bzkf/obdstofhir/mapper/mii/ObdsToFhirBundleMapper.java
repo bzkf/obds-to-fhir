@@ -455,8 +455,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   }
 
   private static <E extends Enum<E>> int prioritiseMeldeanlass(E meldeanlass, E ende) {
-    if (meldeanlass == null) return 0;
-    return meldeanlass.equals(ende) ? 2 : 0; // "ende" at the end, everything else at the front
+    return prioritiseMeldeanlass(meldeanlass, ende, null);
   }
 
   /**

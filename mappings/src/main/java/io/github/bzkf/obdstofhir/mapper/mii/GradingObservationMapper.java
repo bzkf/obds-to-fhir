@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
@@ -95,8 +96,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
             observation::setEffective,
             () -> {
               var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(
-                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              absentDateTime.addExtension(DataAbsentReason.unknown());
               observation.setEffective(absentDateTime);
             });
 

@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.NebenwirkungTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +66,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         var code = new CodeableConcept();
         var nb = nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i);
         if (nb.getArt().getMedDRACode() == null) {
-          code.addExtension()
-              .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-              .setValue(new CodeType("unknown"));
+          code.addExtension(DataAbsentReason.unknown());
           code.setText(nb.getArt().getBezeichnung());
         } else {
           code.addCoding(
@@ -111,9 +110,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     // If the element used to create the AdverseEvent is of type `Grad_maximal_2_unbekannt`,
     // we can't fill the event code with a MedDRA code or similar.
     var code = new CodeableConcept();
-    code.addExtension()
-        .setUrl(fhirProperties.getExtensions().getDataAbsentReason())
-        .setValue(new CodeType("not-applicable"));
+    code.addExtension(DataAbsentReason.notApplicable());
     adverseEvent.setEvent(code);
 
     // seriousness

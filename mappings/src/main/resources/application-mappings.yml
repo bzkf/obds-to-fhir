@@ -1,5 +1,5 @@
 # @ignored
-lib-version: 3.1.2
+lib-version: 3.2.0
 
 fhir:
   codings:
@@ -16,7 +16,6 @@ fhir:
       system: "${fhir.systems.atcBfarm}"
       version: "2025"
   extensions:
-    data-absent-reason: "http://hl7.org/fhir/StructureDefinition/data-absent-reason"
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
     ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
@@ -106,6 +105,8 @@ fhir:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
       enabled: true
+      # -- If enabled, sets Patient.id to the mapped Patient_ID value instead of a hash of the identifier.
+      use-obds-patient-id-as-resource-id: false
     create-provenance-resources:
       # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
       # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.

@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
@@ -89,8 +90,7 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
       LOG.warn(
           "Befundtext is unset for Histologiebefund. Setting data absent extension for conclusion.");
       var absentString = new StringType();
-      absentString.addExtension(
-          fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+      absentString.addExtension(DataAbsentReason.unknown());
       diagnosticReport.setConclusionElement(absentString);
     }
 

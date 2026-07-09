@@ -7,6 +7,7 @@ import de.basisdatensatz.obds.v3.VerlaufTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +91,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
               () -> {
                 LOG.warn("Fernmetastase Diagnosedatum is unset. Setting data absent extension.");
                 var absentDateTime = new DateTimeType();
-                absentDateTime.addExtension(
-                    fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+                absentDateTime.addExtension(DataAbsentReason.unknown());
                 observation.setEffective(absentDateTime);
               });
 
@@ -104,8 +104,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
         observation.setValue(lokalisation);
       } else {
         LOG.warn("Fernmetastase Lokalisation is unset. Setting data absent extension.");
-        lokalisation.addExtension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+        lokalisation.addExtension(DataAbsentReason.unknown());
       }
       observation.setValue(lokalisation);
 

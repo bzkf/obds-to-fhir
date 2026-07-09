@@ -14,8 +14,6 @@ import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
 import io.github.bzkf.obdstofhir.model.MeldungExportV3;
 import io.github.bzkf.obdstofhir.model.ObdsOrAdt;
-import io.github.bzkf.obdstofhir.serde.MeldungExportListV3Serde;
-import io.github.bzkf.obdstofhir.serde.MeldungExportV3Serde;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Serializer;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +28,7 @@ import org.hl7.fhir.r4.model.Condition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -79,7 +78,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
           mapped
               .groupBy(
                   (key, meldung) -> KeyValue.pair(getPatIdFromMeldung(meldung), meldung),
-                  Grouped.with(Serdes.String(), new MeldungExportV3Serde()))
+                  Grouped.with(Serdes.String(), new JacksonJsonSerde<>(MeldungExportV3.class)))
               .aggregate(
                   MeldungExportListV3::new,
                   (key, meldung, aggregate) -> {
@@ -90,7 +89,8 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     aggregate.removeElement(meldung);
                     return retainLatestVersionOnly(aggregate);
                   },
-                  Materialized.with(Serdes.String(), new MeldungExportListV3Serde()))
+                  Materialized.with(
+                      Serdes.String(), new JacksonJsonSerde<>(MeldungExportListV3.class)))
               .toStream()
               .mapValues(this::groupByTumorId);
 

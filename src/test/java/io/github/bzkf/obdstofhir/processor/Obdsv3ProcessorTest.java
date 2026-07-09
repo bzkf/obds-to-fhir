@@ -18,7 +18,6 @@ import io.github.bzkf.obdstofhir.mapper.mii.*;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
 import io.github.bzkf.obdstofhir.model.MeldungExportV3;
-import io.github.bzkf.obdstofhir.serde.MeldungExportV3Serde;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -51,6 +50,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
+import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 
 @SpringBootTest(
@@ -225,7 +225,9 @@ class Obdsv3ProcessorTest extends MapperTest {
 
     var builder = new StreamsBuilder();
     final KTable<String, MeldungExportV3> stream =
-        builder.table(inputTopic, Consumed.with(Serdes.String(), new MeldungExportV3Serde()));
+        builder.table(
+            inputTopic,
+            Consumed.with(Serdes.String(), new JacksonJsonSerde<>(MeldungExportV3.class)));
 
     processor.apply(stream).to(outputTopic);
 

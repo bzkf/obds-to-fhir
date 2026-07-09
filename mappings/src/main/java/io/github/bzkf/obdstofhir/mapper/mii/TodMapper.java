@@ -7,21 +7,17 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
-import java.util.regex.Pattern;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class TodMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(TodMapper.class);
-  private static final Pattern icdVersionPattern =
-      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
 
   public TodMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -117,27 +113,8 @@ public class TodMapper extends ObdsToFhirMapper {
         observation.setId(IdUtils.fromIdentifier(identifier));
 
         // Value | Todesursache(n) ICD10GM
-        var icd10Version = todesursache.getVersion();
-        StringType versionElement = null;
-        if (StringUtils.hasText(icd10Version)) {
-          var matcher = icdVersionPattern.matcher(icd10Version);
-          if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
-            versionElement = new StringType(matcher.group("versionYear"));
-          } else {
-            LOG.warn(
-                "Todesursachen_ICD_Version doesn't match expected format. Expected: '{}', actual: '{}'",
-                icdVersionPattern.pattern(),
-                icd10Version);
-          }
-        } else {
-          LOG.debug("Todesursachen_ICD_Version is unset or contains only whitespaces");
-        }
-
-        if (versionElement == null) {
-          versionElement = new StringType();
-          versionElement.addExtension(
-              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-        }
+        var versionElement =
+            extractIcdVersionYear(todesursache.getVersion(), "Todesursachen_ICD_Version", LOG);
 
         var todesursacheConcept = new CodeableConcept();
         todesursacheConcept

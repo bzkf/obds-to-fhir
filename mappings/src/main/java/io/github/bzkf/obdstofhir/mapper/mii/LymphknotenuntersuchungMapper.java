@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.*;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,8 +164,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
           LOG.warn(
               "TumorHistologiedatum is unset. Setting data absent extension for Observation.effective.");
           var absentDateTime = new DateTimeType();
-          absentDateTime.addExtension(
-              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+          absentDateTime.addExtension(DataAbsentReason.unknown());
           observation.setEffective(absentDateTime);
         });
 

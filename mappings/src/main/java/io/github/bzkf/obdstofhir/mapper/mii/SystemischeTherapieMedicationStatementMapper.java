@@ -8,6 +8,7 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
@@ -112,8 +113,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
           var absentCodeableConcept = new CodeableConcept();
           absentCodeableConcept.setText(substanz.getBezeichnung());
           var absentCode = new CodeType();
-          absentCode.addExtension(
-              fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("as-text"));
+          absentCode.addExtension(DataAbsentReason.asText());
           absentCodeableConcept
               .addCoding()
               .setSystem(fhirProperties.getSystems().getAtcBfarm())
@@ -144,11 +144,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
         var absentCodeableConcept = new CodeableConcept();
         var absentCode = fhirProperties.getCodings().snomed();
-        absentCode
-            .getCodeElement()
-            .addExtension(
-                fhirProperties.getExtensions().getDataAbsentReason(),
-                new CodeType("not-applicable"));
+        absentCode.getCodeElement().addExtension(DataAbsentReason.notApplicable());
         absentCodeableConcept.addCoding(absentCode);
         medication.addIngredient().setItem(absentCodeableConcept);
 

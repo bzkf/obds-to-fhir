@@ -7,6 +7,7 @@ import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.Fruehe
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.hl7.fhir.r4.model.CodeType;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
@@ -22,7 +22,6 @@ import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
-import org.hl7.fhir.r4.model.StringType;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,28 +88,8 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
         && StringUtils.hasText(fruehereTumorerkrankung.getICD().getCode())) {
       icd.setCode(fruehereTumorerkrankung.getICD().getCode());
       var icd10Version = fruehereTumorerkrankung.getICD().getVersion();
-      StringType versionElement = null;
-      if (StringUtils.hasText(icd10Version)) {
-        var matcher = ConditionMapper.ICD_VERSION_PATTERN.matcher(icd10Version);
-        if (matcher.matches() && StringUtils.hasText(matcher.group("versionYear"))) {
-          versionElement = new StringType(matcher.group("versionYear"));
-        } else {
-          LOG.debug(
-              "Unable to extract year from ICD_Version via RegEx '{}', actual: '{}'",
-              ConditionMapper.ICD_VERSION_PATTERN.pattern(),
-              icd10Version);
-        }
-      } else {
-        LOG.debug("Fruehere_Tumorerkrankung ICD_Version is unset or contains only whitespaces");
-      }
-
-      if (versionElement == null) {
-        versionElement = new StringType();
-        versionElement.addExtension(
-            fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
-      }
-
-      icd.setVersionElement(versionElement);
+      icd.setVersionElement(
+          extractIcdVersionYear(icd10Version, "Fruehere_Tumorerkrankung ICD_Version", LOG));
       // Condition.code.text always has to be set, either to the ICD code or to the free text (see
       // below)
       condition.setCode(new CodeableConcept(icd).setText(icd.getCode()));
@@ -133,8 +112,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             () -> {
               LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
               var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(
-                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.addExtension(
                   fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
             });
@@ -145,8 +123,7 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             () -> {
               LOG.warn("MeldeDatum is unset. Setting data absent extension.");
               var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(
-                  fhirProperties.getExtensions().getDataAbsentReason(), new CodeType("unknown"));
+              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.setRecordedDateElement(absentDateTime);
             });
 

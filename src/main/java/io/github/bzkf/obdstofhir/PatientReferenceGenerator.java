@@ -17,6 +17,7 @@ import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import io.github.bzkf.obdstofhir.patientreference.FhirServerLookupPatientReferenceStrategy;
 import io.github.bzkf.obdstofhir.patientreference.IdentifierPseudonymizer;
 import io.github.bzkf.obdstofhir.patientreference.Md5HashedPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.OAuth2ClientCredentialsAuthInterceptor;
 import io.github.bzkf.obdstofhir.patientreference.PatientReferenceStrategy;
 import io.github.bzkf.obdstofhir.patientreference.PlainPatientIdReferenceStrategy;
 import io.github.bzkf.obdstofhir.patientreference.RecordIdDatabaseLookupPatientReferenceStrategy;
@@ -179,11 +180,22 @@ public class PatientReferenceGenerator {
     fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
     var client = fhirContext.newRestfulGenericClient(fhirServerConfig.baseUrl().toString());
 
-    if (fhirServerConfig.auth().basic().enabled()) {
+    var basicAuth = fhirServerConfig.auth().basic();
+    var oauth2 = fhirServerConfig.auth().oauth2();
+
+    if (basicAuth.enabled() && oauth2.enabled()) {
+      throw new IllegalArgumentException(
+          "Only one of fhir-server.auth.basic or fhir-server.auth.oauth2 can be enabled at the"
+              + " same time.");
+    }
+
+    if (basicAuth.enabled()) {
       client.registerInterceptor(
-          new BasicAuthInterceptor(
-              fhirServerConfig.auth().basic().username(),
-              fhirServerConfig.auth().basic().password()));
+          new BasicAuthInterceptor(basicAuth.username(), basicAuth.password()));
+    } else if (oauth2.enabled()) {
+      client.registerInterceptor(
+          new OAuth2ClientCredentialsAuthInterceptor(
+              oauth2.tokenUrl(), oauth2.clientId(), oauth2.clientSecret(), oauth2.scope()));
     }
 
     return client;
