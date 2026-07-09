@@ -6,11 +6,13 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @SpringBootTest(classes = {FhirProperties.class})
 @EnableConfigurationProperties
@@ -41,5 +43,24 @@ class PatientMapperTest extends MapperTest {
     final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
 
     verify(patient, sourceFile);
+  }
+
+  @Test
+  void map_withUseObdsPatientIdAsResourceIdEnabled_shouldSetPatientIdToObdsPatientId()
+      throws IOException {
+    ReflectionTestUtils.setField(sut, "useObdsPatientIdAsResourceId", true);
+    try {
+      final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+      assertThat(resource).isNotNull();
+
+      final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+      var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+
+      final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
+
+      assertThat(patient.getIdElement().getIdPart()).isEqualTo(obdsPatient.getPatientID());
+    } finally {
+      ReflectionTestUtils.setField(sut, "useObdsPatientIdAsResourceId", false);
+    }
   }
 }

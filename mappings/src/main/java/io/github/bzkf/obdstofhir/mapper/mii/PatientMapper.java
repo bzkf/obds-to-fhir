@@ -9,9 +9,11 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
+import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,6 +23,9 @@ public class PatientMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(PatientMapper.class);
   private final Map<PatientenStammdatenMelderTyp.Geschlecht, Enumerations.AdministrativeGender>
       genderMap;
+
+  @Value("${fhir.mappings.create-patient-resources.use-obds-patient-id-as-resource-id:false}")
+  private boolean useObdsPatientIdAsResourceId;
 
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -68,7 +73,7 @@ public class PatientMapper extends ObdsToFhirMapper {
             .setType(mrTypeConcept);
 
     patient.addIdentifier(identifier);
-    patient.setId(IdUtils.fromIdentifier(identifier));
+    patient.setId(resolvePatientId(obdsPatient, identifier));
 
     patient.setGender(
         genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
@@ -132,5 +137,11 @@ public class PatientMapper extends ObdsToFhirMapper {
     }
 
     return patient;
+  }
+
+  private IIdType resolvePatientId(OBDS.MengePatient.Patient obdsPatient, Identifier identifier) {
+    return useObdsPatientIdAsResourceId
+        ? new IdType(obdsPatient.getPatientID())
+        : IdUtils.fromIdentifier(identifier);
   }
 }

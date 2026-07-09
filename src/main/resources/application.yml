@@ -1,5 +1,5 @@
 # @ignored
-app-version: 3.1.2
+app-version: 3.2.0
 
 # @ignored
 app:
@@ -33,6 +33,8 @@ fhir:
       # in the bundle is overridden to refer to Patient.id (the locally-computed hash-based ID).
       # The logical references to the Patient via the identifier are preserved.
       if-already-exists: false
+      # -- If enabled, sets Patient.id to the mapped Patient_ID value instead of a hash of the identifier.
+      use-obds-patient-id-as-resource-id: false
     create-provenance-resources:
       # -- Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what
       # of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID.
@@ -58,6 +60,18 @@ fhir:
             username: ""
             # -- the password
             password: ""
+          oauth2:
+            # -- use OAuth2 client credentials grant authentication for FHIR server authentication.
+            # Mutually exclusive with `auth.basic`.
+            enabled: false
+            # -- the URL of the OAuth2/OIDC token endpoint. E.g. `https://auth.example.com/realms/example/protocol/openid-connect/token`
+            token-url: ""
+            # -- the OAuth2 client id
+            client-id: ""
+            # -- the OAuth2 client secret
+            client-secret: ""
+            # -- the OAuth2 scope(s) to request, space-separated. Optional, may be left empty.
+            scope: ""
       pseudonymize-patient-id:
         # -- if enabled, before looking up the Patient resource from its identifier, the oBDS Patient_ID
         # is first pseudonymized using the FHIR Pseudonymizer service at the `fhir-pseudonymizer.base-url`
