@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.TNMTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -93,7 +94,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-T";
       var tKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmTKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmTKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmTKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -112,7 +113,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-N";
       var nKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmNKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmNKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmNKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -131,7 +132,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-M";
       var mKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmMKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmMKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmMKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -150,7 +151,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-a";
       var aSymbolObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmASymbol(),
+              Onkologie.Profiles.miiPrOnkoTnmASymbol(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmASymbolObservationId(),
               tnmTyp.getVersion(),
@@ -168,7 +169,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-m";
       var mSymbolObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmMSymbol(),
+              Onkologie.Profiles.miiPrOnkoTnmMSymbol(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmMSymbolObservationId(),
               tnmTyp.getVersion(),
@@ -185,7 +186,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-L";
       var lKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmLKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmLKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmLKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -204,7 +205,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-Pn";
       var pnKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmPnKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmPnKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmPnKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -223,7 +224,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-r";
       var rSymbolObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmRSymbol(),
+              Onkologie.Profiles.miiPrOnkoTnmRSymbol(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmRSymbolObservationId(),
               tnmTyp.getVersion(),
@@ -241,7 +242,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-S";
       var sKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmSKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmSKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmSKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -258,7 +259,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-V";
       var vKategorieObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmVKategorie(),
+              Onkologie.Profiles.miiPrOnkoTnmVKategorie(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmVKategorieObservationId(),
               tnmTyp.getVersion(),
@@ -277,7 +278,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       String identifierValue = idBase + "-y";
       var ySymbolObservation =
           createTNMBaseResource(
-              fhirProperties.getProfiles().getMiiPrOnkoTnmYSymbol(),
+              Onkologie.Profiles.miiPrOnkoTnmYSymbol(),
               identifierValue,
               fhirProperties.getSystems().getIdentifiers().getTnmYSymbolObservationId(),
               tnmTyp.getVersion(),
@@ -431,37 +432,37 @@ public class TNMMapper extends ObdsToFhirMapper {
         new CodeableConcept(
             new Coding()
                 .setCode(processedValue)
-                .setSystem(fhirProperties.getSystems().getTnmUicc()));
+                .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()));
 
     if (extractedSuffixes.contains("sn")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmSnSuffix())
+              .setUrl(Onkologie.Extensions.miiExOnkoTnmSnSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
                           .setCode("sn")
-                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
     }
     if (extractedSuffixes.contains("i+")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmItcSuffix())
+              .setUrl(Onkologie.Extensions.miiExOnkoTnmItcSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
                           .setCode("i+")
-                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
     }
     if (extractedSuffixes.contains("i-")) {
       codeableConcept.addExtension(
           new Extension()
-              .setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmItcSuffix())
+              .setUrl(Onkologie.Extensions.miiExOnkoTnmItcSuffix())
               .setValue(
                   new CodeableConcept(
                       new Coding()
                           .setCode("i-")
-                          .setSystem(fhirProperties.getSystems().getTnmUicc()))));
+                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
     }
 
     return codeableConcept;
@@ -475,7 +476,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   private CodeableConcept getCodeableConceptTnmUicc(String tnmValue) {
 
     return new CodeableConcept(
-        new Coding().setSystem(fhirProperties.getSystems().getTnmUicc()).setCode(tnmValue));
+        new Coding().setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()).setCode(tnmValue));
   }
 
   private CodeableConcept getCodeableConceptLoinc(String loincCode, String display) {
@@ -484,11 +485,10 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {
-    var extension =
-        new Extension().setUrl(fhirProperties.getExtensions().getMiiExOnkoTnmCpPraefix());
+    var extension = new Extension().setUrl(Onkologie.Extensions.miiExOnkoTnmCpPraefix());
     extension.setValue(
         new CodeableConcept(
-            new Coding().setCode(cpuPraefixN).setSystem(fhirProperties.getSystems().getTnmUicc())));
+            new Coding().setCode(cpuPraefixN).setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc())));
     return extension;
   }
 
@@ -502,8 +502,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
 
-    observation.setMeta(
-        new Meta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoTnmKlassifikation()));
+    observation.setMeta(new Meta().addProfile(Onkologie.Profiles.miiPrOnkoTnmKlassifikation()));
 
     var identifier =
         new Identifier()
@@ -540,9 +539,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private CodeableConcept getObservationMethod(String tnmVersion) {
     var method =
-        new Coding()
-            .setCode(tnmVersion)
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTnmVersion());
+        new Coding().setCode(tnmVersion).setSystem(Onkologie.CodeSystems.miiCsOnkoTnmVersion());
 
     return new CodeableConcept(method);
   }
@@ -570,7 +567,7 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private CodeableConcept getObservationValueUiccStadium(String uiccStadium) {
 
-    var coding = new Coding().setSystem(fhirProperties.getSystems().getTnmUicc());
+    var coding = new Coding().setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc());
 
     return switch (uiccStadium) {
       case "okk" -> new CodeableConcept(coding.setCode("okk").setDisplay("Stadium X"));

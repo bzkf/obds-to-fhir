@@ -7,6 +7,7 @@ import de.basisdatensatz.obds.v3.STTyp.MengeBestrahlung.Bestrahlung.Applikations
 import de.basisdatensatz.obds.v3.SeiteZielgebietTyp;
 import de.basisdatensatz.obds.v3.StrahlendosisTyp;
 import de.basisdatensatz.obds.v3.ZielgebietTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -113,7 +114,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     }
 
     var procedure = new Procedure();
-    procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie());
+    procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoStrahlentherapie());
 
     var identifier =
         new Identifier()
@@ -151,30 +152,22 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     procedure.setCode(categoryAndCode.code());
 
     if (st.getEndeGrund() != null) {
-      var outcome =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieEndeGrund())
-              .setCode(st.getEndeGrund());
-      procedure.setOutcome(new CodeableConcept(outcome));
+      var outcome = Onkologie.CodeSystems.MiiCsOnkoTherapieEndeGrund.fromValue(st.getEndeGrund());
+      procedure.setOutcome(new CodeableConcept(outcome.coding()));
     }
 
-    var intention =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-            .setCode(st.getIntention());
+    var intention = Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(st.getIntention());
     procedure
         .addExtension()
-        .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieIntention())
-        .setValue(new CodeableConcept(intention));
+        .setUrl(Onkologie.Extensions.miiExOnkoStrahlentherapieIntention())
+        .setValue(new CodeableConcept(intention.coding()));
 
     var stellungZurOp =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieStellungzurop())
-            .setCode(st.getStellungOP());
+        Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValue(st.getStellungOP());
     procedure
         .addExtension()
-        .setUrl(fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieStellungzurop())
-        .setValue(new CodeableConcept(stellungZurOp));
+        .setUrl(Onkologie.Extensions.miiExOnkoStrahlentherapieStellungzurop())
+        .setValue(new CodeableConcept(stellungZurOp.coding()));
 
     var mainStrahlentherapieProcedureReference =
         new Reference(procedure.getResourceType().name() + "/" + procedure.getId());
@@ -216,15 +209,11 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (bestrahlung.getApplikationsart().getMetabolisch() != null) {
       procedure
           .getMeta()
-          .addProfile(
-              fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapieBestrahlungNuklearmedizin());
+          .addProfile(Onkologie.Profiles.miiPrOnkoStrahlentherapieBestrahlungNuklearmedizin());
     } else {
       procedure
           .getMeta()
-          .addProfile(
-              fhirProperties
-                  .getProfiles()
-                  .getMiiPrOnkoStrahlentherapieBestrahlungStrahlentherapie());
+          .addProfile(Onkologie.Profiles.miiPrOnkoStrahlentherapieBestrahlungStrahlentherapie());
     }
 
     var identifier =
@@ -280,17 +269,17 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     // usedCode
     if (bestrahlungsData.strahlenart() != null) {
       var strahlenartCoding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieStrahlenart())
-              .setCode(bestrahlungsData.strahlenart());
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieStrahlenart.fromValue(
+                  bestrahlungsData.strahlenart())
+              .coding();
       procedure.addUsedCode(new CodeableConcept(strahlenartCoding));
     }
 
     if (bestrahlungsData.applikationsart() != null) {
       var applikationsartCoding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieApplikationsart())
-              .setCode(bestrahlungsData.applikationsart().getCode());
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieApplikationsart.fromValue(
+                  bestrahlungsData.applikationsart().getCode())
+              .coding();
       procedure.addExtension(
           fhirProperties.getExtensions().getProcedureMethod(),
           new CodeableConcept(applikationsartCoding));
@@ -300,7 +289,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (bestrahlungsData.zielgebiet() != null) {
       var bodySiteCoding =
           new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieZielgebiet())
+              .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet())
               .setCode(bestrahlungsData.zielgebiet());
 
       procedure.addBodySite(new CodeableConcept(bodySiteCoding));
@@ -310,16 +299,13 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     // set, we still create a bodySite element with just that extension.
     if (bestrahlungsData.seiteZielgebiet() != null) {
       var sideCoding =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoSeitenlokalisation())
-              .setCode(bestrahlungsData.seiteZielgebiet().value());
+          Onkologie.CodeSystems.MiiCsOnkoSeitenlokalisation.fromValue(
+                  bestrahlungsData.seiteZielgebiet().value())
+              .coding();
       procedure
           .getBodySiteFirstRep()
           .addExtension()
-          .setUrl(
-              fhirProperties
-                  .getExtensions()
-                  .getMiiExOnkoStrahlentherapieBestrahlungSeitenlokalisation())
+          .setUrl(Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungSeitenlokalisation())
           .setValue(new CodeableConcept(sideCoding));
     }
 
@@ -439,8 +425,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
               .setCode(gesamtdosis.getEinheit());
       extensions.add(
           new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
-              value));
+              Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungGesamtdosis(), value));
     }
 
     var einzeldosis = data.einzeldosis();
@@ -453,20 +438,16 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
               .setCode(einzeldosis.getEinheit());
       extensions.add(
           new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
-              value));
+              Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungEinzeldosis(), value));
     }
 
     var boost = data.boost();
     if (boost != null) {
-      var value =
-          new Coding()
-              .setSystem(fhirProperties.getSystems().getMiiCsOnkoStrahlentherapieBoost())
-              .setCode(boost.value());
+      var value = Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieBoost.fromValue(boost.value());
       extensions.add(
           new Extension(
-              fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungBoost(),
-              new CodeableConcept(value)));
+              Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungBoost(),
+              new CodeableConcept(value.coding())));
     }
 
     // extra handling for metabolisch, quite ugly, should instead be moved to a
@@ -483,8 +464,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
                 .setCode(metabolisch.getEinzeldosis().getEinheit());
         extensions.add(
             new Extension(
-                fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungEinzeldosis(),
-                value));
+                Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungEinzeldosis(), value));
       }
 
       if (metabolisch.getGesamtdosis() != null) {
@@ -497,8 +477,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
         extensions.add(
             new Extension(
-                fhirProperties.getExtensions().getMiiExOnkoStrahlentherapieBestrahlungGesamtdosis(),
-                value));
+                Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungGesamtdosis(), value));
       }
     }
 

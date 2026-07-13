@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.NebenwirkungTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -79,11 +80,10 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
 
         // seriousness
         var seriousness =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getMiiCsOnkoNebenwirkungCtcaeGrad())
-                    .setCode(nb.getGrad())
-                    .setDisplay(""));
+            new CodeableConcept()
+                .addCoding(
+                    Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValue(nb.getGrad())
+                        .coding());
         adverseEvent.setSeriousness(seriousness);
         adverseEvents.add(adverseEvent);
       }
@@ -115,20 +115,18 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
 
     // seriousness
     var seriousness =
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getMiiCsOnkoNebenwirkungCtcaeGrad())
-                .setCode(nebenwirkung.getGradMaximal2OderUnbekannt())
-                .setDisplay(""));
+        new CodeableConcept()
+            .addCoding(
+                Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValue(
+                        nebenwirkung.getGradMaximal2OderUnbekannt())
+                    .coding());
     adverseEvent.setSeriousness(seriousness);
     return adverseEvent;
   }
 
   private AdverseEvent createAdverseEventBase(Reference patient, Reference suspectedEntity) {
     var adverseEvent = new AdverseEvent();
-    adverseEvent
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoNebenwirkungAdverseEvent());
+    adverseEvent.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoNebenwirkungAdverseEvent());
     adverseEvent.setActuality(AdverseEvent.AdverseEventActuality.ACTUAL);
     adverseEvent.setSubject(patient);
     adverseEvent.addSuspectEntity(

@@ -15,6 +15,7 @@ import de.basisdatensatz.obds.v3.STTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
@@ -325,7 +326,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           if (st.getNebenwirkungen() != null) {
             // in the list of procedures, find the primary/bracket one by cehcking its
             // profile. It's the one the AdverseEvent should reference.
-            var stProfile = fhirProperties.getProfiles().getMiiPrOnkoStrahlentherapie();
+            var stProfile = Onkologie.Profiles.miiPrOnkoStrahlentherapie();
             var primaryProcedure =
                 stProcedure.stream()
                     .filter(

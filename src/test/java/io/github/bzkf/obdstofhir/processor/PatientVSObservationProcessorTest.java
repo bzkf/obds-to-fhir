@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.MapperTest;
 import io.github.bzkf.obdstofhir.mapper.mii.TodMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.VitalStatusMapper;
 import io.github.bzkf.obdstofhir.model.OnkoPatient;
@@ -48,7 +49,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
       PatientReferenceGenerator.class
     })
 @EnableConfigurationProperties(value = {FhirProperties.class})
-class PatientVSObservationProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
+class PatientVSObservationProcessorTest extends MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "patient-table";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";

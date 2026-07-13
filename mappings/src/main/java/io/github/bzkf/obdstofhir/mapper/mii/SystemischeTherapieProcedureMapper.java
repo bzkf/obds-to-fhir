@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.SYSTTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp.Therapieart;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -30,7 +31,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     verifyReference(condition, ResourceType.Condition);
 
     var procedure = new Procedure();
-    procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoSystemischeTherapie());
+    procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoSystemischeTherapie());
 
     var identifier =
         new Identifier()
@@ -80,10 +81,9 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       }
 
       var therapieartCodeableConcept = procedure.getCode();
-      therapieartCodeableConcept
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoSystemischeTherapieArt())
-          .setCode(syst.getTherapieart().value());
+      therapieartCodeableConcept.addCoding(
+          Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValue(syst.getTherapieart().value())
+              .coding());
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
       var absentOpsCoding = fhirProperties.getCodings().ops();
@@ -99,29 +99,26 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.addUsedCode().setText(syst.getProtokoll());
     }
 
-    var intention = new CodeableConcept();
-    intention
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-        .setCode(syst.getIntention()); // Direct mapping from oBDS value
-    procedure.addExtension(
-        fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieIntention(), intention);
+    var intention =
+        new CodeableConcept()
+            .addCoding(
+                Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(syst.getIntention()).coding());
+    procedure.addExtension(Onkologie.Extensions.miiExOnkoSystemischeTherapieIntention(), intention);
 
     var stellungZurOp =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieStellungzurop())
-            .setCode(syst.getStellungOP());
+        Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValue(syst.getStellungOP());
     procedure
         .addExtension()
-        .setUrl(fhirProperties.getExtensions().getMiiExOnkoSystemischeTherapieStellungzurop())
-        .setValue(new CodeableConcept(stellungZurOp));
+        .setUrl(Onkologie.Extensions.miiExOnkoSystemischeTherapieStellungzurop())
+        .setValue(new CodeableConcept(stellungZurOp.coding()));
 
     if (null != syst.getEndeGrund()) {
-      var outcome = new CodeableConcept();
-      outcome
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoTherapieEndeGrund())
-          .setCode(syst.getEndeGrund().value());
+      var outcome =
+          new CodeableConcept()
+              .addCoding(
+                  Onkologie.CodeSystems.MiiCsOnkoTherapieEndeGrund.fromValue(
+                          syst.getEndeGrund().value())
+                      .coding());
       procedure.setOutcome(outcome);
     }
 

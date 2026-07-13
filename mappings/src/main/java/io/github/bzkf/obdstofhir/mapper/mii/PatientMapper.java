@@ -4,6 +4,7 @@ import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
+import de.medizininformatikinitiative.kerndatensatz.base.Base;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -46,7 +47,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       OBDS.MengePatient.Patient obdsPatient,
       List<OBDS.MengePatient.Patient.MengeMeldung.Meldung> meldungen) {
     var patient = new Patient();
-    patient.getMeta().addProfile(fhirProperties.getProfiles().getMiiPatientPseudonymisiert());
+    patient.getMeta().addProfile(Base.Profiles.miiPrPersonPatientPseudonymisiert());
 
     if (!StringUtils.hasText(obdsPatient.getPatientID())) {
       throw new IllegalArgumentException("Patient ID is unset.");

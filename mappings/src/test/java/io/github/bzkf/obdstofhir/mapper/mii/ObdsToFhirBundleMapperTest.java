@@ -6,16 +6,12 @@ import ca.uhn.fhir.context.FhirContext;
 import com.github.difflib.text.DiffRowGenerator;
 import com.spun.util.introspection.Caller;
 import de.basisdatensatz.obds.v3.OBDS;
-import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
-import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
-import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
-import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
-import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import org.approvaltests.Approvals;
+import org.approvaltests.scrubbers.Scrubbers;
 import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -26,43 +22,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 
-@SpringBootTest(
-    classes = {
-      FhirProperties.class,
-      ObdsToFhirBundleMapper.class,
-      PatientMapper.class,
-      ConditionMapper.class,
-      SystemischeTherapieProcedureMapper.class,
-      SystemischeTherapieMedicationStatementMapper.class,
-      StrahlentherapieMapper.class,
-      TodMapper.class,
-      LeistungszustandMapper.class,
-      OperationMapper.class,
-      ResidualstatusMapper.class,
-      HistologiebefundMapper.class,
-      FernmetastasenMapper.class,
-      GradingObservationMapper.class,
-      LymphknotenuntersuchungMapper.class,
-      SpecimenMapper.class,
-      VerlaufshistologieObservationMapper.class,
-      StudienteilnahmeObservationMapper.class,
-      VerlaufObservationMapper.class,
-      GenetischeVarianteMapper.class,
-      TumorkonferenzMapper.class,
-      TNMMapper.class,
-      GleasonScoreMapper.class,
-      ModulProstataMapper.class,
-      WeitereKlassifikationMapper.class,
-      ErstdiagnoseEvidenzListMapper.class,
-      NebenwirkungMapper.class,
-      SubstanzToAtcMapper.class,
-      WeitereKlassifikationCodingMapper.class,
-      ProfileTestConfig.class,
-      FruehereTumorerkrankungenMapper.class,
-      ProvenanceMapper.class,
-      VitalStatusMapper.class,
-      DeviceMapper.class,
-    })
+@SpringBootTest(classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class})
 @EnableConfigurationProperties
 @Configuration
 class ObdsToFhirBundleMapperTest extends MapperTest {
@@ -115,6 +75,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
           fhirJson,
           Approvals.NAMES
               .withParameters("")
+              .withScrubber(PROFILE_VERSION_SCRUBBER)
               .forFile()
               .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
               .forFile()
@@ -170,42 +131,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
   }
 
   @SpringBootTest(
-      classes = {
-        FhirProperties.class,
-        ObdsToFhirBundleMapper.class,
-        PatientMapper.class,
-        ConditionMapper.class,
-        SystemischeTherapieProcedureMapper.class,
-        SystemischeTherapieMedicationStatementMapper.class,
-        StrahlentherapieMapper.class,
-        TodMapper.class,
-        LeistungszustandMapper.class,
-        OperationMapper.class,
-        ResidualstatusMapper.class,
-        HistologiebefundMapper.class,
-        FernmetastasenMapper.class,
-        GradingObservationMapper.class,
-        LymphknotenuntersuchungMapper.class,
-        SpecimenMapper.class,
-        VerlaufshistologieObservationMapper.class,
-        StudienteilnahmeObservationMapper.class,
-        VerlaufObservationMapper.class,
-        GenetischeVarianteMapper.class,
-        TumorkonferenzMapper.class,
-        TNMMapper.class,
-        GleasonScoreMapper.class,
-        ModulProstataMapper.class,
-        WeitereKlassifikationMapper.class,
-        ErstdiagnoseEvidenzListMapper.class,
-        NebenwirkungMapper.class,
-        SubstanzToAtcMapper.class,
-        WeitereKlassifikationCodingMapper.class,
-        ProfileTestConfig.class,
-        FruehereTumorerkrankungenMapper.class,
-        ProvenanceMapper.class,
-        DeviceMapper.class,
-        VitalStatusMapper.class,
-      },
+      classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class},
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
   @EnableConfigurationProperties
   @Configuration
@@ -243,7 +169,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
             fhirJson,
             Approvals.NAMES
                 .withParameters("")
-                .withScrubber(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER)
+                .withScrubber(
+                    Scrubbers.scrubAll(
+                        ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER))
                 .forFile()
                 .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
                 .forFile()
@@ -253,42 +181,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
   }
 
   @SpringBootTest(
-      classes = {
-        FhirProperties.class,
-        ObdsToFhirBundleMapper.class,
-        PatientMapper.class,
-        ConditionMapper.class,
-        SystemischeTherapieProcedureMapper.class,
-        SystemischeTherapieMedicationStatementMapper.class,
-        StrahlentherapieMapper.class,
-        TodMapper.class,
-        LeistungszustandMapper.class,
-        OperationMapper.class,
-        ResidualstatusMapper.class,
-        HistologiebefundMapper.class,
-        FernmetastasenMapper.class,
-        GradingObservationMapper.class,
-        LymphknotenuntersuchungMapper.class,
-        SpecimenMapper.class,
-        VerlaufshistologieObservationMapper.class,
-        StudienteilnahmeObservationMapper.class,
-        VerlaufObservationMapper.class,
-        GenetischeVarianteMapper.class,
-        TumorkonferenzMapper.class,
-        TNMMapper.class,
-        GleasonScoreMapper.class,
-        ModulProstataMapper.class,
-        WeitereKlassifikationMapper.class,
-        ErstdiagnoseEvidenzListMapper.class,
-        NebenwirkungMapper.class,
-        SubstanzToAtcMapper.class,
-        WeitereKlassifikationCodingMapper.class,
-        ProfileTestConfig.class,
-        FruehereTumorerkrankungenMapper.class,
-        ProvenanceMapper.class,
-        DeviceMapper.class,
-        VitalStatusMapper.class,
-      },
+      classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class},
       properties = "fhir.mappings.patient-id-regex=^(\\\\d)\\\\d*$")
   @EnableConfigurationProperties
   @Configuration
@@ -325,7 +218,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
             fhirJson,
             Approvals.NAMES
                 .withParameters("")
-                .withScrubber(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER)
+                .withScrubber(
+                    Scrubbers.scrubAll(
+                        ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER))
                 .forFile()
                 .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
                 .forFile()

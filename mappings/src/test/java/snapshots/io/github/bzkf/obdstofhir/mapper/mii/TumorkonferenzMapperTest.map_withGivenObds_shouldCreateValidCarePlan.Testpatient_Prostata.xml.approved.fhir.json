@@ -13,7 +13,8 @@
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-      "code": "praeth"
+      "code": "praeth",
+      "display": "prätherapeutische Tumorkonferenz (Festlegung der Therapiestrategie)"
     } ]
   } ],
   "subject": {
@@ -28,14 +29,16 @@
       "code": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "OP"
+          "code": "OP",
+          "display": "Operation"
         } ]
       },
       "status": "unknown",
       "statusReason": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       }
     }
@@ -44,14 +47,16 @@
       "code": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "ST"
+          "code": "ST",
+          "display": "Strahlentherapie"
         } ]
       },
       "status": "unknown",
       "statusReason": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-          "code": "U"
+          "code": "U",
+          "display": "unbekannt"
         } ]
       }
     }

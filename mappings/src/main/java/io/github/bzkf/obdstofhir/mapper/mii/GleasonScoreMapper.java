@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -13,10 +14,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -137,9 +138,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @NonNull List<Reference> derivedFromReferences,
       @Nullable XMLGregorianCalendar referenceDate) {
     var observation = new Observation();
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateGleasonGradeGroup());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateGleasonGradeGroup());
 
     observation.setSubject(patient);
     observation.addFocus(condition);
@@ -275,9 +274,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @Nullable XMLGregorianCalendar referenceDate) {
     var results = new ArrayList<Observation>();
     var observation = new Observation();
-    observation
-        .getMeta()
-        .addProfile(fhirProperties.getProfiles().getMiiPrOnkoProstateGleasonPatterns());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateGleasonPatterns());
 
     observation.setSubject(patient);
     observation.addFocus(condition);

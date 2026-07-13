@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.HistologieTyp;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -34,7 +35,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     var observation = new Observation();
     // Meta
-    observation.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoGrading());
+    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoGrading());
 
     var identifierValue = histologie.getHistologieID();
     if (!StringUtils.hasText(identifierValue)) {
@@ -59,7 +60,8 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // category
     var laboratory =
         new CodeableConcept(
-            new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
+            new Coding(
+                fhirProperties.getSystems().getObservationCategory(), "laboratory", "Laboratory"));
     observation.addCategory(laboratory);
 
     // code
@@ -100,9 +102,9 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
 
     // value
     var value =
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getMiiCsOnkoGrading(), histologie.getGrading(), ""));
+        new CodeableConcept()
+            .addCoding(
+                Onkologie.CodeSystems.MiiCsOnkoGrading.fromValue(histologie.getGrading()).coding());
     observation.setValue(value);
 
     return observation;

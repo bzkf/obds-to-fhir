@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.OPTyp.MengeOPS.OPS;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -85,7 +86,7 @@ public class OperationMapper extends ObdsToFhirMapper {
             .setValue(slugifier.slugify(op.getOPID()));
     parentProcedure.addIdentifier(parentIdentifer);
     parentProcedure.setId(IdUtils.fromIdentifier(parentIdentifer));
-    parentProcedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
+    parentProcedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoOperation());
     parentProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
 
     parentProcedure.setCode(
@@ -109,15 +110,14 @@ public class OperationMapper extends ObdsToFhirMapper {
     parentProcedure.addReasonReference(condition);
 
     // intention
-    var intention = new CodeableConcept();
-    intention
-        .addCoding()
-        .setSystem(fhirProperties.getSystems().getMiiCsOnkoIntention())
-        .setCode(op.getIntention());
+    var intention =
+        new CodeableConcept()
+            .addCoding(
+                Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(op.getIntention()).coding());
 
     var intentionExtens =
         new Extension()
-            .setUrl(fhirProperties.getExtensions().getMiiExOnkoOPIntention())
+            .setUrl(Onkologie.Extensions.miiExOnkoOperationIntention())
             .setValue(intention);
 
     parentProcedure.addExtension(intentionExtens);
@@ -125,11 +125,12 @@ public class OperationMapper extends ObdsToFhirMapper {
     if (op.getResidualstatus() != null
         && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
       // outcome
-      var outcome = new CodeableConcept();
-      outcome
-          .addCoding()
-          .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
-          .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+      var outcome =
+          new CodeableConcept()
+              .addCoding(
+                  Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                          op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
+                      .coding());
 
       parentProcedure.setOutcome(outcome);
     }
@@ -147,7 +148,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.addIdentifier(identifier);
       procedure.setId(IdUtils.fromIdentifier(identifier));
 
-      procedure.getMeta().addProfile(fhirProperties.getProfiles().getMiiPrOnkoOperation());
+      procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoOperation());
 
       // status
       procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
@@ -219,11 +220,12 @@ public class OperationMapper extends ObdsToFhirMapper {
       if (op.getResidualstatus() != null
           && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
         // outcome
-        var outcome = new CodeableConcept();
-        outcome
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getMiiCsOnkoOperationResidualstatus())
-            .setCode(op.getResidualstatus().getLokaleBeurteilungResidualstatus().value());
+        var outcome =
+            new CodeableConcept()
+                .addCoding(
+                    Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                            op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
+                        .coding());
 
         procedure.setOutcome(outcome);
       }

@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.*;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
@@ -50,7 +51,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       result.add(
           createObservation(
               identifierValueBase + "-befallen",
-              fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneLymphknoten(),
+              Onkologie.Profiles.miiPrOnkoAnzahlBefalleneLymphknoten(),
               "21893-3",
               "443527007",
               effectiveDate,
@@ -64,7 +65,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       result.add(
           createObservation(
               identifierValueBase + "-untersucht",
-              fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteLymphknoten(),
+              Onkologie.Profiles.miiPrOnkoAnzahlUntersuchteLymphknoten(),
               "21894-1",
               "444025001",
               effectiveDate,
@@ -78,7 +79,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       result.add(
           createObservation(
               identifierValueBase + "-befallen-sentinel",
-              fhirProperties.getProfiles().getMiiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
+              Onkologie.Profiles.miiPrOnkoAnzahlBefalleneSentinelLymphknoten(),
               "92832-5",
               "1264491009",
               effectiveDate,
@@ -92,7 +93,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
       result.add(
           createObservation(
               identifierValueBase + "-untersucht-sentinel",
-              fhirProperties.getProfiles().getMiiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
+              Onkologie.Profiles.miiPrOnkoAnzahlUntersuchteSentinelLymphknoten(),
               "85347-3",
               "444411008",
               effectiveDate,
@@ -139,7 +140,8 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     // Category
     var laboratory =
         new CodeableConcept(
-            new Coding(fhirProperties.getSystems().getObservationCategory(), "laboratory", ""));
+            new Coding(
+                fhirProperties.getSystems().getObservationCategory(), "laboratory", "Laboratory"));
     observation.setCategory(List.of(laboratory));
 
     // Code

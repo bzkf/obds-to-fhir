@@ -28,7 +28,8 @@
       "code": "confirmed"
     }, {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
-      "code": "7"
+      "code": "7",
+      "display": "histologische Untersuchung eines Primärtumors"
     } ]
   },
   "code": {
@@ -48,7 +49,8 @@
   }, {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
-      "code": "R"
+      "code": "R",
+      "display": "rechts"
     }, {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20250701",

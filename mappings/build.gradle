@@ -5,6 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'java-library'
+    id 'java-test-fixtures'
     id 'maven-publish'
     id 'signing'
     id 'jacoco'
@@ -39,6 +40,7 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
     implementation 'com.github.slugify:slugify:4.0.0'
+    implementation 'io.github.diz-uker:fhir-ig-constants:0.2.3'
 
     // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.22'
@@ -53,6 +55,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.approvaltests:approvaltests:30.1.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testFixturesImplementation 'org.assertj:assertj-core:3.27.7'
+    testFixturesImplementation 'com.approvaltests:approvaltests:30.1.1'
 }
 
 test {

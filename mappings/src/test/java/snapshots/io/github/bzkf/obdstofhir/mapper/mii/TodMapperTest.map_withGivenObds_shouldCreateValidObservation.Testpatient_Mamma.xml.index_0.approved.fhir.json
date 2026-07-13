@@ -30,7 +30,8 @@
   "interpretation": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tod",
-      "code": "J"
+      "code": "J",
+      "display": "Ja, die Person ist an einer Tumorerkrankung oder Folge einer Tumorerkrankung (einschließlich Behandlungskomplikation) verstorben."
     } ]
   } ]
 }

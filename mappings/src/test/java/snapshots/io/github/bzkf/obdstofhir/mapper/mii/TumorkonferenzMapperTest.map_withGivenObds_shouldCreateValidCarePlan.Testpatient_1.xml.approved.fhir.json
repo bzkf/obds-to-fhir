@@ -13,7 +13,8 @@
   "category": [ {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieplanung-typ",
-      "code": "postth"
+      "code": "postth",
+      "display": "posttherapeutische Tumorkonferenz (manche Tumore werden nicht operiert)"
     } ]
   } ],
   "subject": {
@@ -28,14 +29,16 @@
       "code": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapie-typ",
-          "code": "CH"
+          "code": "CH",
+          "display": "Chemotherapie"
         } ]
       },
       "status": "cancelled",
       "statusReason": {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-therapieabweichung",
-          "code": "J"
+          "code": "J",
+          "display": "ja"
         } ]
       }
     }

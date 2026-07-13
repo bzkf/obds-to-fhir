@@ -28,7 +28,8 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
-      "code": "N"
+      "code": "N",
+      "display": "keine oder höchstens Grad II"
     } ]
   }
 }

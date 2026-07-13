@@ -96,7 +96,7 @@ import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
       VitalStatusMapper.class,
     })
 @EnableConfigurationProperties(value = {FhirProperties.class, WriteGroupedObdsToKafkaConfig.class})
-class Obdsv3ProcessorTest extends io.github.bzkf.obdstofhir.MapperTest {
+class Obdsv3ProcessorTest extends MapperTest {
 
   private static final String INPUT_TOPIC_NAME = "meldung-obds";
   private static final String OUTPUT_TOPIC_NAME = "onko-fhir";
