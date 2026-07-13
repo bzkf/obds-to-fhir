@@ -1,0 +1,125 @@
+name: benchmark container builds
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - master
+    paths:
+      - Dockerfile
+      - build.gradle
+      - .github/workflows/benchmark-container-builds.yaml
+
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  build-dockerfile:
+    name: build via Dockerfile
+    runs-on: ubuntu-24.04
+    outputs:
+      duration-seconds: ${{ steps.build.outputs.duration-seconds }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Build image via Dockerfile
+        id: build
+        run: |
+          start="$(date +%s)"
+
+          docker buildx build \
+            --load \
+            --tag bench-dockerfile:${{ github.sha }} \
+            -f Dockerfile \
+            .
+
+          end="$(date +%s)"
+          duration=$((end - start))
+          echo "duration-seconds=${duration}" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Dockerfile build"
+            echo "Duration: ${duration}s"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build-jib:
+    name: build via Jib
+    runs-on: ubuntu-24.04
+    outputs:
+      duration-seconds: ${{ steps.build.outputs.duration-seconds }}
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          java-version: "25"
+          distribution: "temurin"
+
+      - uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+        with:
+          # keep this a cold build so it is comparable to the uncached Dockerfile build above
+          cache-disabled: true
+
+      - name: Build image via Jib
+        id: build
+        run: |
+          start="$(date +%s)"
+
+          ./gradlew clean build jibDockerBuild \
+            --no-configuration-cache \
+            --image=bench-jib:${{ github.sha }}
+
+          end="$(date +%s)"
+          duration=$((end - start))
+          echo "duration-seconds=${duration}" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Jib build"
+            echo "Duration: ${duration}s"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  compare:
+    name: compare build times
+    runs-on: ubuntu-24.04
+    needs:
+      - build-dockerfile
+      - build-jib
+    if: always()
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit # change to 'egress-policy: block' after couple of runs
+
+      - name: Print comparison
+        run: |
+          {
+            echo "## Container image build benchmark"
+            echo ""
+            echo "| Method | Duration |"
+            echo "|---|---|"
+            echo "| Dockerfile (\`docker buildx build\`) | ${{ needs.build-dockerfile.outputs.duration-seconds }}s |"
+            echo "| Jib (\`gradlew jibDockerBuild\`) | ${{ needs.build-jib.outputs.duration-seconds }}s |"
+          } >> "$GITHUB_STEP_SUMMARY"

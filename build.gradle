@@ -9,6 +9,7 @@ plugins {
     id 'io.freefair.lombok' version '9.5.0'
     id 'net.ltgt.errorprone' version '5.1.0'
     id 'name.remal.jacoco-to-cobertura' version '2.0.3'
+    id 'com.google.cloud.tools.jib' version '3.5.3'
 }
 
 group = 'io.github.bzkf'
@@ -100,6 +101,24 @@ jacocoTestReport {
         csv.required = true
         html.required = true
         xml.required = true
+    }
+}
+
+// mirrors the final stage of the Dockerfile, minus the libjemalloc.so.2 layer
+jib {
+    from {
+        image = 'gcr.io/distroless/java25-debian13:nonroot@sha256:dade01b669efd3bea3977f73cc196c56f1ee678a71ec8305f84ec15fd5a23c8d'
+    }
+    to {
+        image = 'ghcr.io/bzkf/obds-to-fhir'
+    }
+    container {
+        mainClass = 'io.github.bzkf.obdstofhir.ObdsToFhirApplication'
+        jvmFlags = ['-XX:MaxRAMPercentage=75']
+        user = '65532:65532'
+        appRoot = '/opt/obds-to-fhir'
+        workingDirectory = '/opt/obds-to-fhir'
+        creationTime = 'USE_CURRENT_TIMESTAMP'
     }
 }
 
