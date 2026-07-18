@@ -105,14 +105,16 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
                 Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(syst.getIntention()).coding());
     procedure.addExtension(Onkologie.Extensions.miiExOnkoSystemischeTherapieIntention(), intention);
 
-    var stellungZurOp =
-        Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValue(syst.getStellungOP());
-    procedure
-        .addExtension()
-        .setUrl(Onkologie.Extensions.miiExOnkoSystemischeTherapieStellungzurop())
-        .setValue(new CodeableConcept(stellungZurOp.coding()));
+    if (syst.getStellungOP() != null) {
+      var stellungZurOp =
+          Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValue(syst.getStellungOP());
+      procedure
+          .addExtension()
+          .setUrl(Onkologie.Extensions.miiExOnkoSystemischeTherapieStellungzurop())
+          .setValue(new CodeableConcept(stellungZurOp.coding()));
+    }
 
-    if (null != syst.getEndeGrund()) {
+    if (syst.getEndeGrund() != null) {
       var outcome =
           new CodeableConcept()
               .addCoding(
