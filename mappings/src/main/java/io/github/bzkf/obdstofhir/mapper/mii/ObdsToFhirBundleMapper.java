@@ -37,6 +37,7 @@ import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Provenance;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -160,37 +161,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
-  /**
-   * Maps a list of OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles.
-   *
-   * @param groupedObds List of OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
-   */
-  public List<Bundle> map(List<OBDS> groupedObds) {
-
-    var bundles = new ArrayList<Bundle>();
-
+  public List<BundleMapperResult> map(List<OBDS> groupedObds) {
+    var results = new ArrayList<BundleMapperResult>();
     for (OBDS obds : groupedObds) {
-      bundles.addAll(map(obds));
+      results.addAll(map(obds));
     }
-    return bundles;
+    return results;
   }
 
-  /**
-   * Maps a single OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each
-   * patient in the OBDS data, creates a transaction bundle containing all their associated medical
-   * records.
-   *
-   * @param obds Single OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
-   */
-  public List<Bundle> map(OBDS obds) {
+  public List<BundleMapperResult> map(OBDS obds) {
 
-    var bundles = new ArrayList<Bundle>();
+    var results = new ArrayList<BundleMapperResult>();
 
     for (var obdsPatient : obds.getMengePatient().getPatient()) {
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);
+      var bundleProvenances = new ArrayList<Provenance>();
 
       if (StringUtils.hasText(patientIdRegex)) {
         var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
@@ -389,15 +375,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // they were added to the list initially.
           var targets =
               resourcesMappedFromMeldung.stream().map(ReferenceUtils::createReferenceTo).toList();
-          var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
-          addToBundle(bundle, provenance);
+          bundleProvenances.add(provenanceMapper.map(targets, meldung.getMeldungID()));
         }
       }
 
-      bundles.add(bundle);
+      results.add(new BundleMapperResult(bundle, List.copyOf(bundleProvenances)));
       MDC.clear();
     }
-    return bundles;
+    return results;
   }
 
   private static List<Meldung> sortMeldungen(List<Meldung> meldungen) {

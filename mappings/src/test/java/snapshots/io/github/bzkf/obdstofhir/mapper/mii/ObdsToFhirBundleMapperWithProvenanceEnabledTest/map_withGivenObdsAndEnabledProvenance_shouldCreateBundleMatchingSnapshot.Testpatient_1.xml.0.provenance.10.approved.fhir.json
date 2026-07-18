@@ -1,0 +1,52 @@
+{
+  "resourceType": "Provenance",
+  "id": "05cac510310fd7fdd7c28e55119cc3c8d480425586ecd167fbc441fb20619f7f",
+  "target": [ {
+    "reference": "Condition/778f6d2023c112c28f7c0aaa0bb7693aa3c5b16f87093a7d52f647c7388d4285"
+  }, {
+    "reference": "Observation/200a0d9475f25024d8b7403dec1a059def7c10fdcef7ec2ccd4cb84d0b170b95"
+  }, {
+    "reference": "Observation/9f15623e280f9fd3ded3abf724026c23236dae872fa38a1534be56a9b8517cfa"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "10_3_VE_1"
+      }
+    }
+  } ]
+}
