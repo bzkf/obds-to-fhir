@@ -1,0 +1,60 @@
+{
+  "resourceType": "Provenance",
+  "id": "082fa3de3fda3e7a3f83246d0d976bba928a6612e2b8d7adc39c4227c72b70e5",
+  "target": [ {
+    "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+  }, {
+    "reference": "Procedure/bfc5c7a0c00d1c00e9ab41a4507f8cfbbc87e13953eba89e14c3fe3a54325559"
+  }, {
+    "reference": "Procedure/c27e7388fd50f8dc36cea18c9cd4bf7b69adfeb98d133fca334633ff428199de"
+  }, {
+    "reference": "Procedure/b93ec958bca3fd61dd5939be3c12d044a2e224a7372af25041865250dd98493d"
+  }, {
+    "reference": "Procedure/68cc6dd03306fd9703859bd165a85477bea8daf5bcccc755d096c65f608c4feb"
+  }, {
+    "reference": "Procedure/979e2b28475d07be69ca72da10f7aa7a7837101d2ccd80dee2e8a362f5b846d5"
+  }, {
+    "reference": "AdverseEvent/9509de77033bbee2f5578cb7aa765bdf4c18129f5b14cc88fea0e5bf1c83298a"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "10_1_ST-2"
+      }
+    }
+  } ]
+}
