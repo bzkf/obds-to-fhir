@@ -1,9 +1,10 @@
-# can't yet upgrade to `trixie` as it doesn't include JRE 17
-FROM ghcr.io/astral-sh/uv:0.9.30-python3.12-bookworm-slim@sha256:e5b65587bce7de595f299855d7385fe7fca39b8a74baa261ba1b7147afa78e58
+# Pathling >=9's library-runtime jar is compiled for Java 21, which isn't
+# packaged for `bookworm` (only up to JRE 17 there); `trixie` has JRE 21.
+FROM ghcr.io/astral-sh/uv:0.11.29-python3.12-trixie-slim@sha256:36cdfbf910c8b0f651355c013e7ece9678f4ecbf030a9fd9e6779de421189805
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    SPARK_CONF_DIR=/app/spark/conf
+    HOME=/home/nonroot
 
 WORKDIR /app
 
@@ -11,28 +12,48 @@ WORKDIR /app
 RUN <<EOF
 set -e
 apt-get update -y
-apt-get install -y --no-install-recommends openjdk-17-jre-headless
+apt-get install -y --no-install-recommends openjdk-21-jre-headless
 rm -rf /var/lib/apt/lists/*
 apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 groupadd -r -g 65532 nonroot
-useradd --create-home --shell /bin/bash --uid 65532 -g nonroot nonroot
+useradd --create-home --shell /bin/bash --uid 65532 -g nonroot -d "${HOME}" nonroot
 
-uv venv /app/.venv
+# `extract` writes its Parquet output here for `checks` to pick up.
+mkdir -p /app/data
+chown 65532:65532 /app/data
 EOF
 
-# Install dependencies
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    uv pip install --no-cache-dir -r requirements.txt
-
-# Copy the project into the image
-COPY --chown=65532:65532 . /app
-
-ENV PATH="/app/.venv/bin:$PATH"
+# Install dependencies for both sub-projects. They are kept separate because
+# pathling>=9 (dq/extract) requires PySpark 4.x, while sparkdq, dqx and
+# pydeequ (dq/checks) only support Spark 3.5.x, see dq/README.md.
+COPY --chown=65532:65532 extract/pyproject.toml extract/uv.lock /app/extract/
+COPY --chown=65532:65532 checks/pyproject.toml checks/uv.lock /app/checks/
 
 USER 65532:65532
 
-RUN SPARK_INSTALL_PACKAGES_AND_EXIT=1 python3 /app/check_dq.py
+RUN --mount=type=cache,target=/home/nonroot/.cache/uv,uid=65532,gid=65532 <<EOF
+set -e
+uv sync --project /app/extract --locked --no-install-project
+uv sync --project /app/checks --locked --no-install-project
+EOF
 
-ENTRYPOINT [ "python3", "/app/check_dq.py" ]
+COPY --chown=65532:65532 extract /app/extract
+COPY --chown=65532:65532 checks /app/checks
+COPY --chown=65532:65532 entrypoint.sh /app/entrypoint.sh
+
+RUN --mount=type=cache,target=/home/nonroot/.cache/uv,uid=65532,gid=65532 <<EOF
+set -e
+uv sync --project /app/extract --locked
+uv sync --project /app/checks --locked
+EOF
+
+# Warm the Ivy/Maven caches for the JVM packages (Pathling, Delta, Deequ) so
+# that a container run doesn't need network access to Maven Central just to
+# start up.
+RUN uv run --project /app/extract python -c \
+    "from pathling import PathlingContext; PathlingContext.create(enable_extensions=True, enable_terminology=False)"
+RUN uv run --project /app/checks python -c \
+    "import os; os.environ.setdefault('SPARK_VERSION', '3.5'); import pydeequ; from pyspark.sql import SparkSession; SparkSession.builder.config('spark.jars.packages', pydeequ.deequ_maven_coord).config('spark.jars.excludes', f'{pydeequ.f2j_maven_coord},org.slf4j:slf4j-api').getOrCreate()"
+
+ENTRYPOINT ["/app/entrypoint.sh"]

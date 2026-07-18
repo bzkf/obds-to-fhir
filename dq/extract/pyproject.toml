@@ -1,0 +1,31 @@
+[project]
+name = "obds-dq-extract"
+version = "0.1.0"
+description = "Extracts tabular views of obds-to-fhir FHIR bundles using Pathling (SQL on FHIR v2) for data quality checks"
+authors = [
+    { name = "chgl", email = "chgl@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pathling>=9.8,<10",
+    "loguru>=0.7,<0.8",
+]
+
+[project.scripts]
+obds-dq-extract = "obds_dq_extract.extract:main"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14,<0.15",
+]
+
+[build-system]
+requires = ["uv_build>=0.10.2,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

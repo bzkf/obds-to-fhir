@@ -41,7 +41,7 @@ jobs:
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
-  run-gx-checks:
+  run-dq-checks:
     name: run dq checks
     runs-on: ubuntu-24.04
     needs:
@@ -86,18 +86,7 @@ jobs:
         env:
           DQ_CHECKS_IMAGE: "ghcr.io/${{ github.repository }}-dq-checks:${{ needs.build.outputs.image-version }}"
         run: |
-          mkdir -p ./data-docs
-          sudo chown -R 65532:65532 ./data-docs
           docker run --rm \
             -v ./mappings:/mappings:ro \
-            -v ./data-docs:/app/gx/uncommitted/:rw \
-            -e READ_FROM_DELTA=False \
-            -e SPARK_CHECKPOINT_PATH=/tmp \
             -e BUNDLES_DIR=/mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ \
             "${DQ_CHECKS_IMAGE}"
-
-      - name: Upload data docs
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: gx-data-docs
-          path: data-docs/

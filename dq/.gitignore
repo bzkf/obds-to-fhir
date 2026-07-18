@@ -1,0 +1,6 @@
+# Intermediate Parquet tables written by dq/extract and read by dq/checks.
+data/
+
+.venv/
+__pycache__/
+.ruff_cache/
