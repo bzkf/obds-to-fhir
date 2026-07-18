@@ -74,7 +74,6 @@ fhir:
       obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"
       operation-procedure-id: "${fhir.systems.identifiers.base-url}/operation-procedure-id"
 
-
     # external systems
     v3-data-operation: "http://terminology.hl7.org/CodeSystem/v3-DataOperation"
     provenance-participant-type: "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
