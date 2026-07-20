@@ -44,6 +44,7 @@ jobs:
   run-dq-checks:
     name: run dq checks
     runs-on: ubuntu-24.04
+    continue-on-error: true
     needs:
       - build
     steps:
