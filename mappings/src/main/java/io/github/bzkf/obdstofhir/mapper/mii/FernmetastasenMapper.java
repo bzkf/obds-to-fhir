@@ -99,7 +99,8 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
       var lokalisation = new CodeableConcept();
       if (StringUtils.hasText(fernmetastase.getLokalisation())) {
         lokalisation.addCoding(
-            Onkologie.CodeSystems.MiiCsOnkoFernmetastasen.fromValue(fernmetastase.getLokalisation())
+            Onkologie.CodeSystems.MiiCsOnkoFernmetastasen.fromValueOrThrow(
+                    fernmetastase.getLokalisation())
                 .coding());
         observation.setValue(lokalisation);
       } else {

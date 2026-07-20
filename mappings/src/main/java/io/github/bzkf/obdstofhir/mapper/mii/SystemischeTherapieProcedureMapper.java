@@ -82,7 +82,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
       var therapieartCodeableConcept = procedure.getCode();
       therapieartCodeableConcept.addCoding(
-          Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValue(syst.getTherapieart().value())
+          Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValueOrThrow(syst.getTherapieart().value())
               .coding());
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
@@ -99,26 +99,22 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
       procedure.addUsedCode().setText(syst.getProtokoll());
     }
 
-    var intention =
-        new CodeableConcept()
-            .addCoding(
-                Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(syst.getIntention()).coding());
-    procedure.addExtension(Onkologie.Extensions.miiExOnkoSystemischeTherapieIntention(), intention);
+    var intention = Onkologie.CodeSystems.MiiCsOnkoIntention.fromValueOrThrow(syst.getIntention());
+    procedure.addExtension(Onkologie.Extensions.miiExOnkoSystemischeTherapieIntention(intention));
 
     if (syst.getStellungOP() != null) {
       var stellungZurOp =
-          Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValue(syst.getStellungOP());
-      procedure
-          .addExtension()
-          .setUrl(Onkologie.Extensions.miiExOnkoSystemischeTherapieStellungzurop())
-          .setValue(new CodeableConcept(stellungZurOp.coding()));
+          Onkologie.CodeSystems.MiiCsOnkoTherapieStellungzurop.fromValueOrThrow(
+              syst.getStellungOP());
+      procedure.addExtension(
+          Onkologie.Extensions.miiExOnkoSystemischeTherapieStellungzurop(stellungZurOp));
     }
 
     if (syst.getEndeGrund() != null) {
       var outcome =
           new CodeableConcept()
               .addCoding(
-                  Onkologie.CodeSystems.MiiCsOnkoTherapieEndeGrund.fromValue(
+                  Onkologie.CodeSystems.MiiCsOnkoTherapieEndeGrund.fromValueOrThrow(
                           syst.getEndeGrund().value())
                       .coding());
       procedure.setOutcome(outcome);

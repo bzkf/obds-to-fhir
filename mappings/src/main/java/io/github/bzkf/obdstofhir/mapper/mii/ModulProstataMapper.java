@@ -301,7 +301,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                 .setDisplay("Clavien-Dindo classification grade (observable entity)")));
 
     var coding =
-        Onkologie.CodeSystems.MiiCsOnkoProstataPostsurgicalComplications.fromValue(
+        Onkologie.CodeSystems.MiiCsOnkoProstataPostsurgicalComplications.fromValueOrThrow(
                 modulProstata.getKomplPostOPClavienDindo().toString())
             .coding();
 

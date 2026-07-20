@@ -48,7 +48,8 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     // category
     CodeableConcept codeableConcept =
         new CodeableConcept(
-            Onkologie.CodeSystems.MiiCsOnkoTherapieplanungTyp.fromValue(tk.getTyp()).coding());
+            Onkologie.CodeSystems.MiiCsOnkoTherapieplanungTyp.fromValueOrThrow(tk.getTyp())
+                .coding());
     carePlan.addCategory(codeableConcept);
     // subject
     carePlan.setSubject(patient);
@@ -65,7 +66,8 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
       for (String typ :
           tk.getTherapieempfehlung().getMengeTypTherapieempfehlung().getTypTherapieempfehlung()) {
         CodeableConcept therapieEmpfehlungen =
-            new CodeableConcept(Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValue(typ).coding());
+            new CodeableConcept(
+                Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValueOrThrow(typ).coding());
 
         CarePlan.CarePlanActivityDetailComponent cpadc =
             new CarePlan.CarePlanActivityDetailComponent();
@@ -73,7 +75,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
         // detail.Status
         CodeableConcept statusReason =
             new CodeableConcept(
-                Onkologie.CodeSystems.MiiCsOnkoTherapieabweichung.fromValue(
+                Onkologie.CodeSystems.MiiCsOnkoTherapieabweichung.fromValueOrThrow(
                         tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())
                     .coding());
         switch (tk.getTherapieempfehlung().getAbweichungPatientenwunsch()) {

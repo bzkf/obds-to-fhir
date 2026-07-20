@@ -75,7 +75,7 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     } else {
       // either no or unknown depending on the data
       coding =
-          Onkologie.CodeSystems.MiiCsOnkoStudienteilnahme.fromValue(
+          Onkologie.CodeSystems.MiiCsOnkoStudienteilnahme.fromValueOrThrow(
                   modulAllgemein.getStudienteilnahme().getNU().value())
               .coding();
     }

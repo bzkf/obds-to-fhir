@@ -60,7 +60,7 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     var value =
         new CodeableConcept()
             .addCoding(
-                Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
                         rs.getGesamtbeurteilungResidualstatus().value())
                     .coding());
     observation.setValue(value);
