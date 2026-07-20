@@ -6,9 +6,9 @@ import sys
 
 from loguru import logger
 
+from obds_dq.checks import run_checks
 from obds_dq.extract import build_pathling_context, bundles_dir_from_env, extract_tables
 from obds_dq.prepare import death_observations, observations_with_diagnosis
-from obds_dq.sparkdq_checks import run_checks
 
 
 def main() -> None:
