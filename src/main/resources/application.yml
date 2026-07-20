@@ -145,7 +145,11 @@ spring:
         streams:
           binder:
             configuration:
-              cache.max.bytes.buffering: 0
+              # -- Re-enabling the record cache (was 0) reduces changelog writes significantly.
+              # Since latency is not a concern, records are buffered before flushing to state stores.
+              cache.max.bytes.buffering: ${KAFKA_STREAMS_CACHE_MAX_BYTES_BUFFERING:10485760}
+              # -- Commit (checkpoint) interval. Higher values mean fewer state store flushes.
+              commit.interval.ms: ${KAFKA_STREAMS_COMMIT_INTERVAL_MS:5000}
               max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
               num.stream.threads: ${NUM_STREAM_THREADS:1}
               default:
@@ -160,6 +164,8 @@ spring:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+                  linger.ms: ${KAFKA_PRODUCER_LINGER_MS:200}
+                  batch.size: ${KAFKA_PRODUCER_BATCH_SIZE:1048576}
             getPatientVSObservationProcessor-in-0:
               consumer:
                 application-id: ${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor
@@ -168,6 +174,8 @@ spring:
                 valueSerde: org.miracum.kafka.serializers.KafkaFhirSerde
                 configuration:
                   compression.type: ${KAFKA_COMPRESSION_TYPE:zstd}
+                  linger.ms: ${KAFKA_PRODUCER_LINGER_MS:200}
+                  batch.size: ${KAFKA_PRODUCER_BATCH_SIZE:1048576}
 
   kafka:
     bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9094}
@@ -183,7 +191,16 @@ spring:
       compression-type: ${KAFKA_COMPRESSION_TYPE:zstd}
       value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
       properties:
-        max.request.size: ${KAFKA_MAX_REQUEST_SIZE:20971520}
+        "[max.request.size]": ${KAFKA_MAX_REQUEST_SIZE:20971520}
+        # -- Accumulate records during the replication round-trip; free throughput gain with acks=all.
+        "[linger.ms]": ${KAFKA_PRODUCER_LINGER_MS:200}
+        # -- 1 MB batch size; improves zstd compression ratio for large FHIR bundles.
+        "[batch.size]": ${KAFKA_PRODUCER_BATCH_SIZE:1048576}
+        "[buffer.memory]": ${KAFKA_PRODUCER_BUFFER_MEMORY:67108864}
+        # -- Must exceed replication RTT on slow inter-broker network with min.isr=3.
+        "[request.timeout.ms]": ${KAFKA_PRODUCER_REQUEST_TIMEOUT_MS:60000}
+        # -- Must be > request.timeout.ms to leave room for retries.
+        "[delivery.timeout.ms]": ${KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS:180000}
 
 logging:
   pattern:
