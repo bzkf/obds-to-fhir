@@ -7,16 +7,18 @@ import sys
 from loguru import logger
 
 from obds_dq.checks import run_checks
-from obds_dq.extract import build_pathling_context, bundles_dir_from_env, extract_tables
+from obds_dq.config import Config, build_spark_session
+from obds_dq.extract import build_pathling_context, extract_tables
 from obds_dq.prepare import death_observations, observations_with_diagnosis
 
 
 def main() -> None:
-    bundles_dir = bundles_dir_from_env()
-    logger.info(f"Reading FHIR bundles from {bundles_dir}")
+    config = Config()
+    logger.info(f"Reading FHIR bundles from {config.bundles_dir}")
 
-    pc = build_pathling_context()
-    patients, conditions, observations = extract_tables(pc, bundles_dir)
+    spark = build_spark_session(config)
+    pc = build_pathling_context(spark)
+    patients, conditions, observations = extract_tables(pc, config.bundles_dir)
 
     obs_with_diagnosis = observations_with_diagnosis(conditions, observations).cache()
     death_obs = death_observations(observations).cache()

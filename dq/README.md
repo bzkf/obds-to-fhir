@@ -8,7 +8,7 @@ session:
    Patient/Condition/Observation resources in the FHIR bundles into Spark
    DataFrames, using [Pathling](https://pathling.csiro.au/) >=9 and its
    [SQL on FHIR v2](https://sql-on-fhir.org/ig/2.0.0/) view engine.
-2. **[`src/obds_dq/sparkdq_checks.py`](src/obds_dq/sparkdq_checks.py)** runs
+2. **[`src/obds_dq/checks.py`](src/obds_dq/checks.py)** runs
    the 3 checks against those DataFrames with
    [sparkdq](https://github.com/sparkdq-community/sparkdq).
 
@@ -29,7 +29,7 @@ need revisiting — see sparkdq's release notes.
 
 ## The checks
 
-Implemented in `src/obds_dq/sparkdq_checks.py`:
+Implemented in `src/obds_dq/checks.py`:
 
 1. **Patient birth dates are within an expected time range**
    (`1900-01-01` to Dec 31 of the current year).
@@ -40,6 +40,23 @@ Implemented in `src/obds_dq/sparkdq_checks.py`:
 3. **Each patient has at most one death observation** — uniqueness of
    `patient_reference` among observations with the `mii-pr-onko-tod`
    profile.
+
+## Configuration
+
+Set via environment variables, read in `src/obds_dq/config.py`:
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `BUNDLES_DIR` | mappings test snapshots | A local directory, or an `s3a://bucket/path` for bundles stored on S3. |
+| `SPARK_MASTER` | `local[*]` | |
+| `SPARK_DRIVER_MEMORY` | `8g` | Sets `spark.driver.memory`. |
+| `S3_ENDPOINT` | unset | Only needed for S3-compatible services (e.g. MinIO). Leave unset for AWS S3. Setting this also adds `hadoop-aws` to `spark.jars.packages`. |
+| `S3_CONNECTION_SSL_ENABLED` | `true` | Set to `false` for a non-TLS endpoint, e.g. local MinIO. |
+| `AWS_ACCESS_KEY_ID` | unset | Only applied when `S3_ENDPOINT` is set. |
+| `AWS_SECRET_ACCESS_KEY` | unset | Only applied when `S3_ENDPOINT` is set. |
+
+The FHIR profile/system URLs used by the checks themselves (`TOD_PROFILE`,
+etc.) are constants in `src/obds_dq/constants.py`, not runtime config.
 
 ## Running locally
 

@@ -8,19 +8,9 @@ API did. The columns used for date comparisons here are cast to Spark's
 ``date`` type before being handed to the checks.
 """
 
-import os
-from pathlib import Path
-
 from pathling import PathlingContext
-from pyspark.sql import DataFrame
+from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
-
-REPO_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_BUNDLES_DIR = (
-    REPO_ROOT
-    / "mappings/src/test/java/snapshots/io/github/bzkf"
-    / "obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest"
-)
 
 ASSERTED_DATE_EXTENSION = (
     "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
@@ -61,17 +51,20 @@ OBSERVATION_SELECT = [
 ]
 
 
-def build_pathling_context() -> PathlingContext:
-    return PathlingContext.create(enable_extensions=True, enable_terminology=False)
+def build_pathling_context(spark: SparkSession) -> PathlingContext:
+    return PathlingContext.create(
+        spark, enable_extensions=True, enable_terminology=False
+    )
 
 
 def extract_tables(
-    pc: PathlingContext, bundles_dir: Path
+    pc: PathlingContext, bundles_dir: str
 ) -> tuple[DataFrame, DataFrame, DataFrame]:
-    """Reads Patient/Condition/Observation resources from `bundles_dir` and
-    returns (patients, conditions, observations) DataFrames with their date
-    columns cast to Spark's `date` type."""
-    data = pc.read.bundles(str(bundles_dir), ["Patient", "Condition", "Observation"])
+    """Reads Patient/Condition/Observation resources from `bundles_dir` (a
+    local directory or an s3a:// path) and returns (patients, conditions,
+    observations) DataFrames with their date columns cast to Spark's `date`
+    type."""
+    data = pc.read.bundles(bundles_dir, ["Patient", "Condition", "Observation"])
 
     patients = (
         data.view(resource="Patient", select=PATIENT_SELECT)
@@ -90,7 +83,3 @@ def extract_tables(
     )
 
     return patients, conditions, observations
-
-
-def bundles_dir_from_env() -> Path:
-    return Path(os.environ.get("BUNDLES_DIR", DEFAULT_BUNDLES_DIR))
