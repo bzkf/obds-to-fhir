@@ -222,6 +222,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         continue;
       }
 
+      var patientAddedToBundle = false;
       if (createPatientResources
           && (!patientLookupResult.existsOnServer() || createPatientIfAlreadyExists)) {
         if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
@@ -241,10 +242,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         }
 
         addToBundle(bundle, patient);
+        patientAddedToBundle = true;
       }
 
       bundle.setId(patient.getId());
 
+      var isFirstMeldung = true;
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
@@ -373,10 +376,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (this.createProvenanceResources) {
           // the items in resourcesMappedFromMeldung are processed in the same order that
           // they were added to the list initially.
-          var targets =
-              resourcesMappedFromMeldung.stream().map(ReferenceUtils::createReferenceTo).toList();
-          bundleProvenances.add(provenanceMapper.map(targets, meldung.getMeldungID()));
+          var targets = new ArrayList<>(resourcesMappedFromMeldung);
+          // The Patient sits outside the per-Meldung loop; include it in the first
+          // Meldung's Provenance only to avoid repeating it across all Provenances.
+          if (isFirstMeldung && patientAddedToBundle) {
+            targets.addFirst(patient);
+          }
+          bundleProvenances.add(
+              provenanceMapper.map(
+                  targets.stream().map(ReferenceUtils::createReferenceTo).toList(),
+                  meldung.getMeldungID()));
         }
+        isFirstMeldung = false;
       }
 
       results.add(new BundleMapperResult(bundle, List.copyOf(bundleProvenances)));

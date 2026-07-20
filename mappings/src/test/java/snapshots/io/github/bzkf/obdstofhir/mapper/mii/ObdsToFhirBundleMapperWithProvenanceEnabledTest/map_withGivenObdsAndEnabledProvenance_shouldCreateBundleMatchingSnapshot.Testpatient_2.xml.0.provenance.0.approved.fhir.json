@@ -2,6 +2,8 @@
   "resourceType": "Provenance",
   "id": "fa1bba30e48c138c8c33ce8f6b71dedf5ac0ec0af1d66bbb9c772c0a84498aae",
   "target": [ {
+    "reference": "Patient/b7590139fce130878d3cc126a6eb694647f845c7825798f5fa9d6f2c03e42bcb"
+  }, {
     "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
   }, {
     "reference": "Procedure/f7faa1c740ac0fbd9d487b10fe41ca8b625c319adc35d6a36c0b79c12a76e417"
