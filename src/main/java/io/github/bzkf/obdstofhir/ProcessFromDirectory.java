@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.config.ProcessFromDirectoryConfig;
+import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
@@ -16,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.hl7.fhir.instance.model.api.IBaseResource;
-import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -99,10 +99,12 @@ public class ProcessFromDirectory {
 
           if (config.outputToKafka().enabled()) {
             try {
-              kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle)
+              kafkaTemplate
+                  .send(config.outputToKafka().topic(), bundle.getId(), bundle)
                   .get(60, TimeUnit.SECONDS);
               for (var provenance : result.provenances()) {
-                kafkaTemplate.send(provenanceTopic, provenance.getId(), provenance)
+                kafkaTemplate
+                    .send(provenanceTopic, provenance.getId(), provenance)
                     .get(60, TimeUnit.SECONDS);
               }
             } catch (ExecutionException e) {

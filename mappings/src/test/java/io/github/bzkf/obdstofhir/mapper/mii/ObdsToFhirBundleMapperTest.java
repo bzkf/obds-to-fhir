@@ -165,7 +165,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
       for (int i = 0; i < results.size(); i++) {
         var result = results.get(i);
-        var scrubber = Scrubbers.scrubAll(ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER);
+        var scrubber =
+            Scrubbers.scrubAll(
+                ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER);
         Approvals.verify(
             fhirParser.encodeResourceToString(result.bundle()),
             Approvals.NAMES
@@ -182,7 +184,9 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
                   .withParameters("")
                   .withScrubber(scrubber)
                   .forFile()
-                  .withBaseName(String.format("%s/%s.%s.%d.provenance.%d", className, methodName, sourceFile, i, j))
+                  .withBaseName(
+                      String.format(
+                          "%s/%s.%s.%d.provenance.%d", className, methodName, sourceFile, i, j))
                   .forFile()
                   .withExtension(".fhir.json"));
         }
