@@ -1,9 +1,9 @@
-"""Builds the input DataFrames shared by all three check frameworks."""
+"""Builds the input DataFrames for the checks from the extracted tables."""
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
-from obds_dq_checks.constants import TOD_PROFILE
+from obds_dq.constants import TOD_PROFILE
 
 
 def observations_with_diagnosis(

@@ -12,15 +12,15 @@ from sparkdq.core import Severity
 from sparkdq.engine import BatchDQEngine
 from sparkdq.management import CheckSet
 
-from obds_dq_checks.constants import MAX_BIRTH_DATE, MIN_BIRTH_DATE
+from obds_dq.constants import MAX_BIRTH_DATE, MIN_BIRTH_DATE
 
 
 def _run(label: str, check_set: CheckSet, df: DataFrame) -> bool:
     result = BatchDQEngine(check_set).run_batch(df)
     summary = result.summary()
-    logger.info(f"[sparkdq] {label}: {summary}")
+    logger.info(f"{label}: {summary}")
     if not summary.all_passed:
-        logger.warning(f"[sparkdq] {label}: failing rows")
+        logger.warning(f"{label}: failing rows")
         result.fail_df().show(truncate=False)
     return summary.all_passed
 
