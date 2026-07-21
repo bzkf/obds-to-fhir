@@ -15,7 +15,7 @@ plugins {
 }
 
 group = 'io.github.bzkf'
-version = '3.3.2'
+version = '3.3.3'
 
 dependencyManagement {
   imports {
