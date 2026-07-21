@@ -147,7 +147,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       var interpretationCodeableConcept = new CodeableConcept();
       if (genetischeVariante.getAuspraegung() != null) {
         interpretationCodeableConcept.addCoding(
-            Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.fromValue(
+            Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.fromValueOrThrow(
                     genetischeVariante.getAuspraegung().value())
                 .coding());
       } else if (genetischeVariante.getSonstigeAuspraegung() != null) {

@@ -110,17 +110,9 @@ public class OperationMapper extends ObdsToFhirMapper {
     parentProcedure.addReasonReference(condition);
 
     // intention
-    var intention =
-        new CodeableConcept()
-            .addCoding(
-                Onkologie.CodeSystems.MiiCsOnkoIntention.fromValue(op.getIntention()).coding());
-
-    var intentionExtens =
-        new Extension()
-            .setUrl(Onkologie.Extensions.miiExOnkoOperationIntention())
-            .setValue(intention);
-
-    parentProcedure.addExtension(intentionExtens);
+    var intention = Onkologie.CodeSystems.MiiCsOnkoIntention.fromValueOrThrow(op.getIntention());
+    var intentionExtension = Onkologie.Extensions.miiExOnkoOperationIntention(intention);
+    parentProcedure.addExtension(intentionExtension);
 
     if (op.getResidualstatus() != null
         && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
@@ -128,7 +120,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       var outcome =
           new CodeableConcept()
               .addCoding(
-                  Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                  Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
                           op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
                       .coding());
 
@@ -215,7 +207,7 @@ public class OperationMapper extends ObdsToFhirMapper {
       procedure.addReasonReference(condition);
 
       // intention
-      procedure.addExtension(intentionExtens);
+      procedure.addExtension(intentionExtension);
 
       if (op.getResidualstatus() != null
           && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
@@ -223,7 +215,7 @@ public class OperationMapper extends ObdsToFhirMapper {
         var outcome =
             new CodeableConcept()
                 .addCoding(
-                    Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValue(
+                    Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
                             op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
                         .coding());
 

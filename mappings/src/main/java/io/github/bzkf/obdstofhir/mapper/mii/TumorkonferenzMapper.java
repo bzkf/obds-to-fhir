@@ -5,6 +5,7 @@ import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import org.hl7.fhir.r4.model.*;
@@ -43,13 +44,21 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     } else {
       carePlan.setStatus(CarePlan.CarePlanStatus.ACTIVE);
     }
+
     // intent
     carePlan.setIntent(CarePlan.CarePlanIntent.PLAN);
-    // category
-    CodeableConcept codeableConcept =
-        new CodeableConcept(
-            Onkologie.CodeSystems.MiiCsOnkoTherapieplanungTyp.fromValue(tk.getTyp()).coding());
-    carePlan.addCategory(codeableConcept);
+
+    // category 1..1
+    var category = new CodeableConcept();
+    if (tk.getTyp() != null) {
+      category.addCoding(
+          Onkologie.CodeSystems.MiiCsOnkoTherapieplanungTyp.fromValueOrThrow(tk.getTyp()).coding());
+    } else {
+      category.addExtension(DataAbsentReason.unknown());
+    }
+
+    carePlan.addCategory(category);
+
     // subject
     carePlan.setSubject(patient);
     // created
@@ -60,12 +69,13 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     carePlan.setAddresses(adresse);
 
     // activity - detail
-    //  detail.code
+    // detail.code
     if (tk.getTherapieempfehlung() != null) {
       for (String typ :
           tk.getTherapieempfehlung().getMengeTypTherapieempfehlung().getTypTherapieempfehlung()) {
         CodeableConcept therapieEmpfehlungen =
-            new CodeableConcept(Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValue(typ).coding());
+            new CodeableConcept(
+                Onkologie.CodeSystems.MiiCsOnkoTherapieTyp.fromValueOrThrow(typ).coding());
 
         CarePlan.CarePlanActivityDetailComponent cpadc =
             new CarePlan.CarePlanActivityDetailComponent();
@@ -73,7 +83,7 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
         // detail.Status
         CodeableConcept statusReason =
             new CodeableConcept(
-                Onkologie.CodeSystems.MiiCsOnkoTherapieabweichung.fromValue(
+                Onkologie.CodeSystems.MiiCsOnkoTherapieabweichung.fromValueOrThrow(
                         tk.getTherapieempfehlung().getAbweichungPatientenwunsch().value())
                     .coding());
         switch (tk.getTherapieempfehlung().getAbweichungPatientenwunsch()) {

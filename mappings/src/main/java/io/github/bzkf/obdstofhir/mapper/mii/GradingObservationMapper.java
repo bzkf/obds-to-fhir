@@ -100,12 +100,11 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
               observation.setEffective(absentDateTime);
             });
 
-    // value
-    var value =
-        new CodeableConcept()
-            .addCoding(
-                Onkologie.CodeSystems.MiiCsOnkoGrading.fromValue(histologie.getGrading()).coding());
-    observation.setValue(value);
+    // value is 1..1
+    var coding =
+        Onkologie.CodeSystems.MiiCsOnkoGrading.fromValueOrThrow(histologie.getGrading()).coding();
+
+    observation.setValue(new CodeableConcept().addCoding(coding));
 
     return observation;
   }

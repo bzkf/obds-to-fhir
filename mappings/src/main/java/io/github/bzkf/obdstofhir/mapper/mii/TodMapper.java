@@ -57,7 +57,8 @@ public class TodMapper extends ObdsToFhirMapper {
       var interpretation =
           new CodeableConcept()
               .addCoding(
-                  Onkologie.CodeSystems.MiiCsOnkoTod.fromValue(tod.getTodTumorbedingt().value())
+                  Onkologie.CodeSystems.MiiCsOnkoTod.fromValueOrThrow(
+                          tod.getTodTumorbedingt().value())
                       .coding());
       observation.setInterpretation(Arrays.asList(interpretation));
     }
