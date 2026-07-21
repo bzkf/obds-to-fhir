@@ -1,0 +1,60 @@
+{
+  "resourceType": "Provenance",
+  "id": "dfa389d89fe71c44fa4384f80ad7fae3641080a26953e936242c4b3de61a6eac",
+  "target": [ {
+    "reference": "Condition/dec60bae0a707f01b77ab2ef8f22d53d4b352636c9cf80b1081ad6aa1252cb1d"
+  }, {
+    "reference": "Procedure/fe00363f7749fcab7b5b2acc0010f623f2241839e623aea1174200947b6bba99"
+  }, {
+    "reference": "Procedure/51890ce8d550a0880571a89cc2901ce59a55153b2f75458cd389de61c3ded359"
+  }, {
+    "reference": "Observation/fbe8bd4ee5604df9f3149618851a9935bbee3e95bc4cdeac769ab12fff143e2f"
+  }, {
+    "reference": "Observation/1bc94a47496fb6859362b98531eba79e1abb626f29eee1e991bbf1b7090495e6"
+  }, {
+    "reference": "Observation/e3d0525ade526715233adc04df30183bd9691d704773145281888c489f7d13e2"
+  }, {
+    "reference": "Observation/bf16262583af010dc5d2ed95374c0fb38e0d51b5deab9cf0537bb2c127e837e5"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "10_2_OP_1"
+      }
+    }
+  } ]
+}
