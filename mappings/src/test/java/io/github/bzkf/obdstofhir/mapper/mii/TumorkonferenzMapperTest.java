@@ -29,7 +29,8 @@ class TumorkonferenzMapperTest extends MapperTest {
     "Testpatient_1.xml",
     "Testpatient_2.xml",
     "Testpatient_CLL.xml",
-    "Testpatient_Prostata.xml"
+    "Testpatient_Prostata.xml",
+    "Therapieempfhelung_Typ_Null.xml"
   })
   void map_withGivenObds_shouldCreateValidCarePlan(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);

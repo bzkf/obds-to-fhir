@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="12" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="80">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>107815772</IKNR>
+          <GKV_Versichertennummer>A012345678</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>oBDSProstata</Nachname>
+        <Vornamen>Benjamin</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1952-03-05</Geburtsdatum>
+        <Adresse>
+          <Strasse>Einhornstr.</Strasse>
+          <Hausnummer>17</Hausnummer>
+          <PLZ>90402</PLZ>
+          <Ort>Nürnberg</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="TK_80103">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="801">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-05-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tumorkonferenz Tumorkonferenz_ID="112">
+            <Meldeanlass>diagnose</Meldeanlass>
+            <Datum Datumsgenauigkeit="E">2020-05-25</Datum>
+            <Therapieempfehlung>
+              <Menge_Typ_Therapieempfehlung>
+                <Typ_Therapieempfehlung>OP</Typ_Therapieempfehlung>
+                <Typ_Therapieempfehlung>ST</Typ_Therapieempfehlung>
+              </Menge_Typ_Therapieempfehlung>
+              <Abweichung_Patientenwunsch>U</Abweichung_Patientenwunsch>
+            </Therapieempfehlung>
+          </Tumorkonferenz>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="TK_80104">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="801">
+            <Primaertumor_ICD>
+              <Code>C61</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-05-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Tumorkonferenz Tumorkonferenz_ID="113">
+            <Meldeanlass>behandlungsende</Meldeanlass>
+            <Datum Datumsgenauigkeit="E">2020-06-10</Datum>
+            <Typ>postop</Typ>
+            <Therapieempfehlung>
+              <Menge_Typ_Therapieempfehlung>
+                <Typ_Therapieempfehlung>ST</Typ_Therapieempfehlung>
+                <Typ_Therapieempfehlung>HO</Typ_Therapieempfehlung>
+              </Menge_Typ_Therapieempfehlung>
+              <Abweichung_Patientenwunsch>U</Abweichung_Patientenwunsch>
+            </Therapieempfehlung>
+          </Tumorkonferenz>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>
