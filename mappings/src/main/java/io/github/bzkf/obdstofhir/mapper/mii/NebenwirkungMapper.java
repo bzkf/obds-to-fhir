@@ -82,7 +82,8 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
         var seriousness =
             new CodeableConcept()
                 .addCoding(
-                    Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValue(nb.getGrad())
+                    Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValueOrThrow(
+                            nb.getGrad())
                         .coding());
         adverseEvent.setSeriousness(seriousness);
         adverseEvents.add(adverseEvent);
@@ -117,7 +118,7 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     var seriousness =
         new CodeableConcept()
             .addCoding(
-                Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValue(
+                Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeGrad.fromValueOrThrow(
                         nebenwirkung.getGradMaximal2OderUnbekannt())
                     .coding());
     adverseEvent.setSeriousness(seriousness);

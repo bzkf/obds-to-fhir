@@ -441,7 +441,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "p"
+              "code": "p",
+              "display": "p"
             } ]
           }
         } ],
@@ -929,7 +930,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "c"
+              "code": "c",
+              "display": "c"
             } ]
           }
         } ],
@@ -987,7 +989,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "c"
+              "code": "c",
+              "display": "c"
             } ]
           }
         } ],
@@ -1045,7 +1048,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "c"
+              "code": "c",
+              "display": "c"
             } ]
           }
         } ],
@@ -1160,7 +1164,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "p"
+              "code": "p",
+              "display": "p"
             } ]
           }
         } ],
@@ -1218,7 +1223,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "c"
+              "code": "c",
+              "display": "c"
             } ]
           }
         } ],
@@ -1276,7 +1282,8 @@
           "valueCodeableConcept": {
             "coding": [ {
               "system": "https://www.uicc.org/resources/tnm",
-              "code": "c"
+              "code": "c",
+              "display": "c"
             } ]
           }
         } ],

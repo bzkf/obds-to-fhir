@@ -2,6 +2,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.TNMTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
@@ -435,34 +436,17 @@ public class TNMMapper extends ObdsToFhirMapper {
                 .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()));
 
     if (extractedSuffixes.contains("sn")) {
-      codeableConcept.addExtension(
-          new Extension()
-              .setUrl(Onkologie.Extensions.miiExOnkoTnmSnSuffix())
-              .setValue(
-                  new CodeableConcept(
-                      new Coding()
-                          .setCode("sn")
-                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
+      codeableConcept.addExtension(Onkologie.Extensions.miiExOnkoTnmSnSuffix(MiiCsOnkoTnmUicc.SN));
     }
+
     if (extractedSuffixes.contains("i+")) {
       codeableConcept.addExtension(
-          new Extension()
-              .setUrl(Onkologie.Extensions.miiExOnkoTnmItcSuffix())
-              .setValue(
-                  new CodeableConcept(
-                      new Coding()
-                          .setCode("i+")
-                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.I_POS));
     }
+
     if (extractedSuffixes.contains("i-")) {
       codeableConcept.addExtension(
-          new Extension()
-              .setUrl(Onkologie.Extensions.miiExOnkoTnmItcSuffix())
-              .setValue(
-                  new CodeableConcept(
-                      new Coding()
-                          .setCode("i-")
-                          .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc()))));
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.I_NEG));
     }
 
     return codeableConcept;
@@ -485,11 +469,8 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private Extension getCpPraefixExtension(String cpuPraefixN) {
-    var extension = new Extension().setUrl(Onkologie.Extensions.miiExOnkoTnmCpPraefix());
-    extension.setValue(
-        new CodeableConcept(
-            new Coding().setCode(cpuPraefixN).setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc())));
-    return extension;
+    return Onkologie.Extensions.miiExOnkoTnmCpPraefix(
+        Onkologie.CodeSystems.MiiCsOnkoTnmUicc.fromValueOrThrow(cpuPraefixN));
   }
 
   private Observation createTNMGroupingObservation(

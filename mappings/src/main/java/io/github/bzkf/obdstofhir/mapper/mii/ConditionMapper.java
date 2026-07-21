@@ -140,7 +140,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
         condition.addExtension(
-            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
+            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(morphologie));
       }
     } else {
       if (tumorzuordnung.getMorphologieICDO() != null
@@ -153,7 +153,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
             .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
 
         condition.addExtension(
-            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(), morphologie);
+            Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(morphologie));
       }
     }
 
@@ -182,7 +182,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
         Coding verStatus =
             new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
         var diagnosesicherung =
-            Onkologie.CodeSystems.MiiCsOnkoPrimaertumorDiagnosesicherung.fromValue(
+            Onkologie.CodeSystems.MiiCsOnkoPrimaertumorDiagnosesicherung.fromValueOrThrow(
                     meldung.getDiagnose().getDiagnosesicherung().value())
                 .coding();
 
@@ -195,7 +195,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
     if (tumorzuordnung.getSeitenlokalisation() != null) {
       var seitenlokalisation =
           new CodeableConcept(
-              Onkologie.CodeSystems.MiiCsOnkoSeitenlokalisation.fromValue(
+              Onkologie.CodeSystems.MiiCsOnkoSeitenlokalisation.fromValueOrThrow(
                       tumorzuordnung.getSeitenlokalisation().value())
                   .coding());
 
