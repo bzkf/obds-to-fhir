@@ -3,4 +3,4 @@ loguru==0.7.3
 great-expectations==1.17.2
 numpy==2.4.6
 typed-settings[attrs]==25.3.0
-setuptools==82.0.1
+setuptools==83.0.0
