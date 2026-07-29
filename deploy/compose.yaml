@@ -1,6 +1,6 @@
 services:
   obds-to-fhir:
-    image: ghcr.io/bzkf/obds-to-fhir:v3.3.5
+    image: ghcr.io/bzkf/obds-to-fhir:v3.4.0
     restart: "unless-stopped"
     cap_drop:
       - ALL
