@@ -73,6 +73,7 @@ public class PatientReferenceGenerator {
 
   private final @NonNull FhirProperties fhirProperties;
   private final CodeableConcept mrnType;
+  private final String patientIdPrefix;
 
   private final PatientReferenceStrategy sha256HashedStrategy =
       new Sha256HashedPatientReferenceStrategy();
@@ -97,8 +98,11 @@ public class PatientReferenceGenerator {
           boolean isPseudonymizePatientIdEnabled,
       @Value(
               "${fhir.mappings.patient-reference-generation.pseudonymize-patient-id.fhir-pseudonymizer.base-url}")
-          String fhirPseudonymizerBaseUrl) {
+          String fhirPseudonymizerBaseUrl,
+      @Value("${fhir.mappings.patient-reference-generation.patient-id-prefix:}")
+          String patientIdPrefix) {
     this.fhirProperties = fhirProperties;
+    this.patientIdPrefix = patientIdPrefix;
 
     mrnType = new CodeableConcept();
     mrnType
@@ -145,8 +149,9 @@ public class PatientReferenceGenerator {
       Validate.notBlank(p.getPatientID());
 
       final var system = fhirProperties.getSystems().getIdentifiers().getPatientId();
+      final var patientId = patientIdPrefix + p.getPatientID();
       final var identifier =
-          new Identifier().setSystem(system).setValue(p.getPatientID()).setType(mrnType);
+          new Identifier().setSystem(system).setValue(patientId).setType(mrnType);
 
       return resolveStrategy().resolve(identifier);
     };

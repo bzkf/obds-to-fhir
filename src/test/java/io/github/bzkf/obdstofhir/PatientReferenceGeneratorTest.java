@@ -59,6 +59,7 @@ class PatientReferenceGeneratorTest {
             Optional.of(new RecordIdDbConfig("jdbc:test", "user", "pwd", query)),
             true,
             false,
+            "",
             "");
     ReflectionTestUtils.setField(
         generator, "strategy", PatientReferenceGenerator.Strategy.RECORD_ID_DATABASE_LOOKUP);
@@ -90,6 +91,7 @@ class PatientReferenceGeneratorTest {
             Optional.of(new RecordIdDbConfig("jdbc:test", "user", "pwd", query)),
             true,
             false,
+            "",
             "");
 
     ReflectionTestUtils.setField(
@@ -106,6 +108,31 @@ class PatientReferenceGeneratorTest {
     assertThat(result.reference().getIdentifier().getValue()).isEqualTo("record-1");
     assertThat(result.reference().getIdentifier().getSystem())
         .isEqualTo(createFhirProperties().getSystems().getIdentifiers().getPatientId());
+  }
+
+  @Test
+  void shouldPrependConfiguredPrefixToPatientIdBeforeResolvingStrategy() {
+    var generator =
+        new PatientReferenceGenerator(
+            createFhirProperties(),
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            true,
+            false,
+            "",
+            "prefix-");
+    ReflectionTestUtils.setField(
+        generator, "strategy", PatientReferenceGenerator.Strategy.PATIENT_ID);
+
+    var function = generator.getPatientReferenceGenerationFunction();
+    var patient = new OBDS.MengePatient.Patient();
+    patient.setPatientID("patient-1");
+
+    var result = function.apply(patient);
+
+    assertThat(result.reference().getReference()).isEqualTo("Patient/prefix-patient-1");
+    assertThat(result.reference().getIdentifier().getValue()).isEqualTo("prefix-patient-1");
   }
 
   private FhirProperties createFhirProperties() {

@@ -102,6 +102,7 @@ error topic.
 | fhir.mappings.create-provenance-resources.topic | string | `"${FHIR_PROVENANCE_TOPIC:fhir.obds.provenance}"` | Name of the Kafka topic to write Provenance resources to (one message per Meldung). Only used when enabled=true. |
 | fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |
 | fhir.mappings.patient-reference-generation.identifier-only-references-allowed | bool | `true` | If set to true and the Patient doesn't exist on the FHIR server, the generated Patient reference will only contain the identifier (with system and value) without a logical reference to a Patient resource. |
+| fhir.mappings.patient-reference-generation.patient-id-prefix | string | `""` | Optional prefix prepended to the oBDS Patient_ID before it is used to build the Patient identifier, i.e. before it is hashed, looked up, or otherwise transformed by the configured `strategy`. |
 | fhir.mappings.patient-reference-generation.fhir-server.base-url | string | `""` | the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier. E.g. `https://fhir.example.com/fhir` |
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.enabled | bool | `false` | use HTTP Basic Authentication for FHIR server authentication |
 | fhir.mappings.patient-reference-generation.fhir-server.auth.basic.username | string | `""` | the username |
@@ -129,21 +130,18 @@ error topic.
 | spring.cloud.stream.bindings.getPatientVSObservationProcessor-in-0.destination | string | `"${PATIENT_INPUT_TOPIC_NAME:onkostar.PATIENT}"` | Name of the topic where ONKOSTAR Patients are read from |
 | spring.cloud.stream.bindings.getPatientVSObservationProcessor-out-0.destination | string | `"${FHIR_OUTPUT_TOPIC_NAME:fhir.obds.bundles}"` | Name of the topic where the FHIR resources are written to |
 | spring.cloud.stream.bindings.getPatientVSObservationProcessor-out-0.producer.partition-count | string | `"${FHIR_OUTPUT_TOPIC_PARTITION_COUNT:12}"` |  |
-| spring.cloud.stream.kafka.streams.binder.configuration."cache.max.bytes.buffering" | string | `"${KAFKA_STREAMS_CACHE_MAX_BYTES_BUFFERING:10485760}"` | Re-enabling the record cache (was 0) reduces changelog writes significantly. Since latency is not a concern, records are buffered before flushing to state stores. |
+| spring.cloud.stream.kafka.streams.binder.configuration."cache.max.bytes.buffering" | string | `"${KAFKA_STREAMS_CACHE_MAX_BYTES_BUFFERING:10485760}"` | the record cache reduces changelog writes significantly. Since latency is not a concern, records are buffered before flushing to state stores. |
 | spring.cloud.stream.kafka.streams.binder.configuration."commit.interval.ms" | string | `"${KAFKA_STREAMS_COMMIT_INTERVAL_MS:5000}"` | Commit (checkpoint) interval. Higher values mean fewer state store flushes. |
 | spring.cloud.stream.kafka.streams.binder.configuration."max.request.size" | string | `"${KAFKA_MAX_REQUEST_SIZE:20971520}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration."num.stream.threads" | string | `"${NUM_STREAM_THREADS:1}"` |  |
+| spring.cloud.stream.kafka.streams.binder.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
+| spring.cloud.stream.kafka.streams.binder.configuration."linger.ms" | string | `"${KAFKA_PRODUCER_LINGER_MS:100}"` |  |
+| spring.cloud.stream.kafka.streams.binder.configuration."batch.size" | string | `"${KAFKA_PRODUCER_BATCH_SIZE:1048576}"` |  |
 | spring.cloud.stream.kafka.streams.binder.configuration.default."key.serde" | string | `"org.apache.kafka.common.serialization.Serdes$StringSerde"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id | string | `"${KAFKA_GROUP_ID:obds-meldung-exp-v3-processor}"` | the Kafka consumer group id. Useful to change if multiple versions of this job are run concurrently |
 | spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."linger.ms" | string | `"${KAFKA_PRODUCER_LINGER_MS:200}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-out-0.producer.configuration."batch.size" | string | `"${KAFKA_PRODUCER_BATCH_SIZE:1048576}"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-in-0.consumer.application-id | string | `"${spring.cloud.stream.kafka.streams.bindings.getMeldungExportObdsV3Processor-in-0.consumer.application-id}-patient-table-processor"` |  |
 | spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.valueSerde | string | `"org.miracum.kafka.serializers.KafkaFhirSerde"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.configuration."compression.type" | string | `"${KAFKA_COMPRESSION_TYPE:zstd}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.configuration."linger.ms" | string | `"${KAFKA_PRODUCER_LINGER_MS:200}"` |  |
-| spring.cloud.stream.kafka.streams.bindings.getPatientVSObservationProcessor-out-0.producer.configuration."batch.size" | string | `"${KAFKA_PRODUCER_BATCH_SIZE:1048576}"` |  |
 | spring.kafka.bootstrapServers | string | `"${BOOTSTRAP_SERVERS:localhost:9094}"` |  |
 | spring.kafka."security.protocol" | string | `"${SECURITY_PROTOCOL:PLAINTEXT}"` |  |
 | spring.kafka.ssl.trust-store-type | string | `"PKCS12"` |  |
