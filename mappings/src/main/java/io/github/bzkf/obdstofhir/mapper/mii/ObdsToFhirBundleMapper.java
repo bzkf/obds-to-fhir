@@ -74,6 +74,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
   private final ModulProstataMapper modulProstataMapper;
+  private final ModulDarmMapper modulDarmMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
@@ -123,6 +124,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
       ModulProstataMapper modulProstataMapper,
+      ModulDarmMapper modulDarmMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
@@ -152,6 +154,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
     this.modulProstataMapper = modulProstataMapper;
+    this.modulDarmMapper = modulDarmMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
@@ -647,6 +650,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (diagnose.getModulDarm() != null) {
+      var modulDarm = diagnose.getModulDarm();
+      var diagnosedatum =
+          meldung.getTumorzuordnung().getDiagnosedatum() != null
+              ? meldung.getTumorzuordnung().getDiagnosedatum().getValue()
+              : null;
+      var modulDarmResources =
+          modulDarmMapper.map(
+              modulDarm,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              diagnosedatum);
+      mappedResources.addAll(modulDarmResources);
+    }
+
     mapWeitereKlassifikationen(
         diagnose.getMengeWeitereKlassifikation(),
         meldung.getMeldungID(),
@@ -786,6 +805,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (verlauf.getModulDarm() != null) {
+      var modulDarm = verlauf.getModulDarm();
+      var modulDarmResources =
+          modulDarmMapper.map(
+              modulDarm,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              verlauf.getUntersuchungsdatumVerlauf());
+      mappedResources.addAll(modulDarmResources);
+    }
+
     mapWeitereKlassifikationen(
         verlauf.getMengeWeitereKlassifikation(),
         meldung.getMeldungID(),
@@ -916,6 +947,32 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (op.getModulDarm() != null) {
+      var modulDarm = op.getModulDarm();
+      // the procedure that doesn't reference any other procedure is the
+      // primary/parent one
+      var opReferences =
+          operations.stream()
+              .filter(p -> !p.hasPartOf())
+              .map(ReferenceUtils::createReferenceTo)
+              .toList();
+
+      if (opReferences.size() > 1) {
+        LOG.warn(
+            "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
+      }
+
+      var modulDarmResources =
+          modulDarmMapper.map(
+              modulDarm,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              op.getDatum(),
+              opReferences.getFirst()); // it should never be empty here.
+      mappedResources.addAll(modulDarmResources);
+    }
+
     return mappedResources;
   }
 
@@ -988,6 +1045,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           modulProstataMapper.map(
               modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (pathologie.getModulDarm() != null) {
+      var modulDarm = pathologie.getModulDarm();
+      var modulDarmResources =
+          modulDarmMapper.map(
+              modulDarm, meldung.getMeldungID(), patientReference, primaryConditionReference);
+      mappedResources.addAll(modulDarmResources);
     }
 
     mapWeitereKlassifikationen(

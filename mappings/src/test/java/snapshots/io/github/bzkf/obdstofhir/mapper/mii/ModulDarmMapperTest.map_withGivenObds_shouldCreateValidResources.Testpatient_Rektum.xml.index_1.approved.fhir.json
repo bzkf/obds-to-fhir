@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "f933e75e9885258af135e7cd0a4a627916107267953d2a1ea65f070c465db788",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-mrt-mesorektale-faszie" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-mrt-mesorektale-faszie-observation-id",
+    "value": "DIA_50101-modul-darm-mrt-mesorektale-faszie"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://radlex.org",
+      "code": "RDE96",
+      "display": "Distance to MRF"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-08-02",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-krk-mrt-mesorektale-faszie-status",
+      "code": "D",
+      "display": "Durchgeführt, aber Abstand nicht angegeben"
+    } ]
+  }
+}

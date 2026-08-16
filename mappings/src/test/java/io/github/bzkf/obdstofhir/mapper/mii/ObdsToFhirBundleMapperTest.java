@@ -45,6 +45,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     "Testpatient_Patho.xml",
     "Testpatient_Patho2.xml",
     "Testpatient_Rektum.xml",
+    "Folgepaket_Testpatient_Rektum.xml",
     "Testpatientin_Cervix.xml",
     "Testperson_CervixC53.xml",
     "Testperson_Cervixinsitu.xml",

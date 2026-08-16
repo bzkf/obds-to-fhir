@@ -117,6 +117,32 @@
             </Nebenwirkungen>
           </SYST>
         </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="VER_50113">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="501">
+            <Primaertumor_ICD>
+              <Code>C20</Code>
+              <Version>10 2020 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2020-08-02</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8140/3</Code>
+              <Version>31</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="501_1">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-03-15</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>K</Gesamtbeurteilung_Tumorstatus>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Darm>
+              <GradRektumAnastomoseninsuffizienz>B</GradRektumAnastomoseninsuffizienz>
+              <ASA>2</ASA>
+            </Modul_Darm>
+          </Verlauf>
+        </Meldung>
       </Menge_Meldung>
     </Patient>
   </Menge_Patient>

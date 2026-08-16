@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "93b084c1c1ef29b17c0ba078639cdf7f6d151fc9ee9f000c2b5df4c458df9031",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-anokutan" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-anokutan-observation-id",
+    "value": "OP_50103-modul-darm-abstand-anokutan"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "33748-5",
+      "display": "Distance from anal verge"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-08-31",
+  "valueQuantity": {
+    "extension": [ {
+      "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+      "valueCode": "unknown"
+    } ]
+  }
+}
