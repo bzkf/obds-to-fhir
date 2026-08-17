@@ -24,10 +24,11 @@
     "reference": "Condition/Primärdiagnose"
   } ],
   "effectiveDateTime": "2020-08-31",
-  "valueQuantity": {
-    "extension": [ {
-      "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-      "valueCode": "unknown"
+  "dataAbsentReason": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+      "code": "unknown",
+      "display": "Unknown"
     } ]
   }
 }

@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.ModulDarmTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,6 +27,11 @@ import org.springframework.stereotype.Service;
  * RASMutation} is expressed via the generic {@code MII_PR_Onko_Genetische_Variante} Observation
  * profile, the same one {@link GenetischeVarianteMapper} uses for {@code
  * Menge_Genetik.Genetische_Variante}.
+ *
+ * <p>The {@code RektumAbstand*}/{@code Anokutanlinie} distance fields additionally allow the
+ * literal {@code "U"} (unbekannt) instead of a number. Since the corresponding profiles require
+ * {@code valueQuantity.value/unit/system/code} whenever a value is present, those Observations are
+ * emitted with {@code Observation.dataAbsentReason} set instead of {@code value[x]}.
  */
 @Service
 public class ModulDarmMapper extends ObdsToFhirMapper {
@@ -128,20 +132,30 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
   /**
    * Zahl_3stellig_Typ fields (e.g. {@code RektumAbstandAnokutanlinie}) allow either a 1-3 digit
    * number or the literal {@code "U"} (unbekannt), so a quantity value can't always be derived.
+   * Since the corresponding profiles require {@code valueQuantity.value/unit/system/code} whenever
+   * {@code value[x]} is present, "U" is expressed via {@code Observation.dataAbsentReason} instead
+   * of a partially populated quantity.
    */
-  private static Quantity parseZahl3stelligOrAbsent(
-      @NonNull String rawValue, @NonNull String unit) {
+  private static void setDistanceValue(
+      @NonNull Observation observation, @NonNull String rawValue, @NonNull String unit) {
     if ("U".equals(rawValue)) {
-      var valueQuantity = new Quantity();
-      valueQuantity.addExtension(DataAbsentReason.unknown());
-      return valueQuantity;
+      // this is different to the absent extension, so we can't reuse DataAbsentReason.unknown()
+      // here.
+      observation.setDataAbsentReason(
+          new CodeableConcept(
+              new Coding(
+                  "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                  "unknown",
+                  "Unknown")));
+      return;
     }
 
-    return new Quantity()
-        .setValue(new BigDecimal(rawValue))
-        .setUnit(unit)
-        .setSystem("http://unitsofmeasure.org")
-        .setCode(unit);
+    observation.setValue(
+        new Quantity()
+            .setValue(new BigDecimal(rawValue))
+            .setUnit(unit)
+            .setSystem("http://unitsofmeasure.org")
+            .setCode(unit));
   }
 
   private static Observation createBaseObservation(
@@ -186,8 +200,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
                 .setCode("33748-5")
                 .setDisplay("Distance from anal verge")));
 
-    observation.setValue(
-        parseZahl3stelligOrAbsent(modulDarm.getRektumAbstandAnokutanlinie(), "cm"));
+    setDistanceValue(observation, modulDarm.getRektumAbstandAnokutanlinie(), "cm");
 
     return observation;
   }
@@ -225,8 +238,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
                 .setDisplay(
                     "Distance of tumor from closest margin [Length] in Specimen by Macroscopy")));
 
-    observation.setValue(
-        parseZahl3stelligOrAbsent(modulDarm.getRektumAbstandAboralerResektionsrand(), "mm"));
+    setDistanceValue(observation, modulDarm.getRektumAbstandAboralerResektionsrand(), "mm");
 
     return observation;
   }
@@ -271,8 +283,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
                     "Distance of tumor from circumferential resection margin [Length] in Specimen"
                         + " by Macroscopy")));
 
-    observation.setValue(
-        parseZahl3stelligOrAbsent(modulDarm.getRektumAbstandCircResektionsebene(), "mm"));
+    setDistanceValue(observation, modulDarm.getRektumAbstandCircResektionsebene(), "mm");
 
     return observation;
   }
