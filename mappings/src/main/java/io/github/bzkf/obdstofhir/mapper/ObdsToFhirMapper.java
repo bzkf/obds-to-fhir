@@ -202,6 +202,7 @@ public abstract class ObdsToFhirMapper {
     if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
       Objects.requireNonNull(reference.getIdentifier());
       Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
+      return;
     }
 
     Validate.isTrue(

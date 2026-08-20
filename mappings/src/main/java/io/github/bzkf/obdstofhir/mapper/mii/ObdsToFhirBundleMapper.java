@@ -252,6 +252,10 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             }
             patient.getIdentifierFirstRep().setValue(patientReference.getIdentifier().getValue());
           }
+        } else if (!patientLookupResult.existsOnServer() && !patientReference.hasReference()) {
+          // patient was not found on server; update patientReference to point at
+          // the locally-created Patient resource so downstream mappers can use it
+          patientReference.setReference("Patient/" + patient.getId());
         }
 
         addToBundle(bundle, patient);
