@@ -1120,6 +1120,226 @@
       "url": "Observation/c30e7de9bdc4ebe09b29a506fd26289dee859e2003597cc96f86f558dbcacd61"
     }
   }, {
+    "fullUrl": "Observation/93b084c1c1ef29b17c0ba078639cdf7f6d151fc9ee9f000c2b5df4c458df9031",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "93b084c1c1ef29b17c0ba078639cdf7f6d151fc9ee9f000c2b5df4c458df9031",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-anokutan" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-anokutan-observation-id",
+        "value": "OP_50103-modul-darm-abstand-anokutan"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33748-5",
+          "display": "Distance from anal verge"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "dataAbsentReason": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+          "code": "unknown",
+          "display": "Unknown"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/93b084c1c1ef29b17c0ba078639cdf7f6d151fc9ee9f000c2b5df4c458df9031"
+    }
+  }, {
+    "fullUrl": "Observation/c63a3fddc976683377862b8f31130669df586c44b126d815169e3a05bf2500d8",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c63a3fddc976683377862b8f31130669df586c44b126d815169e3a05bf2500d8",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-aboral" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-aboral-observation-id",
+        "value": "OP_50103-modul-darm-abstand-aboral"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81175-2",
+          "display": "Distance of tumor from closest margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueQuantity": {
+        "value": 19,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c63a3fddc976683377862b8f31130669df586c44b126d815169e3a05bf2500d8"
+    }
+  }, {
+    "fullUrl": "Observation/12f693727cc7357efc0c8bdba6ff9e113c8acf45c6e6dd6910e67ea53a7d7e71",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "12f693727cc7357efc0c8bdba6ff9e113c8acf45c6e6dd6910e67ea53a7d7e71",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-circumferelle-resektionsebene" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-circumferelle-resektionsebene-observation-id",
+        "value": "OP_50103-modul-darm-abstand-circumferelle-resektionsebene"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81176-0",
+          "display": "Distance of tumor from circumferential resection margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueQuantity": {
+        "value": 3,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/12f693727cc7357efc0c8bdba6ff9e113c8acf45c6e6dd6910e67ea53a7d7e71"
+    }
+  }, {
+    "fullUrl": "Observation/af4d5a769673fd3ba9562859facbc3c0c0f24f1e732b094aa9629826bf7af294",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "af4d5a769673fd3ba9562859facbc3c0c0f24f1e732b094aa9629826bf7af294",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-anastomoseninsuffizienz" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-anastomoseninsuffizienz-observation-id",
+        "value": "OP_50103-modul-darm-anastomoseninsuffizienz"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "236091002",
+          "display": "Large intestine anastomotic leak (disorder)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      }, {
+        "reference": "Procedure/3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-krk-anastomoseninsuffizienz",
+          "code": "B",
+          "display": "Anastomoseninsuffizienz Grad B"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/af4d5a769673fd3ba9562859facbc3c0c0f24f1e732b094aa9629826bf7af294"
+    }
+  }, {
+    "fullUrl": "Observation/05554fbf41196a674f3f87ac670bd055a4646e3c92728f133224bc26223371ee",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "05554fbf41196a674f3f87ac670bd055a4646e3c92728f133224bc26223371ee",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-asa-klassifikation" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/asa-klassifikation-observation-id",
+        "value": "OP_50103-modul-darm-asa-klassifikation"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "97816-3",
+          "display": "American society of anesthesiologists morbidity state"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-31",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-asa-obds",
+          "code": "1",
+          "display": "ASA I"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/05554fbf41196a674f3f87ac670bd055a4646e3c92728f133224bc26223371ee"
+    }
+  }, {
     "fullUrl": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
     "resource": {
       "resourceType": "Procedure",
@@ -2071,6 +2291,92 @@
       "url": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7"
     }
   }, {
+    "fullUrl": "Observation/22f26a958796d88582725a305f989ad01855578759b2b4c6b82cc797fbe3e90c",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "22f26a958796d88582725a305f989ad01855578759b2b4c6b82cc797fbe3e90c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-anokutan" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-anokutan-observation-id",
+        "value": "DIA_50101-modul-darm-abstand-anokutan"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33748-5",
+          "display": "Distance from anal verge"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-02",
+      "valueQuantity": {
+        "value": 9,
+        "unit": "cm",
+        "system": "http://unitsofmeasure.org",
+        "code": "cm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/22f26a958796d88582725a305f989ad01855578759b2b4c6b82cc797fbe3e90c"
+    }
+  }, {
+    "fullUrl": "Observation/f933e75e9885258af135e7cd0a4a627916107267953d2a1ea65f070c465db788",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "f933e75e9885258af135e7cd0a4a627916107267953d2a1ea65f070c465db788",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-mrt-mesorektale-faszie" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-mrt-mesorektale-faszie-observation-id",
+        "value": "DIA_50101-modul-darm-mrt-mesorektale-faszie"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://radlex.org",
+          "code": "RDE96",
+          "display": "Distance to MRF"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ],
+      "effectiveDateTime": "2020-08-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-krk-mrt-mesorektale-faszie-status",
+          "code": "D",
+          "display": "Durchgeführt, aber Abstand nicht angegeben"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/f933e75e9885258af135e7cd0a4a627916107267953d2a1ea65f070c465db788"
+    }
+  }, {
     "fullUrl": "List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",
     "resource": {
       "resourceType": "List",
@@ -2115,6 +2421,14 @@
       }, {
         "item": {
           "reference": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/22f26a958796d88582725a305f989ad01855578759b2b4c6b82cc797fbe3e90c"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/f933e75e9885258af135e7cd0a4a627916107267953d2a1ea65f070c465db788"
         }
       } ]
     },

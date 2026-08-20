@@ -93,6 +93,13 @@ public class FhirProperties {
     private String prostataClavienDindoObservationId;
     private String prostataGleasonPatternsObservationId;
     private String prostataGleasonScoreObservationId;
+    private String krkAbstandAnokutanObservationId;
+    private String krkAbstandAboralObservationId;
+    private String krkAbstandCircumferelleResektionsebeneObservationId;
+    private String krkMrtMesorektaleFaszieObservationId;
+    private String krkAnastomoseninsuffizienzObservationId;
+    private String krkStomaMarkierungProcedureId;
+    private String asaKlassifikationObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;

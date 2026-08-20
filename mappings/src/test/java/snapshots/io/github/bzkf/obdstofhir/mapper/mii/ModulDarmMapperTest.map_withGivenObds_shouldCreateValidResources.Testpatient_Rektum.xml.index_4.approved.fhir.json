@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "12f693727cc7357efc0c8bdba6ff9e113c8acf45c6e6dd6910e67ea53a7d7e71",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-circumferelle-resektionsebene" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-circumferelle-resektionsebene-observation-id",
+    "value": "OP_50103-modul-darm-abstand-circumferelle-resektionsebene"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "81176-0",
+      "display": "Distance of tumor from circumferential resection margin [Length] in Specimen by Macroscopy"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-08-31",
+  "valueQuantity": {
+    "value": 3,
+    "unit": "mm",
+    "system": "http://unitsofmeasure.org",
+    "code": "mm"
+  }
+}

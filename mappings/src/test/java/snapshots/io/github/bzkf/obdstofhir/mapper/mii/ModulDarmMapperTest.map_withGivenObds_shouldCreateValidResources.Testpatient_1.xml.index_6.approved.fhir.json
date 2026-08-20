@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "id": "fbd1a5457bdb374361636c446df5d3620e528b82123a66418c9ca3ad2d089cee",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-asa-klassifikation" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/asa-klassifikation-observation-id",
+    "value": "10_2_OP_1-modul-darm-asa-klassifikation"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "97816-3",
+      "display": "American society of anesthesiologists morbidity state"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-02-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-asa-obds",
+      "code": "2",
+      "display": "ASA II"
+    } ]
+  }
+}
