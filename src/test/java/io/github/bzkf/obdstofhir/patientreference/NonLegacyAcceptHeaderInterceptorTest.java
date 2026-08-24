@@ -47,8 +47,7 @@ class NonLegacyAcceptHeaderInterceptorTest {
           .where(Patient.IDENTIFIER.exactly().identifier("foo"))
           .execute();
 
-      assertThat(capturedAccept.get())
-          .isEqualTo("application/fhir+xml;q=1.0, application/fhir+json;q=1.0");
+      assertThat(capturedAccept.get()).isEqualTo("application/fhir+xml, application/fhir+json");
     } finally {
       server.stop(0);
     }

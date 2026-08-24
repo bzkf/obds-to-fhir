@@ -46,6 +46,12 @@ public class NonLegacyAcceptHeaderInterceptor implements IClientInterceptor {
         .map(String::trim)
         .filter(entry -> !entry.startsWith(Constants.CT_FHIR_XML))
         .filter(entry -> !entry.startsWith(Constants.CT_FHIR_JSON))
+        .map(NonLegacyAcceptHeaderInterceptor::stripQualityParameter)
         .collect(Collectors.joining(", "));
+  }
+
+  private static String stripQualityParameter(String mediaTypeEntry) {
+    var separatorIndex = mediaTypeEntry.indexOf(';');
+    return separatorIndex < 0 ? mediaTypeEntry : mediaTypeEntry.substring(0, separatorIndex).trim();
   }
 }
