@@ -1,0 +1,88 @@
+// groovylint-disable NestedBlockDepth
+
+plugins {
+    id 'org.springframework.boot' version '4.1.0' apply false
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+    id 'java'
+    id 'java-library'
+    id 'com.diffplug.spotless' version '8.6.0'
+    id 'io.freefair.lombok' version '9.5.0'
+}
+
+group = 'io.github.bzkf'
+version = '3.4.1'
+
+dependencyManagement {
+  imports {
+    mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+  }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set('hapiVersion', '8.10.0')
+}
+
+dependencies {
+    api project(':mappings')
+
+    implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
+    implementation 'org.springframework.retry:spring-retry:2.0.12'
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    // api: consumers reference DataSourceAutoConfiguration directly to exclude it, since Boot's
+    // default datasource autoconfiguration would otherwise fail without spring.datasource.* set.
+    api 'org.springframework.boot:spring-boot-starter-jdbc'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    runtimeOnly 'org.postgresql:postgresql'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.add('-parameters')
+}
+
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+spotless {
+    java {
+        target('**/*.java')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}
+
+jacocoTestReport {
+    reports {
+        csv.required = true
+        html.required = true
+        xml.required = true
+    }
+}

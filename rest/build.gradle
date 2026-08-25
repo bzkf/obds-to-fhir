@@ -1,0 +1,71 @@
+// groovylint-disable NestedBlockDepth
+
+plugins {
+    id 'org.springframework.boot' version '4.1.0'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+    id 'java'
+    id 'com.diffplug.spotless' version '8.6.0'
+    id 'io.freefair.lombok' version '9.5.0'
+}
+
+group = 'io.github.bzkf'
+version = '3.4.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':mappings')
+    implementation project(':patient-reference')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-kafka'
+    implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-webmvc-test'
+    testImplementation testFixtures(project(':mappings'))
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+jacoco {
+    toolVersion = '0.8.14'
+}
+
+spotless {
+    java {
+        target('**/*.java')
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+    }
+}
+
+jacocoTestReport {
+    reports {
+        csv.required = true
+        html.required = true
+        xml.required = true
+    }
+}

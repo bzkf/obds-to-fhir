@@ -1,6 +1,8 @@
 *
 !src/
 !mappings/
+!rest/
+!patient-reference/
 !*.gradle
 !gradle.properties
 !lombok.config

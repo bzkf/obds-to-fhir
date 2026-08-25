@@ -1,0 +1,107 @@
+spring:
+  profiles:
+    active: mappings,default
+  application:
+    name: obds-to-fhir-rest
+  kafka:
+    bootstrapServers: ${BOOTSTRAP_SERVERS:localhost:9094}
+    security.protocol: ${SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      trust-store-type: PKCS12
+      trust-store-location: file://${SSL_TRUST_STORE:/opt/kafka-certs/ca.p12}
+      trust-store-password: ${SSL_TRUST_STORE_PASSWORD}
+      key-store-type: PKCS12
+      key-store-location: file://${SSL_KEY_STORE_FILE:/opt/kafka-certs/user.p12}
+      key-store-password: ${SSL_KEY_STORE_PASSWORD}
+    producer:
+      compression-type: ${KAFKA_COMPRESSION_TYPE:zstd}
+      value-serializer: org.miracum.kafka.serializers.KafkaFhirSerializer
+
+fhir:
+  mappings:
+    patient-reference-generation:
+      # -- How the Resource.subject.reference to the Patient resources should be generated.
+      strategy: SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID
+      # -- If set to true and the Patient doesn't exist on the FHIR server, the generated Patient
+      # reference will only contain the identifier (with system and value) without a logical
+      # reference to a Patient resource. Only used by the FHIR_SERVER_LOOKUP strategy.
+      identifier-only-references-allowed: true
+      # -- Optional prefix prepended to the oBDS Patient_ID before it is used to build the
+      # Patient identifier, i.e. before it is hashed, looked up, or otherwise transformed by the
+      # configured strategy.
+      patient-id-prefix: ""
+      fhir-server:
+        # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a
+        # local identifier. E.g. `https://fhir.example.com/fhir`. Only used when strategy is set
+        # to FHIR_SERVER_LOOKUP.
+        base-url: ""
+        auth:
+          basic:
+            enabled: false
+            username: ""
+            password: ""
+          oauth2:
+            enabled: false
+            token-url: ""
+            client-id: ""
+            client-secret: ""
+            scope: ""
+      pseudonymize-patient-id:
+        # -- if enabled, before looking up the Patient resource from its identifier, the oBDS
+        # Patient_ID is first pseudonymized using the FHIR Pseudonymizer service. Only used
+        # when strategy is set to FHIR_SERVER_LOOKUP.
+        enabled: false
+        fhir-pseudonymizer:
+          base-url: ""
+      record-id-database:
+        # -- JDBC url to connect to to query an internal RecordID from a Patient_ID. Only used
+        # when strategy is set to RECORD_ID_DATABASE_LOOKUP.
+        jdbc-url: ""
+        username: ""
+        password: ""
+        # -- the SQL query to run. It should include one `?` placeholder which is replaced with
+        # the Patient_ID from the oBDS message.
+        query: |
+          SELECT RecordID
+          FROM lookup
+          WHERE PatientID = ?
+
+obdsv2-to-v3:
+  mapper:
+    ignore-unmappable: false
+    fix-missing-id: false
+    disable-schema-validation: false
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(-){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m %X %n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+
+obds:
+  rest-service:
+    # -- an oBDS XML document may contain one or more patients, so a conversion can yield
+    # more than one FHIR transaction Bundle. Whenever this happens, the Bundles are wrapped
+    # in an outer collection Bundle. If set to true, this wrapping is applied consistently,
+    # i.e. also when the conversion yields only a single patient.
+    wrap-single-patient-bundle: false
+    output-to-kafka:
+      # -- if enabled, also write each converted FHIR bundle to a Kafka topic, in addition
+      # to returning it in the HTTP response.
+      enabled: false
+      # -- name of the topic to write to
+      topic: "fhir.obds"

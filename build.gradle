@@ -37,22 +37,18 @@ ext {
 
 dependencies {
     implementation project(':mappings')
+    implementation project(':patient-reference')
 
     implementation 'org.apache.kafka:kafka-streams'
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation "ca.uhn.hapi.fhir:hapi-fhir-structures-r4:${hapiVersion}"
-    implementation "ca.uhn.hapi.fhir:hapi-fhir-client:${hapiVersion}"
-    implementation 'org.springframework.security:spring-security-oauth2-client'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.5'
     implementation 'io.micrometer:micrometer-core:1.16.5'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
     implementation 'com.github.slugify:slugify:4.0.0'
-    implementation 'org.springframework.retry:spring-retry'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -67,9 +63,6 @@ dependencies {
 
     errorprone 'com.google.errorprone:error_prone_core:2.49.0'
     errorprone 'com.uber.nullaway:nullaway:0.13.4'
-
-    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
-    runtimeOnly 'org.postgresql:postgresql'
 }
 
 dependencyManagement {
