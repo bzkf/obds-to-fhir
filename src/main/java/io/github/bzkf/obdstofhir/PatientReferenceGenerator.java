@@ -190,10 +190,10 @@ public class PatientReferenceGenerator {
     var oauth2 = fhirServerConfig.auth().oauth2();
     var bearerTokenAuth = fhirServerConfig.auth().bearerToken();
 
-    if (basicAuth.enabled() && oauth2.enabled() && bearerTokenAuth.enabled() ||
-      basicAuth.enabled() && oauth2.enabled() ||
-      basicAuth.enabled() && bearerTokenAuth.enabled() ||
-      oauth2.enabled() && bearerTokenAuth.enabled()) {
+    if ((basicAuth.enabled() ? 1 : 0)
+            + (oauth2.enabled() ? 1 : 0)
+            + (bearerTokenAuth.enabled() ? 1 : 0)
+        > 1) {
       throw new IllegalArgumentException(
           "Only one of fhir-server.auth.basic, fhir-server.auth.oauth2 or fhir-server.auth.bearer-token can be enabled at the"
               + " same time.");

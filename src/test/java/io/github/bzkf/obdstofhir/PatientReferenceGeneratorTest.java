@@ -112,7 +112,7 @@ class PatientReferenceGeneratorTest {
             new FhirServerConfig.Auth(
                 new FhirServerConfig.BasicAuth(false, "", ""),
                 new FhirServerConfig.OAuth2(false, "", "", "", null),
-                new FhirServerConfig.BearerTokenAuth(false, "token")));
+                new FhirServerConfig.BearerTokenAuth(true, "token")));
 
     assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
   }
