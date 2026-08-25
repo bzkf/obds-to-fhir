@@ -19,6 +19,21 @@ import org.springframework.test.util.ReflectionTestUtils;
 class PatientReferenceGeneratorTest {
 
   @Test
+  void shouldThrowWhenCreatingFhirClientWithBasicAndOAuth2AndBearerTokenBothEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(true, "user", "pwd"),
+                new FhirServerConfig.OAuth2(
+                    true, "http://example.org/token", "client-id", "client-secret", null),
+                new FhirServerConfig.BearerTokenAuth(true, "token")));
+
+    assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void shouldThrowWhenCreatingFhirClientWithBasicAndOAuth2BothEnabled() throws Exception {
     var config =
         new FhirServerConfig(
@@ -26,10 +41,53 @@ class PatientReferenceGeneratorTest {
             new FhirServerConfig.Auth(
                 new FhirServerConfig.BasicAuth(true, "user", "pwd"),
                 new FhirServerConfig.OAuth2(
-                    true, "http://example.org/token", "client-id", "client-secret", null)));
+                    true, "http://example.org/token", "client-id", "client-secret", null),
+                new FhirServerConfig.BearerTokenAuth(false, "")));
 
     assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void shouldThrowWhenCreatingFhirClientWithBasicAndBearerTokenBothEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(true, "user", "pwd"),
+                new FhirServerConfig.OAuth2(false, "", "", "", null),
+                new FhirServerConfig.BearerTokenAuth(true, "token")));
+
+    assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void shouldThrowWhenCreatingFhirClientWithOAuth2AndBearerTokenBothEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(false, "", ""),
+                new FhirServerConfig.OAuth2(
+                    true, "http://example.org/token", "client-id", "client-secret", null),
+                new FhirServerConfig.BearerTokenAuth(true, "token")));
+
+    assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
+  void shouldCreateFhirClientWhenOnlyBasicIsEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(true, "user", "pwd"),
+                new FhirServerConfig.OAuth2(false, "", "", "", null),
+                new FhirServerConfig.BearerTokenAuth(false, "")));
+
+    assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
   }
 
   @Test
@@ -40,7 +98,21 @@ class PatientReferenceGeneratorTest {
             new FhirServerConfig.Auth(
                 new FhirServerConfig.BasicAuth(false, "", ""),
                 new FhirServerConfig.OAuth2(
-                    true, "http://example.org/token", "client-id", "client-secret", null)));
+                    true, "http://example.org/token", "client-id", "client-secret", null),
+                new FhirServerConfig.BearerTokenAuth(false, "")));
+
+    assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
+  }
+
+  @Test
+  void shouldCreateFhirClientWhenOnlyBearerTokenIsEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(false, "", ""),
+                new FhirServerConfig.OAuth2(false, "", "", "", null),
+                new FhirServerConfig.BearerTokenAuth(false, "token")));
 
     assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
   }
