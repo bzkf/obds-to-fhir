@@ -1,0 +1,88 @@
+{
+  "resourceType": "Provenance",
+  "id": "120e04a8966f95f96adc5ba5cc0b7e3546134ee0dcd1da57947e073b7ff68051",
+  "target": [ {
+    "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
+  }, {
+    "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+  }, {
+    "reference": "Procedure/036ea76ef4234eb8016437915bf16109d2fdcd5ec2ddee3359efe114789f86b7"
+  }, {
+    "reference": "Procedure/d7a6e92bb5ff8306601e98c5517f1cf7cd632ef3a9ef2d9ec4f2d0209b3cde73"
+  }, {
+    "reference": "Procedure/ccd6a5395c9e15f4132dee7ca035342fc3da93b3b9737b22672d868892e1b783"
+  }, {
+    "reference": "Observation/daa3a29e56fbbdcdf2d899040e8a515eb5ae62414b7e1478d79d0b499469bbcc"
+  }, {
+    "reference": "Specimen/0bff7444308f734311de0b6811953da5d79150e6dbbb09083d79b142b36ef659"
+  }, {
+    "reference": "Observation/f5dd92703653c49ab986fa65e4128818ac109316833da78f397379925bd999b0"
+  }, {
+    "reference": "Observation/c0a864d2cc08c699d2880b9b05980317e5a17da27011651f7034c59057e62572"
+  }, {
+    "reference": "Observation/97d55e3c5474a1cefc5025e41958bb468caa173ff93bc80e2d6c056881861258"
+  }, {
+    "reference": "Observation/5de1b43c9f9e06440d804433f17d33df6aefd272cb8c30bc70f304e360eb36f4"
+  }, {
+    "reference": "Observation/88c0be3121ff983c8c79438eec89afa15435930a0a0866b8b6040e179be0ce26"
+  }, {
+    "reference": "Observation/a4363ed8658d46125c1c965b3c454d7258e97cf6de717286a5c5403564638e60"
+  }, {
+    "reference": "Observation/6e196396305c7c74b98501678791248ffff9dca0c9cfc6fc7372f0fe28cc6425"
+  }, {
+    "reference": "Observation/67a726d7b7d36cd2c26b0a60fb1078327666abf9fbe06490d573c0bb81ac8039"
+  }, {
+    "reference": "Observation/4974edcad2cc955eb57277fa27cc36d6449992c26ac40c74b70baf11ce280b3c"
+  }, {
+    "reference": "Observation/c652efd9ceba1b838d4d9195acf7a08e8a7347cadca1e6404224f9f970089212"
+  }, {
+    "reference": "Observation/11a669edb81cf9afebd8089c6ef73b6459716d4c341b65db817b562781704f0e"
+  }, {
+    "reference": "Observation/305a98dddd0772d1372e645a5c6d58c5e344b6c76296b7964b541b1911bcf275"
+  }, {
+    "reference": "Observation/15dbd88bf16a13aaa781922704b3b5cbdf589b22b26ae25af32f6de4d7053ac2"
+  }, {
+    "reference": "Observation/a298575458f69b4c9484a1a7b78a15f8bbf75ec2d1fa84952746707b1a344b13"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "10_1_OP-1"
+      }
+    }
+  } ]
+}

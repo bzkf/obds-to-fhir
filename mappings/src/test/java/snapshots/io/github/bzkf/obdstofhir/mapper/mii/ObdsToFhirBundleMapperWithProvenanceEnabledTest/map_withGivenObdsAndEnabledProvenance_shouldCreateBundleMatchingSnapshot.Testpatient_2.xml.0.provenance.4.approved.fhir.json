@@ -1,0 +1,66 @@
+{
+  "resourceType": "Provenance",
+  "id": "55dfff3b30861464e8569d4ce3e67c6e3e63dcbbbbc20679473c843df86f86b7",
+  "target": [ {
+    "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
+  }, {
+    "reference": "Observation/b7fdb4ce115c4a01fcdb2fb817a6af7551f2db41e8bd0089efdcf27cee93b314"
+  }, {
+    "reference": "Observation/b025f75c3b12ce095ccce95e1512174ca609d8cb2eac70487d315bc39aab4420"
+  }, {
+    "reference": "Observation/0594ec7b243d70f739a2d82d184ceeb6670f04452f262fe84c7b988e5f483499"
+  }, {
+    "reference": "Observation/e38e3341e9aac81eda1be837fe2310daf09d7072d3c8acdf73fea0668075d7c9"
+  }, {
+    "reference": "Observation/f3ae52bbc008d8ad896f176983a7349de70e3ab9b89c3340d4c30d615e793732"
+  }, {
+    "reference": "Observation/c0ebe767a627cd676ee250cbe2b2b9be7af8b4b4c07d486ba6917390c3942c09"
+  }, {
+    "reference": "Observation/e897eb848f80c21ed8da89f308cffbb82d9f37aee6eb11f7a3108a91682b6995"
+  }, {
+    "reference": "Observation/1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db"
+  }, {
+    "reference": "Observation/5172ed43cf0a3687ec38a98377c5240d7ba118258a49c0e0b5fdb090f7354fb9"
+  } ],
+  "occurredDateTime": "2000-01-01T11:11:11Z",
+  "recorded": "2000-01-01T11:11:11Z",
+  "activity": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+      "code": "CREATE",
+      "display": "create"
+    } ]
+  },
+  "agent": [ {
+    "type": {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+        "code": "assembler",
+        "display": "Assembler"
+      } ]
+    },
+    "role": [ {
+      "coding": [ {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+        "code": "AUT",
+        "display": "author"
+      } ]
+    } ],
+    "who": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
+        "value": "obds-to-fhir-0.0.0-test"
+      },
+      "display": "oBDS-to-FHIR v0.0.0-test"
+    }
+  } ],
+  "entity": [ {
+    "role": "source",
+    "what": {
+      "identifier": {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-meldung-id",
+        "value": "11_1_VE_1"
+      }
+    }
+  } ]
+}
