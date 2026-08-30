@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "urn:uuid:bd4d8236-b0c7-3a6c-98b6-97edec64318a",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -38,7 +38,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
+    "fullUrl": "urn:uuid:5988f32d-c967-30e0-a696-88ddb9bcba93",
     "resource": {
       "resourceType": "Condition",
       "id": "f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
@@ -92,7 +92,7 @@
       "url": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a"
     }
   }, {
-    "fullUrl": "Procedure/c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e",
+    "fullUrl": "urn:uuid:3d010ccf-6787-3714-861a-29ba922ff329",
     "resource": {
       "resourceType": "Procedure",
       "id": "c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e",
@@ -171,7 +171,7 @@
       "url": "Procedure/c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e"
     }
   }, {
-    "fullUrl": "Procedure/0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd",
+    "fullUrl": "urn:uuid:ad9dc63a-9fc6-3e7a-915f-55c9071dc861",
     "resource": {
       "resourceType": "Procedure",
       "id": "0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd",
@@ -250,7 +250,7 @@
       "url": "Procedure/0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd"
     }
   }, {
-    "fullUrl": "Procedure/e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058",
+    "fullUrl": "urn:uuid:f7425cd6-c4a0-311d-94d0-663445cab18d",
     "resource": {
       "resourceType": "Procedure",
       "id": "e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058",
@@ -330,7 +330,7 @@
       "url": "Procedure/e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058"
     }
   }, {
-    "fullUrl": "Procedure/9a20a96a1096bcaf9af294b01e5c308b0bcaec60a12bd45e3a7cfebb20d7f351",
+    "fullUrl": "urn:uuid:a77ae509-8078-306b-a255-532bb0a4d6b7",
     "resource": {
       "resourceType": "Procedure",
       "id": "9a20a96a1096bcaf9af294b01e5c308b0bcaec60a12bd45e3a7cfebb20d7f351",
@@ -409,7 +409,7 @@
       "url": "Procedure/9a20a96a1096bcaf9af294b01e5c308b0bcaec60a12bd45e3a7cfebb20d7f351"
     }
   }, {
-    "fullUrl": "Procedure/10ff7d27d5316c43b790c12089a7cd1c657bebf32a33894f470a0e09350fdef8",
+    "fullUrl": "urn:uuid:979f1fe9-4cb5-3529-b5b1-f4c65d9a45a5",
     "resource": {
       "resourceType": "Procedure",
       "id": "10ff7d27d5316c43b790c12089a7cd1c657bebf32a33894f470a0e09350fdef8",
@@ -488,7 +488,7 @@
       "url": "Procedure/10ff7d27d5316c43b790c12089a7cd1c657bebf32a33894f470a0e09350fdef8"
     }
   }, {
-    "fullUrl": "AdverseEvent/e528506357bb34cee8abf44c115d2a52b8ddc1bf2cba72f8102b4283cffb3fd3",
+    "fullUrl": "urn:uuid:1a0358aa-f631-3e1c-b050-58892521ceb5",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "e528506357bb34cee8abf44c115d2a52b8ddc1bf2cba72f8102b4283cffb3fd3",

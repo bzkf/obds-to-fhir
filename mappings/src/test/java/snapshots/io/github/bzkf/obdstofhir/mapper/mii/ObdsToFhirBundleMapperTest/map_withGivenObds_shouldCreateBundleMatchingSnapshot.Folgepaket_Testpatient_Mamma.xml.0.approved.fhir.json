@@ -3,7 +3,7 @@
   "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+    "fullUrl": "urn:uuid:43e93972-8532-3afd-b976-d77c99b2fd04",
     "resource": {
       "resourceType": "Patient",
       "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
@@ -38,7 +38,7 @@
       "url": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
     }
   }, {
-    "fullUrl": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
+    "fullUrl": "urn:uuid:8f246400-78b9-32bb-b2c3-2c324cbeae14",
     "resource": {
       "resourceType": "Condition",
       "id": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
@@ -101,7 +101,7 @@
       "url": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
     }
   }, {
-    "fullUrl": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
+    "fullUrl": "urn:uuid:1e0b7a4c-1e50-370e-a471-493b60d330e7",
     "resource": {
       "resourceType": "Procedure",
       "id": "de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
@@ -182,7 +182,7 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
+    "fullUrl": "urn:uuid:afdd2cb8-7e1c-3b23-b0c7-f003a8e9a0fe",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
@@ -221,7 +221,7 @@
       "url": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256"
     }
   }, {
-    "fullUrl": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+    "fullUrl": "urn:uuid:e1b62041-93f1-3bc4-9c91-10f881f1cc1b",
     "resource": {
       "resourceType": "Medication",
       "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
@@ -261,7 +261,7 @@
       "url": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0"
     }
   }, {
-    "fullUrl": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
+    "fullUrl": "urn:uuid:c1a1655c-4d58-3a89-9b19-cfc826b836ac",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
@@ -300,7 +300,7 @@
       "url": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9"
     }
   }, {
-    "fullUrl": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
+    "fullUrl": "urn:uuid:7ac48c1d-e15f-3a18-a12f-6a7dbdc60635",
     "resource": {
       "resourceType": "Medication",
       "id": "87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
@@ -340,7 +340,7 @@
       "url": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3"
     }
   }, {
-    "fullUrl": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
+    "fullUrl": "urn:uuid:b44cfffd-39a9-3b51-b653-1d956e1c2e2a",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
@@ -387,7 +387,7 @@
       "url": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04"
     }
   }, {
-    "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
+    "fullUrl": "urn:uuid:fc0348ef-0b0c-3718-bf25-084032d1f44c",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",

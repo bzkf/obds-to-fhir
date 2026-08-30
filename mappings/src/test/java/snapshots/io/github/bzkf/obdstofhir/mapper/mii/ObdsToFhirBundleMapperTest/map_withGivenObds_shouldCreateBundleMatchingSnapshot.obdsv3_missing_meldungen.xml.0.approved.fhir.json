@@ -3,7 +3,7 @@
   "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+    "fullUrl": "urn:uuid:9600ac55-6746-3682-a224-74eb436623c3",
     "resource": {
       "resourceType": "Patient",
       "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
@@ -38,7 +38,7 @@
       "url": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149"
     }
   }, {
-    "fullUrl": "Condition/2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
+    "fullUrl": "urn:uuid:45793a2c-ecbd-3aab-997a-a45b280721d2",
     "resource": {
       "resourceType": "Condition",
       "id": "2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",

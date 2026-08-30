@@ -22,11 +22,13 @@ import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
 import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import io.github.dizuker.tofhir.ReferenceUtils;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -1035,12 +1037,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
+    // Bundle.entry.fullUrl must be an absolute URL (unlike entry.request.url, which is
+    // correctly relative for a PUT). Derive a deterministic UUID from the same identity
+    // so re-mapping the same resource always yields the same fullUrl.
+    var fullUrl = "urn:uuid:" + UUID.nameUUIDFromBytes(url.getBytes(StandardCharsets.UTF_8));
     // if a resource entry already exists, it will be replaced.
     // this should only be necessary for the Condition resource,
     // which can be created from the TumorzuordnungTyp present in all kinds of
     // Meldungen.
     var duplicateEntries =
-        bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(url)).toList();
+        bundle.getEntry().stream()
+            .filter(entry -> entry.getRequest().getUrl().equals(url))
+            .toList();
 
     if (duplicateEntries.size() > 1) {
       throw new IllegalStateException(
@@ -1102,7 +1110,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     } else {
       bundle
           .addEntry()
-          .setFullUrl(url)
+          .setFullUrl(fullUrl)
           .setResource(resource)
           .getRequest()
           .setMethod(HTTPVerb.PUT)
