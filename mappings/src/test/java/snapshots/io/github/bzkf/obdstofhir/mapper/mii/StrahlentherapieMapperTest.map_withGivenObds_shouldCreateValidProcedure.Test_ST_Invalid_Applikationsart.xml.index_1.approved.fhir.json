@@ -61,8 +61,9 @@
       }
     } ],
     "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-      "code": "1.2."
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+      "code": "1.2.",
+      "display": "Teilhirn"
     } ]
   } ]
 }

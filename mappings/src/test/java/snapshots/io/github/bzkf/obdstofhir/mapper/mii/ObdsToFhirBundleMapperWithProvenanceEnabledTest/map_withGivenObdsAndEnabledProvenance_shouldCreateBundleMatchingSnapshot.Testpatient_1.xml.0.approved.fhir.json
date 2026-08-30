@@ -2540,8 +2540,9 @@
           }
         } ],
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "3.1.-"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+          "code": "3.1.-",
+          "display": "Mamma als Ganzbrust ohne Lk"
         } ]
       } ],
       "usedCode": [ {
@@ -2647,7 +2648,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "6.10"
+          "code": "6.10",
+          "display": "Schulter (r, l)"
         } ]
       } ],
       "usedCode": [ {
@@ -2743,8 +2745,9 @@
           }
         } ],
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "7.+"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+          "code": "7.+",
+          "display": "Haut mit Lymphknoten"
         } ]
       } ],
       "usedCode": [ {
@@ -2841,7 +2844,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "6.16"
+          "code": "6.16",
+          "display": "Oberschenkel (r, l)"
         } ]
       } ]
     },

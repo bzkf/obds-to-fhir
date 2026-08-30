@@ -253,7 +253,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "5.4"
+          "code": "5.4",
+          "display": "Prostata"
         } ]
       } ]
     },
@@ -326,7 +327,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "9.10"
+          "code": "9.10",
+          "display": "Beckenlymphabfluss (r, l) (Iliakal commun, extern, intern, obturatorisch, präsakral)"
         } ]
       } ]
     },
