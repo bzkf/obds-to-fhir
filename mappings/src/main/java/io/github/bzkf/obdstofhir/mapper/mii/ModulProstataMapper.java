@@ -251,22 +251,20 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                 .setCode("44654-2")
                 .setDisplay("Tissue involved by tumor in Prostate tumor")));
 
-    if (modulProstata.getCaBefallStanze().getU() != null) {
-      var valueQuantity = new Quantity();
-      valueQuantity.addExtension(DataAbsentReason.unknown());
-      observation.setValue(valueQuantity);
-    }
+    var valueQuantity =
+        new Quantity().setUnit("%").setSystem("http://unitsofmeasure.org").setCode("%");
 
+    // valueQuantity.value is 1..1 in the mii-pr-onko-prostate-ca-befall-stanze profile, so it
+    // must be set even when the percentage is unknown.
     if (modulProstata.getCaBefallStanze().getProzentzahl() != null) {
-      var valueQuantity =
-          new Quantity()
-              .setValue(modulProstata.getCaBefallStanze().getProzentzahl())
-              .setUnit("%")
-              .setSystem("http://unitsofmeasure.org")
-              .setCode("%");
-
-      observation.setValue(valueQuantity);
+      valueQuantity.setValue(modulProstata.getCaBefallStanze().getProzentzahl());
+    } else {
+      var absentValue = new DecimalType();
+      absentValue.addExtension(DataAbsentReason.unknown());
+      valueQuantity.setValueElement(absentValue);
     }
+
+    observation.setValue(valueQuantity);
 
     return observation;
   }
