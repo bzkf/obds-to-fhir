@@ -135,6 +135,7 @@ jobs:
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
+            # shellcheck disable=SC2016 # $VALIDATOR_ARGS is expanded by the inner sh, not here
             xargs -0 -I {} sh -c '
               echo "  Validating: {}"
               java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS -output-style eslint-compact 2>&1 \
