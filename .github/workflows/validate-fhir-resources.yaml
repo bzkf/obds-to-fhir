@@ -130,11 +130,12 @@ jobs:
         continue-on-error: true
         env:
           MAPPER_NAME: ${{ matrix.mapper }}
+          VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && java -jar /usr/local/bin/validator_cli.jar {} ${{ needs.extract-mapper-names.outputs.validator-args }}'
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS'
 
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
@@ -185,10 +186,12 @@ jobs:
       # before switching over. Does not gate the build yet.
       - name: Validate bundles (Java validator)
         continue-on-error: true
+        env:
+          VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && java -jar /usr/local/bin/validator_cli.jar {} ${{ needs.extract-mapper-names.outputs.validator-args }}'
+            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS'
 
       - name: Validate bundles
         continue-on-error: true
