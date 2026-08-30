@@ -133,9 +133,9 @@ jobs:
           VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
           echo "Validating files for mapper: ${MAPPER_NAME}"
+          # shellcheck disable=SC2016 # $VALIDATOR_ARGS is expanded by the inner sh, not here
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            # shellcheck disable=SC2016 # $VALIDATOR_ARGS is expanded by the inner sh, not here
             xargs -0 -I {} sh -c '
               echo "  Validating: {}"
               java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS -output-style eslint-compact 2>&1 \
@@ -197,6 +197,7 @@ jobs:
         env:
           VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
+          # shellcheck disable=SC2086 # VALIDATOR_ARGS must word-split into separate flags
           java -jar /usr/local/bin/validator_cli.jar \
             mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json \
             $VALIDATOR_ARGS -html-output=java-validator-bundles-report.html
