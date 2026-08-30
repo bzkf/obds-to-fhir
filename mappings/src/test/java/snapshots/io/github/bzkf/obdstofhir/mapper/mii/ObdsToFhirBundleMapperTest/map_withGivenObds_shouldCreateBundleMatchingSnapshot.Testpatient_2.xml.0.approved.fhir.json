@@ -359,7 +359,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 8
           } ],
           "system": "http://snomed.info/sct",
@@ -421,7 +421,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -478,7 +478,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1410,7 +1410,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
@@ -1472,7 +1472,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 3
           } ],
           "system": "http://snomed.info/sct",
@@ -1529,7 +1529,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1802,7 +1802,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
@@ -1864,7 +1864,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 3
           } ],
           "system": "http://snomed.info/sct",
@@ -1921,7 +1921,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",

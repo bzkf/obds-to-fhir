@@ -26,7 +26,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "extension": [ {
-        "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
         "valueDecimal": 8
       } ],
       "system": "http://snomed.info/sct",
