@@ -3,7 +3,7 @@
   "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "urn:uuid:43e93972-8532-3afd-b976-d77c99b2fd04",
+    "fullUrl": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
     "resource": {
       "resourceType": "Patient",
       "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
@@ -39,7 +39,7 @@
       "url": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
     }
   }, {
-    "fullUrl": "urn:uuid:8f246400-78b9-32bb-b2c3-2c324cbeae14",
+    "fullUrl": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
     "resource": {
       "resourceType": "Condition",
       "id": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
@@ -124,7 +124,7 @@
       "url": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
     }
   }, {
-    "fullUrl": "urn:uuid:c7502987-049e-3a12-8efd-a15f87e3b8f4",
+    "fullUrl": "Observation/9083d0beae5677ba998ede0ed2e2e0b10ceda4b5a96e79b22203739820a5c041",
     "resource": {
       "resourceType": "Observation",
       "id": "9083d0beae5677ba998ede0ed2e2e0b10ceda4b5a96e79b22203739820a5c041",
@@ -168,7 +168,7 @@
       "url": "Observation/9083d0beae5677ba998ede0ed2e2e0b10ceda4b5a96e79b22203739820a5c041"
     }
   }, {
-    "fullUrl": "urn:uuid:0b25b29c-76b4-3a93-865c-4dafdedafe08",
+    "fullUrl": "Procedure/fbf833746a51e29bee075048cd2235f002078ecaadbec3ce05b0d613a91cc9aa",
     "resource": {
       "resourceType": "Procedure",
       "id": "fbf833746a51e29bee075048cd2235f002078ecaadbec3ce05b0d613a91cc9aa",
@@ -222,7 +222,7 @@
       "url": "Procedure/fbf833746a51e29bee075048cd2235f002078ecaadbec3ce05b0d613a91cc9aa"
     }
   }, {
-    "fullUrl": "urn:uuid:79c6f1f3-104a-3eb9-8f14-9394ee04df88",
+    "fullUrl": "Procedure/f9dd6936cc4f4e05f82a776a448666f6da719d7d5797239b06a5deaae7aab9a0",
     "resource": {
       "resourceType": "Procedure",
       "id": "f9dd6936cc4f4e05f82a776a448666f6da719d7d5797239b06a5deaae7aab9a0",
@@ -286,7 +286,7 @@
       "url": "Procedure/f9dd6936cc4f4e05f82a776a448666f6da719d7d5797239b06a5deaae7aab9a0"
     }
   }, {
-    "fullUrl": "urn:uuid:f4bbbd06-05b1-3b86-962a-3473c8179d29",
+    "fullUrl": "Procedure/bbc09770ccfa0bf300c3f3c0b4b005f5841dcc5a254d8190d83e054f1e2e3c9e",
     "resource": {
       "resourceType": "Procedure",
       "id": "bbc09770ccfa0bf300c3f3c0b4b005f5841dcc5a254d8190d83e054f1e2e3c9e",
@@ -350,7 +350,7 @@
       "url": "Procedure/bbc09770ccfa0bf300c3f3c0b4b005f5841dcc5a254d8190d83e054f1e2e3c9e"
     }
   }, {
-    "fullUrl": "urn:uuid:b892869d-dd77-3015-a0e5-bdcf36bc4bd3",
+    "fullUrl": "Observation/93d9505f2f1c6fb54202a03603290a65c50268b03881409350faf64c12a72af2",
     "resource": {
       "resourceType": "Observation",
       "id": "93d9505f2f1c6fb54202a03603290a65c50268b03881409350faf64c12a72af2",
@@ -394,7 +394,7 @@
       "url": "Observation/93d9505f2f1c6fb54202a03603290a65c50268b03881409350faf64c12a72af2"
     }
   }, {
-    "fullUrl": "urn:uuid:b0635a2b-bef2-3618-abcb-66102ef94609",
+    "fullUrl": "Specimen/dee3a3d1c2e8b0333f8fa20659b9ca3900b8a52cbf1a6ef602eba714f7b9b8db",
     "resource": {
       "resourceType": "Specimen",
       "id": "dee3a3d1c2e8b0333f8fa20659b9ca3900b8a52cbf1a6ef602eba714f7b9b8db",
@@ -424,7 +424,7 @@
       "url": "Specimen/dee3a3d1c2e8b0333f8fa20659b9ca3900b8a52cbf1a6ef602eba714f7b9b8db"
     }
   }, {
-    "fullUrl": "urn:uuid:0a727168-567a-3a58-b593-9754b578ea6b",
+    "fullUrl": "Observation/f538540a6338b146132d774052ca5e9845566bd2bb199e3d80f1472a0b7f6134",
     "resource": {
       "resourceType": "Observation",
       "id": "f538540a6338b146132d774052ca5e9845566bd2bb199e3d80f1472a0b7f6134",
@@ -472,7 +472,7 @@
       "url": "Observation/f538540a6338b146132d774052ca5e9845566bd2bb199e3d80f1472a0b7f6134"
     }
   }, {
-    "fullUrl": "urn:uuid:bb67d775-0c73-39af-a519-41e1485418f8",
+    "fullUrl": "Observation/00116f71918e2819a3ce67e8fe91cefac107beaf7183f1e6353ea7615dba4a0e",
     "resource": {
       "resourceType": "Observation",
       "id": "00116f71918e2819a3ce67e8fe91cefac107beaf7183f1e6353ea7615dba4a0e",
@@ -531,7 +531,7 @@
       "url": "Observation/00116f71918e2819a3ce67e8fe91cefac107beaf7183f1e6353ea7615dba4a0e"
     }
   }, {
-    "fullUrl": "urn:uuid:a8f4e4ba-c324-3820-8a62-957b54a6fcfe",
+    "fullUrl": "Observation/966c3fd07134c89a72bea44bb25a1905e00dceb39d3879546e48ceab1f98eb24",
     "resource": {
       "resourceType": "Observation",
       "id": "966c3fd07134c89a72bea44bb25a1905e00dceb39d3879546e48ceab1f98eb24",
@@ -587,7 +587,7 @@
       "url": "Observation/966c3fd07134c89a72bea44bb25a1905e00dceb39d3879546e48ceab1f98eb24"
     }
   }, {
-    "fullUrl": "urn:uuid:b527d84e-44b2-3b17-8f95-f3d6e337b573",
+    "fullUrl": "Observation/b0fadca794f1ef6c6e381870990ecab65761f64284470724e65b8c5c5cb69fca",
     "resource": {
       "resourceType": "Observation",
       "id": "b0fadca794f1ef6c6e381870990ecab65761f64284470724e65b8c5c5cb69fca",
@@ -643,7 +643,7 @@
       "url": "Observation/b0fadca794f1ef6c6e381870990ecab65761f64284470724e65b8c5c5cb69fca"
     }
   }, {
-    "fullUrl": "urn:uuid:a62bb9b9-1014-3ac6-a9fd-6809859f4307",
+    "fullUrl": "Observation/979a9da27672f52b0608af2247b9da8ff9dd482bb88b662eb1cf99b2f2391b1c",
     "resource": {
       "resourceType": "Observation",
       "id": "979a9da27672f52b0608af2247b9da8ff9dd482bb88b662eb1cf99b2f2391b1c",
@@ -702,7 +702,7 @@
       "url": "Observation/979a9da27672f52b0608af2247b9da8ff9dd482bb88b662eb1cf99b2f2391b1c"
     }
   }, {
-    "fullUrl": "urn:uuid:e4454c62-4dc9-3bb3-a3c0-47c9a5afa0aa",
+    "fullUrl": "Observation/42ddda9c2dc53c0aa30d182d5104174c4fda9e47c4814b1939fd7f4b0073c02b",
     "resource": {
       "resourceType": "Observation",
       "id": "42ddda9c2dc53c0aa30d182d5104174c4fda9e47c4814b1939fd7f4b0073c02b",
@@ -761,7 +761,7 @@
       "url": "Observation/42ddda9c2dc53c0aa30d182d5104174c4fda9e47c4814b1939fd7f4b0073c02b"
     }
   }, {
-    "fullUrl": "urn:uuid:cf7b0491-fb61-3260-b4c3-aac7c396ec44",
+    "fullUrl": "Observation/fee8e8ba14ff3d86de8e0b6d2903a14d8c64ea10ded31602d54a0ee472e0a68d",
     "resource": {
       "resourceType": "Observation",
       "id": "fee8e8ba14ff3d86de8e0b6d2903a14d8c64ea10ded31602d54a0ee472e0a68d",
@@ -820,7 +820,7 @@
       "url": "Observation/fee8e8ba14ff3d86de8e0b6d2903a14d8c64ea10ded31602d54a0ee472e0a68d"
     }
   }, {
-    "fullUrl": "urn:uuid:28579a42-8856-3d66-a262-6b0cfc755952",
+    "fullUrl": "Observation/30f4eb53f45ed6e87000602fda499b7b5bf892a18f9c63ffa6d7aa759948137a",
     "resource": {
       "resourceType": "Observation",
       "id": "30f4eb53f45ed6e87000602fda499b7b5bf892a18f9c63ffa6d7aa759948137a",
@@ -869,7 +869,7 @@
       "url": "Observation/30f4eb53f45ed6e87000602fda499b7b5bf892a18f9c63ffa6d7aa759948137a"
     }
   }, {
-    "fullUrl": "urn:uuid:5dbd9388-f544-3fb5-bcec-bd98d1879f62",
+    "fullUrl": "Observation/759c4ef361794792f56cc529692034183c635d2841e54b18f932c9f5b7641fd7",
     "resource": {
       "resourceType": "Observation",
       "id": "759c4ef361794792f56cc529692034183c635d2841e54b18f932c9f5b7641fd7",
@@ -918,7 +918,7 @@
       "url": "Observation/759c4ef361794792f56cc529692034183c635d2841e54b18f932c9f5b7641fd7"
     }
   }, {
-    "fullUrl": "urn:uuid:60ac1358-d892-34a4-bfbd-cda5d662a939",
+    "fullUrl": "Observation/b01bb097c00725ce34dbf1a4d3a7e337f049a938ba9cd263cd81469537605fc5",
     "resource": {
       "resourceType": "Observation",
       "id": "b01bb097c00725ce34dbf1a4d3a7e337f049a938ba9cd263cd81469537605fc5",
@@ -967,7 +967,7 @@
       "url": "Observation/b01bb097c00725ce34dbf1a4d3a7e337f049a938ba9cd263cd81469537605fc5"
     }
   }, {
-    "fullUrl": "urn:uuid:37c0b87d-7662-36c1-ad24-1081e45f4ed2",
+    "fullUrl": "Observation/4946f473c5546fabf2ab2adb186981a23e8324e6332fb60c0047c912831b5a40",
     "resource": {
       "resourceType": "Observation",
       "id": "4946f473c5546fabf2ab2adb186981a23e8324e6332fb60c0047c912831b5a40",
@@ -1016,7 +1016,7 @@
       "url": "Observation/4946f473c5546fabf2ab2adb186981a23e8324e6332fb60c0047c912831b5a40"
     }
   }, {
-    "fullUrl": "urn:uuid:ca243b90-6a8b-3a47-9c09-140fd5dccfdd",
+    "fullUrl": "Observation/9cc0d8877fcda3726e1a475018ca79ddce7a186561e8412dcfd97e1c00d92916",
     "resource": {
       "resourceType": "Observation",
       "id": "9cc0d8877fcda3726e1a475018ca79ddce7a186561e8412dcfd97e1c00d92916",
@@ -1081,7 +1081,7 @@
       "url": "Observation/9cc0d8877fcda3726e1a475018ca79ddce7a186561e8412dcfd97e1c00d92916"
     }
   }, {
-    "fullUrl": "urn:uuid:7cbde60f-e547-3b9a-aecd-172ba0bd8c48",
+    "fullUrl": "Procedure/e3c23dc7a0e9f6afc92f4aec134537f08c4a9b72208ae89d355437e80b41e47a",
     "resource": {
       "resourceType": "Procedure",
       "id": "e3c23dc7a0e9f6afc92f4aec134537f08c4a9b72208ae89d355437e80b41e47a",
@@ -1135,7 +1135,7 @@
       "url": "Procedure/e3c23dc7a0e9f6afc92f4aec134537f08c4a9b72208ae89d355437e80b41e47a"
     }
   }, {
-    "fullUrl": "urn:uuid:4752dff0-fa12-3bd3-8bb3-be3f7aeb8cbe",
+    "fullUrl": "Procedure/62afa263bbac5e3596026361c6c1eb089e535f59abd20ab64f4d303003261987",
     "resource": {
       "resourceType": "Procedure",
       "id": "62afa263bbac5e3596026361c6c1eb089e535f59abd20ab64f4d303003261987",
@@ -1199,7 +1199,7 @@
       "url": "Procedure/62afa263bbac5e3596026361c6c1eb089e535f59abd20ab64f4d303003261987"
     }
   }, {
-    "fullUrl": "urn:uuid:66e4989f-d394-3d42-97b4-567347c20983",
+    "fullUrl": "Procedure/e125ae510a913a44ed5a95c9731bb77d81d6ef0f348bfce4e9f14e10601e34ae",
     "resource": {
       "resourceType": "Procedure",
       "id": "e125ae510a913a44ed5a95c9731bb77d81d6ef0f348bfce4e9f14e10601e34ae",
@@ -1263,7 +1263,7 @@
       "url": "Procedure/e125ae510a913a44ed5a95c9731bb77d81d6ef0f348bfce4e9f14e10601e34ae"
     }
   }, {
-    "fullUrl": "urn:uuid:5eed7124-f609-3584-9e8f-13e64cf45f4d",
+    "fullUrl": "Specimen/066a06bc94fc147f2aaba0e9d8019347c986d28791d886920581b903769b23af",
     "resource": {
       "resourceType": "Specimen",
       "id": "066a06bc94fc147f2aaba0e9d8019347c986d28791d886920581b903769b23af",
@@ -1293,7 +1293,7 @@
       "url": "Specimen/066a06bc94fc147f2aaba0e9d8019347c986d28791d886920581b903769b23af"
     }
   }, {
-    "fullUrl": "urn:uuid:9b602bbe-5a7b-3a45-8b31-69327f46f0c9",
+    "fullUrl": "Observation/7ad413ed60e4bb360180785679bbbbb9005d5eab1b122dce6db6b4b389b5dd8c",
     "resource": {
       "resourceType": "Observation",
       "id": "7ad413ed60e4bb360180785679bbbbb9005d5eab1b122dce6db6b4b389b5dd8c",
@@ -1341,7 +1341,7 @@
       "url": "Observation/7ad413ed60e4bb360180785679bbbbb9005d5eab1b122dce6db6b4b389b5dd8c"
     }
   }, {
-    "fullUrl": "urn:uuid:9372921b-b821-3df8-ba6a-800d299d197e",
+    "fullUrl": "Observation/9be471ade1c74a739feae3a4a964ce1b947af5dd9c0c885ddefddb9faf5dc90a",
     "resource": {
       "resourceType": "Observation",
       "id": "9be471ade1c74a739feae3a4a964ce1b947af5dd9c0c885ddefddb9faf5dc90a",
@@ -1400,7 +1400,7 @@
       "url": "Observation/9be471ade1c74a739feae3a4a964ce1b947af5dd9c0c885ddefddb9faf5dc90a"
     }
   }, {
-    "fullUrl": "urn:uuid:c9af4d13-928e-3139-9e20-8ab9c792e714",
+    "fullUrl": "Observation/b946d925b61cfabf8ed80d58e5daa275d27052df02e0601b6c9d56e0a12829c7",
     "resource": {
       "resourceType": "Observation",
       "id": "b946d925b61cfabf8ed80d58e5daa275d27052df02e0601b6c9d56e0a12829c7",
@@ -1456,7 +1456,7 @@
       "url": "Observation/b946d925b61cfabf8ed80d58e5daa275d27052df02e0601b6c9d56e0a12829c7"
     }
   }, {
-    "fullUrl": "urn:uuid:6ee32ffe-4d37-3c7d-a467-04160838094e",
+    "fullUrl": "Observation/8c1dd8385f3788ca22f2da4d532ca5b3b654bd27c2a62aad3a68f966584b914f",
     "resource": {
       "resourceType": "Observation",
       "id": "8c1dd8385f3788ca22f2da4d532ca5b3b654bd27c2a62aad3a68f966584b914f",
@@ -1512,7 +1512,7 @@
       "url": "Observation/8c1dd8385f3788ca22f2da4d532ca5b3b654bd27c2a62aad3a68f966584b914f"
     }
   }, {
-    "fullUrl": "urn:uuid:6e19e754-a49a-347a-91b4-cdaddc627e1a",
+    "fullUrl": "Observation/55a811dc57741805ae3cc22d08236f1c117db2407ee1d9bcb5a58922e30a2e98",
     "resource": {
       "resourceType": "Observation",
       "id": "55a811dc57741805ae3cc22d08236f1c117db2407ee1d9bcb5a58922e30a2e98",
@@ -1571,7 +1571,7 @@
       "url": "Observation/55a811dc57741805ae3cc22d08236f1c117db2407ee1d9bcb5a58922e30a2e98"
     }
   }, {
-    "fullUrl": "urn:uuid:0fc24305-4183-35af-a92a-ebaa110b9d3c",
+    "fullUrl": "Observation/437e0c5c5b1e66310fb65ba4369469dedf12562eb989b33b823f76f0cf2435d0",
     "resource": {
       "resourceType": "Observation",
       "id": "437e0c5c5b1e66310fb65ba4369469dedf12562eb989b33b823f76f0cf2435d0",
@@ -1640,7 +1640,7 @@
       "url": "Observation/437e0c5c5b1e66310fb65ba4369469dedf12562eb989b33b823f76f0cf2435d0"
     }
   }, {
-    "fullUrl": "urn:uuid:c6e3bcd2-7502-32ab-b3c6-024be62ccae2",
+    "fullUrl": "Observation/37ae8416be504843bba2231186609a315b28ce0a75f8e0416cf6439f05e52302",
     "resource": {
       "resourceType": "Observation",
       "id": "37ae8416be504843bba2231186609a315b28ce0a75f8e0416cf6439f05e52302",
@@ -1699,7 +1699,7 @@
       "url": "Observation/37ae8416be504843bba2231186609a315b28ce0a75f8e0416cf6439f05e52302"
     }
   }, {
-    "fullUrl": "urn:uuid:a5469562-6ad4-3f2e-81e5-53443abcf3c0",
+    "fullUrl": "Observation/d74e0f0ca9b0546020c61ffaeec8a6e64ec5c0f14558c6fc8e540004425bf3f4",
     "resource": {
       "resourceType": "Observation",
       "id": "d74e0f0ca9b0546020c61ffaeec8a6e64ec5c0f14558c6fc8e540004425bf3f4",
@@ -1748,7 +1748,7 @@
       "url": "Observation/d74e0f0ca9b0546020c61ffaeec8a6e64ec5c0f14558c6fc8e540004425bf3f4"
     }
   }, {
-    "fullUrl": "urn:uuid:300c9a41-33f6-38a2-b390-fb447c7ee9e0",
+    "fullUrl": "Observation/e1a214e519631e9309840bf321d2208dec4e2feaafa65f48b0bc5ab07e6a6d1c",
     "resource": {
       "resourceType": "Observation",
       "id": "e1a214e519631e9309840bf321d2208dec4e2feaafa65f48b0bc5ab07e6a6d1c",
@@ -1797,7 +1797,7 @@
       "url": "Observation/e1a214e519631e9309840bf321d2208dec4e2feaafa65f48b0bc5ab07e6a6d1c"
     }
   }, {
-    "fullUrl": "urn:uuid:211c56d8-540c-312b-83eb-c9a68baaf755",
+    "fullUrl": "Observation/96cdc81c98b08515bc61728f06c78dd055ade492f2c7e6dfa96fcb9bdd9debc2",
     "resource": {
       "resourceType": "Observation",
       "id": "96cdc81c98b08515bc61728f06c78dd055ade492f2c7e6dfa96fcb9bdd9debc2",
@@ -1846,7 +1846,7 @@
       "url": "Observation/96cdc81c98b08515bc61728f06c78dd055ade492f2c7e6dfa96fcb9bdd9debc2"
     }
   }, {
-    "fullUrl": "urn:uuid:b70a81e6-2738-3d1d-8805-3be0d1b4b769",
+    "fullUrl": "Observation/46b7dfb6d6c176cf6972d9c7d3464e7712415f72a06ae8adb5f771dc25ff76fc",
     "resource": {
       "resourceType": "Observation",
       "id": "46b7dfb6d6c176cf6972d9c7d3464e7712415f72a06ae8adb5f771dc25ff76fc",
@@ -1909,7 +1909,7 @@
       "url": "Observation/46b7dfb6d6c176cf6972d9c7d3464e7712415f72a06ae8adb5f771dc25ff76fc"
     }
   }, {
-    "fullUrl": "urn:uuid:1e0b7a4c-1e50-370e-a471-493b60d330e7",
+    "fullUrl": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
     "resource": {
       "resourceType": "Procedure",
       "id": "de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
@@ -1982,7 +1982,7 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "urn:uuid:7df9853f-824d-3b1a-bbc4-2991d27366cd",
+    "fullUrl": "MedicationStatement/0e921f5dbce98f86c8652a24e9c50d54edf3ae18fc6479d76932b21ed24f4f6e",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "0e921f5dbce98f86c8652a24e9c50d54edf3ae18fc6479d76932b21ed24f4f6e",
@@ -2020,7 +2020,7 @@
       "url": "MedicationStatement/0e921f5dbce98f86c8652a24e9c50d54edf3ae18fc6479d76932b21ed24f4f6e"
     }
   }, {
-    "fullUrl": "urn:uuid:c356ac7e-7228-3874-af25-0c8fd1f6e08d",
+    "fullUrl": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
     "resource": {
       "resourceType": "Medication",
       "id": "2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f",
@@ -2060,7 +2060,7 @@
       "url": "Medication/2a19535e52c4cf2728907af47ab07d21c0a876eb56df1b210022fe3c596ac51f"
     }
   }, {
-    "fullUrl": "urn:uuid:fc0348ef-0b0c-3718-bf25-084032d1f44c",
+    "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
@@ -2103,7 +2103,7 @@
       "url": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a"
     }
   }, {
-    "fullUrl": "urn:uuid:a0fd7d7d-c59d-3919-9f85-e34fbb6a90cf",
+    "fullUrl": "Procedure/f52e718bb2946bce3b4886e0dc8139d24bcaafad2b502a8e3c2a76022f117d8d",
     "resource": {
       "resourceType": "Procedure",
       "id": "f52e718bb2946bce3b4886e0dc8139d24bcaafad2b502a8e3c2a76022f117d8d",
@@ -2176,7 +2176,7 @@
       "url": "Procedure/f52e718bb2946bce3b4886e0dc8139d24bcaafad2b502a8e3c2a76022f117d8d"
     }
   }, {
-    "fullUrl": "urn:uuid:4e118879-a5e8-3455-b97c-5b4bfa548f07",
+    "fullUrl": "AdverseEvent/069751a6d48afa95c3c1a4888eacf71ee96ab819e886dff06b7b3cafe7492c21",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "069751a6d48afa95c3c1a4888eacf71ee96ab819e886dff06b7b3cafe7492c21",
@@ -2219,7 +2219,7 @@
       "url": "AdverseEvent/069751a6d48afa95c3c1a4888eacf71ee96ab819e886dff06b7b3cafe7492c21"
     }
   }, {
-    "fullUrl": "urn:uuid:aaa54cac-4040-3288-a829-e6354d7c571a",
+    "fullUrl": "CarePlan/dbebd7818cc0f3b4664bb738cf89b8b9107381062036d4b562cf4e6c0799e53d",
     "resource": {
       "resourceType": "CarePlan",
       "id": "dbebd7818cc0f3b4664bb738cf89b8b9107381062036d4b562cf4e6c0799e53d",
@@ -2275,7 +2275,7 @@
       "url": "CarePlan/dbebd7818cc0f3b4664bb738cf89b8b9107381062036d4b562cf4e6c0799e53d"
     }
   }, {
-    "fullUrl": "urn:uuid:482f6449-031e-3b9e-97a6-55523e9d4df7",
+    "fullUrl": "Observation/59a68b71c169b1e5ab256bd149915da265e2931416dba4fe5879527eaeecdd81",
     "resource": {
       "resourceType": "Observation",
       "id": "59a68b71c169b1e5ab256bd149915da265e2931416dba4fe5879527eaeecdd81",
@@ -2368,7 +2368,7 @@
       "url": "Observation/59a68b71c169b1e5ab256bd149915da265e2931416dba4fe5879527eaeecdd81"
     }
   }, {
-    "fullUrl": "urn:uuid:bc69a4d4-3a99-37dc-b4fb-39a5fb4ecefe",
+    "fullUrl": "Observation/bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5",
     "resource": {
       "resourceType": "Observation",
       "id": "bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5",
@@ -2412,7 +2412,7 @@
       "url": "Observation/bb9de60fae20fa97fe422fbe9c07a681bca660ec6380f8476642fd62d83690e5"
     }
   }, {
-    "fullUrl": "urn:uuid:4387b5be-2850-3321-bfd7-15e757919d40",
+    "fullUrl": "Observation/ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57",
     "resource": {
       "resourceType": "Observation",
       "id": "ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57",
@@ -2456,7 +2456,7 @@
       "url": "Observation/ac3bfb7a38283a2d84315f2ff03b0a095b4020e8cdd6ea8fc7de5fd83b56ce57"
     }
   }, {
-    "fullUrl": "urn:uuid:54bde6c0-5ebd-3cf5-8583-d5a912235e57",
+    "fullUrl": "Observation/e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11",
     "resource": {
       "resourceType": "Observation",
       "id": "e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11",
@@ -2510,7 +2510,7 @@
       "url": "Observation/e3d251e35335c6faea888d63606d8ed2bcbc690abb50205bf4d9d7439951dc11"
     }
   }, {
-    "fullUrl": "urn:uuid:bdc8947d-83ad-3f21-a8ca-66249bfcd549",
+    "fullUrl": "Specimen/7a880efa9b000b5d6c1016d39ae5c447758915ced0c3d666958651a14f9e371d",
     "resource": {
       "resourceType": "Specimen",
       "id": "7a880efa9b000b5d6c1016d39ae5c447758915ced0c3d666958651a14f9e371d",
@@ -2540,7 +2540,7 @@
       "url": "Specimen/7a880efa9b000b5d6c1016d39ae5c447758915ced0c3d666958651a14f9e371d"
     }
   }, {
-    "fullUrl": "urn:uuid:9f9f9a53-5b6a-30f1-80d4-e8fd6226ce92",
+    "fullUrl": "Observation/04ce4d27110afac225f6d96c58e2b5627a82f1a515be3c5356d705c3a40e6019",
     "resource": {
       "resourceType": "Observation",
       "id": "04ce4d27110afac225f6d96c58e2b5627a82f1a515be3c5356d705c3a40e6019",
@@ -2588,7 +2588,7 @@
       "url": "Observation/04ce4d27110afac225f6d96c58e2b5627a82f1a515be3c5356d705c3a40e6019"
     }
   }, {
-    "fullUrl": "urn:uuid:62ee74b1-0a63-3800-8209-3e0079829ab7",
+    "fullUrl": "Observation/e5f3ff74665a599fb92bc0aa91d5a56b5eb24ca23987748d07dd7397852ec885",
     "resource": {
       "resourceType": "Observation",
       "id": "e5f3ff74665a599fb92bc0aa91d5a56b5eb24ca23987748d07dd7397852ec885",
@@ -2647,7 +2647,7 @@
       "url": "Observation/e5f3ff74665a599fb92bc0aa91d5a56b5eb24ca23987748d07dd7397852ec885"
     }
   }, {
-    "fullUrl": "urn:uuid:59cefd3d-f9fc-3285-82ce-8ee715a29ed9",
+    "fullUrl": "Observation/620d208fc96ed25e8c5cc6ca7b2a63ee30e439c7fe447e2655d471112bc4d040",
     "resource": {
       "resourceType": "Observation",
       "id": "620d208fc96ed25e8c5cc6ca7b2a63ee30e439c7fe447e2655d471112bc4d040",
@@ -2706,7 +2706,7 @@
       "url": "Observation/620d208fc96ed25e8c5cc6ca7b2a63ee30e439c7fe447e2655d471112bc4d040"
     }
   }, {
-    "fullUrl": "urn:uuid:6d2a9e13-3115-39ec-80c1-f8ac4fa314eb",
+    "fullUrl": "Observation/55172754003bbb6c4f9b7294df3fe51481f9351d5d76bad4f385ee49be9a5412",
     "resource": {
       "resourceType": "Observation",
       "id": "55172754003bbb6c4f9b7294df3fe51481f9351d5d76bad4f385ee49be9a5412",
@@ -2765,7 +2765,7 @@
       "url": "Observation/55172754003bbb6c4f9b7294df3fe51481f9351d5d76bad4f385ee49be9a5412"
     }
   }, {
-    "fullUrl": "urn:uuid:bb5e5d1e-f486-33f5-9103-5ab55f105f6b",
+    "fullUrl": "Observation/a365d15d2c71a8784404c64c739af2d8b76abf34dc18dee58bcba73606c85bdf",
     "resource": {
       "resourceType": "Observation",
       "id": "a365d15d2c71a8784404c64c739af2d8b76abf34dc18dee58bcba73606c85bdf",
@@ -2824,7 +2824,7 @@
       "url": "Observation/a365d15d2c71a8784404c64c739af2d8b76abf34dc18dee58bcba73606c85bdf"
     }
   }, {
-    "fullUrl": "urn:uuid:3481c00f-594a-39f7-b53b-c633189fbbac",
+    "fullUrl": "Observation/b35b3ce860585874c976922a037ba7430d1bd97d37f05f4aec3a877229763808",
     "resource": {
       "resourceType": "Observation",
       "id": "b35b3ce860585874c976922a037ba7430d1bd97d37f05f4aec3a877229763808",
@@ -2873,7 +2873,7 @@
       "url": "Observation/b35b3ce860585874c976922a037ba7430d1bd97d37f05f4aec3a877229763808"
     }
   }, {
-    "fullUrl": "urn:uuid:c6191790-a64e-32d5-87ac-252c19de0f03",
+    "fullUrl": "Observation/07579a07d1f8b6392549619fa3dcacd97b7182d1afd098fe0d0b876ed316a787",
     "resource": {
       "resourceType": "Observation",
       "id": "07579a07d1f8b6392549619fa3dcacd97b7182d1afd098fe0d0b876ed316a787",
@@ -2922,7 +2922,7 @@
       "url": "Observation/07579a07d1f8b6392549619fa3dcacd97b7182d1afd098fe0d0b876ed316a787"
     }
   }, {
-    "fullUrl": "urn:uuid:60ccbfab-637f-3761-bf5c-11b911da5d36",
+    "fullUrl": "Observation/734130b6c4ec4eb70e1471534130c3bea24913e44dd069018a493f13d46546a9",
     "resource": {
       "resourceType": "Observation",
       "id": "734130b6c4ec4eb70e1471534130c3bea24913e44dd069018a493f13d46546a9",
@@ -2973,7 +2973,7 @@
       "url": "Observation/734130b6c4ec4eb70e1471534130c3bea24913e44dd069018a493f13d46546a9"
     }
   }, {
-    "fullUrl": "urn:uuid:6faa04f8-d25f-3fbc-abee-1b3b5649e5e1",
+    "fullUrl": "Observation/15372572e0938689d2b633cb4631c3412b38f44f5b62862b69dad7fdd3c458b3",
     "resource": {
       "resourceType": "Observation",
       "id": "15372572e0938689d2b633cb4631c3412b38f44f5b62862b69dad7fdd3c458b3",
@@ -3022,7 +3022,7 @@
       "url": "Observation/15372572e0938689d2b633cb4631c3412b38f44f5b62862b69dad7fdd3c458b3"
     }
   }, {
-    "fullUrl": "urn:uuid:f1a9debc-d807-3cb9-94b5-62c1cd6aa852",
+    "fullUrl": "Observation/a1f3e52a64932685b8f482c9464dbef6183c04b2f7ec232e8e3e425b73e641a7",
     "resource": {
       "resourceType": "Observation",
       "id": "a1f3e52a64932685b8f482c9464dbef6183c04b2f7ec232e8e3e425b73e641a7",
@@ -3087,7 +3087,7 @@
       "url": "Observation/a1f3e52a64932685b8f482c9464dbef6183c04b2f7ec232e8e3e425b73e641a7"
     }
   }, {
-    "fullUrl": "urn:uuid:60a790e3-2b2a-38ff-873e-8407e8dd7396",
+    "fullUrl": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec",
     "resource": {
       "resourceType": "Procedure",
       "id": "7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec",
@@ -3161,7 +3161,7 @@
       "url": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec"
     }
   }, {
-    "fullUrl": "urn:uuid:fb064298-f586-3596-8b9c-2bad2af6b73d",
+    "fullUrl": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
     "resource": {
       "resourceType": "Procedure",
       "id": "8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
@@ -3261,7 +3261,7 @@
       "url": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39"
     }
   }, {
-    "fullUrl": "urn:uuid:2564bccb-4f6a-3748-88bc-18c63e568de5",
+    "fullUrl": "AdverseEvent/a0900717af2614ed63518613ceae92966f32f4b50a9b44e93e6fb5b5635a7bf0",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "a0900717af2614ed63518613ceae92966f32f4b50a9b44e93e6fb5b5635a7bf0",
@@ -3305,7 +3305,7 @@
       "url": "AdverseEvent/a0900717af2614ed63518613ceae92966f32f4b50a9b44e93e6fb5b5635a7bf0"
     }
   }, {
-    "fullUrl": "urn:uuid:b5b55216-0ae2-3e36-8876-fb8153629932",
+    "fullUrl": "CarePlan/87fd2ca0c7c1180e754c383c0a50580c47a4211518fa52fe8868de8540b9ff34",
     "resource": {
       "resourceType": "CarePlan",
       "id": "87fd2ca0c7c1180e754c383c0a50580c47a4211518fa52fe8868de8540b9ff34",
@@ -3397,7 +3397,7 @@
       "url": "CarePlan/87fd2ca0c7c1180e754c383c0a50580c47a4211518fa52fe8868de8540b9ff34"
     }
   }, {
-    "fullUrl": "urn:uuid:e85ff525-d645-320f-a7ba-11654318c1f8",
+    "fullUrl": "Observation/b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610",
     "resource": {
       "resourceType": "Observation",
       "id": "b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610",
@@ -3451,7 +3451,7 @@
       "url": "Observation/b6fd26e16e61fdab680a3578c55dd2b4d167956df235d345ed5070e86ebe1610"
     }
   }, {
-    "fullUrl": "urn:uuid:203051eb-3d92-3d81-a8d5-734562abfacf",
+    "fullUrl": "Specimen/8b23caad39691d6b5693b53436451eeb9c3b3834bf5bb2d0ece7cc71c250c583",
     "resource": {
       "resourceType": "Specimen",
       "id": "8b23caad39691d6b5693b53436451eeb9c3b3834bf5bb2d0ece7cc71c250c583",
@@ -3481,7 +3481,7 @@
       "url": "Specimen/8b23caad39691d6b5693b53436451eeb9c3b3834bf5bb2d0ece7cc71c250c583"
     }
   }, {
-    "fullUrl": "urn:uuid:f975f864-b430-3121-8d41-42557ecba58d",
+    "fullUrl": "Observation/fb96424cc00fca5db9a5e15f38ff61b952e4b230886be11a5afe31cbc2e23991",
     "resource": {
       "resourceType": "Observation",
       "id": "fb96424cc00fca5db9a5e15f38ff61b952e4b230886be11a5afe31cbc2e23991",
@@ -3540,7 +3540,7 @@
       "url": "Observation/fb96424cc00fca5db9a5e15f38ff61b952e4b230886be11a5afe31cbc2e23991"
     }
   }, {
-    "fullUrl": "urn:uuid:4e93898d-7ca8-3db6-a1e7-4144c7d5f661",
+    "fullUrl": "Observation/7ff610c9bf2e197ddbf1d39e141743d50bf78fe4c47996a1a02e6e0ce8ce2e4d",
     "resource": {
       "resourceType": "Observation",
       "id": "7ff610c9bf2e197ddbf1d39e141743d50bf78fe4c47996a1a02e6e0ce8ce2e4d",
@@ -3599,7 +3599,7 @@
       "url": "Observation/7ff610c9bf2e197ddbf1d39e141743d50bf78fe4c47996a1a02e6e0ce8ce2e4d"
     }
   }, {
-    "fullUrl": "urn:uuid:e612ad16-dccd-3797-9be7-afb0c1e4fe3c",
+    "fullUrl": "Observation/888711f2a80e4c8d6e3fab4fc8151633b38d67baf0359f464ff668bb120e4434",
     "resource": {
       "resourceType": "Observation",
       "id": "888711f2a80e4c8d6e3fab4fc8151633b38d67baf0359f464ff668bb120e4434",
@@ -3658,7 +3658,7 @@
       "url": "Observation/888711f2a80e4c8d6e3fab4fc8151633b38d67baf0359f464ff668bb120e4434"
     }
   }, {
-    "fullUrl": "urn:uuid:94cde1ed-20c5-3505-9600-29261ab4e0d5",
+    "fullUrl": "Observation/4d8b9cef30d1bf02ca1ea109c7183c676200693ca3c4c620c951c5bf04322186",
     "resource": {
       "resourceType": "Observation",
       "id": "4d8b9cef30d1bf02ca1ea109c7183c676200693ca3c4c620c951c5bf04322186",
@@ -3717,7 +3717,7 @@
       "url": "Observation/4d8b9cef30d1bf02ca1ea109c7183c676200693ca3c4c620c951c5bf04322186"
     }
   }, {
-    "fullUrl": "urn:uuid:093964db-7540-3be3-be4f-415b76e6d7fc",
+    "fullUrl": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913",
     "resource": {
       "resourceType": "Observation",
       "id": "23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913",
@@ -3774,7 +3774,7 @@
       "url": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913"
     }
   }, {
-    "fullUrl": "urn:uuid:0f1fe3a6-f22f-32a9-8bc0-ac93e9e02dd9",
+    "fullUrl": "List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233",
     "resource": {
       "resourceType": "List",
       "id": "03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233",
@@ -3826,7 +3826,7 @@
       "url": "List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233"
     }
   }, {
-    "fullUrl": "urn:uuid:5d7a7f54-dc01-3b18-bec3-a88ae3deb067",
+    "fullUrl": "Condition/f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401",
     "resource": {
       "resourceType": "Condition",
       "id": "f8eaa21e15d667e3da84bc8e061ec9be96cbc36fd07cf63575e8626625d4f401",

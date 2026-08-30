@@ -3,7 +3,7 @@
   "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "urn:uuid:accaca2e-67f2-3e13-9b68-871263e87e49",
+    "fullUrl": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
     "resource": {
       "resourceType": "Patient",
       "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
@@ -38,7 +38,7 @@
       "url": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
     }
   }, {
-    "fullUrl": "urn:uuid:7e60a73e-ef42-378c-a03f-e4cf6fab58c9",
+    "fullUrl": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
     "resource": {
       "resourceType": "Condition",
       "id": "5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
@@ -108,7 +108,7 @@
       "url": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
     }
   }, {
-    "fullUrl": "urn:uuid:60a790e3-2b2a-38ff-873e-8407e8dd7396",
+    "fullUrl": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec",
     "resource": {
       "resourceType": "Procedure",
       "id": "7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec",
@@ -189,7 +189,7 @@
       "url": "Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec"
     }
   }, {
-    "fullUrl": "urn:uuid:fb064298-f586-3596-8b9c-2bad2af6b73d",
+    "fullUrl": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
     "resource": {
       "resourceType": "Procedure",
       "id": "8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39",
@@ -296,7 +296,7 @@
       "url": "Procedure/8f8e7c512b0bf9d1f11cab01cdc7a6f63557adf19ca6bed3e9639e3e82052e39"
     }
   }, {
-    "fullUrl": "urn:uuid:2564bccb-4f6a-3748-88bc-18c63e568de5",
+    "fullUrl": "AdverseEvent/a0900717af2614ed63518613ceae92966f32f4b50a9b44e93e6fb5b5635a7bf0",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "a0900717af2614ed63518613ceae92966f32f4b50a9b44e93e6fb5b5635a7bf0",
