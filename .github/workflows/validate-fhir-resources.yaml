@@ -135,7 +135,12 @@ jobs:
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS'
+            xargs -0 -I {} sh -c '
+              echo "  Validating: {}"
+              java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS -output-style eslint-compact 2>&1 \
+                | tee -a /tmp/validator-full.log \
+                | grep -E ": line [0-9]+, col[0-9]+," || true
+            '
 
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
@@ -184,14 +189,22 @@ jobs:
 
       # informational only for now, evaluated alongside the .NET (Firely) validator below
       # before switching over. Does not gate the build yet.
+      # validates all bundles in a single validator_cli.jar invocation (one shared FHIR
+      # context load instead of one per file) and produces one combined HTML report.
       - name: Validate bundles (Java validator)
         continue-on-error: true
         env:
           VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
-          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
-            -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS'
+          java -jar /usr/local/bin/validator_cli.jar \
+            mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json \
+            $VALIDATOR_ARGS -html-output=java-validator-bundles-report.html
+
+      - name: Upload Java validator bundle report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: java-validator-bundles-report
+          path: java-validator-bundles-report.html
 
       - name: Validate bundles
         continue-on-error: true
