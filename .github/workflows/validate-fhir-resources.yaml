@@ -36,7 +36,6 @@ jobs:
     container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
-      validator-args: ${{ steps.validator-args.outputs.args }}
     steps:
       - name: Checkout code
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
@@ -50,19 +49,6 @@ jobs:
             | awk -F'/' '{split($NF, parts, "\\."); print parts[1]}' | sort -u | jq -R . | jq -s -c .)
           echo "Extracted prefixes: $PREFIXES"
           echo "mapper-names=$PREFIXES" >> "$GITHUB_OUTPUT"
-
-      # derives the -version/-ig args for the Java validator (validator_cli.jar) directly
-      # from package.json, so it stays in sync with whatever packages are declared there.
-      - name: Derive Java validator args from package.json
-        id: validator-args
-        run: |
-          ARGS=$(jq -r '
-            (["-version", .fhirVersions[0], "-tx", "n/a"]) as $base |
-            ( .dependencies | to_entries | map(select(.key != "hl7.fhir.r4.core")) | map(["-ig", (.key + "#" + .value)]) | add // [] ) as $igs |
-            ($base + $igs) | join(" ")
-          ' package.json)
-          echo "Derived validator args: $ARGS"
-          echo "args=$ARGS" >> "$GITHUB_OUTPUT"
 
       # restore the fhir packages once per workflow run here to avoid multiple
       # jobs running in parallel each restoring at the same time
@@ -124,25 +110,6 @@ jobs:
           restore-keys: |
             fhir-packages-
 
-      # informational only for now, evaluated alongside the .NET (Firely) validator below
-      # before switching over. Does not gate the build yet.
-      - name: Validate generated FHIR resources (Java validator)
-        continue-on-error: true
-        env:
-          MAPPER_NAME: ${{ matrix.mapper }}
-          VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
-        run: |
-          echo "Validating files for mapper: ${MAPPER_NAME}"
-          # shellcheck disable=SC2016 # $VALIDATOR_ARGS is expanded by the inner sh, not here
-          find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
-            -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c '
-              echo "  Validating: {}"
-              java -jar /usr/local/bin/validator_cli.jar {} $VALIDATOR_ARGS -output-style eslint-compact 2>&1 \
-                | tee -a /tmp/validator-full.log \
-                | grep -E ": line [0-9]+, col[0-9]+," || true
-            '
-
       - name: Validate generated FHIR resources
         continue-on-error: ${{contains(fromJson(env.MAPPERS_TO_IGNORE_VALIDATION_ERRORS), env.MAPPER_NAME) }}
         env:
@@ -194,9 +161,15 @@ jobs:
       # context load instead of one per file) and produces one combined HTML report.
       - name: Validate bundles (Java validator)
         continue-on-error: true
-        env:
-          VALIDATOR_ARGS: ${{ needs.extract-mapper-names.outputs.validator-args }}
         run: |
+          # derives the -version/-ig args for the Java validator (validator_cli.jar) directly
+          # from package.json, so it stays in sync with whatever packages are declared there.
+          VALIDATOR_ARGS=$(jq -r '
+            (["-version", .fhirVersions[0], "-tx", "n/a"]) as $base |
+            ( .dependencies | to_entries | map(select(.key != "hl7.fhir.r4.core")) | map(["-ig", (.key + "#" + .value)]) | add // [] ) as $igs |
+            ($base + $igs) | join(" ")
+          ' package.json)
+          echo "Derived validator args: $VALIDATOR_ARGS"
           # shellcheck disable=SC2086 # VALIDATOR_ARGS must word-split into separate flags
           java -jar /usr/local/bin/validator_cli.jar \
             mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json \
