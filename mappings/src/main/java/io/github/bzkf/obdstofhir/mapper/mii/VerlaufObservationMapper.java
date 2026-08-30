@@ -6,7 +6,6 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
-import lombok.Getter;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +67,9 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
     // Tumorstatus Primärtumor
     var verlaufLokalerTumorstatus = verlauf.getVerlaufLokalerTumorstatus();
     if (verlaufLokalerTumorstatus != null) {
-      var tumorstatusPrimaertumor = TumorstatusPrimaertumor.fromCode(verlaufLokalerTumorstatus);
+      var tumorstatusPrimaertumor =
+          Onkologie.CodeSystems.MiiCsOnkoVerlaufPrimaertumor.fromValueOrThrow(
+              verlaufLokalerTumorstatus);
       observation.addComponent(
           new Observation.ObservationComponentComponent()
               .setCode(
@@ -78,18 +79,15 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                           .snomed()
                           .setCode("277062004")
                           .setDisplay("Status des Residualtumors")))
-              .setValue(
-                  new CodeableConcept(
-                      new Coding(
-                          Onkologie.CodeSystems.miiCsOnkoVerlaufPrimaertumor(),
-                          tumorstatusPrimaertumor.getCode(),
-                          tumorstatusPrimaertumor.getDisplay()))));
+              .setValue(new CodeableConcept(tumorstatusPrimaertumor.coding())));
     }
 
     // Tumorstatus Lymphknoten
     var verlaufTumorstatusLymphknoten = verlauf.getVerlaufTumorstatusLymphknoten();
     if (verlaufTumorstatusLymphknoten != null) {
-      var tumorstatusLymphknoten = TumorstatusLymphknoten.fromCode(verlaufTumorstatusLymphknoten);
+      var tumorstatusLymphknoten =
+          Onkologie.CodeSystems.MiiCsOnkoVerlaufLymphknoten.fromValueOrThrow(
+              verlaufTumorstatusLymphknoten);
       observation.addComponent(
           new Observation.ObservationComponentComponent()
               .setCode(
@@ -100,19 +98,15 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                           .setCode("399656008")
                           .setDisplay(
                               "Status of tumor metastasis to regional lymph nodes (observable entity)")))
-              .setValue(
-                  new CodeableConcept(
-                      new Coding(
-                          Onkologie.CodeSystems.miiCsOnkoVerlaufLymphknoten(),
-                          tumorstatusLymphknoten.getCode(),
-                          tumorstatusLymphknoten.getDisplay()))));
+              .setValue(new CodeableConcept(tumorstatusLymphknoten.coding())));
     }
 
     // Tumorstatus Fernmetastasen
     var verlaufTumorstatusFernmetastasen = verlauf.getVerlaufTumorstatusFernmetastasen();
     if (verlaufTumorstatusFernmetastasen != null) {
       var tumorstatusFernmetastasen =
-          TumorstatusFernmetastasen.fromCode(verlaufTumorstatusFernmetastasen);
+          Onkologie.CodeSystems.MiiCsOnkoVerlaufFernmetastasen.fromValueOrThrow(
+              verlaufTumorstatusFernmetastasen);
       observation.addComponent(
           new Observation.ObservationComponentComponent()
               .setCode(
@@ -122,144 +116,18 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                           .snomed()
                           .setCode("399608002")
                           .setDisplay("Status of distant metastasis (observable entity)")))
-              .setValue(
-                  new CodeableConcept(
-                      new Coding(
-                          Onkologie.CodeSystems.miiCsOnkoVerlaufFernmetastasen(),
-                          tumorstatusFernmetastasen.getCode(),
-                          tumorstatusFernmetastasen.getDisplay()))));
+              .setValue(new CodeableConcept(tumorstatusFernmetastasen.coding())));
     }
 
     // Value
     var gesamtbeurteilung = verlauf.getGesamtbeurteilungTumorstatus();
     if (gesamtbeurteilung != null) {
-      var value = VerlaufGesamtbeurteilung.fromCode(gesamtbeurteilung);
-      observation.setValue(
-          new CodeableConcept(
-              new Coding(
-                  Onkologie.CodeSystems.miiCsOnkoVerlaufGesamtbeurteilung(),
-                  value.getCode(),
-                  value.getDisplay())));
+      var value =
+          Onkologie.CodeSystems.MiiCsOnkoVerlaufGesamtbeurteilung.fromValueOrThrow(
+              gesamtbeurteilung);
+      observation.setValue(new CodeableConcept(value.coding()));
     }
 
     return observation;
-  }
-
-  @Getter
-  protected enum VerlaufGesamtbeurteilung {
-    V("V", "Vollremission"),
-    T("T", "Teilremission"),
-    K("K", "keine Änderung"),
-    P("P", "Progression"),
-    D("D", "divergentes Geschehen"),
-    B("B", "klinische Besserung des Zustandes, Teilremissionkriterien jedoch nicht erfüllt"),
-    R("R", "Vollremission mit residualen Auffälligkeiten"),
-    Y("Y", "Rezidiv"),
-    U("U", "Beurteilung unmöglich"),
-    X("X", "fehlende Angabe");
-
-    private final String code;
-    private final String display;
-
-    VerlaufGesamtbeurteilung(String code, String display) {
-      this.code = code;
-      this.display = display;
-    }
-
-    public static VerlaufGesamtbeurteilung fromCode(String code) {
-      for (VerlaufGesamtbeurteilung value : values()) {
-        if (value.getCode().equalsIgnoreCase(code)) {
-          return value;
-        }
-      }
-      throw new IllegalArgumentException("Ungültiger Code für Verlauf: " + code);
-    }
-  }
-
-  @Getter
-  protected enum TumorstatusPrimaertumor {
-    K("K", "kein Tumor nachweisbar"),
-    T("T", "Tumorreste (Residualtumor)"),
-    P("P", "Tumorreste (Residualtumor) Progress"),
-    N("N", "Tumorreste (Residualtumor) No Change"),
-    R("R", "Lokalrezidiv"),
-    F("F", "fraglicher Befund"),
-    U("U", "unbekannt"),
-    X("X", "fehlende Angabe");
-
-    private final String code;
-    private final String display;
-
-    TumorstatusPrimaertumor(String code, String display) {
-      this.code = code;
-      this.display = display;
-    }
-
-    public static TumorstatusPrimaertumor fromCode(String code) {
-      for (TumorstatusPrimaertumor value : values()) {
-        if (value.getCode().equalsIgnoreCase(code)) {
-          return value;
-        }
-      }
-      throw new IllegalArgumentException("Ungültiger Code für Verlauf: " + code);
-    }
-  }
-
-  @Getter
-  protected enum TumorstatusLymphknoten {
-    K("K", "kein Lymphknotenbefall nachweisbar"),
-    T("T", "bekannter Lymphknotenbefall Residuen"),
-    P("P", "bekannter Lymphknotenbefall Progress"),
-    N("N", "bekannter Lymphknotenbefall No Change"),
-    R("R", "neu aufgetretenes Lymphknotenrezidiv"),
-    F("F", "fraglicher Befund"),
-    U("U", "unbekannt"),
-    X("X", "fehlende Angabe");
-
-    private final String code;
-    private final String display;
-
-    TumorstatusLymphknoten(String code, String display) {
-      this.code = code;
-      this.display = display;
-    }
-
-    public static TumorstatusLymphknoten fromCode(String code) {
-      for (TumorstatusLymphknoten value : values()) {
-        if (value.getCode().equalsIgnoreCase(code)) {
-          return value;
-        }
-      }
-      throw new IllegalArgumentException("Ungültiger Code für Verlauf: " + code);
-    }
-  }
-
-  @Getter
-  protected enum TumorstatusFernmetastasen {
-    K("K", "keine Fernmetastasen nachweisbar"),
-    T("T", "Fernmetastasen Residuen"),
-    P("P", "Fernmetastasen Progress"),
-    N("N", "Fernmetastasen No Change"),
-    R("R", "neu aufgetretene Fernmetastase(n) bzw. Metastasenrezidiv"),
-    F("F", "fraglicher Befund"),
-    U("U", "unbekannt"),
-    X("X", "fehlende Angabe");
-
-    private final String code;
-    private final String display;
-
-    TumorstatusFernmetastasen(String code, String display) {
-      this.code = code;
-      this.display = display;
-    }
-
-    public static TumorstatusFernmetastasen fromCode(String code) {
-      for (TumorstatusFernmetastasen value : values()) {
-        if (value.getCode().equalsIgnoreCase(code)) {
-          return value;
-        }
-      }
-      throw new IllegalArgumentException("Ungültiger Code für Verlauf: " + code);
-    }
   }
 }

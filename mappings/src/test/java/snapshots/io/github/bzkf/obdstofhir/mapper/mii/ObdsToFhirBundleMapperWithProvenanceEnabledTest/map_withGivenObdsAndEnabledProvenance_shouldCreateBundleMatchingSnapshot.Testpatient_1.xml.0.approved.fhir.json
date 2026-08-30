@@ -1281,7 +1281,7 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
           "code": "K",
-          "display": "keine Änderung"
+          "display": "keine Änderung (no change, NC) = stable disease"
         } ]
       },
       "component": [ {
