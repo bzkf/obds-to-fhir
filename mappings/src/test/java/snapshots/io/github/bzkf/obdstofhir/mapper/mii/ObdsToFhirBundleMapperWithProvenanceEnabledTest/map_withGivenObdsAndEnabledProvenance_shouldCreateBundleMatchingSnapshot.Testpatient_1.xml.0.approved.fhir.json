@@ -1220,7 +1220,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -1425,7 +1425,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -1585,7 +1585,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -2050,7 +2050,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -2351,7 +2351,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -2934,7 +2934,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -3198,7 +3198,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -3310,7 +3310,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -4454,7 +4454,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -4659,7 +4659,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -4864,7 +4864,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -6481,7 +6481,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -6625,7 +6625,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
@@ -6769,7 +6769,7 @@
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
             "code": "AUT",
-            "display": "author"
+            "display": "author (originator)"
           } ]
         } ],
         "who": {
