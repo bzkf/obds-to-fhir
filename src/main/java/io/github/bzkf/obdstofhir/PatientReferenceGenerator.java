@@ -6,6 +6,7 @@ import ca.uhn.fhir.rest.client.api.IGenericClient;
 import ca.uhn.fhir.rest.client.api.ServerValidationModeEnum;
 import ca.uhn.fhir.rest.client.exceptions.FhirClientConnectionException;
 import ca.uhn.fhir.rest.client.interceptor.BasicAuthInterceptor;
+import ca.uhn.fhir.rest.client.interceptor.BearerTokenAuthInterceptor;
 import ca.uhn.fhir.rest.server.exceptions.BaseServerResponseException;
 import ca.uhn.fhir.rest.server.exceptions.InternalErrorException;
 import ca.uhn.fhir.rest.server.exceptions.ResourceNotFoundException;
@@ -187,10 +188,14 @@ public class PatientReferenceGenerator {
 
     var basicAuth = fhirServerConfig.auth().basic();
     var oauth2 = fhirServerConfig.auth().oauth2();
+    var bearerTokenAuth = fhirServerConfig.auth().bearerToken();
 
-    if (basicAuth.enabled() && oauth2.enabled()) {
+    if ((basicAuth.enabled() ? 1 : 0)
+            + (oauth2.enabled() ? 1 : 0)
+            + (bearerTokenAuth.enabled() ? 1 : 0)
+        > 1) {
       throw new IllegalArgumentException(
-          "Only one of fhir-server.auth.basic or fhir-server.auth.oauth2 can be enabled at the"
+          "Only one of fhir-server.auth.basic, fhir-server.auth.oauth2 or fhir-server.auth.bearer-token can be enabled at the"
               + " same time.");
     }
 
@@ -201,6 +206,9 @@ public class PatientReferenceGenerator {
       client.registerInterceptor(
           new OAuth2ClientCredentialsAuthInterceptor(
               oauth2.tokenUrl(), oauth2.clientId(), oauth2.clientSecret(), oauth2.scope()));
+    } else if (bearerTokenAuth.enabled()) {
+      client.registerInterceptor(
+          new BearerTokenAuthInterceptor(bearerTokenAuth.token()));
     }
 
     return client;
