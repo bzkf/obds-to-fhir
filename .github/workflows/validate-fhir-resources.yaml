@@ -33,7 +33,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.46@sha256:00ab42bcf4f527b5c4f7415dc8bbcd65aa05f21f5ddfa4303bdaf7642789d862
+    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -73,7 +73,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.46@sha256:00ab42bcf4f527b5c4f7415dc8bbcd65aa05f21f5ddfa4303bdaf7642789d862
+    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
     needs:
       - extract-mapper-names
     strategy:
@@ -125,7 +125,7 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.2.46@sha256:00ab42bcf4f527b5c4f7415dc8bbcd65aa05f21f5ddfa4303bdaf7642789d862
+    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
     needs:
       - extract-mapper-names
     steps:
@@ -154,6 +154,32 @@ jobs:
           key: fhir-packages-${{ hashFiles('package.json') }}
           restore-keys: |
             fhir-packages-
+
+      # informational only for now, evaluated alongside the .NET (Firely) validator below
+      # before switching over. Does not gate the build yet.
+      # validates all bundles in a single validator_cli.jar invocation (one shared FHIR
+      # context load instead of one per file) and produces one combined HTML report.
+      - name: Validate bundles (Java validator)
+        continue-on-error: true
+        run: |
+          # derives the -version/-ig args for the Java validator (validator_cli.jar) directly
+          # from package.json, so it stays in sync with whatever packages are declared there.
+          VALIDATOR_ARGS=$(jq -r '
+            (["-version", .fhirVersions[0], "-tx", "n/a"]) as $base |
+            ( .dependencies | to_entries | map(select(.key != "hl7.fhir.r4.core")) | map(["-ig", (.key + "#" + .value)]) | add // [] ) as $igs |
+            ($base + $igs) | join(" ")
+          ' package.json)
+          echo "Derived validator args: $VALIDATOR_ARGS"
+          # shellcheck disable=SC2086 # VALIDATOR_ARGS must word-split into separate flags
+          java -jar /usr/local/bin/validator_cli.jar \
+            mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json \
+            $VALIDATOR_ARGS -html-output=java-validator-bundles-report.html
+
+      - name: Upload Java validator bundle report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: java-validator-bundles-report
+          path: java-validator-bundles-report.html
 
       - name: Validate bundles
         continue-on-error: true

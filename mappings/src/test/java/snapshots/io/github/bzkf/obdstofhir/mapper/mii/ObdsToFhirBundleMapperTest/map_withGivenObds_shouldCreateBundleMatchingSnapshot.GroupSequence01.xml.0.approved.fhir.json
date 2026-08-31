@@ -167,9 +167,6 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
           "code": "U",
           "display": "Unbekannt"
-        }, {
-          "system": "http://loinc.org",
-          "version": "2.82"
         } ]
       }
     },

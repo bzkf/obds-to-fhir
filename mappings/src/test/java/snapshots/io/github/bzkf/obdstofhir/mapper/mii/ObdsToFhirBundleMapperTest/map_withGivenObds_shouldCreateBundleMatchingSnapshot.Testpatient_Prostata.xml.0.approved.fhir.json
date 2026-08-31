@@ -253,7 +253,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "5.4"
+          "code": "5.4",
+          "display": "Prostata"
         } ]
       } ]
     },
@@ -326,7 +327,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "9.10"
+          "code": "9.10",
+          "display": "Beckenlymphabfluss (r, l) (Iliakal commun, extern, intern, obturatorisch, präsakral)"
         } ]
       } ]
     },
@@ -1521,7 +1523,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 8
           } ],
           "system": "http://snomed.info/sct",
@@ -1583,7 +1585,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1640,7 +1642,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1698,7 +1700,7 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
           "code": "V",
-          "display": "Vollremission"
+          "display": "Vollremission (complete remission, CR)"
         } ]
       },
       "component": [ {
@@ -2500,7 +2502,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
@@ -2562,7 +2564,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -2619,7 +2621,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 3
           } ],
           "system": "http://snomed.info/sct",

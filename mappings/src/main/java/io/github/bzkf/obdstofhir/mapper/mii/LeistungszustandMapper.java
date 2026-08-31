@@ -135,7 +135,11 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
         break;
     }
 
-    var valueConcept = new CodeableConcept().addCoding(miiValue).addCoding(loincValue);
+    var valueConcept = new CodeableConcept().addCoding(miiValue);
+    if (loincValue.hasCode()) {
+      valueConcept.addCoding(loincValue);
+    }
+
     observation.setValue(valueConcept);
 
     return observation;

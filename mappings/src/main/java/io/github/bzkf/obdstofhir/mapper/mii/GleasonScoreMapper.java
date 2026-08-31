@@ -255,11 +255,11 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       valueCodeableConcept = new CodeableConcept(scoreCoding).setText(scoreErgebnis);
     }
 
-    // add the gleason score as the ordinal value extension
+    // add the gleason score as the item weight extension
     valueCodeableConcept
         .getCodingFirstRep()
         .addExtension(
-            fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(gleasonScoreNumeric));
+            fhirProperties.getExtensions().getItemWeight(), new DecimalType(gleasonScoreNumeric));
 
     observation.setValue(valueCodeableConcept);
 
@@ -338,7 +338,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
               .setCode(snomedCode)
               .setDisplay(String.format("Gleason Pattern %s (finding)", pattern));
       valueCoding.addExtension(
-          fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(pattern));
+          fhirProperties.getExtensions().getItemWeight(), new DecimalType(pattern));
 
       primaryPattern.setValue(new CodeableConcept(valueCoding));
 
@@ -375,7 +375,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
               .setCode(snomedCode)
               .setDisplay(String.format("Gleason Pattern %s (finding)", pattern));
       valueCoding.addExtension(
-          fhirProperties.getExtensions().getOrdinalValue(), new DecimalType(pattern));
+          fhirProperties.getExtensions().getItemWeight(), new DecimalType(pattern));
 
       secondaryPattern.setValue(new CodeableConcept(valueCoding));
 

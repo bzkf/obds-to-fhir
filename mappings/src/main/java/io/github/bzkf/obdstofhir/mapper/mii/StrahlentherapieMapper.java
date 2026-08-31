@@ -91,7 +91,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
   private record StrahlentherapieBestrahlung(
       ApplikationsartCode applikationsart,
-      String zielgebiet,
+      Coding zielgebiet,
       SeiteZielgebietTyp seiteZielgebiet,
       String strahlenart,
       StrahlendosisTyp einzeldosis,
@@ -281,12 +281,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     // bodySite
     if (bestrahlungsData.zielgebiet() != null) {
-      var bodySiteCoding =
-          new Coding()
-              .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet())
-              .setCode(bestrahlungsData.zielgebiet());
-
-      procedure.addBodySite(new CodeableConcept(bodySiteCoding));
+      procedure.addBodySite(new CodeableConcept(bestrahlungsData.zielgebiet()));
     }
 
     // this ensures that if the zielgebiet is unset and only the seiteZielgebiet is
@@ -541,14 +536,24 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     return strahlenart != null ? strahlenart.value() : null;
   }
 
-  private static String getZielgebiet(ZielgebietTyp zielgebiet) {
+  private static Coding getZielgebiet(ZielgebietTyp zielgebiet) {
     if (zielgebiet == null) {
       return null;
     }
 
-    return zielgebiet.getCodeVersion2014() != null
-        ? zielgebiet.getCodeVersion2014()
-        : zielgebiet.getCodeVersion2021();
+    if (zielgebiet.getCodeVersion2014() != null) {
+      return Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet2014.fromValueOrThrow(
+              zielgebiet.getCodeVersion2014())
+          .coding();
+    }
+
+    if (zielgebiet.getCodeVersion2021() != null) {
+      return Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet.fromValueOrThrow(
+              zielgebiet.getCodeVersion2021())
+          .coding();
+    }
+
+    return null;
   }
 
   private static ApplikationsartCode mapApplikationsartToCode(Applikationsart applikationsart) {

@@ -39,7 +39,7 @@ public class FhirProperties {
   @Data
   public static class FhirExtensions {
     private String conditionAssertedDate;
-    private String ordinalValue;
+    private String itemWeight;
     private String conditionOccurredFollowing;
     private String procedureMethod;
   }
