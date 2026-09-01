@@ -14,7 +14,7 @@ services:
       - ./oracle/initV3:/docker-entrypoint-initdb.d/setup
 
   kafka:
-    image: docker.io/apache/kafka:4.3.0@sha256:0be4c9eb3565733612d2836d65636fd611a219ebcf5b4162e5ac259ea0ecb907
+    image: docker.io/apache/kafka:4.3.1@sha256:77e3df9054047a88b520d0cc46e16696d3b22022e1d580aeccd2632df6532837
     restart: unless-stopped
     cap_drop:
       - ALL
@@ -70,7 +70,7 @@ services:
       - kafka
 
   akhq:
-    image: docker.io/tchiotludo/akhq:0.27.1@sha256:66a43e84a3355f0a13f3b165a48f515c72a5344ea7ea0575a3e4efe2d3ac9a91
+    image: docker.io/tchiotludo/akhq:0.28.0@sha256:c2824dc2ae442b7ec215581f7e60a9f4106ea9004057fa3a1f88a29464cd4e63
     restart: unless-stopped
     cap_drop:
       - ALL

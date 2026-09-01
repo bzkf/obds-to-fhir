@@ -10,7 +10,7 @@ plugins {
     id 'signing'
     id 'jacoco'
     id 'io.freefair.lombok' version '9.5.0'
-    id 'com.diffplug.spotless' version '8.6.0'
+    id 'com.diffplug.spotless' version '8.10.0'
     id 'io.gitee.pkmer.sonatype-central-publisher' version '1.1.0'
 }
 
@@ -39,17 +39,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
-    implementation 'com.github.slugify:slugify:4.0.0'
-    implementation 'io.github.diz-uker:fhir-ig-constants:0.2.9'
+    implementation 'com.github.slugify:slugify:4.0.1'
+    implementation 'io.github.diz-uker:fhir-ig-constants:0.2.15'
 
     // the lib also includes the oBDS model classes
     api 'io.github.bzkf:obds2-to-obds3:0.1.22'
-    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.10.0'
-    api 'io.github.diz-uker:to-fhir:0.2.9'
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.10.1'
+    api 'io.github.diz-uker:to-fhir:0.2.15'
     api 'org.slf4j:slf4j-api:2.0.18'
     api 'org.apache.commons:commons-csv:1.14.1'
 
-    testImplementation platform('org.junit:junit-bom:6.1.0')
+    testImplementation platform('org.junit:junit-bom:6.1.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.27.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
