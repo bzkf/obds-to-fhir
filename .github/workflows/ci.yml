@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-build.yaml@319a4f1e2fce970ad6ec2851286ee2bf7f8476e4 # v1.24.4
     permissions:
       contents: write
       id-token: write
@@ -52,7 +52,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -114,7 +114,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -131,7 +131,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -199,7 +199,7 @@ jobs:
       OUTPUT_DIRECTORY: ${{ github.workspace }}/tests/compose/fhir-output/
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
@@ -216,7 +216,7 @@ jobs:
           docker info -f '{{ .DriverStatus }}'
 
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -281,12 +281,12 @@ jobs:
       contents: read
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@05e31511f85b41b11d1cf0ef85d0992719546e2c # v2.21.0
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -354,7 +354,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@319a4f1e2fce970ad6ec2851286ee2bf7f8476e4 # v1.24.4
     permissions:
       contents: read
       pull-requests: write
@@ -369,7 +369,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-release.yaml@319a4f1e2fce970ad6ec2851286ee2bf7f8476e4 # v1.24.4
     needs:
       - lint
       - build
