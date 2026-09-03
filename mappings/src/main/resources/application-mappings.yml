@@ -85,6 +85,7 @@ fhir:
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
 
     icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+    icd10who: "http://hl7.org/fhir/sid/icd-10"
     snomed: "http://snomed.info/sct"
     ops: "http://fhir.de/CodeSystem/bfarm/ops"
     ucum: "http://unitsofmeasure.org"

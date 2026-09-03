@@ -24,9 +24,20 @@ public abstract class ObdsToFhirMapper {
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
-  /** Matches oBDS ICD-10 version strings, e.g. {@code "10 2023 GM"}, capturing the year. */
+  /**
+   * Matches oBDS ICD-10 version strings, e.g. {@code "10 2023 GM"}, capturing the year and the
+   * catalogue.
+   */
   protected static final Pattern ICD_VERSION_PATTERN =
-      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) (?<catalogue>GM|WHO)|Sonstige)$");
+
+  /** The ICD-10 catalogue named by an oBDS {@code *_ICD_Version}. */
+  public enum Icd10Catalogue {
+    GM,
+    WHO,
+    /** {@code Sonstige}: the source states that neither GM nor WHO was used. */
+    OTHER
+  }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
@@ -60,6 +71,30 @@ public abstract class ObdsToFhirMapper {
     var versionElement = new StringType();
     versionElement.addExtension(DataAbsentReason.unknown());
     return versionElement;
+  }
+
+  /**
+   * Extracts the catalogue from an oBDS ICD-10 version string (see {@link #ICD_VERSION_PATTERN}).
+   *
+   * @param icdVersion the raw ICD version string, e.g. from {@code *_ICD_Version}
+   * @return empty if the version is unset or doesn't match the expected format
+   */
+  protected static Optional<Icd10Catalogue> extractIcdCatalogue(String icdVersion) {
+    if (!StringUtils.hasText(icdVersion)) {
+      return Optional.empty();
+    }
+
+    var matcher = ICD_VERSION_PATTERN.matcher(icdVersion);
+    if (!matcher.matches()) {
+      return Optional.empty();
+    }
+
+    var catalogue = matcher.group("catalogue");
+    // the pattern matched without the catalogue group, so the version is "Sonstige"
+    if (catalogue == null) {
+      return Optional.of(Icd10Catalogue.OTHER);
+    }
+    return Optional.of(Icd10Catalogue.valueOf(catalogue));
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(
