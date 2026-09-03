@@ -55,4 +55,30 @@ class ConditionMapperTest extends MapperTest {
 
     verify(condition, sourceFile);
   }
+
+  @ParameterizedTest
+  @CsvSource({"Testpatient_Diagnose.xml,Mamma-Ca", "Testpatient_leer.xml,"})
+  void map_withGivenObds_shouldSetCodeTextFromDiagnosetext(
+      String sourceFile, String expectedCodeText) throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
+    assertThat(resource).isNotNull();
+
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+    var conMeldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getDiagnose() != null)
+            .findFirst()
+            .get();
+
+    final var condition =
+        sut.map(
+            conMeldung,
+            new Reference("Patient/1"),
+            obds.getMeldedatum(),
+            obdsPatient.getPatientID());
+
+    assertThat(condition.getCode().getText()).isEqualTo(expectedCodeText);
+  }
 }

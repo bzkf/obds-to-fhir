@@ -84,7 +84,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2022",
           "code": "D06.9"
-        } ]
+        } ],
+        "text": "Cervix-Ca."
       },
       "bodySite": [ {
         "coding": [ {

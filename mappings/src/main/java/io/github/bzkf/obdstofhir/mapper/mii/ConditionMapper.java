@@ -20,6 +20,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ConditionMapper extends ObdsToFhirMapper {
@@ -116,7 +117,12 @@ public class ConditionMapper extends ObdsToFhirMapper {
     var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
     icd.setVersionElement(extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG));
 
-    condition.setCode(new CodeableConcept(icd));
+    var code = new CodeableConcept(icd);
+    if (meldung.getDiagnose() != null
+        && StringUtils.hasText(meldung.getDiagnose().getPrimaertumorDiagnosetext())) {
+      code.setText(meldung.getDiagnose().getPrimaertumorDiagnosetext());
+    }
+    condition.setCode(code);
 
     if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
       var distinctMorphologyCodes =

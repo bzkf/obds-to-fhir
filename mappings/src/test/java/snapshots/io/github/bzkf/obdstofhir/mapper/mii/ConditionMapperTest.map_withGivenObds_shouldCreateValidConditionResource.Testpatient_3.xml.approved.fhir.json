@@ -37,7 +37,8 @@
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
       "version": "2017",
       "code": "C56"
-    } ]
+    } ],
+    "text": "Ovarial-Ca"
   },
   "bodySite": [ {
     "coding": [ {

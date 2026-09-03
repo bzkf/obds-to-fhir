@@ -84,7 +84,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C50.4"
-        } ]
+        } ],
+        "text": "Mammakarzinom re."
       },
       "bodySite": [ {
         "coding": [ {

@@ -83,7 +83,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C61"
-        } ]
+        } ],
+        "text": "Prostatakarzinom"
       },
       "bodySite": [ {
         "coding": [ {
