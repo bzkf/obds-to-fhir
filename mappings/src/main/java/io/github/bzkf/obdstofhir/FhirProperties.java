@@ -122,6 +122,7 @@ public class FhirProperties {
     private String fMLokalisationCS;
     private String jnuCs;
     private String icd10gm;
+    private String icd10who;
     private String adtSeitenlokalisation;
     private String snomed;
     private String opIntention;
