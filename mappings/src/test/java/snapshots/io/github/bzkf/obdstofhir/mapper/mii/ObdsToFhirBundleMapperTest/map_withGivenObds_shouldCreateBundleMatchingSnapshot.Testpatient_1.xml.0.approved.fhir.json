@@ -1301,6 +1301,55 @@
       "url": "Observation/571d00c58bfaa0b922814f1f2bfb644f5b7788958b4cdb9e5b00e802fb5135ad"
     }
   }, {
+    "fullUrl": "Observation/4adea244fa97200e4151c75b3a5eb72853c093d8b36cb48843cf65eb6be368ba",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "4adea244fa97200e4151c75b3a5eb72853c093d8b36cb48843cf65eb6be368ba",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-karnofsky" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-karnofsky-id",
+        "value": "KARNOFSKY-10_1_VE-2"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "761869008",
+          "display": "Karnofsky Performance Status score (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89243-0",
+          "display": "Karnofsky Performance Status score"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+      } ],
+      "effectiveDateTime": "2021-12-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-karnofsky",
+          "code": "10%",
+          "display": "10%"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/4adea244fa97200e4151c75b3a5eb72853c093d8b36cb48843cf65eb6be368ba"
+    }
+  }, {
     "fullUrl": "Observation/d0839b6f7b1989120593c988e21f4271a5a01622b5f14cfc12f485d8f98fd1e8",
     "resource": {
       "resourceType": "Observation",
@@ -3011,6 +3060,55 @@
     "request": {
       "method": "PUT",
       "url": "Observation/1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b"
+    }
+  }, {
+    "fullUrl": "Observation/fd7cd2158c1dab8d6cc9c128b00ebf6476374be5c5c8596b00c41ff340ae8829",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "fd7cd2158c1dab8d6cc9c128b00ebf6476374be5c5c8596b00c41ff340ae8829",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-karnofsky" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-karnofsky-id",
+        "value": "KARNOFSKY-10_1_VE-1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "761869008",
+          "display": "Karnofsky Performance Status score (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89243-0",
+          "display": "Karnofsky Performance Status score"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "10"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/528cbfb627eff7b031c902f2a97d149f5640d57a28f705fadba22462aae7c408"
+      } ],
+      "effectiveDateTime": "2021-06-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-karnofsky",
+          "code": "20%",
+          "display": "20%"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/fd7cd2158c1dab8d6cc9c128b00ebf6476374be5c5c8596b00c41ff340ae8829"
     }
   }, {
     "fullUrl": "Specimen/dbaa556b11c59ff24efb94a652a9574e63de84b972e2caa8bf60b3d8e4ada2fb",

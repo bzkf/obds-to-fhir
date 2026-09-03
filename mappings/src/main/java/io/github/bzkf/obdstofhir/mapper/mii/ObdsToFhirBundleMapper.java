@@ -572,6 +572,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               patientReference,
               primaryConditionReference);
       mappedResources.add(leistungszustand);
+
+      leistungszustandMapper
+          .mapKarnofsky(
+              diagnose.getAllgemeinerLeistungszustand(),
+              meldung.getMeldungID(),
+              meldung.getTumorzuordnung().getDiagnosedatum(),
+              patientReference,
+              primaryConditionReference)
+          .ifPresent(mappedResources::add);
     }
 
     if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
@@ -736,6 +745,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               patientReference,
               primaryConditionReference);
       mappedResources.add(leistungszustand);
+
+      leistungszustandMapper
+          .mapKarnofsky(
+              verlauf.getAllgemeinerLeistungszustand(),
+              meldung.getMeldungID(),
+              verlauf.getUntersuchungsdatumVerlauf(),
+              patientReference,
+              primaryConditionReference)
+          .ifPresent(mappedResources::add);
     }
 
     if (verlauf.getHistologie() != null) {

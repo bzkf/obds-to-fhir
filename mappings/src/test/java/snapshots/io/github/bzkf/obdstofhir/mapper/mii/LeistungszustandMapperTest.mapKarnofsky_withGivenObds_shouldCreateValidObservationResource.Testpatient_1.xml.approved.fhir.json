@@ -1,0 +1,39 @@
+{
+  "resourceType": "Observation",
+  "id": "fd7cd2158c1dab8d6cc9c128b00ebf6476374be5c5c8596b00c41ff340ae8829",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-karnofsky" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-karnofsky-id",
+    "value": "KARNOFSKY-10_1_VE-1"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "761869008",
+      "display": "Karnofsky Performance Status score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "89243-0",
+      "display": "Karnofsky Performance Status score"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/1"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-06-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-karnofsky",
+      "code": "20%",
+      "display": "20%"
+    } ]
+  }
+}
