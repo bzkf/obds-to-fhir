@@ -77,7 +77,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2021",
           "code": "C61"
-        } ]
+        } ],
+        "text": "Prostata-Ca"
       },
       "bodySite": [ {
         "coding": [ {
@@ -930,7 +931,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2017",
           "code": "C91.1"
-        } ]
+        } ],
+        "text": "Chronisch lymphatische Leukämie"
       },
       "bodySite": [ {
         "coding": [ {

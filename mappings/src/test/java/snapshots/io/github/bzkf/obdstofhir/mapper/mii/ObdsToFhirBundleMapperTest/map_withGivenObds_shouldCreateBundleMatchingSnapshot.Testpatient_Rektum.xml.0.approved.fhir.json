@@ -78,7 +78,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C20"
-        } ]
+        } ],
+        "text": "Rektum-Ca"
       },
       "bodySite": [ {
         "coding": [ {

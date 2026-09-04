@@ -89,7 +89,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C50.9"
-        } ]
+        } ],
+        "text": "Mamma-Ca"
       },
       "bodySite": [ {
         "coding": [ {
@@ -1650,7 +1651,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C20"
-        } ]
+        } ],
+        "text": "Rektum-Ca"
       },
       "bodySite": [ {
         "coding": [ {
@@ -2115,7 +2117,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C43.5"
-        } ]
+        } ],
+        "text": "Malignes Melanom"
       },
       "bodySite": [ {
         "coding": [ {

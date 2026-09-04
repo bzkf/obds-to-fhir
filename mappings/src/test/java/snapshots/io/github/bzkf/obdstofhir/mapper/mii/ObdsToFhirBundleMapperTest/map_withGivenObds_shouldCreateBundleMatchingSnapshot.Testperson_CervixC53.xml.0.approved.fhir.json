@@ -79,7 +79,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2018",
           "code": "C53.9"
-        } ]
+        } ],
+        "text": "Bösartige Neubildung: Cervix uteri, nicht näher bezeichnet"
       },
       "bodySite": [ {
         "coding": [ {
