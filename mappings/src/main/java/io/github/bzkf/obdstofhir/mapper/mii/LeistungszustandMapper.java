@@ -8,6 +8,7 @@ import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,114 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
       Reference condition) {
     var date = convertObdsDatumToDateTimeType(datum);
     return map(allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
+  }
+
+  /**
+   * Maps a Karnofsky performance status to an Observation. oBDS records ECOG grades and Karnofsky
+   * percentages in the same element; the ECOG Observation created by {@link #map} keeps no trace of
+   * which of the two the source used, so a Karnofsky input additionally gets its own Observation.
+   *
+   * @return empty if the source recorded an ECOG grade rather than a Karnofsky percentage
+   */
+  public Optional<Observation> mapKarnofsky(
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      XMLGregorianCalendar datum,
+      Reference patient,
+      Reference condition) {
+    var date = convertObdsDatumToDateTimeType(datum);
+    return mapKarnofsky(
+        allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
+  }
+
+  /**
+   * Maps a Karnofsky performance status to an Observation.
+   *
+   * @return empty if the source recorded an ECOG grade rather than a Karnofsky percentage
+   * @see #mapKarnofsky(AllgemeinerLeistungszustand, String, XMLGregorianCalendar, Reference,
+   *     Reference)
+   */
+  public Optional<Observation> mapKarnofsky(
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      DatumTagOderMonatOderJahrOderNichtGenauTyp datum,
+      Reference patient,
+      Reference condition) {
+    var date = convertObdsDatumToDateTimeType(datum);
+    return mapKarnofsky(
+        allgemeinerLeistungszustand, meldungsId, date.orElse(null), patient, condition);
+  }
+
+  /**
+   * Maps a Karnofsky performance status to an Observation.
+   *
+   * @return empty if the source recorded an ECOG grade rather than a Karnofsky percentage
+   * @see #mapKarnofsky(AllgemeinerLeistungszustand, String, XMLGregorianCalendar, Reference,
+   *     Reference)
+   */
+  public Optional<Observation> mapKarnofsky(
+      AllgemeinerLeistungszustand allgemeinerLeistungszustand,
+      String meldungsId,
+      DateTimeType effective,
+      Reference patient,
+      Reference condition) {
+
+    Objects.requireNonNull(allgemeinerLeistungszustand);
+    Objects.requireNonNull(meldungsId);
+    verifyReference(patient, ResourceType.Patient);
+    verifyReference(condition, ResourceType.Condition);
+
+    var karnofskyValue =
+        Onkologie.CodeSystems.MiiCsOnkoAllgemeinerLeistungszustandKarnofsky.fromValue(
+            allgemeinerLeistungszustand.value());
+    if (karnofskyValue.isEmpty()) {
+      return Optional.empty();
+    }
+
+    var observation = new Observation();
+
+    observation
+        .getMeta()
+        .addProfile(Onkologie.Profiles.miiPrOnkoAllgemeinerLeistungszustandKarnofsky());
+
+    var identifier =
+        new Identifier()
+            .setSystem(
+                fhirProperties
+                    .getSystems()
+                    .getIdentifiers()
+                    .getAllgemeinerLeistungszustandKarnofskyObservationId())
+            .setValue(slugifier.slugify("KARNOFSKY-" + meldungsId));
+    observation.addIdentifier(identifier);
+    observation.setId(IdUtils.fromIdentifier(identifier));
+
+    observation.setSubject(patient);
+
+    observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    var codeConcept = new CodeableConcept();
+    codeConcept.addCoding(
+        fhirProperties
+            .getCodings()
+            .snomed()
+            .setCode("761869008")
+            .setDisplay("Karnofsky Performance Status score (observable entity)"));
+    codeConcept.addCoding(
+        fhirProperties
+            .getCodings()
+            .loinc()
+            .setCode("89243-0")
+            .setDisplay("Karnofsky Performance Status score"));
+
+    observation.setCode(codeConcept);
+
+    observation.setEffective(effective);
+
+    observation.setFocus(Collections.singletonList(condition));
+
+    observation.setValue(new CodeableConcept().addCoding(karnofskyValue.get().coding()));
+
+    return Optional.of(observation);
   }
 
   public Observation map(

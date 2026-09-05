@@ -664,6 +664,55 @@
       "url": "Observation/e7950487ad664f6ad1245f805c59d22d06ef2a0ad923901f680e3fa577965122"
     }
   }, {
+    "fullUrl": "Observation/3198d91f2171c35b2d89e9897f4f196604e7a6fc025d0744206f31b569071633",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "3198d91f2171c35b2d89e9897f4f196604e7a6fc025d0744206f31b569071633",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-karnofsky" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-karnofsky-id",
+        "value": "KARNOFSKY-12_1_VE_1"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "761869008",
+          "display": "Karnofsky Performance Status score (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89243-0",
+          "display": "Karnofsky Performance Status score"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6f5a4631aa1afa9fb3b290f6bb86163ea01f9b24bd1170e5d79a0c36995c2c57",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "12"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/c4396ca95fdae137b54465873fe2ccc7e7e2f5bb6b0c3edc3cc9bb59581f531c"
+      } ],
+      "effectiveDateTime": "2018-06-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-karnofsky",
+          "code": "60%",
+          "display": "60%"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/3198d91f2171c35b2d89e9897f4f196604e7a6fc025d0744206f31b569071633"
+    }
+  }, {
     "fullUrl": "Observation/66d516595ce02c44d0a0a4468e65f29af40fea407465cacaea88f617e37d2ac4",
     "resource": {
       "resourceType": "Observation",
