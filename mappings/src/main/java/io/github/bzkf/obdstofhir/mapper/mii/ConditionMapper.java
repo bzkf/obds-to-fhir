@@ -109,19 +109,41 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
-    var icd =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getIcd10gm())
-            .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
+    var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();
+    var icd10Version = primaertumorIcd.getVersion();
+    var icdVersionYear = extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG);
+    // an unset or unparsable version keeps the previous behaviour and is treated as GM
+    var catalog = extractIcdCatalog(icd10Version).orElse(Icd10Catalog.GM);
 
-    var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
-    icd.setVersionElement(extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG));
+    var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
+    if (catalog == Icd10Catalog.GM) {
+      icd.setCode(primaertumorIcd.getCode());
+      icd.setVersionElement(icdVersionYear);
+    } else {
+      // the source named another catalog, so neither the code nor the year apply to ICD-10-GM
+      icd.getCodeElement().addExtension(DataAbsentReason.notApplicable());
+      var absentVersion = new StringType();
+      absentVersion.addExtension(DataAbsentReason.notApplicable());
+      icd.setVersionElement(absentVersion);
+    }
 
     var code = new CodeableConcept(icd);
+    if (catalog == Icd10Catalog.WHO) {
+      code.addCoding(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getIcd10who())
+              .setCode(primaertumorIcd.getCode())
+              .setVersionElement(icdVersionYear));
+    }
+
     if (meldung.getDiagnose() != null
         && StringUtils.hasText(meldung.getDiagnose().getPrimaertumorDiagnosetext())) {
       code.setText(meldung.getDiagnose().getPrimaertumorDiagnosetext());
+    } else if (catalog == Icd10Catalog.OTHER) {
+      // no system can be asserted for "Sonstige", so keep the code as free text
+      code.setText(primaertumorIcd.getCode());
     }
+
     condition.setCode(code);
 
     if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
