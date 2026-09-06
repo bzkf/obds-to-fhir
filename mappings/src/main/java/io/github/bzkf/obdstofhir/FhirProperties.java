@@ -58,6 +58,7 @@ public class FhirProperties {
     private String studienteilnahmeObservationId;
     private String lymphknotenuntersuchungObservationId;
     private String allgemeinerLeistungszustandEcogObservationId;
+    private String allgemeinerLeistungszustandKarnofskyObservationId;
     private String genetischeVarianteObservationId;
     private String tumorkonferenzCarePlanId;
     private String tnmGroupingObservationId;

@@ -38,6 +38,7 @@ fhir:
       systemische-therapie-medication-statement-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-statement-id"
       systemische-therapie-medication-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-id"
       allgemeiner-leistungszustand-ecog-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-ecog-id"
+      allgemeiner-leistungszustand-karnofsky-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-karnofsky-id"
       fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-observation-id"
       residualstatus-observation-id: "${fhir.systems.identifiers.base-url}/residualstatus-observation-id"
       histologiebefund-diagnostic-report-id: "${fhir.systems.identifiers.base-url}/histologiebefund-diagnostic-report-id"
