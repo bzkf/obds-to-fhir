@@ -1392,6 +1392,90 @@
       "url": "Observation/febe78f155d973ffb89bd3f18869914ad0035ae1d1b48c1cf8faefb6158e5881"
     }
   }, {
+    "fullUrl": "Observation/30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-aboral" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-aboral-observation-id",
+        "value": "PAT_70103-modul-darm-abstand-aboral"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81175-2",
+          "display": "Distance of tumor from closest margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
+      } ],
+      "valueQuantity": {
+        "value": 15,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f"
+    }
+  }, {
+    "fullUrl": "Observation/cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-circumferelle-resektionsebene" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-circumferelle-resektionsebene-observation-id",
+        "value": "PAT_70103-modul-darm-abstand-circumferelle-resektionsebene"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81176-0",
+          "display": "Distance of tumor from circumferential resection margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
+      } ],
+      "valueQuantity": {
+        "value": 5,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817"
+    }
+  }, {
     "fullUrl": "DiagnosticReport/1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2",
     "resource": {
       "resourceType": "DiagnosticReport",

@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "id": "e266b08f4c942ad3df97202fb0cb93ef3819e6b31418912c17f4eaf3f4bbf37d",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-anastomoseninsuffizienz" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-anastomoseninsuffizienz-observation-id",
+    "value": "VER_50113-modul-darm-anastomoseninsuffizienz"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "236091002",
+      "display": "Large intestine anastomotic leak (disorder)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-03-15",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-krk-anastomoseninsuffizienz",
+      "code": "B",
+      "display": "Anastomoseninsuffizienz Grad B"
+    } ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "resourceType": "Observation",
+  "id": "14c155103ee92a6f569d1d8587655b3fb857c259ba09c009b50c0c3a9ed747ec",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-mrt-mesorektale-faszie" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-mrt-mesorektale-faszie-observation-id",
+    "value": "10_2_DI_1-modul-darm-mrt-mesorektale-faszie"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://radlex.org",
+      "code": "RDE96",
+      "display": "Distance to MRF"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-01-01",
+  "valueQuantity": {
+    "value": 13,
+    "unit": "mm",
+    "system": "http://unitsofmeasure.org",
+    "code": "mm"
+  }
+}

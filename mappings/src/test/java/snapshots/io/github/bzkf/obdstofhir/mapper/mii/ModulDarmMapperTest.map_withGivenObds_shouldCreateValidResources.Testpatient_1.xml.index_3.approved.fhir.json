@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "961b657bdac8877de01fee1c491806eeb0d2cbc2c5a097e33b8303e296734708",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-aboral" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-aboral-observation-id",
+    "value": "10_2_OP_1-modul-darm-abstand-aboral"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "81175-2",
+      "display": "Distance of tumor from closest margin [Length] in Specimen by Macroscopy"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-02-01",
+  "valueQuantity": {
+    "value": 10,
+    "unit": "mm",
+    "system": "http://unitsofmeasure.org",
+    "code": "mm"
+  }
+}
