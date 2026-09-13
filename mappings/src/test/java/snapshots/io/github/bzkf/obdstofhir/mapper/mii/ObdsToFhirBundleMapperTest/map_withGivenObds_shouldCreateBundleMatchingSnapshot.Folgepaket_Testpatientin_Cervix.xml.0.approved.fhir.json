@@ -305,6 +305,13 @@
         "value": "55-ICDO3-8077-2"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",

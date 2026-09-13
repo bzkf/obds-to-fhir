@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -89,6 +90,8 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
+    observation.addCategory(observationCategory(ObservationCategory.SURVEY));
+
     var codeConcept = new CodeableConcept();
     codeConcept.addCoding(
         fhirProperties
@@ -150,6 +153,8 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
 
     observation.setStatus(Observation.ObservationStatus.FINAL);
+
+    observation.addCategory(observationCategory(ObservationCategory.SURVEY));
 
     var codeConcept = new CodeableConcept();
     codeConcept.addCoding(

@@ -9,6 +9,13 @@
     "value": "11_1_OP_1-modul-prostata-secondary-gleason-pattern"
   } ],
   "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",

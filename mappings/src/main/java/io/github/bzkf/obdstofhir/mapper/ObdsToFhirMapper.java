@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -41,6 +42,19 @@ public abstract class ObdsToFhirMapper {
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
+  }
+
+  /**
+   * Builds an {@code Observation.category} concept from the HL7 observation-category code system.
+   *
+   * @param category the category to code, e.g. {@link ObservationCategory#LABORATORY}
+   */
+  protected CodeableConcept observationCategory(ObservationCategory category) {
+    return new CodeableConcept(
+        new Coding(
+            fhirProperties.getSystems().getObservationCategory(),
+            category.toCode(),
+            category.getDisplay()));
   }
 
   /**
