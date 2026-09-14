@@ -1,5 +1,5 @@
 # @ignored
-lib-version: 3.5.0
+lib-version: 3.6.0
 
 fhir:
   codings:
