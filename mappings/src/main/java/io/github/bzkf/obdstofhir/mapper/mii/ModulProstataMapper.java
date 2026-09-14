@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -94,11 +95,14 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
     return results;
   }
 
-  private static Observation createBaseObservation(
-      @NonNull Reference patient, @NonNull Reference condition) {
+  private Observation createBaseObservation(
+      @NonNull Reference patient,
+      @NonNull Reference condition,
+      @NonNull ObservationCategory category) {
     var observation = new Observation();
     observation.setSubject(patient);
     observation.setStatus(Observation.ObservationStatus.FINAL);
+    observation.addCategory(observationCategory(category));
     observation.addFocus(condition);
 
     return observation;
@@ -110,7 +114,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getPSA());
-    var observation = createBaseObservation(patient, condition);
+    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstatePsa());
 
     // for creating the identifier, we can use the meldungId plus a fixed suffix
@@ -152,7 +156,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlStanzen());
-    var observation = createBaseObservation(patient, condition);
+    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen());
 
     var identifier =
@@ -189,7 +193,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlPosStanzen());
-    var observation = createBaseObservation(patient, condition);
+    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen());
 
     var identifier =
@@ -226,7 +230,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getCaBefallStanze());
-    var observation = createBaseObservation(patient, condition);
+    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze());
 
     var identifier =
@@ -277,7 +281,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @Nullable XMLGregorianCalendar referenceDate,
       @Nullable Reference op) {
     Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
-    var observation = createBaseObservation(patient, condition);
+    var observation = createBaseObservation(patient, condition, ObservationCategory.SURVEY);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateClavienDindo());
 
     var identifier =

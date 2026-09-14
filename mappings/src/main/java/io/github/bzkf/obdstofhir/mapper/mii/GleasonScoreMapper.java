@@ -14,6 +14,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -143,6 +144,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
     observation.addFocus(condition);
     observation.setStatus(ObservationStatus.FINAL);
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
     observation.setDerivedFrom(derivedFromReferences);
 
     convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
@@ -279,6 +281,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.setSubject(patient);
     observation.addFocus(condition);
     observation.setStatus(ObservationStatus.FINAL);
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
 
