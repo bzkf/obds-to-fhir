@@ -107,6 +107,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setSubject(patient);
     condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoDiagnosePrimaertumor());
 
+    condition.addCategory(
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("55342001")
+                .setDisplay("Neoplastic disease (disorder)")));
+
     var tumorzuordnung = meldung.getTumorzuordnung();
 
     var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();

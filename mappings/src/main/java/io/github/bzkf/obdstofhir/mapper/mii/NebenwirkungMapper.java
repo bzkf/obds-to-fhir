@@ -73,10 +73,15 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
               new Coding()
                   .setSystem(fhirProperties.getSystems().getMeddra())
                   .setCode(nb.getArt().getMedDRACode())
-                  .setDisplay(nb.getArt().getBezeichnung())
-                  .setVersion(nb.getVersion()));
+                  .setDisplay(nb.getArt().getBezeichnung()));
         }
         adverseEvent.setEvent(code);
+
+        var ctcaeVersion =
+            Onkologie.CodeSystems.MiiCsOnkoNebenwirkungCtcaeVersion.fromValueOrThrow(
+                nb.getVersion());
+        adverseEvent.addExtension(
+            Onkologie.Extensions.miiExOnkoNebenwirkungCtcaeVersion(ctcaeVersion));
 
         // seriousness
         var seriousness =
