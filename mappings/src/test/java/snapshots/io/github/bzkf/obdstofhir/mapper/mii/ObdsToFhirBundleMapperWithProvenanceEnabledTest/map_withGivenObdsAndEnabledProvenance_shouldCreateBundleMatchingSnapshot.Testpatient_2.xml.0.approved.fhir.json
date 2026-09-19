@@ -50,7 +50,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8140/3"
           } ]
         }
@@ -91,7 +91,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C61.9"
         } ],
         "text": "Prostata"
@@ -1124,7 +1124,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "32",
+            "version": "2014",
             "code": "9823/3"
           } ],
           "text": "Chronisch lymphatische Leukämie"
@@ -1166,7 +1166,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "32",
+          "version": "2014",
           "code": "C42.1"
         } ],
         "text": "Knochenmark"

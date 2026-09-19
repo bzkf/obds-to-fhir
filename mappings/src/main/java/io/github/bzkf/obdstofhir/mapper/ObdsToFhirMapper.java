@@ -111,6 +111,44 @@ public abstract class ObdsToFhirMapper {
     return Optional.of(Icd10Catalog.valueOf(catalog));
   }
 
+  /**
+   * Maps an oBDS {@code *_ICD_O_Version} ("31", "32", "33", "bb") to the corresponding business
+   * version of the {@code http://terminology.hl7.org/CodeSystem/icd-o-3} CodeSystem, which is
+   * versioned by year rather than by ICD-O-3 revision.
+   *
+   * <p>"31" (ICD-O-3, 2003) predates both CodeSystem versions HL7 publishes and "bb" (new WHO Blue
+   * Book codes) isn't part of ICD-O-3 at all, so neither has a corresponding version; {@link
+   * Coding#setVersion(String)} should simply be left unset for these, since it isn't a required
+   * element.
+   */
+  protected static final Map<String, String> ICDO3_VERSION_YEARS =
+      Map.of(
+          "32", "2014",
+          "33", "2019");
+
+  /**
+   * Extracts the {@code http://terminology.hl7.org/CodeSystem/icd-o-3} business version matching an
+   * oBDS ICD-O version (see {@link #ICDO3_VERSION_YEARS}).
+   *
+   * @param icdoVersion the raw ICD-O version string, e.g. from {@code *_ICD_O_Version}
+   * @param fieldName the oBDS field name, used only for the log message on an unmapped version
+   * @param mapperLog the calling mapper's logger, so the message is attributed correctly
+   * @return empty if the version is unset or has no corresponding CodeSystem version
+   */
+  protected static Optional<String> extractIcdo3VersionYear(String icdoVersion) {
+    if (!StringUtils.hasText(icdoVersion)) {
+      log.debug("icd-o-3 version is unset or contains only whitespaces");
+      return Optional.empty();
+    }
+
+    var versionYear = ICDO3_VERSION_YEARS.get(icdoVersion);
+    if (versionYear == null) {
+      log.debug("No terminology.hl7.org ICD-O-3 CodeSystem version known for {}", icdoVersion);
+      return Optional.empty();
+    }
+    return Optional.of(versionYear);
+  }
+
   public static Optional<DateType> convertObdsDatumToDateType(
       DatumTagOderMonatOderJahrOderNichtGenauTyp obdsDatum) {
     if (obdsDatum == null) {

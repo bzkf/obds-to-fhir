@@ -120,11 +120,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
       for (var morphologieCode : distinctMorphologyCodes) {
         var morphologie = new CodeableConcept();
-        morphologie
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-            .setCode(morphologieCode.getCode())
-            .setVersion(morphologieCode.getVersion());
+        var morphologieCoding =
+            morphologie
+                .addCoding()
+                .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+                .setCode(morphologieCode.getCode());
+        extractIcdo3VersionYear(morphologieCode.getVersion())
+            .ifPresent(morphologieCoding::setVersion);
 
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
@@ -135,11 +137,13 @@ public class ConditionMapper extends ObdsToFhirMapper {
       if (tumorzuordnung.getMorphologieICDO() != null
           && tumorzuordnung.getMorphologieICDO().getCode() != null) {
         var morphologie = new CodeableConcept();
-        morphologie
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-            .setCode(tumorzuordnung.getMorphologieICDO().getCode())
-            .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+        var morphologieCoding =
+            morphologie
+                .addCoding()
+                .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+                .setCode(tumorzuordnung.getMorphologieICDO().getCode());
+        extractIcdo3VersionYear(tumorzuordnung.getMorphologieICDO().getVersion())
+            .ifPresent(morphologieCoding::setVersion);
 
         condition.addExtension(
             Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(morphologie));
@@ -152,14 +156,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
       var diagnoseMeldung = meldung.getDiagnose();
 
       if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
-        CodeableConcept topographie =
-            new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-                    .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
-                    .setVersion(
-                        meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
-        condition.addBodySite(topographie);
+        var topographieIcdo = diagnoseMeldung.getPrimaertumorTopographieICDO();
+        var topographieCoding =
+            new Coding()
+                .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
+                .setCode(topographieIcdo.getCode());
+        extractIcdo3VersionYear(topographieIcdo.getVersion())
+            .ifPresent(topographieCoding::setVersion);
+        condition.addBodySite(new CodeableConcept(topographieCoding));
       }
 
       if (diagnoseMeldung.getPrimaertumorTopographieFreitext() != null) {

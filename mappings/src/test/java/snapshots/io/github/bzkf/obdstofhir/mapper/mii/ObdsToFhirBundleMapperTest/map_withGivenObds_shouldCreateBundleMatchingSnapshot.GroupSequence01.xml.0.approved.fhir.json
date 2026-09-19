@@ -50,7 +50,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8720/3"
           } ]
         }
@@ -59,7 +59,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8720/2"
           } ]
         }
@@ -99,7 +99,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C44.9"
         } ],
         "text": "Vulva"

@@ -9,7 +9,7 @@
     "valueCodeableConcept": {
       "coding": [ {
         "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-        "version": "33",
+        "version": "2019",
         "code": "8140/3"
       } ]
     }
@@ -50,7 +50,7 @@
   "bodySite": [ {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-      "version": "33",
+      "version": "2019",
       "code": "C61.9"
     } ],
     "text": "Prostata"

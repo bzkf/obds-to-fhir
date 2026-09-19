@@ -51,7 +51,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8010/3"
           } ],
           "text": "Karzinom o.n.A."
@@ -103,7 +103,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C50.9"
         } ],
         "text": "rechte Brust"
@@ -430,7 +430,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "8010/3"
         } ],
         "text": "Karzinom o.n.A."
@@ -1492,7 +1492,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8010/3"
           } ]
         }
@@ -1533,7 +1533,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C20.9"
         } ],
         "text": "Rektum"
@@ -1895,7 +1895,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8720/3"
           } ]
         }
@@ -1936,7 +1936,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C44.5"
         } ],
         "text": "Rumpf"
@@ -3254,7 +3254,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "8010/3"
         } ],
         "text": "Karzinom o.n.A."

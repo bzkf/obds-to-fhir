@@ -50,7 +50,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8077/2"
           } ],
           "text": "Zervikale intraepitheliale Neoplasie Grad 3"
@@ -97,7 +97,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C53.9"
         } ],
         "text": "Cervix uteri"
@@ -360,7 +360,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "8077/2"
         } ],
         "text": "Zervikale intraepitheliale Neoplasie Grad 3"
