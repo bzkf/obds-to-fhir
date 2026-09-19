@@ -113,7 +113,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
                 .getCodings()
                 .snomed()
                 .setCode("55342001")
-                .setDisplay("Neoplastic disease (disorder)")));
+                .setDisplay("Neoplastic disease")));
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 

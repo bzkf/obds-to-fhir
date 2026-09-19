@@ -89,7 +89,7 @@
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "55342001",
-          "display": "Neoplastic disease (disorder)"
+          "display": "Neoplastic disease"
         } ]
       } ],
       "code": {
@@ -1734,7 +1734,7 @@
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "55342001",
-          "display": "Neoplastic disease (disorder)"
+          "display": "Neoplastic disease"
         } ]
       } ],
       "code": {
@@ -2208,7 +2208,7 @@
           "system": "http://snomed.info/sct",
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "55342001",
-          "display": "Neoplastic disease (disorder)"
+          "display": "Neoplastic disease"
         } ]
       } ],
       "code": {
@@ -6552,6 +6552,13 @@
           "code": "394593009",
           "display": "Medical oncology (qualifier value)"
         } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -6596,6 +6603,13 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "394593009",
           "display": "Medical oncology (qualifier value)"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
         } ]
       } ],
       "code": {
