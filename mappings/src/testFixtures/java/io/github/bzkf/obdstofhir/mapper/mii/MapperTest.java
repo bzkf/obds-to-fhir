@@ -17,7 +17,7 @@ public abstract class MapperTest {
 
   /** Scrubs the version suffix (e.g. {@code |2026.0.3}) from canonical profile URLs. */
   protected static final Scrubber PROFILE_VERSION_SCRUBBER =
-      new RegExScrubber("\\|[0-9]+\\.[0-9]+\\.[0-9]+(?=\")", "");
+      new RegExScrubber("\\|[0-9]+\\.[0-9]+\\.[0-9]+-[^\"]+(?=\")", "");
 
   /**
    * Provides default XmlMapper for oBDS v3

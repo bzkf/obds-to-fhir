@@ -12,6 +12,14 @@
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
     "value": "10-101_SONSTIGE"
   } ],
+  "category": [ {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "55342001",
+      "display": "Neoplastic disease"
+    } ]
+  } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -33,7 +41,7 @@
   "bodySite": [ {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-      "version": "33",
+      "version": "2019",
       "code": "C50.9"
     } ]
   } ],

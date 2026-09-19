@@ -23,6 +23,8 @@ fhir:
     # -- regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group.
     # Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s.
     patient-id-regex: "^(.*)$"
+    # -- Base URL prepended to each Bundle.entry.fullUrl, e.g. `Patient/xyz` becomes `<full-url-base>Patient/xyz`.
+    full-url-base: "https://bzkf.github.io/obds-to-fhir/fhir/"
     create-patient-resources:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
