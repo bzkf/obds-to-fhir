@@ -101,7 +101,6 @@ public class ConditionMapper extends ObdsToFhirMapper {
         var morphologie =
             new CodeableConcept(
                 icdo3Coding(morphologieCode.getCode(), morphologieCode.getVersion()));
-
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
         condition.addExtension(
