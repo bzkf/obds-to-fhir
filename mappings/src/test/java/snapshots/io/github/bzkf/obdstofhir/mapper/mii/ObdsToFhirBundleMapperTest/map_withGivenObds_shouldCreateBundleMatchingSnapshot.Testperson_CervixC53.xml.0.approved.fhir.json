@@ -92,6 +92,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "C53.9"
         } ],
         "text": "Cervix"
@@ -350,12 +351,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2025",
           "code": "L01CB01",
           "userSelected": false
         } ],
@@ -433,12 +429,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2025",
           "code": "L01XA02",
           "userSelected": false
         } ],
@@ -731,12 +722,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2025",
           "code": "L01XA01",
           "userSelected": false
         } ],
@@ -859,8 +845,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-            "code": "445200009",
-            "display": "Status of residual neoplasm (observable entity)"
+            "code": "277062004",
+            "display": "Status des Residualtumors"
           } ]
         },
         "valueCodeableConcept": {
@@ -876,7 +862,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
             "code": "399656008",
-            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
         },
         "valueCodeableConcept": {

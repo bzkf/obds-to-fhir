@@ -51,6 +51,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "2019",
             "code": "8010/3"
           } ],
           "text": "Karzinom o.n.A."
@@ -102,6 +103,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "C50.9"
         } ],
         "text": "rechte Brust"
@@ -428,6 +430,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "8010/3"
         } ],
         "text": "Karzinom o.n.A."
@@ -1205,8 +1208,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-            "code": "445200009",
-            "display": "Status of residual neoplasm (observable entity)"
+            "code": "277062004",
+            "display": "Status des Residualtumors"
           } ]
         },
         "valueCodeableConcept": {
@@ -1222,7 +1225,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
             "code": "399656008",
-            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
         },
         "valueCodeableConcept": {
@@ -1489,6 +1492,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "2019",
             "code": "8010/3"
           } ]
         }
@@ -1529,6 +1533,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "C20.9"
         } ],
         "text": "Rektum"
@@ -1890,6 +1895,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "2019",
             "code": "8720/3"
           } ]
         }
@@ -1930,6 +1936,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "C44.5"
         } ],
         "text": "Rumpf"
@@ -2962,8 +2969,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-            "code": "445200009",
-            "display": "Status of residual neoplasm (observable entity)"
+            "code": "277062004",
+            "display": "Status des Residualtumors"
           } ]
         },
         "valueCodeableConcept": {
@@ -2979,7 +2986,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
             "code": "399656008",
-            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
         },
         "valueCodeableConcept": {
@@ -3247,6 +3254,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "8010/3"
         } ],
         "text": "Karzinom o.n.A."
@@ -4086,8 +4094,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-            "code": "445200009",
-            "display": "Status of residual neoplasm (observable entity)"
+            "code": "277062004",
+            "display": "Status des Residualtumors"
           } ]
         },
         "valueCodeableConcept": {
@@ -4103,7 +4111,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
             "code": "399656008",
-            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
         },
         "valueCodeableConcept": {
@@ -4240,8 +4248,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-            "code": "445200009",
-            "display": "Status of residual neoplasm (observable entity)"
+            "code": "277062004",
+            "display": "Status des Residualtumors"
           } ]
         },
         "valueCodeableConcept": {
@@ -4257,7 +4265,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20250701",
             "code": "399656008",
-            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
           } ]
         },
         "valueCodeableConcept": {

@@ -91,6 +91,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "2019",
           "code": "C20.9"
         } ],
         "text": "Rektum o.n.A. (Ampulle)"
@@ -1253,12 +1254,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2025",
           "code": "L01XA03",
           "userSelected": false
         } ],
@@ -1382,12 +1378,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2025",
           "code": "V03AF03",
           "userSelected": false
         } ],
