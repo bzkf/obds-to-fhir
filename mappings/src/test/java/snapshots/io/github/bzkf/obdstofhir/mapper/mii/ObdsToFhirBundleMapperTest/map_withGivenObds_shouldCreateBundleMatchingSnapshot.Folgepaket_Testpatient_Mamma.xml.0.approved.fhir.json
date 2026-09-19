@@ -3,7 +3,7 @@
   "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
     "resource": {
       "resourceType": "Patient",
       "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
@@ -38,7 +38,7 @@
       "url": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
     }
   }, {
-    "fullUrl": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
     "resource": {
       "resourceType": "Condition",
       "id": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
@@ -109,7 +109,7 @@
       "url": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
     }
   }, {
-    "fullUrl": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
     "resource": {
       "resourceType": "Procedure",
       "id": "de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
@@ -190,7 +190,7 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
@@ -229,7 +229,7 @@
       "url": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256"
     }
   }, {
-    "fullUrl": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
     "resource": {
       "resourceType": "Medication",
       "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
@@ -269,7 +269,7 @@
       "url": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0"
     }
   }, {
-    "fullUrl": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
@@ -308,7 +308,7 @@
       "url": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9"
     }
   }, {
-    "fullUrl": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
     "resource": {
       "resourceType": "Medication",
       "id": "87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
@@ -348,7 +348,7 @@
       "url": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3"
     }
   }, {
-    "fullUrl": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
@@ -395,7 +395,7 @@
       "url": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04"
     }
   }, {
-    "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",

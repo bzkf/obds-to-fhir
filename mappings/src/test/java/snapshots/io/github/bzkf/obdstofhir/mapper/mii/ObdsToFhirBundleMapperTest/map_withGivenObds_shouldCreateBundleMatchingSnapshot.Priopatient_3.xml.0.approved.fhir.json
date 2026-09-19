@@ -3,7 +3,7 @@
   "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
     "resource": {
       "resourceType": "Patient",
       "id": "a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07",
@@ -38,7 +38,7 @@
       "url": "Patient/a02e16474896f1d528cac71f2c9b4c45ac3c9028e3a53fb414a1f7882991ee07"
     }
   }, {
-    "fullUrl": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
     "resource": {
       "resourceType": "Condition",
       "id": "5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571",
@@ -127,7 +127,7 @@
       "url": "Condition/5e4b2f91fa2ef84922f2aa3ce0e3524ccbec1ac2673a424917d1be5aa56c7571"
     }
   }, {
-    "fullUrl": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
     "resource": {
       "resourceType": "Observation",
       "id": "6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d",
@@ -188,7 +188,7 @@
       "url": "Observation/6ff37297dfe99bf538549b388e8a9dad85756899519ef6e8e1775da5273bac8d"
     }
   }, {
-    "fullUrl": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
     "resource": {
       "resourceType": "Specimen",
       "id": "f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa",
@@ -218,7 +218,7 @@
       "url": "Specimen/f67905a247bee2ed0a0a6388c4a820b19cd668be1482a0a2fc7df81c15576ffa"
     }
   }, {
-    "fullUrl": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
     "resource": {
       "resourceType": "Observation",
       "id": "1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd",
@@ -277,7 +277,7 @@
       "url": "Observation/1e7d5d97cd0cd644942036d8c612b5421ccda0a6d0fd2c961d02d028f7c086dd"
     }
   }, {
-    "fullUrl": "Observation/1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c",
     "resource": {
       "resourceType": "Observation",
       "id": "1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c",
@@ -314,7 +314,7 @@
       "url": "Observation/1a7595f3cc59b52cdbdc9a860086b514e9826d9c0b1ae30368d8c8a843b5581c"
     }
   }, {
-    "fullUrl": "Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
     "resource": {
       "resourceType": "Observation",
       "id": "1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546",
@@ -361,7 +361,7 @@
       "url": "Observation/1f738862ff53685fad437a568b3c2e909aeb4008d785609e69725361cfde9546"
     }
   }, {
-    "fullUrl": "Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3",
     "resource": {
       "resourceType": "Observation",
       "id": "62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3",
@@ -398,7 +398,7 @@
       "url": "Observation/62144eefa15c66801937b70211b152e2c9b1e02786dc0d8fee5e9a9b8fd688c3"
     }
   }, {
-    "fullUrl": "List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",
     "resource": {
       "resourceType": "List",
       "id": "1d23de097c0082ec9a1c3e7fb033ded2e5300bccb3b4b38360b2708d12fc5cf3",

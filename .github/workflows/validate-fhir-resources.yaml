@@ -21,6 +21,17 @@ env:
   # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
   # seems like a false positive since the sample at <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html>
   # does the same.
+  #
+  # ModulProstataMapperTest:
+  # error: Instance count is 2, which is not within the specified cardinality of 1..1 (for slice Diagnose)
+  # error: Instance count is 0, which is not within the specified cardinality of 1..1 (for slice Operation)
+  # mii-pr-onko-prostate-clavien-dindo slices Observation.focus using a resolve()-based
+  # profile discriminator, which requires the referenced Condition/Procedure to actually be
+  # resolvable. These snapshots validate a single extracted Observation outside of any Bundle,
+  # so the reference can never resolve and the validator misclassifies both focus entries into
+  # the first slice. Confirmed as a false positive: the same resource validates cleanly once it
+  # is inside its Bundle with a resolvable (absolute) Bundle.entry.fullUrl, which is what
+  # actually gets validated by the validate-bundles job.
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
