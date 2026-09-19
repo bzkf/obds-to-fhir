@@ -131,8 +131,6 @@ public abstract class ObdsToFhirMapper {
    * oBDS ICD-O version (see {@link #ICDO3_VERSION_YEARS}).
    *
    * @param icdoVersion the raw ICD-O version string, e.g. from {@code *_ICD_O_Version}
-   * @param fieldName the oBDS field name, used only for the log message on an unmapped version
-   * @param mapperLog the calling mapper's logger, so the message is attributed correctly
    * @return empty if the version is unset or has no corresponding CodeSystem version
    */
   protected static Optional<String> extractIcdo3VersionYear(String icdoVersion) {
