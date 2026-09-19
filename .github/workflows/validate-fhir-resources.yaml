@@ -19,8 +19,19 @@ env:
   # ProvenanceMapperTest:
   # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
   # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
-  # seems like a false positive since the sample at <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html>
-  # does the same.
+  # Confirmed false positive in the Firely "Advanced" validator engine (not present when using
+  # "Regular"). The two flagged elements (Provenance.agent.who, Provenance.entity.what) carry
+  # only Reference.identifier, no Reference.reference at all, which is spec-legal. The ref-1
+  # invariant is `reference.startsWith('#').not() or (reference.substring(1)... in
+  # %rootResource.contained.id...)`. With no `reference` element, both sides of the `or`
+  # evaluate to an empty FHIRPath collection, so `{} or {}` is empty/indeterminate - the
+  # Advanced engine treats that as a failure instead of as "not applicable". The official R4B
+  # example <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html> has the
+  # same identifier-only Reference pattern and would trip the same false positive.
+  # The legacy "Regular" engine already works around this (see FpConstraintValidationExtensions.cs
+  # in fhir-net-api/Hl7.Fhir.Specification, which rewrites ref-1 to
+  # `reference.exists() implies (...)` for R4/R4B+); the Advanced engine (Firely.Fhir.Validation,
+  # part of firely-net-sdk) does not have the equivalent fix.
   #
   # ModulProstataMapperTest:
   # error: Instance count is 2, which is not within the specified cardinality of 1..1 (for slice Diagnose)
