@@ -99,6 +99,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.patient-id-regex}")
   private String patientIdRegex;
 
+  @Value("${fhir.mappings.full-url-base}")
+  private String fullUrlBase;
+
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
 
   public ObdsToFhirBundleMapper(
@@ -1029,12 +1032,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     var url = String.format("%s/%s", resource.getResourceType(), resource.getIdBase());
+    var fullUrl = fullUrlBase + url;
     // if a resource entry already exists, it will be replaced.
     // this should only be necessary for the Condition resource,
     // which can be created from the TumorzuordnungTyp present in all kinds of
     // Meldungen.
     var duplicateEntries =
-        bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(url)).toList();
+        bundle.getEntry().stream().filter(entry -> entry.getFullUrl().equals(fullUrl)).toList();
 
     if (duplicateEntries.size() > 1) {
       throw new IllegalStateException(
@@ -1096,7 +1100,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     } else {
       bundle
           .addEntry()
-          .setFullUrl(url)
+          .setFullUrl(fullUrl)
           .setResource(resource)
           .getRequest()
           .setMethod(HTTPVerb.PUT)
