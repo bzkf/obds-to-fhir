@@ -3,7 +3,7 @@
   "id": "43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
     "resource": {
       "resourceType": "Patient",
       "id": "43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849",
@@ -39,7 +39,7 @@
       "url": "Patient/43d8d22e39e073fbb83f221071d60fe92e947d234ada77f7401d0eb4d230a849"
     }
   }, {
-    "fullUrl": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06",
     "resource": {
       "resourceType": "Condition",
       "id": "60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06",
@@ -51,7 +51,7 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "33",
+            "version": "2019",
             "code": "8077/2"
           } ],
           "text": "Zervikale intraepitheliale Neoplasie Grad 3"
@@ -79,6 +79,14 @@
           "display": "Zytologie"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -90,7 +98,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C53.9"
         } ],
         "text": "Cervix uteri"
@@ -99,11 +107,6 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T",
           "display": "trifft nicht zu"
-        }, {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "385432009",
-          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -125,7 +128,7 @@
       "url": "Condition/60c7c9e7ec920151bab3675602c2c7653c354b96d9b5bcdda96151fc7d6dca06"
     }
   }, {
-    "fullUrl": "Procedure/af52b1d2d741d4637320e2a387e47ab5d6beb45c59fd2817c84dd87e1e830458",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/af52b1d2d741d4637320e2a387e47ab5d6beb45c59fd2817c84dd87e1e830458",
     "resource": {
       "resourceType": "Procedure",
       "id": "af52b1d2d741d4637320e2a387e47ab5d6beb45c59fd2817c84dd87e1e830458",
@@ -179,7 +182,7 @@
       "url": "Procedure/af52b1d2d741d4637320e2a387e47ab5d6beb45c59fd2817c84dd87e1e830458"
     }
   }, {
-    "fullUrl": "Procedure/f262fc4be4c07c308f153fbd69986a8eb64e02545c1d25c9318e42df5ef91f7a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/f262fc4be4c07c308f153fbd69986a8eb64e02545c1d25c9318e42df5ef91f7a",
     "resource": {
       "resourceType": "Procedure",
       "id": "f262fc4be4c07c308f153fbd69986a8eb64e02545c1d25c9318e42df5ef91f7a",
@@ -243,7 +246,7 @@
       "url": "Procedure/f262fc4be4c07c308f153fbd69986a8eb64e02545c1d25c9318e42df5ef91f7a"
     }
   }, {
-    "fullUrl": "Observation/964182d74fc3cbd2407b9c39d10460f42727161beb591d47d6587cafa476be19",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/964182d74fc3cbd2407b9c39d10460f42727161beb591d47d6587cafa476be19",
     "resource": {
       "resourceType": "Observation",
       "id": "964182d74fc3cbd2407b9c39d10460f42727161beb591d47d6587cafa476be19",
@@ -287,7 +290,7 @@
       "url": "Observation/964182d74fc3cbd2407b9c39d10460f42727161beb591d47d6587cafa476be19"
     }
   }, {
-    "fullUrl": "Specimen/097acda1b6047222ac3416023b94762da68b053084d7172abc8686fad9901418",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/097acda1b6047222ac3416023b94762da68b053084d7172abc8686fad9901418",
     "resource": {
       "resourceType": "Specimen",
       "id": "097acda1b6047222ac3416023b94762da68b053084d7172abc8686fad9901418",
@@ -317,7 +320,7 @@
       "url": "Specimen/097acda1b6047222ac3416023b94762da68b053084d7172abc8686fad9901418"
     }
   }, {
-    "fullUrl": "Observation/7dba18dc9220685fbf4e5fbe30852c0cd55d578097bbd45359b9af6546a8d142",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7dba18dc9220685fbf4e5fbe30852c0cd55d578097bbd45359b9af6546a8d142",
     "resource": {
       "resourceType": "Observation",
       "id": "7dba18dc9220685fbf4e5fbe30852c0cd55d578097bbd45359b9af6546a8d142",
@@ -358,7 +361,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "8077/2"
         } ],
         "text": "Zervikale intraepitheliale Neoplasie Grad 3"
@@ -372,7 +375,7 @@
       "url": "Observation/7dba18dc9220685fbf4e5fbe30852c0cd55d578097bbd45359b9af6546a8d142"
     }
   }, {
-    "fullUrl": "Observation/776bd87eeec7e98757d56b42fbd951102297601d1bfd15877a7fe6fec06415fe",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/776bd87eeec7e98757d56b42fbd951102297601d1bfd15877a7fe6fec06415fe",
     "resource": {
       "resourceType": "Observation",
       "id": "776bd87eeec7e98757d56b42fbd951102297601d1bfd15877a7fe6fec06415fe",
@@ -431,7 +434,7 @@
       "url": "Observation/776bd87eeec7e98757d56b42fbd951102297601d1bfd15877a7fe6fec06415fe"
     }
   }, {
-    "fullUrl": "Observation/549f55ebc8b4447526b65bc594ad5279ed701cc7fcf5c0f78fb6a425a225b68f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/549f55ebc8b4447526b65bc594ad5279ed701cc7fcf5c0f78fb6a425a225b68f",
     "resource": {
       "resourceType": "Observation",
       "id": "549f55ebc8b4447526b65bc594ad5279ed701cc7fcf5c0f78fb6a425a225b68f",
@@ -490,7 +493,7 @@
       "url": "Observation/549f55ebc8b4447526b65bc594ad5279ed701cc7fcf5c0f78fb6a425a225b68f"
     }
   }, {
-    "fullUrl": "Observation/6eeda128bb26c2a2583421d4e203efba9476c0dc40fce2d1dbe84c1e6b4fdb87",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6eeda128bb26c2a2583421d4e203efba9476c0dc40fce2d1dbe84c1e6b4fdb87",
     "resource": {
       "resourceType": "Observation",
       "id": "6eeda128bb26c2a2583421d4e203efba9476c0dc40fce2d1dbe84c1e6b4fdb87",
@@ -543,7 +546,7 @@
       "url": "Observation/6eeda128bb26c2a2583421d4e203efba9476c0dc40fce2d1dbe84c1e6b4fdb87"
     }
   }, {
-    "fullUrl": "Observation/04b7cf22855942cf4043fa5b6b3d3c38306e88e55c7b732bb445c578b8ab7ee1",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/04b7cf22855942cf4043fa5b6b3d3c38306e88e55c7b732bb445c578b8ab7ee1",
     "resource": {
       "resourceType": "Observation",
       "id": "04b7cf22855942cf4043fa5b6b3d3c38306e88e55c7b732bb445c578b8ab7ee1",
@@ -636,7 +639,7 @@
       "url": "Observation/04b7cf22855942cf4043fa5b6b3d3c38306e88e55c7b732bb445c578b8ab7ee1"
     }
   }, {
-    "fullUrl": "Observation/7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c",
     "resource": {
       "resourceType": "Observation",
       "id": "7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c",
@@ -697,7 +700,7 @@
       "url": "Observation/7ef92467d95536ced709834b2e49616411a0a245c7cfdb4b014430dffbefe40c"
     }
   }, {
-    "fullUrl": "Observation/78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5",
     "resource": {
       "resourceType": "Observation",
       "id": "78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5",
@@ -741,7 +744,7 @@
       "url": "Observation/78679c759593f8d93e7c1d69da9dc889d33845dc8a471f58473ef43db80c95f5"
     }
   }, {
-    "fullUrl": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
     "resource": {
       "resourceType": "Observation",
       "id": "ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62",
@@ -802,7 +805,7 @@
       "url": "Observation/ee9229bfb55adfac28d31404e6774949fe5f9e3e9f3a3a7c6c0e987a1e192d62"
     }
   }, {
-    "fullUrl": "Specimen/e610555b244f1e3aeb4b84fe548b681d72119de52a1e9e738cfbc39304dcb382",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/e610555b244f1e3aeb4b84fe548b681d72119de52a1e9e738cfbc39304dcb382",
     "resource": {
       "resourceType": "Specimen",
       "id": "e610555b244f1e3aeb4b84fe548b681d72119de52a1e9e738cfbc39304dcb382",
@@ -832,7 +835,7 @@
       "url": "Specimen/e610555b244f1e3aeb4b84fe548b681d72119de52a1e9e738cfbc39304dcb382"
     }
   }, {
-    "fullUrl": "Observation/91560d1576a1a8e6448bf364bca3fc67bf7f594cffd5e6a4785ca430ef2eb83a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/91560d1576a1a8e6448bf364bca3fc67bf7f594cffd5e6a4785ca430ef2eb83a",
     "resource": {
       "resourceType": "Observation",
       "id": "91560d1576a1a8e6448bf364bca3fc67bf7f594cffd5e6a4785ca430ef2eb83a",
@@ -891,7 +894,7 @@
       "url": "Observation/91560d1576a1a8e6448bf364bca3fc67bf7f594cffd5e6a4785ca430ef2eb83a"
     }
   }, {
-    "fullUrl": "Observation/a4f48c0d03fd5a64e824a2212358ffd1c5ce291d1ae5b32acc0006e86fe6c701",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/a4f48c0d03fd5a64e824a2212358ffd1c5ce291d1ae5b32acc0006e86fe6c701",
     "resource": {
       "resourceType": "Observation",
       "id": "a4f48c0d03fd5a64e824a2212358ffd1c5ce291d1ae5b32acc0006e86fe6c701",
@@ -934,7 +937,7 @@
       "url": "Observation/a4f48c0d03fd5a64e824a2212358ffd1c5ce291d1ae5b32acc0006e86fe6c701"
     }
   }, {
-    "fullUrl": "Observation/642515673b09b09e1963570d76ae0161160ed68052b102a38ecfd573b166ee3f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/642515673b09b09e1963570d76ae0161160ed68052b102a38ecfd573b166ee3f",
     "resource": {
       "resourceType": "Observation",
       "id": "642515673b09b09e1963570d76ae0161160ed68052b102a38ecfd573b166ee3f",
@@ -993,7 +996,7 @@
       "url": "Observation/642515673b09b09e1963570d76ae0161160ed68052b102a38ecfd573b166ee3f"
     }
   }, {
-    "fullUrl": "Observation/d35f3cdd15ce7594be9e91c003ca1c13ca37d74b84ce709f123b7ab530cf8cc1",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/d35f3cdd15ce7594be9e91c003ca1c13ca37d74b84ce709f123b7ab530cf8cc1",
     "resource": {
       "resourceType": "Observation",
       "id": "d35f3cdd15ce7594be9e91c003ca1c13ca37d74b84ce709f123b7ab530cf8cc1",
@@ -1052,7 +1055,7 @@
       "url": "Observation/d35f3cdd15ce7594be9e91c003ca1c13ca37d74b84ce709f123b7ab530cf8cc1"
     }
   }, {
-    "fullUrl": "Observation/459a44827a6e848ef276886c97cf29f265cc3f5418d7e6c58949eb495abb452a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/459a44827a6e848ef276886c97cf29f265cc3f5418d7e6c58949eb495abb452a",
     "resource": {
       "resourceType": "Observation",
       "id": "459a44827a6e848ef276886c97cf29f265cc3f5418d7e6c58949eb495abb452a",
@@ -1111,7 +1114,7 @@
       "url": "Observation/459a44827a6e848ef276886c97cf29f265cc3f5418d7e6c58949eb495abb452a"
     }
   }, {
-    "fullUrl": "Observation/fe6a955f43541db9cb89a00d47cceb243b43f6f4c44f6faf6ea7ffa168bd9887",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/fe6a955f43541db9cb89a00d47cceb243b43f6f4c44f6faf6ea7ffa168bd9887",
     "resource": {
       "resourceType": "Observation",
       "id": "fe6a955f43541db9cb89a00d47cceb243b43f6f4c44f6faf6ea7ffa168bd9887",
@@ -1168,7 +1171,7 @@
       "url": "Observation/fe6a955f43541db9cb89a00d47cceb243b43f6f4c44f6faf6ea7ffa168bd9887"
     }
   }, {
-    "fullUrl": "Observation/e1b83be77f79c744ed042892ca3303bbf5d4b3af064461cc7aa31995f0de6581",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e1b83be77f79c744ed042892ca3303bbf5d4b3af064461cc7aa31995f0de6581",
     "resource": {
       "resourceType": "Observation",
       "id": "e1b83be77f79c744ed042892ca3303bbf5d4b3af064461cc7aa31995f0de6581",
@@ -1227,7 +1230,7 @@
       "url": "Observation/e1b83be77f79c744ed042892ca3303bbf5d4b3af064461cc7aa31995f0de6581"
     }
   }, {
-    "fullUrl": "Observation/e6c12025ea7e93e073d19bada38ccd3c0b297fab3f0ba8b55ee43a1f68b1656a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e6c12025ea7e93e073d19bada38ccd3c0b297fab3f0ba8b55ee43a1f68b1656a",
     "resource": {
       "resourceType": "Observation",
       "id": "e6c12025ea7e93e073d19bada38ccd3c0b297fab3f0ba8b55ee43a1f68b1656a",
@@ -1286,7 +1289,7 @@
       "url": "Observation/e6c12025ea7e93e073d19bada38ccd3c0b297fab3f0ba8b55ee43a1f68b1656a"
     }
   }, {
-    "fullUrl": "Observation/4468bd69566c739e880f63ad24048240d007a54688d0602397302cfe5a68483f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/4468bd69566c739e880f63ad24048240d007a54688d0602397302cfe5a68483f",
     "resource": {
       "resourceType": "Observation",
       "id": "4468bd69566c739e880f63ad24048240d007a54688d0602397302cfe5a68483f",
@@ -1345,7 +1348,7 @@
       "url": "Observation/4468bd69566c739e880f63ad24048240d007a54688d0602397302cfe5a68483f"
     }
   }, {
-    "fullUrl": "Observation/9729b853c2efba3c9383a71ffcf09aad25d3cfd7dece81d38421696cc5523ffa",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/9729b853c2efba3c9383a71ffcf09aad25d3cfd7dece81d38421696cc5523ffa",
     "resource": {
       "resourceType": "Observation",
       "id": "9729b853c2efba3c9383a71ffcf09aad25d3cfd7dece81d38421696cc5523ffa",
@@ -1402,7 +1405,7 @@
       "url": "Observation/9729b853c2efba3c9383a71ffcf09aad25d3cfd7dece81d38421696cc5523ffa"
     }
   }, {
-    "fullUrl": "List/d1c7f88bae7347ce3687489f726bb619b240436ae19c7c5189a8d57de8b4c5c8",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/d1c7f88bae7347ce3687489f726bb619b240436ae19c7c5189a8d57de8b4c5c8",
     "resource": {
       "resourceType": "List",
       "id": "d1c7f88bae7347ce3687489f726bb619b240436ae19c7c5189a8d57de8b4c5c8",
@@ -1474,7 +1477,7 @@
       "url": "List/d1c7f88bae7347ce3687489f726bb619b240436ae19c7c5189a8d57de8b4c5c8"
     }
   }, {
-    "fullUrl": "Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
     "resource": {
       "resourceType": "Condition",
       "id": "2c354fb45e5691c7a6f7e33efdac34a8f29d80c93fc21339191d8fdf7b53b17e",
@@ -1495,6 +1498,13 @@
           "version": "http://snomed.info/sct/900000000000207008/version/20250701",
           "code": "394593009",
           "display": "Medical oncology (qualifier value)"
+        } ]
+      }, {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
         } ]
       } ],
       "code": {

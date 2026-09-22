@@ -3,7 +3,7 @@
   "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
     "resource": {
       "resourceType": "Patient",
       "id": "7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
@@ -38,7 +38,7 @@
       "url": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149"
     }
   }, {
-    "fullUrl": "Condition/2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
     "resource": {
       "resourceType": "Condition",
       "id": "2e0911f6b6f5a731285bb006de324bc0035295067efd488aaf1281cf22d211c9",
@@ -59,6 +59,14 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1-1"
       } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -71,11 +79,6 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "R",
           "display": "rechts"
-        }, {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "24028007",
-          "display": "Right (qualifier value)"
         } ]
       } ],
       "subject": {
