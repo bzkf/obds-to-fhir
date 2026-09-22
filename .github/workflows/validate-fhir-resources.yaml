@@ -119,7 +119,7 @@ jobs:
       - name: Configure fhir cli
         run: |
           fhir config inflate All
-          # fhir config validator Advanced
+          fhir config validator Advanced
 
       - name: Cache FHIR packages
         id: fhir-package-cache
