@@ -779,7 +779,23 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
           "code": "8"
         } ]
-      }
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "version": "2.82",
+            "code": "42030-7",
+            "display": "Multiple tumors reported as single primary Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "3"
+          } ]
+        }
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -902,55 +918,6 @@
     "request": {
       "method": "PUT",
       "url": "Observation/4974edcad2cc955eb57277fa27cc36d6449992c26ac40c74b70baf11ce280b3c"
-    }
-  }, {
-    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c652efd9ceba1b838d4d9195acf7a08e8a7347cadca1e6404224f9f970089212",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "c652efd9ceba1b838d4d9195acf7a08e8a7347cadca1e6404224f9f970089212",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-        "value": "483-m"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "42030-7",
-          "display": "Multiple tumors reported as single primary Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "1"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/3bf7a62876e91710228794a459051653ef1ec4ab1194f664be85e2f4dba0c131"
-      } ],
-      "effectiveDateTime": "2020-03-05",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.uicc.org/resources/tnm",
-          "code": "3"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/c652efd9ceba1b838d4d9195acf7a08e8a7347cadca1e6404224f9f970089212"
     }
   }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/11a669edb81cf9afebd8089c6ef73b6459716d4c341b65db817b562781704f0e",
@@ -1150,8 +1117,6 @@
         "reference": "Observation/67a726d7b7d36cd2c26b0a60fb1078327666abf9fbe06490d573c0bb81ac8039"
       }, {
         "reference": "Observation/4974edcad2cc955eb57277fa27cc36d6449992c26ac40c74b70baf11ce280b3c"
-      }, {
-        "reference": "Observation/c652efd9ceba1b838d4d9195acf7a08e8a7347cadca1e6404224f9f970089212"
       }, {
         "reference": "Observation/11a669edb81cf9afebd8089c6ef73b6459716d4c341b65db817b562781704f0e"
       }, {
@@ -1732,6 +1697,16 @@
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
       },
+      "modifierExtension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-y-praefix",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "y",
+            "display": "y"
+          } ]
+        }
+      } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
         "value": "485-T"
@@ -1784,57 +1759,6 @@
       "url": "Observation/1bc94a47496fb6859362b98531eba79e1abb626f29eee1e991bbf1b7090495e6"
     }
   }, {
-    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e3d0525ade526715233adc04df30183bd9691d704773145281888c489f7d13e2",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "e3d0525ade526715233adc04df30183bd9691d704773145281888c489f7d13e2",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-y-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-y-symbol-observation-id",
-        "value": "485-y"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "101658-3",
-          "display": "Cancer staging after multimodality therapy"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "1"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/33709d3a7f60d0ff98a9e9b228300ab4001ecedcefba2b0c3ecb0a67532a4b8f"
-      } ],
-      "effectiveDateTime": "2020-02-01",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "421755005",
-          "display": "Tumor staging descriptor y (tumor staging)"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/e3d0525ade526715233adc04df30183bd9691d704773145281888c489f7d13e2"
-    }
-  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/bf16262583af010dc5d2ed95374c0fb38e0d51b5deab9cf0537bb2c127e837e5",
     "resource": {
       "resourceType": "Observation",
@@ -1874,8 +1798,6 @@
       },
       "hasMember": [ {
         "reference": "Observation/1bc94a47496fb6859362b98531eba79e1abb626f29eee1e991bbf1b7090495e6"
-      }, {
-        "reference": "Observation/e3d0525ade526715233adc04df30183bd9691d704773145281888c489f7d13e2"
       } ]
     },
     "request": {
@@ -3618,6 +3540,16 @@
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
       },
+      "modifierExtension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-r-praefix",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "r",
+            "display": "r"
+          } ]
+        }
+      } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
         "value": "484-T"
@@ -3677,6 +3609,16 @@
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-n-kategorie" ]
       },
+      "modifierExtension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-r-praefix",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "r",
+            "display": "r"
+          } ]
+        }
+      } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-n-kategorie-observation-id",
         "value": "484-N"
@@ -3736,6 +3678,16 @@
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-kategorie" ]
       },
+      "modifierExtension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-r-praefix",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "r",
+            "display": "r"
+          } ]
+        }
+      } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-kategorie-observation-id",
         "value": "484-M"
@@ -3886,57 +3838,6 @@
       "url": "Observation/fb46c2e1c304ac749113c2bfa19b9658f5210b3ca9383d9bb76a03d5b7da3660"
     }
   }, {
-    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/868cffb6f85ab5bd7559006944d3937de0d66ee2fba26d0f5e902c4b2dec7ba0",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "868cffb6f85ab5bd7559006944d3937de0d66ee2fba26d0f5e902c4b2dec7ba0",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-r-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-r-symbol-observation-id",
-        "value": "484-r"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "101659-1",
-          "display": "Cancer staging after tumor recurrence"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "1"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/3bf7a62876e91710228794a459051653ef1ec4ab1194f664be85e2f4dba0c131"
-      } ],
-      "effectiveDateTime": "2021-06-01",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "421188008",
-          "display": "Tumor staging descriptor r (tumor staging)"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/868cffb6f85ab5bd7559006944d3937de0d66ee2fba26d0f5e902c4b2dec7ba0"
-    }
-  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e15a2217b3e16f94c947f59ca7b01687f5286dfd501c01ba444d7d064d47a366",
     "resource": {
       "resourceType": "Observation",
@@ -4040,8 +3941,6 @@
         "reference": "Observation/6e40744591f8003f7addaded67d45b77e157f2783e9ffaabcb52f533d36e7811"
       }, {
         "reference": "Observation/fb46c2e1c304ac749113c2bfa19b9658f5210b3ca9383d9bb76a03d5b7da3660"
-      }, {
-        "reference": "Observation/868cffb6f85ab5bd7559006944d3937de0d66ee2fba26d0f5e902c4b2dec7ba0"
       }, {
         "reference": "Observation/e15a2217b3e16f94c947f59ca7b01687f5286dfd501c01ba444d7d064d47a366"
       } ]
@@ -4994,7 +4893,23 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
           "code": "8"
         } ]
-      }
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "version": "2.82",
+            "code": "42030-7",
+            "display": "Multiple tumors reported as single primary Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "m"
+          } ]
+        }
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -5119,55 +5034,6 @@
       "url": "Observation/a167e575c9183085b43542906e958521c4027fc4081c1e97ff337cea5e6325e1"
     }
   }, {
-    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-        "value": "481-c-m"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "42030-7",
-          "display": "Multiple tumors reported as single primary Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "1"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/3bf7a62876e91710228794a459051653ef1ec4ab1194f664be85e2f4dba0c131"
-      } ],
-      "effectiveDateTime": "2020-03-01",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.uicc.org/resources/tnm",
-          "code": "m"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326"
-    }
-  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6a2ec4f1d61f831735f3d757573b9f939d4d827fb0e8e812463a56e8cc6692d6",
     "resource": {
       "resourceType": "Observation",
@@ -5218,8 +5084,6 @@
         "reference": "Observation/23bf25bbf040d99755aab7b768dee1955ecd2a625562c74f747b83eca316ae13"
       }, {
         "reference": "Observation/a167e575c9183085b43542906e958521c4027fc4081c1e97ff337cea5e6325e1"
-      }, {
-        "reference": "Observation/3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326"
       } ]
     },
     "request": {
@@ -5279,7 +5143,23 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
           "code": "8"
         } ]
-      }
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "version": "2.82",
+            "code": "42030-7",
+            "display": "Multiple tumors reported as single primary Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "3"
+          } ]
+        }
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -5402,55 +5282,6 @@
     "request": {
       "method": "PUT",
       "url": "Observation/3e0a4439e8d3c536787c6a70808286c1b9552090899b40ab5ec2e185ad2534d9"
-    }
-  }, {
-    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-        "value": "482-p-m"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "42030-7",
-          "display": "Multiple tumors reported as single primary Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/7d3abf49fed5ada2b7ab4ee9b17d0ed448ea32d52209907b1a13030594565149",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "1"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/3bf7a62876e91710228794a459051653ef1ec4ab1194f664be85e2f4dba0c131"
-      } ],
-      "effectiveDateTime": "2020-03-05",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.uicc.org/resources/tnm",
-          "code": "3"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b"
     }
   }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/5554f6a616206a279c1809d1ca25da7bc946e33bf6fa0461566caa6518e16aa5",
@@ -5651,8 +5482,6 @@
       }, {
         "reference": "Observation/3e0a4439e8d3c536787c6a70808286c1b9552090899b40ab5ec2e185ad2534d9"
       }, {
-        "reference": "Observation/102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b"
-      }, {
         "reference": "Observation/5554f6a616206a279c1809d1ca25da7bc946e33bf6fa0461566caa6518e16aa5"
       }, {
         "reference": "Observation/49e6bb0492d24e370e4d992073c652cea9550d8019f0bbc21c9f5f601b408bb7"
@@ -5740,10 +5569,6 @@
         }
       }, {
         "item": {
-          "reference": "Observation/3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326"
-        }
-      }, {
-        "item": {
           "reference": "Observation/6a2ec4f1d61f831735f3d757573b9f939d4d827fb0e8e812463a56e8cc6692d6"
         }
       }, {
@@ -5757,10 +5582,6 @@
       }, {
         "item": {
           "reference": "Observation/3e0a4439e8d3c536787c6a70808286c1b9552090899b40ab5ec2e185ad2534d9"
-        }
-      }, {
-        "item": {
-          "reference": "Observation/102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b"
         }
       }, {
         "item": {

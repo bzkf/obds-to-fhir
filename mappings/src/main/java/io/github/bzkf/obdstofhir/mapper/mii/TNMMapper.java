@@ -91,6 +91,14 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     var memberObservationList = new ArrayList<Observation>();
 
+    var hasPraefix =
+        tnmTyp.getYSymbol() != null || tnmTyp.getRSymbol() != null || tnmTyp.getASymbol() != null;
+    if (hasPraefix && tnmTyp.getT() == null && tnmTyp.getN() == null && tnmTyp.getM() == null) {
+      LOG.warn(
+          "TNM y-, r- or a-Symbol is set, but there is no T, N or M category to attach it to. "
+              + "The prefix is not mapped.");
+    }
+
     if (tnmTyp.getT() != null) {
       String identifierValue = idBase + "-T";
       var tKategorieObservation =
@@ -107,7 +115,24 @@ public class TNMMapper extends ObdsToFhirMapper {
       var cpuPraefixT = Optional.ofNullable(tnmTyp.getCPUPraefixT()).orElse("c");
       tKategorieObservation.setCode(createTKategorieCode(cpuPraefixT));
       tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
+      addPraefixModifierExtensions(tKategorieObservation, tnmTyp);
+
+      // since KDS Onkologie 2027, the m-Symbol is no longer mapped as a separate symbol
+      // observation, but as a component of the T category
+      if (tnmTyp.getMSymbol() != null) {
+        tKategorieObservation
+            .addComponent()
+            .setCode(
+                getCodeableConceptLoinc(
+                    "42030-7", "Multiple tumors reported as single primary Cancer"))
+            .setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
+      }
+
       memberObservationList.add(tKategorieObservation);
+    } else if (tnmTyp.getMSymbol() != null) {
+      LOG.warn(
+          "TNM m-Symbol is set, but there is no T category to attach it to. "
+              + "The m-Symbol is not mapped.");
     }
 
     if (tnmTyp.getN() != null) {
@@ -126,6 +151,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       var cpuPraefixN = Optional.ofNullable(tnmTyp.getCPUPraefixN()).orElse("c");
       nKategorieObservation.setCode(createNKategorieCode(cpuPraefixN));
       nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
+      addPraefixModifierExtensions(nKategorieObservation, tnmTyp);
       memberObservationList.add(nKategorieObservation);
     }
 
@@ -145,42 +171,8 @@ public class TNMMapper extends ObdsToFhirMapper {
       var cpuPraefixM = Optional.ofNullable(tnmTyp.getCPUPraefixM()).orElse("c");
       mKategorieObservation.setCode(createMKategorieCode(cpuPraefixM));
       mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
+      addPraefixModifierExtensions(mKategorieObservation, tnmTyp);
       memberObservationList.add(mKategorieObservation);
-    }
-
-    if (tnmTyp.getASymbol() != null) {
-      String identifierValue = idBase + "-a";
-      var aSymbolObservation =
-          createTNMBaseResource(
-              Onkologie.Profiles.miiPrOnkoTnmASymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmASymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      aSymbolObservation.setCode(
-          getCodeableConceptLoinc("101660-9", "Cancer staging during autopsy"));
-      aSymbolObservation.setValue(
-          getCodeableConceptSnomed("421426001", "Tumor staging descriptor a (tumor staging)"));
-      memberObservationList.add(aSymbolObservation);
-    }
-
-    if (tnmTyp.getMSymbol() != null) {
-      String identifierValue = idBase + "-m";
-      var mSymbolObservation =
-          createTNMBaseResource(
-              Onkologie.Profiles.miiPrOnkoTnmMSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmMSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      mSymbolObservation.setCode(
-          getCodeableConceptLoinc("42030-7", "Multiple tumors reported as single primary Cancer"));
-      mSymbolObservation.setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
-      memberObservationList.add(mSymbolObservation);
     }
 
     if (tnmTyp.getL() != null) {
@@ -221,24 +213,6 @@ public class TNMMapper extends ObdsToFhirMapper {
       memberObservationList.add(pnKategorieObservation);
     }
 
-    if (tnmTyp.getRSymbol() != null) {
-      String identifierValue = idBase + "-r";
-      var rSymbolObservation =
-          createTNMBaseResource(
-              Onkologie.Profiles.miiPrOnkoTnmRSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmRSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      rSymbolObservation.setCode(
-          getCodeableConceptLoinc("101659-1", "Cancer staging after tumor recurrence"));
-      rSymbolObservation.setValue(
-          getCodeableConceptSnomed("421188008", "Tumor staging descriptor r (tumor staging)"));
-      memberObservationList.add(rSymbolObservation);
-    }
-
     if (tnmTyp.getS() != null) {
       String identifierValue = idBase + "-S";
       var sKategorieObservation =
@@ -275,25 +249,28 @@ public class TNMMapper extends ObdsToFhirMapper {
       memberObservationList.add(vKategorieObservation);
     }
 
-    if (tnmTyp.getYSymbol() != null) {
-      String identifierValue = idBase + "-y";
-      var ySymbolObservation =
-          createTNMBaseResource(
-              Onkologie.Profiles.miiPrOnkoTnmYSymbol(),
-              identifierValue,
-              fhirProperties.getSystems().getIdentifiers().getTnmYSymbolObservationId(),
-              tnmTyp.getVersion(),
-              tnmTyp.getDatum(),
-              patient,
-              primaryConditionReference);
-      ySymbolObservation.setCode(
-          getCodeableConceptLoinc("101658-3", "Cancer staging after multimodality therapy"));
-      ySymbolObservation.setValue(
-          getCodeableConceptSnomed("421755005", "Tumor staging descriptor y (tumor staging)"));
-      memberObservationList.add(ySymbolObservation);
-    }
-
     return memberObservationList;
+  }
+
+  // since KDS Onkologie 2027, the y-, r- and a-prefixes are no longer mapped as separate symbol
+  // observations, but as modifierExtensions on each T, N and M category since they change the
+  // interpretation of the category value
+  private void addPraefixModifierExtensions(Observation observation, TNMTyp tnmTyp) {
+    if (tnmTyp.getYSymbol() != null) {
+      observation.addModifierExtension(
+          Onkologie.Extensions.miiExOnkoTnmYPraefix(
+              new CodeableConcept(MiiCsOnkoTnmUicc.Y.coding())));
+    }
+    if (tnmTyp.getRSymbol() != null) {
+      observation.addModifierExtension(
+          Onkologie.Extensions.miiExOnkoTnmRPraefix(
+              new CodeableConcept(MiiCsOnkoTnmUicc.R.coding())));
+    }
+    if (tnmTyp.getASymbol() != null) {
+      observation.addModifierExtension(
+          Onkologie.Extensions.miiExOnkoTnmAPraefix(
+              new CodeableConcept(MiiCsOnkoTnmUicc.A.coding())));
+    }
   }
 
   private List<Reference> createObservationReferences(List<Observation> observations) {
