@@ -5,8 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TNMTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
+import io.github.dizuker.tofhir.FhirSystems;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -186,7 +188,10 @@ class TNMMapperTest extends MapperTest {
               Onkologie.Extensions.Urls.miiExOnkoTnmAPraefix()),
           category.getModifierExtension().stream().map(Extension::getUrl).toList());
       Assertions.assertEquals(
-          List.of("y", "r", "a"),
+          List.of(
+              MiiCsOnkoTnmUicc.Y.coding().getCode(),
+              MiiCsOnkoTnmUicc.R.coding().getCode(),
+              MiiCsOnkoTnmUicc.A.coding().getCode()),
           category.getModifierExtension().stream()
               .map(e -> ((CodeableConcept) e.getValue()).getCodingFirstRep().getCode())
               .toList());
@@ -241,13 +246,14 @@ class TNMMapperTest extends MapperTest {
 
     Assertions.assertEquals(1, tKategorie.getComponent().size());
     var component = tKategorie.getComponentFirstRep();
-    Assertions.assertEquals(
-        "http://loinc.org", component.getCode().getCodingFirstRep().getSystem());
+    Assertions.assertEquals(FhirSystems.LOINC, component.getCode().getCodingFirstRep().getSystem());
     Assertions.assertEquals("42030-7", component.getCode().getCodingFirstRep().getCode());
     Assertions.assertEquals(
         Onkologie.CodeSystems.miiCsOnkoTnmUicc(),
         component.getValueCodeableConcept().getCodingFirstRep().getSystem());
-    Assertions.assertEquals("m", component.getValueCodeableConcept().getCodingFirstRep().getCode());
+    Assertions.assertEquals(
+        MiiCsOnkoTnmUicc.M.coding().getCode(),
+        component.getValueCodeableConcept().getCodingFirstRep().getCode());
 
     Assertions.assertTrue(
         observations.stream()
