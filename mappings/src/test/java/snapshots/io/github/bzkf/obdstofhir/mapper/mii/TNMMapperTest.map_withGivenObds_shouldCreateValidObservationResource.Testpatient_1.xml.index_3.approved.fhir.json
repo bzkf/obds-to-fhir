@@ -1,20 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326",
+  "id": "6a2ec4f1d61f831735f3d757573b9f939d4d827fb0e8e812463a56e8cc6692d6",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-    "value": "481-c-m"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
+    "value": "481-c"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
-      "system": "http://loinc.org",
-      "version": "2.82",
-      "code": "42030-7",
-      "display": "Multiple tumors reported as single primary Cancer"
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "399537006",
+      "display": "Clinical TNM stage grouping"
     } ]
   },
   "subject": {
@@ -27,7 +27,8 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "m"
+      "code": "IV",
+      "display": "Stadium IV"
     } ]
   },
   "method": {
@@ -35,5 +36,12 @@
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
       "code": "8"
     } ]
-  }
+  },
+  "hasMember": [ {
+    "reference": "Observation/65b426d0838cd8d9c04bce3d0d78e598576891860fa35f445eae53caa7704cf4"
+  }, {
+    "reference": "Observation/23bf25bbf040d99755aab7b768dee1955ecd2a625562c74f747b83eca316ae13"
+  }, {
+    "reference": "Observation/a167e575c9183085b43542906e958521c4027fc4081c1e97ff337cea5e6325e1"
+  } ]
 }

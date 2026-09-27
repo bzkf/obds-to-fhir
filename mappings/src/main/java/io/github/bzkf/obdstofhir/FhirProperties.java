@@ -69,10 +69,6 @@ public class FhirProperties {
     private String tnmPnKategorieObservationId;
     private String tnmSKategorieObservationId;
     private String tnmVKategorieObservationId;
-    private String tnmASymbolObservationId;
-    private String tnmMSymbolObservationId;
-    private String tnmRSymbolObservationId;
-    private String tnmYSymbolObservationId;
     private String erstdiagnoseEvidenzListId;
     private String verlaufshistologieObservationId;
     private String strahlentherapieProcedureId;
