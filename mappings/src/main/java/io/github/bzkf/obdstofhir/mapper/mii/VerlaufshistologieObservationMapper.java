@@ -131,8 +131,8 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       var coding =
           new Coding()
               .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-              .setCode(morph.getCode())
-              .setVersion(morph.getVersion());
+              .setCode(morph.getCode());
+      extractIcdo3VersionYear(morph.getVersion()).ifPresent(coding::setVersion);
       var value = new CodeableConcept(coding).setText(histologie.getMorphologieFreitext());
       observation.setValue(value);
 

@@ -1,21 +1,25 @@
 {
   "resourceType": "Medication",
-  "id": "7ae25bc89e839b7bd3a7a2987e61d7b5fea5bb29180dd0bd93603af37e69157a",
+  "id": "868a0a51e68b81f39fd1394246c5e7629a48c91d723c45d5874503fe6db17fbe",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-medikation/StructureDefinition/Medication" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/systemische-therapie-medication-id",
-    "value": "L01CD01"
+    "value": "L01FF05"
   } ],
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "version": "2026",
-      "code": "L01CD01",
-      "userSelected": false
-    } ],
-    "text": "Paclitaxel"
+      "_version": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      },
+      "code": "L01FF05",
+      "userSelected": true
+    } ]
   },
   "ingredient": [ {
     "itemCodeableConcept": {

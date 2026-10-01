@@ -1,20 +1,30 @@
 {
   "resourceType": "Observation",
-  "id": "6a2ec4f1d61f831735f3d757573b9f939d4d827fb0e8e812463a56e8cc6692d6",
+  "id": "48c3102ffe53478e905d80634aa2cf4fb530ae4e4df88b46cbaeeb3e3dacaa3c",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-klassifikation" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-t-kategorie" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-grouping-observation-id",
-    "value": "481-c"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-t-kategorie-observation-id",
+    "value": "482-p-T"
   } ],
   "status": "final",
   "code": {
+    "extension": [ {
+      "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-tnm-cp-praefix",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.uicc.org/resources/tnm",
+          "code": "p",
+          "display": "p"
+        } ]
+      }
+    } ],
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "399537006",
-      "display": "Clinical TNM stage grouping"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "384625004",
+      "display": "pT category (observable entity)"
     } ]
   },
   "subject": {
@@ -23,12 +33,11 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "effectiveDateTime": "2020-03-01",
+  "effectiveDateTime": "2020-03-05",
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "IV",
-      "display": "Stadium IV"
+      "code": "T2"
     } ]
   },
   "method": {
@@ -37,13 +46,20 @@
       "code": "8"
     } ]
   },
-  "hasMember": [ {
-    "reference": "Observation/65b426d0838cd8d9c04bce3d0d78e598576891860fa35f445eae53caa7704cf4"
-  }, {
-    "reference": "Observation/23bf25bbf040d99755aab7b768dee1955ecd2a625562c74f747b83eca316ae13"
-  }, {
-    "reference": "Observation/a167e575c9183085b43542906e958521c4027fc4081c1e97ff337cea5e6325e1"
-  }, {
-    "reference": "Observation/3054e3bfededc43b8099f2e54ca7e6d1bdfd9af27ccfb3fd1a0f19a2ba004326"
+  "component": [ {
+    "code": {
+      "coding": [ {
+        "system": "http://loinc.org",
+        "version": "2.82",
+        "code": "42030-7",
+        "display": "Multiple tumors reported as single primary Cancer"
+      } ]
+    },
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.uicc.org/resources/tnm",
+        "code": "3"
+      } ]
+    }
   } ]
 }

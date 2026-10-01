@@ -34,7 +34,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-      "version": "32",
+      "version": "2014",
       "code": "8461/3"
     } ],
     "text": "Seröses papilläres Oberflächenkarzinom"

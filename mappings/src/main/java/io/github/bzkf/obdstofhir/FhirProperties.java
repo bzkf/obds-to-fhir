@@ -1,39 +1,21 @@
 package io.github.bzkf.obdstofhir;
 
 import lombok.Data;
-import org.hl7.fhir.r4.model.Coding;
+import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationProperties(prefix = "fhir")
 @Data
-public class FhirProperties {
+@EqualsAndHashCode(callSuper = false)
+public class FhirProperties extends io.github.dizuker.tofhir.config.FhirProperties {
   private FhirExtensions extensions;
   private FhirSystems systems;
-  private Codings codings;
 
-  public static record Codings(Coding loinc, Coding snomed, Coding ops, Coding atc) {
-    @Override
-    public Coding loinc() {
-      // return a fresh copy, otherwise the original instance will be modified
-      return loinc.copy();
-    }
-
-    @Override
-    public Coding snomed() {
-      return snomed.copy();
-    }
-
-    @Override
-    public Coding ops() {
-      return ops.copy();
-    }
-
-    @Override
-    public Coding atc() {
-      return atc.copy();
-    }
+  // the codings and their versions default to the ones from to-fhir
+  public Codings getCodings() {
+    return codings();
   }
 
   @Data
@@ -69,10 +51,6 @@ public class FhirProperties {
     private String tnmPnKategorieObservationId;
     private String tnmSKategorieObservationId;
     private String tnmVKategorieObservationId;
-    private String tnmASymbolObservationId;
-    private String tnmMSymbolObservationId;
-    private String tnmRSymbolObservationId;
-    private String tnmYSymbolObservationId;
     private String erstdiagnoseEvidenzListId;
     private String verlaufshistologieObservationId;
     private String strahlentherapieProcedureId;
@@ -112,34 +90,13 @@ public class FhirProperties {
     private String v3ObservationValue;
     private String loinc;
     private String icdo3Morphologie;
-    private String uicc;
-    private String tnmPraefix;
-    private String tnmTCs;
-    private String tnmNCs;
-    private String tnmMCs;
-    private String tnmYSymbolCs;
-    private String tnmRSymbolCs;
-    private String tnmMSymbolCs;
-    private String fMLokalisationCS;
-    private String jnuCs;
     private String icd10gm;
     private String icd10who;
-    private String adtSeitenlokalisation;
     private String snomed;
-    private String opIntention;
-    private String systTherapieart;
     private String ops;
-    private String lokalBeurtResidualCS;
-    private String gesamtBeurtResidualCS;
-    private String systIntention;
-    private String systStellungOP;
-    private String sideEffectTypeOid;
-    private String opComplication;
     private String ucum;
     private String conditionVerStatus;
-    private String icdo3MorphologieOid;
     private String atcBfarm;
-    private String atcWho;
     private String observationCategory;
     private String meddra;
   }

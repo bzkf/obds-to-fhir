@@ -2,19 +2,6 @@
 lib-version: 3.6.0
 
 fhir:
-  codings:
-    loinc:
-      system: "${fhir.systems.loinc}"
-      version: "2.82"
-    snomed:
-      system: "${fhir.systems.snomed}"
-      version: "http://snomed.info/sct/900000000000207008/version/20250701"
-    ops:
-      system: "${fhir.systems.ops}"
-      version: "2026"
-    atc:
-      system: "${fhir.systems.atcBfarm}"
-      version: "2025"
   extensions:
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
@@ -55,10 +42,6 @@ fhir:
       tnm-pn-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-pn-kategorie-observation-id"
       tnm-s-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-s-kategorie-observation-id"
       tnm-v-kategorie-observation-id: "${fhir.systems.identifiers.base-url}/tnm-v-kategorie-observation-id"
-      tnm-a-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-a-symbol-observation-id"
-      tnm-m-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-m-symbol-observation-id"
-      tnm-r-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-r-symbol-observation-id"
-      tnm-y-symbol-observation-id: "${fhir.systems.identifiers.base-url}/tnm-y-symbol-observation-id"
       tumorkonferenz-care-plan-id: "${fhir.systems.identifiers.base-url}/tumorkonferenz-care-plan-id"
       weitere-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/weitere-klassifikation-observation-id"
       erstdiagnose-evidenz-list-id: "${fhir.systems.identifiers.base-url}/erstdiagnose-evidenz-list-id"
@@ -102,6 +85,8 @@ fhir:
     ## -- regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group.
     # Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s.
     patient-id-regex: "^(.*)$"
+    # -- Base URL prepended to each Bundle.entry.fullUrl, e.g. `Patient/xyz` becomes `<full-url-base>Patient/xyz`.
+    full-url-base: "https://bzkf.github.io/obds-to-fhir/fhir/"
     create-patient-resources:
       # -- Whether Patient resources should be created. Useful to disable if you already create FHIR resources
       # from a different source.
@@ -117,6 +102,7 @@ fhir:
       # The CSV file needs to have two headings: `Substanzbezeichnung;ATC-Code`, all columns must be seperated by `;`.
       # The job always ships with the mappings from <https://plattform65c.atlassian.net/wiki/spaces/UMK/pages/15532506/Substanzen>,
       # if the extra file contains duplicate mappings to the default ones, the ones from this file take precedence.
+      # The ATC version of codes mapped via this lookup defaults to `fhir.codings.atc.version`.
       extra-mappings-file-path: ""
     weitere-klassifikationen:
       # -- ⚠️ Experimental! Path to a CSV file containing additional Weitere Klassifikationen -> SNOMED code mappings.

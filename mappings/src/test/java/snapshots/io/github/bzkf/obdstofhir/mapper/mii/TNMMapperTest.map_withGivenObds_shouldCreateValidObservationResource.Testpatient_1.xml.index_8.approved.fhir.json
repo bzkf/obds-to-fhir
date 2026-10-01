@@ -1,20 +1,20 @@
 {
   "resourceType": "Observation",
-  "id": "102d2433cb08e910ab246a5665d79c1da70938e18cb61fb4d989af1ae782d69b",
+  "id": "49e6bb0492d24e370e4d992073c652cea9550d8019f0bbc21c9f5f601b408bb7",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-pn-kategorie" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-    "value": "482-p-m"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-pn-kategorie-observation-id",
+    "value": "482-p-Pn"
   } ],
   "status": "final",
   "code": {
     "coding": [ {
-      "system": "http://loinc.org",
-      "version": "2.82",
-      "code": "42030-7",
-      "display": "Multiple tumors reported as single primary Cancer"
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "371513001",
+      "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
     } ]
   },
   "subject": {
@@ -27,7 +27,7 @@
   "valueCodeableConcept": {
     "coding": [ {
       "system": "https://www.uicc.org/resources/tnm",
-      "code": "3"
+      "code": "PnX"
     } ]
   },
   "method": {

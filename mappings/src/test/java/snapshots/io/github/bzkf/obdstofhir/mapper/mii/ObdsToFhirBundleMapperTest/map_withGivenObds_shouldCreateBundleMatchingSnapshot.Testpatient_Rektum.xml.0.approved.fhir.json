@@ -3,7 +3,7 @@
   "id": "4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
     "resource": {
       "resourceType": "Patient",
       "id": "4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
@@ -38,7 +38,7 @@
       "url": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
     }
   }, {
-    "fullUrl": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
     "resource": {
       "resourceType": "Condition",
       "id": "7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
@@ -50,7 +50,6 @@
         "valueCodeableConcept": {
           "coding": [ {
             "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-            "version": "31",
             "code": "8140/3"
           } ],
           "text": "Adenokarzinom o.n.A."
@@ -73,6 +72,14 @@
           "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -84,7 +91,7 @@
       "bodySite": [ {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "33",
+          "version": "2019",
           "code": "C20.9"
         } ],
         "text": "Rektum o.n.A. (Ampulle)"
@@ -93,11 +100,6 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T",
           "display": "trifft nicht zu"
-        }, {
-          "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "385432009",
-          "display": "Not applicable (qualifier value)"
         } ]
       } ],
       "subject": {
@@ -119,7 +121,7 @@
       "url": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
     }
   }, {
-    "fullUrl": "CarePlan/897c611f7d4a2cb408798ad87d40623202643da0ecc19934aa9d83f00e943fb0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/CarePlan/897c611f7d4a2cb408798ad87d40623202643da0ecc19934aa9d83f00e943fb0",
     "resource": {
       "resourceType": "CarePlan",
       "id": "897c611f7d4a2cb408798ad87d40623202643da0ecc19934aa9d83f00e943fb0",
@@ -211,7 +213,7 @@
       "url": "CarePlan/897c611f7d4a2cb408798ad87d40623202643da0ecc19934aa9d83f00e943fb0"
     }
   }, {
-    "fullUrl": "Procedure/3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e",
     "resource": {
       "resourceType": "Procedure",
       "id": "3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e",
@@ -236,7 +238,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure (procedure)"
         } ]
@@ -265,7 +267,7 @@
       "url": "Procedure/3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e"
     }
   }, {
-    "fullUrl": "Procedure/ba548e5462413736f11995db5ed33a55ca7edb7d3fc8914c4d3c33778bac8c1b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/ba548e5462413736f11995db5ed33a55ca7edb7d3fc8914c4d3c33778bac8c1b",
     "resource": {
       "resourceType": "Procedure",
       "id": "ba548e5462413736f11995db5ed33a55ca7edb7d3fc8914c4d3c33778bac8c1b",
@@ -293,7 +295,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -329,7 +331,7 @@
       "url": "Procedure/ba548e5462413736f11995db5ed33a55ca7edb7d3fc8914c4d3c33778bac8c1b"
     }
   }, {
-    "fullUrl": "Procedure/f8721ccaf2b0b9dae950ea9769603cfac3373aeef4c738ac196a9b48a3d41193",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/f8721ccaf2b0b9dae950ea9769603cfac3373aeef4c738ac196a9b48a3d41193",
     "resource": {
       "resourceType": "Procedure",
       "id": "f8721ccaf2b0b9dae950ea9769603cfac3373aeef4c738ac196a9b48a3d41193",
@@ -357,7 +359,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -393,7 +395,7 @@
       "url": "Procedure/f8721ccaf2b0b9dae950ea9769603cfac3373aeef4c738ac196a9b48a3d41193"
     }
   }, {
-    "fullUrl": "Observation/a30af108fe299ccd35464232c6f48499d73f2bf2fb6be244a50531850ededcb7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/a30af108fe299ccd35464232c6f48499d73f2bf2fb6be244a50531850ededcb7",
     "resource": {
       "resourceType": "Observation",
       "id": "a30af108fe299ccd35464232c6f48499d73f2bf2fb6be244a50531850ededcb7",
@@ -437,7 +439,7 @@
       "url": "Observation/a30af108fe299ccd35464232c6f48499d73f2bf2fb6be244a50531850ededcb7"
     }
   }, {
-    "fullUrl": "Specimen/59b2936d4a62bd36254284f34b00327e003850e49749cc9096d06baa752bec98",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/59b2936d4a62bd36254284f34b00327e003850e49749cc9096d06baa752bec98",
     "resource": {
       "resourceType": "Specimen",
       "id": "59b2936d4a62bd36254284f34b00327e003850e49749cc9096d06baa752bec98",
@@ -464,7 +466,7 @@
       "url": "Specimen/59b2936d4a62bd36254284f34b00327e003850e49749cc9096d06baa752bec98"
     }
   }, {
-    "fullUrl": "Observation/11c564941f98b394cc41756475078e18897e12f98a480f942fc7028ced127381",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/11c564941f98b394cc41756475078e18897e12f98a480f942fc7028ced127381",
     "resource": {
       "resourceType": "Observation",
       "id": "11c564941f98b394cc41756475078e18897e12f98a480f942fc7028ced127381",
@@ -505,7 +507,6 @@
       "valueCodeableConcept": {
         "coding": [ {
           "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-          "version": "31",
           "code": "8140/3"
         } ],
         "text": "Adenokarzinom o.n.A."
@@ -519,7 +520,7 @@
       "url": "Observation/11c564941f98b394cc41756475078e18897e12f98a480f942fc7028ced127381"
     }
   }, {
-    "fullUrl": "Observation/90b47742a625d4cff626ffc8453d82a37c6d84f2a0bda1a5c17fbcef081fbf70",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/90b47742a625d4cff626ffc8453d82a37c6d84f2a0bda1a5c17fbcef081fbf70",
     "resource": {
       "resourceType": "Observation",
       "id": "90b47742a625d4cff626ffc8453d82a37c6d84f2a0bda1a5c17fbcef081fbf70",
@@ -546,7 +547,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -578,7 +579,7 @@
       "url": "Observation/90b47742a625d4cff626ffc8453d82a37c6d84f2a0bda1a5c17fbcef081fbf70"
     }
   }, {
-    "fullUrl": "Observation/7f87ef2ca34630bbc833034b5b655dab54d4639619652f626725065323d17f27",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7f87ef2ca34630bbc833034b5b655dab54d4639619652f626725065323d17f27",
     "resource": {
       "resourceType": "Observation",
       "id": "7f87ef2ca34630bbc833034b5b655dab54d4639619652f626725065323d17f27",
@@ -604,7 +605,7 @@
           "code": "21893-3"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "443527007"
         } ]
       },
@@ -634,7 +635,7 @@
       "url": "Observation/7f87ef2ca34630bbc833034b5b655dab54d4639619652f626725065323d17f27"
     }
   }, {
-    "fullUrl": "Observation/4696d5553928d9599403b015f8c454faee1fcc18fdcca5ebcc72683694879a2a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/4696d5553928d9599403b015f8c454faee1fcc18fdcca5ebcc72683694879a2a",
     "resource": {
       "resourceType": "Observation",
       "id": "4696d5553928d9599403b015f8c454faee1fcc18fdcca5ebcc72683694879a2a",
@@ -660,7 +661,7 @@
           "code": "21894-1"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "444025001"
         } ]
       },
@@ -690,7 +691,7 @@
       "url": "Observation/4696d5553928d9599403b015f8c454faee1fcc18fdcca5ebcc72683694879a2a"
     }
   }, {
-    "fullUrl": "Observation/e9300374d8033938aae52b9c61eb99098f5e67095a46d3d611ace7f0ce9265fd",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e9300374d8033938aae52b9c61eb99098f5e67095a46d3d611ace7f0ce9265fd",
     "resource": {
       "resourceType": "Observation",
       "id": "e9300374d8033938aae52b9c61eb99098f5e67095a46d3d611ace7f0ce9265fd",
@@ -715,7 +716,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -742,14 +743,30 @@
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
           "code": "8"
         } ]
-      }
+      },
+      "component": [ {
+        "code": {
+          "coding": [ {
+            "system": "http://loinc.org",
+            "version": "2.82",
+            "code": "42030-7",
+            "display": "Multiple tumors reported as single primary Cancer"
+          } ]
+        },
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.uicc.org/resources/tnm",
+            "code": "2"
+          } ]
+        }
+      } ]
     },
     "request": {
       "method": "PUT",
       "url": "Observation/e9300374d8033938aae52b9c61eb99098f5e67095a46d3d611ace7f0ce9265fd"
     }
   }, {
-    "fullUrl": "Observation/6d71855669284b2e30f038672ecd832a1b7d6e61c86d1bf8c800978df98a9b75",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6d71855669284b2e30f038672ecd832a1b7d6e61c86d1bf8c800978df98a9b75",
     "resource": {
       "resourceType": "Observation",
       "id": "6d71855669284b2e30f038672ecd832a1b7d6e61c86d1bf8c800978df98a9b75",
@@ -774,7 +791,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371494008",
           "display": "pN category (observable entity)"
         } ]
@@ -808,7 +825,7 @@
       "url": "Observation/6d71855669284b2e30f038672ecd832a1b7d6e61c86d1bf8c800978df98a9b75"
     }
   }, {
-    "fullUrl": "Observation/7524fe7f84a861140fff5bf92a1dbc452df8c2d9a66e1660a7cdad37c5c17fb6",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7524fe7f84a861140fff5bf92a1dbc452df8c2d9a66e1660a7cdad37c5c17fb6",
     "resource": {
       "resourceType": "Observation",
       "id": "7524fe7f84a861140fff5bf92a1dbc452df8c2d9a66e1660a7cdad37c5c17fb6",
@@ -833,7 +850,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -867,56 +884,7 @@
       "url": "Observation/7524fe7f84a861140fff5bf92a1dbc452df8c2d9a66e1660a7cdad37c5c17fb6"
     }
   }, {
-    "fullUrl": "Observation/107ec594b5414dc7023f2454a1d87be8bfae364b52017260bcbd8191abd760c3",
-    "resource": {
-      "resourceType": "Observation",
-      "id": "107ec594b5414dc7023f2454a1d87be8bfae364b52017260bcbd8191abd760c3",
-      "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tnm-m-symbol" ]
-      },
-      "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tnm-m-symbol-observation-id",
-        "value": "246-m"
-      } ],
-      "status": "final",
-      "code": {
-        "coding": [ {
-          "system": "http://loinc.org",
-          "version": "2.82",
-          "code": "42030-7",
-          "display": "Multiple tumors reported as single primary Cancer"
-        } ]
-      },
-      "subject": {
-        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
-        "identifier": {
-          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
-          "value": "50"
-        }
-      },
-      "focus": [ {
-        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
-      } ],
-      "effectiveDateTime": "2020-08-31",
-      "valueCodeableConcept": {
-        "coding": [ {
-          "system": "https://www.uicc.org/resources/tnm",
-          "code": "2"
-        } ]
-      },
-      "method": {
-        "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-tnm-version",
-          "code": "8"
-        } ]
-      }
-    },
-    "request": {
-      "method": "PUT",
-      "url": "Observation/107ec594b5414dc7023f2454a1d87be8bfae364b52017260bcbd8191abd760c3"
-    }
-  }, {
-    "fullUrl": "Observation/e3edb11f601e8d8bfdef1eec1a378a99f431541634b06eb0c7476b0066fbc96d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e3edb11f601e8d8bfdef1eec1a378a99f431541634b06eb0c7476b0066fbc96d",
     "resource": {
       "resourceType": "Observation",
       "id": "e3edb11f601e8d8bfdef1eec1a378a99f431541634b06eb0c7476b0066fbc96d",
@@ -931,7 +899,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "395715009",
           "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
@@ -965,7 +933,7 @@
       "url": "Observation/e3edb11f601e8d8bfdef1eec1a378a99f431541634b06eb0c7476b0066fbc96d"
     }
   }, {
-    "fullUrl": "Observation/e7e7674df13ef5f6bfdca315e332873cf79d4e9f594dafd918c3e01acf817603",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e7e7674df13ef5f6bfdca315e332873cf79d4e9f594dafd918c3e01acf817603",
     "resource": {
       "resourceType": "Observation",
       "id": "e7e7674df13ef5f6bfdca315e332873cf79d4e9f594dafd918c3e01acf817603",
@@ -980,7 +948,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371513001",
           "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
@@ -1014,7 +982,7 @@
       "url": "Observation/e7e7674df13ef5f6bfdca315e332873cf79d4e9f594dafd918c3e01acf817603"
     }
   }, {
-    "fullUrl": "Observation/3598b5630c57b433aa75105b5084cba1f0e0e9a557680212ecd4efc6b65f660c",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/3598b5630c57b433aa75105b5084cba1f0e0e9a557680212ecd4efc6b65f660c",
     "resource": {
       "resourceType": "Observation",
       "id": "3598b5630c57b433aa75105b5084cba1f0e0e9a557680212ecd4efc6b65f660c",
@@ -1029,7 +997,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371493002",
           "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
@@ -1063,7 +1031,7 @@
       "url": "Observation/3598b5630c57b433aa75105b5084cba1f0e0e9a557680212ecd4efc6b65f660c"
     }
   }, {
-    "fullUrl": "Observation/c30e7de9bdc4ebe09b29a506fd26289dee859e2003597cc96f86f558dbcacd61",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c30e7de9bdc4ebe09b29a506fd26289dee859e2003597cc96f86f558dbcacd61",
     "resource": {
       "resourceType": "Observation",
       "id": "c30e7de9bdc4ebe09b29a506fd26289dee859e2003597cc96f86f558dbcacd61",
@@ -1078,7 +1046,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399390009",
           "display": "TNM stage grouping"
         } ]
@@ -1114,8 +1082,6 @@
       }, {
         "reference": "Observation/7524fe7f84a861140fff5bf92a1dbc452df8c2d9a66e1660a7cdad37c5c17fb6"
       }, {
-        "reference": "Observation/107ec594b5414dc7023f2454a1d87be8bfae364b52017260bcbd8191abd760c3"
-      }, {
         "reference": "Observation/e3edb11f601e8d8bfdef1eec1a378a99f431541634b06eb0c7476b0066fbc96d"
       }, {
         "reference": "Observation/e7e7674df13ef5f6bfdca315e332873cf79d4e9f594dafd918c3e01acf817603"
@@ -1128,7 +1094,7 @@
       "url": "Observation/c30e7de9bdc4ebe09b29a506fd26289dee859e2003597cc96f86f558dbcacd61"
     }
   }, {
-    "fullUrl": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
     "resource": {
       "resourceType": "Procedure",
       "id": "f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
@@ -1162,7 +1128,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "18629005",
           "display": "Administration of drug or medicament (procedure)"
         } ]
@@ -1201,7 +1167,7 @@
       "url": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
     }
   }, {
-    "fullUrl": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
@@ -1239,7 +1205,7 @@
       "url": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1"
     }
   }, {
-    "fullUrl": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
     "resource": {
       "resourceType": "Medication",
       "id": "36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
@@ -1253,7 +1219,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2025",
+          "version": "2026",
           "code": "L01XA03",
           "userSelected": false
         } ],
@@ -1263,7 +1229,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1279,7 +1245,7 @@
       "url": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051"
     }
   }, {
-    "fullUrl": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
@@ -1325,7 +1291,7 @@
       "url": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4"
     }
   }, {
-    "fullUrl": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
@@ -1363,7 +1329,7 @@
       "url": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60"
     }
   }, {
-    "fullUrl": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
     "resource": {
       "resourceType": "Medication",
       "id": "d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
@@ -1377,7 +1343,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2025",
+          "version": "2026",
           "code": "V03AF03",
           "userSelected": false
         } ],
@@ -1387,7 +1353,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -1403,7 +1369,7 @@
       "url": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea"
     }
   }, {
-    "fullUrl": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
@@ -1446,7 +1412,7 @@
       "url": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee"
     }
   }, {
-    "fullUrl": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
     "resource": {
       "resourceType": "Procedure",
       "id": "dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
@@ -1480,7 +1446,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -1512,7 +1478,7 @@
       "url": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4"
     }
   }, {
-    "fullUrl": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
     "resource": {
       "resourceType": "Procedure",
       "id": "2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
@@ -1540,7 +1506,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -1586,7 +1552,7 @@
       "url": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab"
     }
   }, {
-    "fullUrl": "AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
@@ -1629,7 +1595,7 @@
       "url": "AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268"
     }
   }, {
-    "fullUrl": "CarePlan/833ab1f74f5c8997344fb2fd16d5ce9dc79c2eed70ecd3a1103afa733fc78a73",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/CarePlan/833ab1f74f5c8997344fb2fd16d5ce9dc79c2eed70ecd3a1103afa733fc78a73",
     "resource": {
       "resourceType": "CarePlan",
       "id": "833ab1f74f5c8997344fb2fd16d5ce9dc79c2eed70ecd3a1103afa733fc78a73",
@@ -1703,7 +1669,7 @@
       "url": "CarePlan/833ab1f74f5c8997344fb2fd16d5ce9dc79c2eed70ecd3a1103afa733fc78a73"
     }
   }, {
-    "fullUrl": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0",
     "resource": {
       "resourceType": "Observation",
       "id": "bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0",
@@ -1725,7 +1691,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -1764,7 +1730,7 @@
       "url": "Observation/bcd6e1b46b8ac53bb6156e6042dfab59c08efb6bb48573621810e5ba7d6e7ad0"
     }
   }, {
-    "fullUrl": "Specimen/e6444839a0d83b4e15696c240e12bbec6ea752e45f8e3f51f0ce8e09a66ec866",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/e6444839a0d83b4e15696c240e12bbec6ea752e45f8e3f51f0ce8e09a66ec866",
     "resource": {
       "resourceType": "Specimen",
       "id": "e6444839a0d83b4e15696c240e12bbec6ea752e45f8e3f51f0ce8e09a66ec866",
@@ -1794,7 +1760,7 @@
       "url": "Specimen/e6444839a0d83b4e15696c240e12bbec6ea752e45f8e3f51f0ce8e09a66ec866"
     }
   }, {
-    "fullUrl": "Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06",
     "resource": {
       "resourceType": "Observation",
       "id": "c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06",
@@ -1821,7 +1787,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -1853,7 +1819,7 @@
       "url": "Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06"
     }
   }, {
-    "fullUrl": "Observation/ec6fe01cbe0705f4f60a4b1158586ae0938000639940a468f46aa0a716062f79",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ec6fe01cbe0705f4f60a4b1158586ae0938000639940a468f46aa0a716062f79",
     "resource": {
       "resourceType": "Observation",
       "id": "ec6fe01cbe0705f4f60a4b1158586ae0938000639940a468f46aa0a716062f79",
@@ -1878,7 +1844,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399504009",
           "display": "cT category (observable entity)"
         } ]
@@ -1912,7 +1878,7 @@
       "url": "Observation/ec6fe01cbe0705f4f60a4b1158586ae0938000639940a468f46aa0a716062f79"
     }
   }, {
-    "fullUrl": "Observation/de06c613a6f0f385cbbc6484a7c7e2924b6f1d95f0db9e84321dbf687e0ccb7d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/de06c613a6f0f385cbbc6484a7c7e2924b6f1d95f0db9e84321dbf687e0ccb7d",
     "resource": {
       "resourceType": "Observation",
       "id": "de06c613a6f0f385cbbc6484a7c7e2924b6f1d95f0db9e84321dbf687e0ccb7d",
@@ -1937,7 +1903,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -1971,7 +1937,7 @@
       "url": "Observation/de06c613a6f0f385cbbc6484a7c7e2924b6f1d95f0db9e84321dbf687e0ccb7d"
     }
   }, {
-    "fullUrl": "Observation/35f565b7747e1463a73f09f6107d4117b1626e2a536743ddcd9e103f0df96036",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/35f565b7747e1463a73f09f6107d4117b1626e2a536743ddcd9e103f0df96036",
     "resource": {
       "resourceType": "Observation",
       "id": "35f565b7747e1463a73f09f6107d4117b1626e2a536743ddcd9e103f0df96036",
@@ -1996,7 +1962,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -2030,7 +1996,7 @@
       "url": "Observation/35f565b7747e1463a73f09f6107d4117b1626e2a536743ddcd9e103f0df96036"
     }
   }, {
-    "fullUrl": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7",
     "resource": {
       "resourceType": "Observation",
       "id": "847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7",
@@ -2045,7 +2011,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399537006",
           "display": "Clinical TNM stage grouping"
         } ]
@@ -2087,7 +2053,7 @@
       "url": "Observation/847c366cf1cb2c57ed435a7a3f606ce6cad8a47c98e75949397af5bc4ef72be7"
     }
   }, {
-    "fullUrl": "List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",
     "resource": {
       "resourceType": "List",
       "id": "fc61d9fd239c7babbad7c514f2a20413d56eabacb0a60fcec48e8390e1817f87",

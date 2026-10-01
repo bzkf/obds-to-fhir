@@ -11,7 +11,7 @@
   "code": {
     "coding": [ {
       "system": "http://fhir.de/CodeSystem/bfarm/atc",
-      "version": "2025",
+      "version": "2026",
       "code": "L01EX05",
       "userSelected": false
     } ],
@@ -21,7 +21,7 @@
     "itemCodeableConcept": {
       "coding": [ {
         "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "version": "http://snomed.info/sct/900000000000207008/version/20260701",
         "_code": {
           "extension": [ {
             "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
