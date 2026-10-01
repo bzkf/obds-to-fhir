@@ -203,6 +203,13 @@ jobs:
           name: java-validator-bundles-report
           path: java-validator-bundles-report.html
 
+      - uses: medvertical/records-fhir-validator@0492195d1b180e81fa85a1cff9c9de6a632d64fd # v0.7.0
+        with:
+          paths: |
+            mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json
+          fhir-version: R4
+          fail-on: error
+
       - name: Validate bundles
         continue-on-error: true
         run: |
