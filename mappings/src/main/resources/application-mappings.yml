@@ -2,19 +2,6 @@
 lib-version: 3.6.0
 
 fhir:
-  codings:
-    loinc:
-      system: "${fhir.systems.loinc}"
-      version: "2.82"
-    snomed:
-      system: "${fhir.systems.snomed}"
-      version: "http://snomed.info/sct/900000000000207008/version/20250701"
-    ops:
-      system: "${fhir.systems.ops}"
-      version: "2026"
-    atc:
-      system: "${fhir.systems.atcBfarm}"
-      version: "2025"
   extensions:
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"

@@ -76,7 +76,7 @@
       "category": [ {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "55342001",
           "display": "Neoplastic disease"
         } ]
@@ -156,7 +156,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "18629005",
           "display": "Administration of drug or medicament (procedure)"
         } ]
@@ -247,7 +247,12 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2025",
+          "_version": {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ]
+          },
           "code": "L01AA01",
           "userSelected": false
         } ],
@@ -257,7 +262,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -325,7 +330,12 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2025",
+          "_version": {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ]
+          },
           "code": "L01FA01",
           "userSelected": false
         } ],
@@ -335,7 +345,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -403,7 +413,12 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "version": "2025",
+          "_version": {
+            "extension": [ {
+              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+              "valueCode": "unknown"
+            } ]
+          },
           "code": "L01BB05",
           "userSelected": false
         } ],
@@ -413,7 +428,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -444,7 +459,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -597,7 +612,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "373818007",
           "display": "No anti-cancer treatment - watchful waiting (finding)"
         }, {
@@ -648,7 +663,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -734,7 +749,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -785,7 +800,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -839,7 +854,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -889,7 +904,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -985,7 +1000,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -1032,7 +1047,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
