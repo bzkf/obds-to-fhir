@@ -16,13 +16,11 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
-import org.hl7.fhir.r4.model.StringType;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,39 +81,17 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
                 .setCode("394593009")
                 .setDisplay("Medical oncology (qualifier value)")));
 
-    var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
-
     if (fruehereTumorerkrankung.getICD() != null
         && StringUtils.hasText(fruehereTumorerkrankung.getICD().getCode())) {
-      var icdCode = fruehereTumorerkrankung.getICD().getCode();
-      var icd10Version = fruehereTumorerkrankung.getICD().getVersion();
-      var icdVersionYear =
-          extractIcdVersionYear(icd10Version, "Fruehere_Tumorerkrankung ICD_Version", LOG);
-      // an unset or unparsable version keeps the previous behaviour and is treated as GM
-      var catalog = extractIcdCatalog(icd10Version).orElse(Icd10Catalog.GM);
-
-      if (catalog == Icd10Catalog.GM) {
-        icd.setCode(icdCode);
-        icd.setVersionElement(icdVersionYear);
-      } else {
-        // the source named another catalog, so neither the code nor the year apply to ICD-10-GM
-        icd.getCodeElement().addExtension(DataAbsentReason.notApplicable());
-        var absentVersion = new StringType();
-        absentVersion.addExtension(DataAbsentReason.notApplicable());
-        icd.setVersionElement(absentVersion);
-      }
-
-      // Condition.code.text always has to be set, either to the ICD code or to the free text (see
-      // below)
-      var code = new CodeableConcept(icd).setText(icdCode);
-      if (catalog == Icd10Catalog.WHO) {
-        code.addCoding(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getIcd10who())
-                .setCode(icdCode)
-                .setVersionElement(icdVersionYear));
-      }
-      condition.setCode(code);
+      // Condition.code.text retains the ICD code unless free text overrides it below.
+      condition.setCode(
+          new CodeableConcept()
+              .setCoding(
+                  mapTumorIcdToCodings(
+                      fruehereTumorerkrankung.getICD(),
+                      "Fruehere_Tumorerkrankung ICD_Version",
+                      LOG))
+              .setText(fruehereTumorerkrankung.getICD().getCode()));
     }
 
     if (StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
