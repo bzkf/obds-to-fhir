@@ -37,6 +37,7 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
     "Test_SysT_0.xml",
     "Test_SysT_1.xml",
     "Test_SysT_2.xml",
+    "Test_SysT_1_unset_ATC_Version.xml",
   })
   void map_withGivenObds_shouldCreateValidMedicationStatement(String sourceFile)
       throws IOException {

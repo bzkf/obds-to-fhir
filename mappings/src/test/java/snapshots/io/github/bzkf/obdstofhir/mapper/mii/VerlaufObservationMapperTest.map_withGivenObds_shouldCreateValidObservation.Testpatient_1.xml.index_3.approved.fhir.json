@@ -12,7 +12,7 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
       "code": "396432002",
       "display": "Status of regression of tumor (observable entity)"
     } ]
@@ -35,9 +35,9 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-        "code": "445200009",
-        "display": "Status of residual neoplasm (observable entity)"
+        "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+        "code": "277062004",
+        "display": "Status des Residualtumors"
       } ]
     },
     "valueCodeableConcept": {
@@ -51,9 +51,9 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "version": "http://snomed.info/sct/900000000000207008/version/20260701",
         "code": "399656008",
-        "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
+        "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
       } ]
     },
     "valueCodeableConcept": {
@@ -67,7 +67,7 @@
     "code": {
       "coding": [ {
         "system": "http://snomed.info/sct",
-        "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+        "version": "http://snomed.info/sct/900000000000207008/version/20260701",
         "code": "399608002",
         "display": "Status of distant metastasis (observable entity)"
       } ]
