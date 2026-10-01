@@ -6,6 +6,7 @@ import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
 import java.util.ArrayList;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
@@ -31,7 +32,10 @@ class FruehereTumorerkrankungenMapperTest extends MapperTest {
     "Testpatient_1.xml",
     "Testpatient_Diagnose.xml",
     "Hauptpaket_Testperson_Cervixinsitu.xml",
-    "Testpatient_Mamma.xml"
+    "Testpatient_Mamma.xml",
+    "Testpatient_Fruehere_ICD_WHO.xml",
+    "Testpatient_Fruehere_ICD_Sonstige.xml",
+    "Testpatient_Fruehere_ICD_Sonstige_ohne_Freitext.xml"
   })
   void map_withGivenObds_shouldCreateValidConditionResources(String sourceFile) throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
@@ -57,5 +61,55 @@ class FruehereTumorerkrankungenMapperTest extends MapperTest {
     }
 
     verifyAll(list, sourceFile);
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "Testpatient_Diagnose.xml,C43.7,,Malignes Melanom rechtes Bein",
+    "Testpatient_Fruehere_ICD_WHO.xml,,C43.7,Malignes Melanom rechtes Bein",
+    "Testpatient_Fruehere_ICD_Sonstige.xml,,,Malignes Melanom rechtes Bein",
+    "Testpatient_Fruehere_ICD_Sonstige_ohne_Freitext.xml,,,C43.7"
+  })
+  void map_withGivenIcdVersion_shouldOnlyAssertTheStatedCatalog(
+      String sourceFile, String expectedGmCode, String expectedWhoCode, String expectedCodeText)
+      throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
+    assertThat(resource).isNotNull();
+
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+    var meldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(
+                m ->
+                    m.getDiagnose() != null
+                        && m.getDiagnose().getMengeFruehereTumorerkrankung() != null)
+            .findFirst()
+            .get();
+
+    var conditions =
+        sut.map(
+            meldung.getDiagnose().getMengeFruehereTumorerkrankung(),
+            new Reference("Patient/any"),
+            new Identifier().setSystem("any").setValue("pd-id-1"),
+            obds.getMeldedatum());
+
+    var code = conditions.getFirst().getCode();
+
+    var gmCoding =
+        code.getCoding().stream()
+            .filter(c -> "http://fhir.de/CodeSystem/bfarm/icd-10-gm".equals(c.getSystem()))
+            .findFirst();
+    assertThat(gmCoding).isPresent();
+    assertThat(gmCoding.get().getCode()).isEqualTo(expectedGmCode);
+
+    var whoCoding =
+        code.getCoding().stream()
+            .filter(c -> "http://hl7.org/fhir/sid/icd-10".equals(c.getSystem()))
+            .findFirst();
+    assertThat(whoCoding.map(Coding::getCode).orElse(null)).isEqualTo(expectedWhoCode);
+
+    assertThat(code.getText()).isEqualTo(expectedCodeText);
   }
 }

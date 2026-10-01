@@ -5,6 +5,7 @@ import com.github.slugify.Slugify;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
+import de.basisdatensatz.obds.v3.TumorICDTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.*;
@@ -109,6 +110,38 @@ public abstract class ObdsToFhirMapper {
       return Optional.of(Icd10Catalog.OTHER);
     }
     return Optional.of(Icd10Catalog.valueOf(catalog));
+  }
+
+  /**
+   * Maps a tumor ICD to the codings used by the primary and previous-tumor profiles. WHO retains
+   * its own coding alongside the required, explicitly absent GM slice. An unset or unparsable
+   * catalog retains the existing GM fallback policy. Text and profile-specific requirements remain
+   * the caller's responsibility.
+   */
+  protected List<Coding> mapTumorIcdToCodings(
+      TumorICDTyp tumorIcd, String fieldName, Logger mapperLog) {
+    var versionYear = extractIcdVersionYear(tumorIcd.getVersion(), fieldName, mapperLog);
+    var catalog = extractIcdCatalog(tumorIcd.getVersion()).orElse(Icd10Catalog.GM);
+    var gm = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
+    if (catalog == Icd10Catalog.GM) {
+      gm.setCode(tumorIcd.getCode());
+      gm.setVersionElement(versionYear);
+    } else {
+      gm.getCodeElement().addExtension(DataAbsentReason.notApplicable());
+      var absentVersion = new StringType();
+      absentVersion.addExtension(DataAbsentReason.notApplicable());
+      gm.setVersionElement(absentVersion);
+    }
+    var codings = new ArrayList<Coding>();
+    codings.add(gm);
+    if (catalog == Icd10Catalog.WHO) {
+      codings.add(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getIcd10who())
+              .setCode(tumorIcd.getCode())
+              .setVersionElement(versionYear));
+    }
+    return codings;
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(
