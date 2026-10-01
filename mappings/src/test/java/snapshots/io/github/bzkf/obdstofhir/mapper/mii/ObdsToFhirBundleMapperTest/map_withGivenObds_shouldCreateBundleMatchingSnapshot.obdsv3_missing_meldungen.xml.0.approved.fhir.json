@@ -70,7 +70,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
-          "version": "2000",
+          "version": "2020",
           "code": "C50.8"
         } ]
       },

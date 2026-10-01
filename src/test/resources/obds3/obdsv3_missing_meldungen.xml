@@ -31,7 +31,7 @@
           <Tumorzuordnung Tumor_ID="1">
             <Primaertumor_ICD>
               <Code>C50.8</Code>
-              <Version>10 2000 GM</Version>
+              <Version>10 2020 GM</Version>
             </Primaertumor_ICD>
             <Diagnosedatum Datumsgenauigkeit="E">2000-01-01</Diagnosedatum>
             <Seitenlokalisation>R</Seitenlokalisation>
