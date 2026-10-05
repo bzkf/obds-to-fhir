@@ -17,6 +17,7 @@ import io.github.bzkf.obdstofhir.model.PatientLookupResult;
 import io.github.bzkf.obdstofhir.patientreference.FhirServerLookupPatientReferenceStrategy;
 import io.github.bzkf.obdstofhir.patientreference.IdentifierPseudonymizer;
 import io.github.bzkf.obdstofhir.patientreference.Md5HashedPatientReferenceStrategy;
+import io.github.bzkf.obdstofhir.patientreference.NonLegacyAcceptHeaderInterceptor;
 import io.github.bzkf.obdstofhir.patientreference.OAuth2ClientCredentialsAuthInterceptor;
 import io.github.bzkf.obdstofhir.patientreference.PatientReferenceStrategy;
 import io.github.bzkf.obdstofhir.patientreference.PlainPatientIdReferenceStrategy;
@@ -184,6 +185,10 @@ public class PatientReferenceGenerator {
     var fhirContext = FhirContext.forR4();
     fhirContext.getRestfulClientFactory().setServerValidationMode(ServerValidationModeEnum.NEVER);
     var client = fhirContext.newRestfulGenericClient(fhirServerConfig.baseUrl().toString());
+
+    if (fhirServerConfig.stripLegacyMediaTypesFromAcceptHeader()) {
+      client.registerInterceptor(new NonLegacyAcceptHeaderInterceptor());
+    }
 
     var basicAuth = fhirServerConfig.auth().basic();
     var oauth2 = fhirServerConfig.auth().oauth2();

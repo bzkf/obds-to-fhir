@@ -56,6 +56,12 @@ fhir:
         # -- the base URL of a FHIR server used to lookup an existing logical Patient id from a local identifier.
         # E.g. `https://fhir.example.com/fhir`
         base-url: ""
+        # -- some FHIR servers reject requests whose `Accept` header contains the long-deprecated
+        # `application/xml+fhir`/`application/json+fhir` media types, which HAPI's FHIR client
+        # always includes as a low-priority fallback alongside the current `application/fhir+xml`/
+        # `application/fhir+json` types. Enable this to strip the deprecated media types from the
+        # `Accept` header sent to `fhir-server.base-url`.
+        strip-legacy-media-types-from-accept-header: false
         auth:
           basic:
             # -- use HTTP Basic Authentication for FHIR server authentication

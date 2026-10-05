@@ -12,7 +12,8 @@ import org.springframework.validation.annotation.Validated;
     name = "fhir.mappings.patient-reference-generation.strategy",
     havingValue = "FHIR_SERVER_LOOKUP")
 @Validated
-public record FhirServerConfig(@NotNull URL baseUrl, Auth auth) {
+public record FhirServerConfig(
+    @NotNull URL baseUrl, Auth auth, boolean stripLegacyMediaTypesFromAcceptHeader) {
   public record Auth(BasicAuth basic, OAuth2 oauth2) {}
 
   public record BasicAuth(boolean enabled, String username, String password) {}

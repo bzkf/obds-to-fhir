@@ -26,7 +26,8 @@ class PatientReferenceGeneratorTest {
             new FhirServerConfig.Auth(
                 new FhirServerConfig.BasicAuth(true, "user", "pwd"),
                 new FhirServerConfig.OAuth2(
-                    true, "http://example.org/token", "client-id", "client-secret", null)));
+                    true, "http://example.org/token", "client-id", "client-secret", null)),
+            false);
 
     assertThatThrownBy(() -> PatientReferenceGenerator.createFhirClient(config))
         .isInstanceOf(IllegalArgumentException.class);
@@ -40,7 +41,21 @@ class PatientReferenceGeneratorTest {
             new FhirServerConfig.Auth(
                 new FhirServerConfig.BasicAuth(false, "", ""),
                 new FhirServerConfig.OAuth2(
-                    true, "http://example.org/token", "client-id", "client-secret", null)));
+                    true, "http://example.org/token", "client-id", "client-secret", null)),
+            false);
+
+    assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
+  }
+
+  @Test
+  void shouldCreateFhirClientWithLegacyMediaTypeWorkaroundEnabled() throws Exception {
+    var config =
+        new FhirServerConfig(
+            URI.create("http://example.org/fhir").toURL(),
+            new FhirServerConfig.Auth(
+                new FhirServerConfig.BasicAuth(false, "", ""),
+                new FhirServerConfig.OAuth2(false, "", "", "", null)),
+            true);
 
     assertThat(PatientReferenceGenerator.createFhirClient(config)).isNotNull();
   }
