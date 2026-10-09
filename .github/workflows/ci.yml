@@ -38,6 +38,9 @@ jobs:
     with:
       enable-build-test-layer: true
       enable-upload-test-image: true
+      platforms: |
+        linux/amd64
+        linux/arm64
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
 
