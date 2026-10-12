@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
@@ -43,12 +44,14 @@ import org.hl7.fhir.r4.model.ResourceType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
@@ -103,6 +106,9 @@ class Obdsv3ProcessorTest extends MapperTest {
   private static final FhirContext ctx = FhirContext.forR4();
 
   @Autowired private Obdsv3Processor processor;
+  @Autowired private ObdsMapper obdsV2ToV3Mapper;
+  @Autowired private Obdsv3Deserializer deserializer;
+  @Autowired private ObdsToFhirBundleMapper bundleMapper;
 
   @Value("classpath:obds3/*.xml")
   private Resource[] obdsResources;
@@ -170,6 +176,36 @@ class Obdsv3ProcessorTest extends MapperTest {
 
       assertThat(outputTopic.readRecordsToList()).isNotEmpty();
     }
+  }
+
+  @ParameterizedTest
+  @ValueSource(
+      strings = {
+        "001_1.Pat_2Tumoren_TumorID_1_Diagnose.xml",
+        "002_1.Pat_2Tumoren_TumorID_2_Diagnose.xml",
+        "003_Pat1_Tumor1_Therapie1_Behandlungsende_OP.xml",
+        "004_Pat1_Tumor2_Therapie2_Behandlungsende_ST.xml",
+        "005_Pat2_Tumor1_TumorID_1_Diagnose.xml",
+        "006_Pat2_Tumor1_Behandlungsbeginn.xml",
+        "007_Pat2_Tumor1_Behandlungsende_ST.xml",
+        "008_Pat3_Tumor1_Behandlungsende_SYST.xml",
+        "009_Pat1_Tumor1_Statusaenderung_Fernmeta_3x-überschreibt2xFernMetaausDIAGNOSE.xml",
+        "010_Pat2_Tumor1_Tod.xml",
+        "adt/Testpatient_ADT_Diagnose.xml",
+        "diagnosis_set.xml",
+        "diagnosis_unset.xml"
+      })
+  void mapObdsV2ToV3ToFhir_withGivenAdt_shouldCreateBundlesMatchingSnapshot(String sourceFile)
+      throws IOException {
+    var xml =
+        new String(
+            new ClassPathResource(sourceFile).getInputStream().readAllBytes(),
+            StandardCharsets.UTF_8);
+
+    var obds = obdsV2ToV3Mapper.map(deserializer.deserializeAsObdsOrAdt(xml).getAdt());
+    var bundles = bundleMapper.map(obds);
+
+    verifyAll(bundles, sourceFile.replace('/', '_'));
   }
 
   @Test

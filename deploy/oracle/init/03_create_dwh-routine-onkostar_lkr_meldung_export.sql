@@ -351,7 +351,7 @@ VALUES (4, 4776, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
 									<ST_Ende_Datum>14.09.2021</ST_Ende_Datum>
 								</Bestrahlung>
 								<Bestrahlung>
-									<ST_Zielgebiet>1.2</ST_Zielgebiet>
+									<ST_Zielgebiet>1.2.</ST_Zielgebiet>
 									<ST_Seite_Zielgebiet>L</ST_Seite_Zielgebiet>
 									<ST_Beginn_Datum>01.10.2021</ST_Beginn_Datum>
 									<ST_Ende_Datum>02.10.2021</ST_Ende_Datum>
@@ -505,13 +505,13 @@ VALUES (6, 5452, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
 									<ST_Ende_Datum>02.01.1900</ST_Ende_Datum>
 								</Bestrahlung>
 								<Bestrahlung>
-									<ST_Zielgebiet>1.2</ST_Zielgebiet>
+									<ST_Zielgebiet>1.2.</ST_Zielgebiet>
 									<ST_Seite_Zielgebiet>R</ST_Seite_Zielgebiet>
 									<ST_Beginn_Datum>01.12.1800</ST_Beginn_Datum>
 									<ST_Ende_Datum>02.12.1800</ST_Ende_Datum>
 								</Bestrahlung>
 							</Menge_Bestrahlung>
-							<ST_Ende_Grund>L</ST_Ende_Grund>
+							<ST_Ende_Grund>E</ST_Ende_Grund>
 							<Menge_Nebenwirkung>
 								<ST_Nebenwirkung>
 									<Nebenwirkung_Grad>4</Nebenwirkung_Grad>
@@ -578,12 +578,12 @@ VALUES (7, 1238, 1, 1, to_clob('<?xml version="1.0" encoding="UTF-8"?>
 									<ST_Seite_Zielgebiet>T</ST_Seite_Zielgebiet>
 								</Bestrahlung>
 								<Bestrahlung>
-									<ST_Zielgebiet>1.2</ST_Zielgebiet>
+									<ST_Zielgebiet>1.2.</ST_Zielgebiet>
 									<ST_Seite_Zielgebiet>R</ST_Seite_Zielgebiet>
 									<ST_Ende_Datum>02.12.2021</ST_Ende_Datum>
 								</Bestrahlung>
 							</Menge_Bestrahlung>
-							<ST_Ende_Grund>L</ST_Ende_Grund>
+							<ST_Ende_Grund>E</ST_Ende_Grund>
 							<Menge_Nebenwirkung>
 								<ST_Nebenwirkung>
 									<Nebenwirkung_Grad>4</Nebenwirkung_Grad>
