@@ -80,6 +80,10 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+    // WORKAROUND:
+    // the snapshots were approved in this time zone; some mapped values (e.g. identifiers
+    // derived from converted oBDS v2 dates) depend on the JVM default time zone.
+    systemProperty 'user.timezone', 'Europe/Berlin'
 }
 
 jacoco {
