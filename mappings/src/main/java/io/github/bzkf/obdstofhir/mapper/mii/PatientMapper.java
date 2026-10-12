@@ -1,6 +1,5 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
@@ -9,6 +8,7 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
+import java.time.LocalDate;
 import java.util.*;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.*;
@@ -98,7 +98,12 @@ public class PatientMapper extends ObdsToFhirMapper {
       var latestReports =
           deathReports.stream()
               .filter(m -> m.getTod().getSterbedatum() != null)
-              .sorted(Comparator.comparing(m -> m.getTod().getSterbedatum().toGregorianCalendar()))
+              .sorted(
+                  Comparator.comparing(
+                      m -> {
+                        var d = m.getTod().getSterbedatum();
+                        return LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
+                      }))
               .toList();
 
       if (latestReports.isEmpty()) {
@@ -107,9 +112,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       } else {
         var latestReport = latestReports.getLast();
         var deceased =
-            new DateTimeType(
-                latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
-        deceased.setPrecision(TemporalPrecisionEnum.DAY);
+            convertObdsDatumToDateTimeType(latestReport.getTod().getSterbedatum()).orElseThrow();
         patient.setDeceased(deceased);
       }
     }

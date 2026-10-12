@@ -60,7 +60,7 @@
       }, {
         "url": "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing",
         "valueReference": {
-          "reference": "Condition/766a1f2ca35b488b38cf163d0829daa2a16c76b8524b30d97835d3f6802c0f63"
+          "reference": "Condition/71533ac77006d41319b2048e4747885d5f0524acf98686a2739d696cd82029eb"
         }
       } ],
       "identifier": [ {
@@ -395,10 +395,10 @@
       "url": "List/fffa7db2fa769c609d8737737c95653e7e00c273a83f04c92ac93c45115799a9"
     }
   }, {
-    "fullUrl": "Condition/766a1f2ca35b488b38cf163d0829daa2a16c76b8524b30d97835d3f6802c0f63",
+    "fullUrl": "Condition/71533ac77006d41319b2048e4747885d5f0524acf98686a2739d696cd82029eb",
     "resource": {
       "resourceType": "Condition",
-      "id": "766a1f2ca35b488b38cf163d0829daa2a16c76b8524b30d97835d3f6802c0f63",
+      "id": "71533ac77006d41319b2048e4747885d5f0524acf98686a2739d696cd82029eb",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-fruehere-tumorerkrankung" ]
       },
@@ -408,7 +408,7 @@
       } ],
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/fruehere-tumorerkrankung-condition-id",
-        "value": "1055555888-1-C41-01-2021-02-08T00-00-00-000-01-00"
+        "value": "1055555888-1-C41-01-2021-02-08"
       } ],
       "category": [ {
         "coding": [ {
@@ -444,7 +444,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Condition/766a1f2ca35b488b38cf163d0829daa2a16c76b8524b30d97835d3f6802c0f63"
+      "url": "Condition/71533ac77006d41319b2048e4747885d5f0524acf98686a2739d696cd82029eb"
     }
   } ]
 }

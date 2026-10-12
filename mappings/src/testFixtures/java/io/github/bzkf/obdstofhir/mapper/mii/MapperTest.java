@@ -3,7 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
-import java.text.SimpleDateFormat;
+import io.github.bzkf.obds2toobds3.PlainDateModule;
 import java.util.List;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Scrubber;
@@ -28,9 +28,7 @@ public abstract class MapperTest {
     return XmlMapper.builder()
         .defaultUseWrapper(false)
         .addModule(new JakartaXmlBindAnnotationModule())
-        .build()
-        .rebuild()
-        .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+        .addModule(new PlainDateModule())
         .build();
   }
 

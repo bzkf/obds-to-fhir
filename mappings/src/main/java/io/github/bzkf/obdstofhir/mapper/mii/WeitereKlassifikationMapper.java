@@ -6,7 +6,6 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.IdUtils;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
@@ -42,9 +41,9 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
       var identifierBuilder = new StringBuilder();
       identifierBuilder.append(meldungId).append("-").append(klassifikation.getName());
       if (klassifikation.getDatum() != null) {
+        var datum = klassifikation.getDatum().getValue();
         var date =
-            new SimpleDateFormat("yyyy-MM-dd")
-                .format(klassifikation.getDatum().getValue().toGregorianCalendar().getTime());
+            String.format("%04d-%02d-%02d", datum.getYear(), datum.getMonth(), datum.getDay());
         identifierBuilder.append("-").append(date);
       }
 
