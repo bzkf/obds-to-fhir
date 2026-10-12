@@ -1,0 +1,345 @@
+{
+  "resourceType": "Bundle",
+  "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+  "type": "transaction",
+  "entry": [ {
+    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "resource": {
+      "resourceType": "Patient",
+      "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/core/modul-person/StructureDefinition/PatientPseudonymisiert" ]
+      },
+      "identifier": [ {
+        "type": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical record number"
+          }, {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+            "code": "PSEUDED",
+            "display": "pseudonymized"
+          } ]
+        },
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+        "value": "1055555999"
+      } ],
+      "gender": "male",
+      "birthDate": "1900-09-11",
+      "address": [ {
+        "type": "both",
+        "postalCode": "91000",
+        "country": "DE"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
+    }
+  }, {
+    "fullUrl": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
+    "resource": {
+      "resourceType": "Condition",
+      "id": "5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "32",
+            "code": "9222/3"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-histology-morphology-behavior-icdo3",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+            "version": "32",
+            "code": "9111/3"
+          } ]
+        }
+      }, {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime": "2021-02-08"
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
+        "value": "1055555999-2"
+      } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
+        } ]
+      },
+      "code": {
+        "coding": [ {
+          "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
+          "version": "2021",
+          "code": "C41.01"
+        } ]
+      },
+      "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "version": "32",
+          "code": "C41.02"
+        } ],
+        "text": "Mastikatorloge"
+      }, {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
+          "code": "T",
+          "display": "trifft nicht zu"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "385432009",
+          "display": "Not applicable (qualifier value)"
+        } ]
+      } ],
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "recordedDate": "2021-05-20",
+      "evidence": [ {
+        "detail": [ {
+          "reference": "List/266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945"
+        } ]
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f"
+    }
+  }, {
+    "fullUrl": "Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-allgemeiner-leistungszustand-ecog" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/allgemeiner-leistungszustand-ecog-id",
+        "value": "ECOG-KC0000723"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "423740007",
+          "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "89262-0",
+          "display": "ECOG Performance Status [Interpretation]"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f"
+      } ],
+      "effectiveDateTime": "2021-02-08",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-allgemeiner-leistungszustand-ecog",
+          "code": "U",
+          "display": "Unbekannt"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec"
+    }
+  }, {
+    "fullUrl": "Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+        "value": "8617"
+      } ],
+      "accessionIdentifier": {
+        "value": "12105169"
+      },
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "collection": {
+        "collectedDateTime": "2021-02-25"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc"
+    }
+  }, {
+    "fullUrl": "Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
+        "value": "8617-grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f"
+      } ],
+      "effectiveDateTime": "2021-02-25",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "U",
+          "display": "unbekannt"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1"
+    }
+  }, {
+    "fullUrl": "List/266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945",
+    "resource": {
+      "resourceType": "List",
+      "id": "266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-liste-evidenz-erstdiagnose" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/erstdiagnose-evidenz-list-id",
+        "value": "1055555999-2"
+      } ],
+      "status": "current",
+      "mode": "snapshot",
+      "title": "Liste der Evidenz zum Erstdiagnosezeitpunkt",
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "entry": [ {
+        "item": {
+          "reference": "Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1"
+        }
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "List/266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945"
+    }
+  } ]
+}
