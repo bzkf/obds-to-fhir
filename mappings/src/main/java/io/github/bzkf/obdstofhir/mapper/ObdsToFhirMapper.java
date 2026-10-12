@@ -10,6 +10,7 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.*;
 import java.util.regex.Pattern;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -154,9 +155,20 @@ public abstract class ObdsToFhirMapper {
       return Optional.empty();
     }
 
-    var dateType = new DateType(dateTimeType.get().getValue());
-    dateType.setPrecision(dateTimeType.get().getPrecision());
+    // go through the string representation to avoid a time zone dependent Date round trip
+    var dateType = new DateType(dateTimeType.get().getValueAsString());
     return Optional.of(dateType);
+  }
+
+  /**
+   * Creates a DateTimeType from the calendar date (year, month, day) of the given value. oBDS dates
+   * are plain calendar dates, converting them through an instant would make the result depend on
+   * the JVM's default time zone.
+   */
+  private static DateTimeType toDateTimeType(XMLGregorianCalendar calendar) {
+    var month = calendar.getMonth() == DatatypeConstants.FIELD_UNDEFINED ? 1 : calendar.getMonth();
+    var day = calendar.getDay() == DatatypeConstants.FIELD_UNDEFINED ? 1 : calendar.getDay();
+    return new DateTimeType(String.format("%04d-%02d-%02d", calendar.getYear(), month, day));
   }
 
   public static Optional<DateTimeType> convertObdsDatumToDateTimeType(
@@ -165,7 +177,7 @@ public abstract class ObdsToFhirMapper {
       return Optional.empty();
     }
 
-    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var date = toDateTimeType(obdsDatum.getValue());
 
     // see the code for obdsDatum.getDatumsgenauigkeit(), the default value is 'E'
     // (exakt)
@@ -191,7 +203,7 @@ public abstract class ObdsToFhirMapper {
       return Optional.empty();
     }
 
-    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var date = toDateTimeType(obdsDatum.getValue());
 
     if (obdsDatum.getDatumsgenauigkeit() == null) {
       log.warn("Datumsgenauigkeit is unset. Assuming 'Day' precision.");
@@ -221,7 +233,7 @@ public abstract class ObdsToFhirMapper {
       return Optional.empty();
     }
 
-    var date = new DateTimeType(obdsDatum.getValue().toGregorianCalendar().getTime());
+    var date = toDateTimeType(obdsDatum.getValue());
 
     if (obdsDatum.getDatumsgenauigkeit() == null) {
       log.warn("Datumsgenauigkeit is unset. Assuming 'Day' precision.");
@@ -260,7 +272,7 @@ public abstract class ObdsToFhirMapper {
     if (null == obdsDatum) {
       return Optional.empty();
     }
-    var date = new DateTimeType(obdsDatum.toGregorianCalendar().getTime());
+    var date = toDateTimeType(obdsDatum);
     date.setPrecision(TemporalPrecisionEnum.DAY);
     return Optional.of(date);
   }

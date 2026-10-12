@@ -1,6 +1,5 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
@@ -65,9 +64,8 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     if (modulAllgemein.getStudienteilnahme().getDatum() != null) {
       // Effective Date
       var date =
-          new DateTimeType(
-              modulAllgemein.getStudienteilnahme().getDatum().toGregorianCalendar().getTime());
-      date.setPrecision(TemporalPrecisionEnum.DAY);
+          convertObdsDatumToDateTimeType(modulAllgemein.getStudienteilnahme().getDatum())
+              .orElseThrow();
       observation.setEffective(date);
 
       // always yes, if the date is set
