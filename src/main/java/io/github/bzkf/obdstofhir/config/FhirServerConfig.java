@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
     havingValue = "FHIR_SERVER_LOOKUP")
 @Validated
 public record FhirServerConfig(@NotNull URL baseUrl, Auth auth) {
-  public record Auth(BasicAuth basic, OAuth2 oauth2) {}
+  public record Auth(BasicAuth basic, OAuth2 oauth2, BearerTokenAuth bearerToken) {}
 
   public record BasicAuth(boolean enabled, String username, String password) {}
 
@@ -23,4 +23,6 @@ public record FhirServerConfig(@NotNull URL baseUrl, Auth auth) {
       String clientId,
       String clientSecret,
       @Nullable String scope) {}
+
+  public record BearerTokenAuth(boolean enabled, String token) {}
 }
