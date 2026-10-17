@@ -83,7 +83,8 @@
     } ],
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-      "code": "6.10"
+      "code": "6.10",
+      "display": "Schulter (r, l)"
     } ]
   } ],
   "usedCode": [ {

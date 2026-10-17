@@ -74,7 +74,8 @@
     } ],
     "coding": [ {
       "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-      "code": "6.16"
+      "code": "6.16",
+      "display": "Oberschenkel (r, l)"
     } ]
   } ]
 }

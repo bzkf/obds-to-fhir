@@ -20,6 +20,7 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ConditionMapper extends ObdsToFhirMapper {
@@ -108,15 +109,21 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
-    var icd =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getIcd10gm())
-            .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
+    var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();
+    var code =
+        new CodeableConcept()
+            .setCoding(mapTumorIcdToCodings(primaertumorIcd, "Primaertumor_ICD_Version", LOG));
 
-    var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
-    icd.setVersionElement(extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG));
+    if (meldung.getDiagnose() != null
+        && StringUtils.hasText(meldung.getDiagnose().getPrimaertumorDiagnosetext())) {
+      code.setText(meldung.getDiagnose().getPrimaertumorDiagnosetext());
+    } else if (extractIcdCatalog(primaertumorIcd.getVersion()).orElse(Icd10Catalog.GM)
+        == Icd10Catalog.OTHER) {
+      // no system can be asserted for "Sonstige", so keep the code as free text
+      code.setText(primaertumorIcd.getCode());
+    }
 
-    condition.setCode(new CodeableConcept(icd));
+    condition.setCode(code);
 
     if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
       var distinctMorphologyCodes =

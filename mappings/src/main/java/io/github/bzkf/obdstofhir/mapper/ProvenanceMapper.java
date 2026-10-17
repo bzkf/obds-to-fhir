@@ -55,7 +55,10 @@ public class ProvenanceMapper extends ObdsToFhirMapper {
                     "Assembler")))
         .addRole(
             new CodeableConcept(
-                new Coding(fhirProperties.getSystems().getV3ParticipationType(), "AUT", "author")))
+                new Coding(
+                    fhirProperties.getSystems().getV3ParticipationType(),
+                    "AUT",
+                    "author (originator)")))
         .setWho(
             new Reference()
                 .setIdentifier(deviceIdentifier)

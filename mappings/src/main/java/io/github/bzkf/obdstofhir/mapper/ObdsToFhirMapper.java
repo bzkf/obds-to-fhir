@@ -5,6 +5,7 @@ import com.github.slugify.Slugify;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
+import de.basisdatensatz.obds.v3.TumorICDTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -24,12 +26,36 @@ public abstract class ObdsToFhirMapper {
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
   private static final Logger log = LoggerFactory.getLogger(ObdsToFhirMapper.class);
 
-  /** Matches oBDS ICD-10 version strings, e.g. {@code "10 2023 GM"}, capturing the year. */
+  /**
+   * Matches oBDS ICD-10 version strings, e.g. {@code "10 2023 GM"}, capturing the year and the
+   * catalog.
+   */
   protected static final Pattern ICD_VERSION_PATTERN =
-      Pattern.compile("^(10 (?<versionYear>20\\d{2}) ((GM)|(WHO))|Sonstige)$");
+      Pattern.compile("^(10 (?<versionYear>20\\d{2}) (?<catalog>GM|WHO)|Sonstige)$");
+
+  /** The ICD-10 catalog named by an oBDS {@code *_ICD_Version}. */
+  public enum Icd10Catalog {
+    GM,
+    WHO,
+    /** {@code Sonstige}: the source states that neither GM nor WHO was used. */
+    OTHER
+  }
 
   protected ObdsToFhirMapper(final FhirProperties fhirProperties) {
     this.fhirProperties = fhirProperties;
+  }
+
+  /**
+   * Builds an {@code Observation.category} concept from the HL7 observation-category code system.
+   *
+   * @param category the category to code, e.g. {@link ObservationCategory#LABORATORY}
+   */
+  protected CodeableConcept observationCategory(ObservationCategory category) {
+    return new CodeableConcept(
+        new Coding(
+            fhirProperties.getSystems().getObservationCategory(),
+            category.toCode(),
+            category.getDisplay()));
   }
 
   /**
@@ -60,6 +86,62 @@ public abstract class ObdsToFhirMapper {
     var versionElement = new StringType();
     versionElement.addExtension(DataAbsentReason.unknown());
     return versionElement;
+  }
+
+  /**
+   * Extracts the catalog from an oBDS ICD-10 version string (see {@link #ICD_VERSION_PATTERN}).
+   *
+   * @param icdVersion the raw ICD version string, e.g. from {@code *_ICD_Version}
+   * @return empty if the version is unset or doesn't match the expected format
+   */
+  protected static Optional<Icd10Catalog> extractIcdCatalog(String icdVersion) {
+    if (!StringUtils.hasText(icdVersion)) {
+      return Optional.empty();
+    }
+
+    var matcher = ICD_VERSION_PATTERN.matcher(icdVersion);
+    if (!matcher.matches()) {
+      return Optional.empty();
+    }
+
+    var catalog = matcher.group("catalog");
+    // the pattern matched without the catalog group, so the version is "Sonstige"
+    if (catalog == null) {
+      return Optional.of(Icd10Catalog.OTHER);
+    }
+    return Optional.of(Icd10Catalog.valueOf(catalog));
+  }
+
+  /**
+   * Maps a tumor ICD to the codings used by the primary and previous-tumor profiles. WHO retains
+   * its own coding alongside the required, explicitly absent GM slice. An unset or unparsable
+   * catalog retains the existing GM fallback policy. Text and profile-specific requirements remain
+   * the caller's responsibility.
+   */
+  protected List<Coding> mapTumorIcdToCodings(
+      TumorICDTyp tumorIcd, String fieldName, Logger mapperLog) {
+    var versionYear = extractIcdVersionYear(tumorIcd.getVersion(), fieldName, mapperLog);
+    var catalog = extractIcdCatalog(tumorIcd.getVersion()).orElse(Icd10Catalog.GM);
+    var gm = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
+    if (catalog == Icd10Catalog.GM) {
+      gm.setCode(tumorIcd.getCode());
+      gm.setVersionElement(versionYear);
+    } else {
+      gm.getCodeElement().addExtension(DataAbsentReason.notApplicable());
+      var absentVersion = new StringType();
+      absentVersion.addExtension(DataAbsentReason.notApplicable());
+      gm.setVersionElement(absentVersion);
+    }
+    var codings = new ArrayList<Coding>();
+    codings.add(gm);
+    if (catalog == Icd10Catalog.WHO) {
+      codings.add(
+          new Coding()
+              .setSystem(fhirProperties.getSystems().getIcd10who())
+              .setCode(tumorIcd.getCode())
+              .setVersionElement(versionYear));
+    }
+    return codings;
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(
@@ -202,6 +284,7 @@ public abstract class ObdsToFhirMapper {
     if (resourceType == ResourceType.Patient && !StringUtils.hasText(reference.getReference())) {
       Objects.requireNonNull(reference.getIdentifier());
       Validate.isTrue(StringUtils.hasText(reference.getIdentifier().getValue()));
+      return;
     }
 
     Validate.isTrue(

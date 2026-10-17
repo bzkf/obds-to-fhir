@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,9 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
       // Meta
       observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoHistologieIcdo3());
+
+      // Category
+      observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
       var identifierValue = histologie.getHistologieID();
       if (!StringUtils.hasText(identifierValue)) {

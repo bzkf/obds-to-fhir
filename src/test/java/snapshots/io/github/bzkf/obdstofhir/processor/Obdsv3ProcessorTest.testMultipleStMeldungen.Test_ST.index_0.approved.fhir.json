@@ -285,8 +285,9 @@
           }
         } ],
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "3.1.+"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+          "code": "3.1.+",
+          "display": "Mamma als Ganzbrust mit Lk"
         } ]
       } ]
     },

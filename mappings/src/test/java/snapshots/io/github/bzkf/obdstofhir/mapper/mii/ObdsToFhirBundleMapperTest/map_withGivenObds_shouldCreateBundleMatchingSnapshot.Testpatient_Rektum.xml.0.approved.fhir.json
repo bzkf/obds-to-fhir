@@ -78,7 +78,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C20"
-        } ]
+        } ],
+        "text": "Rektum-Ca"
       },
       "bodySite": [ {
         "coding": [ {
@@ -475,6 +476,13 @@
         "value": "259-ICDO3-8140-3"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1567,8 +1575,9 @@
           }
         } ],
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "5.1.+"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+          "code": "5.1.+",
+          "display": "Rektum mit Lk"
         } ]
       } ]
     },
@@ -1706,6 +1715,13 @@
         "value": "ECOG-DIA_50101"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",

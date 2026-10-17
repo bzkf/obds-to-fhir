@@ -10,6 +10,8 @@
   }, {
     "reference": "Observation/1b8cbcab8427f3d4b77c4814ec9e7aa065916dc5734f77115fccbf4cdcd44a2b"
   }, {
+    "reference": "Observation/fd7cd2158c1dab8d6cc9c128b00ebf6476374be5c5c8596b00c41ff340ae8829"
+  }, {
     "reference": "Specimen/dbaa556b11c59ff24efb94a652a9574e63de84b972e2caa8bf60b3d8e4ada2fb"
   }, {
     "reference": "Observation/3622dbc23fd755d9693f6150efda2e131269310dc495105d4568bfd4caf80b3c"
@@ -63,7 +65,7 @@
       "coding": [ {
         "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
         "code": "AUT",
-        "display": "author"
+        "display": "author (originator)"
       } ]
     } ],
     "who": {

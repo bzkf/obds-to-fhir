@@ -37,7 +37,8 @@
       "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
       "version": "2020",
       "code": "C50.9"
-    } ]
+    } ],
+    "text": "Mamma-Ca"
   },
   "bodySite": [ {
     "coding": [ {

@@ -83,7 +83,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C61"
-        } ]
+        } ],
+        "text": "Prostatakarzinom"
       },
       "bodySite": [ {
         "coding": [ {
@@ -253,7 +254,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "5.4"
+          "code": "5.4",
+          "display": "Prostata"
         } ]
       } ]
     },
@@ -326,7 +328,8 @@
         } ],
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "9.10"
+          "code": "9.10",
+          "display": "Beckenlymphabfluss (r, l) (Iliakal commun, extern, intern, obturatorisch, präsakral)"
         } ]
       } ]
     },
@@ -850,6 +853,13 @@
         "value": "274-ICDO3-8140-3"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1499,6 +1509,13 @@
         "value": "OP_80105-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1521,7 +1538,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 8
           } ],
           "system": "http://snomed.info/sct",
@@ -1561,6 +1578,13 @@
         "value": "OP_80105-modul-prostata-primary-gleason-pattern"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1583,7 +1607,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1618,6 +1642,13 @@
         "value": "OP_80105-modul-prostata-secondary-gleason-pattern"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1640,7 +1671,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -1698,7 +1729,7 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-verlauf-gesamtbeurteilung",
           "code": "V",
-          "display": "Vollremission"
+          "display": "Vollremission (complete remission, CR)"
         } ]
       },
       "component": [ {
@@ -1768,6 +1799,13 @@
         "value": "ECOG-VER_80107"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1822,6 +1860,13 @@
         "value": "VER_80107-modul-prostata-psa"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1939,6 +1984,13 @@
         "value": "ECOG-DIA_80106"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -2316,6 +2368,13 @@
         "value": "DIA_80106-modul-prostata-psa"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2359,6 +2418,13 @@
         "value": "DIA_80106-modul-prostata-anzahl-stanzen"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2397,6 +2463,13 @@
         "value": "DIA_80106-modul-prostata-anzahl-positive-stanzen"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2435,6 +2508,13 @@
         "value": "DIA_80106-modul-prostata-ca-befall-stanze"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2478,6 +2558,13 @@
         "value": "DIA_80106-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -2500,7 +2587,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
@@ -2540,6 +2627,13 @@
         "value": "DIA_80106-modul-prostata-primary-gleason-pattern"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -2562,7 +2656,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
@@ -2597,6 +2691,13 @@
         "value": "DIA_80106-modul-prostata-secondary-gleason-pattern"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -2619,7 +2720,7 @@
       "valueCodeableConcept": {
         "coding": [ {
           "extension": [ {
-            "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+            "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
             "valueDecimal": 3
           } ],
           "system": "http://snomed.info/sct",

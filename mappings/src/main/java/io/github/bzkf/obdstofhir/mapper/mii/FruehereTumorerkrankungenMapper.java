@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Identifier;
@@ -82,17 +81,17 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
                 .setCode("394593009")
                 .setDisplay("Medical oncology (qualifier value)")));
 
-    var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
-
     if (fruehereTumorerkrankung.getICD() != null
         && StringUtils.hasText(fruehereTumorerkrankung.getICD().getCode())) {
-      icd.setCode(fruehereTumorerkrankung.getICD().getCode());
-      var icd10Version = fruehereTumorerkrankung.getICD().getVersion();
-      icd.setVersionElement(
-          extractIcdVersionYear(icd10Version, "Fruehere_Tumorerkrankung ICD_Version", LOG));
-      // Condition.code.text always has to be set, either to the ICD code or to the free text (see
-      // below)
-      condition.setCode(new CodeableConcept(icd).setText(icd.getCode()));
+      // Condition.code.text retains the ICD code unless free text overrides it below.
+      condition.setCode(
+          new CodeableConcept()
+              .setCoding(
+                  mapTumorIcdToCodings(
+                      fruehereTumorerkrankung.getICD(),
+                      "Fruehere_Tumorerkrankung ICD_Version",
+                      LOG))
+              .setText(fruehereTumorerkrankung.getICD().getCode()));
     }
 
     if (StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {

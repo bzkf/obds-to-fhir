@@ -84,7 +84,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C50.4"
-        } ]
+        } ],
+        "text": "Mammakarzinom re."
       },
       "bodySite": [ {
         "coding": [ {
@@ -436,6 +437,13 @@
         "value": "262-ICDO3-8500-3"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1305,6 +1313,13 @@
         "value": "263-ICDO3-8500-3"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2468,6 +2483,13 @@
         "value": "ECOG-VER_60102"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -2552,6 +2574,13 @@
         "value": "260-ICDO3-8500-3"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -3250,8 +3279,9 @@
           }
         } ],
         "coding": [ {
-          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-          "code": "3.1.+"
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+          "code": "3.1.+",
+          "display": "Mamma als Ganzbrust mit Lk"
         } ]
       } ]
     },
@@ -3408,6 +3438,13 @@
         "value": "ECOG-DIA_60103"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
