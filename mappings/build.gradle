@@ -43,7 +43,7 @@ dependencies {
     implementation 'io.github.diz-uker:fhir-ig-constants:0.2.9'
 
     // the lib also includes the oBDS model classes
-    api 'io.github.bzkf:obds2-to-obds3:0.1.22'
+    api 'io.github.bzkf:obds2-to-obds3:0.1.24'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.10.0'
     api 'io.github.diz-uker:to-fhir:0.2.9'
     api 'org.slf4j:slf4j-api:2.0.18'

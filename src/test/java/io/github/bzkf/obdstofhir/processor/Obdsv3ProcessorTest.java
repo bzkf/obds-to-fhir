@@ -191,6 +191,7 @@ class Obdsv3ProcessorTest extends MapperTest {
         "008_Pat3_Tumor1_Behandlungsende_SYST.xml",
         "009_Pat1_Tumor1_Statusaenderung_Fernmeta_3x-überschreibt2xFernMetaausDIAGNOSE.xml",
         "010_Pat2_Tumor1_Tod.xml",
+        "011_Pat3_Tumor1_Behandlungsende_SYST_empty_nebenwirkung.xml",
         "adt/Testpatient_ADT_Diagnose.xml",
         "diagnosis_set.xml",
         "diagnosis_unset.xml"
