@@ -204,7 +204,7 @@ class Obdsv3ProcessorTest extends MapperTest {
             StandardCharsets.UTF_8);
 
     var obds = obdsV2ToV3Mapper.map(deserializer.deserializeAsObdsOrAdt(xml).getAdt());
-    var bundles = bundleMapper.map(obds);
+    var bundles = bundleMapper.map(obds).stream().map(BundleMapperResult::bundle).toList();
 
     verifyAll(bundles, sourceFile.replace('/', '_'));
   }

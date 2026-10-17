@@ -4,6 +4,7 @@ import ca.uhn.fhir.context.FhirContext;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.config.ProcessFromDirectoryConfig;
+import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -33,6 +35,9 @@ import org.springframework.stereotype.Service;
 public class ProcessFromDirectory {
   private static final Logger LOG = LoggerFactory.getLogger(ProcessFromDirectory.class);
   private static final FhirContext fhirContext = FhirContext.forR4();
+
+  @Value("${fhir.mappings.create-provenance-resources.topic:fhir.obds.provenance}")
+  private String provenanceTopic;
 
   private ProcessFromDirectoryConfig config;
   private KafkaTemplate<String, IBaseResource> kafkaTemplate;
@@ -87,15 +92,21 @@ public class ProcessFromDirectory {
           continue;
         }
 
-        final var bundles = mapper.map(obds);
-        for (var bundle : bundles) {
+        final var results = mapper.map(obds);
+        for (BundleMapperResult result : results) {
+          var bundle = result.bundle();
           LOG.info("Created FHIR bundle {}", bundle.getId());
 
           if (config.outputToKafka().enabled()) {
             try {
-              var future =
-                  kafkaTemplate.send(config.outputToKafka().topic(), bundle.getId(), bundle);
-              future.get(60, TimeUnit.SECONDS);
+              kafkaTemplate
+                  .send(config.outputToKafka().topic(), bundle.getId(), bundle)
+                  .get(60, TimeUnit.SECONDS);
+              for (var provenance : result.provenances()) {
+                kafkaTemplate
+                    .send(provenanceTopic, provenance.getId(), provenance)
+                    .get(60, TimeUnit.SECONDS);
+              }
             } catch (ExecutionException e) {
               LOG.error("Sending message to Kafka failed", e);
             } catch (TimeoutException e) {

@@ -68,7 +68,7 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
     final var bundles = sut.map(obds);
     assertThat(bundles).hasSize(1);
 
-    var bundle = bundles.getFirst();
+    var bundle = bundles.getFirst().bundle();
 
     // Patient resource should be present in the bundle even though existsOnServer=true
     var patientEntries =
