@@ -15,7 +15,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +63,7 @@ public class ProcessFromDirectory {
     LOG.info("Processing oBDS files in folder {}", config.path());
 
     try (var stream = Files.list(Paths.get(config.path()))) {
-      var files =
-          stream.filter(file -> !Files.isDirectory(file)).sorted().collect(Collectors.toSet());
+      var files = stream.filter(file -> !Files.isDirectory(file)).sorted().toList();
 
       for (var file : files) {
         MDC.put("fileName", file.getFileName().toString());
