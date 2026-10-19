@@ -542,15 +542,37 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     }
 
     if (zielgebiet.getCodeVersion2014() != null) {
-      return Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet2014.fromValueOrThrow(
-              zielgebiet.getCodeVersion2014())
-          .coding();
+      var coding =
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet2014.fromValue(
+              zielgebiet.getCodeVersion2014());
+      if (coding.isPresent()) {
+        return coding.get().coding();
+      } else {
+        LOG.warn(
+            "Unknown Zielgebiet Version 2014: {}. "
+                + "Setting the code nonetheless - FHIR validation will fail.",
+            zielgebiet.getCodeVersion2014());
+        return new Coding()
+            .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet2014())
+            .setCode(zielgebiet.getCodeVersion2014());
+      }
     }
 
     if (zielgebiet.getCodeVersion2021() != null) {
-      return Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet.fromValueOrThrow(
-              zielgebiet.getCodeVersion2021())
-          .coding();
+      var coding =
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet.fromValue(
+              zielgebiet.getCodeVersion2021());
+      if (coding.isPresent()) {
+        return coding.get().coding();
+      } else {
+        LOG.warn(
+            "Unknown Zielgebiet Version 2021: {}. "
+                + "Setting the code nonetheless - FHIR validation will fail.",
+            zielgebiet.getCodeVersion2021());
+        return new Coding()
+            .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet())
+            .setCode(zielgebiet.getCodeVersion2021());
+      }
     }
 
     return null;
