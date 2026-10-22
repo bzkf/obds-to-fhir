@@ -77,8 +77,8 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                       fhirProperties
                           .getCodings()
                           .snomed()
-                          .setCode("277062004")
-                          .setDisplay("Status des Residualtumors")))
+                          .setCode("445200009")
+                          .setDisplay("Status of residual neoplasm (observable entity)")))
               .setValue(new CodeableConcept(tumorstatusPrimaertumor.coding())));
     }
 
@@ -97,7 +97,7 @@ public class VerlaufObservationMapper extends ObdsToFhirMapper {
                           .snomed()
                           .setCode("399656008")
                           .setDisplay(
-                              "Status of tumor metastasis to regional lymph nodes (observable entity)")))
+                              "Presence of metastatic neoplasm in regional lymph node (observable entity)")))
               .setValue(new CodeableConcept(tumorstatusLymphknoten.coding())));
     }
 
