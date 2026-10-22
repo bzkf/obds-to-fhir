@@ -37,7 +37,6 @@
   "bodySite": [ {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
-      "version": "33",
       "code": "C50.9"
     } ]
   } ],

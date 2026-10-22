@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -85,11 +86,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       if (substanz.getATC() != null && StringUtils.hasText(substanz.getATC().getCode())) {
         substanzId = substanz.getATC().getCode();
         atcCode =
-            fhirProperties
-                .getCodings()
-                .atc()
-                .setCode(substanz.getATC().getCode())
-                .setVersion(substanz.getATC().getVersion())
+            createAtcCoding(substanz.getATC().getCode(), substanz.getATC().getVersion())
                 .setUserSelected(true);
       } else {
         // previously, we overwrote substanzId with the ATC code if it was present in
@@ -104,8 +101,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
         var mappedCode = substanzToAtcMapper.getCode(substanz.getBezeichnung());
         if (mappedCode.isPresent()) {
-          atcCode =
-              fhirProperties.getCodings().atc().setCode(mappedCode.get()).setUserSelected(false);
+          atcCode = createAtcCoding(mappedCode.get(), null).setUserSelected(false);
         } else {
           LOG.warn(
               "Substanz in Systemische Therapie with Bezeichnung '{}' could not be mapped to an ATC code.",
@@ -195,6 +191,13 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
     MDC.remove("SYST_ID");
 
     return result;
+  }
+
+  private Coding createAtcCoding(String code, @Nullable String version) {
+    // only use the ATC version from the oBDS message, never the configured default one
+    var coding = fhirProperties.getCodings().atc().setCode(code);
+    coding.setVersion(StringUtils.hasText(version) ? version : null);
+    return coding;
   }
 
   private static Collection<MengeSubstanz.Substanz> getDistinctSubstanzen(
