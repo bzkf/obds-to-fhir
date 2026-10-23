@@ -98,9 +98,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
       }
 
       for (var morphologieCode : distinctMorphologyCodes) {
-        var morphologie =
-            new CodeableConcept(
-                icdo3Coding(morphologieCode.getCode(), morphologieCode.getVersion()));
+        var morphologie = new CodeableConcept(icdo3Coding(morphologieCode.getCode()));
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
         condition.addExtension(
@@ -110,10 +108,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
       if (tumorzuordnung.getMorphologieICDO() != null
           && tumorzuordnung.getMorphologieICDO().getCode() != null) {
         var morphologie =
-            new CodeableConcept(
-                icdo3Coding(
-                    tumorzuordnung.getMorphologieICDO().getCode(),
-                    tumorzuordnung.getMorphologieICDO().getVersion()));
+            new CodeableConcept(icdo3Coding(tumorzuordnung.getMorphologieICDO().getCode()));
 
         condition.addExtension(
             Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(morphologie));
@@ -126,10 +121,9 @@ public class ConditionMapper extends ObdsToFhirMapper {
       var diagnoseMeldung = meldung.getDiagnose();
 
       if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
-        var topographieIcdo = diagnoseMeldung.getPrimaertumorTopographieICDO();
         condition.addBodySite(
             new CodeableConcept(
-                icdo3Coding(topographieIcdo.getCode(), topographieIcdo.getVersion())));
+                icdo3Coding(diagnoseMeldung.getPrimaertumorTopographieICDO().getCode())));
       }
 
       if (diagnoseMeldung.getPrimaertumorTopographieFreitext() != null) {
@@ -194,11 +188,10 @@ public class ConditionMapper extends ObdsToFhirMapper {
         .setValue(slugifier.slugify(patientId + "-" + tumorzuordnung.getTumorID()));
   }
 
-  private Coding icdo3Coding(String code, String version) {
-    var coding =
-        new Coding().setSystem(fhirProperties.getSystems().getIcdo3Morphologie()).setCode(code);
-    extractIcdo3VersionYear(version).ifPresent(coding::setVersion);
-    return coding;
+  private Coding icdo3Coding(String code) {
+    // no version: the oBDS ICD-O version ("31", "32", "33", "bb") is not a version of the
+    // terminology.hl7.org ICD-O-3 CodeSystem, which has the fixed version 2.0.1
+    return new Coding().setSystem(fhirProperties.getSystems().getIcdo3Morphologie()).setCode(code);
   }
 
   private Collection<MorphologieICDOTyp> getDistinctMorphologies(
