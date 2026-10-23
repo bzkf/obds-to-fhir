@@ -589,8 +589,8 @@
           "coding": [ {
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-            "code": "277062004",
-            "display": "Status des Residualtumors"
+            "code": "445200009",
+            "display": "Status of residual neoplasm (observable entity)"
           } ]
         },
         "valueCodeableConcept": {
@@ -606,7 +606,7 @@
             "system": "http://snomed.info/sct",
             "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "399656008",
-            "display": "Status of tumor metastasis to regional lymph nodes (observable entity)"
+            "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
           } ]
         },
         "valueCodeableConcept": {

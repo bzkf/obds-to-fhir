@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -38,7 +38,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
     "resource": {
       "resourceType": "Condition",
       "id": "f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -58,6 +58,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1055555999-1"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -94,7 +102,7 @@
       "url": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a"
     }
   }, {
-    "fullUrl": "Observation/8aa078bc593b15a597857aa23182c104c11e0c7eee2b1b0cd67a262fac5617bf",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/8aa078bc593b15a597857aa23182c104c11e0c7eee2b1b0cd67a262fac5617bf",
     "resource": {
       "resourceType": "Observation",
       "id": "8aa078bc593b15a597857aa23182c104c11e0c7eee2b1b0cd67a262fac5617bf",
@@ -109,7 +117,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -143,7 +151,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "445200009",
             "display": "Status of residual neoplasm (observable entity)"
           } ]
@@ -159,7 +167,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "399656008",
             "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
           } ]
@@ -175,7 +183,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "399608002",
             "display": "Status of distant metastasis (observable entity)"
           } ]
@@ -194,7 +202,7 @@
       "url": "Observation/8aa078bc593b15a597857aa23182c104c11e0c7eee2b1b0cd67a262fac5617bf"
     }
   }, {
-    "fullUrl": "Observation/644fdd545f5c229b62a82deec1bf9c96da2816eb615f3c41d769f971dbbc8ff4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/644fdd545f5c229b62a82deec1bf9c96da2816eb615f3c41d769f971dbbc8ff4",
     "resource": {
       "resourceType": "Observation",
       "id": "644fdd545f5c229b62a82deec1bf9c96da2816eb615f3c41d769f971dbbc8ff4",
@@ -209,7 +217,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "385421009",
           "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
@@ -245,7 +253,7 @@
       "url": "Observation/644fdd545f5c229b62a82deec1bf9c96da2816eb615f3c41d769f971dbbc8ff4"
     }
   }, {
-    "fullUrl": "Observation/2937536a10f9b171e0c0d04d96f6121a35254ae72255a2095c6288c44f2b58c5",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/2937536a10f9b171e0c0d04d96f6121a35254ae72255a2095c6288c44f2b58c5",
     "resource": {
       "resourceType": "Observation",
       "id": "2937536a10f9b171e0c0d04d96f6121a35254ae72255a2095c6288c44f2b58c5",
@@ -260,7 +268,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "385421009",
           "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
@@ -296,7 +304,7 @@
       "url": "Observation/2937536a10f9b171e0c0d04d96f6121a35254ae72255a2095c6288c44f2b58c5"
     }
   }, {
-    "fullUrl": "Observation/37c200a47f6139d0a877e3132b0fc6bfacc6d5f0f34c31a6c878fce1cded0cdf",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/37c200a47f6139d0a877e3132b0fc6bfacc6d5f0f34c31a6c878fce1cded0cdf",
     "resource": {
       "resourceType": "Observation",
       "id": "37c200a47f6139d0a877e3132b0fc6bfacc6d5f0f34c31a6c878fce1cded0cdf",
@@ -311,7 +319,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "385421009",
           "display": "Anatomic location of metastatic spread of malignant neoplasm (observable entity)"
         } ]
@@ -347,7 +355,7 @@
       "url": "Observation/37c200a47f6139d0a877e3132b0fc6bfacc6d5f0f34c31a6c878fce1cded0cdf"
     }
   }, {
-    "fullUrl": "Observation/49904c3e68023522244e59328ef17aa2110972e0ffc73322197a56f1724dc09e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/49904c3e68023522244e59328ef17aa2110972e0ffc73322197a56f1724dc09e",
     "resource": {
       "resourceType": "Observation",
       "id": "49904c3e68023522244e59328ef17aa2110972e0ffc73322197a56f1724dc09e",
@@ -369,7 +377,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -410,7 +418,7 @@
       "url": "Observation/49904c3e68023522244e59328ef17aa2110972e0ffc73322197a56f1724dc09e"
     }
   }, {
-    "fullUrl": "Observation/3c409b31f25c81e0c4f076c4ca9ad3b837eb48db1cc78a43779045de082247f2",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/3c409b31f25c81e0c4f076c4ca9ad3b837eb48db1cc78a43779045de082247f2",
     "resource": {
       "resourceType": "Observation",
       "id": "3c409b31f25c81e0c4f076c4ca9ad3b837eb48db1cc78a43779045de082247f2",
@@ -425,7 +433,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "709491003",
           "display": "Enrollment in clinical trial (procedure)"
         } ]
@@ -460,7 +468,7 @@
       "url": "Observation/3c409b31f25c81e0c4f076c4ca9ad3b837eb48db1cc78a43779045de082247f2"
     }
   }, {
-    "fullUrl": "Observation/0f7247ef9cc0da34adeaa94512fbd4cc9bd69ecc0da0798d9a862d12476a64a4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/0f7247ef9cc0da34adeaa94512fbd4cc9bd69ecc0da0798d9a862d12476a64a4",
     "resource": {
       "resourceType": "Observation",
       "id": "0f7247ef9cc0da34adeaa94512fbd4cc9bd69ecc0da0798d9a862d12476a64a4",
