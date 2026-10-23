@@ -196,7 +196,14 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
   private Coding createAtcCoding(String code, @Nullable String version) {
     // only use the ATC version from the oBDS message, never the configured default one
     var coding = fhirProperties.getCodings().atc().setCode(code);
-    coding.setVersion(StringUtils.hasText(version) ? version : null);
+    if (StringUtils.hasText(version)) {
+      coding.setVersion(version);
+    } else {
+      // the Medication profile requires Medication.code.coding:atcClassDe.version (1..1)
+      var absentVersion = new StringType();
+      absentVersion.addExtension(DataAbsentReason.unknown());
+      coding.setVersionElement(absentVersion);
+    }
     return coding;
   }
 
