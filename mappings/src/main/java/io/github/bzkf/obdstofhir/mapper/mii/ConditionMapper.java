@@ -60,6 +60,14 @@ public class ConditionMapper extends ObdsToFhirMapper {
     condition.setSubject(patient);
     condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoDiagnosePrimaertumor());
 
+    condition.addCategory(
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("55342001")
+                .setDisplay("Neoplastic disease")));
+
     var tumorzuordnung = meldung.getTumorzuordnung();
 
     var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();
@@ -91,7 +99,6 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
       for (var morphologieCode : distinctMorphologyCodes) {
         var morphologie = new CodeableConcept(icdo3Coding(morphologieCode.getCode()));
-
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
         condition.addExtension(
@@ -183,7 +190,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
   private Coding icdo3Coding(String code) {
     // no version: the oBDS ICD-O version ("31", "32", "33", "bb") is not a version of the
-    // terminology.hl7.org ICD-O-3 CodeSystem
+    // terminology.hl7.org ICD-O-3 CodeSystem, which has the fixed version 2.0.1
     return new Coding().setSystem(fhirProperties.getSystems().getIcdo3Morphologie()).setCode(code);
   }
 

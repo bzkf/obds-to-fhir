@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -39,7 +39,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
     "resource": {
       "resourceType": "Condition",
       "id": "f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
@@ -47,7 +47,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -59,6 +59,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1055555999-1"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -95,7 +103,7 @@
       "url": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a"
     }
   }, {
-    "fullUrl": "Observation/73359e3287f6d425b3e72b0d96791bab0ecbc8c3a5e84bb2ed6aeb0c58784012",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/73359e3287f6d425b3e72b0d96791bab0ecbc8c3a5e84bb2ed6aeb0c58784012",
     "resource": {
       "resourceType": "Observation",
       "id": "73359e3287f6d425b3e72b0d96791bab0ecbc8c3a5e84bb2ed6aeb0c58784012",
@@ -110,7 +118,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -146,7 +154,7 @@
       "url": "Observation/73359e3287f6d425b3e72b0d96791bab0ecbc8c3a5e84bb2ed6aeb0c58784012"
     }
   }, {
-    "fullUrl": "Observation/daaa3105cec76f6ae33e571e859b11fa2196a6cb7659d827d101f92d9a151040",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/daaa3105cec76f6ae33e571e859b11fa2196a6cb7659d827d101f92d9a151040",
     "resource": {
       "resourceType": "Observation",
       "id": "daaa3105cec76f6ae33e571e859b11fa2196a6cb7659d827d101f92d9a151040",
@@ -161,7 +169,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "184305005",
           "display": "Cause of death (observable entity)"
         } ]

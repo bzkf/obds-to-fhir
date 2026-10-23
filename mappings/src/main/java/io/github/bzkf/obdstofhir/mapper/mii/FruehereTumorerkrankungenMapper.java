@@ -81,6 +81,14 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
                 .setCode("394593009")
                 .setDisplay("Medical oncology (qualifier value)")));
 
+    condition.addCategory(
+        new CodeableConcept(
+            fhirProperties
+                .getCodings()
+                .snomed()
+                .setCode("55342001")
+                .setDisplay("Neoplastic disease")));
+
     if (fruehereTumorerkrankung.getICD() != null
         && StringUtils.hasText(fruehereTumorerkrankung.getICD().getCode())) {
       // Condition.code.text retains the ICD code unless free text overrides it below.

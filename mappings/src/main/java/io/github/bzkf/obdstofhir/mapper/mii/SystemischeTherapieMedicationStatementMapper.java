@@ -101,7 +101,8 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
 
         var mappedCode = substanzToAtcMapper.getCode(substanz.getBezeichnung());
         if (mappedCode.isPresent()) {
-          atcCode = createAtcCoding(mappedCode.get(), null).setUserSelected(false);
+          atcCode =
+              fhirProperties.getCodings().atc().setCode(mappedCode.get()).setUserSelected(false);
         } else {
           LOG.warn(
               "Substanz in Systemische Therapie with Bezeichnung '{}' could not be mapped to an ATC code.",
