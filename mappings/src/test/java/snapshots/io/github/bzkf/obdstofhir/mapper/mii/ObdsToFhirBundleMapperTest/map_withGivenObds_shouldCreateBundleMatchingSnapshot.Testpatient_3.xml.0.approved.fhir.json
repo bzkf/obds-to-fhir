@@ -905,9 +905,7 @@
       } ],
       "effectiveDateTime": "2017-07-02",
       "valueCodeableConcept": {
-        "coding": [ {
-          "code": "IIIB"
-        } ]
+        "text": "IIIB"
       }
     },
     "request": {
