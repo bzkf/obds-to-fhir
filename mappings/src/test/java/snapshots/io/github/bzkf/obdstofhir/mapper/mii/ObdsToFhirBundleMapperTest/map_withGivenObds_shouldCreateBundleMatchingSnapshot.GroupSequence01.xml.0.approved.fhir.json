@@ -664,9 +664,7 @@
       } ],
       "effectiveDateTime": "2023-12-09",
       "valueCodeableConcept": {
-        "coding": [ {
-          "code": "IV"
-        } ]
+        "text": "IV"
       }
     },
     "request": {
