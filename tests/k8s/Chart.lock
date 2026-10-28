@@ -4,9 +4,9 @@ dependencies:
   version: 86.2.2
 - name: stream-processors
   repository: oci://ghcr.io/miracum/charts
-  version: 1.11.4
+  version: 2.0.2
 - name: strimzi-kafka-operator
   repository: oci://quay.io/strimzi-helm
   version: 0.51.0
-digest: sha256:46c4b5590fa173b4fa8796180bd140b22efe284dbc8b208601555219456fec96
-generated: "2026-06-12T14:21:43.641609747Z"
+digest: sha256:f02fd24e1852f60cca300435db781c748ed5432f810d6a88cc3205ca459b8adb
+generated: "2026-10-26T23:26:34.402876732Z"
