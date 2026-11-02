@@ -433,5 +433,366 @@
       "method": "PUT",
       "url": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a"
     }
+  }, {
+    "fullUrl": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+        "value": "264"
+      } ],
+      "accessionIdentifier": {
+        "value": "H24110/2021"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "collection": {
+        "collectedDateTime": "2021-10"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f"
+    }
+  }, {
+    "fullUrl": "Observation/1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlaufshistologie-observation-id",
+        "value": "264-ICDO3-8500-3"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-10",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "code": "8500/3"
+        } ],
+        "text": "Invasives duktales Karzinom o.n.A."
+      },
+      "specimen": {
+        "reference": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3"
+    }
+  }, {
+    "fullUrl": "Observation/7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
+        "value": "264-grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-10",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "2",
+          "display": "mäßig differenziert"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc"
+    }
+  }, {
+    "fullUrl": "DiagnosticReport/db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7",
+    "resource": {
+      "resourceType": "DiagnosticReport",
+      "id": "db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
+        "value": "PAT_60113"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "22034-3",
+          "display": "Pathology report Cancer Narrative"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "specimen": [ {
+        "reference": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f"
+      } ],
+      "conclusion": "Nachbefundung des Resektats."
+    },
+    "request": {
+      "method": "PUT",
+      "url": "DiagnosticReport/db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7"
+    }
+  }, {
+    "fullUrl": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9",
+    "resource": {
+      "resourceType": "Specimen",
+      "id": "540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-specimen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologie-specimen-id",
+        "value": "265"
+      } ],
+      "accessionIdentifier": {
+        "value": "H24111/2021"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9"
+    }
+  }, {
+    "fullUrl": "Observation/0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-histologie-icdo3" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/verlaufshistologie-observation-id",
+        "value": "265-ICDO3-8500-3"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "59847-4",
+          "display": "Histology and Behavior ICD-O-3 Cancer"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "code": "8500/3"
+        } ],
+        "text": "Invasives duktales Karzinom o.n.A."
+      },
+      "specimen": {
+        "reference": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7"
+    }
+  }, {
+    "fullUrl": "Observation/a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-grading" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/grading-observation-id",
+        "value": "265-grading"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "33732-9",
+          "display": "Histology grade [Identifier] in Cancer specimen"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "371469007",
+          "display": "Histologic grade of neoplasm (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "_effectiveDateTime": {
+        "extension": [ {
+          "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+          "valueCode": "unknown"
+        } ]
+      },
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-grading",
+          "code": "2",
+          "display": "mäßig differenziert"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de"
+    }
+  }, {
+    "fullUrl": "DiagnosticReport/0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999",
+    "resource": {
+      "resourceType": "DiagnosticReport",
+      "id": "0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-befund" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/histologiebefund-diagnostic-report-id",
+        "value": "PAT_60114"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "22034-3",
+          "display": "Pathology report Cancer Narrative"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "specimen": [ {
+        "reference": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9"
+      } ],
+      "conclusion": "Nachbefundung des Resektats."
+    },
+    "request": {
+      "method": "PUT",
+      "url": "DiagnosticReport/0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999"
+    }
   } ]
 }
