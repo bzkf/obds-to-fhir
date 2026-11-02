@@ -1,0 +1,42 @@
+{
+  "resourceType": "Observation",
+  "id": "19e5c8523a07963496273070d6d1829efb7d5d8762a91b41c97d7ac3903961ba",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-progesteron" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-progesteron-observation-id",
+    "value": "PAT_60113-modul-mamma-rezeptorstatus-progesteron"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "85339-0",
+      "display": "Progesterone receptor Ag [Presence] in Breast cancer specimen by Immune stain"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-10",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "LA6577-6",
+      "display": "Negative"
+    } ]
+  }
+}

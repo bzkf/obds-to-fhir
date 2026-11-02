@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -75,6 +76,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
   private final ModulProstataMapper modulProstataMapper;
+  private final ModulMammaMapper modulMammaMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
@@ -124,6 +126,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
       ModulProstataMapper modulProstataMapper,
+      ModulMammaMapper modulMammaMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
@@ -153,6 +156,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
     this.modulProstataMapper = modulProstataMapper;
+    this.modulMammaMapper = modulMammaMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
@@ -646,6 +650,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (diagnose.getModulMamma() != null) {
+      var effective =
+          convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum())
+              .orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              diagnose.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
+    }
+
     mapWeitereKlassifikationen(
         diagnose.getMengeWeitereKlassifikation(),
         meldung.getMeldungID(),
@@ -784,6 +802,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (verlauf.getModulMamma() != null) {
+      var effective =
+          convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              verlauf.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
+    }
+
     mapWeitereKlassifikationen(
         verlauf.getMengeWeitereKlassifikation(),
         meldung.getMeldungID(),
@@ -914,6 +945,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulProstataResources);
     }
 
+    if (op.getModulMamma() != null) {
+      var effective = convertObdsDatumToDateTimeType(op.getDatum()).orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              op.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
+    }
+
     return mappedResources;
   }
 
@@ -986,6 +1029,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           modulProstataMapper.map(
               modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (pathologie.getModulMamma() != null) {
+      // the Pathologie section has no date of its own; the histology date is the closest
+      var effective =
+          Optional.ofNullable(pathologie.getHistologie())
+              .flatMap(h -> convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
+              .orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              pathologie.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
     }
 
     mapWeitereKlassifikationen(

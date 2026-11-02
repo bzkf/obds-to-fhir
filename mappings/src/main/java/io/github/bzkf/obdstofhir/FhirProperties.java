@@ -94,6 +94,11 @@ public class FhirProperties {
     private String prostataClavienDindoObservationId;
     private String prostataGleasonPatternsObservationId;
     private String prostataGleasonScoreObservationId;
+    private String mammaMenopausenstatusObservationId;
+    private String mammaRezeptorstatusEstrogenObservationId;
+    private String mammaRezeptorstatusProgesteronObservationId;
+    private String mammaHer2neuStatusObservationId;
+    private String tumorgroesseObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;
