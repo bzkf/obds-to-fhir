@@ -41,9 +41,6 @@ import org.springframework.stereotype.Service;
 public class ModulMammaMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ModulMammaMapper.class);
 
-  private static final String DATA_ABSENT_REASON_SYSTEM =
-      "http://terminology.hl7.org/CodeSystem/data-absent-reason";
-
   protected ModulMammaMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
@@ -349,8 +346,11 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
             .setText(codeText));
 
     if ("U".equals(rawValue)) {
+      // the to-fhir DataAbsentReason helpers only build the extension, this needs the coding
+      var unknown = org.hl7.fhir.r4.model.codesystems.DataAbsentReason.UNKNOWN;
       observation.setDataAbsentReason(
-          new CodeableConcept(new Coding(DATA_ABSENT_REASON_SYSTEM, "unknown", "Unknown")));
+          new CodeableConcept(
+              new Coding(unknown.getSystem(), unknown.toCode(), unknown.getDisplay())));
       return observation;
     }
 
