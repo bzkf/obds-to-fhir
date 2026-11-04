@@ -85,6 +85,7 @@ import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
       TNMMapper.class,
       GleasonScoreMapper.class,
       ModulProstataMapper.class,
+      ModulDarmMapper.class,
       ModulMammaMapper.class,
       WeitereKlassifikationMapper.class,
       Obdsv2v3MapperConfig.class,

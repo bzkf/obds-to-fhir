@@ -76,6 +76,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
   private final ModulProstataMapper modulProstataMapper;
+  private final ModulDarmMapper modulDarmMapper;
   private final ModulMammaMapper modulMammaMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
@@ -126,6 +127,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
       ModulProstataMapper modulProstataMapper,
+      ModulDarmMapper modulDarmMapper,
       ModulMammaMapper modulMammaMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
@@ -156,6 +158,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
     this.modulProstataMapper = modulProstataMapper;
+    this.modulDarmMapper = modulDarmMapper;
     this.modulMammaMapper = modulMammaMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
@@ -205,6 +208,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var meldungen = obdsPatient.getMengeMeldung().getMeldung();
 
       meldungen = sortMeldungen(meldungen);
+
+      // detection only, to find out whether this occurs in practice before mapping
+      // RektumQualitaetTME to the Specimen
+      for (var finding : TmeSpecimenOverwriteDetector.detect(meldungen)) {
+        LOG.warn(
+            "RektumQualitaetTME overwrite risk: the Specimen of Histologie_ID {} is created from"
+                + " multiple Meldungen, but the one processed last ({}) has no TME quality, so a"
+                + " TME quality on the Specimen would be lost. Meldungen in processing order: [{}]",
+            finding.histologieId(),
+            finding.last().meldungId(),
+            finding.describeSections());
+      }
 
       // Patient
       // XXX: this assumes that the "meldungen" contains every single Meldung for the
@@ -580,6 +595,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(diagnoseFM);
     }
 
+    Reference specimenReference = null;
     if (diagnose.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -589,6 +605,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               false);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -647,6 +664,23 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               effective);
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (diagnose.getModulDarm() != null) {
+      // keeps the Datumsgenauigkeit of the Diagnosedatum (month, year, ...)
+      var effective =
+          convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum())
+              .orElse(null);
+      var modulDarmResources =
+          modulDarmMapper.map(
+              diagnose.getModulDarm(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective,
+              null,
+              specimenReference);
+      mappedResources.addAll(modulDarmResources);
     }
 
     if (diagnose.getModulMamma() != null) {
@@ -749,6 +783,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference));
     }
 
+    Reference specimenReference = null;
     if (verlauf.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -758,6 +793,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               true);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -801,6 +837,21 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               effective);
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (verlauf.getModulDarm() != null) {
+      var effective =
+          convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
+      var modulDarmResources =
+          modulDarmMapper.map(
+              verlauf.getModulDarm(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective,
+              null,
+              specimenReference);
+      mappedResources.addAll(modulDarmResources);
     }
 
     if (verlauf.getModulMamma() != null) {
@@ -881,6 +932,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.add(residualstatus);
     }
 
+    Reference specimenReference = null;
     if (op.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -890,6 +942,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               true);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -945,6 +998,33 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               effective,
               opReferences.getFirst()); // it should never be empty here.
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (op.getModulDarm() != null) {
+      var modulDarm = op.getModulDarm();
+      // the procedure that doesn't reference any other procedure is the
+      // primary/parent one
+      var opReferences =
+          operations.stream()
+              .filter(p -> !p.hasPartOf())
+              .map(ReferenceUtils::createReferenceTo)
+              .toList();
+
+      if (opReferences.size() > 1) {
+        LOG.warn(
+            "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
+      }
+
+      var modulDarmResources =
+          modulDarmMapper.map(
+              modulDarm,
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              convertObdsDatumToDateTimeType(op.getDatum()).orElse(null),
+              opReferences.getFirst(), // it should never be empty here.
+              specimenReference);
+      mappedResources.addAll(modulDarmResources);
     }
 
     if (op.getModulMamma() != null) {
@@ -1031,6 +1111,25 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           modulProstataMapper.map(
               modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
       mappedResources.addAll(modulProstataResources);
+    }
+
+    if (pathologie.getModulDarm() != null) {
+      // the Pathologie section has no date of its own; the histology date is the closest
+      var effective =
+          Optional.ofNullable(pathologie.getHistologie())
+              .flatMap(h -> convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
+              .orElse(null);
+      var modulDarmResources =
+          modulDarmMapper.map(
+              pathologie.getModulDarm(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective,
+              null,
+              // only set if there's a Histologie, otherwise it's an empty Reference
+              pathologie.getHistologie() != null ? specimenReference : null);
+      mappedResources.addAll(modulDarmResources);
     }
 
     if (pathologie.getModulMamma() != null) {
