@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
@@ -454,12 +455,7 @@ class Obdsv3ProcessorTest extends MapperTest {
 
     var systProcedures =
         BundleUtil.toListOfResourcesOfType(ctx, bundle, Procedure.class).stream()
-            .filter(
-                p ->
-                    p.getMeta().getProfile().stream()
-                        // the profiles are versioned, i.e. "<url>|<version>"
-                        .map(profile -> profile.getValue().split("\\|")[0])
-                        .anyMatch(url -> url.endsWith("/mii-pr-onko-systemische-therapie")))
+            .filter(p -> p.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoSystemischeTherapie()))
             .toList();
 
     assertThat(systProcedures)
