@@ -209,6 +209,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       meldungen = sortMeldungen(meldungen);
 
+      // detection only, to find out whether this occurs in practice before mapping
+      // RektumQualitaetTME to the Specimen
+      for (var finding : TmeSpecimenOverwriteDetector.detect(meldungen)) {
+        LOG.warn(
+            "RektumQualitaetTME overwrite risk: the Specimen of Histologie_ID {} is created from"
+                + " multiple Meldungen, but the one processed last ({}) has no TME quality, so a"
+                + " TME quality on the Specimen would be lost. Meldungen in processing order: [{}]",
+            finding.histologieId(),
+            finding.last().meldungId(),
+            finding.describeSections());
+      }
+
       // Patient
       // XXX: this assumes that the "meldungen" contains every single Meldung for the
       // patient
