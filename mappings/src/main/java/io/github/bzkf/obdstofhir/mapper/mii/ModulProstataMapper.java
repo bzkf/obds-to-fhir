@@ -9,7 +9,6 @@ import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
@@ -44,7 +43,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable XMLGregorianCalendar referenzDatum) {
+      @Nullable DateTimeType referenzDatum) {
     return map(modulProstata, meldungId, patient, condition, referenzDatum, null);
   }
 
@@ -53,7 +52,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable XMLGregorianCalendar referenzDatum,
+      @Nullable DateTimeType referenzDatum,
       @Nullable Reference op) {
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
@@ -278,7 +277,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable XMLGregorianCalendar referenceDate,
+      @Nullable DateTimeType referenceDate,
       @Nullable Reference op) {
     Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
     var observation = createBaseObservation(patient, condition, ObservationCategory.SURVEY);
@@ -292,7 +291,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
-    convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
+    observation.setEffective(referenceDate);
 
     observation.setCode(
         new CodeableConcept(

@@ -636,17 +636,16 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (diagnose.getModulProstata() != null) {
       var modulProstata = diagnose.getModulProstata();
-      var diagnosedatum =
-          meldung.getTumorzuordnung().getDiagnosedatum() != null
-              ? meldung.getTumorzuordnung().getDiagnosedatum().getValue()
-              : null;
+      var effective =
+          convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum())
+              .orElse(null);
       var modulProstataResources =
           modulProstataMapper.map(
               modulProstata,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              diagnosedatum);
+              effective);
       mappedResources.addAll(modulProstataResources);
     }
 
@@ -792,13 +791,15 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     if (verlauf.getModulProstata() != null) {
       var modulProstata = verlauf.getModulProstata();
+      var effective =
+          convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
       var modulProstataResources =
           modulProstataMapper.map(
               modulProstata,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              verlauf.getUntersuchungsdatumVerlauf());
+              effective);
       mappedResources.addAll(modulProstataResources);
     }
 
@@ -934,13 +935,14 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
       }
 
+      var effective = convertObdsDatumToDateTimeType(op.getDatum()).orElse(null);
       var modulProstataResources =
           modulProstataMapper.map(
               modulProstata,
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              op.getDatum(),
+              effective,
               opReferences.getFirst()); // it should never be empty here.
       mappedResources.addAll(modulProstataResources);
     }

@@ -42,6 +42,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     "Testpatient_leer.xml",
     "Testpatient_Mamma.xml",
     "Testpatient_Prostata.xml",
+    "Testpatient_Prostata_Diagnosedatum_Geschaetzt.xml",
     "Testpatient_Patho.xml",
     "Testpatient_Patho2.xml",
     "Testpatient_Rektum.xml",
