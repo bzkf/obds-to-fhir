@@ -783,9 +783,6 @@
           "value": "50"
         }
       },
-      "focus": [ {
-        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
-      } ],
       "effectiveDateTime": "2021-03-15",
       "valueCodeableConcept": {
         "coding": [ {
@@ -812,6 +809,13 @@
         "value": "VER_50113-modul-darm-asa-klassifikation"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -835,6 +839,11 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-asa-obds",
           "code": "2",
+          "display": "ASA II"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA28814-4",
           "display": "ASA II"
         } ]
       }

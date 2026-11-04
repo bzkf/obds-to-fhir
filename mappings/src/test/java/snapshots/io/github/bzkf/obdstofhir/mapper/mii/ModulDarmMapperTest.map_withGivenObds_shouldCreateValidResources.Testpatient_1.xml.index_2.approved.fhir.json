@@ -46,5 +46,8 @@
   } ],
   "note": [ {
     "text": "RAS-Mutation"
-  } ]
+  } ],
+  "specimen": {
+    "reference": "Specimen/any"
+  }
 }

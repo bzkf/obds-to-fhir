@@ -21,8 +21,6 @@
     "reference": "Patient/any"
   },
   "focus": [ {
-    "reference": "Condition/Primärdiagnose"
-  }, {
     "reference": "Procedure/any"
   } ],
   "effectiveDateTime": "2020-02-01",

@@ -1800,7 +1800,7 @@
       "resourceType": "Procedure",
       "id": "fe00363f7749fcab7b5b2acc0010f623f2241839e623aea1174200947b6bba99",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation", "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-operation" ]
       },
       "extension": [ {
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
@@ -1809,6 +1809,15 @@
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K",
             "display": "kurativ"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-urgency",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-urgency",
+            "code": "E",
+            "display": "Elektiveingriff"
           } ]
         }
       } ],
@@ -1863,6 +1872,15 @@
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K",
             "display": "kurativ"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-urgency",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-urgency",
+            "code": "E",
+            "display": "Elektiveingriff"
           } ]
         }
       } ],
@@ -2127,6 +2145,13 @@
         "value": "10_2_OP_1-modul-darm-abstand-aboral"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2170,6 +2195,13 @@
         "value": "10_2_OP_1-modul-darm-abstand-circumferelle-resektionsebene"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2229,8 +2261,6 @@
         }
       },
       "focus": [ {
-        "reference": "Condition/33709d3a7f60d0ff98a9e9b228300ab4001ecedcefba2b0c3ecb0a67532a4b8f"
-      }, {
         "reference": "Procedure/fe00363f7749fcab7b5b2acc0010f623f2241839e623aea1174200947b6bba99"
       } ],
       "effectiveDateTime": "2020-02-01",
@@ -2259,6 +2289,13 @@
         "value": "10_2_OP_1-modul-darm-asa-klassifikation"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -2282,6 +2319,11 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-asa-obds",
           "code": "2",
+          "display": "ASA II"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA28814-4",
           "display": "ASA II"
         } ]
       }
@@ -7109,6 +7151,13 @@
         "value": "10_2_DI_1-modul-darm-mrt-mesorektale-faszie"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "imaging",
+          "display": "Imaging"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://radlex.org",

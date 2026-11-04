@@ -114,6 +114,22 @@ public class OperationMapper extends ObdsToFhirMapper {
     var intentionExtension = Onkologie.Extensions.miiExOnkoOperationIntention(intention);
     parentProcedure.addExtension(intentionExtension);
 
+    Extension urgencyExtension = null;
+    if (op.getModulDarm() != null) {
+      // the KRK Anastomoseninsuffizienz Observation references this (parent) Procedure as its
+      // focus, which the profile restricts to MII_PR_Onko_KRK_Operation.
+      parentProcedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkOperation());
+
+      // urgency (KR6 ArtEingriff)
+      if (op.getModulDarm().getArtEingriff() != null) {
+        var urgency =
+            Onkologie.CodeSystems.MiiCsOnkoOperationUrgency.fromValueOrThrow(
+                op.getModulDarm().getArtEingriff());
+        urgencyExtension = Onkologie.Extensions.miiExOnkoOperationUrgency(urgency);
+        parentProcedure.addExtension(urgencyExtension);
+      }
+    }
+
     if (op.getResidualstatus() != null
         && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
       // outcome
@@ -208,6 +224,11 @@ public class OperationMapper extends ObdsToFhirMapper {
 
       // intention
       procedure.addExtension(intentionExtension);
+
+      // urgency
+      if (urgencyExtension != null) {
+        procedure.addExtension(urgencyExtension);
+      }
 
       if (op.getResidualstatus() != null
           && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {

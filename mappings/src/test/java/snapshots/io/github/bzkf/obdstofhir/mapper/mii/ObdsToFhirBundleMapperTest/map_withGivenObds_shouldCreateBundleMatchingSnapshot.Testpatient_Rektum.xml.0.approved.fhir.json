@@ -209,7 +209,7 @@
       "resourceType": "Procedure",
       "id": "3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-operation", "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-operation" ]
       },
       "extension": [ {
         "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
@@ -218,6 +218,15 @@
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K",
             "display": "kurativ"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-urgency",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-urgency",
+            "code": "E",
+            "display": "Elektiveingriff"
           } ]
         }
       } ],
@@ -272,6 +281,15 @@
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K",
             "display": "kurativ"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-urgency",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-urgency",
+            "code": "E",
+            "display": "Elektiveingriff"
           } ]
         }
       } ],
@@ -336,6 +354,15 @@
             "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
             "code": "K",
             "display": "kurativ"
+          } ]
+        }
+      }, {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-urgency",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-urgency",
+            "code": "E",
+            "display": "Elektiveingriff"
           } ]
         }
       } ],
@@ -1176,6 +1203,13 @@
         "value": "OP_50103-modul-darm-abstand-aboral"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1219,6 +1253,13 @@
         "value": "OP_50103-modul-darm-abstand-circumferelle-resektionsebene"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1278,8 +1319,6 @@
         }
       },
       "focus": [ {
-        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
-      }, {
         "reference": "Procedure/3f1e94596ca9e7e69cf88560f9501d7ebeef1b52dc6e750bb0bee8f8b46e9a3e"
       } ],
       "effectiveDateTime": "2020-08-31",
@@ -1308,6 +1347,13 @@
         "value": "OP_50103-modul-darm-asa-klassifikation"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "survey",
+          "display": "Survey"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://loinc.org",
@@ -1331,6 +1377,11 @@
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-asa-obds",
           "code": "1",
+          "display": "ASA I"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA28813-6",
           "display": "ASA I"
         } ]
       }
@@ -2364,6 +2415,13 @@
         "value": "DIA_50101-modul-darm-mrt-mesorektale-faszie"
       } ],
       "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "imaging",
+          "display": "Imaging"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://radlex.org",

@@ -8,9 +8,11 @@ import io.github.dizuker.tofhir.IdUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -21,11 +23,18 @@ import org.springframework.stereotype.Service;
  * Maps the oBDS {@code Modul_Darm} (Kolorektales Karzinom) to the corresponding MII Onkologie FHIR
  * profiles.
  *
- * <p>Not every field of {@code Modul_Darm_Typ} has a corresponding profile in the MII IG Onkologie
- * yet: {@code RektumQualitaetTME} is modeled as {@code Specimen.condition} on the histology
- * specimen and isn't produced here, and {@code ArtEingriff} has no defined target profile. {@code
- * RASMutation} is expressed via the generic {@code MII_PR_Onko_Genetische_Variante} Observation
- * profile, the same one {@link GenetischeVarianteMapper} uses for {@code
+ * <p>Not every field of {@code Modul_Darm_Typ} is mapped here:
+ *
+ * <ul>
+ *   <li>{@code ArtEingriff} (KR6) is mapped by {@link OperationMapper} as the {@code
+ *       MII_EX_Onko_Operation_Urgency} extension of the OP Procedure. Outside of an OP Meldung
+ *       there is no Procedure to attach it to.
+ *   <li>{@code RektumQualitaetTME} (KR4) targets {@code Specimen.condition} of the {@code
+ *       MII_PR_Onko_KRK_Specimen} profile and isn't produced here.
+ * </ul>
+ *
+ * <p>{@code RASMutation} is expressed via the generic {@code MII_PR_Onko_Genetische_Variante}
+ * Observation profile, the same one {@link GenetischeVarianteMapper} uses for {@code
  * Menge_Genetik.Genetische_Variante}.
  *
  * <p>The {@code RektumAbstand*}/{@code Anokutanlinie} distance fields additionally allow the
@@ -37,39 +46,36 @@ import org.springframework.stereotype.Service;
 public class ModulDarmMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ModulDarmMapper.class);
 
+  private record LoincAnswer(String code, String display) {}
+
+  /** The oBDS ASA codes (1-5) as LOINC answers, from the MII_CM_Onko_ASA_oBDS_LOINC ConceptMap. */
+  private static final Map<String, LoincAnswer> ASA_LOINC_ANSWERS =
+      Map.of(
+          "1", new LoincAnswer("LA28813-6", "ASA I"),
+          "2", new LoincAnswer("LA28814-4", "ASA II"),
+          "3", new LoincAnswer("LA28815-1", "ASA III"),
+          "4", new LoincAnswer("LA28816-9", "ASA IV"),
+          "5", new LoincAnswer("LA28817-7", "ASA V"));
+
   protected ModulDarmMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
-  public List<Resource> map(
-      @NonNull ModulDarmTyp modulDarm, @NonNull String meldungId, @NonNull Reference patient) {
-    return map(modulDarm, meldungId, patient, null, null, null);
-  }
-
-  public List<Resource> map(
-      @NonNull ModulDarmTyp modulDarm,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @Nullable Reference condition) {
-    return map(modulDarm, meldungId, patient, condition, null, null);
-  }
-
+  /**
+   * @param effective the date of the section {@code Modul_Darm} is part of, e.g. the OP date
+   * @param op the (parent) OP Procedure. Only available in an OP Meldung. Used as the focus of the
+   *     Anastomoseninsuffizienz.
+   * @param specimen the Specimen of the section's Histologie, if there is one. Used as the specimen
+   *     of the RAS-Mutation.
+   */
   public List<Resource> map(
       @NonNull ModulDarmTyp modulDarm,
       @NonNull String meldungId,
       @NonNull Reference patient,
       @Nullable Reference condition,
-      @Nullable XMLGregorianCalendar referenzDatum) {
-    return map(modulDarm, meldungId, patient, condition, referenzDatum, null);
-  }
-
-  public List<Resource> map(
-      @NonNull ModulDarmTyp modulDarm,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @Nullable Reference condition,
-      @Nullable XMLGregorianCalendar referenzDatum,
-      @Nullable Reference op) {
+      @Nullable DateTimeType effective,
+      @Nullable Reference op,
+      @Nullable Reference specimen) {
     verifyReference(patient, ResourceType.Patient);
     if (condition != null) {
       verifyReference(condition, ResourceType.Condition);
@@ -77,9 +83,11 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     if (op != null) {
       verifyReference(op, ResourceType.Procedure);
     }
+    if (specimen != null) {
+      verifyReference(specimen, ResourceType.Specimen);
+    }
 
     var results = new ArrayList<Resource>();
-    var effective = convertObdsDatumToDateTimeType(referenzDatum).orElse(null);
 
     if (modulDarm.getRektumAbstandAnokutanlinie() != null) {
       results.add(mapAbstandAnokutanlinie(modulDarm, meldungId, patient, condition, effective));
@@ -100,8 +108,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     }
 
     if (modulDarm.getGradRektumAnastomoseninsuffizienz() != null) {
-      results.add(
-          mapAnastomoseninsuffizienz(modulDarm, meldungId, patient, condition, effective, op));
+      results.add(mapAnastomoseninsuffizienz(modulDarm, meldungId, patient, effective, op));
     }
 
     if (modulDarm.getASA() != null) {
@@ -118,15 +125,22 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
               + " scope for this mapper.");
     }
 
-    if (modulDarm.getArtEingriff() != null) {
-      LOG.debug("ArtEingriff has no corresponding FHIR profile in the MII IG Onkologie yet.");
+    if (modulDarm.getArtEingriff() != null && op == null) {
+      LOG.debug(
+          "ArtEingriff is only mapped as part of an OP Meldung, as an extension of the OP"
+              + " Procedure.");
     }
 
     if (modulDarm.getRASMutation() != null) {
-      results.add(mapRasMutation(modulDarm, meldungId, patient, condition, effective));
+      results.add(mapRasMutation(modulDarm, meldungId, patient, condition, effective, specimen));
     }
 
     return results;
+  }
+
+  private static CodeableConcept dataAbsentReason(@NonNull DataAbsentReason reason) {
+    return new CodeableConcept(
+        new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
   }
 
   /**
@@ -139,14 +153,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
   private static void setDistanceValue(
       @NonNull Observation observation, @NonNull String rawValue, @NonNull String unit) {
     if ("U".equals(rawValue)) {
-      // this is different to the absent extension, so we can't reuse DataAbsentReason.unknown()
-      // here.
-      observation.setDataAbsentReason(
-          new CodeableConcept(
-              new Coding(
-                  "http://terminology.hl7.org/CodeSystem/data-absent-reason",
-                  "unknown",
-                  "Unknown")));
+      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
       return;
     }
 
@@ -159,12 +166,12 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
   }
 
   private static Observation createBaseObservation(
-      @NonNull Reference patient, @Nullable Reference condition) {
+      @NonNull Reference patient, @Nullable Reference focus) {
     var observation = new Observation();
     observation.setSubject(patient);
     observation.setStatus(Observation.ObservationStatus.FINAL);
-    if (condition != null) {
-      observation.addFocus(condition);
+    if (focus != null) {
+      observation.addFocus(focus);
     }
 
     return observation;
@@ -223,6 +230,9 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
+    // a measurement on the resected specimen, i.e. by the pathology
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
+
     if (effective != null) {
       observation.setEffective(effective);
     }
@@ -267,6 +277,9 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
+    // a measurement on the resected specimen, i.e. by the pathology
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
+
     if (effective != null) {
       observation.setEffective(effective);
     }
@@ -310,6 +323,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
+    observation.addCategory(observationCategory(ObservationCategory.IMAGING));
+
     if (effective != null) {
       observation.setEffective(effective);
     }
@@ -339,11 +354,18 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @NonNull ModulDarmTyp modulDarm,
       @NonNull String meldungId,
       @NonNull Reference patient,
-      @Nullable Reference condition,
       @Nullable DateTimeType effective,
       @Nullable Reference op) {
     Objects.requireNonNull(modulDarm.getGradRektumAnastomoseninsuffizienz());
-    var observation = createBaseObservation(patient, condition);
+    // the profile only allows the (KRK) OP Procedure as the focus, not the Condition. Outside of
+    // an OP Meldung there's no Procedure to reference, so the Observation isn't linked to the
+    // tumor at all.
+    if (op == null) {
+      LOG.debug(
+          "No OP Procedure available for the Anastomoseninsuffizienz Observation. Leaving its"
+              + " focus unset.");
+    }
+    var observation = createBaseObservation(patient, op);
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkAnastomoseninsuffizienz());
 
     var identifier =
@@ -375,12 +397,6 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
             .coding();
     observation.setValue(new CodeableConcept(coding));
 
-    if (op != null) {
-      observation.addFocus(op);
-    } else {
-      LOG.warn("OP reference is null for Anastomoseninsuffizienz observation");
-    }
-
     return observation;
   }
 
@@ -402,6 +418,9 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addIdentifier(identifier);
     observation.setId(IdUtils.fromIdentifier(identifier));
 
+    // a scored assessment, like the ECOG performance status
+    observation.addCategory(observationCategory(ObservationCategory.SURVEY));
+
     if (effective != null) {
       observation.setEffective(effective);
     }
@@ -414,9 +433,21 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
                 .setCode("97816-3")
                 .setDisplay("American society of anesthesiologists morbidity state")));
 
-    var coding =
-        Onkologie.CodeSystems.MiiCsOnkoAsaObds.fromValueOrThrow(modulDarm.getASA()).coding();
-    observation.setValue(new CodeableConcept(coding));
+    var value =
+        new CodeableConcept(
+            Onkologie.CodeSystems.MiiCsOnkoAsaObds.fromValueOrThrow(modulDarm.getASA()).coding());
+
+    var loincAnswer = ASA_LOINC_ANSWERS.get(modulDarm.getASA());
+    if (loincAnswer != null) {
+      value.addCoding(
+          fhirProperties
+              .getCodings()
+              .loinc()
+              .setCode(loincAnswer.code())
+              .setDisplay(loincAnswer.display()));
+    }
+
+    observation.setValue(value);
 
     return observation;
   }
@@ -463,7 +494,14 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     // the oBDS code only documents whether/how the marking was done, so we derive
     // status/statusReason from it, based on the MII_CM_Onko_KRK_Stoma_oBDS_SCT ConceptMap.
     switch (rawValue) {
-      case "D" -> procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+      case "D" -> {
+        procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+        // the date of the marking itself isn't documented, the date of the section (e.g. the
+        // OP date) is the closest. Only set if the marking was actually done.
+        if (effective != null) {
+          procedure.setPerformed(effective);
+        }
+      }
       case "N" -> {
         procedure.setStatus(Procedure.ProcedureStatus.NOTDONE);
         procedure.setStatusReason(
@@ -502,10 +540,6 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       }
     }
 
-    if (effective != null) {
-      procedure.setPerformed(effective);
-    }
-
     return procedure;
   }
 
@@ -514,7 +548,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @Nullable Reference condition,
-      @Nullable DateTimeType effective) {
+      @Nullable DateTimeType effective,
+      @Nullable Reference specimen) {
     var rasMutation = modulDarm.getRASMutation();
     Objects.requireNonNull(rasMutation);
     var observation = createBaseObservation(patient, condition);
@@ -530,6 +565,10 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
 
     if (effective != null) {
       observation.setEffective(effective);
+    }
+
+    if (specimen != null) {
+      observation.setSpecimen(specimen);
     }
 
     observation.setCode(
@@ -555,14 +594,20 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
 
     observation.addNote().setText("RAS-Mutation");
 
-    // RASMutationTyp (W/M/U/N) uses the same codes as
-    // MiiCsOnkoGenetischeVarianteAuspraegung, N (Nicht untersucht) maps to N (Nicht
-    // bestimmbar).
-    var interpretation =
-        Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.fromValueOrThrow(
-                rasMutation.value())
-            .coding();
-    observation.addInterpretation(new CodeableConcept(interpretation));
+    if ("N".equals(rasMutation.value())) {
+      // in the oBDS, N means "Nicht untersucht", while N in the
+      // MiiCsOnkoGenetischeVarianteAuspraegung means "Nicht bestimmbar", i.e. tested but
+      // without a result. So we don't set an interpretation and mark the test as not performed.
+      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.NOTPERFORMED));
+    } else {
+      // the remaining RASMutationTyp codes (W/M/U) have the same meaning in the
+      // MiiCsOnkoGenetischeVarianteAuspraegung
+      var interpretation =
+          Onkologie.CodeSystems.MiiCsOnkoGenetischeVarianteAuspraegung.fromValueOrThrow(
+                  rasMutation.value())
+              .coding();
+      observation.addInterpretation(new CodeableConcept(interpretation));
+    }
 
     return observation;
   }

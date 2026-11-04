@@ -583,6 +583,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(diagnoseFM);
     }
 
+    Reference specimenReference = null;
     if (diagnose.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -592,6 +593,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               false);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -654,18 +656,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (diagnose.getModulDarm() != null) {
-      var modulDarm = diagnose.getModulDarm();
-      var diagnosedatum =
-          meldung.getTumorzuordnung().getDiagnosedatum() != null
-              ? meldung.getTumorzuordnung().getDiagnosedatum().getValue()
-              : null;
+      // keeps the Datumsgenauigkeit of the Diagnosedatum (month, year, ...)
+      var effective =
+          convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum())
+              .orElse(null);
       var modulDarmResources =
           modulDarmMapper.map(
-              modulDarm,
+              diagnose.getModulDarm(),
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              diagnosedatum);
+              effective,
+              null,
+              specimenReference);
       mappedResources.addAll(modulDarmResources);
     }
 
@@ -769,6 +772,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference));
     }
 
+    Reference specimenReference = null;
     if (verlauf.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -778,6 +782,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               true);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -822,14 +827,17 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (verlauf.getModulDarm() != null) {
-      var modulDarm = verlauf.getModulDarm();
+      var effective =
+          convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
       var modulDarmResources =
           modulDarmMapper.map(
-              modulDarm,
+              verlauf.getModulDarm(),
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              verlauf.getUntersuchungsdatumVerlauf());
+              effective,
+              null,
+              specimenReference);
       mappedResources.addAll(modulDarmResources);
     }
 
@@ -911,6 +919,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.add(residualstatus);
     }
 
+    Reference specimenReference = null;
     if (op.getHistologie() != null) {
       var histologieResources =
           mapHistologieSection(
@@ -920,6 +929,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               true);
       mappedResources.addAll(histologieResources.resources());
+      specimenReference = histologieResources.specimenReference();
     }
 
     mapStudienteilnahme(
@@ -997,8 +1007,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               meldung.getMeldungID(),
               patientReference,
               primaryConditionReference,
-              op.getDatum(),
-              opReferences.getFirst()); // it should never be empty here.
+              convertObdsDatumToDateTimeType(op.getDatum()).orElse(null),
+              opReferences.getFirst(), // it should never be empty here.
+              specimenReference);
       mappedResources.addAll(modulDarmResources);
     }
 
@@ -1089,10 +1100,21 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (pathologie.getModulDarm() != null) {
-      var modulDarm = pathologie.getModulDarm();
+      // the Pathologie section has no date of its own; the histology date is the closest
+      var effective =
+          Optional.ofNullable(pathologie.getHistologie())
+              .flatMap(h -> convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
+              .orElse(null);
       var modulDarmResources =
           modulDarmMapper.map(
-              modulDarm, meldung.getMeldungID(), patientReference, primaryConditionReference);
+              pathologie.getModulDarm(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective,
+              null,
+              // only set if there's a Histologie, otherwise it's an empty Reference
+              pathologie.getHistologie() != null ? specimenReference : null);
       mappedResources.addAll(modulDarmResources);
     }
 
