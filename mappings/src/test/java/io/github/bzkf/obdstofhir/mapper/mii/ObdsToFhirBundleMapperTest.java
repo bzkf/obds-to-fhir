@@ -62,7 +62,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
     final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
-    final var bundles = sut.map(obds);
+    final var results = sut.map(obds);
 
     var caller = Caller.get(0);
     var methodName = caller.getMethodName();
@@ -70,8 +70,8 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
     var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
-    for (int i = 0; i < bundles.size(); i++) {
-      var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
+    for (int i = 0; i < results.size(); i++) {
+      var fhirJson = fhirParser.encodeResourceToString(results.get(i).bundle());
       Approvals.verify(
           fhirJson,
           Approvals.NAMES
@@ -156,7 +156,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
       final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
-      final var bundles = sut.map(obds);
+      final var results = sut.map(obds);
 
       var caller = Caller.get(0);
       var methodName = caller.getMethodName();
@@ -164,19 +164,33 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
       var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
-      for (int i = 0; i < bundles.size(); i++) {
-        var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
+      for (int i = 0; i < results.size(); i++) {
+        var result = results.get(i);
+        var scrubber =
+            Scrubbers.scrubAll(
+                ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER);
         Approvals.verify(
-            fhirJson,
+            fhirParser.encodeResourceToString(result.bundle()),
             Approvals.NAMES
                 .withParameters("")
-                .withScrubber(
-                    Scrubbers.scrubAll(
-                        ProvenanceMapperTest.FHIR_DATE_TIME_SCRUBBER, PROFILE_VERSION_SCRUBBER))
+                .withScrubber(scrubber)
                 .forFile()
                 .withBaseName(String.format("%s/%s.%s.%d", className, methodName, sourceFile, i))
                 .forFile()
                 .withExtension(".fhir.json"));
+        for (int j = 0; j < result.provenances().size(); j++) {
+          Approvals.verify(
+              fhirParser.encodeResourceToString(result.provenances().get(j)),
+              Approvals.NAMES
+                  .withParameters("")
+                  .withScrubber(scrubber)
+                  .forFile()
+                  .withBaseName(
+                      String.format(
+                          "%s/%s.%s.%d.provenance.%d", className, methodName, sourceFile, i, j))
+                  .forFile()
+                  .withExtension(".fhir.json"));
+        }
       }
     }
   }
@@ -205,7 +219,7 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
       final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
 
-      final var bundles = sut.map(obds);
+      final var results = sut.map(obds);
 
       var caller = Caller.get(0);
       var methodName = caller.getMethodName();
@@ -213,8 +227,8 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
 
       var fhirParser = FhirContext.forR4().newJsonParser().setPrettyPrint(true);
 
-      for (int i = 0; i < bundles.size(); i++) {
-        var fhirJson = fhirParser.encodeResourceToString(bundles.get(i));
+      for (int i = 0; i < results.size(); i++) {
+        var fhirJson = fhirParser.encodeResourceToString(results.get(i).bundle());
         Approvals.verify(
             fhirJson,
             Approvals.NAMES

@@ -5,9 +5,6 @@ on:
     branches:
       - master
       - beta
-  release:
-    types:
-      - created
   pull_request:
     branches:
       - master
@@ -68,7 +65,7 @@ jobs:
             build/libs/
 
       - name: Publish to central
-        if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           ./gradlew :mappings:publish --no-configuration-cache
           ./gradlew :mappings:publishToMavenCentralPortal --no-configuration-cache

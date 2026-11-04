@@ -64,8 +64,9 @@
       }
     } ],
     "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet",
-      "code": "5.4.-"
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-strahlentherapie-zielgebiet-2014",
+      "code": "5.4.-",
+      "display": "Prostata ohne Lk"
     } ]
   } ],
   "usedCode": [ {

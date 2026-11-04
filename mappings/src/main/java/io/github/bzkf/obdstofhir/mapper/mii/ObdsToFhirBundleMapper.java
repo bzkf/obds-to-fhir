@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -37,6 +38,7 @@ import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Provenance;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -75,6 +77,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TNMMapper tnmMapper;
   private final ModulProstataMapper modulProstataMapper;
   private final ModulDarmMapper modulDarmMapper;
+  private final ModulMammaMapper modulMammaMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
@@ -125,6 +128,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TNMMapper tnmMapper,
       ModulProstataMapper modulProstataMapper,
       ModulDarmMapper modulDarmMapper,
+      ModulMammaMapper modulMammaMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
@@ -155,6 +159,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tnmMapper = tnmMapper;
     this.modulProstataMapper = modulProstataMapper;
     this.modulDarmMapper = modulDarmMapper;
+    this.modulMammaMapper = modulMammaMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
@@ -163,37 +168,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
-  /**
-   * Maps a list of OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles.
-   *
-   * @param groupedObds List of OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
-   */
-  public List<Bundle> map(List<OBDS> groupedObds) {
-
-    var bundles = new ArrayList<Bundle>();
-
+  public List<BundleMapperResult> map(List<OBDS> groupedObds) {
+    var results = new ArrayList<BundleMapperResult>();
     for (OBDS obds : groupedObds) {
-      bundles.addAll(map(obds));
+      results.addAll(map(obds));
     }
-    return bundles;
+    return results;
   }
 
-  /**
-   * Maps a single OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each
-   * patient in the OBDS data, creates a transaction bundle containing all their associated medical
-   * records.
-   *
-   * @param obds Single OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
-   */
-  public List<Bundle> map(OBDS obds) {
+  public List<BundleMapperResult> map(OBDS obds) {
 
-    var bundles = new ArrayList<Bundle>();
+    var results = new ArrayList<BundleMapperResult>();
 
     for (var obdsPatient : obds.getMengePatient().getPatient()) {
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);
+      var bundleProvenances = new ArrayList<Provenance>();
 
       if (StringUtils.hasText(patientIdRegex)) {
         var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
@@ -239,6 +229,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         continue;
       }
 
+      var patientAddedToBundle = false;
       if (createPatientResources
           && (!patientLookupResult.existsOnServer() || createPatientIfAlreadyExists)) {
         if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
@@ -262,10 +253,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         }
 
         addToBundle(bundle, patient);
+        patientAddedToBundle = true;
       }
 
       bundle.setId(patient.getId());
 
+      var isFirstMeldung = true;
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
@@ -394,17 +387,24 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (this.createProvenanceResources) {
           // the items in resourcesMappedFromMeldung are processed in the same order that
           // they were added to the list initially.
-          var targets =
-              resourcesMappedFromMeldung.stream().map(ReferenceUtils::createReferenceTo).toList();
-          var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
-          addToBundle(bundle, provenance);
+          var targets = new ArrayList<>(resourcesMappedFromMeldung);
+          // The Patient sits outside the per-Meldung loop; include it in the first
+          // Meldung's Provenance only to avoid repeating it across all Provenances.
+          if (isFirstMeldung && patientAddedToBundle) {
+            targets.addFirst(patient);
+          }
+          bundleProvenances.add(
+              provenanceMapper.map(
+                  targets.stream().map(ReferenceUtils::createReferenceTo).toList(),
+                  meldung.getMeldungID()));
         }
+        isFirstMeldung = false;
       }
 
-      bundles.add(bundle);
+      results.add(new BundleMapperResult(bundle, List.copyOf(bundleProvenances)));
       MDC.clear();
     }
-    return bundles;
+    return results;
   }
 
   private static List<Meldung> sortMeldungen(List<Meldung> meldungen) {
@@ -567,14 +567,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var primaryConditionReference = ReferenceUtils.createReferenceTo(primaryCondition);
 
     if (diagnose.getAllgemeinerLeistungszustand() != null) {
-      var leistungszustand =
+      mappedResources.addAll(
           leistungszustandMapper.map(
               diagnose.getAllgemeinerLeistungszustand(),
               meldung.getMeldungID(),
               meldung.getTumorzuordnung().getDiagnosedatum(),
               patientReference,
-              primaryConditionReference);
-      mappedResources.add(leistungszustand);
+              primaryConditionReference));
     }
 
     if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
@@ -670,6 +669,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulDarmResources);
     }
 
+    if (diagnose.getModulMamma() != null) {
+      var effective =
+          convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum())
+              .orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              diagnose.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
+    }
+
     mapWeitereKlassifikationen(
         diagnose.getMengeWeitereKlassifikation(),
         meldung.getMeldungID(),
@@ -747,14 +760,13 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     }
 
     if (verlauf.getAllgemeinerLeistungszustand() != null) {
-      var leistungszustand =
+      mappedResources.addAll(
           leistungszustandMapper.map(
               verlauf.getAllgemeinerLeistungszustand(),
               meldung.getMeldungID(),
               verlauf.getUntersuchungsdatumVerlauf(),
               patientReference,
-              primaryConditionReference);
-      mappedResources.add(leistungszustand);
+              primaryConditionReference));
     }
 
     if (verlauf.getHistologie() != null) {
@@ -819,6 +831,19 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               primaryConditionReference,
               verlauf.getUntersuchungsdatumVerlauf());
       mappedResources.addAll(modulDarmResources);
+    }
+
+    if (verlauf.getModulMamma() != null) {
+      var effective =
+          convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              verlauf.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
     }
 
     mapWeitereKlassifikationen(
@@ -977,6 +1002,18 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       mappedResources.addAll(modulDarmResources);
     }
 
+    if (op.getModulMamma() != null) {
+      var effective = convertObdsDatumToDateTimeType(op.getDatum()).orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              op.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
+    }
+
     return mappedResources;
   }
 
@@ -1057,6 +1094,22 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           modulDarmMapper.map(
               modulDarm, meldung.getMeldungID(), patientReference, primaryConditionReference);
       mappedResources.addAll(modulDarmResources);
+    }
+
+    if (pathologie.getModulMamma() != null) {
+      // the Pathologie section has no date of its own; the histology date is the closest
+      var effective =
+          Optional.ofNullable(pathologie.getHistologie())
+              .flatMap(h -> convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
+              .orElse(null);
+      var modulMammaResources =
+          modulMammaMapper.map(
+              pathologie.getModulMamma(),
+              meldung.getMeldungID(),
+              patientReference,
+              primaryConditionReference,
+              effective);
+      mappedResources.addAll(modulMammaResources);
     }
 
     mapWeitereKlassifikationen(

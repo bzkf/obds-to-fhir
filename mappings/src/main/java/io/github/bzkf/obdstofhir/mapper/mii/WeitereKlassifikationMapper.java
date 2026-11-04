@@ -103,8 +103,7 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
         var code = new CodeableConcept().setText(klassifikation.getName());
         observation.setCode(code);
 
-        var value = new CodeableConcept();
-        value.addCoding().setCode(klassifikation.getStadium());
+        var value = new CodeableConcept().setText(klassifikation.getStadium());
         observation.setValue(value);
       }
 

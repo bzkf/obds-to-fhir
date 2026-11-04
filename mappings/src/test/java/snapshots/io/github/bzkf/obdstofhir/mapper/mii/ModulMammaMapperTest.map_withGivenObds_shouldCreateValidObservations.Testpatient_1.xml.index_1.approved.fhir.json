@@ -1,0 +1,42 @@
+{
+  "resourceType": "Observation",
+  "id": "a5d963f6f31f382a0af1b06e16f2bf9b8f2d5c7ad74016fa66b38edd9ed3334e",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-estrogen" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-estrogen-observation-id",
+    "value": "10_1_DI_1-modul-mamma-rezeptorstatus-estrogen"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "40556-3",
+      "display": "Estrogen receptor Ag [Presence] in Tissue by Immune stain"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-01",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "LA6576-8",
+      "display": "Positive"
+    } ]
+  }
+}

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,9 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       // Meta
       observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoHistologieIcdo3());
 
+      // Category
+      observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
+
       var identifierValue = histologie.getHistologieID();
       if (!StringUtils.hasText(identifierValue)) {
         LOG.debug(
@@ -127,8 +131,8 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
       var coding =
           new Coding()
               .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-              .setCode(morph.getCode())
-              .setVersion(morph.getVersion());
+              // no version: the oBDS ICD-O version is not a version of the ICD-O-3 CodeSystem
+              .setCode(morph.getCode());
       var value = new CodeableConcept(coding).setText(histologie.getMorphologieFreitext());
       observation.setValue(value);
 

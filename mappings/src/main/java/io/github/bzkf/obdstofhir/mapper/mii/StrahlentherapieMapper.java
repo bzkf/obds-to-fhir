@@ -91,7 +91,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
   private record StrahlentherapieBestrahlung(
       ApplikationsartCode applikationsart,
-      String zielgebiet,
+      Coding zielgebiet,
       SeiteZielgebietTyp seiteZielgebiet,
       String strahlenart,
       StrahlendosisTyp einzeldosis,
@@ -281,12 +281,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
     // bodySite
     if (bestrahlungsData.zielgebiet() != null) {
-      var bodySiteCoding =
-          new Coding()
-              .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet())
-              .setCode(bestrahlungsData.zielgebiet());
-
-      procedure.addBodySite(new CodeableConcept(bodySiteCoding));
+      procedure.addBodySite(new CodeableConcept(bestrahlungsData.zielgebiet()));
     }
 
     // this ensures that if the zielgebiet is unset and only the seiteZielgebiet is
@@ -541,14 +536,46 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     return strahlenart != null ? strahlenart.value() : null;
   }
 
-  private static String getZielgebiet(ZielgebietTyp zielgebiet) {
+  private static Coding getZielgebiet(ZielgebietTyp zielgebiet) {
     if (zielgebiet == null) {
       return null;
     }
 
-    return zielgebiet.getCodeVersion2014() != null
-        ? zielgebiet.getCodeVersion2014()
-        : zielgebiet.getCodeVersion2021();
+    if (zielgebiet.getCodeVersion2014() != null) {
+      var coding =
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet2014.fromValue(
+              zielgebiet.getCodeVersion2014());
+      if (coding.isPresent()) {
+        return coding.get().coding();
+      } else {
+        LOG.warn(
+            "Unknown Zielgebiet Version 2014: {}. "
+                + "Setting the code nonetheless - FHIR validation will fail.",
+            zielgebiet.getCodeVersion2014());
+        return new Coding()
+            .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet2014())
+            .setCode(zielgebiet.getCodeVersion2014());
+      }
+    }
+
+    if (zielgebiet.getCodeVersion2021() != null) {
+      var coding =
+          Onkologie.CodeSystems.MiiCsOnkoStrahlentherapieZielgebiet.fromValue(
+              zielgebiet.getCodeVersion2021());
+      if (coding.isPresent()) {
+        return coding.get().coding();
+      } else {
+        LOG.warn(
+            "Unknown Zielgebiet Version 2021: {}. "
+                + "Setting the code nonetheless - FHIR validation will fail.",
+            zielgebiet.getCodeVersion2021());
+        return new Coding()
+            .setSystem(Onkologie.CodeSystems.miiCsOnkoStrahlentherapieZielgebiet())
+            .setCode(zielgebiet.getCodeVersion2021());
+      }
+    }
+
+    return null;
   }
 
   private static ApplikationsartCode mapApplikationsartToCode(Applikationsart applikationsart) {

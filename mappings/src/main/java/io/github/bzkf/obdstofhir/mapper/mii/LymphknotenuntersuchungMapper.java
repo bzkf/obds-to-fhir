@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -138,11 +139,7 @@ public class LymphknotenuntersuchungMapper extends ObdsToFhirMapper {
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     // Category
-    var laboratory =
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getObservationCategory(), "laboratory", "Laboratory"));
-    observation.setCategory(List.of(laboratory));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     // Code
     var code =

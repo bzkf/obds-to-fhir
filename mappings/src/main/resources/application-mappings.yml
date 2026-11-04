@@ -1,5 +1,5 @@
 # @ignored
-lib-version: 3.4.1
+lib-version: 3.8.0
 
 fhir:
   codings:
@@ -18,7 +18,7 @@ fhir:
   extensions:
     condition-asserted-date: "http://hl7.org/fhir/StructureDefinition/condition-assertedDate"
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
-    ordinal-value: "http://hl7.org/fhir/StructureDefinition/ordinalValue"
+    item-weight: "http://hl7.org/fhir/StructureDefinition/itemWeight"
     procedure-method: "http://hl7.org/fhir/StructureDefinition/procedure-method"
   systems:
     identifiers:
@@ -38,6 +38,7 @@ fhir:
       systemische-therapie-medication-statement-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-statement-id"
       systemische-therapie-medication-id: "${fhir.systems.identifiers.base-url}/systemische-therapie-medication-id"
       allgemeiner-leistungszustand-ecog-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-ecog-id"
+      allgemeiner-leistungszustand-karnofsky-observation-id: "${fhir.systems.identifiers.base-url}/allgemeiner-leistungszustand-karnofsky-id"
       fernmetastasen-observation-id: "${fhir.systems.identifiers.base-url}/fernmetastasen-observation-id"
       residualstatus-observation-id: "${fhir.systems.identifiers.base-url}/residualstatus-observation-id"
       histologiebefund-diagnostic-report-id: "${fhir.systems.identifiers.base-url}/histologiebefund-diagnostic-report-id"
@@ -76,6 +77,11 @@ fhir:
       krk-anastomoseninsuffizienz-observation-id: "${fhir.systems.identifiers.base-url}/krk-anastomoseninsuffizienz-observation-id"
       krk-stoma-markierung-procedure-id: "${fhir.systems.identifiers.base-url}/krk-stoma-markierung-procedure-id"
       asa-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/asa-klassifikation-observation-id"
+      mamma-menopausenstatus-observation-id: "${fhir.systems.identifiers.base-url}/mamma-menopausenstatus-observation-id"
+      mamma-rezeptorstatus-estrogen-observation-id: "${fhir.systems.identifiers.base-url}/mamma-rezeptorstatus-estrogen-observation-id"
+      mamma-rezeptorstatus-progesteron-observation-id: "${fhir.systems.identifiers.base-url}/mamma-rezeptorstatus-progesteron-observation-id"
+      mamma-her2neu-status-observation-id: "${fhir.systems.identifiers.base-url}/mamma-her2neu-status-observation-id"
+      tumorgroesse-observation-id: "${fhir.systems.identifiers.base-url}/tumorgroesse-observation-id"
       obds-meldung-id: "${fhir.systems.identifiers.base-url}/obds-meldung-id"
       provenance-id: "${fhir.systems.identifiers.base-url}/provenance-id"
       obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"
@@ -92,6 +98,7 @@ fhir:
     icdo3Morphologie: "http://terminology.hl7.org/CodeSystem/icd-o-3"
 
     icd10gm: "http://fhir.de/CodeSystem/bfarm/icd-10-gm"
+    icd10who: "http://hl7.org/fhir/sid/icd-10"
     snomed: "http://snomed.info/sct"
     ops: "http://fhir.de/CodeSystem/bfarm/ops"
     ucum: "http://unitsofmeasure.org"

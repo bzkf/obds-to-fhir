@@ -506,11 +506,7 @@ public class TNMMapper extends ObdsToFhirMapper {
     dateOptional.ifPresent(observation::setEffective);
 
     if (tnm.getUICCStadium() != null) {
-      CodeableConcept observationValueUiccStadium =
-          getObservationValueUiccStadium(tnm.getUICCStadium());
-      if (observationValueUiccStadium != null) {
-        observation.setValue(observationValueUiccStadium);
-      }
+      observation.setValue(getObservationValueUiccStadium(tnm.getUICCStadium()));
     }
 
     observation.setHasMember(memberObservations);
@@ -547,49 +543,17 @@ public class TNMMapper extends ObdsToFhirMapper {
   }
 
   private CodeableConcept getObservationValueUiccStadium(String uiccStadium) {
+    var coding =
+        Onkologie.CodeSystems.MiiCsOnkoTnmUicc.fromValue(uiccStadium)
+            .map(value -> value.coding())
+            .orElseGet(
+                () -> {
+                  LOG.warn("Unknown UICC stadium {}, still using code as-is.", uiccStadium);
+                  return new Coding()
+                      .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc())
+                      .setCode(uiccStadium);
+                });
 
-    var coding = new Coding().setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc());
-
-    return switch (uiccStadium) {
-      case "okk" -> new CodeableConcept(coding.setCode("okk").setDisplay("Stadium X"));
-      case "0" -> new CodeableConcept(coding.setCode("0").setDisplay("Stadium 0"));
-      case "0a" -> new CodeableConcept(coding.setCode("0a").setDisplay("Stadium 0a"));
-      case "0is" -> new CodeableConcept(coding.setCode("0is").setDisplay("Stadium 0is"));
-      case "I" -> new CodeableConcept(coding.setCode("I").setDisplay("Stadium I"));
-      case "IA" -> new CodeableConcept(coding.setCode("IA").setDisplay("Stadium IA"));
-      case "IIID" -> new CodeableConcept(coding.setCode("IIID").setDisplay("Stadium IIID"));
-      case "IVA1" -> new CodeableConcept(coding.setCode("IVA1").setDisplay("Stadium IVA1"));
-      case "IVA2" -> new CodeableConcept(coding.setCode("IVA2").setDisplay("Stadium IVA2"));
-      case "IA1" -> new CodeableConcept(coding.setCode("IA1").setDisplay("Stadium IA1"));
-      case "IA2" -> new CodeableConcept(coding.setCode("IA2").setDisplay("Stadium IA2"));
-      case "IA3" -> new CodeableConcept(coding.setCode("IA3").setDisplay("Stadium IA3"));
-      case "IB" -> new CodeableConcept(coding.setCode("IB").setDisplay("Stadium IB"));
-      case "IB1" -> new CodeableConcept(coding.setCode("IB1").setDisplay("Stadium IB1"));
-      case "IB2" -> new CodeableConcept(coding.setCode("IB2").setDisplay("Stadium IB2"));
-      case "IC" -> new CodeableConcept(coding.setCode("IC").setDisplay("Stadium IC"));
-      case "IS" -> new CodeableConcept(coding.setCode("IS").setDisplay("Stadium IS"));
-      case "II" -> new CodeableConcept(coding.setCode("II").setDisplay("Stadium II"));
-      case "IIA" -> new CodeableConcept(coding.setCode("IIA").setDisplay("Stadium IIA"));
-      case "IIA1" -> new CodeableConcept(coding.setCode("IIA1").setDisplay("Stadium IIA1"));
-      case "IIA2" -> new CodeableConcept(coding.setCode("IIA2").setDisplay("Stadium IIA2"));
-      case "IIB" -> new CodeableConcept(coding.setCode("IIB").setDisplay("Stadium IIB"));
-      case "IIC" -> new CodeableConcept(coding.setCode("IIC").setDisplay("Stadium IIC"));
-      case "III" -> new CodeableConcept(coding.setCode("III").setDisplay("Stadium III"));
-      case "IIIA" -> new CodeableConcept(coding.setCode("IIIA").setDisplay("Stadium IIIA"));
-      case "IIIA1" -> new CodeableConcept(coding.setCode("IIIA1").setDisplay("Stadium IIIA1"));
-      case "IIIA2" -> new CodeableConcept(coding.setCode("IIIA2").setDisplay("Stadium IIIA2"));
-      case "IIIB" -> new CodeableConcept(coding.setCode("IIIB").setDisplay("Stadium IIIB"));
-      case "IIIC" -> new CodeableConcept(coding.setCode("IIIC").setDisplay("Stadium IIIC"));
-      case "IIIC1" -> new CodeableConcept(coding.setCode("IIIC1").setDisplay("Stadium IIIC1"));
-      case "IIIC2" -> new CodeableConcept(coding.setCode("IIIC2").setDisplay("Stadium IIIC2"));
-      case "IV" -> new CodeableConcept(coding.setCode("IV").setDisplay("Stadium IV"));
-      case "IVA" -> new CodeableConcept(coding.setCode("IVA").setDisplay("Stadium IVA"));
-      case "IVB" -> new CodeableConcept(coding.setCode("IVB").setDisplay("Stadium IVB"));
-      case "IVC" -> new CodeableConcept(coding.setCode("IVC").setDisplay("Stadium IVC"));
-      default -> {
-        LOG.warn("unkown uicc stadium {}", uiccStadium);
-        yield null;
-      }
-    };
+    return new CodeableConcept(coding);
   }
 }

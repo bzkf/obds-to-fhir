@@ -40,6 +40,7 @@ import org.springframework.context.annotation.Import;
   GleasonScoreMapper.class,
   ModulProstataMapper.class,
   ModulDarmMapper.class,
+  ModulMammaMapper.class,
   WeitereKlassifikationMapper.class,
   ErstdiagnoseEvidenzListMapper.class,
   NebenwirkungMapper.class,

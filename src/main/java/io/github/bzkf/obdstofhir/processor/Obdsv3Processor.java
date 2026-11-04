@@ -9,6 +9,7 @@ import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
@@ -23,13 +24,17 @@ import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Condition;
+import org.miracum.kafka.serializers.KafkaFhirSerde;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @ConditionalOnProperty(
@@ -46,6 +51,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private final ObdsMapper obdsMapper;
 
   private final WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig;
+
+  @Value("${fhir.mappings.create-provenance-resources.topic:fhir.obds.provenance}")
+  private String provenanceTopic;
 
   protected Obdsv3Processor(
       FhirProperties fhirProperties,
@@ -117,8 +125,16 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
                     Serdes.serdeFrom(new Obdsv3Serializer(), new Obdsv3Deserializer())));
       }
 
-      return stream
-          .flatMapValues(this.getMeldungExportListToBundleListMapper())
+      var resultStream = stream.flatMapValues(this.getMeldungExportListToBundleListMapper());
+
+      if (StringUtils.hasText(provenanceTopic)) {
+        resultStream
+            .<IBaseResource>flatMapValues(result -> result.provenances())
+            .to(provenanceTopic, Produced.with(Serdes.String(), new KafkaFhirSerde()));
+      }
+
+      return resultStream
+          .mapValues(BundleMapperResult::bundle)
           .filter((key, bundle) -> bundle != null)
           .selectKey((key, bundle) -> patientBundleKeySelector(bundle));
     };
@@ -202,7 +218,7 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return meldung.getObds().getMengePatient().getPatient().getFirst().getPatientID();
   }
 
-  public ValueMapper<List<MeldungExportListV3>, List<Bundle>>
+  public ValueMapper<List<MeldungExportListV3>, List<BundleMapperResult>>
       getMeldungExportListToBundleListMapper() {
     return meldungGroupedByPatientIdAndTumorId -> {
       List<OBDS> tumorObds =

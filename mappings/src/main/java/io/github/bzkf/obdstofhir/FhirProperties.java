@@ -39,7 +39,7 @@ public class FhirProperties {
   @Data
   public static class FhirExtensions {
     private String conditionAssertedDate;
-    private String ordinalValue;
+    private String itemWeight;
     private String conditionOccurredFollowing;
     private String procedureMethod;
   }
@@ -58,6 +58,7 @@ public class FhirProperties {
     private String studienteilnahmeObservationId;
     private String lymphknotenuntersuchungObservationId;
     private String allgemeinerLeistungszustandEcogObservationId;
+    private String allgemeinerLeistungszustandKarnofskyObservationId;
     private String genetischeVarianteObservationId;
     private String tumorkonferenzCarePlanId;
     private String tnmGroupingObservationId;
@@ -100,6 +101,11 @@ public class FhirProperties {
     private String krkAnastomoseninsuffizienzObservationId;
     private String krkStomaMarkierungProcedureId;
     private String asaKlassifikationObservationId;
+    private String mammaMenopausenstatusObservationId;
+    private String mammaRezeptorstatusEstrogenObservationId;
+    private String mammaRezeptorstatusProgesteronObservationId;
+    private String mammaHer2neuStatusObservationId;
+    private String tumorgroesseObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;
@@ -129,6 +135,7 @@ public class FhirProperties {
     private String fMLokalisationCS;
     private String jnuCs;
     private String icd10gm;
+    private String icd10who;
     private String adtSeitenlokalisation;
     private String snomed;
     private String opIntention;
