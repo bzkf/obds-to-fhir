@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.Observation.ObservationStatus;
@@ -109,7 +108,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable XMLGregorianCalendar referenceDate) {
+      @Nullable DateTimeType referenceDate) {
     Objects.requireNonNull(modulProstata.getGleasonScore());
 
     verifyReference(patient, ResourceType.Patient);
@@ -137,7 +136,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition,
       @NonNull List<Reference> derivedFromReferences,
-      @Nullable XMLGregorianCalendar referenceDate) {
+      @Nullable DateTimeType referenceDate) {
     var observation = new Observation();
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateGleasonGradeGroup());
 
@@ -147,7 +146,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
     observation.setDerivedFrom(derivedFromReferences);
 
-    convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
+    observation.setEffective(referenceDate);
 
     var identifier =
         new Identifier()
@@ -273,7 +272,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable XMLGregorianCalendar referenceDate) {
+      @Nullable DateTimeType referenceDate) {
     var results = new ArrayList<Observation>();
     var observation = new Observation();
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateGleasonPatterns());
@@ -283,7 +282,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.setStatus(ObservationStatus.FINAL);
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
-    convertObdsDatumToDateTimeType(referenceDate).ifPresent(observation::setEffective);
+    observation.setEffective(referenceDate);
 
     if (modulProstata.getAnlassGleasonScore() != null) {
       var coding =

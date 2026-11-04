@@ -15,7 +15,7 @@ plugins {
 }
 
 group = 'io.github.bzkf'
-version = '3.8.0'
+version = '3.8.1'
 
 dependencyManagement {
   imports {
@@ -46,6 +46,9 @@ dependencies {
     api 'io.github.bzkf:obds2-to-obds3:0.1.24'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.10.0'
     api 'io.github.diz-uker:to-fhir:0.2.9'
+    // api so the modules depending on this one (e.g. the root app's tests) can use the same
+    // version of the profile/CodeSystem constants
+    api 'io.github.diz-uker:fhir-ig-constants:0.2.9'
     api 'org.slf4j:slf4j-api:2.0.18'
     api 'org.apache.commons:commons-csv:1.14.1'
 
