@@ -39,6 +39,7 @@ import org.springframework.context.annotation.Import;
   TNMMapper.class,
   GleasonScoreMapper.class,
   ModulProstataMapper.class,
+  ModulMammaMapper.class,
   WeitereKlassifikationMapper.class,
   ErstdiagnoseEvidenzListMapper.class,
   NebenwirkungMapper.class,
