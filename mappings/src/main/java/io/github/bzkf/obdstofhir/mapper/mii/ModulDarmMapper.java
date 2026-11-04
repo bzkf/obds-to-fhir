@@ -138,11 +138,6 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     return results;
   }
 
-  private static CodeableConcept dataAbsentReason(@NonNull DataAbsentReason reason) {
-    return new CodeableConcept(
-        new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
-  }
-
   /**
    * Zahl_3stellig_Typ fields (e.g. {@code RektumAbstandAnokutanlinie}) allow either a 1-3 digit
    * number or the literal {@code "U"} (unbekannt), so a quantity value can't always be derived.

@@ -9,6 +9,12 @@
     "reference": "Procedure/d384c76caaba134f7c500069474843e53f9fd0ae52f8bebd4bd30e03fc831a56"
   }, {
     "reference": "Observation/820a4d15bc65ede836e0b68922b75855e9ab63f2ce4b33c39e8796096107b357"
+  }, {
+    "reference": "Observation/20ca931b8ab55edf17b6b71bc57975de55c16e3db328e5128f04560b8a2805f0"
+  }, {
+    "reference": "Observation/d13b7b15bf4e5d439615b0af8cf2add309d8d1abdfab369529e294b9114667b8"
+  }, {
+    "reference": "Observation/f8411c1eaae56d22cf5f0c1f0ee3c8968e34b77a98aed2fbc161a4c0b101fd23"
   } ],
   "occurredDateTime": "2000-01-01T11:11:11Z",
   "recorded": "2000-01-01T11:11:11Z",

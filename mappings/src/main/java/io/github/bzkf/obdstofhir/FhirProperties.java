@@ -106,6 +106,10 @@ public class FhirProperties {
     private String mammaRezeptorstatusProgesteronObservationId;
     private String mammaHer2neuStatusObservationId;
     private String tumorgroesseObservationId;
+    private String melanomSicherheitsabstandObservationId;
+    private String melanomBreslowTiefeObservationId;
+    private String melanomLdhObservationId;
+    private String melanomUlzerationObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Schema_Version="3.0.1" xsi:schemaLocation="http://www.basisdatensatz.de/oBDS/XML https://basisdatensatz.de/xml/oBDS_v3.0.1.xsd">
+  <Absender Absender_ID="13" Software_ID="1" Software_Version="1">
+    <Bezeichnung>Test Absender</Bezeichnung>
+    <Ansprechpartner>Andreas Ansprecher</Ansprechpartner>
+    <Anschrift>Kontaktstraße 1a</Anschrift>
+    <Telefon>+49 (0)69 123456-99</Telefon>
+    <EMail>andreas.ansprecher@testarzt.de</EMail>
+  </Absender>
+  <Meldedatum>2024-02-16</Meldedatum>
+  <Menge_Patient>
+    <Patient Patient_ID="90">
+      <Patienten_Stammdaten>
+        <Versichertendaten_GKV>
+          <IKNR>101234567</IKNR>
+          <GKV_Versichertennummer>M900000017</GKV_Versichertennummer>
+        </Versichertendaten_GKV>
+        <Nachname>Mustermann</Nachname>
+        <Vornamen>Moritz</Vornamen>
+        <Geschlecht>M</Geschlecht>
+        <Geburtsdatum Datumsgenauigkeit="E">1965-07-21</Geburtsdatum>
+        <Adresse>
+          <Strasse>Sonnenweg</Strasse>
+          <Hausnummer>3</Hausnummer>
+          <Land>DE</Land>
+          <PLZ>91052</PLZ>
+          <Ort>Erlangen</Ort>
+        </Adresse>
+      </Patienten_Stammdaten>
+      <Menge_Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="DIA_90101">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="901">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-03-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Malignes Melanom des Rumpfes</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C44.5</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Rücken</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Malignes_Melanom>
+              <Tumordicke>0.85</Tumordicke>
+              <LDH>180</LDH>
+              <Ulzeration>N</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </Diagnose>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="OP_90102">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="901">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-03-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <OP OP_ID="901">
+            <Intention>K</Intention>
+            <Datum>2021-03-24</Datum>
+            <Menge_OPS>
+              <OPS>
+                <Code>5-894.1</Code>
+                <Version>2021</Version>
+              </OPS>
+            </Menge_OPS>
+            <Residualstatus>
+              <Lokale_Beurteilung_Residualstatus>R1</Lokale_Beurteilung_Residualstatus>
+              <Gesamtbeurteilung_Residualstatus>R1</Gesamtbeurteilung_Residualstatus>
+            </Residualstatus>
+            <Komplikationen>
+              <Komplikation_nein_oder_unbekannt>N</Komplikation_nein_oder_unbekannt>
+            </Komplikationen>
+            <Modul_Malignes_Melanom>
+              <Sicherheitsabstand_Primaertumor>0</Sicherheitsabstand_Primaertumor>
+              <Tumordicke>1.10</Tumordicke>
+              <LDH>420</LDH>
+              <Ulzeration>J</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </OP>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="VER_90103">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="901">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-03-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Verlauf Verlauf_ID="901">
+            <Meldeanlass>statusaenderung</Meldeanlass>
+            <Untersuchungsdatum_Verlauf>2021-09-01</Untersuchungsdatum_Verlauf>
+            <Gesamtbeurteilung_Tumorstatus>K</Gesamtbeurteilung_Tumorstatus>
+            <Verlauf_Lokaler_Tumorstatus>K</Verlauf_Lokaler_Tumorstatus>
+            <Verlauf_Tumorstatus_Lymphknoten>K</Verlauf_Tumorstatus_Lymphknoten>
+            <Verlauf_Tumorstatus_Fernmetastasen>K</Verlauf_Tumorstatus_Fernmetastasen>
+            <Allgemeiner_Leistungszustand>1</Allgemeiner_Leistungszustand>
+            <Modul_Malignes_Melanom>
+              <LDH>1050</LDH>
+              <Ulzeration>U</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </Verlauf>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="PAT_90104">
+          <Meldebegruendung>D</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="901">
+            <Primaertumor_ICD>
+              <Code>C43.5</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="E">2021-03-10</Diagnosedatum>
+            <Seitenlokalisation>T</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Pathologie>
+            <Primaertumor_Diagnosetext>Malignes Melanom des Rumpfes</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C44.5</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Primaertumor_Topographie_Freitext>Rücken</Primaertumor_Topographie_Freitext>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Histologie Histologie_ID="901">
+              <Tumor_Histologiedatum Datumsgenauigkeit="T">2021-03-01</Tumor_Histologiedatum>
+              <Histologie_EinsendeNr>H2103/2021</Histologie_EinsendeNr>
+              <Morphologie_ICD_O>
+                <Code>8720/3</Code>
+                <Version>33</Version>
+              </Morphologie_ICD_O>
+              <Grading>T</Grading>
+            </Histologie>
+            <Einsender>
+              <unstrukturiert>
+                <Adresse1>Testeinsender</Adresse1>
+              </unstrukturiert>
+            </Einsender>
+            <Befundtext>Nachresektat, Sicherheitsabstand nicht zu beurteilen.</Befundtext>
+            <Modul_Malignes_Melanom>
+              <Sicherheitsabstand_Primaertumor>-1</Sicherheitsabstand_Primaertumor>
+              <Tumordicke>1.25</Tumordicke>
+              <Ulzeration>U</Ulzeration>
+            </Modul_Malignes_Melanom>
+          </Pathologie>
+        </Meldung>
+        <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="DIA_90201">
+          <Meldebegruendung>I</Meldebegruendung>
+          <Eigene_Leistung>J</Eigene_Leistung>
+          <Tumorzuordnung Tumor_ID="902">
+            <Primaertumor_ICD>
+              <Code>C43.7</Code>
+              <Version>10 2021 GM</Version>
+            </Primaertumor_ICD>
+            <Diagnosedatum Datumsgenauigkeit="V">2019-01-01</Diagnosedatum>
+            <Seitenlokalisation>L</Seitenlokalisation>
+            <Morphologie_ICD_O>
+              <Code>8720/3</Code>
+              <Version>33</Version>
+            </Morphologie_ICD_O>
+          </Tumorzuordnung>
+          <Diagnose>
+            <Primaertumor_Diagnosetext>Malignes Melanom des linken Unterschenkels</Primaertumor_Diagnosetext>
+            <Primaertumor_Topographie_ICD_O>
+              <Code>C44.7</Code>
+              <Version>33</Version>
+            </Primaertumor_Topographie_ICD_O>
+            <Diagnosesicherung>7</Diagnosesicherung>
+            <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Malignes_Melanom>
+              <LDH>230</LDH>
+            </Modul_Malignes_Melanom>
+          </Diagnose>
+        </Meldung>
+      </Menge_Meldung>
+    </Patient>
+  </Menge_Patient>
+  <Menge_Melder>
+    <Melder ID="123456/abcDEF_:#">
+      <Ident_Nummern>
+        <IKNR>191234567</IKNR>
+      </Ident_Nummern>
+      <KH_Abt_Station_Praxis>Krankenhaus</KH_Abt_Station_Praxis>
+      <Arztname>Dr. Mackie Messer</Arztname>
+      <Anschrift>Soho</Anschrift>
+      <PLZ>12345</PLZ>
+      <Ort>London</Ort>
+      <Bankname>Arztbank</Bankname>
+      <Kontoinhaber>Dr. Mackie Messer</Kontoinhaber>
+      <BIC>12345678987</BIC>
+      <IBAN>DE21345678912345678912</IBAN>
+    </Melder>
+  </Menge_Melder>
+</oBDS>

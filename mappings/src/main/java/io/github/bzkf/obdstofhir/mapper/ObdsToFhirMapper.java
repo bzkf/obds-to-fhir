@@ -8,12 +8,15 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import de.basisdatensatz.obds.v3.TumorICDTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
+import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -56,6 +59,46 @@ public abstract class ObdsToFhirMapper {
             fhirProperties.getSystems().getObservationCategory(),
             category.toCode(),
             category.getDisplay()));
+  }
+
+  /**
+   * Creates an Observation in the shape the MII Onkologie module profiles share: the profile, a
+   * final status, the patient as subject, the primary Condition as focus, an identifier the id is
+   * derived from and, when known, the effective date.
+   */
+  protected Observation createBaseObservation(
+      @NonNull String profile,
+      @NonNull String identifierSystem,
+      @NonNull String identifierValue,
+      @NonNull Reference patient,
+      @NonNull Reference condition,
+      @Nullable DateTimeType effective) {
+    var observation = new Observation();
+    observation.getMeta().addProfile(profile);
+    observation.setSubject(patient);
+    observation.setStatus(Observation.ObservationStatus.FINAL);
+    observation.addFocus(condition);
+
+    var identifier =
+        new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
+    observation.addIdentifier(identifier);
+    observation.setId(IdUtils.fromIdentifier(identifier));
+
+    if (effective != null) {
+      observation.setEffective(effective);
+    }
+
+    return observation;
+  }
+
+  /**
+   * {@code Observation.dataAbsentReason} takes a coding, while the to-fhir {@link DataAbsentReason}
+   * helpers only build the extension.
+   */
+  protected static CodeableConcept dataAbsentReason(
+      org.hl7.fhir.r4.model.codesystems.DataAbsentReason reason) {
+    return new CodeableConcept(
+        new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
   }
 
   /**
