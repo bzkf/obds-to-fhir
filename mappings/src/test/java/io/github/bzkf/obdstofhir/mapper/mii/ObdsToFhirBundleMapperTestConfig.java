@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Import;
   ModulProstataMapper.class,
   ModulDarmMapper.class,
   ModulMammaMapper.class,
+  ModulMalignesMelanomMapper.class,
   WeitereKlassifikationMapper.class,
   ErstdiagnoseEvidenzListMapper.class,
   NebenwirkungMapper.class,

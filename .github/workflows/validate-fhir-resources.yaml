@@ -21,12 +21,20 @@ env:
   # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
   # seems like a false positive since the sample at <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html>
   # does the same.
+  # ModulMalignesMelanomMapperTest:
+  # error: Instance failed constraint mii-onko-melanom-sicherheitsabstand-1 "Entweder muss valueQuantity oder dataAbsentReason vorhanden sein"
+  # the invariant's expression is `valueQuantity.exists() or dataAbsentReason.exists()`, but FHIRPath labels a
+  # choice element by its name without the [x] suffix (<https://hl7.org/fhir/R4/fhirpath.html>, "Polymorphism in
+  # FHIR"), so every Observation that carries a measured margin fails it and only the dataAbsentReason case passes.
+  # Remove once the IG corrects the expression, see
+  # <https://github.com/medizininformatik-initiative/kerndatensatzmodul-onkologie/issues/341>.
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
       "ModulProstataMapperTest",
       "SystemischeTherapieMedicationStatementMapperTest",
-      "ProvenanceMapperTest"
+      "ProvenanceMapperTest",
+      "ModulMalignesMelanomMapperTest"
     ]
 
 jobs:

@@ -1922,6 +1922,136 @@
       "url": "Observation/13eb2e254799582f4989eb8cc69b1f55b7706e8c1bce22d02feac6c1ce313b54"
     }
   }, {
+    "fullUrl": "Observation/cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-sicherheitsabstand" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-sicherheitsabstand-observation-id",
+        "value": "PAT_70104-modul-melanom-sicherheitsabstand"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "396511007",
+          "display": "Distance of in situ melanoma from closest lateral surgical margin in excised specimen of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueQuantity": {
+        "value": 10,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c"
+    }
+  }, {
+    "fullUrl": "Observation/551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-breslow-tiefe" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-breslow-tiefe-observation-id",
+        "value": "PAT_70104-modul-melanom-breslow-tiefe"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "106243009",
+          "display": "Breslow depth staging for melanoma of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueQuantity": {
+        "value": 1.4,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e"
+    }
+  }, {
+    "fullUrl": "Observation/753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-ulzeration" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-ulzeration-observation-id",
+        "value": "PAT_70104-modul-melanom-ulzeration"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "6270001000004106",
+          "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-melanom-ulzeration",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834"
+    }
+  }, {
     "fullUrl": "DiagnosticReport/0ab8291007f01a691b1499f4ee01ececd2e1cee22737198aeabc408e4afb45bb",
     "resource": {
       "resourceType": "DiagnosticReport",

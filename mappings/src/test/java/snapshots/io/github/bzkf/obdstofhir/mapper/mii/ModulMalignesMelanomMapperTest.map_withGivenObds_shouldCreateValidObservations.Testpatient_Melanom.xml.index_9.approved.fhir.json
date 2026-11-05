@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "id": "5896ef25ebb66c8cd157867c3b5502e2be10ebb06bdb2446d9110d2cef9d228e",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-sicherheitsabstand" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-sicherheitsabstand-observation-id",
+    "value": "PAT_90104-modul-melanom-sicherheitsabstand"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "396511007",
+      "display": "Distance of in situ melanoma from closest lateral surgical margin in excised specimen of skin (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-03",
+  "dataAbsentReason": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+      "code": "unknown",
+      "display": "Unknown"
+    } ]
+  }
+}

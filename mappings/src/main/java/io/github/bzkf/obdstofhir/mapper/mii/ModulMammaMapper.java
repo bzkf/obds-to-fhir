@@ -6,7 +6,6 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,31 +110,6 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
     }
 
     return results;
-  }
-
-  private Observation createBaseObservation(
-      @NonNull String profile,
-      @NonNull String identifierSystem,
-      @NonNull String identifierValue,
-      @NonNull Reference patient,
-      @NonNull Reference condition,
-      @Nullable DateTimeType effective) {
-    var observation = new Observation();
-    observation.getMeta().addProfile(profile);
-    observation.setSubject(patient);
-    observation.setStatus(Observation.ObservationStatus.FINAL);
-    observation.addFocus(condition);
-
-    var identifier =
-        new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
-
-    return observation;
   }
 
   private Observation mapMenopausenstatus(
@@ -346,11 +320,8 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
             .setText(codeText));
 
     if ("U".equals(rawValue)) {
-      // the to-fhir DataAbsentReason helpers only build the extension, this needs the coding
-      var unknown = org.hl7.fhir.r4.model.codesystems.DataAbsentReason.UNKNOWN;
       observation.setDataAbsentReason(
-          new CodeableConcept(
-              new Coding(unknown.getSystem(), unknown.toCode(), unknown.getDisplay())));
+          dataAbsentReason(org.hl7.fhir.r4.model.codesystems.DataAbsentReason.UNKNOWN));
       return observation;
     }
 
