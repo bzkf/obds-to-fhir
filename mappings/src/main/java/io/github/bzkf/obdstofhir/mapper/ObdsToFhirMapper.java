@@ -9,6 +9,7 @@ import de.basisdatensatz.obds.v3.TumorICDTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -23,7 +24,6 @@ import org.springframework.util.StringUtils;
 
 public abstract class ObdsToFhirMapper {
   protected final FhirProperties fhirProperties;
-  static String idHashAlgorithm;
 
   protected static final Slugify slugifier =
       Slugify.builder().lowerCase(false).locale(Locale.GERMAN).build();
@@ -63,32 +63,60 @@ public abstract class ObdsToFhirMapper {
 
   /**
    * Creates an Observation in the shape the MII Onkologie module profiles share: the profile, a
-   * final status, the patient as subject, the primary Condition as focus, an identifier the id is
-   * derived from and, when known, the effective date.
+   * final status, the patient as subject, the focus (usually the primary Condition), an identifier
+   * the id is derived from and, when known, the effective date.
    */
   protected Observation createBaseObservation(
       @NonNull String profile,
       @NonNull String identifierSystem,
       @NonNull String identifierValue,
       @NonNull Reference patient,
-      @NonNull Reference condition,
+      @Nullable Reference focus,
       @Nullable DateTimeType effective) {
     var observation = new Observation();
     observation.getMeta().addProfile(profile);
     observation.setSubject(patient);
     observation.setStatus(Observation.ObservationStatus.FINAL);
-    observation.addFocus(condition);
+    setIdentifierAndId(observation, identifierSystem, identifierValue);
 
-    var identifier =
-        new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    if (focus != null) {
+      observation.addFocus(focus);
+    }
 
     if (effective != null) {
       observation.setEffective(effective);
     }
 
     return observation;
+  }
+
+  /**
+   * Adds an identifier with the slugified value to the resource and derives the resource's id from
+   * it.
+   *
+   * @param resource a resource with an {@code identifier} element
+   */
+  protected static void setIdentifierAndId(
+      @NonNull Resource resource, @NonNull String system, @NonNull String value) {
+    var identifier = new Identifier().setSystem(system).setValue(slugifier.slugify(value));
+    resource.setProperty("identifier", identifier);
+    resource.setId(IdUtils.fromIdentifier(identifier));
+  }
+
+  /** A dateTime for elements a profile requires, but whose value isn't known. */
+  protected static DateTimeType absentDateTime() {
+    var absentDateTime = new DateTimeType();
+    absentDateTime.addExtension(DataAbsentReason.unknown());
+    return absentDateTime;
+  }
+
+  /** A Quantity whose unit is also its UCUM code. */
+  protected Quantity ucumQuantity(@NonNull BigDecimal value, @NonNull String unit) {
+    return new Quantity()
+        .setValue(value)
+        .setUnit(unit)
+        .setSystem(fhirProperties.getSystems().getUcum())
+        .setCode(unit);
   }
 
   /**

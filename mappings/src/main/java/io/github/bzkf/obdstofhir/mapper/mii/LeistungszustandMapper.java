@@ -5,7 +5,6 @@ import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.Collections;
 import java.util.List;
@@ -75,16 +74,13 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
         .getMeta()
         .addProfile(Onkologie.Profiles.miiPrOnkoAllgemeinerLeistungszustandKarnofsky());
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getAllgemeinerLeistungszustandKarnofskyObservationId())
-            .setValue(slugifier.slugify("KARNOFSKY-" + meldungsId));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        observation,
+        fhirProperties
+            .getSystems()
+            .getIdentifiers()
+            .getAllgemeinerLeistungszustandKarnofskyObservationId(),
+        "KARNOFSKY-" + meldungsId);
 
     observation.setSubject(patient);
 
@@ -139,16 +135,13 @@ public class LeistungszustandMapper extends ObdsToFhirMapper {
 
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoAllgemeinerLeistungszustandEcog());
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getAllgemeinerLeistungszustandEcogObservationId())
-            .setValue(slugifier.slugify("ECOG-" + meldungsId));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        observation,
+        fhirProperties
+            .getSystems()
+            .getIdentifiers()
+            .getAllgemeinerLeistungszustandEcogObservationId(),
+        "ECOG-" + meldungsId);
 
     observation.setSubject(patient);
 

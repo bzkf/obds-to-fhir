@@ -5,11 +5,11 @@ import de.basisdatensatz.obds.v3.ModulMammaTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -302,9 +302,7 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
       LOG.warn(
           "Tumorgroesse reference date is unset. Setting data absent extension for"
               + " Observation.effective.");
-      var absentDateTime = new DateTimeType();
-      absentDateTime.addExtension(DataAbsentReason.unknown());
-      observation.setEffective(absentDateTime);
+      observation.setEffective(absentDateTime());
     }
 
     observation.setCode(
@@ -320,17 +318,11 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
             .setText(codeText));
 
     if ("U".equals(rawValue)) {
-      observation.setDataAbsentReason(
-          dataAbsentReason(org.hl7.fhir.r4.model.codesystems.DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
       return observation;
     }
 
-    observation.setValue(
-        new Quantity()
-            .setValue(new BigDecimal(rawValue))
-            .setUnit("mm")
-            .setSystem(fhirProperties.getSystems().getUcum())
-            .setCode("mm"));
+    observation.setValue(ucumQuantity(new BigDecimal(rawValue), "mm"));
 
     return observation;
   }

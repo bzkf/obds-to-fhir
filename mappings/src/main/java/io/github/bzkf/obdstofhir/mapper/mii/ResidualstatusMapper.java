@@ -4,23 +4,16 @@ import de.basisdatensatz.obds.v3.OPTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
-import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResidualstatusMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG = LoggerFactory.getLogger(ResidualstatusMapper.class);
 
   public ResidualstatusMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -38,14 +31,10 @@ public class ResidualstatusMapper extends ObdsToFhirMapper {
     var observation = new Observation();
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoResidualstatus());
 
-    // Identifiers
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getResidualstatusObservationId())
-            .setValue(slugifier.slugify(op.getOPID()));
-    observation.setId(IdUtils.fromIdentifier(identifier));
-    observation.setIdentifier(List.of(identifier));
+    setIdentifierAndId(
+        observation,
+        fhirProperties.getSystems().getIdentifiers().getResidualstatusObservationId(),
+        op.getOPID());
 
     // Subject
     observation.setSubject(patient);

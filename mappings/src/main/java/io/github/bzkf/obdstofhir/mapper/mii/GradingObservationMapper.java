@@ -4,10 +4,9 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,25 +43,16 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
       identifierValue = meldungsId;
     }
 
-    // Identifer
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getGradingObservationId())
-            .setValue(slugifier.slugify(identifierValue + "-grading"));
-    observation.addIdentifier(identifier);
-
-    // Id
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        observation,
+        fhirProperties.getSystems().getIdentifiers().getGradingObservationId(),
+        identifierValue + "-grading");
 
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);
 
     // category
-    var laboratory =
-        new CodeableConcept(
-            new Coding(
-                fhirProperties.getSystems().getObservationCategory(), "laboratory", "Laboratory"));
-    observation.addCategory(laboratory);
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     // code
     var code =
@@ -93,12 +83,7 @@ public class GradingObservationMapper extends ObdsToFhirMapper {
     // effective is 1..1
     convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
         .ifPresentOrElse(
-            observation::setEffective,
-            () -> {
-              var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(DataAbsentReason.unknown());
-              observation.setEffective(absentDateTime);
-            });
+            observation::setEffective, () -> observation.setEffective(absentDateTime()));
 
     // value is 1..1
     var coding =

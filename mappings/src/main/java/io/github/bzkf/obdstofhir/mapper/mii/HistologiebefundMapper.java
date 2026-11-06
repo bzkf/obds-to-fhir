@@ -5,7 +5,6 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -44,18 +43,10 @@ public class HistologiebefundMapper extends ObdsToFhirMapper {
       identifierValue = meldungsId;
     }
 
-    // Identifier
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getHistologiebefundDiagnosticReportId())
-            .setValue(slugifier.slugify(identifierValue));
-    diagnosticReport.addIdentifier(identifier);
-    // Id
-    diagnosticReport.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        diagnosticReport,
+        fhirProperties.getSystems().getIdentifiers().getHistologiebefundDiagnosticReportId(),
+        identifierValue);
 
     // basedOn Tumorkonferenz
     if (tumorkonferenz != null) {

@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.ModulDarmTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,31 +144,14 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
    * {@code value[x]} is present, "U" is expressed via {@code Observation.dataAbsentReason} instead
    * of a partially populated quantity.
    */
-  private static void setDistanceValue(
+  private void setDistanceValue(
       @NonNull Observation observation, @NonNull String rawValue, @NonNull String unit) {
     if ("U".equals(rawValue)) {
       observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
       return;
     }
 
-    observation.setValue(
-        new Quantity()
-            .setValue(new BigDecimal(rawValue))
-            .setUnit(unit)
-            .setSystem("http://unitsofmeasure.org")
-            .setCode(unit));
-  }
-
-  private static Observation createBaseObservation(
-      @NonNull Reference patient, @Nullable Reference focus) {
-    var observation = new Observation();
-    observation.setSubject(patient);
-    observation.setStatus(Observation.ObservationStatus.FINAL);
-    if (focus != null) {
-      observation.addFocus(focus);
-    }
-
-    return observation;
+    observation.setValue(ucumQuantity(new BigDecimal(rawValue), unit));
   }
 
   private Observation mapAbstandAnokutanlinie(
@@ -179,20 +161,14 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable Reference condition,
       @Nullable DateTimeType effective) {
     Objects.requireNonNull(modulDarm.getRektumAbstandAnokutanlinie());
-    var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkAbstandAnokutan());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getKrkAbstandAnokutanObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-abstand-anokutan"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoKrkAbstandAnokutan(),
+            fhirProperties.getSystems().getIdentifiers().getKrkAbstandAnokutanObservationId(),
+            meldungId + "-modul-darm-abstand-anokutan",
+            patient,
+            condition,
+            effective);
 
     observation.setCode(
         new CodeableConcept(
@@ -214,23 +190,17 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable Reference condition,
       @Nullable DateTimeType effective) {
     Objects.requireNonNull(modulDarm.getRektumAbstandAboralerResektionsrand());
-    var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkAbstandAboral());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getKrkAbstandAboralObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-abstand-aboral"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoKrkAbstandAboral(),
+            fhirProperties.getSystems().getIdentifiers().getKrkAbstandAboralObservationId(),
+            meldungId + "-modul-darm-abstand-aboral",
+            patient,
+            condition,
+            effective);
 
     // a measurement on the resected specimen, i.e. by the pathology
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
 
     // the oBDS field doesn't distinguish macroscopic/microscopic assessment, so we
     // default to the macroscopy code, matching the official MII example.
@@ -255,29 +225,20 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable Reference condition,
       @Nullable DateTimeType effective) {
     Objects.requireNonNull(modulDarm.getRektumAbstandCircResektionsebene());
-    var observation = createBaseObservation(patient, condition);
-    observation
-        .getMeta()
-        .addProfile(Onkologie.Profiles.miiPrOnkoKrkAbstandCircumferelleResektionsebene());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getKrkAbstandCircumferelleResektionsebeneObservationId())
-            .setValue(
-                slugifier.slugify(meldungId + "-modul-darm-abstand-circumferelle-resektionsebene"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoKrkAbstandCircumferelleResektionsebene(),
+            fhirProperties
+                .getSystems()
+                .getIdentifiers()
+                .getKrkAbstandCircumferelleResektionsebeneObservationId(),
+            meldungId + "-modul-darm-abstand-circumferelle-resektionsebene",
+            patient,
+            condition,
+            effective);
 
     // a measurement on the resected specimen, i.e. by the pathology
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
 
     // the oBDS field doesn't distinguish macroscopic/microscopic assessment, so we
     // default to the macroscopy code, matching the official MII example.
@@ -304,37 +265,22 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable DateTimeType effective) {
     var rawValue = modulDarm.getRektumMRTDuennschichtAngabemesorektaleFaszie();
     Objects.requireNonNull(rawValue);
-    var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkMrtMesorektaleFaszie());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getKrkMrtMesorektaleFaszieObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-mrt-mesorektale-faszie"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoKrkMrtMesorektaleFaszie(),
+            fhirProperties.getSystems().getIdentifiers().getKrkMrtMesorektaleFaszieObservationId(),
+            meldungId + "-modul-darm-mrt-mesorektale-faszie",
+            patient,
+            condition,
+            effective);
 
     observation.addCategory(observationCategory(ObservationCategory.IMAGING));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
 
     observation.setCode(
         new CodeableConcept(new Coding("http://radlex.org", "RDE96", "Distance to MRF")));
 
     if (rawValue.matches("\\d+")) {
-      var valueQuantity =
-          new Quantity()
-              .setValue(new BigDecimal(rawValue))
-              .setUnit("mm")
-              .setSystem("http://unitsofmeasure.org")
-              .setCode("mm");
-      observation.setValue(valueQuantity);
+      observation.setValue(ucumQuantity(new BigDecimal(rawValue), "mm"));
     } else {
       var coding =
           Onkologie.CodeSystems.MiiCsOnkoKrkMrtMesorektaleFaszieStatus.fromValueOrThrow(rawValue)
@@ -360,23 +306,17 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
           "No OP Procedure available for the Anastomoseninsuffizienz Observation. Leaving its"
               + " focus unset.");
     }
-    var observation = createBaseObservation(patient, op);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkAnastomoseninsuffizienz());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getKrkAnastomoseninsuffizienzObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-anastomoseninsuffizienz"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoKrkAnastomoseninsuffizienz(),
+            fhirProperties
+                .getSystems()
+                .getIdentifiers()
+                .getKrkAnastomoseninsuffizienzObservationId(),
+            meldungId + "-modul-darm-anastomoseninsuffizienz",
+            patient,
+            op,
+            effective);
 
     observation.setCode(
         new CodeableConcept(
@@ -402,23 +342,17 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable Reference condition,
       @Nullable DateTimeType effective) {
     Objects.requireNonNull(modulDarm.getASA());
-    var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoAsaKlassifikation());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getAsaKlassifikationObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-asa-klassifikation"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoAsaKlassifikation(),
+            fhirProperties.getSystems().getIdentifiers().getAsaKlassifikationObservationId(),
+            meldungId + "-modul-darm-asa-klassifikation",
+            patient,
+            condition,
+            effective);
 
     // a scored assessment, like the ECOG performance status
     observation.addCategory(observationCategory(ObservationCategory.SURVEY));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
 
     observation.setCode(
         new CodeableConcept(
@@ -462,13 +396,10 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       procedure.addReasonReference(condition);
     }
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getKrkStomaMarkierungProcedureId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-stoma-markierung"));
-    procedure.addIdentifier(identifier);
-    procedure.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        procedure,
+        fhirProperties.getSystems().getIdentifiers().getKrkStomaMarkierungProcedureId(),
+        meldungId + "-modul-darm-stoma-markierung");
 
     procedure.setCategory(
         new CodeableConcept(
@@ -547,20 +478,14 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       @Nullable Reference specimen) {
     var rasMutation = modulDarm.getRASMutation();
     Objects.requireNonNull(rasMutation);
-    var observation = createBaseObservation(patient, condition);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoGenetischeVariante());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getGenetischeVarianteObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-darm-ras-mutation"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    if (effective != null) {
-      observation.setEffective(effective);
-    }
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoGenetischeVariante(),
+            fhirProperties.getSystems().getIdentifiers().getGenetischeVarianteObservationId(),
+            meldungId + "-modul-darm-ras-mutation",
+            patient,
+            condition,
+            effective);
 
     if (specimen != null) {
       observation.setSpecimen(specimen);
@@ -574,12 +499,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
                 .setCode("69548-6")
                 .setDisplay("Genetic variant assessment")));
 
-    observation.addCategory(
-        new CodeableConcept(
-            new Coding()
-                .setSystem(fhirProperties.getSystems().getObservationCategory())
-                .setCode("laboratory")
-                .setDisplay("Laboratory")));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
     observation.addCategory(
         new CodeableConcept(
             new Coding()

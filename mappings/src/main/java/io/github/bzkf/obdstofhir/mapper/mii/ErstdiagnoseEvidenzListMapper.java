@@ -3,9 +3,7 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.List;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.ListResource;
 import org.hl7.fhir.r4.model.ListResource.ListMode;
 import org.hl7.fhir.r4.model.ListResource.ListStatus;
@@ -28,12 +26,10 @@ public class ErstdiagnoseEvidenzListMapper extends ObdsToFhirMapper {
     var list = new ListResource();
     list.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoListeEvidenzErstdiagnose());
 
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getErstdiagnoseEvidenzListId())
-            .setValue(slugifier.slugify(patientId + "-" + tumorId));
-    list.addIdentifier(identifier);
-    list.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        list,
+        fhirProperties.getSystems().getIdentifiers().getErstdiagnoseEvidenzListId(),
+        patientId + "-" + tumorId);
 
     list.setSubject(patient);
 

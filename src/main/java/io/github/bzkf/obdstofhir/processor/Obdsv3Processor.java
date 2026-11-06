@@ -6,9 +6,7 @@ import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
-import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
-import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
@@ -20,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -41,9 +40,24 @@ import org.springframework.util.StringUtils;
     havingValue = "false",
     matchIfMissing = true)
 @Configuration
-public class Obdsv3Processor extends ObdsToFhirMapper {
+public class Obdsv3Processor {
 
   private static final FhirContext ctx = FhirContext.forR4();
+
+  /**
+   * Oldest first, by Meldedatum. That's only precise to the day, so the export row ID breaks ties:
+   * it's an incrementing number, and comparing the length first keeps "9" before "10".
+   */
+  private static final Comparator<MeldungExportV3> REPORTING_ORDER =
+      Comparator.comparing(
+              (MeldungExportV3 meldung) -> meldung.getObds().getMeldedatum(),
+              Comparator.nullsFirst(
+                  Comparator.comparing(XMLGregorianCalendar::toGregorianCalendar)))
+          .thenComparing(
+              MeldungExportV3::getId,
+              Comparator.nullsFirst(
+                  Comparator.<String>comparingInt(String::length)
+                      .thenComparing(Comparator.naturalOrder())));
 
   private final ObdsToFhirBundleMapper obdsToFhirBundleMapper;
 
@@ -55,11 +69,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private String provenanceTopic;
 
   protected Obdsv3Processor(
-      FhirProperties fhirProperties,
       ObdsToFhirBundleMapper obdsToFhirBundleMapper,
       ObdsMapper obdsMapper,
       WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig) {
-    super(fhirProperties);
     this.obdsToFhirBundleMapper = obdsToFhirBundleMapper;
     this.obdsMapper = obdsMapper;
     this.writeGroupedObdsToKafkaConfig = writeGroupedObdsToKafkaConfig;
@@ -236,18 +248,16 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {
     final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
 
+    var meldungenOldestFirst = meldungsOfPatientAndTumor.stream().sorted(REPORTING_ORDER).toList();
+    var latestReportingByReportingDate = meldungenOldestFirst.getLast().getObds();
+
     // Meldedatum
-    var latestReportingByReportingDate =
-        meldungsOfPatientAndTumor.stream()
-            .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
-            .get()
-            .getObds();
     obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
 
     // Patstammdaten
     setLatestReportedPatientData(latestReportingByReportingDate, obds);
 
-    addAllMeldungen(meldungsOfPatientAndTumor, obds);
+    addAllMeldungen(meldungenOldestFirst, obds);
 
     return obds;
   }
@@ -261,9 +271,12 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
    * and -ende of a SYST) are all passed on: the {@link ObdsToFhirBundleMapper} processes the later
    * one last, so its resources override the ones with the same ID created from the earlier one.
    * This is the same input the bundle mapper gets when processing from a directory.
+   *
+   * @param meldungenOldestFirst the Meldungen in {@link #REPORTING_ORDER}. The bundle mapper's
+   *     sorting is stable, so Meldungen it treats as equal still override each other in this order.
    */
-  protected static void addAllMeldungen(MeldungExportListV3 meldungExportList, OBDS obds) {
-    meldungExportList.stream()
+  protected static void addAllMeldungen(List<MeldungExportV3> meldungenOldestFirst, OBDS obds) {
+    meldungenOldestFirst.stream()
         .map(MeldungExportV3::getObds)
         .map(OBDS::getMengePatient)
         .map(OBDS.MengePatient::getPatient)

@@ -5,7 +5,6 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -94,40 +93,24 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
     return results;
   }
 
-  private Observation createBaseObservation(
-      @NonNull Reference patient,
-      @NonNull Reference condition,
-      @NonNull ObservationCategory category) {
-    var observation = new Observation();
-    observation.setSubject(patient);
-    observation.setStatus(Observation.ObservationStatus.FINAL);
-    observation.addCategory(observationCategory(category));
-    observation.addFocus(condition);
-
-    return observation;
-  }
-
   private Observation mapPsa(
       @NonNull ModulProstataTyp modulProstata,
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getPSA());
-    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstatePsa());
-
     // for creating the identifier, we can use the meldungId plus a fixed suffix
     // as a single Meldung can only have one of the elements that may contain the
     // Modul_Prostata_Typ: Pathologie, Diagnose, OP.
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getProstataPsaObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-prostata-psa"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    convertObdsDatumToDateTimeType(modulProstata.getDatumPSA())
-        .ifPresent(observation::setEffective);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoProstatePsa(),
+            fhirProperties.getSystems().getIdentifiers().getProstataPsaObservationId(),
+            meldungId + "-modul-prostata-psa",
+            patient,
+            condition,
+            convertObdsDatumToDateTimeType(modulProstata.getDatumPSA()).orElse(null));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     observation.setCode(
         new CodeableConcept(
@@ -141,7 +124,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
         new Quantity()
             .setValue(modulProstata.getPSA())
             .setUnit("ng/ml")
-            .setSystem("http://unitsofmeasure.org")
+            .setSystem(fhirProperties.getSystems().getUcum())
             .setCode("ng/mL");
 
     observation.setValue(valueQuantity);
@@ -155,22 +138,15 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlStanzen());
-    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getProstataAnzahlStanzenObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-prostata-anzahl-stanzen"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
-        .ifPresent(observation::setEffective);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen(),
+            fhirProperties.getSystems().getIdentifiers().getProstataAnzahlStanzenObservationId(),
+            meldungId + "-modul-prostata-anzahl-stanzen",
+            patient,
+            condition,
+            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     observation.setCode(
         new CodeableConcept(
@@ -192,22 +168,18 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getAnzahlPosStanzen());
-    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getProstataAnzahlPositiveStanzenObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-prostata-anzahl-positive-stanzen"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
-        .ifPresent(observation::setEffective);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen(),
+            fhirProperties
+                .getSystems()
+                .getIdentifiers()
+                .getProstataAnzahlPositiveStanzenObservationId(),
+            meldungId + "-modul-prostata-anzahl-positive-stanzen",
+            patient,
+            condition,
+            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     observation.setCode(
         new CodeableConcept(
@@ -229,22 +201,15 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @NonNull Reference patient,
       @NonNull Reference condition) {
     Objects.requireNonNull(modulProstata.getCaBefallStanze());
-    var observation = createBaseObservation(patient, condition, ObservationCategory.LABORATORY);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getProstataCaBefallStanzeObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-prostata-ca-befall-stanze"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen())
-        .ifPresent(observation::setEffective);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze(),
+            fhirProperties.getSystems().getIdentifiers().getProstataCaBefallStanzeObservationId(),
+            meldungId + "-modul-prostata-ca-befall-stanze",
+            patient,
+            condition,
+            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
+    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
 
     observation.setCode(
         new CodeableConcept(
@@ -255,7 +220,7 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
                 .setDisplay("Tissue involved by tumor in Prostate tumor")));
 
     var valueQuantity =
-        new Quantity().setUnit("%").setSystem("http://unitsofmeasure.org").setCode("%");
+        new Quantity().setUnit("%").setSystem(fhirProperties.getSystems().getUcum()).setCode("%");
 
     // valueQuantity.value is 1..1 in the mii-pr-onko-prostate-ca-befall-stanze profile, so it
     // must be set even when the percentage is unknown.
@@ -280,18 +245,15 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
       @Nullable DateTimeType referenceDate,
       @Nullable Reference op) {
     Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
-    var observation = createBaseObservation(patient, condition, ObservationCategory.SURVEY);
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoProstateClavienDindo());
-
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getProstataClavienDindoObservationId())
-            .setValue(slugifier.slugify(meldungId + "-modul-prostata-clavien-dindo"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    observation.setEffective(referenceDate);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoProstateClavienDindo(),
+            fhirProperties.getSystems().getIdentifiers().getProstataClavienDindoObservationId(),
+            meldungId + "-modul-prostata-clavien-dindo",
+            patient,
+            condition,
+            referenceDate);
+    observation.addCategory(observationCategory(ObservationCategory.SURVEY));
 
     observation.setCode(
         new CodeableConcept(

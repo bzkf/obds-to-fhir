@@ -5,11 +5,11 @@ import de.basisdatensatz.obds.v3.ModulMalignesMelanomTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -105,8 +105,7 @@ public class ModulMalignesMelanomMapper extends ObdsToFhirMapper {
                         + " specimen of skin (observable entity)")));
 
     if (sicherheitsabstand == -1) {
-      observation.setDataAbsentReason(
-          dataAbsentReason(org.hl7.fhir.r4.model.codesystems.DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
       return observation;
     }
 
@@ -165,9 +164,7 @@ public class ModulMalignesMelanomMapper extends ObdsToFhirMapper {
     if (effective == null) {
       LOG.warn(
           "LDH reference date is unset. Setting data absent extension for Observation.effective.");
-      var absentDateTime = new DateTimeType();
-      absentDateTime.addExtension(DataAbsentReason.unknown());
-      observation.setEffective(absentDateTime);
+      observation.setEffective(absentDateTime());
     }
 
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
@@ -217,13 +214,5 @@ public class ModulMalignesMelanomMapper extends ObdsToFhirMapper {
     observation.setValue(new CodeableConcept(coding));
 
     return observation;
-  }
-
-  private Quantity ucumQuantity(@NonNull BigDecimal value, @NonNull String unit) {
-    return new Quantity()
-        .setValue(value)
-        .setUnit(unit)
-        .setSystem(fhirProperties.getSystems().getUcum())
-        .setCode(unit);
   }
 }
