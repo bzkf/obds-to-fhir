@@ -1,6 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.uhn.fhir.context.FhirContext;
 import com.github.difflib.text.DiffRowGenerator;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -133,6 +135,28 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
                 |}|}|""");
   }
 
+  private OBDS readObds(String sourceFile) throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
+    assertThat(resource).isNotNull();
+    return xmlMapper().readValue(resource.openStream(), OBDS.class);
+  }
+
+  @Test
+  void map_shouldKeepTheLoggingContextOfTheCaller() throws IOException {
+    final var obds = readObds("Testpatient_Tumorkonferenz1.xml");
+
+    MDC.put("fileName", "Testpatient_Tumorkonferenz1.xml");
+    try {
+      sut.map(obds);
+
+      assertThat(MDC.get("fileName")).isEqualTo("Testpatient_Tumorkonferenz1.xml");
+      assertThat(MDC.get("meldungId")).isNull();
+      assertThat(MDC.get("tumorId")).isNull();
+    } finally {
+      MDC.remove("fileName");
+    }
+  }
+
   @SpringBootTest(
       classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class},
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
@@ -208,6 +232,19 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     @BeforeAll
     static void beforeAll(@Autowired ObdsToFhirBundleMapper bundleMapper) {
       sut = bundleMapper;
+    }
+
+    @Test
+    void map_withPatientIdNotMatchingRegex_shouldNotExposeItInTheException() throws IOException {
+      final var resource = this.getClass().getClassLoader().getResource("obds3/Testpatient_1.xml");
+      assertThat(resource).isNotNull();
+
+      final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+      obds.getMengePatient().getPatient().getFirst().setPatientID("not-a-number");
+
+      assertThatThrownBy(() -> sut.map(obds))
+          .isInstanceOf(IllegalArgumentException.class)
+          .hasMessageNotContaining("not-a-number");
     }
 
     @ParameterizedTest

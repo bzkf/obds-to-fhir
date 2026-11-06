@@ -49,8 +49,7 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
     Query a FHIR server to get the logical ID of the Patient resource from the identifier value.
     This sends a `GET /Patient?identifier=<fhir.systems.identifiers.patient-id>|<Patient_ID>` query
     to the server specified in `fhir.mappings.patient-reference-generation.fhir-server.base-url` and returns the
-    `Patient.id` in the response. If the result is empty or more than one Patient resource is found,
-    the job exits with an error.
+    `Patient.id` in the response. If more than one Patient resource is found, the job exits with an error.
 - `RECORD_ID_DATABASE_LOOKUP`
 
     Query a database table to lookup an internal ID from the given Patient_ID. The database connection
@@ -59,12 +58,16 @@ Set `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_STRATEGY` to one of the values b
 
 > [!IMPORTANT]
 > For both the `FHIR_SERVER_LOOKUP` and `RECORD_ID_DATABASE_LOOKUP` strategy, if the ID wasn't found in either the
-> or the record database and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `true`, a FHIR Patient
-> resource is still created and added to the resulting Bundle using the default
-> `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID` strategy to create its `Patient.id` and all references
-> to it.
-> If no ID is found and `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `false`, an exception is thrown
-> and the application is stopped.
+> FHIR server or the record database, the first of these that applies decides what happens:
+>
+> 1. `FHIR_SERVER_LOOKUP` only: if `FHIR_MAPPINGS_PATIENT_REFERENCE_GENERATION_IDENTIFIER_ONLY_REFERENCES_ALLOWED`
+>    is set to `false`, an exception is thrown and the application is stopped.
+> 2. If `FHIR_MAPPINGS_SKIP_PATIENT_IF_IT_DOES_NOT_ALREADY_EXIST` is set to `true`, no resources are created for
+>    the patient.
+> 3. If `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED` is set to `true`, a FHIR Patient resource is still created
+>    and added to the resulting Bundle using the default `SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID`
+>    strategy to create its `Patient.id` and all references to it.
+> 4. Otherwise, the created resources only reference the Patient by its identifier.
 
 ## Dead Letter Queue
 
@@ -96,8 +99,9 @@ error topic.
 | fhir.mappings.meta.source | string | `""` | Value to set for the meta.source field in all generated resources |
 | fhir.mappings.patient-id-regex | string | `"^(.*)$"` | regex to apply to the `Patient_ID` before setting it to `Patient.identifier.value`. Must contain one capture group. Use, e.g. `^0*([1-9]\d*)$` to match any numeric value, ignoring any prefixed 0s. |
 | fhir.mappings.create-patient-resources.enabled | bool | `true` | Whether Patient resources should be created. Useful to disable if you already create FHIR resources from a different source. |
-| fhir.mappings.create-patient-resources.if-already-exists | bool | `false` | If set to true, a Patient resource is always created and added to the bundle, even if the patient already exists on the FHIR server (i.e. the patient reference generator returns existsOnServer=true). The Patient.identifier.value is set to the Patient_ID, and the patient reference for all other resources in the bundle is overridden to refer to Patient.id (the locally-computed hash-based ID). The logical references to the Patient via the identifier are preserved. |
+| fhir.mappings.create-patient-resources.if-already-exists | bool | `false` | If set to true, a Patient resource is always created and added to the bundle, even if the patient already exists on the FHIR server or in the record database (i.e. the patient reference generator returns existsOnServer=true). Patient.id and Patient.identifier.value are then taken from the generated patient reference, so the created resource replaces the existing Patient. |
 | fhir.mappings.create-patient-resources.use-obds-patient-id-as-resource-id | bool | `false` | If enabled, sets Patient.id to the mapped Patient_ID value instead of a hash of the identifier. |
+| fhir.mappings.skip-patient-if-it-does-not-already-exist | bool | `false` | If set to true, no resources are created for a patient that wasn't found by the `FHIR_SERVER_LOOKUP` or `RECORD_ID_DATABASE_LOOKUP` strategy. Has no effect on the other strategies. |
 | fhir.mappings.create-provenance-resources.enabled | bool | `false` | Whether Provenance resources should be created. They include the oBDS Meldung_ID as the entity.what of the FHIR Resource derived from the Meldung. Multiple resources are mapped from a single Meldung_ID. |
 | fhir.mappings.create-provenance-resources.topic | string | `"${FHIR_PROVENANCE_TOPIC:fhir.obds.provenance}"` | Name of the Kafka topic to write Provenance resources to (one message per Meldung). Only used when enabled=true. |
 | fhir.mappings.patient-reference-generation.strategy | string | `"SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID"` | How the Resource.subject.reference to the Patient resources should be generated. You should set `fhir.mappings.create-patient-resources.enabled=false` when changing this from the default to avoid creating additional, unreferenced Patient resources. |

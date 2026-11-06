@@ -61,6 +61,8 @@ dependencies {
 
     testFixturesImplementation 'org.assertj:assertj-core:3.27.7'
     testFixturesImplementation 'com.approvaltests:approvaltests:30.1.1'
+    // MapperTest uses the mapper of Obdsv3Deserializer, which implements a Kafka interface
+    testFixturesImplementation 'org.apache.kafka:kafka-clients'
 }
 
 test {

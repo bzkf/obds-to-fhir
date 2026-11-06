@@ -3,14 +3,13 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
-import java.text.SimpleDateFormat;
+import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.util.List;
 import org.approvaltests.Approvals;
 import org.approvaltests.core.Scrubber;
 import org.approvaltests.scrubbers.RegExScrubber;
 import org.hl7.fhir.instance.model.api.IBaseResource;
 import tools.jackson.dataformat.xml.XmlMapper;
-import tools.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 
 /** Abstract class to provide common methods for mapping tests */
 public abstract class MapperTest {
@@ -20,18 +19,12 @@ public abstract class MapperTest {
       new RegExScrubber("\\|[0-9]+\\.[0-9]+\\.[0-9]+(?=\")", "");
 
   /**
-   * Provides default XmlMapper for oBDS v3
+   * Provides the XmlMapper used in production, so tests parse oBDS v3 exactly like the application
    *
    * @return XmlMapper configured for use with oBDS v3
    */
   protected XmlMapper xmlMapper() {
-    return XmlMapper.builder()
-        .defaultUseWrapper(false)
-        .addModule(new JakartaXmlBindAnnotationModule())
-        .build()
-        .rebuild()
-        .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
-        .build();
+    return Obdsv3Deserializer.xmlMapper();
   }
 
   /**

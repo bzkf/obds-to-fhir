@@ -8,9 +8,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
 import io.github.bzkf.obdstofhir.config.FhirServerConfig;
 import io.github.bzkf.obdstofhir.config.RecordIdDbConfig;
+import io.github.bzkf.obdstofhir.mapper.mii.PatientMapper;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -133,6 +136,39 @@ class PatientReferenceGeneratorTest {
 
     assertThat(result.reference().getReference()).isEqualTo("Patient/prefix-patient-1");
     assertThat(result.reference().getIdentifier().getValue()).isEqualTo("prefix-patient-1");
+  }
+
+  @Test
+  void shouldReferenceTheCreatedPatientResourceWhenPrefixIsConfigured() {
+    var fhirProperties = createFhirProperties();
+    var generator =
+        new PatientReferenceGenerator(
+            fhirProperties,
+            Optional.empty(),
+            Optional.empty(),
+            Optional.empty(),
+            true,
+            false,
+            "",
+            "prefix-");
+    ReflectionTestUtils.setField(
+        generator,
+        "strategy",
+        PatientReferenceGenerator.Strategy.SHA256_HASHED_PATIENT_IDENTIFIER_SYSTEM_AND_PATIENT_ID);
+
+    var patientMapper = new PatientMapper(fhirProperties);
+    ReflectionTestUtils.setField(patientMapper, "patientIdPrefix", "prefix-");
+
+    var obdsPatient = new OBDS.MengePatient.Patient();
+    obdsPatient.setPatientID("patient-1");
+    obdsPatient.setPatientenStammdaten(new PatientenStammdatenMelderTyp());
+
+    var reference =
+        generator.getPatientReferenceGenerationFunction().apply(obdsPatient).reference();
+    var patient = patientMapper.map(obdsPatient, List.of());
+
+    assertThat(reference.getReference()).isEqualTo("Patient/" + patient.getId());
+    assertThat(patient.getIdentifierFirstRep().getValue()).isEqualTo("prefix-patient-1");
   }
 
   private FhirProperties createFhirProperties() {

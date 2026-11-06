@@ -382,6 +382,28 @@ class Obdsv3ProcessorTest extends MapperTest {
   }
 
   @Test
+  void process_withFruehereTumorerkrankung_shouldKeepItsDiagnosisYear() throws IOException {
+    var bundle = processAll("Testpatient_1.xml").getLast();
+
+    var fruehereTumorerkrankungen =
+        BundleUtil.toListOfResourcesOfType(ctx, bundle, Condition.class).stream()
+            .filter(
+                c -> c.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoFruehereTumorerkrankung()))
+            .toList();
+
+    assertThat(fruehereTumorerkrankungen)
+        .isNotEmpty()
+        .allSatisfy(
+            condition -> {
+              var assertedDate =
+                  condition.getExtensionByUrl(
+                      "http://hl7.org/fhir/StructureDefinition/condition-assertedDate");
+              assertThat(assertedDate.getValue().primitiveValue()).matches("20\\d{2}");
+              assertThat(condition.getIdentifierFirstRep().getValue()).matches(".*-20\\d{2}");
+            });
+  }
+
+  @Test
   void process_withBeginAndEndOfSameTumorkonferenz_shouldKeepTheEndState() throws IOException {
     // both describe Tumorkonferenz_ID 221: behandlungsbeginn and behandlungsende
     var bundle =

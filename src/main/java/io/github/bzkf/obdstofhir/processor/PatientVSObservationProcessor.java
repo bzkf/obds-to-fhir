@@ -81,7 +81,8 @@ public class PatientVSObservationProcessor {
       var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
       if (onkoPatient.getSterbeDatum() == null && onkoPatient.getLetzteInformation() == null) {
-        LOG.warn("Skipping patient without dates: {}", onkoPatient.getPatientId());
+        LOG.warn("Skipping patient without dates");
+        LOG.debug("Skipped Patient_ID: {}", onkoPatient.getPatientId());
         return null;
       }
 

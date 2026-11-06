@@ -201,10 +201,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // mutating the obdsPatient is probably not ideal
           obdsPatient.setPatientID(patientId);
         } else {
+          LOG.debug("Patient_ID {} failed to match {}", obdsPatient.getPatientID(), patientIdRegex);
           throw new IllegalArgumentException(
-              String.format(
-                  "Regex %s failed to match against %s",
-                  patientIdRegex, obdsPatient.getPatientID()));
+              String.format("Regex %s failed to match the Patient_ID", patientIdRegex));
         }
       }
 
@@ -239,8 +238,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           && !patientLookupResult.existsOnServer()
           && !patientReference.hasReference()) {
         LOG.warn(
-            "Patient {} does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient",
-            obdsPatient.getPatientID());
+            "Patient does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient");
+        LOG.debug("Skipped Patient_ID: {}", obdsPatient.getPatientID());
         continue;
       }
 
@@ -417,7 +416,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
 
       results.add(new BundleMapperResult(bundle, List.copyOf(bundleProvenances)));
-      MDC.clear();
+      // only remove our own keys, the caller may have set others, e.g. the file name
+      MDC.remove("meldungId");
+      MDC.remove("tumorId");
     }
     return results;
   }

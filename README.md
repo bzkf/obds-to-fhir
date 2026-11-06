@@ -126,13 +126,41 @@ parameters:
 ```
 
 The application also logs to stdout and the output always include the currently processed `Meldung_ID` and potentially other information
-extracted directly from the source data. If this is a concern, we recommend disabling logging by in the container runtime used.
+extracted directly from the source data. This includes the changed contents of overwritten resources, which are logged at the `WARN` level.
+If this is a concern, we recommend disabling logging by in the container runtime used.
+`Patient_ID` values on their own are only logged at the `DEBUG` level, so we recommend against enabling it for production data.
 
 ## Known Issues & Limitations
 
 See <https://github.com/bzkf/obds-to-fhir/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug>
 for a list of known bugs and <https://github.com/bzkf/obds-to-fhir/issues/553> for the list
 of not-yet implemented modules.
+
+### Patient resources and deaths
+
+We recommend not using this job as the master source of Patient resources. Ideally, create them from a different
+source and set `FHIR_MAPPINGS_CREATE_PATIENT_RESOURCES_ENABLED=false`. To find out whether and when a patient died,
+use the death Observations instead of `Patient.deceased`:
+
+- `mii-pr-onko-tod` Observations, created from every `Tod` Meldung
+- `mii-pr-person-vitalstatus` Observations, created from the ONKOSTAR patient data if
+  `fhir.mappings.from-onkostar-patient-data.enabled` is set
+
+The reason is that the job creates one Bundle per patient and tumor, and each one contains a Patient resource built
+only from that tumor's `Meldungen`. If a patient has several tumors, these Patient resources can differ, and the
+one written last replaces the others:
+
+- `Patient.deceased` is only set if that tumor has a `Tod` Meldung, so a deceased patient can end up without it.
+- The master data, such as the address, comes from one of that tumor's `Meldungen`, which isn't necessarily the latest.
+
+### Order of the `Meldungen` of a tumor
+
+When reading from Kafka, the `Meldungen` of a tumor aren't processed in chronological order:
+
+- `Condition.recordedDate` is taken from one of the `Meldungen`, not necessarily the one with the latest `Meldedatum`.
+- If several `Meldungen` create a resource with the same ID, the one processed last wins, which isn't necessarily the
+  newest. Only the type of a `Meldung` and its `Meldeanlass` affect this order: `Diagnose` Meldungen are processed last,
+  and a `behandlungsende` is processed after a `behandlungsbeginn`.
 
 ## Development
 
