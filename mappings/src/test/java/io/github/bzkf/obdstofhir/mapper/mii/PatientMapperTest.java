@@ -3,8 +3,11 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp.Geschlecht;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
+import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Enumerations.AdministrativeGender;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,6 +46,48 @@ class PatientMapperTest extends MapperTest {
     final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
 
     verify(patient, sourceFile);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"D,divers", "X,unbestimmt"})
+  void map_withGeschlechtDOrX_shouldSetOtherWithGenderAmtlichExtension(
+      String geschlecht, String display) throws IOException {
+    var patient = mapWithGeschlecht(Geschlecht.fromValue(geschlecht));
+
+    assertThat(patient.getGender()).isEqualTo(AdministrativeGender.OTHER);
+
+    var extension =
+        patient
+            .getGenderElement()
+            .getExtensionByUrl("http://fhir.de/StructureDefinition/gender-amtlich-de");
+    assertThat(extension).isNotNull();
+
+    var coding = (Coding) extension.getValue();
+    assertThat(coding.getSystem()).isEqualTo("http://fhir.de/CodeSystem/gender-amtlich-de");
+    assertThat(coding.getCode()).isEqualTo(geschlecht);
+    assertThat(coding.getDisplay()).isEqualTo(display);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"M,MALE", "W,FEMALE", "U,UNKNOWN"})
+  void map_withOtherGeschlecht_shouldNotAddGenderAmtlichExtension(
+      String geschlecht, AdministrativeGender expected) throws IOException {
+    var patient = mapWithGeschlecht(Geschlecht.fromValue(geschlecht));
+
+    assertThat(patient.getGender()).isEqualTo(expected);
+    assertThat(patient.getGenderElement().hasExtension()).isFalse();
+  }
+
+  private org.hl7.fhir.r4.model.Patient mapWithGeschlecht(Geschlecht geschlecht)
+      throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+    assertThat(resource).isNotNull();
+
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+    obdsPatient.getPatientenStammdaten().setGeschlecht(geschlecht);
+
+    return sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
   }
 
   @Test

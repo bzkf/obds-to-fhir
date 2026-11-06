@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -27,6 +28,9 @@ public class OperationMapper extends ObdsToFhirMapper {
 
   private static final Comparator<OPS> BY_VERSION =
       Comparator.comparing(OPS::getVersion, Comparator.nullsFirst(Comparator.naturalOrder()));
+
+  // the letters of an OPS code itself are always lower case, so this only matches the suffix
+  private static final Pattern OPS_WITH_SEITENLOKALISATION = Pattern.compile("^(.+)([RLB])$");
 
   public OperationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -73,8 +77,7 @@ public class OperationMapper extends ObdsToFhirMapper {
           createBaseProcedure(op, op.getOPID() + "-" + opsCode.getCode(), subject, condition);
 
       // code
-      var coding =
-          new Coding().setSystem(fhirProperties.getSystems().getOps()).setCode(opsCode.getCode());
+      var coding = createOpsCoding(opsCode.getCode());
 
       if (StringUtils.hasText(opsCode.getVersion())) {
         coding.setVersion(opsCode.getVersion());
@@ -171,7 +174,69 @@ public class OperationMapper extends ObdsToFhirMapper {
                       .coding()));
     }
 
+    // complications
+    mapKomplikationen(op).forEach(procedure::addComplication);
+
     return procedure;
+  }
+
+  /** CodingOPS doesn't allow the oBDS side suffix in the code, it belongs in an extension. */
+  private Coding createOpsCoding(String opsCode) {
+    var coding = new Coding().setSystem(fhirProperties.getSystems().getOps());
+
+    var matcher = OPS_WITH_SEITENLOKALISATION.matcher(opsCode);
+    if (!matcher.matches()) {
+      return coding.setCode(opsCode);
+    }
+
+    coding.setCode(matcher.group(1));
+    coding.addExtension(
+        fhirProperties.getExtensions().getSeitenlokalisation(),
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getSeitenlokalisation())
+            .setCode(matcher.group(2)));
+    return coding;
+  }
+
+  private List<CodeableConcept> mapKomplikationen(OPTyp op) {
+    var komplikationen = op.getKomplikationen();
+    if (komplikationen == null) {
+      return List.of();
+    }
+
+    var result = new ArrayList<CodeableConcept>();
+
+    // N and U are codes of the same CodeSystem as the Kuerzel
+    if (StringUtils.hasText(komplikationen.getKomplikationNeinOderUnbekannt())) {
+      result.add(mapKomplikationKuerzel(komplikationen.getKomplikationNeinOderUnbekannt()));
+    }
+
+    if (komplikationen.getMengeKomplikation() != null) {
+      for (var komplikation : komplikationen.getMengeKomplikation().getKomplikation()) {
+        if (StringUtils.hasText(komplikation.getKuerzel())) {
+          result.add(mapKomplikationKuerzel(komplikation.getKuerzel()));
+        } else if (komplikation.getICD() != null) {
+          result.add(
+              mapIcdToConcept(
+                  komplikation.getICD().getCode(),
+                  komplikation.getICD().getVersion(),
+                  "Komplikation ICD Version",
+                  LOG));
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private CodeableConcept mapKomplikationKuerzel(String kuerzel) {
+    return Onkologie.CodeSystems.MiiCsOnkoOperationKomplikation.fromValue(kuerzel)
+        .map(value -> new CodeableConcept(value.coding()))
+        .orElseGet(
+            () -> {
+              LOG.warn("Unknown Komplikation code {}, keeping it as text.", kuerzel);
+              return new CodeableConcept().setText(kuerzel);
+            });
   }
 
   /**

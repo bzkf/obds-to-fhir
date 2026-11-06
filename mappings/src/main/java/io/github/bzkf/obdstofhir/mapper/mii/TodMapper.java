@@ -110,17 +110,20 @@ public class TodMapper extends ObdsToFhirMapper {
                 tod);
 
         // Value | Todesursache(n) ICD10GM
-        var versionElement =
-            extractIcdVersionYear(todesursache.getVersion(), "Todesursachen_ICD_Version", LOG);
-
-        var todesursacheConcept = new CodeableConcept();
-        todesursacheConcept
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcd10gm())
-            .setCode(todesursache.getCode())
-            .setVersionElement(versionElement);
-
-        observation.setValue(todesursacheConcept);
+        var gm =
+            mapIcdToCodings(
+                    todesursache.getCode(),
+                    todesursache.getVersion(),
+                    "Todesursachen_ICD_Version",
+                    LOG)
+                .getFirst();
+        var value = new CodeableConcept(gm);
+        // the profile fixes the system of every coding to ICD-10-GM, so a code from another
+        // catalog can only be kept as text
+        if (gm.getCode() == null) {
+          value.setText(todesursache.getCode());
+        }
+        observation.setValue(value);
 
         observationList.add(observation);
       }

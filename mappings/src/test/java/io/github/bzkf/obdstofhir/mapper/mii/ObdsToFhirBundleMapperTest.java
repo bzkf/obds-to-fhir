@@ -6,13 +6,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import ca.uhn.fhir.context.FhirContext;
 import com.github.difflib.text.DiffRowGenerator;
 import com.spun.util.introspection.Caller;
+import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import org.approvaltests.Approvals;
 import org.approvaltests.scrubbers.Scrubbers;
+import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Patient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -139,6 +144,70 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     final var resource = this.getClass().getClassLoader().getResource("obds3/" + sourceFile);
     assertThat(resource).isNotNull();
     return xmlMapper().readValue(resource.openStream(), OBDS.class);
+  }
+
+  @Test
+  void map_withWeitereKlassifikationInOp_shouldCreateObservation() throws IOException {
+    final var obds = readObds("Testpatient_1.xml");
+    var opMeldung =
+        obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getOP() != null)
+            .findFirst()
+            .orElseThrow();
+    var klassifikation = new MengeWeitereKlassifikationTyp.WeitereKlassifikation();
+    klassifikation.setName("Test-Klassifikation");
+    klassifikation.setStadium("IIa");
+    var menge = new MengeWeitereKlassifikationTyp();
+    menge.getWeitereKlassifikation().add(klassifikation);
+    opMeldung.getOP().setMengeWeitereKlassifikation(menge);
+
+    var observations =
+        sut.map(obds).getFirst().bundle().getEntry().stream()
+            .map(e -> e.getResource())
+            .filter(Observation.class::isInstance)
+            .map(Observation.class::cast)
+            .filter(
+                o -> o.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoWeitereKlassifikationen()))
+            .toList();
+
+    assertThat(observations).hasSize(1);
+    assertThat(observations.getFirst().getCode().getText()).isEqualTo("Test-Klassifikation");
+    assertThat(observations.getFirst().getValueCodeableConcept().getText()).isEqualTo("IIa");
+    assertThat(observations.getFirst().getFocusFirstRep().getReference()).startsWith("Condition/");
+  }
+
+  @Test
+  void map_withMeldungAfterPathologie_shouldKeepThePathologieDataOnTheCondition()
+      throws IOException {
+    final var obds = readObds("Testpatient_Patho.xml");
+    var meldungen = obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung();
+    var pathologieMeldung =
+        meldungen.stream().filter(m -> m.getPathologie() != null).findFirst().orElseThrow();
+
+    // only creates the Condition of the same tumor from its Tumorzuordnung, like a Verlauf would
+    var laterMeldung = new Meldung();
+    laterMeldung.setMeldungID("later");
+    laterMeldung.setTumorzuordnung(pathologieMeldung.getTumorzuordnung());
+    meldungen.add(laterMeldung);
+
+    var condition =
+        sut.map(obds).getFirst().bundle().getEntry().stream()
+            .map(e -> e.getResource())
+            .filter(Condition.class::isInstance)
+            .map(Condition.class::cast)
+            .filter(
+                c ->
+                    c.getIdentifierFirstRep()
+                        .getValue()
+                        .endsWith(pathologieMeldung.getTumorzuordnung().getTumorID()))
+            .findFirst()
+            .orElseThrow();
+
+    assertThat(condition.getCode().getText())
+        .isEqualTo(pathologieMeldung.getPathologie().getPrimaertumorDiagnosetext());
+    assertThat(condition.getBodySiteFirstRep().getText())
+        .isEqualTo(pathologieMeldung.getPathologie().getPrimaertumorTopographieFreitext());
+    assertThat(condition.hasVerificationStatus()).isTrue();
   }
 
   @Test

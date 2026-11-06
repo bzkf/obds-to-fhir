@@ -4,6 +4,7 @@ import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     var observation =
         createBaseObservation(
             Onkologie.Profiles.miiPrOnkoProstateGleasonGradeGroup(),
-            fhirProperties.getSystems().getIdentifiers().getProstataGleasonPatternsObservationId(),
+            fhirProperties.getSystems().getIdentifiers().getProstataGleasonScoreObservationId(),
             meldungId + "-modul-prostata-gleason-grade-group",
             patient,
             condition,
@@ -207,6 +208,11 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
               modulProstata.getGleasonScore().getGradSekundaer());
       var gradeGroupSnomedCode = GLEASON_SCORE_TO_SNOMED_GRADE_GROUP.get(gradeGroupKey);
       var gradeGroupCoding = fhirProperties.getCodings().snomed().setCode(gradeGroupSnomedCode);
+      if (gradeGroupSnomedCode == null) {
+        // the ValueSet only has combinations of the patterns 3 to 5, e.g. not 2+3
+        LOG.debug("No ISUP grade group for the Gleason patterns {}", gradeGroupKey);
+        gradeGroupCoding.getCodeElement().addExtension(DataAbsentReason.notApplicable());
+      }
       valueCodeableConcept = new CodeableConcept(gradeGroupCoding).setText(gradeGroupKey);
     } else {
       LOG.warn(
