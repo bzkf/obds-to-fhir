@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serdes.StringSerde;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -39,11 +41,13 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.hl7.fhir.r4.model.Specimen;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
@@ -387,6 +391,82 @@ class Obdsv3ProcessorTest extends MapperTest {
         .singleElement()
         .extracting(CarePlan::getStatus)
         .isEqualTo(CarePlan.CarePlanStatus.COMPLETED);
+  }
+
+  /**
+   * A behandlungsbeginn of Tumorkonferenz 221 of patient 10, tumor 101. All exports built by this
+   * are distinct Meldungen that map to the same CarePlan, so only one of them can win.
+   */
+  private MeldungExportV3 buildTumorkonferenzExport(
+      String exportId, String meldedatum, String plz, String typ)
+      throws IOException, DatatypeConfigurationException {
+    var export =
+        buildMeldungExport(
+            getResourceByName("Testpatient_Tumorkonferenz1.xml", obdsResources),
+            exportId,
+            "12356789",
+            "123",
+            1);
+
+    var obds = export.getObds();
+    obds.setMeldedatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(meldedatum));
+
+    var patient = obds.getMengePatient().getPatient().getFirst();
+    patient.getPatientenStammdaten().getAdresse().setPLZ(plz);
+
+    var meldung = patient.getMengeMeldung().getMeldung().getFirst();
+    meldung.setMeldungID("meldung-" + exportId);
+    meldung.getTumorkonferenz().setTyp(typ);
+
+    return export;
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, 2020-01-01, 2, 2024-06-30, 2024-06-30, 22222, postop",
+    "1, 2024-06-30, 2, 2020-01-01, 2024-06-30, 11111, praeth",
+    // same Meldedatum: the higher export ID is the newer one, compared as a number
+    "9, 2024-06-30, 10, 2024-06-30, 2024-06-30, 22222, postop",
+  })
+  void process_withMeldungenOfSameTumor_shouldPreferTheLatestReported(
+      String firstId,
+      String firstMeldedatum,
+      String secondId,
+      String secondMeldedatum,
+      String expectedRecordedDate,
+      String expectedPlz,
+      String expectedTyp)
+      throws IOException, DatatypeConfigurationException {
+    var first = buildTumorkonferenzExport(firstId, firstMeldedatum, "11111", "praeth");
+    var second = buildTumorkonferenzExport(secondId, secondMeldedatum, "22222", "postop");
+
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+      var inputTopic =
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      inputTopic.pipeInput(first.getId(), first);
+      inputTopic.pipeInput(second.getId(), second);
+
+      var bundle = (Bundle) outputTopic.readValuesToList().getLast();
+
+      var condition = BundleUtil.toListOfResourcesOfType(ctx, bundle, Condition.class).getFirst();
+      assertThat(condition.getRecordedDateElement().getValueAsString())
+          .isEqualTo(expectedRecordedDate);
+
+      var patient = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class).getFirst();
+      assertThat(patient.getAddressFirstRep().getPostalCode()).isEqualTo(expectedPlz);
+
+      assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, CarePlan.class))
+          .singleElement()
+          .extracting(c -> c.getCategoryFirstRep().getCodingFirstRep().getCode())
+          .isEqualTo(expectedTyp);
+    }
   }
 
   @Test
