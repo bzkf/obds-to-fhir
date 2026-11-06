@@ -1,5 +1,6 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import de.basisdatensatz.obds.v3.GleasonScoreTyp;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
@@ -206,10 +207,9 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
               "%s+%s",
               modulProstata.getGleasonScore().getGradPrimaer(),
               modulProstata.getGleasonScore().getGradSekundaer());
-      var gradeGroupSnomedCode = GLEASON_SCORE_TO_SNOMED_GRADE_GROUP.get(gradeGroupKey);
+      var gradeGroupSnomedCode = getGradeGroupCode(modulProstata.getGleasonScore());
       var gradeGroupCoding = fhirProperties.getCodings().snomed().setCode(gradeGroupSnomedCode);
       if (gradeGroupSnomedCode == null) {
-        // the ValueSet only has combinations of the patterns 3 to 5, e.g. not 2+3
         LOG.debug("No ISUP grade group for the Gleason patterns {}", gradeGroupKey);
         gradeGroupCoding.getCodeElement().addExtension(DataAbsentReason.notApplicable());
       }
@@ -231,6 +231,19 @@ public class GleasonScoreMapper extends ObdsToFhirMapper {
     observation.setValue(valueCodeableConcept);
 
     return observation;
+  }
+
+  /**
+   * ISUP defines grade group 1 as a Gleason score of up to 6. SNOMED's only concept for it is named
+   * after 3+3, so lower patterns like 2+3 use it as well, their own patterns are kept as text.
+   *
+   * @return null for 2+5 and 5+2: of the combinations adding up to 7, ISUP only defines 3+4 and 4+3
+   */
+  private static @Nullable String getGradeGroupCode(GleasonScoreTyp gleasonScore) {
+    var primaer = gleasonScore.getGradPrimaer();
+    var sekundaer = gleasonScore.getGradSekundaer();
+    var score = Integer.parseInt(primaer) + Integer.parseInt(sekundaer);
+    return GLEASON_SCORE_TO_SNOMED_GRADE_GROUP.get(score <= 6 ? "3+3" : primaer + "+" + sekundaer);
   }
 
   private List<Observation> mapGleasonPatterns(

@@ -7,7 +7,9 @@ import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DecimalType;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
@@ -72,11 +74,24 @@ class GleasonScoreMapperTest extends MapperTest {
     verifyAll(list, sourceFile);
   }
 
-  @Test
-  void map_withPatternsWithoutGradeGroup_shouldSetTheCodeAsAbsentAndKeepThePatterns() {
-    var gradeGroup = mapGradeGroup("2", "3", "5");
+  @ParameterizedTest
+  @CsvSource({"1,1,2", "2,3,5", "3,2,5", "2,4,6", "4,2,6", "1,5,6", "5,1,6", "3,3,6"})
+  void map_withScoreUpTo6_shouldUseGradeGroup1AndKeepThePatterns(
+      String primaer, String sekundaer, String score) {
+    var value = mapGradeGroup(primaer, sekundaer, score).getValueCodeableConcept();
+    var coding = value.getCodingFirstRep();
 
-    var value = gradeGroup.getValueCodeableConcept();
+    assertThat(coding.getCode()).isEqualTo("1279715000");
+    assertThat(coding.getCodeElement().hasExtension()).isFalse();
+    assertThat(value.getText()).isEqualTo(primaer + "+" + sekundaer);
+    assertThat(itemWeight(coding)).isEqualByComparingTo(score);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"2,5", "5,2"})
+  void map_withScore7OutsideOfTheGradeGroups_shouldSetTheCodeAsAbsentAndKeepThePatterns(
+      String primaer, String sekundaer) {
+    var value = mapGradeGroup(primaer, sekundaer, "7").getValueCodeableConcept();
     var coding = value.getCodingFirstRep();
 
     assertThat(coding.getCode()).isNull();
@@ -87,14 +102,16 @@ class GleasonScoreMapperTest extends MapperTest {
                 .getValue()
                 .primitiveValue())
         .isEqualTo("not-applicable");
-    assertThat(value.getText()).isEqualTo("2+3");
-    assertThat(
-            ((DecimalType)
-                    coding
-                        .getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/itemWeight")
-                        .getValue())
+    assertThat(value.getText()).isEqualTo(primaer + "+" + sekundaer);
+    assertThat(itemWeight(coding)).isEqualByComparingTo("7");
+  }
+
+  private static BigDecimal itemWeight(Coding coding) {
+    return ((DecimalType)
+            coding
+                .getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/itemWeight")
                 .getValue())
-        .isEqualByComparingTo("5");
+        .getValue();
   }
 
   @Test
