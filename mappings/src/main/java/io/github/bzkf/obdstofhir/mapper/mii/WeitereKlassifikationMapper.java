@@ -5,7 +5,6 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.WeitereKlassifikationCodingMapper;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,18 +51,10 @@ public class WeitereKlassifikationMapper extends ObdsToFhirMapper {
         identifierBuilder.append("-").append(klassifikation.getStadium());
       }
 
-      var identifierValue = slugifier.slugify(identifierBuilder.toString());
-
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties
-                      .getSystems()
-                      .getIdentifiers()
-                      .getWeitereKlassifikationObservationId())
-              .setValue(identifierValue);
-      observation.setId(IdUtils.fromIdentifier(identifier));
-      observation.setIdentifier(List.of(identifier));
+      setIdentifierAndId(
+          observation,
+          fhirProperties.getSystems().getIdentifiers().getWeitereKlassifikationObservationId(),
+          identifierBuilder.toString());
 
       // Subject
       observation.setSubject(patient);

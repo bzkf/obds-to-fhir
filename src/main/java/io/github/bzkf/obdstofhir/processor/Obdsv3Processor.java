@@ -6,9 +6,7 @@ import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
-import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
-import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
@@ -42,7 +40,7 @@ import org.springframework.util.StringUtils;
     havingValue = "false",
     matchIfMissing = true)
 @Configuration
-public class Obdsv3Processor extends ObdsToFhirMapper {
+public class Obdsv3Processor {
 
   private static final FhirContext ctx = FhirContext.forR4();
 
@@ -71,11 +69,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private String provenanceTopic;
 
   protected Obdsv3Processor(
-      FhirProperties fhirProperties,
       ObdsToFhirBundleMapper obdsToFhirBundleMapper,
       ObdsMapper obdsMapper,
       WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig) {
-    super(fhirProperties);
     this.obdsToFhirBundleMapper = obdsToFhirBundleMapper;
     this.obdsMapper = obdsMapper;
     this.writeGroupedObdsToKafkaConfig = writeGroupedObdsToKafkaConfig;

@@ -151,16 +151,17 @@ only from that tumor's `Meldungen`. If a patient has several tumors, these Patie
 one written last replaces the others:
 
 - `Patient.deceased` is only set if that tumor has a `Tod` Meldung, so a deceased patient can end up without it.
-- The master data, such as the address, comes from one of that tumor's `Meldungen`, which isn't necessarily the latest.
+- The master data, such as the address, comes from that tumor's latest `Meldung`, so a newer `Meldung` of another tumor
+  can contain more recent data.
 
 ### Order of the `Meldungen` of a tumor
 
-When reading from Kafka, the `Meldungen` of a tumor aren't processed in chronological order:
+When reading from Kafka, the `Meldungen` of a tumor are processed oldest first, by their `Meldedatum` and then by the
+`ID` of their row in the export table. `Condition.recordedDate` is taken from the latest `Meldedatum`.
 
-- `Condition.recordedDate` is taken from one of the `Meldungen`, not necessarily the one with the latest `Meldedatum`.
-- If several `Meldungen` create a resource with the same ID, the one processed last wins, which isn't necessarily the
-  newest. Only the type of a `Meldung` and its `Meldeanlass` affect this order: `Diagnose` Meldungen are processed last,
-  and a `behandlungsende` is processed after a `behandlungsbeginn`.
+If several `Meldungen` create a resource with the same ID, the one processed last wins. The type of a `Meldung` and its
+`Meldeanlass` take precedence over its age, so an older `Meldung` can still replace a newer one: `Diagnose` Meldungen
+are processed last, and a `behandlungsende` is processed after a `behandlungsbeginn`.
 
 ## Development
 

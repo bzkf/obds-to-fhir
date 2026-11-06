@@ -26,12 +26,9 @@ public class Obdsv3Serializer extends ValueSerializer<ObdsOrAdt>
       tools.jackson.core.JsonGenerator gen,
       tools.jackson.databind.SerializationContext ctxt) {
 
-    String xml = MAPPER.writeValueAsString(value);
-
-    if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
+    if (value.hasOBDS()) {
       gen.writeString(MAPPER.writeValueAsString(value.getObds()));
-    } else if (xml.toLowerCase().contains("<adt")
-        && xml.toLowerCase().contains("schema_version=\"2.")) {
+    } else if (value.hasADT()) {
       gen.writeString(MAPPER.writeValueAsString(value.getAdt()));
     } else {
       throw new RuntimeException("Unknown XML root element in serialization");

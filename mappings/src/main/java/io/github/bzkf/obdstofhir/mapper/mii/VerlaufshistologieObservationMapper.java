@@ -5,9 +5,7 @@ import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
@@ -40,41 +38,13 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
 
     var observations = new ArrayList<Observation>();
 
-    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
-    for (var morph : histologie.getMorphologieICDO()) {
-      var code = morph.getCode();
-      var version = morph.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, morph);
-      } else {
-        var existing = distinctCodes.get(code);
-        if (version == null) {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found, but new version is unset. "
-                  + "Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
+    var distinctCodes =
+        histologie.getMorphologieICDO().stream()
+            .map(MorphologieICDOTyp::getCode)
+            .distinct()
+            .toList();
 
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
-          distinctCodes.put(code, morph);
-        } else {
-          LOG.debug(
-              "Multiple ICDO3 morphologies with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
-        }
-      }
-    }
-
-    for (var morph : distinctCodes.values()) {
+    for (var morphologieCode : distinctCodes) {
       var observation = new Observation();
 
       // Meta
@@ -90,17 +60,10 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
         identifierValue = meldungsId;
       }
 
-      identifierValue += "-ICDO3-" + morph.getCode();
-
-      // Identifer
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties.getSystems().getIdentifiers().getVerlaufshistologieObservationId())
-              .setValue(slugifier.slugify(identifierValue));
-      observation.addIdentifier(identifier);
-      // Id
-      observation.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          observation,
+          fhirProperties.getSystems().getIdentifiers().getVerlaufshistologieObservationId(),
+          identifierValue + "-ICDO3-" + morphologieCode);
 
       // Status
       observation.setStatus(Observation.ObservationStatus.FINAL);
@@ -132,7 +95,7 @@ public class VerlaufshistologieObservationMapper extends ObdsToFhirMapper {
           new Coding()
               .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
               // no version: the oBDS ICD-O version is not a version of the ICD-O-3 CodeSystem
-              .setCode(morph.getCode());
+              .setCode(morphologieCode);
       var value = new CodeableConcept(coding).setText(histologie.getMorphologieFreitext());
       observation.setValue(value);
 

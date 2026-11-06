@@ -51,9 +51,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.5'
     implementation 'io.micrometer:micrometer-core:1.16.5'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
-    implementation 'com.github.slugify:slugify:4.0.0'
     implementation 'org.springframework.retry:spring-retry'
-    implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 

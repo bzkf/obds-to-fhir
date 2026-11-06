@@ -56,7 +56,12 @@ class GenetischeVarianteMapperTest extends MapperTest {
           && meldung.getDiagnose().getMengeGenetik() != null
           && meldung.getDiagnose().getMengeGenetik().getGenetischeVariante() != null) {
         var observations =
-            sut.map(meldung.getDiagnose(), subject, condition, meldung.getMeldungID());
+            sut.map(
+                meldung.getDiagnose().getMengeGenetik(),
+                "Diagnose",
+                subject,
+                condition,
+                meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -66,7 +71,12 @@ class GenetischeVarianteMapperTest extends MapperTest {
           && meldung.getVerlauf().getMengeGenetik() != null
           && meldung.getVerlauf().getMengeGenetik().getGenetischeVariante() != null) {
         var observations =
-            sut.map(meldung.getVerlauf(), subject, condition, meldung.getMeldungID());
+            sut.map(
+                meldung.getVerlauf().getMengeGenetik(),
+                "Verlauf",
+                subject,
+                condition,
+                meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -76,7 +86,12 @@ class GenetischeVarianteMapperTest extends MapperTest {
           && meldung.getPathologie().getMengeGenetik() != null
           && meldung.getPathologie().getMengeGenetik().getGenetischeVariante() != null) {
         var observations =
-            sut.map(meldung.getPathologie(), subject, condition, meldung.getMeldungID());
+            sut.map(
+                meldung.getPathologie().getMengeGenetik(),
+                "Pathologie",
+                subject,
+                condition,
+                meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }
@@ -85,7 +100,13 @@ class GenetischeVarianteMapperTest extends MapperTest {
       if (meldung.getOP() != null
           && meldung.getOP().getMengeGenetik() != null
           && meldung.getOP().getMengeGenetik().getGenetischeVariante() != null) {
-        var observations = sut.map(meldung.getOP(), subject, condition, meldung.getMeldungID());
+        var observations =
+            sut.map(
+                meldung.getOP().getMengeGenetik(),
+                "OP",
+                subject,
+                condition,
+                meldung.getMeldungID());
         if (observations != null) {
           resultResources.addAll(observations);
         }

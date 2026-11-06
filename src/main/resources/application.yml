@@ -1,11 +1,6 @@
 # @ignored
 app-version: 3.10.0
 
-# @ignored
-app:
-  enableCheckDigitConv: ${CHECK_DIGIT_CONVERSION:false}
-  patient-id-pattern: "[^0]\\d{8}"
-
 fhir:
   mappings:
     from-onkostar-patient-data:
