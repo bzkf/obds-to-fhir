@@ -1,7 +1,10 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import de.basisdatensatz.obds.v3.PathologieTyp;
+import de.basisdatensatz.obds.v3.TopographieICDOTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
@@ -9,6 +12,7 @@ import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -23,11 +27,55 @@ public class ConditionMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
+  /** What a Diagnose and a Pathologie both state about the primary tumor. */
+  private record PrimaryTumorDetails(
+      @Nullable String diagnosetext,
+      @Nullable TopographieICDOTyp topographie,
+      @Nullable String topographieFreitext,
+      @Nullable String diagnosesicherung) {
+
+    static @Nullable PrimaryTumorDetails of(
+        @Nullable DiagnoseTyp diagnose, @Nullable PathologieTyp pathologie) {
+      if (diagnose != null) {
+        return new PrimaryTumorDetails(
+            diagnose.getPrimaertumorDiagnosetext(),
+            diagnose.getPrimaertumorTopographieICDO(),
+            diagnose.getPrimaertumorTopographieFreitext(),
+            diagnose.getDiagnosesicherung() != null
+                ? diagnose.getDiagnosesicherung().value()
+                : null);
+      }
+
+      if (pathologie != null) {
+        return new PrimaryTumorDetails(
+            pathologie.getPrimaertumorDiagnosetext(),
+            pathologie.getPrimaertumorTopographieICDO(),
+            pathologie.getPrimaertumorTopographieFreitext(),
+            pathologie.getDiagnosesicherung());
+      }
+
+      return null;
+    }
+  }
+
   public Condition map(
       @NonNull Meldung meldung,
       @NonNull Reference patient,
       @NonNull XMLGregorianCalendar meldeDatum,
       @NonNull String patientId) {
+    return map(meldung, patient, meldeDatum, patientId, meldung.getPathologie());
+  }
+
+  /**
+   * @param pathologie the Pathologie of the tumor to take the topography, Diagnosesicherung and
+   *     diagnosis text from if the Meldung has no Diagnose
+   */
+  public Condition map(
+      @NonNull Meldung meldung,
+      @NonNull Reference patient,
+      @NonNull XMLGregorianCalendar meldeDatum,
+      @NonNull String patientId,
+      @Nullable PathologieTyp pathologie) {
     Objects.requireNonNull(meldung.getTumorzuordnung());
     Objects.requireNonNull(meldung.getMeldungID());
 
@@ -37,7 +85,7 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     if (meldung.getDiagnose() == null) {
       LOG.debug(
-          "Diagnose is null for Meldung. Only the Tumorzuordnung will be used to create the Condition.");
+          "Diagnose is null for Meldung. Only the Tumorzuordnung and Pathologie, if any, will be used to create the Condition.");
       var tag =
           fhirProperties
               .getCodings()
@@ -57,18 +105,18 @@ public class ConditionMapper extends ObdsToFhirMapper {
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
+    var details = PrimaryTumorDetails.of(meldung.getDiagnose(), pathologie);
+
     var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();
     var code =
-        new CodeableConcept()
-            .setCoding(mapTumorIcdToCodings(primaertumorIcd, "Primaertumor_ICD_Version", LOG));
+        mapIcdToConcept(
+            primaertumorIcd.getCode(),
+            primaertumorIcd.getVersion(),
+            "Primaertumor_ICD_Version",
+            LOG);
 
-    if (meldung.getDiagnose() != null
-        && StringUtils.hasText(meldung.getDiagnose().getPrimaertumorDiagnosetext())) {
-      code.setText(meldung.getDiagnose().getPrimaertumorDiagnosetext());
-    } else if (extractIcdCatalog(primaertumorIcd.getVersion()).orElse(Icd10Catalog.GM)
-        == Icd10Catalog.OTHER) {
-      // no system can be asserted for "Sonstige", so keep the code as free text
-      code.setText(primaertumorIcd.getCode());
+    if (details != null && StringUtils.hasText(details.diagnosetext())) {
+      code.setText(details.diagnosetext());
     }
 
     condition.setCode(code);
@@ -106,32 +154,29 @@ public class ConditionMapper extends ObdsToFhirMapper {
       }
     }
 
-    // icd-o topography and diagnosis verification status are only available for
-    // Diagnosemeldungen.
-    if (meldung.getDiagnose() != null) {
-      var diagnoseMeldung = meldung.getDiagnose();
-
-      if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
-        condition.addBodySite(
-            new CodeableConcept(
-                icdo3Coding(diagnoseMeldung.getPrimaertumorTopographieICDO().getCode())));
+    if (details != null) {
+      if (details.topographie() != null) {
+        condition.addBodySite(new CodeableConcept(icdo3Coding(details.topographie().getCode())));
       }
 
-      if (diagnoseMeldung.getPrimaertumorTopographieFreitext() != null) {
-        var freitext = diagnoseMeldung.getPrimaertumorTopographieFreitext();
-        condition.getBodySiteFirstRep().setText(freitext);
+      if (details.topographieFreitext() != null) {
+        condition.getBodySiteFirstRep().setText(details.topographieFreitext());
       }
 
-      if (diagnoseMeldung.getDiagnosesicherung() != null) {
+      if (details.diagnosesicherung() != null) {
         Coding verStatus =
             new Coding(fhirProperties.getSystems().getConditionVerStatus(), "confirmed", "");
-        var diagnosesicherung =
-            Onkologie.CodeSystems.MiiCsOnkoPrimaertumorDiagnosesicherung.fromValueOrThrow(
-                    meldung.getDiagnose().getDiagnosesicherung().value())
-                .coding();
+        var verificationStatus = new CodeableConcept().addCoding(verStatus);
 
-        var verificationStatus =
-            new CodeableConcept().addCoding(verStatus).addCoding(diagnosesicherung);
+        Onkologie.CodeSystems.MiiCsOnkoPrimaertumorDiagnosesicherung.fromValue(
+                details.diagnosesicherung())
+            .ifPresentOrElse(
+                value -> verificationStatus.addCoding(value.coding()),
+                () ->
+                    LOG.warn(
+                        "Unknown Diagnosesicherung {}, not adding it to the Condition.",
+                        details.diagnosesicherung()));
+
         condition.setVerificationStatus(verificationStatus);
       }
     }

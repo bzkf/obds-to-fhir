@@ -54,8 +54,9 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
 
     // subject
     carePlan.setSubject(patient);
-    // created
-    convertObdsDatumToDateTimeType(tk.getDatum()).ifPresent(carePlan::setCreatedElement);
+    // created is 1..1, but a completely estimated date (precision V) has no value
+    carePlan.setCreatedElement(
+        convertObdsDatumToDateTimeType(tk.getDatum()).orElseGet(ObdsToFhirMapper::absentDateTime));
     // addresses
     ArrayList<Reference> adresse = new ArrayList<>();
     adresse.add(primaerDiagnose);

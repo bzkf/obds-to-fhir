@@ -85,8 +85,9 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       condition.setCode(
           new CodeableConcept()
               .setCoding(
-                  mapTumorIcdToCodings(
-                      fruehereTumorerkrankung.getICD(),
+                  mapIcdToCodings(
+                      fruehereTumorerkrankung.getICD().getCode(),
+                      fruehereTumorerkrankung.getICD().getVersion(),
                       "Fruehere_Tumorerkrankung ICD_Version",
                       LOG))
               .setText(fruehereTumorerkrankung.getICD().getCode()));

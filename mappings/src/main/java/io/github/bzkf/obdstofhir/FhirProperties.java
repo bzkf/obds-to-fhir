@@ -42,6 +42,8 @@ public class FhirProperties {
     private String itemWeight;
     private String conditionOccurredFollowing;
     private String procedureMethod;
+    private String genderAmtlichDe;
+    private String seitenlokalisation;
   }
 
   @Data
@@ -135,5 +137,7 @@ public class FhirProperties {
     private String atcBfarm;
     private String observationCategory;
     private String meddra;
+    private String genderAmtlichDe;
+    private String seitenlokalisation;
   }
 }

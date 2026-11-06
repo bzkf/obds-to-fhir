@@ -32,7 +32,9 @@ import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -279,6 +281,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       bundle.setId(patient.getId());
 
+      var latestPathologieByTumor = latestPathologieByTumor(meldungen);
+
       var isFirstMeldung = true;
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
@@ -291,7 +295,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         // is known
         var condition =
             conditionMapper.map(
-                meldung, patientReference, obds.getMeldedatum(), obdsPatient.getPatientID());
+                meldung,
+                patientReference,
+                obds.getMeldedatum(),
+                obdsPatient.getPatientID(),
+                latestPathologieByTumor.get(meldung.getTumorzuordnung().getTumorID()));
         resourcesMappedFromMeldung.add(condition);
 
         var primaryConditionReference = ReferenceUtils.createReferenceTo(condition);
@@ -380,6 +388,20 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       MDC.remove("tumorId");
     }
     return results;
+  }
+
+  /**
+   * Every Meldung creates the Condition of its tumor and the one processed last wins, so a Meldung
+   * after a Pathologie would otherwise drop what only the Pathologie knows about the tumor.
+   */
+  private static Map<String, PathologieTyp> latestPathologieByTumor(List<Meldung> meldungen) {
+    var latest = new HashMap<String, PathologieTyp>();
+    for (var meldung : meldungen) {
+      if (meldung.getPathologie() != null) {
+        latest.put(meldung.getTumorzuordnung().getTumorID(), meldung.getPathologie());
+      }
+    }
+    return latest;
   }
 
   private static List<Meldung> sortMeldungen(List<Meldung> meldungen) {
@@ -516,7 +538,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
             allgemein, context.patient(), context.condition(), context.meldungId()));
   }
 
-  /** Maps the WeitereKlassifikation resources shared by Diagnose, Verlauf and Pathologie. */
+  /** Maps the WeitereKlassifikation resources shared by Diagnose, Verlauf, OP and Pathologie. */
   private void mapWeitereKlassifikationen(
       @Nullable MengeWeitereKlassifikationTyp menge,
       MeldungContext context,
@@ -887,6 +909,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         context,
         mappedResources);
 
+    mapWeitereKlassifikationen(op.getMengeWeitereKlassifikation(), context, mappedResources);
+
     return mappedResources;
   }
 
@@ -913,15 +937,6 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         context,
         mappedResources);
 
-    if (pathologie.getModulProstata() != null) {
-      mappedResources.addAll(
-          modulProstataMapper.map(
-              pathologie.getModulProstata(),
-              context.meldungId(),
-              context.patient(),
-              context.condition()));
-    }
-
     // the Pathologie section has no date of its own; the histology date is the closest
     var effective =
         Optional.ofNullable(pathologie.getHistologie())
@@ -930,7 +945,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     mapModules(
         new Modules(
-            null,
+            pathologie.getModulProstata(),
             pathologie.getModulDarm(),
             pathologie.getModulMamma(),
             pathologie.getModulMalignesMelanom()),

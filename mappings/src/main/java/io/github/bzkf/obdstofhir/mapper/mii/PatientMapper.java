@@ -81,8 +81,16 @@ public class PatientMapper extends ObdsToFhirMapper {
     patient.addIdentifier(identifier);
     patient.setId(resolvePatientId(identifier));
 
-    patient.setGender(
-        genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
+    var geschlecht = obdsPatient.getPatientenStammdaten().getGeschlecht();
+    patient.setGender(genderMap.getOrDefault(geschlecht, null));
+
+    // D and X are both `other`, the extension tells them apart and is required for `other`
+    // (mii-pat-1)
+    if (geschlecht == PatientenStammdatenMelderTyp.Geschlecht.D) {
+      addGenderAmtlich(patient, "D", "divers");
+    } else if (geschlecht == PatientenStammdatenMelderTyp.Geschlecht.X) {
+      addGenderAmtlich(patient, "X", "unbestimmt");
+    }
 
     convertObdsDatumToDateType(obdsPatient.getPatientenStammdaten().getGeburtsdatum())
         .ifPresent(patient::setBirthDateElement);
@@ -143,6 +151,14 @@ public class PatientMapper extends ObdsToFhirMapper {
     }
 
     return patient;
+  }
+
+  private void addGenderAmtlich(Patient patient, String code, String display) {
+    patient
+        .getGenderElement()
+        .addExtension(
+            fhirProperties.getExtensions().getGenderAmtlichDe(),
+            new Coding(fhirProperties.getSystems().getGenderAmtlichDe(), code, display));
   }
 
   private IIdType resolvePatientId(Identifier identifier) {

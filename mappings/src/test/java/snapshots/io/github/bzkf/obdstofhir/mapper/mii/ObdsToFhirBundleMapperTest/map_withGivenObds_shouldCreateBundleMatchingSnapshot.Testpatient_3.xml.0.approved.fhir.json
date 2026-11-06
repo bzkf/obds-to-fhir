@@ -242,8 +242,7 @@
           },
           "code": "L01CD01",
           "userSelected": false
-        } ],
-        "text": "Paclitaxel"
+        } ]
       },
       "ingredient": [ {
         "itemCodeableConcept": {

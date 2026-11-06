@@ -5,7 +5,6 @@ import com.github.slugify.Slugify;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTyp;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatGenauTypSchaetzOptional;
 import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp;
-import de.basisdatensatz.obds.v3.TumorICDTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
@@ -184,18 +183,18 @@ public abstract class ObdsToFhirMapper {
   }
 
   /**
-   * Maps a tumor ICD to the codings used by the primary and previous-tumor profiles. WHO retains
-   * its own coding alongside the required, explicitly absent GM slice. An unset or unparsable
-   * catalog retains the existing GM fallback policy. Text and profile-specific requirements remain
-   * the caller's responsibility.
+   * Maps an ICD code to the codings used by the primary tumor, previous tumor and OP complication
+   * profiles, the first one is always the GM one. WHO retains its own coding alongside the
+   * explicitly absent GM coding. An unset or unparsable catalog retains the existing GM fallback
+   * policy. Text and profile-specific requirements remain the caller's responsibility.
    */
-  protected List<Coding> mapTumorIcdToCodings(
-      TumorICDTyp tumorIcd, String fieldName, Logger mapperLog) {
-    var versionYear = extractIcdVersionYear(tumorIcd.getVersion(), fieldName, mapperLog);
-    var catalog = extractIcdCatalog(tumorIcd.getVersion()).orElse(Icd10Catalog.GM);
+  protected List<Coding> mapIcdToCodings(
+      String code, String version, String fieldName, Logger mapperLog) {
+    var versionYear = extractIcdVersionYear(version, fieldName, mapperLog);
+    var catalog = extractIcdCatalog(version).orElse(Icd10Catalog.GM);
     var gm = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
     if (catalog == Icd10Catalog.GM) {
-      gm.setCode(tumorIcd.getCode());
+      gm.setCode(code);
       gm.setVersionElement(versionYear);
     } else {
       gm.getCodeElement().addExtension(DataAbsentReason.notApplicable());
@@ -209,10 +208,24 @@ public abstract class ObdsToFhirMapper {
       codings.add(
           new Coding()
               .setSystem(fhirProperties.getSystems().getIcd10who())
-              .setCode(tumorIcd.getCode())
+              .setCode(code)
               .setVersionElement(versionYear));
     }
     return codings;
+  }
+
+  /**
+   * Maps an ICD code to a concept with the codings of {@link #mapIcdToCodings}. No system can be
+   * asserted for {@code Sonstige}, so its code is kept as free text.
+   */
+  protected CodeableConcept mapIcdToConcept(
+      String code, String version, String fieldName, Logger mapperLog) {
+    var concept =
+        new CodeableConcept().setCoding(mapIcdToCodings(code, version, fieldName, mapperLog));
+    if (extractIcdCatalog(version).orElse(Icd10Catalog.GM) == Icd10Catalog.OTHER) {
+      concept.setText(code);
+    }
+    return concept;
   }
 
   public static Optional<DateType> convertObdsDatumToDateType(

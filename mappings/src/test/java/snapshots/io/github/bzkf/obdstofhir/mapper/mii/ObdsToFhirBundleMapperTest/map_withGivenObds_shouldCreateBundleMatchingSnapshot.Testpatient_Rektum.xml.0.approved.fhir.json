@@ -260,7 +260,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "DAI",
+          "display": "Darmanastomoseninsuffizienz"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -333,7 +340,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "DAI",
+          "display": "Darmanastomoseninsuffizienz"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -406,7 +420,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "DAI",
+          "display": "Darmanastomoseninsuffizienz"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1524,8 +1545,7 @@
           },
           "code": "L01XA03",
           "userSelected": false
-        } ],
-        "text": "Oxaliplatin"
+        } ]
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -1653,8 +1673,7 @@
           },
           "code": "V03AF03",
           "userSelected": false
-        } ],
-        "text": "Folinsäure"
+        } ]
       },
       "ingredient": [ {
         "itemCodeableConcept": {

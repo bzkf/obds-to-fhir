@@ -3,14 +3,17 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.SYSTTyp;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.SubstanzToAtcMapper;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
+import org.hl7.fhir.r4.model.Medication;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +68,57 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
             .toList();
 
     verifyAll(flattened, sourceFile);
+  }
+
+  @Test
+  void map_withSameAtcCode_shouldCreateTheSameMedicationRegardlessOfTheBezeichnung() {
+    var first = mapMedication("L01XA03", "2024", "Oxaliplatin");
+    var second = mapMedication("L01XA03", "2024", "Eloxatin");
+
+    assertThat(first.equalsDeep(second)).isTrue();
+    assertThat(first.getCode().hasText()).isFalse();
+  }
+
+  @Test
+  void map_withSameAtcCodeButDifferentVersion_shouldCreateOneMedicationPerAtcCode() {
+    var first = mapMedication("L01XA03", "2024", "Oxaliplatin");
+    var second = mapMedication("L01XA03", "2025", "Oxaliplatin");
+
+    assertThat(first.getId()).isEqualTo(second.getId());
+    assertThat(first.getIdentifierFirstRep().getValue()).isEqualTo("L01XA03");
+    assertThat(second.getIdentifierFirstRep().getValue()).isEqualTo("L01XA03");
+  }
+
+  @Test
+  void map_shouldKeepTheBezeichnungOnTheMedicationStatement() {
+    var statement = mapSubstanz("L01XA03", "2024", "Eloxatin").getFirst().medicationStatement();
+
+    assertThat(statement.getMedicationReference().getDisplay()).isEqualTo("Eloxatin");
+  }
+
+  private static Medication mapMedication(String atcCode, String version, String bezeichnung) {
+    return mapSubstanz(atcCode, version, bezeichnung).getFirst().medication().orElseThrow();
+  }
+
+  private static List<
+          SystemischeTherapieMedicationStatementMapper.SystemischeTherapieMappingResults>
+      mapSubstanz(String atcCode, String version, String bezeichnung) {
+    var atc = new SYSTTyp.MengeSubstanz.Substanz.ATC();
+    atc.setCode(atcCode);
+    atc.setVersion(version);
+    var substanz = new SYSTTyp.MengeSubstanz.Substanz();
+    substanz.setATC(atc);
+    substanz.setBezeichnung(bezeichnung);
+    var menge = new SYSTTyp.MengeSubstanz();
+    menge.getSubstanz().add(substanz);
+    var syst = new SYSTTyp();
+    syst.setSYSTID("1");
+    syst.setMengeSubstanz(menge);
+
+    return sut.map(
+        syst,
+        new Reference("Patient/any"),
+        new Reference("Procedure/any"),
+        new Reference("Condition/any"));
   }
 }

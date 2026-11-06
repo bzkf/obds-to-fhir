@@ -3,11 +3,15 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
+import java.util.function.Consumer;
 import org.hl7.fhir.r4.model.Coding;
+import org.hl7.fhir.r4.model.Condition;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,5 +131,48 @@ class ConditionMapperTest extends MapperTest {
     assertThat(whoCoding.map(Coding::getCode).orElse(null)).isEqualTo(expectedWhoCode);
 
     assertThat(condition.getCode().getText()).isEqualTo(expectedCodeText);
+  }
+
+  @Test
+  void map_withPathologieOnly_shouldUseItsTopographyDiagnosesicherungAndDiagnosetext()
+      throws IOException {
+    var condition = mapPathologieMeldung(meldung -> {});
+
+    assertThat(condition.getCode().getText()).isEqualTo("Mamma-Ca");
+    assertThat(condition.getBodySiteFirstRep().getText()).isEqualTo("Brust");
+    assertThat(condition.getBodySiteFirstRep().getCodingFirstRep().getSystem())
+        .isEqualTo("http://terminology.hl7.org/CodeSystem/icd-o-3");
+    assertThat(condition.getVerificationStatus().getCoding())
+        .extracting(Coding::getCode)
+        .containsExactly("confirmed", "7");
+    // the Diagnose is still missing
+    assertThat(condition.getMeta().getTag()).extracting(Coding::getCode).contains("255599008");
+  }
+
+  @Test
+  void map_withUnknownPathologieDiagnosesicherung_shouldNotThrow() throws IOException {
+    var condition = mapPathologieMeldung(m -> m.getPathologie().setDiagnosesicherung("invalid"));
+
+    assertThat(condition.getVerificationStatus().getCoding())
+        .extracting(Coding::getCode)
+        .containsExactly("confirmed");
+  }
+
+  private Condition mapPathologieMeldung(Consumer<Meldung> customize) throws IOException {
+    final var resource =
+        this.getClass().getClassLoader().getResource("obds3/Testpatient_Patho.xml");
+    assertThat(resource).isNotNull();
+
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+    var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+    var meldung =
+        obdsPatient.getMengeMeldung().getMeldung().stream()
+            .filter(m -> m.getPathologie() != null)
+            .findFirst()
+            .orElseThrow();
+    customize.accept(meldung);
+
+    return sut.map(
+        meldung, new Reference("Patient/any"), obds.getMeldedatum(), obdsPatient.getPatientID());
   }
 }
