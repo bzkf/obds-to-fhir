@@ -4,13 +4,13 @@ import de.basisdatensatz.obds.v3.ModulDarmTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -147,7 +147,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
   private void setDistanceValue(
       @NonNull Observation observation, @NonNull String rawValue, @NonNull String unit) {
     if ("U".equals(rawValue)) {
-      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(
+          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.UNKNOWN));
       return;
     }
 
@@ -513,7 +514,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       // in the oBDS, N means "Nicht untersucht", while N in the
       // MiiCsOnkoGenetischeVarianteAuspraegung means "Nicht bestimmbar", i.e. tested but
       // without a result. So we don't set an interpretation and mark the test as not performed.
-      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.NOTPERFORMED));
+      observation.setDataAbsentReason(
+          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.NOTPERFORMED));
     } else {
       // the remaining RASMutationTyp codes (W/M/U) have the same meaning in the
       // MiiCsOnkoGenetischeVarianteAuspraegung

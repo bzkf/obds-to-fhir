@@ -30,7 +30,7 @@ public class ProvenanceMapper extends ObdsToFhirMapper {
     var deviceIdentifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getIdentifiers().getObdsToFhirDeviceId())
-            .setValue("obds-to-fhir-" + libVersion);
+            .setValue("obds-to-fhir-v" + libVersion);
 
     var provenance = new Provenance();
     var identifier =

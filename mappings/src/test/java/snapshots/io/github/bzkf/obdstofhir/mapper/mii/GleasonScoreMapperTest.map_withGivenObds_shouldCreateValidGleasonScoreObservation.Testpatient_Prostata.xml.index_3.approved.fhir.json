@@ -1,11 +1,11 @@
 {
   "resourceType": "Observation",
-  "id": "402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329",
+  "id": "18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
     "value": "DIA_80106-modul-prostata-gleason-grade-group"
   } ],
   "status": "final",

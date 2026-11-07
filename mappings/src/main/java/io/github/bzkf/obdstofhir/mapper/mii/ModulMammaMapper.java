@@ -5,11 +5,11 @@ import de.basisdatensatz.obds.v3.ModulMammaTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -318,7 +318,8 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
             .setText(codeText));
 
     if ("U".equals(rawValue)) {
-      observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(
+          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.UNKNOWN));
       return observation;
     }
 

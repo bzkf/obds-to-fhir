@@ -163,6 +163,9 @@ If several `Meldungen` create a resource with the same ID, the one processed las
 `Meldeanlass` take precedence over its age, so an older `Meldung` can still replace a newer one: `Diagnose` Meldungen
 are processed last, and a `behandlungsende` is processed after a `behandlungsbeginn`.
 
+Without a `Diagnose` Meldung, the topography, `Diagnosesicherung` and diagnosis text of the Condition come from the
+tumor's `Pathologie` Meldung that is processed last, even if another `Meldung` is processed after it.
+
 ## Development
 
 ### Development Stack

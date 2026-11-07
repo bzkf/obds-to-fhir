@@ -2,12 +2,14 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.basisdatensatz.obds.v3.DatumTagOderMonatOderJahrOderNichtGenauTyp.DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,34 @@ class TumorkonferenzMapperTest extends MapperTest {
       var carePlan = tmk.map(tumorMeldung, subject, primaerdiagnose);
       verify(carePlan, sourceFile);
     }
+  }
+
+  @Test
+  void map_withCompletelyEstimatedDate_shouldSetCreatedAsAbsent() throws IOException {
+    final var resource = this.getClass().getClassLoader().getResource("obds3/Testpatient_1.xml");
+    assertThat(resource).isNotNull();
+
+    final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+    var tumorkonferenz =
+        obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung().stream()
+            .map(m -> m.getTumorkonferenz())
+            .filter(Objects::nonNull)
+            .findFirst()
+            .orElseThrow();
+    tumorkonferenz
+        .getDatum()
+        .setDatumsgenauigkeit(DatumsgenauigkeitTagOderMonatOderJahrOderNichtGenau.V);
+
+    var created =
+        tmk.map(tumorkonferenz, new Reference("Patient/any"), new Reference("Condition/any"))
+            .getCreatedElement();
+
+    assertThat(created.getValue()).isNull();
+    assertThat(
+            created
+                .getExtensionByUrl("http://hl7.org/fhir/StructureDefinition/data-absent-reason")
+                .getValue()
+                .primitiveValue())
+        .isEqualTo("unknown");
   }
 }

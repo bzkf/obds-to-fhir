@@ -5,8 +5,10 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -23,9 +25,12 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(TNMMapper.class);
 
-  // suffixes = {"i-", "i+", "sn"};
+  // suffixes = {"i-", "i+", "mol-", "mol+", "sn"};
   private static final Pattern SUFFIX_PATTERN =
-      Pattern.compile("\\(?(\\Qi-\\E|\\Qi+\\E|\\Qsn\\E)\\)?");
+      Pattern.compile("\\(?(\\Qi-\\E|\\Qi+\\E|\\Qmol-\\E|\\Qmol+\\E|\\Qsn\\E)\\)?");
+
+  private static final Set<String> M_SYMBOL_CODES =
+      Set.of("m", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 
   public enum TnmType {
     CLINICAL,
@@ -141,7 +146,7 @@ public class TNMMapper extends ObdsToFhirMapper {
                 () ->
                     getCodeableConceptLoinc(
                         "42030-7", "Multiple tumors reported as single primary Cancer"),
-                () -> getCodeableConceptTnmUicc(tnmTyp.getMSymbol())),
+                () -> createMSymbolValue(tnmTyp.getMSymbol())),
             new TnmMember(
                 tnmTyp.getL(),
                 "-L",
@@ -216,7 +221,15 @@ public class TNMMapper extends ObdsToFhirMapper {
                       patient,
                       primaryConditionReference);
               observation.setCode(member.code().get());
-              observation.setValue(member.value().get());
+              var value = member.value().get();
+              if (value.hasCoding()) {
+                observation.setValue(value);
+              } else {
+                // the required binding of the value doesn't allow one that only has a text
+                observation.setDataAbsentReason(
+                    DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.ASTEXT));
+                observation.addNote().setText(value.getText());
+              }
               return observation;
             })
         .toList();
@@ -272,7 +285,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   private CodeableConcept createNKategorieCode(String cpuPraefix) {
     var coding =
         switch (cpuPraefix) {
-          case "c" -> getSnomedCoding("399534004", "cN category (observable entity)");
+          case "c", "u" -> getSnomedCoding("399534004", "cN category (observable entity)");
           case "p" -> getSnomedCoding("371494008", "pN category (observable entity)");
           default -> getSnomedCoding("277206009", "N category (observable entity)");
         };
@@ -282,7 +295,7 @@ public class TNMMapper extends ObdsToFhirMapper {
   private CodeableConcept createMKategorieCode(String cpuPraefix) {
     var coding =
         switch (cpuPraefix) {
-          case "c" -> getSnomedCoding("399387003", "cM category (observable entity)");
+          case "c", "u" -> getSnomedCoding("399387003", "cM category (observable entity)");
           case "p" -> getSnomedCoding("371497001", "pM category (observable entity)");
           default -> getSnomedCoding("277208005", "M category (observable entity)");
         };
@@ -332,7 +345,33 @@ public class TNMMapper extends ObdsToFhirMapper {
           Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.I_NEG));
     }
 
+    if (extractedSuffixes.contains("mol+")) {
+      codeableConcept.addExtension(
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.MOL_POS));
+    }
+
+    if (extractedSuffixes.contains("mol-")) {
+      codeableConcept.addExtension(
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.MOL_NEG));
+    }
+
     return codeableConcept;
+  }
+
+  /**
+   * The ValueSet only has {@code m} and the counts 2 to 10, while oBDS also allows more tumors and
+   * an in-situ marker ({@code m,is} or just {@code is}). What the ValueSet can't express is kept as
+   * text.
+   */
+  private CodeableConcept createMSymbolValue(String mSymbol) {
+    var code = mSymbol.replace(",is", "");
+    if (!M_SYMBOL_CODES.contains(code)) {
+      LOG.debug("m_Symbol {} has no code in the ValueSet, keeping it as text.", mSymbol);
+      return new CodeableConcept().setText(mSymbol);
+    }
+
+    var value = getCodeableConceptTnmUicc(code);
+    return code.equals(mSymbol) ? value : value.setText(mSymbol);
   }
 
   private Coding getSnomedCoding(String snomedCode, String display) {
@@ -389,7 +428,11 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observation;
   }
 
-  private CodeableConcept getObservationMethod(String tnmVersion) {
+  private @Nullable CodeableConcept getObservationMethod(@Nullable String tnmVersion) {
+    if (!StringUtils.hasText(tnmVersion)) {
+      return null;
+    }
+
     var method =
         new Coding().setCode(tnmVersion).setSystem(Onkologie.CodeSystems.miiCsOnkoTnmVersion());
 

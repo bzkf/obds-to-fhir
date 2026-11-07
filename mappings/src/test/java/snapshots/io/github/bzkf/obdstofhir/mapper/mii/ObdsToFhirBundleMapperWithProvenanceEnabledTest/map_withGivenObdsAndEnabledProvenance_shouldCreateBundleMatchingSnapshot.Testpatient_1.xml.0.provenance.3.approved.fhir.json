@@ -1,6 +1,6 @@
 {
   "resourceType": "Provenance",
-  "id": "dfa389d89fe71c44fa4384f80ad7fae3641080a26953e936242c4b3de61a6eac",
+  "id": "c6f499358ccbf45f8ac717ba212a044c1d2a238836ff4c558094b21f2cd342f2",
   "target": [ {
     "reference": "Condition/dec60bae0a707f01b77ab2ef8f22d53d4b352636c9cf80b1081ad6aa1252cb1d"
   }, {
@@ -55,7 +55,7 @@
     "who": {
       "identifier": {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
-        "value": "obds-to-fhir-0.0.0-test"
+        "value": "obds-to-fhir-v0.0.0-test"
       },
       "display": "oBDS-to-FHIR v0.0.0-test"
     }

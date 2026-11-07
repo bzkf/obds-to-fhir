@@ -694,7 +694,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -758,7 +765,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1494,15 +1508,15 @@
       "url": "Observation/c2c37787be75fee5766d1338c04e79c8d11620bdbf889ea83e6386d4a7580c51"
     }
   }, {
-    "fullUrl": "Observation/29b02cb04f540d0c482df61dd5e1fe1d310bfab4d982f043ed77713f8b953146",
+    "fullUrl": "Observation/9ce4ccffea14a760417f8d25460b2929f97d64b2c8d2c218086cdfa572e3f195",
     "resource": {
       "resourceType": "Observation",
-      "id": "29b02cb04f540d0c482df61dd5e1fe1d310bfab4d982f043ed77713f8b953146",
+      "id": "9ce4ccffea14a760417f8d25460b2929f97d64b2c8d2c218086cdfa572e3f195",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
         "value": "OP_80105-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
@@ -1560,7 +1574,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/29b02cb04f540d0c482df61dd5e1fe1d310bfab4d982f043ed77713f8b953146"
+      "url": "Observation/9ce4ccffea14a760417f8d25460b2929f97d64b2c8d2c218086cdfa572e3f195"
     }
   }, {
     "fullUrl": "Observation/aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4",
@@ -2543,15 +2557,15 @@
       "url": "Observation/00712c24ba9af14eda2149757b13cda0fb7cd8dd4b5d3e26e47150b778bb8e06"
     }
   }, {
-    "fullUrl": "Observation/402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329",
+    "fullUrl": "Observation/18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692",
     "resource": {
       "resourceType": "Observation",
-      "id": "402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329",
+      "id": "18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
         "value": "DIA_80106-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
@@ -2609,7 +2623,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329"
+      "url": "Observation/18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692"
     }
   }, {
     "fullUrl": "Observation/c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b",
@@ -2803,7 +2817,7 @@
         }
       }, {
         "item": {
-          "reference": "Observation/402aa9502da51d9680df772e22fe83a91a6cacd304dd12c5af5466f423a96329"
+          "reference": "Observation/18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692"
         }
       }, {
         "item": {

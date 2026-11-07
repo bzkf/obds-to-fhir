@@ -148,7 +148,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -219,7 +226,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -290,7 +304,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -361,7 +382,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -432,7 +460,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -503,7 +538,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -574,7 +616,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -645,7 +694,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -716,7 +772,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1423,15 +1486,15 @@
       "url": "Observation/ddacd1e5ec16de68d1a83a19311250e5d7abd14a6a4376eac154ba83f061fa11"
     }
   }, {
-    "fullUrl": "Observation/8c25d396e87db2fa30f56e571c93a4fe2cf8956c34b932a603f21442a7c85178",
+    "fullUrl": "Observation/7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
     "resource": {
       "resourceType": "Observation",
-      "id": "8c25d396e87db2fa30f56e571c93a4fe2cf8956c34b932a603f21442a7c85178",
+      "id": "7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
       },
       "identifier": [ {
-        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
         "value": "NC0000061_741-modul-prostata-gleason-grade-group"
       } ],
       "status": "final",
@@ -1496,7 +1559,7 @@
     },
     "request": {
       "method": "PUT",
-      "url": "Observation/8c25d396e87db2fa30f56e571c93a4fe2cf8956c34b932a603f21442a7c85178"
+      "url": "Observation/7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb"
     }
   }, {
     "fullUrl": "Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a",

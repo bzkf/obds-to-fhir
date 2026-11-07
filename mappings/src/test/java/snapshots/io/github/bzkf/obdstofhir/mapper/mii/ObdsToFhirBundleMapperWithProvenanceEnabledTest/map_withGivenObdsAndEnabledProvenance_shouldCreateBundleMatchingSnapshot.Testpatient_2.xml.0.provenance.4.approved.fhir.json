@@ -1,6 +1,6 @@
 {
   "resourceType": "Provenance",
-  "id": "55dfff3b30861464e8569d4ce3e67c6e3e63dcbbbbc20679473c843df86f86b7",
+  "id": "d518d09b7b5fece7a7f20f3166d93c12a3234b1b291a6b9b190422a4714f4baf",
   "target": [ {
     "reference": "Condition/9500c9bdcd923c6cdbaf5045ddc3411d23197ab5988bf148dd38174a66cd2910"
   }, {
@@ -16,7 +16,7 @@
   }, {
     "reference": "Observation/c0ebe767a627cd676ee250cbe2b2b9be7af8b4b4c07d486ba6917390c3942c09"
   }, {
-    "reference": "Observation/e897eb848f80c21ed8da89f308cffbb82d9f37aee6eb11f7a3108a91682b6995"
+    "reference": "Observation/5c73b030890b1a75191faf92e34789ab9263262605c82afb2114860ecc0bcf26"
   }, {
     "reference": "Observation/1b807e520eb2dccc06756e581563d326698774f25cc2de8b9bfdd2b50fcf30db"
   }, {
@@ -49,7 +49,7 @@
     "who": {
       "identifier": {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
-        "value": "obds-to-fhir-0.0.0-test"
+        "value": "obds-to-fhir-v0.0.0-test"
       },
       "display": "oBDS-to-FHIR v0.0.0-test"
     }
