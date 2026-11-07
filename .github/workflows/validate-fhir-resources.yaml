@@ -65,12 +65,24 @@ jobs:
           restore-keys: |
             fhir-packages-
 
+      # Firely Terminal 4 exits non-zero on the dependency cycle between hl7.terminology.r4 and
+      # hl7.fhir.uv.extensions.r4 (CircularReference, OutOfRange), even though the packages get
+      # installed. Its exit code is ignored, but the step fails if a direct dependency is missing:
+      # the other jobs only restore the cache, so an incomplete restore must not be saved to it.
       - name: Restore FHIR package dependencies
         if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
           fhir cache location --path
           fhir cache list
-          fhir restore
+          fhir restore || echo "::warning::fhir restore exited with code $?, checking the installed packages"
+          PACKAGES_DIR=$(fhir cache location --path)
+          jq -r '.dependencies | to_entries[] | "\(.key)#\(.value)"' package.json | while read -r package; do
+            if [ ! -d "$PACKAGES_DIR/$package" ]; then
+              echo "::error::FHIR package $package is missing after fhir restore"
+              exit 1
+            fi
+            echo "found $package"
+          done
 
   validate-fhir-resource:
     name: validate fhir resources
