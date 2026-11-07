@@ -126,17 +126,6 @@
                 "hasChanged": true
               }
             ]
-          },
-          {
-            "files": ["package.json"],
-            "from": "\"version\": \".*\"",
-            "to": "\"version\": \"${nextRelease.version}\"",
-            "results": [
-              {
-                "file": "package.json",
-                "hasChanged": true
-              }
-            ]
           }
         ]
       }
@@ -151,8 +140,7 @@
           "mappings/build.gradle",
           "README.md",
           "deploy/compose.yaml",
-          "deploy/compose.dq-checks.yaml",
-          "package.json"
+          "deploy/compose.dq-checks.yaml"
         ]
       }
     ]
