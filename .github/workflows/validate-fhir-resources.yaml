@@ -16,11 +16,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
-  # ProvenanceMapperTest:
-  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
-  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
-  # seems like a false positive since the sample at <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html>
-  # does the same.
   # ModulMalignesMelanomMapperTest:
   # error: Instance failed constraint mii-onko-melanom-sicherheitsabstand-1 "Entweder muss valueQuantity oder dataAbsentReason vorhanden sein"
   # the invariant's expression is `valueQuantity.exists() or dataAbsentReason.exists()`, but FHIRPath labels a
@@ -104,7 +99,7 @@ jobs:
       - name: Configure fhir cli
         run: |
           fhir config inflate All
-          fhir config validator Advanced
+          fhir config validate firely
 
       - name: Cache FHIR packages
         id: fhir-package-cache
@@ -127,7 +122,7 @@ jobs:
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose "{}" --fail-on error'
 
   validate-bundles:
     name: validate bundles
@@ -149,7 +144,7 @@ jobs:
       - name: Configure fhir cli
         run: |
           fhir config inflate All
-          fhir config validator Advanced
+          fhir config validate firely
 
       - name: Cache FHIR packages
         id: fhir-package-cache
@@ -195,4 +190,4 @@ jobs:
           fhir cache list
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose "{}" --fail-on error'
