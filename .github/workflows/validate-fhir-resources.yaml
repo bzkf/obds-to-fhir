@@ -33,7 +33,6 @@ env:
       "TumorKonferenzMapperTest",
       "ModulProstataMapperTest",
       "SystemischeTherapieMedicationStatementMapperTest",
-      "ProvenanceMapperTest",
       "ModulMalignesMelanomMapperTest"
     ]
 
@@ -41,7 +40,7 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -81,7 +80,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     strategy:
@@ -133,7 +132,7 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     steps:

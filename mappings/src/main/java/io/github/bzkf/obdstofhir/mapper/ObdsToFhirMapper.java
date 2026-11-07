@@ -119,16 +119,6 @@ public abstract class ObdsToFhirMapper {
   }
 
   /**
-   * {@code Observation.dataAbsentReason} takes a coding, while the to-fhir {@link DataAbsentReason}
-   * helpers only build the extension.
-   */
-  protected static CodeableConcept dataAbsentReason(
-      org.hl7.fhir.r4.model.codesystems.DataAbsentReason reason) {
-    return new CodeableConcept(
-        new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
-  }
-
-  /**
    * Extracts the version year from an oBDS ICD-10 version string (see {@link
    * #ICD_VERSION_PATTERN}), falling back to a data-absent-reason extension if it is unset or
    * doesn't match the expected format.

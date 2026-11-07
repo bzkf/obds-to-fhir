@@ -2389,7 +2389,8 @@
           },
           "code": "L01XA01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Cisplatin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {

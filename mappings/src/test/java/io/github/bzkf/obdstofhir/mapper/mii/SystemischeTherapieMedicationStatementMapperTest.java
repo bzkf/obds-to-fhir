@@ -71,12 +71,13 @@ class SystemischeTherapieMedicationStatementMapperTest extends MapperTest {
   }
 
   @Test
-  void map_withSameAtcCode_shouldCreateTheSameMedicationRegardlessOfTheBezeichnung() {
+  void map_withSameAtcCode_shouldCreateOneMedicationWithTheBezeichnungAsText() {
     var first = mapMedication("L01XA03", "2024", "Oxaliplatin");
     var second = mapMedication("L01XA03", "2024", "Eloxatin");
 
-    assertThat(first.equalsDeep(second)).isTrue();
-    assertThat(first.getCode().hasText()).isFalse();
+    assertThat(first.getId()).isEqualTo(second.getId());
+    assertThat(first.getCode().getText()).isEqualTo("Oxaliplatin");
+    assertThat(second.getCode().getText()).isEqualTo("Eloxatin");
   }
 
   @Test

@@ -125,8 +125,6 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
       if (atcCode != null) {
         var medication = new Medication();
         medication.getMeta().addProfile(Medikation.Profiles.miiPrMedikationMedication());
-        // there is one Medication per ATC code across all patients, so the Bezeichnung of a single
-        // Meldung is only kept on the MedicationStatement's reference
         var medicationIdentifier =
             new Identifier()
                 .setSystem(
@@ -138,7 +136,7 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
         medication.addIdentifier(medicationIdentifier);
         medication.setId(IdUtils.fromIdentifier(medicationIdentifier));
 
-        medication.setCode(new CodeableConcept(atcCode));
+        medication.setCode(new CodeableConcept(atcCode).setText(substanz.getBezeichnung()));
 
         var absentCodeableConcept = new CodeableConcept();
         var absentCode = fhirProperties.getCodings().snomed();

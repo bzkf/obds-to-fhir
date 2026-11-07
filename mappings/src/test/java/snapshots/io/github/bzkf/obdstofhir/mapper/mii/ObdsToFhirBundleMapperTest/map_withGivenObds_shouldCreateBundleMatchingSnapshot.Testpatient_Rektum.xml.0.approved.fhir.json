@@ -1545,7 +1545,8 @@
           },
           "code": "L01XA03",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Oxaliplatin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -1673,7 +1674,8 @@
           },
           "code": "V03AF03",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Folinsäure"
       },
       "ingredient": [ {
         "itemCodeableConcept": {

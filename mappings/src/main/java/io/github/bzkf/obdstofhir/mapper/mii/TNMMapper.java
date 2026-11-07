@@ -5,6 +5,7 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
+import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +13,6 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
-import org.hl7.fhir.r4.model.codesystems.DataAbsentReason;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
@@ -226,7 +226,8 @@ public class TNMMapper extends ObdsToFhirMapper {
                 observation.setValue(value);
               } else {
                 // the required binding of the value doesn't allow one that only has a text
-                observation.setDataAbsentReason(dataAbsentReason(DataAbsentReason.ASTEXT));
+                observation.setDataAbsentReason(
+                    DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.ASTEXT));
                 observation.addNote().setText(value.getText());
               }
               return observation;

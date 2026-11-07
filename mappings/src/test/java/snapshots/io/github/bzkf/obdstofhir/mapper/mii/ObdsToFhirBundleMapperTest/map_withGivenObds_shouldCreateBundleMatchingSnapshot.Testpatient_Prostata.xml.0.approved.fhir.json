@@ -507,7 +507,8 @@
           },
           "code": "L02AE01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Buserelin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {

@@ -364,7 +364,8 @@
           },
           "code": "L01CB01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Etoposid"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -446,7 +447,8 @@
           },
           "code": "L01XA02",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Carboplatin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -743,7 +745,8 @@
           },
           "code": "L01XA01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Cisplatin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {

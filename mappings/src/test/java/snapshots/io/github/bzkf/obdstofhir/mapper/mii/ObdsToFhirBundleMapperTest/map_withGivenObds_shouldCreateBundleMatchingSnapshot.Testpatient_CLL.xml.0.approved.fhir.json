@@ -245,7 +245,8 @@
           },
           "code": "L01AA01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Cyclophosphamid"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -327,7 +328,8 @@
           },
           "code": "L01FA01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Rituximab"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -409,7 +411,8 @@
           },
           "code": "L01BB05",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Fludarabin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {

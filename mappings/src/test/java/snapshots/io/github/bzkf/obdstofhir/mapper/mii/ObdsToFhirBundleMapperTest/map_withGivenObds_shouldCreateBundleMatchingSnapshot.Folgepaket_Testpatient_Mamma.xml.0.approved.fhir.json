@@ -254,7 +254,8 @@
           },
           "code": "L01AA01",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Cyclophosphamid"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
@@ -337,7 +338,8 @@
           },
           "code": "L01DB03",
           "userSelected": false
-        } ]
+        } ],
+        "text": "Epirubicin"
       },
       "ingredient": [ {
         "itemCodeableConcept": {
