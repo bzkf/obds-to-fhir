@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
+    uses: miracum/.github/.github/workflows/standard-build.yaml@cca0bcc51093bb9292344cdefd5eeff9cf41c973 # v1.32.1
     permissions:
       contents: write
       id-token: write
@@ -353,7 +353,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@cca0bcc51093bb9292344cdefd5eeff9cf41c973 # v1.32.1
     permissions:
       contents: read
       pull-requests: write
@@ -366,7 +366,7 @@ jobs:
       java-version: "21"
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
+    uses: miracum/.github/.github/workflows/standard-release.yaml@cca0bcc51093bb9292344cdefd5eeff9cf41c973 # v1.32.1
     needs:
       - lint
       - build
