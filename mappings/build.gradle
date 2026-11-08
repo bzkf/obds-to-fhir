@@ -42,7 +42,7 @@ dependencies {
     implementation 'com.github.slugify:slugify:4.0.0'
 
     // the lib also includes the oBDS model classes
-    api 'io.github.bzkf:obds2-to-obds3:0.1.24'
+    api 'io.github.bzkf:obds2-to-obds3:0.1.25'
     api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.12.1'
     api 'io.github.diz-uker:to-fhir:0.2.23'
     // api so the modules depending on this one (e.g. the root app's tests) can use the same
