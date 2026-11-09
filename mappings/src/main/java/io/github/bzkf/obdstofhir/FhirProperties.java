@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "fhir")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class FhirProperties extends io.github.dizuker.tofhir.config.FhirProperties {
+public class FhirProperties extends io.github.dizuker.tofhir.config.ToFhirProperties {
   private FhirExtensions extensions;
   private FhirSystems systems;
 
