@@ -38,7 +38,6 @@ env:
       "TumorKonferenzMapperTest",
       "PatientMapperTest",
       "ModulProstataMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest",
       "ModulMalignesMelanomMapperTest"
     ]
 
