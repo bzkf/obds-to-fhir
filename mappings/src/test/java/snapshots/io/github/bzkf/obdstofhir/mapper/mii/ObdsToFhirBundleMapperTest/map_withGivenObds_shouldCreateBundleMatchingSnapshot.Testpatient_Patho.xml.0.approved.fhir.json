@@ -67,6 +67,16 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-401"
       } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
+        } ]
+      },
       "category": [ {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -80,9 +90,16 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2019",
           "code": "C50.9"
-        } ]
+        } ],
+        "text": "Mamma-Ca"
       },
       "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "code": "C50.9"
+        } ],
+        "text": "Brust"
+      }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "R",
@@ -1095,6 +1112,210 @@
       "url": "Observation/96558616b472d81a721f094d88b6886081f7e5b15584fcfce80f53ffe6e218c4"
     }
   }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ce90935db967a305fd9245c3a20759a89705474970880de803b461812769a696",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "ce90935db967a305fd9245c3a20759a89705474970880de803b461812769a696",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-estrogen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-estrogen-observation-id",
+        "value": "PAT_70101-modul-mamma-rezeptorstatus-estrogen"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "40556-3",
+          "display": "Estrogen receptor Ag [Presence] in Tissue by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
+      } ],
+      "effectiveDateTime": "2022-08-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/ce90935db967a305fd9245c3a20759a89705474970880de803b461812769a696"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c9376b7870137b645f0aef3ba39c38ee23db9eb376e64d36bbbb84b9fb031053",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c9376b7870137b645f0aef3ba39c38ee23db9eb376e64d36bbbb84b9fb031053",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-progesteron" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-progesteron-observation-id",
+        "value": "PAT_70101-modul-mamma-rezeptorstatus-progesteron"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "85339-0",
+          "display": "Progesterone receptor Ag [Presence] in Breast cancer specimen by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
+      } ],
+      "effectiveDateTime": "2022-08-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c9376b7870137b645f0aef3ba39c38ee23db9eb376e64d36bbbb84b9fb031053"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c4d04952290f76228c7ecdeecdef4bc7c1aed08f88e637db6dd3445b4136ea20",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c4d04952290f76228c7ecdeecdef4bc7c1aed08f88e637db6dd3445b4136ea20",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-her2neu-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-her2neu-status-observation-id",
+        "value": "PAT_70101-modul-mamma-her2neu-status"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "48676-1",
+          "display": "HER2 [Interpretation] in Tissue"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
+      } ],
+      "effectiveDateTime": "2022-08-05",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-mamma-her2neu-status-obds",
+          "code": "N",
+          "display": "negativ"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c4d04952290f76228c7ecdeecdef4bc7c1aed08f88e637db6dd3445b4136ea20"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/b862f71b0a46c3c70ac709b686a666769017de7871460a73b58e178978c28c35",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b862f71b0a46c3c70ac709b686a666769017de7871460a73b58e178978c28c35",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+        "value": "PAT_70101-modul-mamma-tumorgroesse-invasiv"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "21889-1",
+          "display": "Size Tumor"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "371479009",
+          "display": "Tumor size, largest dimension (observable entity)"
+        } ],
+        "text": "Tumorgröße invasives Karzinom"
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/be44412f1e27ee788b86a224fbefd661ea0390a10df305b58eebc0d25acc696c"
+      } ],
+      "effectiveDateTime": "2022-08-05",
+      "valueQuantity": {
+        "value": 85,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b862f71b0a46c3c70ac709b686a666769017de7871460a73b58e178978c28c35"
+    }
+  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/dbd58c18b6360f5db3b0e6595a976abb94a71c176689e2dc30a156fde98fa20b",
     "resource": {
       "resourceType": "DiagnosticReport",
@@ -1161,6 +1382,16 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-402"
       } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
+        } ]
+      },
       "category": [ {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1174,9 +1405,16 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C20"
-        } ]
+        } ],
+        "text": "Rektum"
       },
       "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "code": "C20.9"
+        } ],
+        "text": "Rektum o.n.A."
+      }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "T",
@@ -1318,6 +1556,104 @@
       "url": "Observation/febe78f155d973ffb89bd3f18869914ad0035ae1d1b48c1cf8faefb6158e5881"
     }
   }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-aboral" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-aboral-observation-id",
+        "value": "PAT_70103-modul-darm-abstand-aboral"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81175-2",
+          "display": "Distance of tumor from closest margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
+      } ],
+      "valueQuantity": {
+        "value": 15,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/30ed482dd8e5a0d40383be67e1929342150818af71cb630b2ae81b607552f88f"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-krk-abstand-circumferelle-resektionsebene" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/krk-abstand-circumferelle-resektionsebene-observation-id",
+        "value": "PAT_70103-modul-darm-abstand-circumferelle-resektionsebene"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "81176-0",
+          "display": "Distance of tumor from circumferential resection margin [Length] in Specimen by Macroscopy"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/85f5ce823227260b89eeaf107513bc3fab0a4841beb4347ae6b31369ad569d00"
+      } ],
+      "valueQuantity": {
+        "value": 5,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/cb3bca63272c408fbf6a6ac02f0d102790a24493e8b98bf079a4c966ddf79817"
+    }
+  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/1f13d00c583d76bc42540fa187e084aed61c9c5e3e432c9962cf2de1790aa1f2",
     "resource": {
       "resourceType": "DiagnosticReport",
@@ -1381,6 +1717,16 @@
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "40-403"
       } ],
+      "verificationStatus": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+          "code": "confirmed"
+        }, {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-primaertumor-diagnosesicherung",
+          "code": "7",
+          "display": "histologische Untersuchung eines Primärtumors"
+        } ]
+      },
       "category": [ {
         "coding": [ {
           "system": "http://snomed.info/sct",
@@ -1394,9 +1740,16 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2020",
           "code": "C43.6"
-        } ]
+        } ],
+        "text": "Malignes Melanom"
       },
       "bodySite": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/icd-o-3",
+          "code": "C44.6"
+        } ],
+        "text": "Haut am Oberarm"
+      }, {
         "coding": [ {
           "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-seitenlokalisation",
           "code": "L",
@@ -1558,6 +1911,136 @@
     "request": {
       "method": "PUT",
       "url": "Observation/13eb2e254799582f4989eb8cc69b1f55b7706e8c1bce22d02feac6c1ce313b54"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-sicherheitsabstand" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-sicherheitsabstand-observation-id",
+        "value": "PAT_70104-modul-melanom-sicherheitsabstand"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "396511007",
+          "display": "Distance of in situ melanoma from closest lateral surgical margin in excised specimen of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueQuantity": {
+        "value": 10,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/cee341986bc7273a7f775558c7fd49589824840515b8b48152efcb65cefe354c"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-breslow-tiefe" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-breslow-tiefe-observation-id",
+        "value": "PAT_70104-modul-melanom-breslow-tiefe"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "106243009",
+          "display": "Breslow depth staging for melanoma of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueQuantity": {
+        "value": 1.4,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-ulzeration" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-ulzeration-observation-id",
+        "value": "PAT_70104-modul-melanom-ulzeration"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "6270001000004106",
+          "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/17fd07c897c1b71242be625380c0f570dd1262c3e8e6716c09819705494d65b5",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "40"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/3962fc65d8f7e595b2a1818b7027a9bf1bb8499add9b1d240a4c2c29e26e0b90"
+      } ],
+      "effectiveDateTime": "2020-01-01",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-melanom-ulzeration",
+          "code": "J",
+          "display": "Ja"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/753a899d8e3e5378600946dc6d62ee995df4ea3d4222d72b8343d99bd1b86834"
     }
   }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/0ab8291007f01a691b1499f4ee01ececd2e1cee22737198aeabc408e4afb45bb",

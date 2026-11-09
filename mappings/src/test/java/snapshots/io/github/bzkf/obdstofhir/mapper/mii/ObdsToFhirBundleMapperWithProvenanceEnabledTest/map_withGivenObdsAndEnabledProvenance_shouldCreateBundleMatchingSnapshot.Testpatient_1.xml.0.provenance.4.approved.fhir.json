@@ -1,6 +1,6 @@
 {
   "resourceType": "Provenance",
-  "id": "6124a95a8f1dd43489e3ae8874ade4eba3145cfd9fb3b6c8322d6d09157e63f2",
+  "id": "013fcfba2e764e9256470804509f50d90792613cd6e7dceee1cc1fa471c0dab2",
   "target": [ {
     "reference": "Condition/778f6d2023c112c28f7c0aaa0bb7693aa3c5b16f87093a7d52f647c7388d4285"
   }, {
@@ -9,6 +9,12 @@
     "reference": "Procedure/d384c76caaba134f7c500069474843e53f9fd0ae52f8bebd4bd30e03fc831a56"
   }, {
     "reference": "Observation/820a4d15bc65ede836e0b68922b75855e9ab63f2ce4b33c39e8796096107b357"
+  }, {
+    "reference": "Observation/20ca931b8ab55edf17b6b71bc57975de55c16e3db328e5128f04560b8a2805f0"
+  }, {
+    "reference": "Observation/d13b7b15bf4e5d439615b0af8cf2add309d8d1abdfab369529e294b9114667b8"
+  }, {
+    "reference": "Observation/f8411c1eaae56d22cf5f0c1f0ee3c8968e34b77a98aed2fbc161a4c0b101fd23"
   } ],
   "occurredDateTime": "2000-01-01T11:11:11Z",
   "recorded": "2000-01-01T11:11:11Z",
@@ -37,7 +43,7 @@
     "who": {
       "identifier": {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/obds-to-fhir-device-id",
-        "value": "obds-to-fhir-0.0.0-test"
+        "value": "obds-to-fhir-v0.0.0-test"
       },
       "display": "oBDS-to-FHIR v0.0.0-test"
     }

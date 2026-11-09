@@ -6,10 +6,12 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -24,10 +26,19 @@ public class OperationMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(OperationMapper.class);
 
+  private static final Comparator<OPS> BY_VERSION =
+      Comparator.comparing(OPS::getVersion, Comparator.nullsFirst(Comparator.naturalOrder()));
+
+  // the letters of an OPS code itself are always lower case, so this only matches the suffix
+  private static final Pattern OPS_WITH_SEITENLOKALISATION = Pattern.compile("^(.+)([RLB])$");
+
   public OperationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
   }
 
+  /**
+   * @return the parent Procedure, followed by one Procedure per distinct OPS code
+   */
   public List<Procedure> map(
       @NonNull OPTyp op, @NonNull Reference subject, @NonNull Reference condition) {
     Validate.notBlank(op.getOPID(), "Required OP_ID is unset");
@@ -36,58 +47,11 @@ public class OperationMapper extends ObdsToFhirMapper {
 
     MDC.put("OP_ID", op.getOPID());
 
-    var distinctCodes = new HashMap<String, OPS>();
-    // if no OPS codes are set, it's fine for the distinctCodes list to be empty
-    // we will then only create the parent procedure, not the child ones with
-    // any codes.
-    if (op.getMengeOPS() != null) {
-      for (var ops : op.getMengeOPS().getOPS()) {
-        var code = ops.getCode();
-        var version = ops.getVersion();
-        if (!distinctCodes.containsKey(code)) {
-          distinctCodes.put(code, ops);
-        } else {
-          var existing = distinctCodes.get(code);
-
-          if (version == null) {
-            LOG.debug(
-                "Multiple OPS with code {} found, but new version is unset. Keeping one with existing version {}.",
-                code,
-                existing.getVersion());
-            continue;
-          }
-
-          if (version.compareTo(existing.getVersion()) > 0) {
-            LOG.debug(
-                "Multiple OPS with code {} found. Updating version {} over version {}.",
-                code,
-                version,
-                existing.getVersion());
-            distinctCodes.put(code, ops);
-          } else {
-            LOG.debug(
-                "Multiple OPS with code {} found. Keeping largest version {} over version {}.",
-                code,
-                existing.getVersion(),
-                version);
-          }
-        }
-      }
-    }
     // create a list to hold all single Procedure resources
     var procedureList = new ArrayList<Procedure>();
 
     // create Parent Procedure
-    var parentProcedure = new Procedure();
-
-    var parentIdentifer =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
-            .setValue(slugifier.slugify(op.getOPID()));
-    parentProcedure.addIdentifier(parentIdentifer);
-    parentProcedure.setId(IdUtils.fromIdentifier(parentIdentifer));
-    parentProcedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoOperation());
-    parentProcedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+    var parentProcedure = createBaseProcedure(op, op.getOPID(), subject, condition);
 
     parentProcedure.setCode(
         new CodeableConcept(
@@ -97,57 +61,23 @@ public class OperationMapper extends ObdsToFhirMapper {
                 .setCode("387713003")
                 .setDisplay("Surgical procedure (procedure)")));
 
-    parentProcedure.setSubject(subject);
-    var dateTime = convertObdsDatumToDateTimeType(op.getDatum());
-    if (dateTime.isPresent()) {
-      parentProcedure.setPerformed(dateTime.get());
-    } else {
-      var performed = new DateTimeType();
-      performed.addExtension(DataAbsentReason.unknown());
-      parentProcedure.setPerformed(performed);
+    if (op.getModulDarm() != null) {
+      // the KRK Anastomoseninsuffizienz Observation references this (parent) Procedure as its
+      // focus, which the profile restricts to MII_PR_Onko_KRK_Operation.
+      parentProcedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoKrkOperation());
     }
-    // ReasonReference
-    parentProcedure.addReasonReference(condition);
 
-    // intention
-    var intention = Onkologie.CodeSystems.MiiCsOnkoIntention.fromValueOrThrow(op.getIntention());
-    var intentionExtension = Onkologie.Extensions.miiExOnkoOperationIntention(intention);
-    parentProcedure.addExtension(intentionExtension);
-
-    if (op.getResidualstatus() != null
-        && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
-      // outcome
-      var outcome =
-          new CodeableConcept()
-              .addCoding(
-                  Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
-                          op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
-                      .coding());
-
-      parentProcedure.setOutcome(outcome);
-    }
     procedureList.add(parentProcedure);
 
     // create child procedures
-    for (var opsCode : distinctCodes.values()) {
-      var procedure = new Procedure();
+    for (var opsCode : distinctOps(op)) {
       MDC.put("opsCode", opsCode.getCode());
 
-      var identifier =
-          new Identifier()
-              .setSystem(fhirProperties.getSystems().getIdentifiers().getOperationProcedureId())
-              .setValue(slugifier.slugify(op.getOPID() + "-" + opsCode.getCode()));
-      procedure.addIdentifier(identifier);
-      procedure.setId(IdUtils.fromIdentifier(identifier));
-
-      procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoOperation());
-
-      // status
-      procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+      var procedure =
+          createBaseProcedure(op, op.getOPID() + "-" + opsCode.getCode(), subject, condition);
 
       // code
-      var coding =
-          new Coding().setSystem(fhirProperties.getSystems().getOps()).setCode(opsCode.getCode());
+      var coding = createOpsCoding(opsCode.getCode());
 
       if (StringUtils.hasText(opsCode.getVersion())) {
         coding.setVersion(opsCode.getVersion());
@@ -191,41 +121,9 @@ public class OperationMapper extends ObdsToFhirMapper {
                   .setCode(categoryCode)
                   .setDisplay(categoryDisplay)));
 
-      // subject reference
-      procedure.setSubject(subject);
-
-      // performed
-      if (dateTime.isPresent()) {
-        procedure.setPerformed(dateTime.get());
-      } else {
-        var performed = new DateTimeType();
-        performed.addExtension(DataAbsentReason.unknown());
-        procedure.setPerformed(performed);
-      }
-
-      // ReasonReference
-      procedure.addReasonReference(condition);
-
-      // intention
-      procedure.addExtension(intentionExtension);
-
-      if (op.getResidualstatus() != null
-          && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
-        // outcome
-        var outcome =
-            new CodeableConcept()
-                .addCoding(
-                    Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
-                            op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
-                        .coding());
-
-        procedure.setOutcome(outcome);
-      }
-
       MDC.remove("opsCode");
 
-      var parentReference = new Reference("Procedure/" + parentProcedure.getId());
-      procedure.addPartOf(parentReference);
+      procedure.addPartOf(new Reference("Procedure/" + parentProcedure.getId()));
       // add procedure to procedure list here
       procedureList.add(procedure);
     }
@@ -233,5 +131,128 @@ public class OperationMapper extends ObdsToFhirMapper {
     MDC.remove("OP_ID");
 
     return procedureList;
+  }
+
+  /** Creates a Procedure with what the parent one and the ones per OPS code have in common. */
+  private Procedure createBaseProcedure(
+      OPTyp op, String identifierValue, Reference subject, Reference condition) {
+    var procedure = new Procedure();
+
+    setIdentifierAndId(
+        procedure,
+        fhirProperties.getSystems().getIdentifiers().getOperationProcedureId(),
+        identifierValue);
+    procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoOperation());
+    procedure.setStatus(Procedure.ProcedureStatus.COMPLETED);
+    procedure.setSubject(subject);
+    procedure.setPerformed(
+        convertObdsDatumToDateTimeType(op.getDatum()).orElseGet(ObdsToFhirMapper::absentDateTime));
+
+    // ReasonReference
+    procedure.addReasonReference(condition);
+
+    // intention
+    var intention = Onkologie.CodeSystems.MiiCsOnkoIntention.fromValueOrThrow(op.getIntention());
+    procedure.addExtension(Onkologie.Extensions.miiExOnkoOperationIntention(intention));
+
+    // urgency (KR6 ArtEingriff)
+    if (op.getModulDarm() != null && op.getModulDarm().getArtEingriff() != null) {
+      var urgency =
+          Onkologie.CodeSystems.MiiCsOnkoOperationUrgency.fromValueOrThrow(
+              op.getModulDarm().getArtEingriff());
+      procedure.addExtension(Onkologie.Extensions.miiExOnkoOperationUrgency(urgency));
+    }
+
+    // outcome
+    if (op.getResidualstatus() != null
+        && op.getResidualstatus().getLokaleBeurteilungResidualstatus() != null) {
+      procedure.setOutcome(
+          new CodeableConcept()
+              .addCoding(
+                  Onkologie.CodeSystems.MiiCsOnkoResidualstatus.fromValueOrThrow(
+                          op.getResidualstatus().getLokaleBeurteilungResidualstatus().value())
+                      .coding()));
+    }
+
+    // complications
+    mapKomplikationen(op).forEach(procedure::addComplication);
+
+    return procedure;
+  }
+
+  /** CodingOPS doesn't allow the oBDS side suffix in the code, it belongs in an extension. */
+  private Coding createOpsCoding(String opsCode) {
+    var coding = new Coding().setSystem(fhirProperties.getSystems().getOps());
+
+    var matcher = OPS_WITH_SEITENLOKALISATION.matcher(opsCode);
+    if (!matcher.matches()) {
+      return coding.setCode(opsCode);
+    }
+
+    coding.setCode(matcher.group(1));
+    coding.addExtension(
+        fhirProperties.getExtensions().getSeitenlokalisation(),
+        new Coding()
+            .setSystem(fhirProperties.getSystems().getSeitenlokalisation())
+            .setCode(matcher.group(2)));
+    return coding;
+  }
+
+  private List<CodeableConcept> mapKomplikationen(OPTyp op) {
+    var komplikationen = op.getKomplikationen();
+    if (komplikationen == null) {
+      return List.of();
+    }
+
+    var result = new ArrayList<CodeableConcept>();
+
+    // N and U are codes of the same CodeSystem as the Kuerzel
+    if (StringUtils.hasText(komplikationen.getKomplikationNeinOderUnbekannt())) {
+      result.add(mapKomplikationKuerzel(komplikationen.getKomplikationNeinOderUnbekannt()));
+    }
+
+    if (komplikationen.getMengeKomplikation() != null) {
+      for (var komplikation : komplikationen.getMengeKomplikation().getKomplikation()) {
+        if (StringUtils.hasText(komplikation.getKuerzel())) {
+          result.add(mapKomplikationKuerzel(komplikation.getKuerzel()));
+        } else if (komplikation.getICD() != null) {
+          result.add(
+              mapIcdToConcept(
+                  komplikation.getICD().getCode(),
+                  komplikation.getICD().getVersion(),
+                  "Komplikation ICD Version",
+                  LOG));
+        }
+      }
+    }
+
+    return result;
+  }
+
+  private CodeableConcept mapKomplikationKuerzel(String kuerzel) {
+    return Onkologie.CodeSystems.MiiCsOnkoOperationKomplikation.fromValue(kuerzel)
+        .map(value -> new CodeableConcept(value.coding()))
+        .orElseGet(
+            () -> {
+              LOG.warn("Unknown Komplikation code {}, keeping it as text.", kuerzel);
+              return new CodeableConcept().setText(kuerzel);
+            });
+  }
+
+  /**
+   * One OPS per code, the one with the highest version if there are duplicates. If no OPS codes are
+   * set, it's fine for this to be empty: then only the parent procedure is created.
+   */
+  private static Collection<OPS> distinctOps(OPTyp op) {
+    var distinctCodes = new HashMap<String, OPS>();
+    if (op.getMengeOPS() != null) {
+      for (var ops : op.getMengeOPS().getOPS()) {
+        var existing = distinctCodes.get(ops.getCode());
+        if (existing == null || BY_VERSION.compare(ops, existing) > 0) {
+          distinctCodes.put(ops.getCode(), ops);
+        }
+      }
+    }
+    return distinctCodes.values();
   }
 }

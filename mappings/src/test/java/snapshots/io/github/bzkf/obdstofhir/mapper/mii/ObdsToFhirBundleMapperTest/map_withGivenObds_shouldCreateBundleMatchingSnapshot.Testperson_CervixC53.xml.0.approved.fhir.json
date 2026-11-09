@@ -161,6 +161,13 @@
       "performedDateTime": "2020-03-01",
       "reasonReference": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "U",
+          "display": "unbekannt"
+        } ]
       } ]
     },
     "request": {
@@ -218,6 +225,13 @@
       "performedDateTime": "2020-03-01",
       "reasonReference": [ {
         "reference": "Condition/f86dc47f64c968c766082caff301353398214f43ed43d1edd355346743421284"
+      } ],
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "U",
+          "display": "unbekannt"
+        } ]
       } ]
     },
     "request": {

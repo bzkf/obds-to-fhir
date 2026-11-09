@@ -1,0 +1,39 @@
+{
+  "resourceType": "Observation",
+  "id": "ba933dd00b206dabd5f29f12c09f72d323d54a7e99af9345f396a40207c1f29a",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+    "value": "DIA_60103-modul-mamma-tumorgroesse-invasiv"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "21889-1",
+      "display": "Size Tumor"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "371479009",
+      "display": "Tumor size, largest dimension (observable entity)"
+    } ],
+    "text": "Tumorgröße invasives Karzinom"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-02-16",
+  "valueQuantity": {
+    "value": 23,
+    "unit": "mm",
+    "system": "http://unitsofmeasure.org",
+    "code": "mm"
+  }
+}

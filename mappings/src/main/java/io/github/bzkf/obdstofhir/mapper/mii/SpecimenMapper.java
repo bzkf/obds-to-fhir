@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.HistologieTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.slf4j.Logger;
@@ -35,13 +34,10 @@ public class SpecimenMapper extends ObdsToFhirMapper {
     }
 
     // Identifier = HistologieId
-    var identifier = new Identifier();
-    identifier
-        .setSystem(fhirProperties.getSystems().getIdentifiers().getHistologieSpecimenId())
-        .setValue(slugifier.slugify(identifierValue));
-    specimen.addIdentifier(identifier);
-    // Id
-    specimen.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        specimen,
+        fhirProperties.getSystems().getIdentifiers().getHistologieSpecimenId(),
+        identifierValue);
     // Meta
     specimen.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoSpecimen());
 

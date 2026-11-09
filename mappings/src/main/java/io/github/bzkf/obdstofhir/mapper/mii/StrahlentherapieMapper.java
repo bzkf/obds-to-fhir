@@ -1,6 +1,5 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import de.basisdatensatz.obds.v3.AktivitaetsTyp;
 import de.basisdatensatz.obds.v3.BoostTyp;
 import de.basisdatensatz.obds.v3.NuklideTyp;
 import de.basisdatensatz.obds.v3.STTyp;
@@ -14,8 +13,6 @@ import de.basisdatensatz.obds.v3.ZielgebietTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,10 +22,8 @@ import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Extension;
-import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Period;
 import org.hl7.fhir.r4.model.Procedure;
-import org.hl7.fhir.r4.model.Quantity;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
 import org.slf4j.Logger;
@@ -120,13 +115,10 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     var procedure = new Procedure();
     procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoStrahlentherapie());
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getStrahlentherapieProcedureId())
-            .setValue(slugifier.slugify(idBase));
-    procedure.addIdentifier(identifier);
-    procedure.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        procedure,
+        fhirProperties.getSystems().getIdentifiers().getStrahlentherapieProcedureId(),
+        idBase);
 
     // Status
     if (st.getMeldeanlass() == STTyp.Meldeanlass.BEHANDLUNGSENDE) {
@@ -213,16 +205,10 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
           .addProfile(Onkologie.Profiles.miiPrOnkoStrahlentherapieBestrahlungStrahlentherapie());
     }
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties
-                    .getSystems()
-                    .getIdentifiers()
-                    .getStrahlentherapieBestrahlungProcedureId())
-            .setValue(slugifier.slugify(identifierValue));
-    procedure.addIdentifier(identifier);
-    procedure.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        procedure,
+        fhirProperties.getSystems().getIdentifiers().getStrahlentherapieBestrahlungProcedureId(),
+        identifierValue);
 
     // Status
     if (bestrahlung.getEnde() != null) {
@@ -308,9 +294,7 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
 
   private static DateTimeType dataAbsentBeginn() {
     LOG.warn("Bestrahlung Beginn is unset. Setting data absent extension.");
-    var absentDateTime = new DateTimeType();
-    absentDateTime.addExtension(DataAbsentReason.unknown());
-    return absentDateTime;
+    return absentDateTime();
   }
 
   private StrahlenTherapieCategoryAndCode getCategoryAndCodeFromBestrahlungen(
@@ -414,14 +398,14 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
     if (gesamtdosis != null) {
       extensions.add(
           Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungGesamtdosis(
-              toQuantity(gesamtdosis)));
+              ucumQuantity(gesamtdosis.getDosis(), gesamtdosis.getEinheit())));
     }
 
     var einzeldosis = data.einzeldosis();
     if (einzeldosis != null) {
       extensions.add(
           Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungEinzeldosis(
-              toQuantity(einzeldosis)));
+              ucumQuantity(einzeldosis.getDosis(), einzeldosis.getEinheit())));
     }
 
     var boost = data.boost();
@@ -438,36 +422,24 @@ public class StrahlentherapieMapper extends ObdsToFhirMapper {
             ? bestrahlung.getApplikationsart().getMetabolisch()
             : null;
     if (metabolisch != null) {
-      if (metabolisch.getEinzeldosis() != null) {
+      var metabolischEinzeldosis = metabolisch.getEinzeldosis();
+      if (metabolischEinzeldosis != null) {
         extensions.add(
             Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungEinzeldosis(
-                toQuantity(metabolisch.getEinzeldosis())));
+                ucumQuantity(
+                    metabolischEinzeldosis.getDosis(), metabolischEinzeldosis.getEinheit())));
       }
 
-      if (metabolisch.getGesamtdosis() != null) {
+      var metabolischGesamtdosis = metabolisch.getGesamtdosis();
+      if (metabolischGesamtdosis != null) {
         extensions.add(
             Onkologie.Extensions.miiExOnkoStrahlentherapieBestrahlungGesamtdosis(
-                toQuantity(metabolisch.getGesamtdosis())));
+                ucumQuantity(
+                    metabolischGesamtdosis.getDosis(), metabolischGesamtdosis.getEinheit())));
       }
     }
 
     return extensions;
-  }
-
-  private Quantity toQuantity(StrahlendosisTyp dosis) {
-    return new Quantity()
-        .setUnit(dosis.getEinheit())
-        .setValue(dosis.getDosis())
-        .setSystem(fhirProperties.getSystems().getUcum())
-        .setCode(dosis.getEinheit());
-  }
-
-  private Quantity toQuantity(AktivitaetsTyp dosis) {
-    return new Quantity()
-        .setUnit(dosis.getEinheit())
-        .setValue(dosis.getDosis())
-        .setSystem(fhirProperties.getSystems().getUcum())
-        .setCode(dosis.getEinheit());
   }
 
   private static StrahlentherapieBestrahlung getBestrahlungsData(Applikationsart applikationsart) {

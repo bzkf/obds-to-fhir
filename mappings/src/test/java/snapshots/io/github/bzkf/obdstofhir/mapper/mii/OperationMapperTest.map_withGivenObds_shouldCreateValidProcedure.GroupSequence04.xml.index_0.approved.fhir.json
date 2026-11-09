@@ -40,5 +40,12 @@
       "code": "RX",
       "display": "Vorhandensein von Residualtumor kann nicht beurteilt werden"
     } ]
-  }
+  },
+  "complication": [ {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+      "code": "N",
+      "display": "nein"
+    } ]
+  } ]
 }

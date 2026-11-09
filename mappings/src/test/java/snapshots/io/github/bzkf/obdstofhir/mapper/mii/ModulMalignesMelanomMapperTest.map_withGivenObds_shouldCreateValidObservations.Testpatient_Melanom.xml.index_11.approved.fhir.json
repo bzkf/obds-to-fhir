@@ -1,0 +1,34 @@
+{
+  "resourceType": "Observation",
+  "id": "b58aa48160046ceff3d9469aafca897d6c4a21fe68d1b24a820a2bb80e5e1aa0",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-ulzeration" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-ulzeration-observation-id",
+    "value": "PAT_90104-modul-melanom-ulzeration"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "6270001000004106",
+      "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-03",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-melanom-ulzeration",
+      "code": "U",
+      "display": "Unbekannt"
+    } ]
+  }
+}

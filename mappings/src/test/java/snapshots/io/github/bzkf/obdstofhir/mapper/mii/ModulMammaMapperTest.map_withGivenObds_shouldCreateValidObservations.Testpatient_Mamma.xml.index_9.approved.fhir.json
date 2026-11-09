@@ -1,0 +1,40 @@
+{
+  "resourceType": "Observation",
+  "id": "9dee2f68469002dfc4ade7a63738af379a5ec31fd73d6930ea0a7d3760da41f1",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+    "value": "DIA_60103-modul-mamma-tumorgroesse-dcis"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "21889-1",
+      "display": "Size Tumor"
+    }, {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "371479009",
+      "display": "Tumor size, largest dimension (observable entity)"
+    } ],
+    "text": "Tumorgröße DCIS"
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-02-16",
+  "dataAbsentReason": {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+      "code": "unknown",
+      "display": "Unknown"
+    } ]
+  }
+}

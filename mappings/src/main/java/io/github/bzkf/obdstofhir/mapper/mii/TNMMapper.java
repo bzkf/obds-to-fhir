@@ -5,11 +5,9 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
@@ -24,6 +22,13 @@ import org.springframework.util.StringUtils;
 public class TNMMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(TNMMapper.class);
+
+  // suffixes = {"i-", "i+", "mol-", "mol+", "sn"};
+  private static final Pattern SUFFIX_PATTERN =
+      Pattern.compile("\\(?(\\Qi-\\E|\\Qi+\\E|\\Qmol-\\E|\\Qmol+\\E|\\Qsn\\E)\\)?");
+
+  private static final Set<String> M_SYMBOL_CODES =
+      Set.of("m", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 
   public enum TnmType {
     CLINICAL,
@@ -88,7 +93,6 @@ public class TNMMapper extends ObdsToFhirMapper {
 
   private List<Observation> createObservations(
       TNMTyp tnmTyp, String idBase, Reference patient, Reference primaryConditionReference) {
-
     var memberObservationList = new ArrayList<Observation>();
 
     var hasPraefix =
@@ -112,7 +116,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               primaryConditionReference);
 
       // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixT = Optional.ofNullable(tnmTyp.getCPUPraefixT()).orElse("c");
+      var cpuPraefixT = praefixOrDefault(tnmTyp.getCPUPraefixT());
       tKategorieObservation.setCode(createTKategorieCode(cpuPraefixT));
       tKategorieObservation.setValue(getCodeableConceptTnmUicc("T" + tnmTyp.getT()));
       addPraefixModifierExtensions(tKategorieObservation, tnmTyp);
@@ -120,12 +124,7 @@ public class TNMMapper extends ObdsToFhirMapper {
       // since KDS Onkologie 2027, the m-Symbol is no longer mapped as a separate symbol
       // observation, but as a component of the T category
       if (tnmTyp.getMSymbol() != null) {
-        tKategorieObservation
-            .addComponent()
-            .setCode(
-                getCodeableConceptLoinc(
-                    "42030-7", "Multiple tumors reported as single primary Cancer"))
-            .setValue(getCodeableConceptTnmUicc(tnmTyp.getMSymbol()));
+        addMultipleTumorenComponent(tKategorieObservation, tnmTyp.getMSymbol());
       }
 
       memberObservationList.add(tKategorieObservation);
@@ -148,7 +147,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               primaryConditionReference);
 
       // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixN = Optional.ofNullable(tnmTyp.getCPUPraefixN()).orElse("c");
+      var cpuPraefixN = praefixOrDefault(tnmTyp.getCPUPraefixN());
       nKategorieObservation.setCode(createNKategorieCode(cpuPraefixN));
       nKategorieObservation.setValue(createValueWithItcSnSuffixExtension("N" + tnmTyp.getN()));
       addPraefixModifierExtensions(nKategorieObservation, tnmTyp);
@@ -168,7 +167,7 @@ public class TNMMapper extends ObdsToFhirMapper {
               primaryConditionReference);
 
       // Das Weglassen des Prefix wird als "c" interpretiert
-      var cpuPraefixM = Optional.ofNullable(tnmTyp.getCPUPraefixM()).orElse("c");
+      var cpuPraefixM = praefixOrDefault(tnmTyp.getCPUPraefixM());
       mKategorieObservation.setCode(createMKategorieCode(cpuPraefixM));
       mKategorieObservation.setValue(createValueWithItcSnSuffixExtension("M" + tnmTyp.getM()));
       addPraefixModifierExtensions(mKategorieObservation, tnmTyp);
@@ -252,6 +251,27 @@ public class TNMMapper extends ObdsToFhirMapper {
     return memberObservationList;
   }
 
+  /**
+   * The value of the multipleTumoren component has a required binding to the m-Symbol ValueSet. An
+   * m-Symbol outside of it (see {@link #createMSymbolValue}) is kept as a note on the T category
+   * instead, with the component's dataAbsentReason set.
+   */
+  private void addMultipleTumorenComponent(Observation tKategorie, String mSymbol) {
+    var component =
+        tKategorie
+            .addComponent()
+            .setCode(
+                getCodeableConceptLoinc(
+                    "42030-7", "Multiple tumors reported as single primary Cancer"));
+    var value = createMSymbolValue(mSymbol);
+    if (value.hasCoding()) {
+      component.setValue(value);
+    } else {
+      component.setDataAbsentReason(dataAbsentReason(Enumerations.DataAbsentReason.ASTEXT));
+      tKategorie.addNote().setText("m-Symbol: " + value.getText());
+    }
+  }
+
   // since KDS Onkologie 2027, the y-, r- and a-prefixes are no longer mapped as separate symbol
   // observations, but as modifierExtensions on each T, N and M category since they change the
   // interpretation of the category value
@@ -292,106 +312,63 @@ public class TNMMapper extends ObdsToFhirMapper {
       XMLGregorianCalendar datum,
       Reference patient,
       Reference primaryConditionReference) {
-    var observation = new Observation();
-
-    observation.setMeta(new Meta().addProfile(profile));
-
-    var identifier =
-        new Identifier().setSystem(identifierSystem).setValue(slugifier.slugify(identifierValue));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    observation.setSubject(patient);
-    observation.setFocus(Collections.singletonList(primaryConditionReference));
-    observation.setStatus(Observation.ObservationStatus.FINAL);
+    var observation =
+        createBaseObservation(
+            profile,
+            identifierSystem,
+            identifierValue,
+            patient,
+            primaryConditionReference,
+            convertObdsDatumToDateTimeType(datum).orElse(null));
     observation.setMethod(getObservationMethod(tnmVersion));
-    var dateOptional = convertObdsDatumToDateTimeType(datum);
-    dateOptional.ifPresent(observation::setEffective);
 
     return observation;
   }
 
-  private CodeableConcept createTKategorieCode(String cpuPraefixT) {
-
-    var extension = getCpPraefixExtension(cpuPraefixT);
-
-    var codeCoding = fhirProperties.getCodings().snomed();
-    switch (cpuPraefixT) {
-      case null: // xml specifies: Das Weglassen des Prefix wird als "c" interpretiert
-      case "u":
-      case "c":
-        codeCoding.setCode("399504009").setDisplay("cT category (observable entity)");
-        break;
-      case "p":
-        codeCoding.setCode("384625004").setDisplay("pT category (observable entity)");
-        break;
-      default: // this should never happen
-        LOG.warn("No valid TNM T category c/p prefix value set. Provided value {}", cpuPraefixT);
-        codeCoding.setCode("78873005").setDisplay("T category (observable entity)");
-        break;
-    }
-
-    var codeableConcept = new CodeableConcept();
-    codeableConcept.setCoding(Collections.singletonList(codeCoding));
-    codeableConcept.setExtension(Collections.singletonList(extension));
-
-    return codeableConcept;
+  /** xml specifies: Das Weglassen des Prefix wird als "c" interpretiert */
+  private static String praefixOrDefault(@Nullable String cpuPraefix) {
+    return cpuPraefix != null ? cpuPraefix : "c";
   }
 
-  private CodeableConcept createNKategorieCode(String cpuPraefixN) {
-
-    var extension = getCpPraefixExtension(cpuPraefixN);
-
-    var codeCoding = fhirProperties.getCodings().snomed();
-    switch (cpuPraefixN) {
-      case "c":
-        codeCoding.setCode("399534004").setDisplay("cN category (observable entity)");
-        break;
-      case "p":
-        codeCoding.setCode("371494008").setDisplay("pN category (observable entity)");
-        break;
-      default:
-        codeCoding.setCode("277206009").setDisplay("N category (observable entity)");
-        break;
-    }
-
-    var codeableConcept = new CodeableConcept();
-    codeableConcept.setCoding(Collections.singletonList(codeCoding));
-    codeableConcept.setExtension(Collections.singletonList(extension));
-
-    return codeableConcept;
+  private CodeableConcept createTKategorieCode(String cpuPraefix) {
+    var coding =
+        switch (cpuPraefix) {
+          case "c", "u" -> getSnomedCoding("399504009", "cT category (observable entity)");
+          case "p" -> getSnomedCoding("384625004", "pT category (observable entity)");
+          default -> getSnomedCoding("78873005", "T category (observable entity)");
+        };
+    return createKategorieCode(coding, cpuPraefix);
   }
 
-  private CodeableConcept createMKategorieCode(String cpuPraefixM) {
+  private CodeableConcept createNKategorieCode(String cpuPraefix) {
+    var coding =
+        switch (cpuPraefix) {
+          case "c", "u" -> getSnomedCoding("399534004", "cN category (observable entity)");
+          case "p" -> getSnomedCoding("371494008", "pN category (observable entity)");
+          default -> getSnomedCoding("277206009", "N category (observable entity)");
+        };
+    return createKategorieCode(coding, cpuPraefix);
+  }
 
-    var extension = getCpPraefixExtension(cpuPraefixM);
+  private CodeableConcept createMKategorieCode(String cpuPraefix) {
+    var coding =
+        switch (cpuPraefix) {
+          case "c", "u" -> getSnomedCoding("399387003", "cM category (observable entity)");
+          case "p" -> getSnomedCoding("371497001", "pM category (observable entity)");
+          default -> getSnomedCoding("277208005", "M category (observable entity)");
+        };
+    return createKategorieCode(coding, cpuPraefix);
+  }
 
-    var codeCoding = fhirProperties.getCodings().snomed();
-    switch (cpuPraefixM) {
-      case "c":
-        codeCoding.setCode("399387003").setDisplay("cM category (observable entity)");
-        break;
-      case "p":
-        codeCoding.setCode("371497001").setDisplay("pM category (observable entity)");
-        break;
-      default:
-        codeCoding.setCode("277208005").setDisplay("M category (observable entity)");
-        break;
-    }
-
-    var codeableConcept = new CodeableConcept();
-    codeableConcept.setCoding(Collections.singletonList(codeCoding));
-    codeableConcept.setExtension(Collections.singletonList(extension));
-
+  private CodeableConcept createKategorieCode(Coding coding, String cpuPraefix) {
+    var codeableConcept = new CodeableConcept(coding);
+    codeableConcept.addExtension(getCpPraefixExtension(cpuPraefix));
     return codeableConcept;
   }
 
   protected CodeableConcept createValueWithItcSnSuffixExtension(String inputValue) {
 
-    // suffixes = {"i-", "i+", "sn"};
-    var suffixPattern = "\\(?(\\Qi-\\E|\\Qi+\\E|\\Qsn\\E)\\)?";
-    var pattern = Pattern.compile(suffixPattern);
-    var matcher = pattern.matcher(inputValue.trim());
+    var matcher = SUFFIX_PATTERN.matcher(inputValue.trim());
 
     List<String> extractedSuffixes = new ArrayList<>();
     int firstSuffixIndex = -1;
@@ -426,12 +403,41 @@ public class TNMMapper extends ObdsToFhirMapper {
           Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.I_NEG));
     }
 
+    if (extractedSuffixes.contains("mol+")) {
+      codeableConcept.addExtension(
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.MOL_POS));
+    }
+
+    if (extractedSuffixes.contains("mol-")) {
+      codeableConcept.addExtension(
+          Onkologie.Extensions.miiExOnkoTnmItcSuffix(MiiCsOnkoTnmUicc.MOL_NEG));
+    }
+
     return codeableConcept;
   }
 
+  /**
+   * The ValueSet only has {@code m} and the counts 2 to 10, while oBDS also allows more tumors and
+   * an in-situ marker ({@code m,is} or just {@code is}). What the ValueSet can't express is kept as
+   * text.
+   */
+  private CodeableConcept createMSymbolValue(String mSymbol) {
+    var code = mSymbol.replace(",is", "");
+    if (!M_SYMBOL_CODES.contains(code)) {
+      LOG.debug("m_Symbol {} has no code in the ValueSet, keeping it as text.", mSymbol);
+      return new CodeableConcept().setText(mSymbol);
+    }
+
+    var value = getCodeableConceptTnmUicc(code);
+    return code.equals(mSymbol) ? value : value.setText(mSymbol);
+  }
+
+  private Coding getSnomedCoding(String snomedCode, String display) {
+    return fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(display);
+  }
+
   private CodeableConcept getCodeableConceptSnomed(String snomedCode, String display) {
-    return new CodeableConcept(
-        fhirProperties.getCodings().snomed().setCode(snomedCode).setDisplay(display));
+    return new CodeableConcept(getSnomedCoding(snomedCode, display));
   }
 
   private CodeableConcept getCodeableConceptTnmUicc(String tnmValue) {
@@ -458,29 +464,18 @@ public class TNMMapper extends ObdsToFhirMapper {
       Reference patient,
       Reference primaryConditionReference) {
 
-    var observation = new Observation();
-
-    observation.setMeta(new Meta().addProfile(Onkologie.Profiles.miiPrOnkoTnmKlassifikation()));
-
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getTnmGroupingObservationId())
-            .setValue(slugifier.slugify(idBase));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
-
-    observation.setSubject(patient);
-
-    observation.setFocus(Collections.singletonList(primaryConditionReference));
-
-    observation.setStatus(Observation.ObservationStatus.FINAL);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoTnmKlassifikation(),
+            fhirProperties.getSystems().getIdentifiers().getTnmGroupingObservationId(),
+            idBase,
+            patient,
+            primaryConditionReference,
+            convertObdsDatumToDateTimeType(tnm.getDatum()).orElse(null));
 
     observation.setCode(getGroupingObservationCode(observationType));
 
     observation.setMethod(getObservationMethod(tnm.getVersion()));
-
-    var dateOptional = convertObdsDatumToDateTimeType(tnm.getDatum());
-    dateOptional.ifPresent(observation::setEffective);
 
     if (tnm.getUICCStadium() != null) {
       observation.setValue(getObservationValueUiccStadium(tnm.getUICCStadium()));
@@ -491,7 +486,11 @@ public class TNMMapper extends ObdsToFhirMapper {
     return observation;
   }
 
-  private CodeableConcept getObservationMethod(String tnmVersion) {
+  private @Nullable CodeableConcept getObservationMethod(@Nullable String tnmVersion) {
+    if (!StringUtils.hasText(tnmVersion)) {
+      return null;
+    }
+
     var method =
         new Coding().setCode(tnmVersion).setSystem(Onkologie.CodeSystems.miiCsOnkoTnmVersion());
 

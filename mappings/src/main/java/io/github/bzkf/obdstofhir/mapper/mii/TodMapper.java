@@ -5,7 +5,6 @@ import de.basisdatensatz.obds.v3.TodTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.*;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
@@ -23,16 +22,22 @@ public class TodMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
-  private Observation createBaseObservation(
+  private Observation createTodObservation(
+      String identifierSystem,
+      String identifierValue,
       Reference patient,
-      Optional<Reference> condition,
-      Optional<DateTimeType> todesZeitpunkt,
+      @Nullable Reference condition,
+      @Nullable DateTimeType todesZeitpunkt,
       TodTyp tod) {
 
-    var observation = new Observation();
-
-    observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoTod());
-    observation.setStatus(Observation.ObservationStatus.FINAL);
+    var observation =
+        createBaseObservation(
+            Onkologie.Profiles.miiPrOnkoTod(),
+            identifierSystem,
+            identifierValue,
+            patient,
+            condition,
+            todesZeitpunkt);
 
     // Code | 184305005 | Cause of death (observable entity)
     var snomedCode =
@@ -42,15 +47,6 @@ public class TodMapper extends ObdsToFhirMapper {
             .setCode("184305005")
             .setDisplay("Cause of death (observable entity)");
     observation.setCode(new CodeableConcept(snomedCode));
-
-    // Subject
-    observation.setSubject(patient);
-
-    // Effective | Sterbedatum
-    todesZeitpunkt.ifPresent(observation::setEffective);
-
-    // Focus | Bezugsdiagnose
-    condition.ifPresent(observation::addFocus);
 
     // Interpretation | Tod Tumorbedingt
     if (tod.getTodTumorbedingt() != null) {
@@ -91,7 +87,7 @@ public class TodMapper extends ObdsToFhirMapper {
 
     var observationList = new ArrayList<Observation>();
 
-    var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum());
+    var todesZeitpunkt = convertObdsDatumToDateTimeType(tod.getSterbedatum()).orElse(null);
 
     var todObsIdentifierSytstem =
         fhirProperties.getSystems().getIdentifiers().getTodObservationId();
@@ -103,46 +99,41 @@ public class TodMapper extends ObdsToFhirMapper {
     if (tod.getMengeTodesursachen() != null) {
       for (AllgemeinICDTyp todesursache : tod.getMengeTodesursachen().getTodesursacheICD()) {
 
+        // set identifier per todesursache
         var observation =
-            createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
-        // Identifier: set identifier per todesursache
-        Identifier identifier =
-            new Identifier()
-                .setSystem(todObsIdentifierSytstem)
-                .setValue(slugifier.slugify(identifierValue + "-" + todesursache.getCode()));
-        observation.addIdentifier(identifier);
-        observation.setId(IdUtils.fromIdentifier(identifier));
+            createTodObservation(
+                todObsIdentifierSytstem,
+                identifierValue + "-" + todesursache.getCode(),
+                patient,
+                condition,
+                todesZeitpunkt,
+                tod);
 
         // Value | Todesursache(n) ICD10GM
-        var versionElement =
-            extractIcdVersionYear(todesursache.getVersion(), "Todesursachen_ICD_Version", LOG);
-
-        var todesursacheConcept = new CodeableConcept();
-        todesursacheConcept
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcd10gm())
-            .setCode(todesursache.getCode())
-            .setVersionElement(versionElement);
-
-        observation.setValue(todesursacheConcept);
+        var gm =
+            mapIcdToCodings(
+                    todesursache.getCode(),
+                    todesursache.getVersion(),
+                    "Todesursachen_ICD_Version",
+                    LOG)
+                .getFirst();
+        var value = new CodeableConcept(gm);
+        // the profile fixes the system of every coding to ICD-10-GM, so a code from another
+        // catalog can only be kept as text
+        if (gm.getCode() == null) {
+          value.setText(todesursache.getCode());
+        }
+        observation.setValue(value);
 
         observationList.add(observation);
       }
 
     } else {
-      var observation =
-          createBaseObservation(patient, Optional.ofNullable(condition), todesZeitpunkt, tod);
-
       // if the ICD cause of death is unset, use the plain identifier without icd code
       // suffix
-      var identifier =
-          new Identifier()
-              .setSystem(todObsIdentifierSytstem)
-              .setValue(slugifier.slugify(identifierValue));
-      observation.addIdentifier(identifier);
-      observation.setId(IdUtils.fromIdentifier(identifier));
-
-      observationList.add(observation);
+      observationList.add(
+          createTodObservation(
+              todObsIdentifierSytstem, identifierValue, patient, condition, todesZeitpunkt, tod));
     }
 
     return observationList;

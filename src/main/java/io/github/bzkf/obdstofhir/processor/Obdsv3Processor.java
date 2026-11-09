@@ -6,12 +6,9 @@ import de.basisdatensatz.obds.v3.*;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
-import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
-import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.BundleMapperResult;
 import io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapper;
-import io.github.bzkf.obdstofhir.model.Meldeanlass;
 import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
 import io.github.bzkf.obdstofhir.model.MeldungExportV3;
 import io.github.bzkf.obdstofhir.model.ObdsOrAdt;
@@ -21,6 +18,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.kstream.*;
@@ -42,9 +40,24 @@ import org.springframework.util.StringUtils;
     havingValue = "false",
     matchIfMissing = true)
 @Configuration
-public class Obdsv3Processor extends ObdsToFhirMapper {
+public class Obdsv3Processor {
 
   private static final FhirContext ctx = FhirContext.forR4();
+
+  /**
+   * Oldest first, by Meldedatum. That's only precise to the day, so the export row ID breaks ties:
+   * it's an incrementing number, and comparing the length first keeps "9" before "10".
+   */
+  private static final Comparator<MeldungExportV3> REPORTING_ORDER =
+      Comparator.comparing(
+              (MeldungExportV3 meldung) -> meldung.getObds().getMeldedatum(),
+              Comparator.nullsFirst(
+                  Comparator.comparing(XMLGregorianCalendar::toGregorianCalendar)))
+          .thenComparing(
+              MeldungExportV3::getId,
+              Comparator.nullsFirst(
+                  Comparator.<String>comparingInt(String::length)
+                      .thenComparing(Comparator.naturalOrder())));
 
   private final ObdsToFhirBundleMapper obdsToFhirBundleMapper;
 
@@ -56,11 +69,9 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private String provenanceTopic;
 
   protected Obdsv3Processor(
-      FhirProperties fhirProperties,
       ObdsToFhirBundleMapper obdsToFhirBundleMapper,
       ObdsMapper obdsMapper,
       WriteGroupedObdsToKafkaConfig writeGroupedObdsToKafkaConfig) {
-    super(fhirProperties);
     this.obdsToFhirBundleMapper = obdsToFhirBundleMapper;
     this.obdsMapper = obdsMapper;
     this.writeGroupedObdsToKafkaConfig = writeGroupedObdsToKafkaConfig;
@@ -237,55 +248,46 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
   private OBDS processMeldungGroup(MeldungExportListV3 meldungsOfPatientAndTumor) {
     final OBDS obds = getObdsWithPatientMengeAndMeldungInitialized();
 
+    var meldungenOldestFirst = meldungsOfPatientAndTumor.stream().sorted(REPORTING_ORDER).toList();
+    var latestReportingByReportingDate = meldungenOldestFirst.getLast().getObds();
+
     // Meldedatum
-    var latestReportingByReportingDate =
-        meldungsOfPatientAndTumor.stream()
-            .max(Comparator.comparing(v -> v.getObds().getMeldedatum().getMillisecond()))
-            .get()
-            .getObds();
     obds.setMeldedatum(latestReportingByReportingDate.getMeldedatum());
 
     // Patstammdaten
     setLatestReportedPatientData(latestReportingByReportingDate, obds);
 
-    // Diagnose, OP, Tod
-    tryAddDiagnoseOpTodMeldung(meldungsOfPatientAndTumor, obds);
-
-    // Systemtherapie
-    getSystemtherapieMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
-
-    // Strahlentherapie
-    getStrahlentherapieMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
-
-    // Verlauf
-    getVerlaufMeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
-
-    // Tumorkonferenz
-    getTumorKonferenzmeldungen(meldungsOfPatientAndTumor).forEach(m -> addMeldung(m, obds));
+    addAllMeldungen(meldungenOldestFirst, obds);
 
     return obds;
   }
 
-  protected static void tryAddDiagnoseOpTodMeldung(
-      MeldungExportListV3 meldungExportList, OBDS obds) {
-    meldungExportList.stream()
+  /**
+   * Adds every Meldung of the tumor, regardless of its type (Diagnose, Pathologie, OP, ST, SYST,
+   * Verlauf, Tod, Tumorkonferenz), to the given oBDS. At this point only the latest version of each
+   * Meldung is left (see {@link #retainLatestVersionOnly}).
+   *
+   * <p>Meldungen describing the same therapy, Verlauf or Tumorkonferenz (e.g. the behandlungsbeginn
+   * and -ende of a SYST) are all passed on: the {@link ObdsToFhirBundleMapper} processes the later
+   * one last, so its resources override the ones with the same ID created from the earlier one.
+   * This is the same input the bundle mapper gets when processing from a directory.
+   *
+   * @param meldungenOldestFirst the Meldungen in {@link #REPORTING_ORDER}. The bundle mapper's
+   *     sorting is stable, so Meldungen it treats as equal still override each other in this order.
+   */
+  protected static void addAllMeldungen(List<MeldungExportV3> meldungenOldestFirst, OBDS obds) {
+    meldungenOldestFirst.stream()
         .map(MeldungExportV3::getObds)
         .map(OBDS::getMengePatient)
         .map(OBDS.MengePatient::getPatient)
         .filter(Objects::nonNull)
         .flatMap(List::stream)
         .map(OBDS.MengePatient.Patient::getMengeMeldung)
+        .filter(Objects::nonNull)
         .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
         .filter(Objects::nonNull)
         .flatMap(List::stream)
-        .forEach(
-            meldung -> {
-              if (meldung.getDiagnose() != null
-                  || meldung.getOP() != null
-                  || meldung.getTod() != null) {
-                addMeldung(meldung, obds);
-              }
-            });
+        .forEach(meldung -> addMeldung(meldung, obds));
   }
 
   /**
@@ -322,116 +324,10 @@ public class Obdsv3Processor extends ObdsToFhirMapper {
     return obds;
   }
 
-  protected List<Meldung> getSystemtherapieMeldungen(MeldungExportListV3 meldungExportList) {
-    return selectMultipleByMeldeanlass(
-        meldungExportList,
-        Meldeanlass.BEHANDLUNGSENDE,
-        Meldeanlass.BEHANDLUNGSBEGINN,
-        Meldung::getSYST,
-        syst -> ((SYSTTyp) syst).getSYSTID(), // Identify unique SYST instances
-        syst ->
-            ((SYSTTyp) syst).getMeldeanlass() == null
-                ? null
-                : ((SYSTTyp) syst).getMeldeanlass().toString());
-  }
-
-  protected List<Meldung> getStrahlentherapieMeldungen(MeldungExportListV3 meldungExportList) {
-    return selectMultipleByMeldeanlass(
-        meldungExportList,
-        Meldeanlass.BEHANDLUNGSENDE,
-        Meldeanlass.BEHANDLUNGSBEGINN,
-        Meldung::getST,
-        st -> ((STTyp) st).getSTID(), // Identify unique ST instances
-        st ->
-            ((STTyp) st).getMeldeanlass() == null
-                ? null
-                : ((STTyp) st).getMeldeanlass().toString());
-  }
-
-  protected List<Meldung> getVerlaufMeldungen(MeldungExportListV3 meldungExportList) {
-    return selectMultipleByMeldeanlass(
-        meldungExportList,
-        Meldeanlass.STATUSAENDERUNG,
-        Meldeanlass.STATUSMELDUNG,
-        Meldung::getVerlauf,
-        verlauf -> ((VerlaufTyp) verlauf).getVerlaufID(), // Identify unique Verlauf instances
-        verlauf ->
-            ((VerlaufTyp) verlauf).getMeldeanlass() == null
-                ? null
-                : ((VerlaufTyp) verlauf).getMeldeanlass().toString());
-  }
-
-  protected List<Meldung> getTumorKonferenzmeldungen(MeldungExportListV3 meldungExportList) {
-    return selectMultipleByMeldeanlass(
-        meldungExportList,
-        Meldeanlass.BEHANDLUNGSENDE,
-        Meldeanlass.BEHANDLUNGSBEGINN,
-        Meldung::getTumorkonferenz,
-        tumorkonferenz -> ((TumorkonferenzTyp) tumorkonferenz).getTumorkonferenzID(),
-        tumorkonferenz ->
-            ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass() == null
-                ? null
-                : ((TumorkonferenzTyp) tumorkonferenz).getMeldeanlass().toString());
-  }
-
   private static void addMeldung(Meldung meldung, OBDS obds) {
     if (meldung != null) {
       obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung().add(meldung);
     }
-  }
-
-  private List<Meldung> selectMultipleByMeldeanlass(
-      MeldungExportListV3 meldungList,
-      Meldeanlass primary,
-      Meldeanlass secondary,
-      Function<Meldung, ?> fieldExtractor, // Extracts SYST, ST, or Verlauf
-      Function<Object, String> idExtractor, // Extracts unique ID
-      Function<Object, String> meldeanlassExtractor // Extracts Meldeanlass from the extracted type
-      ) {
-    return meldungList.stream()
-        .map(this::extractMeldung)
-        .filter(Objects::nonNull)
-        .filter(meldung -> fieldExtractor.apply(meldung) != null) // Ensure the field exists
-        .collect(
-            Collectors.groupingBy(
-                meldung -> {
-                  Object field = fieldExtractor.apply(meldung);
-                  return field != null ? idExtractor.apply(field) : null; // Extract unique ID
-                },
-                Collectors.toList()))
-        .values()
-        .stream()
-        .map(
-            meldungen ->
-                meldungen.stream()
-                    .sorted(
-                        Comparator.comparing(
-                            m -> {
-                              String meldeanlass =
-                                  meldeanlassExtractor.apply(fieldExtractor.apply(m));
-                              if (Objects.equals(meldeanlass, primary.name()))
-                                return 0; // Highest priority
-                              if (Objects.equals(meldeanlass, secondary.name()))
-                                return 1; // Fallback
-                              return 2; // Otherwise ignore
-                            }))
-                    .findFirst() // Take only one per group (either primary or secondary)
-                    .orElse(null) // If neither primary nor secondary exists, return null
-            )
-        .filter(Objects::nonNull)
-        .collect(Collectors.toList());
-  }
-
-  private OBDS.MengePatient.Patient.MengeMeldung.Meldung extractMeldung(
-      MeldungExportV3 meldungExport) {
-    return Optional.ofNullable(meldungExport.getObds())
-        .map(OBDS::getMengePatient)
-        .map(OBDS.MengePatient::getPatient)
-        .flatMap(patients -> patients.stream().findFirst())
-        .map(OBDS.MengePatient.Patient::getMengeMeldung)
-        .map(OBDS.MengePatient.Patient.MengeMeldung::getMeldung)
-        .flatMap(meldungen -> meldungen.stream().findFirst())
-        .orElse(null);
   }
 
   private static String patientBundleKeySelector(Bundle bundle) {

@@ -1,17 +1,13 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.MengeGenetikTyp;
-import de.basisdatensatz.obds.v3.OPTyp;
-import de.basisdatensatz.obds.v3.PathologieTyp;
-import de.basisdatensatz.obds.v3.VerlaufTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,50 +22,20 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
+  /**
+   * @param section the section of the Meldung containing the Genetische_Variante elements, e.g.
+   *     {@code Verlauf}. It's part of the identifier.
+   */
   public List<Observation> map(
-      DiagnoseTyp diagnoseTyp, Reference patient, Reference diagnose, String meldungsID) {
-    return createObservations(
-        diagnoseTyp.getMengeGenetik().getGenetischeVariante(),
-        "Diagnose",
-        patient,
-        diagnose,
-        meldungsID);
-  }
-
-  public List<Observation> map(
-      OPTyp opTyp, Reference patient, Reference diagnose, String meldungsID) {
-    return createObservations(
-        opTyp.getMengeGenetik().getGenetischeVariante(), "OP", patient, diagnose, meldungsID);
-  }
-
-  public List<Observation> map(
-      VerlaufTyp verlaufTyp, Reference patient, Reference diagnose, String meldungsID) {
-    return createObservations(
-        verlaufTyp.getMengeGenetik().getGenetischeVariante(),
-        "Verlauf",
-        patient,
-        diagnose,
-        meldungsID);
-  }
-
-  public List<Observation> map(
-      PathologieTyp pathologieTyp, Reference patient, Reference diagnose, String meldungsID) {
-    return createObservations(
-        pathologieTyp.getMengeGenetik().getGenetischeVariante(),
-        "Pathologie",
-        patient,
-        diagnose,
-        meldungsID);
-  }
-
-  private List<Observation> createObservations(
-      @NonNull List<MengeGenetikTyp.GenetischeVariante> genetischeVarianteList,
-      @NonNull String source,
+      @NonNull MengeGenetikTyp mengeGenetik,
+      @NonNull String section,
       @NonNull Reference patient,
       @NonNull Reference condition,
       @NonNull String meldungsID) {
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
+
+    var genetischeVarianteList = mengeGenetik.getGenetischeVariante();
 
     // create a list to hold all single Observation resources, 1 observation per
     // <Genetische_Variante> in Meldung
@@ -84,17 +50,13 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
           genetischeVariante.getAuspraegung() != null
               ? String.format(
                   "GenetischeAusprägung-%s-%s-%s-%d",
-                  source, meldungsID, genetischeVariante.getAuspraegung().value(), i)
-              : String.format("GenetischeAusprägung-%s-%s-%d", source, meldungsID, i);
+                  section, meldungsID, genetischeVariante.getAuspraegung().value(), i)
+              : String.format("GenetischeAusprägung-%s-%s-%d", section, meldungsID, i);
 
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties.getSystems().getIdentifiers().getGenetischeVarianteObservationId())
-              .setValue(slugifier.slugify(value));
-
-      observation.addIdentifier(identifier);
-      observation.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          observation,
+          fhirProperties.getSystems().getIdentifiers().getGenetischeVarianteObservationId(),
+          value);
 
       // meta
       observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoGenetischeVariante());
@@ -115,13 +77,7 @@ public class GenetischeVarianteMapper extends ObdsToFhirMapper {
       observation.setCode(codeCodeableConcept);
 
       // category
-      observation.addCategory(
-          new CodeableConcept()
-              .addCoding(
-                  new Coding()
-                      .setSystem(fhirProperties.getSystems().getObservationCategory())
-                      .setCode("laboratory")
-                      .setDisplay("Laboratory")));
+      observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
       observation.addCategory(
           new CodeableConcept()
               .addCoding(

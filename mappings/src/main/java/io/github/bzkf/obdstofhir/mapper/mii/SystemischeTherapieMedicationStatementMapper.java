@@ -151,16 +151,13 @@ public class SystemischeTherapieMedicationStatementMapper extends ObdsToFhirMapp
             new SystemischeTherapieMappingResults(systMedicationStatement, Optional.of(medication));
       }
 
-      var identifier =
-          new Identifier()
-              .setSystem(
-                  fhirProperties
-                      .getSystems()
-                      .getIdentifiers()
-                      .getSystemischeTherapieMedicationStatementId())
-              .setValue(slugifier.slugify(identifierBase + "-" + substanzId));
-      systMedicationStatement.addIdentifier(identifier);
-      systMedicationStatement.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          systMedicationStatement,
+          fhirProperties
+              .getSystems()
+              .getIdentifiers()
+              .getSystemischeTherapieMedicationStatementId(),
+          identifierBase + "-" + substanzId);
 
       // Status
       var meldeanlass = syst.getMeldeanlass();

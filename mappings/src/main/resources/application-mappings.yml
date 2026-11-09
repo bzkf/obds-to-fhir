@@ -1,5 +1,5 @@
 # @ignored
-lib-version: 3.7.4
+lib-version: 4.0.0-beta.2
 
 fhir:
   extensions:
@@ -7,6 +7,8 @@ fhir:
     condition-occurred-following: "http://hl7.org/fhir/StructureDefinition/condition-occurredFollowing"
     item-weight: "http://hl7.org/fhir/StructureDefinition/itemWeight"
     procedure-method: "http://hl7.org/fhir/StructureDefinition/procedure-method"
+    gender-amtlich-de: "http://fhir.de/StructureDefinition/gender-amtlich-de"
+    seitenlokalisation: "http://fhir.de/StructureDefinition/seitenlokalisation"
   systems:
     identifiers:
       base-url: "https://bzkf.github.io/obds-to-fhir/identifiers"
@@ -53,6 +55,22 @@ fhir:
       prostata-clavien-dindo-observation-id: "${fhir.systems.identifiers.base-url}/prostata-clavien-dindo-observation-id"
       prostata-gleason-patterns-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-patterns-observation-id"
       prostata-gleason-score-observation-id: "${fhir.systems.identifiers.base-url}/prostata-gleason-score-observation-id"
+      krk-abstand-anokutan-observation-id: "${fhir.systems.identifiers.base-url}/krk-abstand-anokutan-observation-id"
+      krk-abstand-aboral-observation-id: "${fhir.systems.identifiers.base-url}/krk-abstand-aboral-observation-id"
+      krk-abstand-circumferelle-resektionsebene-observation-id: "${fhir.systems.identifiers.base-url}/krk-abstand-circumferelle-resektionsebene-observation-id"
+      krk-mrt-mesorektale-faszie-observation-id: "${fhir.systems.identifiers.base-url}/krk-mrt-mesorektale-faszie-observation-id"
+      krk-anastomoseninsuffizienz-observation-id: "${fhir.systems.identifiers.base-url}/krk-anastomoseninsuffizienz-observation-id"
+      krk-stoma-markierung-procedure-id: "${fhir.systems.identifiers.base-url}/krk-stoma-markierung-procedure-id"
+      asa-klassifikation-observation-id: "${fhir.systems.identifiers.base-url}/asa-klassifikation-observation-id"
+      mamma-menopausenstatus-observation-id: "${fhir.systems.identifiers.base-url}/mamma-menopausenstatus-observation-id"
+      mamma-rezeptorstatus-estrogen-observation-id: "${fhir.systems.identifiers.base-url}/mamma-rezeptorstatus-estrogen-observation-id"
+      mamma-rezeptorstatus-progesteron-observation-id: "${fhir.systems.identifiers.base-url}/mamma-rezeptorstatus-progesteron-observation-id"
+      mamma-her2neu-status-observation-id: "${fhir.systems.identifiers.base-url}/mamma-her2neu-status-observation-id"
+      tumorgroesse-observation-id: "${fhir.systems.identifiers.base-url}/tumorgroesse-observation-id"
+      melanom-sicherheitsabstand-observation-id: "${fhir.systems.identifiers.base-url}/melanom-sicherheitsabstand-observation-id"
+      melanom-breslow-tiefe-observation-id: "${fhir.systems.identifiers.base-url}/melanom-breslow-tiefe-observation-id"
+      melanom-ldh-observation-id: "${fhir.systems.identifiers.base-url}/melanom-ldh-observation-id"
+      melanom-ulzeration-observation-id: "${fhir.systems.identifiers.base-url}/melanom-ulzeration-observation-id"
       obds-meldung-id: "${fhir.systems.identifiers.base-url}/obds-meldung-id"
       provenance-id: "${fhir.systems.identifiers.base-url}/provenance-id"
       obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"
@@ -77,6 +95,8 @@ fhir:
     atcBfarm: "http://fhir.de/CodeSystem/bfarm/atc"
     observation-category: "http://terminology.hl7.org/CodeSystem/observation-category"
     meddra: "https://www.meddra.org"
+    gender-amtlich-de: "http://fhir.de/CodeSystem/gender-amtlich-de"
+    seitenlokalisation: "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_SEITENLOKALISATION"
 
   mappings:
     meta:

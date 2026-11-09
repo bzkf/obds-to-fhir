@@ -6,7 +6,6 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.apache.commons.lang3.Validate;
 import org.hl7.fhir.r4.model.*;
@@ -33,13 +32,10 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
     var procedure = new Procedure();
     procedure.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoSystemischeTherapie());
 
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getSystemischeTherapieProcedureId())
-            .setValue(slugifier.slugify(syst.getSYSTID()));
-    procedure.addIdentifier(identifier);
-    procedure.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        procedure,
+        fhirProperties.getSystems().getIdentifiers().getSystemischeTherapieProcedureId(),
+        syst.getSYSTID());
 
     // Status
     if (syst.getMeldeanlass() == SYSTTyp.Meldeanlass.BEHANDLUNGSENDE) {
@@ -52,13 +48,8 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
 
     procedure.addReasonReference(condition);
 
-    var dataAbsentExtension = DataAbsentReason.unknown();
-
     if (syst.getBeginn() == null && syst.getEnde() == null) {
-      var performedStart = new DateTimeType();
-      performedStart.addExtension(dataAbsentExtension);
-      var performed = new Period().setStartElement(performedStart);
-      procedure.setPerformed(performed);
+      procedure.setPerformed(new Period().setStartElement(absentDateTime()));
     } else {
       var performed = new Period();
       convertObdsDatumToDateTimeType(syst.getBeginn())
@@ -86,6 +77,7 @@ public class SystemischeTherapieProcedureMapper extends ObdsToFhirMapper {
               .coding());
     } else {
       LOG.warn("Therapieart is unset for SYST_ID={}", syst.getSYSTID());
+      var dataAbsentExtension = DataAbsentReason.unknown();
       var absentOpsCoding = fhirProperties.getCodings().ops();
       absentOpsCoding.getCodeElement().addExtension(dataAbsentExtension);
       procedure.setCode(new CodeableConcept().addCoding(absentOpsCoding));

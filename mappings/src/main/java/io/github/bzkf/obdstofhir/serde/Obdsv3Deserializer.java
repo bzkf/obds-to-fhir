@@ -2,7 +2,9 @@ package io.github.bzkf.obdstofhir.serde;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import de.basisdatensatz.obds.v2.ADTGEKID;
+import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.FruehereTumorerkrankung;
 import de.basisdatensatz.obds.v3.OBDS;
+import io.github.bzkf.obds2toobds3.PlainDateModule;
 import io.github.bzkf.obdstofhir.model.ObdsOrAdt;
 import java.util.Locale;
 import org.springframework.stereotype.Service;
@@ -21,11 +23,18 @@ public class Obdsv3Deserializer extends ValueDeserializer<ObdsOrAdt>
       XmlMapper.builder()
           .defaultUseWrapper(false)
           .addModule(new JakartaXmlBindAnnotationModule())
+          .addModule(new PlainDateModule())
           .addHandler(new SchemaLocationPropertyHandler())
+          .addMixIn(FruehereTumorerkrankung.class, FruehereTumorerkrankungMixIn.class)
           .enable(XmlReadFeature.EMPTY_ELEMENT_AS_NULL)
           .changeDefaultPropertyInclusion(
               incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
           .build();
+
+  /** The mapper used to parse oBDS XML. Public so tests can parse it exactly like production. */
+  public static XmlMapper xmlMapper() {
+    return MAPPER;
+  }
 
   private static class SchemaLocationPropertyHandler
       extends tools.jackson.databind.deser.DeserializationProblemHandler {

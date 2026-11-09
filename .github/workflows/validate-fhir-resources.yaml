@@ -16,23 +16,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
-  # ProvenanceMapperTest:
-  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
-  # error: Instance failed constraint ref-1 "SHALL have a contained resource if a local reference is provided"
-  # Confirmed false positive in the Firely "Advanced" validator engine (not present when using
-  # "Regular"). The two flagged elements (Provenance.agent.who, Provenance.entity.what) carry
-  # only Reference.identifier, no Reference.reference at all, which is spec-legal. The ref-1
-  # invariant is `reference.startsWith('#').not() or (reference.substring(1)... in
-  # %rootResource.contained.id...)`. With no `reference` element, both sides of the `or`
-  # evaluate to an empty FHIRPath collection, so `{} or {}` is empty/indeterminate - the
-  # Advanced engine treats that as a failure instead of as "not applicable". The official R4B
-  # example <http://hl7.org/fhir/R4B/provenance-example-biocompute-object.json.html> has the
-  # same identifier-only Reference pattern and would trip the same false positive.
-  # The legacy "Regular" engine already works around this (see FpConstraintValidationExtensions.cs
-  # in fhir-net-api/Hl7.Fhir.Specification, which rewrites ref-1 to
-  # `reference.exists() implies (...)` for R4/R4B+); the Advanced engine (Firely.Fhir.Validation,
-  # part of firely-net-sdk) does not have the equivalent fix.
-  #
   # ModulProstataMapperTest:
   # error: Instance count is 2, which is not within the specified cardinality of 1..1 (for slice Diagnose)
   # error: Instance count is 0, which is not within the specified cardinality of 1..1 (for slice Operation)
@@ -43,19 +26,27 @@ env:
   # the first slice. Confirmed as a false positive: the same resource validates cleanly once it
   # is inside its Bundle with a resolvable (absolute) Bundle.entry.fullUrl, which is what
   # actually gets validated by the validate-bundles job.
+  # ModulMalignesMelanomMapperTest:
+  # error: Instance failed constraint mii-onko-melanom-sicherheitsabstand-1 "Entweder muss valueQuantity oder dataAbsentReason vorhanden sein"
+  # the invariant's expression is `valueQuantity.exists() or dataAbsentReason.exists()`, but FHIRPath labels a
+  # choice element by its name without the [x] suffix (<https://hl7.org/fhir/R4/fhirpath.html>, "Polymorphism in
+  # FHIR"), so every Observation that carries a measured margin fails it and only the dataAbsentReason case passes.
+  # Remove once the IG corrects the expression, see
+  # <https://github.com/medizininformatik-initiative/kerndatensatzmodul-onkologie/issues/341>.
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
       "PatientMapperTest",
       "ModulProstataMapperTest",
-      "ProvenanceMapperTest"
+      "SystemischeTherapieMedicationStatementMapperTest",
+      "ModulMalignesMelanomMapperTest"
     ]
 
 jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
@@ -85,17 +76,29 @@ jobs:
           restore-keys: |
             fhir-packages-
 
+      # Firely Terminal 4 exits non-zero on the dependency cycle between hl7.terminology.r4 and
+      # hl7.fhir.uv.extensions.r4 (CircularReference, OutOfRange), even though the packages get
+      # installed. Its exit code is ignored, but the step fails if a direct dependency is missing:
+      # the other jobs only restore the cache, so an incomplete restore must not be saved to it.
       - name: Restore FHIR package dependencies
         if: ${{ steps.fhir-package-cache.outputs.cache-hit != 'true' }}
         run: |
           fhir cache location --path
           fhir cache list
-          fhir restore
+          fhir restore || echo "::warning::fhir restore exited with code $?, checking the installed packages"
+          PACKAGES_DIR=$(fhir cache location --path)
+          jq -r '.dependencies | to_entries[] | "\(.key)#\(.value)"' package.json | while read -r package; do
+            if [ ! -d "$PACKAGES_DIR/$package" ]; then
+              echo "::error::FHIR package $package is missing after fhir restore"
+              exit 1
+            fi
+            echo "found $package"
+          done
 
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     strategy:
@@ -119,7 +122,7 @@ jobs:
       - name: Configure fhir cli
         run: |
           fhir config inflate All
-          fhir config validator Advanced
+          fhir config validate firely
 
       - name: Cache FHIR packages
         id: fhir-package-cache
@@ -142,12 +145,12 @@ jobs:
           echo "Validating files for mapper: ${MAPPER_NAME}"
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ -maxdepth 1 -type f \
             -name "${MAPPER_NAME}*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'echo "  Validating: {}" && fhir validate --verbose "{}" --fail-on error'
 
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     steps:
@@ -164,7 +167,7 @@ jobs:
       - name: Configure fhir cli
         run: |
           fhir config inflate All
-          fhir config validator Advanced
+          fhir config validate firely
 
       - name: Cache FHIR packages
         id: fhir-package-cache
@@ -218,4 +221,4 @@ jobs:
           fhir cache list
           find mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/ -type f \
             -name "*.fhir.json" -print0 | \
-            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose --fail "{}"'
+            xargs -0 -I {} sh -c 'echo "\n\n\nValidating: {}" && fhir validate --verbose "{}" --fail-on error'

@@ -72,7 +72,8 @@
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
           "version": "2019",
           "code": "C43.2"
-        } ]
+        } ],
+        "text": "Bösartiges Melanom des Rumpfes"
       },
       "bodySite": [ {
         "coding": [ {

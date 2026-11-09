@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.util.BundleUtil;
-import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obds2toobds3.ObdsMapper;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.PatientReferenceGenerator;
@@ -16,19 +16,19 @@ import io.github.bzkf.obdstofhir.config.WriteGroupedObdsToKafkaConfig;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
 import io.github.bzkf.obdstofhir.mapper.ProvenanceMapper;
 import io.github.bzkf.obdstofhir.mapper.mii.*;
-import io.github.bzkf.obdstofhir.model.Meldeanlass;
-import io.github.bzkf.obdstofhir.model.MeldungExportListV3;
 import io.github.bzkf.obdstofhir.model.MeldungExportV3;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.Serdes.StringSerde;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -38,9 +38,13 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.CarePlan;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.DiagnosticReport;
+import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Procedure;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.hl7.fhir.r4.model.Specimen;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -85,6 +89,9 @@ import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
       TNMMapper.class,
       GleasonScoreMapper.class,
       ModulProstataMapper.class,
+      ModulDarmMapper.class,
+      ModulMammaMapper.class,
+      ModulMalignesMelanomMapper.class,
       WeitereKlassifikationMapper.class,
       Obdsv2v3MapperConfig.class,
       Obdsv2v3MapperProperties.class,
@@ -339,23 +346,149 @@ class Obdsv3ProcessorTest extends MapperTest {
     }
   }
 
-  @ParameterizedTest
-  @CsvSource(
-      value = {
-        "Testpatient_Tumorkonferenz2.xml:BEHANDLUNGSENDE",
-        "Testpatient_Tumorkonferenz1.xml:BEHANDLUNGSBEGINN",
-      },
-      delimiter = ':')
-  void testTumorkonferenz(String inputXmlResourceName, String expectedMeldeAnlass)
-      throws IOException {
-    final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
-    meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName(inputXmlResourceName, obdsResources), "1", "12356789", "123", 1));
+  /**
+   * Pipes each of the given files as its own Meldung export through the processor and returns the
+   * output bundles in the order they were produced.
+   */
+  private List<Bundle> processAll(String... resourceNames) throws IOException {
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+      var inputTopic =
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
 
-    var result = processor.getTumorKonferenzmeldungen(meldungExportListV3);
-    assertThat(result.getFirst().getTumorkonferenz().getMeldeanlass().name())
-        .isEqualTo(Meldeanlass.valueOf(expectedMeldeAnlass).name());
+      for (int i = 0; i < resourceNames.length; i++) {
+        pipeInput(inputTopic, "key" + i, resourceNames[i], obdsResources, String.valueOf(i + 1), 1);
+      }
+
+      return outputTopic.readValuesToList().stream().map(Bundle.class::cast).toList();
+    }
+  }
+
+  @Test
+  void process_withPathologieMeldungen_shouldMapThem() throws IOException {
+    // 3 Pathologie Meldungen, 2 of them with a Histologie
+    var bundles = processAll("Testpatient_Patho.xml");
+
+    assertThat(bundles).isNotEmpty();
+    var bundle = bundles.getLast();
+    // every Pathologie Meldung results in a Histologiebefund
+    assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, DiagnosticReport.class)).hasSize(3);
+    assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, Specimen.class)).hasSize(2);
+  }
+
+  @Test
+  void process_withFruehereTumorerkrankung_shouldKeepItsDiagnosisYear() throws IOException {
+    var bundle = processAll("Testpatient_1.xml").getLast();
+
+    var fruehereTumorerkrankungen =
+        BundleUtil.toListOfResourcesOfType(ctx, bundle, Condition.class).stream()
+            .filter(
+                c -> c.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoFruehereTumorerkrankung()))
+            .toList();
+
+    assertThat(fruehereTumorerkrankungen)
+        .isNotEmpty()
+        .allSatisfy(
+            condition -> {
+              var assertedDate =
+                  condition.getExtensionByUrl(
+                      "http://hl7.org/fhir/StructureDefinition/condition-assertedDate");
+              assertThat(assertedDate.getValue().primitiveValue()).matches("20\\d{2}");
+              assertThat(condition.getIdentifierFirstRep().getValue()).matches(".*-20\\d{2}");
+            });
+  }
+
+  @Test
+  void process_withBeginAndEndOfSameTumorkonferenz_shouldKeepTheEndState() throws IOException {
+    // both describe Tumorkonferenz_ID 221: behandlungsbeginn and behandlungsende
+    var bundle =
+        processAll("Testpatient_Tumorkonferenz1.xml", "Testpatient_Tumorkonferenz2.xml").getLast();
+
+    assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, CarePlan.class))
+        .singleElement()
+        .extracting(CarePlan::getStatus)
+        .isEqualTo(CarePlan.CarePlanStatus.COMPLETED);
+  }
+
+  /**
+   * A behandlungsbeginn of Tumorkonferenz 221 of patient 10, tumor 101. All exports built by this
+   * are distinct Meldungen that map to the same CarePlan, so only one of them can win.
+   */
+  private MeldungExportV3 buildTumorkonferenzExport(
+      String exportId, String meldedatum, String plz, String typ)
+      throws IOException, DatatypeConfigurationException {
+    var export =
+        buildMeldungExport(
+            getResourceByName("Testpatient_Tumorkonferenz1.xml", obdsResources),
+            exportId,
+            "12356789",
+            "123",
+            1);
+
+    var obds = export.getObds();
+    obds.setMeldedatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(meldedatum));
+
+    var patient = obds.getMengePatient().getPatient().getFirst();
+    patient.getPatientenStammdaten().getAdresse().setPLZ(plz);
+
+    var meldung = patient.getMengeMeldung().getMeldung().getFirst();
+    meldung.setMeldungID("meldung-" + exportId);
+    meldung.getTumorkonferenz().setTyp(typ);
+
+    return export;
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "1, 2020-01-01, 2, 2024-06-30, 2024-06-30, 22222, postop",
+    "1, 2024-06-30, 2, 2020-01-01, 2024-06-30, 11111, praeth",
+    // same Meldedatum: the higher export ID is the newer one, compared as a number
+    "9, 2024-06-30, 10, 2024-06-30, 2024-06-30, 22222, postop",
+  })
+  void process_withMeldungenOfSameTumor_shouldPreferTheLatestReported(
+      String firstId,
+      String firstMeldedatum,
+      String secondId,
+      String secondMeldedatum,
+      String expectedRecordedDate,
+      String expectedPlz,
+      String expectedTyp)
+      throws IOException, DatatypeConfigurationException {
+    var first = buildTumorkonferenzExport(firstId, firstMeldedatum, "11111", "praeth");
+    var second = buildTumorkonferenzExport(secondId, secondMeldedatum, "22222", "postop");
+
+    try (var driver =
+        buildStream(
+            processor.getMeldungExportObdsV3Processor(), INPUT_TOPIC_NAME, OUTPUT_TOPIC_NAME)) {
+      var inputTopic =
+          driver.createInputTopic(
+              INPUT_TOPIC_NAME, new StringSerializer(), new JacksonJsonSerializer<>());
+      var outputTopic =
+          driver.createOutputTopic(
+              OUTPUT_TOPIC_NAME, new StringDeserializer(), new KafkaFhirDeserializer());
+
+      inputTopic.pipeInput(first.getId(), first);
+      inputTopic.pipeInput(second.getId(), second);
+
+      var bundle = (Bundle) outputTopic.readValuesToList().getLast();
+
+      var condition = BundleUtil.toListOfResourcesOfType(ctx, bundle, Condition.class).getFirst();
+      assertThat(condition.getRecordedDateElement().getValueAsString())
+          .isEqualTo(expectedRecordedDate);
+
+      var patient = BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class).getFirst();
+      assertThat(patient.getAddressFirstRep().getPostalCode()).isEqualTo(expectedPlz);
+
+      assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, CarePlan.class))
+          .singleElement()
+          .extracting(c -> c.getCategoryFirstRep().getCodingFirstRep().getCode())
+          .isEqualTo(expectedTyp);
+    }
   }
 
   @Test
@@ -419,44 +552,19 @@ class Obdsv3ProcessorTest extends MapperTest {
   }
 
   @Test
-  void testMultiSystTherapieIds() throws IOException {
-    final String description =
-        "Es wurden 2 Systemtherapie mit unterschiedlicher Id durchgeführt. "
-            + "Daher auch 2 Meldungen erwartet";
+  void process_withMultipleSystIds_shouldKeepOneProcedurePerSystInItsEndState() throws IOException {
+    // Test_SysT_0/1: behandlungsbeginn/-ende of SYST 101_IN-1,
+    // Test_SysT_2: behandlungsende of SYST 101_IN-2
+    var bundle = processAll("Test_SysT_0.xml", "Test_SysT_1.xml", "Test_SysT_2.xml").getLast();
 
-    final MeldungExportListV3 meldungExportListV3 = new MeldungExportListV3();
-    meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName("Test_SysT_0.xml", obdsResources), "1", "12356789", "123", 1));
-    meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName("Test_SysT_1.xml", obdsResources), "2", "12356789", "124", 1));
-    meldungExportListV3.add(
-        buildMeldungExport(
-            getResourceByName("Test_SysT_2.xml", obdsResources), "3", "12356789", "125", 1));
-    var result = processor.getSystemtherapieMeldungen(meldungExportListV3);
+    var systProcedures =
+        BundleUtil.toListOfResourcesOfType(ctx, bundle, Procedure.class).stream()
+            .filter(p -> p.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoSystemischeTherapie()))
+            .toList();
 
-    assertThat(result).as(description).isNotNull().hasSize(2);
-    final Optional<Meldung> firstMeldungId1 =
-        result.stream()
-            .filter(meldung -> "101_IN-1".equals(meldung.getSYST().getSYSTID()))
-            .findAny();
-    assertThat(firstMeldungId1)
-        .as("Meldung zu SystemTherapie mit ID 101_IN-1 muss vorhanden sein.")
-        .isNotEmpty();
-    assertThat(firstMeldungId1.get().getSYST().getMeldeanlass().name())
-        .as(
-            "Meldeanlass 'behandlungsende' wird Meldung mit Meldeanlass 'behandlungsbeginn' vorgezogen.")
-        .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
-
-    final Optional<Meldung> secondMeldungId1 =
-        result.stream()
-            .filter(meldung -> "101_IN-2".equals(meldung.getSYST().getSYSTID()))
-            .findAny();
-    assertThat(secondMeldungId1)
-        .as("Meldung zu SystemTherapie mit ID 101_IN-2 muss vorhanden sein.")
-        .isNotEmpty();
-    assertThat(firstMeldungId1.get().getSYST().getMeldeanlass().name())
-        .isEqualTo(Meldeanlass.BEHANDLUNGSENDE.name());
+    assertThat(systProcedures)
+        .as("one Procedure per SYST_ID, the behandlungsende overriding the behandlungsbeginn")
+        .hasSize(2)
+        .allSatisfy(p -> assertThat(p.getStatus()).isEqualTo(Procedure.ProcedureStatus.COMPLETED));
   }
 }

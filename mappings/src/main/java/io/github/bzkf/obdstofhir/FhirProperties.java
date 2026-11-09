@@ -24,6 +24,8 @@ public class FhirProperties extends io.github.dizuker.tofhir.config.FhirProperti
     private String itemWeight;
     private String conditionOccurredFollowing;
     private String procedureMethod;
+    private String genderAmtlichDe;
+    private String seitenlokalisation;
   }
 
   @Data
@@ -72,6 +74,22 @@ public class FhirProperties extends io.github.dizuker.tofhir.config.FhirProperti
     private String prostataClavienDindoObservationId;
     private String prostataGleasonPatternsObservationId;
     private String prostataGleasonScoreObservationId;
+    private String krkAbstandAnokutanObservationId;
+    private String krkAbstandAboralObservationId;
+    private String krkAbstandCircumferelleResektionsebeneObservationId;
+    private String krkMrtMesorektaleFaszieObservationId;
+    private String krkAnastomoseninsuffizienzObservationId;
+    private String krkStomaMarkierungProcedureId;
+    private String asaKlassifikationObservationId;
+    private String mammaMenopausenstatusObservationId;
+    private String mammaRezeptorstatusEstrogenObservationId;
+    private String mammaRezeptorstatusProgesteronObservationId;
+    private String mammaHer2neuStatusObservationId;
+    private String tumorgroesseObservationId;
+    private String melanomSicherheitsabstandObservationId;
+    private String melanomBreslowTiefeObservationId;
+    private String melanomLdhObservationId;
+    private String melanomUlzerationObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;
@@ -88,16 +106,16 @@ public class FhirProperties extends io.github.dizuker.tofhir.config.FhirProperti
     private String provenanceParticipantType;
     private String identifierType;
     private String v3ObservationValue;
-    private String loinc;
     private String icdo3Morphologie;
     private String icd10gm;
     private String icd10who;
-    private String snomed;
     private String ops;
     private String ucum;
     private String conditionVerStatus;
     private String atcBfarm;
     private String observationCategory;
     private String meddra;
+    private String genderAmtlichDe;
+    private String seitenlokalisation;
   }
 }

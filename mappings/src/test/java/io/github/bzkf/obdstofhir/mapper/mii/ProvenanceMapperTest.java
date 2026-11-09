@@ -1,5 +1,7 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import ca.uhn.fhir.context.FhirContext;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.DeviceMapper;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class ProvenanceMapperTest extends MapperTest {
 
   @Autowired private ProvenanceMapper sut;
+  @Autowired private DeviceMapper deviceMapper;
 
   public static final Scrubber FHIR_DATE_TIME_SCRUBBER =
       Scrubbers.scrubAll(
@@ -33,6 +36,15 @@ class ProvenanceMapperTest extends MapperTest {
   void map_withGivenResources_shouldCreateValidProvenanceResource() {
     var provenance = sut.map(List.of(new Reference("Condition/any")), "123");
     verify(provenance);
+  }
+
+  @Test
+  void map_shouldReferenceTheDeviceByItsIdentifier() {
+    var provenance = sut.map(List.of(new Reference("Condition/any")), "123");
+    var device = deviceMapper.map();
+
+    assertThat(provenance.getAgentFirstRep().getWho().getIdentifier().getValue())
+        .isEqualTo(device.getIdentifierFirstRep().getValue());
   }
 
   private static void verify(IBaseResource resource) {

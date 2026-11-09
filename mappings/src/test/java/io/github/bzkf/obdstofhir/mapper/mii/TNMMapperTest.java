@@ -1,6 +1,6 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TNMTyp;
@@ -259,5 +259,117 @@ class TNMMapperTest extends MapperTest {
         observations.stream()
             .filter(o -> !o.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoTnmTKategorie()))
             .noneMatch(Observation::hasComponent));
+  }
+
+  @ParameterizedTest
+  @CsvSource({"N0(mol+),mol+", "N0(mol-),mol-", "N0 (mol+),mol+"})
+  void createValue_withMolSuffix_shouldMoveItToTheItcExtension(String input, String suffix) {
+    var value = sut.createValueWithItcSnSuffixExtension(input);
+
+    assertThat(value.getCodingFirstRep().getCode()).isEqualTo("N0");
+    assertThat(value.getExtension()).hasSize(1);
+    assertThat(((CodeableConcept) value.getExtensionFirstRep().getValue()).getCodingFirstRep())
+        .extracting(c -> c.getCode())
+        .isEqualTo(suffix);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"m,m,", "10,10,", "'m,is',m,'m,is'", "'2,is',2,'2,is'"})
+  void map_withMSymbolInValueSet_shouldUseTheCodeAndKeepTheRestAsText(
+      String mSymbol, String expectedCode, String expectedText) {
+    var tnm = new TNMTyp();
+    tnm.setT("1");
+    tnm.setMSymbol(mSymbol);
+
+    var value = multipleTumorenComponent(tnm).getValueCodeableConcept();
+
+    assertThat(value.getCodingFirstRep().getCode()).isEqualTo(expectedCode);
+    assertThat(value.getText()).isEqualTo(expectedText);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"is", "11", "'11,is'"})
+  void map_withMSymbolOutsideOfValueSet_shouldKeepItAsNoteWithoutAValue(String mSymbol) {
+    var tnm = new TNMTyp();
+    tnm.setT("1");
+    tnm.setMSymbol(mSymbol);
+
+    var tKategorie = byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmTKategorie());
+    var component = tKategorie.getComponentFirstRep();
+
+    assertThat(component.hasValue()).isFalse();
+    assertThat(component.getDataAbsentReason().getCodingFirstRep().getCode()).isEqualTo("as-text");
+    assertThat(tKategorie.getNoteFirstRep().getText()).isEqualTo("m-Symbol: " + mSymbol);
+  }
+
+  @Test
+  void map_withoutVersion_shouldNotSetMethod() {
+    var tnm = new TNMTyp();
+    tnm.setT("1");
+    tnm.setN("0");
+
+    assertThat(mapTnm(tnm)).isNotEmpty().noneMatch(Observation::hasMethod);
+  }
+
+  @Test
+  void map_withVersion_shouldSetMethod() {
+    var tnm = new TNMTyp();
+    tnm.setT("1");
+    tnm.setVersion("8");
+
+    assertThat(mapTnm(tnm))
+        .isNotEmpty()
+        .allMatch(o -> o.getMethod().getCodingFirstRep().getCode().equals("8"));
+  }
+
+  @Test
+  void map_withPraefixU_shouldUseTheClinicalCodeForTNAndM() {
+    var tnm = new TNMTyp();
+    tnm.setT("1");
+    tnm.setN("0");
+    tnm.setM("0");
+    tnm.setCPUPraefixT("u");
+    tnm.setCPUPraefixN("u");
+    tnm.setCPUPraefixM("u");
+
+    var observations = mapTnm(tnm);
+
+    assertKategorie(observations, Onkologie.Profiles.miiPrOnkoTnmTKategorie(), "399504009");
+    assertKategorie(observations, Onkologie.Profiles.miiPrOnkoTnmNKategorie(), "399534004");
+    assertKategorie(observations, Onkologie.Profiles.miiPrOnkoTnmMKategorie(), "399387003");
+  }
+
+  private static void assertKategorie(
+      List<Observation> observations, String profile, String expectedCode) {
+    var code = byProfile(observations, profile).getCode();
+    assertThat(code.getCodingFirstRep().getCode()).isEqualTo(expectedCode);
+    // the prefix itself isn't lost
+    assertThat(
+            ((CodeableConcept) code.getExtensionFirstRep().getValue())
+                .getCodingFirstRep()
+                .getCode())
+        .isEqualTo("u");
+  }
+
+  private static Observation.ObservationComponentComponent multipleTumorenComponent(TNMTyp tnm) {
+    return byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmTKategorie())
+        .getComponentFirstRep();
+  }
+
+  private static Observation byProfile(List<Observation> observations, String profile) {
+    return observations.stream()
+        .filter(o -> o.getMeta().hasProfile(profile))
+        .findFirst()
+        .orElseThrow();
+  }
+
+  private static List<Observation> mapTnm(TNMTyp tnm) {
+    return sut.map(
+        tnm,
+        TnmType.GENERIC,
+        "meldung-1",
+        new Reference("Patient/1"),
+        new Reference("Condition/1"),
+        null);
   }
 }

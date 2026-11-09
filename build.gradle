@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'io.github.bzkf'
-version = '3.7.4'
+version = '4.0.0-beta.2'
 
 java {
     toolchain {
@@ -32,7 +32,7 @@ repositories {
 
 ext {
     set('springCloudVersion', '2025.1.1')
-    set('hapiVersion', '8.10.0')
+    set('hapiVersion', '8.12.1')
 }
 
 dependencies {
@@ -51,9 +51,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.16.5'
     implementation 'io.micrometer:micrometer-core:1.16.5'
     implementation 'org.miracum:kafka-fhir-serializer:3.0.0'
-    implementation 'com.github.slugify:slugify:4.0.0'
     implementation 'org.springframework.retry:spring-retry'
-    implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -80,10 +78,6 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
-    // WORKAROUND:
-    // the snapshots were approved in this time zone; some mapped values (e.g. identifiers
-    // derived from converted oBDS v2 dates) depend on the JVM default time zone.
-    systemProperty 'user.timezone', 'Europe/Berlin'
 }
 
 jacoco {

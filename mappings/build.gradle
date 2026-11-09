@@ -15,7 +15,7 @@ plugins {
 }
 
 group = 'io.github.bzkf'
-version = '3.7.4'
+version = '4.0.0-beta.2'
 
 dependencyManagement {
   imports {
@@ -40,12 +40,14 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.17'
     implementation 'com.github.slugify:slugify:4.0.0'
-    implementation 'io.github.diz-uker:fhir-ig-constants:0.3.0-alpha.4'
 
     // the lib also includes the oBDS model classes
-    api 'io.github.bzkf:obds2-to-obds3:0.1.24'
-    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.10.0'
+    api 'io.github.bzkf:obds2-to-obds3:0.1.25'
+    api 'ca.uhn.hapi.fhir:hapi-fhir-structures-r4:8.12.1'
     api 'io.github.diz-uker:to-fhir-starter:0.3.0-alpha.4'
+    // api so the modules depending on this one (e.g. the root app's tests) can use the same
+    // version of the profile/CodeSystem constants
+    api 'io.github.diz-uker:fhir-ig-constants:0.3.0-alpha.4'
     api 'org.slf4j:slf4j-api:2.0.18'
     api 'org.apache.commons:commons-csv:1.14.1'
 
@@ -58,6 +60,8 @@ dependencies {
 
     testFixturesImplementation 'org.assertj:assertj-core:3.27.7'
     testFixturesImplementation 'com.approvaltests:approvaltests:30.1.1'
+    // MapperTest uses the mapper of Obdsv3Deserializer, which implements a Kafka interface
+    testFixturesImplementation 'org.apache.kafka:kafka-clients'
 }
 
 test {

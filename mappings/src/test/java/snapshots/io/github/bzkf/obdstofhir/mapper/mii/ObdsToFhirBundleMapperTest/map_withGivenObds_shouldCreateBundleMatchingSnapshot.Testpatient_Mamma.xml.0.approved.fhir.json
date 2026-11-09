@@ -217,7 +217,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -281,7 +288,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -345,7 +359,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "N",
+          "display": "nein"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1054,6 +1075,305 @@
       "url": "Observation/9cc0d8877fcda3726e1a475018ca79ddce7a186561e8412dcfd97e1c00d92916"
     }
   }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/50b4e774e8f6f333fe99c36ebbdafa71c3c652699a5ca4ed058de29383bb3f21",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "50b4e774e8f6f333fe99c36ebbdafa71c3c652699a5ca4ed058de29383bb3f21",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-menopause-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-menopausenstatus-observation-id",
+        "value": "OP_60104-modul-mamma-menopausenstatus"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "161712005",
+          "display": "Menopause, function (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "261665006",
+          "display": "Unknown (qualifier value)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/50b4e774e8f6f333fe99c36ebbdafa71c3c652699a5ca4ed058de29383bb3f21"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/aaa7c63399a440f9349844ac7bad2b62d8a074e834da9751197114654262ee36",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "aaa7c63399a440f9349844ac7bad2b62d8a074e834da9751197114654262ee36",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-estrogen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-estrogen-observation-id",
+        "value": "OP_60104-modul-mamma-rezeptorstatus-estrogen"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "40556-3",
+          "display": "Estrogen receptor Ag [Presence] in Tissue by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6577-6",
+          "display": "Negative"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/aaa7c63399a440f9349844ac7bad2b62d8a074e834da9751197114654262ee36"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/d0cdd48361cef578986001aef465c3b98b975fb698af91085d3dfa2421342ef6",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "d0cdd48361cef578986001aef465c3b98b975fb698af91085d3dfa2421342ef6",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-progesteron" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-progesteron-observation-id",
+        "value": "OP_60104-modul-mamma-rezeptorstatus-progesteron"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "85339-0",
+          "display": "Progesterone receptor Ag [Presence] in Breast cancer specimen by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA4489-6",
+          "display": "Unknown"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/d0cdd48361cef578986001aef465c3b98b975fb698af91085d3dfa2421342ef6"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/740e1ad0240c188d1427ae24c0366629f29e00bd0bf95c49b7628fc0c9556184",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "740e1ad0240c188d1427ae24c0366629f29e00bd0bf95c49b7628fc0c9556184",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-her2neu-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-her2neu-status-observation-id",
+        "value": "OP_60104-modul-mamma-her2neu-status"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "48676-1",
+          "display": "HER2 [Interpretation] in Tissue"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-mamma-her2neu-status-obds",
+          "code": "P",
+          "display": "positiv"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/740e1ad0240c188d1427ae24c0366629f29e00bd0bf95c49b7628fc0c9556184"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/684a46cd5b427ab61598a8fd0d5bbb4a620c34d1cc9a983ed3c7cc573b28e8c7",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "684a46cd5b427ab61598a8fd0d5bbb4a620c34d1cc9a983ed3c7cc573b28e8c7",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+        "value": "OP_60104-modul-mamma-tumorgroesse-invasiv"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "21889-1",
+          "display": "Size Tumor"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "371479009",
+          "display": "Tumor size, largest dimension (observable entity)"
+        } ],
+        "text": "Tumorgröße invasives Karzinom"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "dataAbsentReason": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+          "code": "unknown",
+          "display": "Unknown"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/684a46cd5b427ab61598a8fd0d5bbb4a620c34d1cc9a983ed3c7cc573b28e8c7"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c4a5f9ab17bc72d55f29dbfdabc673b2c9a6c97413d518c65f12a6e6cd7e18d2",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "c4a5f9ab17bc72d55f29dbfdabc673b2c9a6c97413d518c65f12a6e6cd7e18d2",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+        "value": "OP_60104-modul-mamma-tumorgroesse-dcis"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "21889-1",
+          "display": "Size Tumor"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "371479009",
+          "display": "Tumor size, largest dimension (observable entity)"
+        } ],
+        "text": "Tumorgröße DCIS"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-03-02",
+      "valueQuantity": {
+        "value": 15,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/c4a5f9ab17bc72d55f29dbfdabc673b2c9a6c97413d518c65f12a6e6cd7e18d2"
+    }
+  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/e3c23dc7a0e9f6afc92f4aec134537f08c4a9b72208ae89d355437e80b41e47a",
     "resource": {
       "resourceType": "Procedure",
@@ -1101,7 +1421,14 @@
           "code": "R1",
           "display": "Mikroskopischer Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "WUH",
+          "display": "Wundhämatom (konservativ therapiert)"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1165,7 +1492,14 @@
           "code": "R1",
           "display": "Mikroskopischer Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "WUH",
+          "display": "Wundhämatom (konservativ therapiert)"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -1229,7 +1563,14 @@
           "code": "R1",
           "display": "Mikroskopischer Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "WUH",
+          "display": "Wundhämatom (konservativ therapiert)"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -3056,6 +3397,206 @@
       "url": "Observation/a1f3e52a64932685b8f482c9464dbef6183c04b2f7ec232e8e3e425b73e641a7"
     }
   }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/db0588b796531b3d2b32be1181c691ba9965cc684971d578e755f63692252616",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "db0588b796531b3d2b32be1181c691ba9965cc684971d578e755f63692252616",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-menopause-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-menopausenstatus-observation-id",
+        "value": "VER_60102-modul-mamma-menopausenstatus"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "161712005",
+          "display": "Menopause, function (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-09-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "76498008",
+          "display": "Postmenopausal state (finding)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/db0588b796531b3d2b32be1181c691ba9965cc684971d578e755f63692252616"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6741baa8d97b5b68479ee9f06398a112681c10ad011eec63924023eab23860c1",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "6741baa8d97b5b68479ee9f06398a112681c10ad011eec63924023eab23860c1",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-estrogen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-estrogen-observation-id",
+        "value": "VER_60102-modul-mamma-rezeptorstatus-estrogen"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "40556-3",
+          "display": "Estrogen receptor Ag [Presence] in Tissue by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-09-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/6741baa8d97b5b68479ee9f06398a112681c10ad011eec63924023eab23860c1"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/cfee510d1b28a8b7bdcfd71e3c60ddfc23e6f57761c3049617363fd1ff174e06",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "cfee510d1b28a8b7bdcfd71e3c60ddfc23e6f57761c3049617363fd1ff174e06",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-progesteron" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-progesteron-observation-id",
+        "value": "VER_60102-modul-mamma-rezeptorstatus-progesteron"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "85339-0",
+          "display": "Progesterone receptor Ag [Presence] in Breast cancer specimen by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-09-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/cfee510d1b28a8b7bdcfd71e3c60ddfc23e6f57761c3049617363fd1ff174e06"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/b4f783e444fcda17f0eb11f73a2e1b05941e052bb4935fa40c4396b14cad5c53",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "b4f783e444fcda17f0eb11f73a2e1b05941e052bb4935fa40c4396b14cad5c53",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-her2neu-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-her2neu-status-observation-id",
+        "value": "VER_60102-modul-mamma-her2neu-status"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "48676-1",
+          "display": "HER2 [Interpretation] in Tissue"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2021-09-14",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-mamma-her2neu-status-obds",
+          "code": "N",
+          "display": "negativ"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/b4f783e444fcda17f0eb11f73a2e1b05941e052bb4935fa40c4396b14cad5c53"
+    }
+  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/7235df9cd9b20c4e863029e1bfbda394ef3941e2086340b9f19e0ff64ef618ec",
     "resource": {
       "resourceType": "Procedure",
@@ -3760,6 +4301,305 @@
       "url": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913"
     }
   }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/55932fe7e85861d798f04130c2407ec412aeb6981b262246d207c961a8d1665b",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "55932fe7e85861d798f04130c2407ec412aeb6981b262246d207c961a8d1665b",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-menopause-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-menopausenstatus-observation-id",
+        "value": "DIA_60103-modul-mamma-menopausenstatus"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "161712005",
+          "display": "Menopause, function (observable entity)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "22636003",
+          "display": "Premenopausal state (finding)"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/55932fe7e85861d798f04130c2407ec412aeb6981b262246d207c961a8d1665b"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/8cdb1cf8e0c885084f1bf81ee7cb72566664868b99874bea31d769b49b058d8f",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "8cdb1cf8e0c885084f1bf81ee7cb72566664868b99874bea31d769b49b058d8f",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-estrogen" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-estrogen-observation-id",
+        "value": "DIA_60103-modul-mamma-rezeptorstatus-estrogen"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "40556-3",
+          "display": "Estrogen receptor Ag [Presence] in Tissue by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/8cdb1cf8e0c885084f1bf81ee7cb72566664868b99874bea31d769b49b058d8f"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/a50ed5e5d673dc1527395dc2e105a22713aec4b2064d3f248401f4c1e0f45096",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a50ed5e5d673dc1527395dc2e105a22713aec4b2064d3f248401f4c1e0f45096",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-rezeptorstatus-progesteron" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-rezeptorstatus-progesteron-observation-id",
+        "value": "DIA_60103-modul-mamma-rezeptorstatus-progesteron"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "85339-0",
+          "display": "Progesterone receptor Ag [Presence] in Breast cancer specimen by Immune stain"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "LA6576-8",
+          "display": "Positive"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a50ed5e5d673dc1527395dc2e105a22713aec4b2064d3f248401f4c1e0f45096"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/a97e516f40f2e79fc45fd453469ce890dd42a8c1aab4e72f9e99daa1e5fd9ff0",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "a97e516f40f2e79fc45fd453469ce890dd42a8c1aab4e72f9e99daa1e5fd9ff0",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-her2neu-status" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-her2neu-status-observation-id",
+        "value": "DIA_60103-modul-mamma-her2neu-status"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "48676-1",
+          "display": "HER2 [Interpretation] in Tissue"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-mamma-her2neu-status-obds",
+          "code": "N",
+          "display": "negativ"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/a97e516f40f2e79fc45fd453469ce890dd42a8c1aab4e72f9e99daa1e5fd9ff0"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ba933dd00b206dabd5f29f12c09f72d323d54a7e99af9345f396a40207c1f29a",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "ba933dd00b206dabd5f29f12c09f72d323d54a7e99af9345f396a40207c1f29a",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+        "value": "DIA_60103-modul-mamma-tumorgroesse-invasiv"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "21889-1",
+          "display": "Size Tumor"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "371479009",
+          "display": "Tumor size, largest dimension (observable entity)"
+        } ],
+        "text": "Tumorgröße invasives Karzinom"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "valueQuantity": {
+        "value": 23,
+        "unit": "mm",
+        "system": "http://unitsofmeasure.org",
+        "code": "mm"
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/ba933dd00b206dabd5f29f12c09f72d323d54a7e99af9345f396a40207c1f29a"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/9dee2f68469002dfc4ade7a63738af379a5ec31fd73d6930ea0a7d3760da41f1",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "9dee2f68469002dfc4ade7a63738af379a5ec31fd73d6930ea0a7d3760da41f1",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-tumorgroesse" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/tumorgroesse-observation-id",
+        "value": "DIA_60103-modul-mamma-tumorgroesse-dcis"
+      } ],
+      "status": "final",
+      "code": {
+        "coding": [ {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "21889-1",
+          "display": "Size Tumor"
+        }, {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "371479009",
+          "display": "Tumor size, largest dimension (observable entity)"
+        } ],
+        "text": "Tumorgröße DCIS"
+      },
+      "subject": {
+        "reference": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "60"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
+      } ],
+      "effectiveDateTime": "2020-02-16",
+      "dataAbsentReason": {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+          "code": "unknown",
+          "display": "Unknown"
+        } ]
+      }
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/9dee2f68469002dfc4ade7a63738af379a5ec31fd73d6930ea0a7d3760da41f1"
+    }
+  }, {
     "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/03f37796811559cbf7fec7785a8f835fae0b70c21dd5f04ea9c6d692ff47f233",
     "resource": {
       "resourceType": "List",
@@ -3804,6 +4644,30 @@
       }, {
         "item": {
           "reference": "Observation/23c409be8d9a996d3418af5d7a9bbf9fc113704f56ef5820c7e3d9060954c913"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/55932fe7e85861d798f04130c2407ec412aeb6981b262246d207c961a8d1665b"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/8cdb1cf8e0c885084f1bf81ee7cb72566664868b99874bea31d769b49b058d8f"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/a50ed5e5d673dc1527395dc2e105a22713aec4b2064d3f248401f4c1e0f45096"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/a97e516f40f2e79fc45fd453469ce890dd42a8c1aab4e72f9e99daa1e5fd9ff0"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/ba933dd00b206dabd5f29f12c09f72d323d54a7e99af9345f396a40207c1f29a"
+        }
+      }, {
+        "item": {
+          "reference": "Observation/9dee2f68469002dfc4ade7a63738af379a5ec31fd73d6930ea0a7d3760da41f1"
         }
       } ]
     },

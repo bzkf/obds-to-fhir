@@ -1,22 +1,15 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(StudienteilnahmeObservationMapper.class);
 
   public StudienteilnahmeObservationMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -35,14 +28,10 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     // Meta
     observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoStudienteilnahme());
 
-    // Identifier
-    var identifier =
-        new Identifier()
-            .setSystem(
-                fhirProperties.getSystems().getIdentifiers().getStudienteilnahmeObservationId())
-            .setValue(slugifier.slugify(meldungsID + "-Studienteilnahme"));
-    observation.addIdentifier(identifier);
-    observation.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        observation,
+        fhirProperties.getSystems().getIdentifiers().getStudienteilnahmeObservationId(),
+        meldungsID + "-Studienteilnahme");
 
     // Status
     observation.setStatus(Observation.ObservationStatus.FINAL);
@@ -65,9 +54,8 @@ public class StudienteilnahmeObservationMapper extends ObdsToFhirMapper {
     if (modulAllgemein.getStudienteilnahme().getDatum() != null) {
       // Effective Date
       var date =
-          new DateTimeType(
-              modulAllgemein.getStudienteilnahme().getDatum().toGregorianCalendar().getTime());
-      date.setPrecision(TemporalPrecisionEnum.DAY);
+          convertObdsDatumToDateTimeType(modulAllgemein.getStudienteilnahme().getDatum())
+              .orElseThrow();
       observation.setEffective(date);
 
       // always yes, if the date is set

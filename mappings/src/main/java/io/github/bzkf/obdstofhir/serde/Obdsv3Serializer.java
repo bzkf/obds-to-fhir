@@ -1,7 +1,9 @@
 package io.github.bzkf.obdstofhir.serde;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.FruehereTumorerkrankung;
 import de.basisdatensatz.obds.v3.OBDS;
+import io.github.bzkf.obds2toobds3.PlainDateModule;
 import io.github.bzkf.obdstofhir.model.ObdsOrAdt;
 import tools.jackson.databind.ValueSerializer;
 import tools.jackson.dataformat.xml.XmlMapper;
@@ -14,6 +16,8 @@ public class Obdsv3Serializer extends ValueSerializer<ObdsOrAdt>
       XmlMapper.builder()
           .defaultUseWrapper(false)
           .addModule(new JakartaXmlBindAnnotationModule())
+          .addMixIn(FruehereTumorerkrankung.class, FruehereTumorerkrankungMixIn.class)
+          .addModule(new PlainDateModule())
           .changeDefaultPropertyInclusion(
               incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
           .build();
@@ -24,12 +28,9 @@ public class Obdsv3Serializer extends ValueSerializer<ObdsOrAdt>
       tools.jackson.core.JsonGenerator gen,
       tools.jackson.databind.SerializationContext ctxt) {
 
-    String xml = MAPPER.writeValueAsString(value);
-
-    if (xml.toLowerCase().contains("<obds") && xml.toLowerCase().contains("schema_version=\"3.")) {
+    if (value.hasOBDS()) {
       gen.writeString(MAPPER.writeValueAsString(value.getObds()));
-    } else if (xml.toLowerCase().contains("<adt")
-        && xml.toLowerCase().contains("schema_version=\"2.")) {
+    } else if (value.hasADT()) {
       gen.writeString(MAPPER.writeValueAsString(value.getAdt()));
     } else {
       throw new RuntimeException("Unknown XML root element in serialization");

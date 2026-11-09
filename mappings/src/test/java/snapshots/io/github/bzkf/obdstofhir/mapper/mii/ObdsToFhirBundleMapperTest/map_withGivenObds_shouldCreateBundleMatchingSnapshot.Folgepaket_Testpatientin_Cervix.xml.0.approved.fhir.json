@@ -150,7 +150,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "RNB",
+          "display": "Nachblutung, revisionsbedürftig, anderweitig nicht erwähnt"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",
@@ -214,7 +221,14 @@
           "code": "R0",
           "display": "Kein Residualtumor"
         } ]
-      }
+      },
+      "complication": [ {
+        "coding": [ {
+          "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-operation-komplikation",
+          "code": "RNB",
+          "display": "Nachblutung, revisionsbedürftig, anderweitig nicht erwähnt"
+        } ]
+      } ]
     },
     "request": {
       "method": "PUT",

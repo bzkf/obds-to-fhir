@@ -1,6 +1,5 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.PatientenStammdatenMelderTyp;
@@ -9,6 +8,7 @@ import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import io.github.dizuker.tofhir.IdUtils;
+import java.time.LocalDate;
 import java.util.*;
 import org.hl7.fhir.instance.model.api.IIdType;
 import org.hl7.fhir.r4.model.*;
@@ -27,6 +27,11 @@ public class PatientMapper extends ObdsToFhirMapper {
 
   @Value("${fhir.mappings.create-patient-resources.use-obds-patient-id-as-resource-id:false}")
   private boolean useObdsPatientIdAsResourceId;
+
+  // has to match the prefix used by the patient reference generator, otherwise the references in
+  // the bundle don't point to this Patient
+  @Value("${fhir.mappings.patient-reference-generation.patient-id-prefix:}")
+  private String patientIdPrefix = "";
 
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -70,14 +75,22 @@ public class PatientMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
-            .setValue(obdsPatient.getPatientID())
+            .setValue(patientIdPrefix + obdsPatient.getPatientID())
             .setType(mrTypeConcept);
 
     patient.addIdentifier(identifier);
-    patient.setId(resolvePatientId(obdsPatient, identifier));
+    patient.setId(resolvePatientId(identifier));
 
-    patient.setGender(
-        genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
+    var geschlecht = obdsPatient.getPatientenStammdaten().getGeschlecht();
+    patient.setGender(genderMap.getOrDefault(geschlecht, null));
+
+    // D and X are both `other`, the extension tells them apart and is required for `other`
+    // (mii-pat-1)
+    if (geschlecht == PatientenStammdatenMelderTyp.Geschlecht.D) {
+      addGenderAmtlich(patient, "D", "divers");
+    } else if (geschlecht == PatientenStammdatenMelderTyp.Geschlecht.X) {
+      addGenderAmtlich(patient, "X", "unbestimmt");
+    }
 
     convertObdsDatumToDateType(obdsPatient.getPatientenStammdaten().getGeburtsdatum())
         .ifPresent(patient::setBirthDateElement);
@@ -98,7 +111,12 @@ public class PatientMapper extends ObdsToFhirMapper {
       var latestReports =
           deathReports.stream()
               .filter(m -> m.getTod().getSterbedatum() != null)
-              .sorted(Comparator.comparing(m -> m.getTod().getSterbedatum().toGregorianCalendar()))
+              .sorted(
+                  Comparator.comparing(
+                      m -> {
+                        var d = m.getTod().getSterbedatum();
+                        return LocalDate.of(d.getYear(), d.getMonth(), d.getDay());
+                      }))
               .toList();
 
       if (latestReports.isEmpty()) {
@@ -107,9 +125,7 @@ public class PatientMapper extends ObdsToFhirMapper {
       } else {
         var latestReport = latestReports.getLast();
         var deceased =
-            new DateTimeType(
-                latestReport.getTod().getSterbedatum().toGregorianCalendar().getTime());
-        deceased.setPrecision(TemporalPrecisionEnum.DAY);
+            convertObdsDatumToDateTimeType(latestReport.getTod().getSterbedatum()).orElseThrow();
         patient.setDeceased(deceased);
       }
     }
@@ -140,9 +156,17 @@ public class PatientMapper extends ObdsToFhirMapper {
     return patient;
   }
 
-  private IIdType resolvePatientId(OBDS.MengePatient.Patient obdsPatient, Identifier identifier) {
+  private void addGenderAmtlich(Patient patient, String code, String display) {
+    patient
+        .getGenderElement()
+        .addExtension(
+            fhirProperties.getExtensions().getGenderAmtlichDe(),
+            new Coding(fhirProperties.getSystems().getGenderAmtlichDe(), code, display));
+  }
+
+  private IIdType resolvePatientId(Identifier identifier) {
     return useObdsPatientIdAsResourceId
-        ? new IdType(obdsPatient.getPatientID())
+        ? new IdType(identifier.getValue())
         : IdUtils.fromIdentifier(identifier);
   }
 }
