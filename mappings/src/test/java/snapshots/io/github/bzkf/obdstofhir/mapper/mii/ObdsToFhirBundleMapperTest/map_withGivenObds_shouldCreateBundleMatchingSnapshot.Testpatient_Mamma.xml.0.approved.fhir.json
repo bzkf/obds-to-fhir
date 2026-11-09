@@ -1248,7 +1248,7 @@
           "system": "http://loinc.org",
           "version": "2.82",
           "code": "48676-1",
-          "display": "HER2 [Interpretation] in Tissue"
+          "display": "HER2 Ag [Interpretation] in Tissue"
         } ]
       },
       "subject": {
@@ -3570,7 +3570,7 @@
           "system": "http://loinc.org",
           "version": "2.82",
           "code": "48676-1",
-          "display": "HER2 [Interpretation] in Tissue"
+          "display": "HER2 Ag [Interpretation] in Tissue"
         } ]
       },
       "subject": {
@@ -4474,7 +4474,7 @@
           "system": "http://loinc.org",
           "version": "2.82",
           "code": "48676-1",
-          "display": "HER2 [Interpretation] in Tissue"
+          "display": "HER2 Ag [Interpretation] in Tissue"
         } ]
       },
       "subject": {

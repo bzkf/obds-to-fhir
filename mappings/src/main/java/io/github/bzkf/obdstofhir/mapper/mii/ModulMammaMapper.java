@@ -265,7 +265,7 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
                 .getCodings()
                 .loinc()
                 .setCode("48676-1")
-                .setDisplay("HER2 [Interpretation] in Tissue")));
+                .setDisplay("HER2 Ag [Interpretation] in Tissue")));
 
     // the DefinitionOBDS slice uses the oBDS-specific code system with the same P/N/U codes
     var coding =
