@@ -47,6 +47,9 @@ public class PatientVSObservationProcessor {
   @Value("${fhir.mappings.create-provenance-resources.enabled}")
   private boolean createProvenanceResources;
 
+  @Value("${fhir.mappings.meta.source}")
+  private String metaSource;
+
   public PatientVSObservationProcessor(
       TodMapper todMapper,
       VitalStatusMapper vitalStatusMapper,
@@ -112,7 +115,15 @@ public class PatientVSObservationProcessor {
         builder.withProvenance(who, what);
       }
 
-      return builder.build();
+      var bundle = builder.build();
+
+      // like the ObdsToFhirBundleMapper, set meta.source on all generated resources. This is done
+      // on the built bundle so it includes the Provenance the TransactionBuilder adds in build().
+      if (!metaSource.isEmpty()) {
+        bundle.getEntry().forEach(entry -> entry.getResource().getMeta().setSource(metaSource));
+      }
+
+      return bundle;
     };
   }
 
