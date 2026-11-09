@@ -97,6 +97,7 @@ fhir:
     meddra: "https://www.meddra.org"
     gender-amtlich-de: "http://fhir.de/CodeSystem/gender-amtlich-de"
     seitenlokalisation: "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_ICD_SEITENLOKALISATION"
+    radelement: "https://radelement.org"
 
   mappings:
     meta:

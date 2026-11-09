@@ -276,7 +276,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addCategory(observationCategory(ObservationCategory.IMAGING));
 
     observation.setCode(
-        new CodeableConcept(new Coding("https://radelement.org", "RDE96", "Distance to MRF")));
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getRadelement(), "RDE96", "Distance to MRF")));
 
     if (rawValue.matches("\\d+")) {
       observation.setValue(ucumQuantity(new BigDecimal(rawValue), "mm"));

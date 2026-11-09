@@ -117,5 +117,6 @@ public class FhirProperties extends io.github.dizuker.tofhir.config.ToFhirProper
     private String meddra;
     private String genderAmtlichDe;
     private String seitenlokalisation;
+    private String radelement;
   }
 }
