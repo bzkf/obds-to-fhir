@@ -5,7 +5,6 @@ import de.basisdatensatz.obds.v3.ModulMammaTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +30,10 @@ import org.springframework.stereotype.Service;
  * Observations reference the same primary Condition and are told apart by their identifier suffix
  * and {@code code.text} instead.
  *
- * <p>Unlike {@link ModulProstataMapper}, the reference date is passed as an already converted
- * {@link DateTimeType}: the Pathologie section only offers {@code Tumor_Histologiedatum}, which may
- * be month- or year-precise, and {@code MII_PR_Onko_Tumorgroesse} requires {@code
- * effectiveDateTime}. Callers convert with {@link #convertObdsDatumToDateTimeType}.
+ * <p>The reference date is passed as an already converted {@link DateTimeType}: the Pathologie
+ * section only offers {@code Tumor_Histologiedatum}, which may be month- or year-precise, and
+ * {@code MII_PR_Onko_Tumorgroesse} requires {@code effectiveDateTime}. Callers convert with {@link
+ * #convertObdsDatumToDateTimeType}.
  */
 @Service
 public class ModulMammaMapper extends ObdsToFhirMapper {
@@ -266,7 +265,7 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
                 .getCodings()
                 .loinc()
                 .setCode("48676-1")
-                .setDisplay("HER2 [Interpretation] in Tissue")));
+                .setDisplay("HER2 Ag [Interpretation] in Tissue")));
 
     // the DefinitionOBDS slice uses the oBDS-specific code system with the same P/N/U codes
     var coding =
@@ -318,8 +317,7 @@ public class ModulMammaMapper extends ObdsToFhirMapper {
             .setText(codeText));
 
     if ("U".equals(rawValue)) {
-      observation.setDataAbsentReason(
-          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(dataAbsentReason(Enumerations.DataAbsentReason.UNKNOWN));
       return observation;
     }
 

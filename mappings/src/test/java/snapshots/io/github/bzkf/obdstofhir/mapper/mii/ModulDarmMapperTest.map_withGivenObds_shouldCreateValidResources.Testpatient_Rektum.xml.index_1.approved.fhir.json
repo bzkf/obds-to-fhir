@@ -18,7 +18,7 @@
   } ],
   "code": {
     "coding": [ {
-      "system": "http://radlex.org",
+      "system": "https://radelement.org",
       "code": "RDE96",
       "display": "Distance to MRF"
     } ]

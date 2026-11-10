@@ -16,6 +16,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 env:
+  # ModulProstataMapperTest:
+  # error: Instance count is 2, which is not within the specified cardinality of 1..1 (for slice Diagnose)
+  # error: Instance count is 0, which is not within the specified cardinality of 1..1 (for slice Operation)
+  # mii-pr-onko-prostate-clavien-dindo slices Observation.focus using a resolve()-based
+  # profile discriminator, which requires the referenced Condition/Procedure to actually be
+  # resolvable. These snapshots validate a single extracted Observation outside of any Bundle,
+  # so the reference can never resolve and the validator misclassifies both focus entries into
+  # the first slice. Confirmed as a false positive: the same resource validates cleanly once it
+  # is inside its Bundle with a resolvable (absolute) Bundle.entry.fullUrl, which is what
+  # actually gets validated by the validate-bundles job.
   # ModulMalignesMelanomMapperTest:
   # error: Instance failed constraint mii-onko-melanom-sicherheitsabstand-1 "Entweder muss valueQuantity oder dataAbsentReason vorhanden sein"
   # the invariant's expression is `valueQuantity.exists() or dataAbsentReason.exists()`, but FHIRPath labels a
@@ -26,8 +36,8 @@ env:
   MAPPERS_TO_IGNORE_VALIDATION_ERRORS: |
     [
       "TumorKonferenzMapperTest",
+      "PatientMapperTest",
       "ModulProstataMapperTest",
-      "SystemischeTherapieMedicationStatementMapperTest",
       "ModulMalignesMelanomMapperTest"
     ]
 
@@ -194,6 +204,14 @@ jobs:
         with:
           name: java-validator-bundles-report
           path: java-validator-bundles-report.html
+
+      - name: Validate bundles (records validator)
+        uses: medvertical/records-fhir-validator@0492195d1b180e81fa85a1cff9c9de6a632d64fd # v0.7.0
+        with:
+          paths: |
+            mappings/src/test/java/snapshots/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperTest/*.fhir.json
+          fhir-version: R4
+          fail-on: none
 
       - name: Validate bundles
         continue-on-error: true

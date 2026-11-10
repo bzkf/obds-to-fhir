@@ -1,0 +1,62 @@
+{
+  "resourceType": "Observation",
+  "id": "ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "value": "DIA_80106-modul-prostata-secondary-gleason-pattern"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "384995005",
+      "display": "Secondary Gleason pattern (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "44642-7",
+      "display": "Gleason pattern.secondary in Prostate tumor"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-05-10",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
+        "valueDecimal": 3
+      } ],
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "369772003",
+      "display": "Gleason Pattern 3 (finding)"
+    } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
+    } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  }
+}

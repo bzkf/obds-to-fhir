@@ -3,7 +3,7 @@
   "id": "316d09af0a5513815637d82c7a02582d45f85ed8b4cfb44c48a8e898d3ab5618",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/316d09af0a5513815637d82c7a02582d45f85ed8b4cfb44c48a8e898d3ab5618",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/316d09af0a5513815637d82c7a02582d45f85ed8b4cfb44c48a8e898d3ab5618",
     "resource": {
       "resourceType": "Patient",
       "id": "316d09af0a5513815637d82c7a02582d45f85ed8b4cfb44c48a8e898d3ab5618",
@@ -38,7 +38,7 @@
       "url": "Patient/316d09af0a5513815637d82c7a02582d45f85ed8b4cfb44c48a8e898d3ab5618"
     }
   }, {
-    "fullUrl": "Condition/bcd9ee6daa0ce72ab0e04477c88c79d976019f769ae72a5eb712a6bdf3e35436",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/bcd9ee6daa0ce72ab0e04477c88c79d976019f769ae72a5eb712a6bdf3e35436",
     "resource": {
       "resourceType": "Condition",
       "id": "bcd9ee6daa0ce72ab0e04477c88c79d976019f769ae72a5eb712a6bdf3e35436",
@@ -71,6 +71,14 @@
           "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -111,7 +119,7 @@
       "url": "Condition/bcd9ee6daa0ce72ab0e04477c88c79d976019f769ae72a5eb712a6bdf3e35436"
     }
   }, {
-    "fullUrl": "Procedure/7cedbc2208303bd471d565b45d333b09e8e03bf1a1f83ea8c48b3907ca7578df",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/7cedbc2208303bd471d565b45d333b09e8e03bf1a1f83ea8c48b3907ca7578df",
     "resource": {
       "resourceType": "Procedure",
       "id": "7cedbc2208303bd471d565b45d333b09e8e03bf1a1f83ea8c48b3907ca7578df",
@@ -136,7 +144,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure (procedure)"
         } ]
@@ -172,7 +180,7 @@
       "url": "Procedure/7cedbc2208303bd471d565b45d333b09e8e03bf1a1f83ea8c48b3907ca7578df"
     }
   }, {
-    "fullUrl": "Procedure/097c8d78facc9277af3aa900e3612ae841741b1c0d08f7629b7513709e009d34",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/097c8d78facc9277af3aa900e3612ae841741b1c0d08f7629b7513709e009d34",
     "resource": {
       "resourceType": "Procedure",
       "id": "097c8d78facc9277af3aa900e3612ae841741b1c0d08f7629b7513709e009d34",
@@ -200,7 +208,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -243,7 +251,7 @@
       "url": "Procedure/097c8d78facc9277af3aa900e3612ae841741b1c0d08f7629b7513709e009d34"
     }
   }, {
-    "fullUrl": "Observation/595133847c11ef655891b84120040ecbaa58f62e5b956531388d120401ed393d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/595133847c11ef655891b84120040ecbaa58f62e5b956531388d120401ed393d",
     "resource": {
       "resourceType": "Observation",
       "id": "595133847c11ef655891b84120040ecbaa58f62e5b956531388d120401ed393d",
@@ -287,7 +295,7 @@
       "url": "Observation/595133847c11ef655891b84120040ecbaa58f62e5b956531388d120401ed393d"
     }
   }, {
-    "fullUrl": "Observation/3761d7fe9e23c92831d7433cc9766297d53ed32627f3107e208a0e7cbc3a4960",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/3761d7fe9e23c92831d7433cc9766297d53ed32627f3107e208a0e7cbc3a4960",
     "resource": {
       "resourceType": "Observation",
       "id": "3761d7fe9e23c92831d7433cc9766297d53ed32627f3107e208a0e7cbc3a4960",
@@ -302,7 +310,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396511007",
           "display": "Distance of in situ melanoma from closest lateral surgical margin in excised specimen of skin (observable entity)"
         } ]
@@ -330,7 +338,7 @@
       "url": "Observation/3761d7fe9e23c92831d7433cc9766297d53ed32627f3107e208a0e7cbc3a4960"
     }
   }, {
-    "fullUrl": "Observation/2107ec0093d71a66f4402ec9c94ecb844e8988b79e19eac0f94b2596774e2d9b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/2107ec0093d71a66f4402ec9c94ecb844e8988b79e19eac0f94b2596774e2d9b",
     "resource": {
       "resourceType": "Observation",
       "id": "2107ec0093d71a66f4402ec9c94ecb844e8988b79e19eac0f94b2596774e2d9b",
@@ -345,7 +353,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "106243009",
           "display": "Breslow depth staging for melanoma of skin (observable entity)"
         } ]
@@ -373,7 +381,7 @@
       "url": "Observation/2107ec0093d71a66f4402ec9c94ecb844e8988b79e19eac0f94b2596774e2d9b"
     }
   }, {
-    "fullUrl": "Observation/1d91ae103d156fd531ebe9a2f9c4f2d6e79c46a454e406e4724708a25abd2547",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/1d91ae103d156fd531ebe9a2f9c4f2d6e79c46a454e406e4724708a25abd2547",
     "resource": {
       "resourceType": "Observation",
       "id": "1d91ae103d156fd531ebe9a2f9c4f2d6e79c46a454e406e4724708a25abd2547",
@@ -423,7 +431,7 @@
       "url": "Observation/1d91ae103d156fd531ebe9a2f9c4f2d6e79c46a454e406e4724708a25abd2547"
     }
   }, {
-    "fullUrl": "Observation/eac9bfb22fa585c5989917284057d89287192ba08c3ff06e8c8f3f28585ddab6",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/eac9bfb22fa585c5989917284057d89287192ba08c3ff06e8c8f3f28585ddab6",
     "resource": {
       "resourceType": "Observation",
       "id": "eac9bfb22fa585c5989917284057d89287192ba08c3ff06e8c8f3f28585ddab6",
@@ -438,7 +446,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "6270001000004106",
           "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
         } ]
@@ -467,7 +475,7 @@
       "url": "Observation/eac9bfb22fa585c5989917284057d89287192ba08c3ff06e8c8f3f28585ddab6"
     }
   }, {
-    "fullUrl": "Specimen/5894f65a6a5820111111b4486f971ecf8129909521b2372850cb8d6f89bc8901",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/5894f65a6a5820111111b4486f971ecf8129909521b2372850cb8d6f89bc8901",
     "resource": {
       "resourceType": "Specimen",
       "id": "5894f65a6a5820111111b4486f971ecf8129909521b2372850cb8d6f89bc8901",
@@ -497,7 +505,7 @@
       "url": "Specimen/5894f65a6a5820111111b4486f971ecf8129909521b2372850cb8d6f89bc8901"
     }
   }, {
-    "fullUrl": "Observation/2cb879756c144d49ab021382074432debb4bb69339d6dee8359ee39881bd9676",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/2cb879756c144d49ab021382074432debb4bb69339d6dee8359ee39881bd9676",
     "resource": {
       "resourceType": "Observation",
       "id": "2cb879756c144d49ab021382074432debb4bb69339d6dee8359ee39881bd9676",
@@ -550,7 +558,7 @@
       "url": "Observation/2cb879756c144d49ab021382074432debb4bb69339d6dee8359ee39881bd9676"
     }
   }, {
-    "fullUrl": "Observation/d0deee3acb5fc4d00a2c66e0a71ed168585bd23da5032f3e546822a96a5c9405",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/d0deee3acb5fc4d00a2c66e0a71ed168585bd23da5032f3e546822a96a5c9405",
     "resource": {
       "resourceType": "Observation",
       "id": "d0deee3acb5fc4d00a2c66e0a71ed168585bd23da5032f3e546822a96a5c9405",
@@ -577,7 +585,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -609,7 +617,7 @@
       "url": "Observation/d0deee3acb5fc4d00a2c66e0a71ed168585bd23da5032f3e546822a96a5c9405"
     }
   }, {
-    "fullUrl": "Observation/5896ef25ebb66c8cd157867c3b5502e2be10ebb06bdb2446d9110d2cef9d228e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/5896ef25ebb66c8cd157867c3b5502e2be10ebb06bdb2446d9110d2cef9d228e",
     "resource": {
       "resourceType": "Observation",
       "id": "5896ef25ebb66c8cd157867c3b5502e2be10ebb06bdb2446d9110d2cef9d228e",
@@ -624,7 +632,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396511007",
           "display": "Distance of in situ melanoma from closest lateral surgical margin in excised specimen of skin (observable entity)"
         } ]
@@ -653,7 +661,7 @@
       "url": "Observation/5896ef25ebb66c8cd157867c3b5502e2be10ebb06bdb2446d9110d2cef9d228e"
     }
   }, {
-    "fullUrl": "Observation/61a9ff2be8433bebf5fdc17fc1a6fa3d7e6f0875613bd1a3cd27dd23663fe843",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/61a9ff2be8433bebf5fdc17fc1a6fa3d7e6f0875613bd1a3cd27dd23663fe843",
     "resource": {
       "resourceType": "Observation",
       "id": "61a9ff2be8433bebf5fdc17fc1a6fa3d7e6f0875613bd1a3cd27dd23663fe843",
@@ -668,7 +676,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "106243009",
           "display": "Breslow depth staging for melanoma of skin (observable entity)"
         } ]
@@ -696,7 +704,7 @@
       "url": "Observation/61a9ff2be8433bebf5fdc17fc1a6fa3d7e6f0875613bd1a3cd27dd23663fe843"
     }
   }, {
-    "fullUrl": "Observation/b58aa48160046ceff3d9469aafca897d6c4a21fe68d1b24a820a2bb80e5e1aa0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/b58aa48160046ceff3d9469aafca897d6c4a21fe68d1b24a820a2bb80e5e1aa0",
     "resource": {
       "resourceType": "Observation",
       "id": "b58aa48160046ceff3d9469aafca897d6c4a21fe68d1b24a820a2bb80e5e1aa0",
@@ -711,7 +719,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "6270001000004106",
           "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
         } ]
@@ -740,7 +748,7 @@
       "url": "Observation/b58aa48160046ceff3d9469aafca897d6c4a21fe68d1b24a820a2bb80e5e1aa0"
     }
   }, {
-    "fullUrl": "DiagnosticReport/859787f5b1089f5a5d0ad65f55473ad6c3c1f276af812a37eceda20ffb267252",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/859787f5b1089f5a5d0ad65f55473ad6c3c1f276af812a37eceda20ffb267252",
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "859787f5b1089f5a5d0ad65f55473ad6c3c1f276af812a37eceda20ffb267252",
@@ -777,7 +785,7 @@
       "url": "DiagnosticReport/859787f5b1089f5a5d0ad65f55473ad6c3c1f276af812a37eceda20ffb267252"
     }
   }, {
-    "fullUrl": "Observation/45b886de168ffce124e1d0b496d148fcb07bc6eaef065b77bf710c634ed61e29",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/45b886de168ffce124e1d0b496d148fcb07bc6eaef065b77bf710c634ed61e29",
     "resource": {
       "resourceType": "Observation",
       "id": "45b886de168ffce124e1d0b496d148fcb07bc6eaef065b77bf710c634ed61e29",
@@ -792,7 +800,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -819,7 +827,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "445200009",
             "display": "Status of residual neoplasm (observable entity)"
           } ]
@@ -835,7 +843,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "399656008",
             "display": "Presence of metastatic neoplasm in regional lymph node (observable entity)"
           } ]
@@ -851,7 +859,7 @@
         "code": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "code": "399608002",
             "display": "Status of distant metastasis (observable entity)"
           } ]
@@ -870,7 +878,7 @@
       "url": "Observation/45b886de168ffce124e1d0b496d148fcb07bc6eaef065b77bf710c634ed61e29"
     }
   }, {
-    "fullUrl": "Observation/cecdaac2bf16c50aeae3284ffcc95d3eaec36bb999d61805bdb4a7bf3deed0f9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/cecdaac2bf16c50aeae3284ffcc95d3eaec36bb999d61805bdb4a7bf3deed0f9",
     "resource": {
       "resourceType": "Observation",
       "id": "cecdaac2bf16c50aeae3284ffcc95d3eaec36bb999d61805bdb4a7bf3deed0f9",
@@ -892,7 +900,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -931,7 +939,7 @@
       "url": "Observation/cecdaac2bf16c50aeae3284ffcc95d3eaec36bb999d61805bdb4a7bf3deed0f9"
     }
   }, {
-    "fullUrl": "Observation/01550be3adc38ade04a257fd3bc8a60a7a17c7d7d69dce5a775e1ab47123d969",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/01550be3adc38ade04a257fd3bc8a60a7a17c7d7d69dce5a775e1ab47123d969",
     "resource": {
       "resourceType": "Observation",
       "id": "01550be3adc38ade04a257fd3bc8a60a7a17c7d7d69dce5a775e1ab47123d969",
@@ -981,7 +989,7 @@
       "url": "Observation/01550be3adc38ade04a257fd3bc8a60a7a17c7d7d69dce5a775e1ab47123d969"
     }
   }, {
-    "fullUrl": "Observation/4a60c5206d31d8f96842bf634ab5c1fb1a70f600ec15372e51de22ceca03a099",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/4a60c5206d31d8f96842bf634ab5c1fb1a70f600ec15372e51de22ceca03a099",
     "resource": {
       "resourceType": "Observation",
       "id": "4a60c5206d31d8f96842bf634ab5c1fb1a70f600ec15372e51de22ceca03a099",
@@ -996,7 +1004,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "6270001000004106",
           "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
         } ]
@@ -1025,7 +1033,7 @@
       "url": "Observation/4a60c5206d31d8f96842bf634ab5c1fb1a70f600ec15372e51de22ceca03a099"
     }
   }, {
-    "fullUrl": "Observation/6a2d311f5df3a3f9393d6d41f1541e5e6d42b98736e6fdab73148d779f102868",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/6a2d311f5df3a3f9393d6d41f1541e5e6d42b98736e6fdab73148d779f102868",
     "resource": {
       "resourceType": "Observation",
       "id": "6a2d311f5df3a3f9393d6d41f1541e5e6d42b98736e6fdab73148d779f102868",
@@ -1047,7 +1055,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -1086,7 +1094,7 @@
       "url": "Observation/6a2d311f5df3a3f9393d6d41f1541e5e6d42b98736e6fdab73148d779f102868"
     }
   }, {
-    "fullUrl": "Observation/2b91491769731d054479f8495f41c484c2e110e0adbc80e2bfe0b0a428bee19d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/2b91491769731d054479f8495f41c484c2e110e0adbc80e2bfe0b0a428bee19d",
     "resource": {
       "resourceType": "Observation",
       "id": "2b91491769731d054479f8495f41c484c2e110e0adbc80e2bfe0b0a428bee19d",
@@ -1101,7 +1109,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "106243009",
           "display": "Breslow depth staging for melanoma of skin (observable entity)"
         } ]
@@ -1129,7 +1137,7 @@
       "url": "Observation/2b91491769731d054479f8495f41c484c2e110e0adbc80e2bfe0b0a428bee19d"
     }
   }, {
-    "fullUrl": "Observation/0767c7da0e0e31f300bbf9b94b89a82e474df4306459fbd6d9f161f01bd60ef0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/0767c7da0e0e31f300bbf9b94b89a82e474df4306459fbd6d9f161f01bd60ef0",
     "resource": {
       "resourceType": "Observation",
       "id": "0767c7da0e0e31f300bbf9b94b89a82e474df4306459fbd6d9f161f01bd60ef0",
@@ -1179,7 +1187,7 @@
       "url": "Observation/0767c7da0e0e31f300bbf9b94b89a82e474df4306459fbd6d9f161f01bd60ef0"
     }
   }, {
-    "fullUrl": "Observation/c4ae37ead6088c1915e46adc8ee0604e9480e0fdbe9f55d809186b3aa899c1e4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c4ae37ead6088c1915e46adc8ee0604e9480e0fdbe9f55d809186b3aa899c1e4",
     "resource": {
       "resourceType": "Observation",
       "id": "c4ae37ead6088c1915e46adc8ee0604e9480e0fdbe9f55d809186b3aa899c1e4",
@@ -1194,7 +1202,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "6270001000004106",
           "display": "Presence of ulcer in primary malignant melanoma of skin (observable entity)"
         } ]
@@ -1223,7 +1231,7 @@
       "url": "Observation/c4ae37ead6088c1915e46adc8ee0604e9480e0fdbe9f55d809186b3aa899c1e4"
     }
   }, {
-    "fullUrl": "List/ece177392ed11236a04a990060ca8b689f8e18e1129e0577149b9f768e01d2b2",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/ece177392ed11236a04a990060ca8b689f8e18e1129e0577149b9f768e01d2b2",
     "resource": {
       "resourceType": "List",
       "id": "ece177392ed11236a04a990060ca8b689f8e18e1129e0577149b9f768e01d2b2",
@@ -1267,7 +1275,7 @@
       "url": "List/ece177392ed11236a04a990060ca8b689f8e18e1129e0577149b9f768e01d2b2"
     }
   }, {
-    "fullUrl": "Condition/f05067c2d5cf43c7d7e85ce7dd2e7b6918d06c22e54321f6e2dd98860e4c749e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/f05067c2d5cf43c7d7e85ce7dd2e7b6918d06c22e54321f6e2dd98860e4c749e",
     "resource": {
       "resourceType": "Condition",
       "id": "f05067c2d5cf43c7d7e85ce7dd2e7b6918d06c22e54321f6e2dd98860e4c749e",
@@ -1305,6 +1313,14 @@
           "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -1344,7 +1360,7 @@
       "url": "Condition/f05067c2d5cf43c7d7e85ce7dd2e7b6918d06c22e54321f6e2dd98860e4c749e"
     }
   }, {
-    "fullUrl": "Observation/8dea24a05f96e601975959cc6aff6c7ce24c2a59b500c1e9d147258ee87a617d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/8dea24a05f96e601975959cc6aff6c7ce24c2a59b500c1e9d147258ee87a617d",
     "resource": {
       "resourceType": "Observation",
       "id": "8dea24a05f96e601975959cc6aff6c7ce24c2a59b500c1e9d147258ee87a617d",
@@ -1366,7 +1382,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -1404,7 +1420,7 @@
       "url": "Observation/8dea24a05f96e601975959cc6aff6c7ce24c2a59b500c1e9d147258ee87a617d"
     }
   }, {
-    "fullUrl": "Observation/8842821f15dc65d5802f9512f3cc68b4b011323f3c106885ed8e3beaf531195b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/8842821f15dc65d5802f9512f3cc68b4b011323f3c106885ed8e3beaf531195b",
     "resource": {
       "resourceType": "Observation",
       "id": "8842821f15dc65d5802f9512f3cc68b4b011323f3c106885ed8e3beaf531195b",
@@ -1459,7 +1475,7 @@
       "url": "Observation/8842821f15dc65d5802f9512f3cc68b4b011323f3c106885ed8e3beaf531195b"
     }
   }, {
-    "fullUrl": "List/5792b971c2d102da31cccd05e21e376e8a1211f6bd6f716e94ac43c943181fa4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/5792b971c2d102da31cccd05e21e376e8a1211f6bd6f716e94ac43c943181fa4",
     "resource": {
       "resourceType": "List",
       "id": "5792b971c2d102da31cccd05e21e376e8a1211f6bd6f716e94ac43c943181fa4",

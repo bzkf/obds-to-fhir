@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.ModulDarmTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,8 +146,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
   private void setDistanceValue(
       @NonNull Observation observation, @NonNull String rawValue, @NonNull String unit) {
     if ("U".equals(rawValue)) {
-      observation.setDataAbsentReason(
-          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(dataAbsentReason(Enumerations.DataAbsentReason.UNKNOWN));
       return;
     }
 
@@ -278,7 +276,8 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
     observation.addCategory(observationCategory(ObservationCategory.IMAGING));
 
     observation.setCode(
-        new CodeableConcept(new Coding("http://radlex.org", "RDE96", "Distance to MRF")));
+        new CodeableConcept(
+            new Coding(fhirProperties.getSystems().getRadelement(), "RDE96", "Distance to MRF")));
 
     if (rawValue.matches("\\d+")) {
       observation.setValue(ucumQuantity(new BigDecimal(rawValue), "mm"));
@@ -514,8 +513,7 @@ public class ModulDarmMapper extends ObdsToFhirMapper {
       // in the oBDS, N means "Nicht untersucht", while N in the
       // MiiCsOnkoGenetischeVarianteAuspraegung means "Nicht bestimmbar", i.e. tested but
       // without a result. So we don't set an interpretation and mark the test as not performed.
-      observation.setDataAbsentReason(
-          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.NOTPERFORMED));
+      observation.setDataAbsentReason(dataAbsentReason(Enumerations.DataAbsentReason.NOTPERFORMED));
     } else {
       // the remaining RASMutationTyp codes (W/M/U) have the same meaning in the
       // MiiCsOnkoGenetischeVarianteAuspraegung

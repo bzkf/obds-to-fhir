@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -38,7 +38,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
     "resource": {
       "resourceType": "Condition",
       "id": "5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
@@ -79,6 +79,14 @@
           "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -125,7 +133,7 @@
       "url": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f"
     }
   }, {
-    "fullUrl": "Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec",
     "resource": {
       "resourceType": "Observation",
       "id": "09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec",
@@ -147,7 +155,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -188,7 +196,7 @@
       "url": "Observation/09e2e2bfe8031d12561f9113044bcd642232d39a4eee2e41d13f16614eddbaec"
     }
   }, {
-    "fullUrl": "Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc",
     "resource": {
       "resourceType": "Specimen",
       "id": "43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc",
@@ -225,7 +233,7 @@
       "url": "Specimen/43a747212a6aa11780eebd856fd0b65064a5b3336cd98fc15ee4dbe51579dabc"
     }
   }, {
-    "fullUrl": "Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1",
     "resource": {
       "resourceType": "Observation",
       "id": "896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1",
@@ -252,7 +260,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -291,7 +299,7 @@
       "url": "Observation/896cc46dc925f7c8727b4c54dd2e28a0de4d45bf3d5c4b288c7cc8eeddd967a1"
     }
   }, {
-    "fullUrl": "List/266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/List/266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945",
     "resource": {
       "resourceType": "List",
       "id": "266fd91aa21079bbe335f967fa7c5bd409e2ddcf548d8a99c5f0683aa280e945",

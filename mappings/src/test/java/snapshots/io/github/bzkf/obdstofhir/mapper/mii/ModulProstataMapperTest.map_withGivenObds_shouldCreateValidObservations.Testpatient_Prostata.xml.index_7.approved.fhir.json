@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "18694f09610193e7655a54fd4793453a59995155f1d8896aa670f2973b451692",
+  "id": "00712c24ba9af14eda2149757b13cda0fb7cd8dd4b5d3e26e47150b778bb8e06",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
-    "value": "DIA_80106-modul-prostata-gleason-grade-group"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-ca-befall-stanze-observation-id",
+    "value": "DIA_80106-modul-prostata-ca-befall-stanze"
   } ],
   "status": "final",
   "category": [ {
@@ -18,10 +18,10 @@
   } ],
   "code": {
     "coding": [ {
-      "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1812491000004107",
-      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "44654-2",
+      "display": "Tissue involved by tumor in Prostate tumor"
     } ]
   },
   "subject": {
@@ -30,29 +30,11 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
-  "valueCodeableConcept": {
-    "coding": [ {
-      "extension": [ {
-        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 7
-      } ],
-      "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1279716004"
-    } ],
-    "text": "4+3"
-  },
-  "method": {
-    "coding": [ {
-      "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "86273004",
-      "display": "Biopsy (procedure)"
-    } ]
-  },
-  "derivedFrom": [ {
-    "reference": "Observation/c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b"
-  }, {
-    "reference": "Observation/ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec"
-  } ]
+  "effectiveDateTime": "2020-05-10",
+  "valueQuantity": {
+    "value": 15,
+    "unit": "%",
+    "system": "http://unitsofmeasure.org",
+    "code": "%"
+  }
 }

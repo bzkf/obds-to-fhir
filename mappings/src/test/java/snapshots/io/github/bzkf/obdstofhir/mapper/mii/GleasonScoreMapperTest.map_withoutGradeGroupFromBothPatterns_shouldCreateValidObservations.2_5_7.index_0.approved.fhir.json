@@ -1,0 +1,56 @@
+{
+  "resourceType": "Observation",
+  "id": "12c319c03360fffbae3216ded98fcdc1f49ac431c1303d603797674b45ba301f",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+    "value": "meldung-1-modul-prostata-gleason-score-gesamt"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "372278000",
+      "display": "Gleason score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
+        "valueDecimal": 7
+      } ],
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "57403001",
+      "display": "Gleason grade score 7 out of 10 (finding)"
+    } ],
+    "text": "2+5"
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/9caf3d2056c94918a4293f7a58ebb3c1ca4eeebb1ff4c7ee7bfb471a5842545f"
+  }, {
+    "reference": "Observation/18d9ae20a167d365442ba9e70cc47cf237b4251b8ee6c96d72c9e67c767934e6"
+  } ]
+}

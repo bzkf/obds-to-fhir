@@ -3,7 +3,7 @@
   "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
     "resource": {
       "resourceType": "Patient",
       "id": "9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730",
@@ -38,7 +38,7 @@
       "url": "Patient/9142ee3ff7990f826ada966f03da267e0fe662f73858158f5e868b772cd68730"
     }
   }, {
-    "fullUrl": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
     "resource": {
       "resourceType": "Condition",
       "id": "57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -77,6 +77,14 @@
           "display": "histologische Untersuchung eines Primärtumors"
         } ]
       },
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
+      } ],
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/icd-10-gm",
@@ -112,7 +120,7 @@
       "url": "Condition/57fe05a96c5aea16ea6ccf644f5da4afb7b73f8e9390e11bf7fff7a95d08edae"
     }
   }, {
-    "fullUrl": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
     "resource": {
       "resourceType": "Procedure",
       "id": "de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736",
@@ -146,7 +154,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "18629005",
           "display": "Administration of drug or medicament (procedure)"
         } ]
@@ -193,7 +201,7 @@
       "url": "Procedure/de875a1e1285ad0484739a80e4d58a12a2c1483dcc097458852a16ce1b264736"
     }
   }, {
-    "fullUrl": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256",
@@ -232,7 +240,7 @@
       "url": "MedicationStatement/539f4ca13576292ce201e39c623aefbc4f513486c3a6877f701b817b0ffb3256"
     }
   }, {
-    "fullUrl": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
     "resource": {
       "resourceType": "Medication",
       "id": "3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0",
@@ -246,12 +254,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2026",
           "code": "L01AA01",
           "userSelected": false
         } ],
@@ -261,7 +264,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -277,7 +280,7 @@
       "url": "Medication/3647d4e589845a68344659d2a2298f0e9ebf1b5185e15f40babcf520dee34fe0"
     }
   }, {
-    "fullUrl": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9",
@@ -316,7 +319,7 @@
       "url": "MedicationStatement/f1300e1c01b4cc45c4a3af7678426561f50d5a1b102de9813d0770ff9d5d58b9"
     }
   }, {
-    "fullUrl": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
     "resource": {
       "resourceType": "Medication",
       "id": "87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3",
@@ -330,12 +333,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2026",
           "code": "L01DB03",
           "userSelected": false
         } ],
@@ -345,7 +343,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -361,7 +359,7 @@
       "url": "Medication/87a6a91dce8e814de5b5d5ab9d744f33a4f577a9d104a9ead608d47353967cd3"
     }
   }, {
-    "fullUrl": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04",
@@ -408,7 +406,7 @@
       "url": "MedicationStatement/a246e3481c0ddce74570a437e5ce6d40d81f84a0f6f7de9d29823305c0107d04"
     }
   }, {
-    "fullUrl": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a",
@@ -451,7 +449,7 @@
       "url": "AdverseEvent/687b11e821fce78dfbb84ce76cf145d062cdd8174f1f9b1b00622e2480e3328a"
     }
   }, {
-    "fullUrl": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f",
     "resource": {
       "resourceType": "Specimen",
       "id": "e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f",
@@ -481,7 +479,7 @@
       "url": "Specimen/e3f65a76d1d0fbd8aba062f7aad733241845b861e1a0895aaa2f0a2fd5cd901f"
     }
   }, {
-    "fullUrl": "Observation/1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3",
     "resource": {
       "resourceType": "Observation",
       "id": "1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3",
@@ -535,7 +533,7 @@
       "url": "Observation/1b3aa8e18b8116d8cbb1db206bcde59584458b099378045cfeac33dece9d2ca3"
     }
   }, {
-    "fullUrl": "Observation/7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc",
     "resource": {
       "resourceType": "Observation",
       "id": "7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc",
@@ -562,7 +560,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -594,7 +592,7 @@
       "url": "Observation/7ec910fccf6e1219e646e1f4977caa7c95cff213ab75e541347dab28c2e75edc"
     }
   }, {
-    "fullUrl": "Observation/b7aea6c612334e059693c122be082c7b1f3807a69387853b33bc1402167cfe00",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/b7aea6c612334e059693c122be082c7b1f3807a69387853b33bc1402167cfe00",
     "resource": {
       "resourceType": "Observation",
       "id": "b7aea6c612334e059693c122be082c7b1f3807a69387853b33bc1402167cfe00",
@@ -646,7 +644,7 @@
       "url": "Observation/b7aea6c612334e059693c122be082c7b1f3807a69387853b33bc1402167cfe00"
     }
   }, {
-    "fullUrl": "Observation/19e5c8523a07963496273070d6d1829efb7d5d8762a91b41c97d7ac3903961ba",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/19e5c8523a07963496273070d6d1829efb7d5d8762a91b41c97d7ac3903961ba",
     "resource": {
       "resourceType": "Observation",
       "id": "19e5c8523a07963496273070d6d1829efb7d5d8762a91b41c97d7ac3903961ba",
@@ -698,7 +696,7 @@
       "url": "Observation/19e5c8523a07963496273070d6d1829efb7d5d8762a91b41c97d7ac3903961ba"
     }
   }, {
-    "fullUrl": "Observation/4617dc42e35168d8132eccdac85e1329fe16e5f06b1bcb4e62f94d5243cabf30",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/4617dc42e35168d8132eccdac85e1329fe16e5f06b1bcb4e62f94d5243cabf30",
     "resource": {
       "resourceType": "Observation",
       "id": "4617dc42e35168d8132eccdac85e1329fe16e5f06b1bcb4e62f94d5243cabf30",
@@ -722,7 +720,7 @@
           "system": "http://loinc.org",
           "version": "2.82",
           "code": "48676-1",
-          "display": "HER2 [Interpretation] in Tissue"
+          "display": "HER2 Ag [Interpretation] in Tissue"
         } ]
       },
       "subject": {
@@ -749,7 +747,7 @@
       "url": "Observation/4617dc42e35168d8132eccdac85e1329fe16e5f06b1bcb4e62f94d5243cabf30"
     }
   }, {
-    "fullUrl": "Observation/7897063c21a6675c1ef09e46d3e557899d65d510b5d8fe16b2a318639e6c901c",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7897063c21a6675c1ef09e46d3e557899d65d510b5d8fe16b2a318639e6c901c",
     "resource": {
       "resourceType": "Observation",
       "id": "7897063c21a6675c1ef09e46d3e557899d65d510b5d8fe16b2a318639e6c901c",
@@ -769,7 +767,7 @@
           "display": "Size Tumor"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371479009",
           "display": "Tumor size, largest dimension (observable entity)"
         } ],
@@ -798,7 +796,7 @@
       "url": "Observation/7897063c21a6675c1ef09e46d3e557899d65d510b5d8fe16b2a318639e6c901c"
     }
   }, {
-    "fullUrl": "DiagnosticReport/db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7",
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7",
@@ -835,7 +833,7 @@
       "url": "DiagnosticReport/db49326e4c18e9c7f41cc9d4d395b52422e6d684a4c9afa09fe03be59a2c0bd7"
     }
   }, {
-    "fullUrl": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9",
     "resource": {
       "resourceType": "Specimen",
       "id": "540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9",
@@ -862,7 +860,7 @@
       "url": "Specimen/540103f702907f10e9a9368b2a43a13b9acfd9684e573246ce3dfca841a15ef9"
     }
   }, {
-    "fullUrl": "Observation/0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7",
     "resource": {
       "resourceType": "Observation",
       "id": "0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7",
@@ -915,7 +913,7 @@
       "url": "Observation/0be244f1e73a459017da44cb9e7b49eedf83d55773a8710ff6e0dc5fd8946af7"
     }
   }, {
-    "fullUrl": "Observation/a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de",
     "resource": {
       "resourceType": "Observation",
       "id": "a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de",
@@ -942,7 +940,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -979,7 +977,7 @@
       "url": "Observation/a022f7b0b85a8dce433cfc387bcf7472febb390ccef5b25a5ddb27ab513747de"
     }
   }, {
-    "fullUrl": "Observation/7cd168bd234cc53f96a7dd010b3ad2b1e76447225a8bcf78bb8c24c9bc4d3c8e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7cd168bd234cc53f96a7dd010b3ad2b1e76447225a8bcf78bb8c24c9bc4d3c8e",
     "resource": {
       "resourceType": "Observation",
       "id": "7cd168bd234cc53f96a7dd010b3ad2b1e76447225a8bcf78bb8c24c9bc4d3c8e",
@@ -1030,7 +1028,7 @@
       "url": "Observation/7cd168bd234cc53f96a7dd010b3ad2b1e76447225a8bcf78bb8c24c9bc4d3c8e"
     }
   }, {
-    "fullUrl": "Observation/d3c7a8c35ec5cdca7f075c0249236df987509a6260682ca7e6c4ca51f5c54c7e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/d3c7a8c35ec5cdca7f075c0249236df987509a6260682ca7e6c4ca51f5c54c7e",
     "resource": {
       "resourceType": "Observation",
       "id": "d3c7a8c35ec5cdca7f075c0249236df987509a6260682ca7e6c4ca51f5c54c7e",
@@ -1054,7 +1052,7 @@
           "system": "http://loinc.org",
           "version": "2.82",
           "code": "48676-1",
-          "display": "HER2 [Interpretation] in Tissue"
+          "display": "HER2 Ag [Interpretation] in Tissue"
         } ]
       },
       "subject": {
@@ -1080,7 +1078,7 @@
       "url": "Observation/d3c7a8c35ec5cdca7f075c0249236df987509a6260682ca7e6c4ca51f5c54c7e"
     }
   }, {
-    "fullUrl": "Observation/54f04d81fb7aa6672bd743ff48190e63186a3dc10d76d080f4432d2a47e3820b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/54f04d81fb7aa6672bd743ff48190e63186a3dc10d76d080f4432d2a47e3820b",
     "resource": {
       "resourceType": "Observation",
       "id": "54f04d81fb7aa6672bd743ff48190e63186a3dc10d76d080f4432d2a47e3820b",
@@ -1100,7 +1098,7 @@
           "display": "Size Tumor"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371479009",
           "display": "Tumor size, largest dimension (observable entity)"
         } ],
@@ -1134,7 +1132,7 @@
       "url": "Observation/54f04d81fb7aa6672bd743ff48190e63186a3dc10d76d080f4432d2a47e3820b"
     }
   }, {
-    "fullUrl": "DiagnosticReport/0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/DiagnosticReport/0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999",
     "resource": {
       "resourceType": "DiagnosticReport",
       "id": "0529bffd3447f09860a7069971daa83542938fe22941a240e4c20e89fd93e999",

@@ -5,12 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.TNMTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
+import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie.CodeSystems.MiiCsOnkoTnmUicc;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.mii.TNMMapper.TnmType;
+import io.github.dizuker.tofhir.FhirSystems;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.CodeableConcept;
+import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.jupiter.api.Assertions;
@@ -140,6 +143,124 @@ class TNMMapperTest extends MapperTest {
                 e -> ((CodeableConcept) e.getValue()).getCodingFirstRep().getCode().equals("sn")));
   }
 
+  @Test
+  void map_withYRASymbols_shouldAddPraefixModifierExtensionsToEachTnmCategory() {
+    var tnm = new TNMTyp();
+    tnm.setID("tnm-1");
+    tnm.setVersion("8");
+    tnm.setT("2");
+    tnm.setN("0");
+    tnm.setM("0");
+    tnm.setYSymbol("y");
+    tnm.setRSymbol("r");
+    tnm.setASymbol("a");
+
+    var observations =
+        sut.map(
+            tnm,
+            TnmType.PATHOLOGIC,
+            "meldung-1",
+            new Reference("Patient/1"),
+            new Reference("Condition/1"),
+            null);
+
+    // T, N, M and the grouping observation. The y, r and a symbols are no longer
+    // separate observations.
+    Assertions.assertEquals(4, observations.size());
+
+    var categoryProfiles =
+        List.of(
+            Onkologie.Profiles.miiPrOnkoTnmTKategorie(),
+            Onkologie.Profiles.miiPrOnkoTnmNKategorie(),
+            Onkologie.Profiles.miiPrOnkoTnmMKategorie());
+
+    for (var profile : categoryProfiles) {
+      var category =
+          observations.stream()
+              .filter(o -> o.getMeta().hasProfile(profile))
+              .findFirst()
+              .orElseThrow();
+
+      Assertions.assertEquals(
+          List.of(
+              Onkologie.Extensions.Urls.miiExOnkoTnmYPraefix(),
+              Onkologie.Extensions.Urls.miiExOnkoTnmRPraefix(),
+              Onkologie.Extensions.Urls.miiExOnkoTnmAPraefix()),
+          category.getModifierExtension().stream().map(Extension::getUrl).toList());
+      Assertions.assertEquals(
+          List.of(
+              MiiCsOnkoTnmUicc.Y.coding().getCode(),
+              MiiCsOnkoTnmUicc.R.coding().getCode(),
+              MiiCsOnkoTnmUicc.A.coding().getCode()),
+          category.getModifierExtension().stream()
+              .map(e -> ((CodeableConcept) e.getValue()).getCodingFirstRep().getCode())
+              .toList());
+    }
+  }
+
+  @Test
+  void map_withoutSymbols_shouldNotAddModifierExtensions() {
+    var tnm = new TNMTyp();
+    tnm.setID("tnm-1");
+    tnm.setVersion("8");
+    tnm.setT("2");
+
+    var observations =
+        sut.map(
+            tnm,
+            TnmType.CLINICAL,
+            "meldung-1",
+            new Reference("Patient/1"),
+            new Reference("Condition/1"),
+            null);
+
+    Assertions.assertTrue(observations.stream().noneMatch(Observation::hasModifierExtension));
+  }
+
+  @Test
+  void map_withMSymbol_shouldAddMultipleTumorenComponentToTKategorie() {
+    var tnm = new TNMTyp();
+    tnm.setID("tnm-1");
+    tnm.setVersion("8");
+    tnm.setT("2");
+    tnm.setN("0");
+    tnm.setMSymbol("m");
+
+    var observations =
+        sut.map(
+            tnm,
+            TnmType.PATHOLOGIC,
+            "meldung-1",
+            new Reference("Patient/1"),
+            new Reference("Condition/1"),
+            null);
+
+    // T, N and the grouping observation. The m symbol is no longer a separate observation.
+    Assertions.assertEquals(3, observations.size());
+
+    var tKategorie =
+        observations.stream()
+            .filter(o -> o.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoTnmTKategorie()))
+            .findFirst()
+            .orElseThrow();
+
+    Assertions.assertEquals(1, tKategorie.getComponent().size());
+    var component = tKategorie.getComponentFirstRep();
+    Assertions.assertEquals(FhirSystems.LOINC, component.getCode().getCodingFirstRep().getSystem());
+    Assertions.assertEquals("42030-7", component.getCode().getCodingFirstRep().getCode());
+    Assertions.assertEquals(
+        Onkologie.CodeSystems.miiCsOnkoTnmUicc(),
+        component.getValueCodeableConcept().getCodingFirstRep().getSystem());
+    Assertions.assertEquals(
+        MiiCsOnkoTnmUicc.M.coding().getCode(),
+        component.getValueCodeableConcept().getCodingFirstRep().getCode());
+
+    Assertions.assertTrue(
+        observations.stream()
+            .filter(o -> !o.getMeta().hasProfile(Onkologie.Profiles.miiPrOnkoTnmTKategorie()))
+            .noneMatch(Observation::hasComponent));
+  }
+
   @ParameterizedTest
   @CsvSource({"N0(mol+),mol+", "N0(mol-),mol-", "N0 (mol+),mol+"})
   void createValue_withMolSuffix_shouldMoveItToTheItcExtension(String input, String suffix) {
@@ -157,9 +278,10 @@ class TNMMapperTest extends MapperTest {
   void map_withMSymbolInValueSet_shouldUseTheCodeAndKeepTheRestAsText(
       String mSymbol, String expectedCode, String expectedText) {
     var tnm = new TNMTyp();
+    tnm.setT("1");
     tnm.setMSymbol(mSymbol);
 
-    var value = mSymbolValue(tnm);
+    var value = multipleTumorenComponent(tnm).getValueCodeableConcept();
 
     assertThat(value.getCodingFirstRep().getCode()).isEqualTo(expectedCode);
     assertThat(value.getText()).isEqualTo(expectedText);
@@ -169,14 +291,15 @@ class TNMMapperTest extends MapperTest {
   @CsvSource({"is", "11", "'11,is'"})
   void map_withMSymbolOutsideOfValueSet_shouldKeepItAsNoteWithoutAValue(String mSymbol) {
     var tnm = new TNMTyp();
+    tnm.setT("1");
     tnm.setMSymbol(mSymbol);
 
-    var observation = byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmMSymbol());
+    var tKategorie = byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmTKategorie());
+    var component = tKategorie.getComponentFirstRep();
 
-    assertThat(observation.hasValue()).isFalse();
-    assertThat(observation.getDataAbsentReason().getCodingFirstRep().getCode())
-        .isEqualTo("as-text");
-    assertThat(observation.getNoteFirstRep().getText()).isEqualTo(mSymbol);
+    assertThat(component.hasValue()).isFalse();
+    assertThat(component.getDataAbsentReason().getCodingFirstRep().getCode()).isEqualTo("as-text");
+    assertThat(tKategorie.getNoteFirstRep().getText()).isEqualTo("m-Symbol: " + mSymbol);
   }
 
   @Test
@@ -228,9 +351,9 @@ class TNMMapperTest extends MapperTest {
         .isEqualTo("u");
   }
 
-  private static CodeableConcept mSymbolValue(TNMTyp tnm) {
-    return byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmMSymbol())
-        .getValueCodeableConcept();
+  private static Observation.ObservationComponentComponent multipleTumorenComponent(TNMTyp tnm) {
+    return byProfile(mapTnm(tnm), Onkologie.Profiles.miiPrOnkoTnmTKategorie())
+        .getComponentFirstRep();
   }
 
   private static Observation byProfile(List<Observation> observations, String profile) {

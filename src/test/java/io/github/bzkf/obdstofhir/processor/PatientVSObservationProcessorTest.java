@@ -28,8 +28,10 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.KTable;
 import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Provenance;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.miracum.kafka.serializers.KafkaFhirDeserializer;
 import org.miracum.kafka.serializers.KafkaFhirSerde;
@@ -38,6 +40,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.support.serializer.JacksonJsonSerde;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest(
     classes = {
@@ -97,8 +100,43 @@ class PatientVSObservationProcessorTest extends MapperTest {
       assertThat(obs2.getValueCodeableConcept().getCodingFirstRep().getCode()).isEqualTo("L");
       assertThat(obs2.getEffectiveDateTimeType().getValueAsString()).isEqualTo("2022-02-02");
 
+      // fhir.mappings.meta.source is empty by default, so no meta.source is set
+      assertThat(bundles)
+          .flatMap(Bundle::getEntry)
+          .noneMatch(entry -> entry.getResource().getMeta().hasSource());
+
     } catch (JSONException e) {
       throw new RuntimeException(e);
+    }
+  }
+
+  @Nested
+  @TestPropertySource(
+      properties = {
+        "fhir.mappings.meta.source=onkostar-bestoftumor",
+        "fhir.mappings.create-provenance-resources.enabled=true"
+      })
+  class WithMetaSource {
+
+    @Autowired private PatientVSObservationProcessor processor;
+
+    @Test
+    void getTodObsBundleMapper_withMetaSource_shouldSetItOnAllResources() throws Exception {
+      var bundle =
+          processor
+              .getTodObsBundleMapper()
+              .apply(
+                  buildOnkoPatient(
+                      "1", "12356789", "2011-01-01T00:00:00.000000", "2011-01-01T00:00:00.000000"));
+
+      // the vital status and the death Observation, plus the Provenance
+      assertThat(bundle.getEntry())
+          .hasSize(3)
+          .allSatisfy(
+              entry ->
+                  assertThat(entry.getResource().getMeta().getSource())
+                      .isEqualTo("onkostar-bestoftumor"));
+      assertThat(bundle.getEntry()).anyMatch(entry -> entry.getResource() instanceof Provenance);
     }
   }
 

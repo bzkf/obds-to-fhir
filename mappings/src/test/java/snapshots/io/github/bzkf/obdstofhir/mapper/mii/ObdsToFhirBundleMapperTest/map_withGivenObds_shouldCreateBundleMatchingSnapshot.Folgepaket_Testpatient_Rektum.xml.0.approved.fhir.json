@@ -3,7 +3,7 @@
   "id": "4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
     "resource": {
       "resourceType": "Patient",
       "id": "4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
@@ -38,7 +38,7 @@
       "url": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4"
     }
   }, {
-    "fullUrl": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
     "resource": {
       "resourceType": "Condition",
       "id": "7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -66,6 +66,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "50-501"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -95,7 +103,7 @@
       "url": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
     }
   }, {
-    "fullUrl": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
     "resource": {
       "resourceType": "Procedure",
       "id": "dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4",
@@ -129,7 +137,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -169,7 +177,7 @@
       "url": "Procedure/dcf6ca4b7c2edcc9f181f404ae33c3e30a055f43dd78a38bbce4f2ef353a46d4"
     }
   }, {
-    "fullUrl": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
     "resource": {
       "resourceType": "Procedure",
       "id": "2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab",
@@ -222,7 +230,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -269,7 +277,7 @@
       "url": "Procedure/2da9c873b23a8eafcb9f47bcbeafa1a3c3d1de04e7f5b7b0f440c548aaeafaab"
     }
   }, {
-    "fullUrl": "AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268",
@@ -312,7 +320,7 @@
       "url": "AdverseEvent/9b6e6eeb02b2b8890b44d769d2a5fb3ef7a77c5333202d8cb5a81da2afac3268"
     }
   }, {
-    "fullUrl": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
     "resource": {
       "resourceType": "Procedure",
       "id": "f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe",
@@ -346,7 +354,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "18629005",
           "display": "Administration of drug or medicament (procedure)"
         } ]
@@ -393,7 +401,7 @@
       "url": "Procedure/f6ed3b0fa56f326e5a7aec89c9c57decd6bef29b24da97bb20060c0b6a5baebe"
     }
   }, {
-    "fullUrl": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1",
@@ -432,7 +440,7 @@
       "url": "MedicationStatement/2ce143b12a5fee93aad3d9a895cc1d091c6fea9bc7d30a08430aa51c853514f1"
     }
   }, {
-    "fullUrl": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
     "resource": {
       "resourceType": "Medication",
       "id": "36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051",
@@ -446,12 +454,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2026",
           "code": "L01XA03",
           "userSelected": false
         } ],
@@ -461,7 +464,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -477,7 +480,7 @@
       "url": "Medication/36d82ee6be6becba6789027d95c882925ca0e3bb6c6022aa6db5ebffffd28051"
     }
   }, {
-    "fullUrl": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4",
@@ -524,7 +527,7 @@
       "url": "MedicationStatement/80f7337b98988210f5caafb650ef66dfa4ff276d249e38a732dfa0f6faf9b0d4"
     }
   }, {
-    "fullUrl": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
     "resource": {
       "resourceType": "MedicationStatement",
       "id": "5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60",
@@ -563,7 +566,7 @@
       "url": "MedicationStatement/5155ba198d1d251ce2f4fc29bc802d4496c7f15b65ada0e16e4372f8eb32ec60"
     }
   }, {
-    "fullUrl": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
     "resource": {
       "resourceType": "Medication",
       "id": "d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea",
@@ -577,12 +580,7 @@
       "code": {
         "coding": [ {
           "system": "http://fhir.de/CodeSystem/bfarm/atc",
-          "_version": {
-            "extension": [ {
-              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
-              "valueCode": "unknown"
-            } ]
-          },
+          "version": "2026",
           "code": "V03AF03",
           "userSelected": false
         } ],
@@ -592,7 +590,7 @@
         "itemCodeableConcept": {
           "coding": [ {
             "system": "http://snomed.info/sct",
-            "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+            "version": "http://snomed.info/sct/900000000000207008/version/20260701",
             "_code": {
               "extension": [ {
                 "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
@@ -608,7 +606,7 @@
       "url": "Medication/d9ab231fc2d142eacb7d6480e20fd1ab4881f33490f9f3183cf709eb2b8f74ea"
     }
   }, {
-    "fullUrl": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee",
@@ -651,7 +649,7 @@
       "url": "AdverseEvent/ac733bec63ad106fe5f873e09c88146962a47ef395cc7d8267c6675ab3ecfcee"
     }
   }, {
-    "fullUrl": "Observation/07713a1c3efcaea9a4be0901c20151ac51d7c6266caf8a2aaf9d99e41e6df53e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/07713a1c3efcaea9a4be0901c20151ac51d7c6266caf8a2aaf9d99e41e6df53e",
     "resource": {
       "resourceType": "Observation",
       "id": "07713a1c3efcaea9a4be0901c20151ac51d7c6266caf8a2aaf9d99e41e6df53e",
@@ -666,7 +664,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "396432002",
           "display": "Status of regression of tumor (observable entity)"
         } ]
@@ -695,7 +693,7 @@
       "url": "Observation/07713a1c3efcaea9a4be0901c20151ac51d7c6266caf8a2aaf9d99e41e6df53e"
     }
   }, {
-    "fullUrl": "Observation/cd9eba430ab910065db9e08a2e3e26759f3feb8b3cfe2e4d6af13a82d63b5335",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/cd9eba430ab910065db9e08a2e3e26759f3feb8b3cfe2e4d6af13a82d63b5335",
     "resource": {
       "resourceType": "Observation",
       "id": "cd9eba430ab910065db9e08a2e3e26759f3feb8b3cfe2e4d6af13a82d63b5335",
@@ -717,7 +715,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "423740007",
           "display": "Eastern Cooperative Oncology Group performance status (observable entity)"
         }, {
@@ -756,7 +754,7 @@
       "url": "Observation/cd9eba430ab910065db9e08a2e3e26759f3feb8b3cfe2e4d6af13a82d63b5335"
     }
   }, {
-    "fullUrl": "Observation/e266b08f4c942ad3df97202fb0cb93ef3819e6b31418912c17f4eaf3f4bbf37d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/e266b08f4c942ad3df97202fb0cb93ef3819e6b31418912c17f4eaf3f4bbf37d",
     "resource": {
       "resourceType": "Observation",
       "id": "e266b08f4c942ad3df97202fb0cb93ef3819e6b31418912c17f4eaf3f4bbf37d",
@@ -771,7 +769,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "236091002",
           "display": "Large intestine anastomotic leak (disorder)"
         } ]
@@ -797,7 +795,7 @@
       "url": "Observation/e266b08f4c942ad3df97202fb0cb93ef3819e6b31418912c17f4eaf3f4bbf37d"
     }
   }, {
-    "fullUrl": "Observation/92cec901556395b219bf4fd00de94ed09307e7c8f4a522392cb0364ac521e834",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/92cec901556395b219bf4fd00de94ed09307e7c8f4a522392cb0364ac521e834",
     "resource": {
       "resourceType": "Observation",
       "id": "92cec901556395b219bf4fd00de94ed09307e7c8f4a522392cb0364ac521e834",

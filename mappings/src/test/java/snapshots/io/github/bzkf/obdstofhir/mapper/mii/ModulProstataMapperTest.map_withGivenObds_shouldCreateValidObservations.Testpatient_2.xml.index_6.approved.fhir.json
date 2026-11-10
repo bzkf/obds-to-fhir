@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e",
+  "id": "eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e",
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "11_1_DI_1-modul-prostata-secondary-gleason-pattern"
+    "value": "11_1_DI_1-modul-prostata-primary-gleason-pattern"
   } ],
   "status": "final",
   "category": [ {
@@ -19,9 +19,14 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "384995005",
-      "display": "Secondary Gleason pattern (observable entity)"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "384994009",
+      "display": "Primary Gleason pattern (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "44641-9",
+      "display": "Gleason pattern.primary in Prostate tumor"
     } ]
   },
   "subject": {
@@ -30,24 +35,28 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
+  "effectiveDateTime": "2021-07-08",
   "valueCodeableConcept": {
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 4
+        "valueDecimal": 3
       } ],
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "369772003",
+      "display": "Gleason Pattern 3 (finding)"
     } ]
   },
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   }
 }

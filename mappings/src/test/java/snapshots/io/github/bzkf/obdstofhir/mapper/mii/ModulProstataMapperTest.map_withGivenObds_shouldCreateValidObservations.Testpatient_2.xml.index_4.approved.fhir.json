@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "aac6be138b783837fc0d8e83102a7560fe3252f325ce472a17f038c4d83b92cc",
+  "id": "0983f8dcd0aeed08ef4d49c7f867ea67efd66fdc0fca6dd90bd1043c179af558",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
-    "value": "11_1_DI_1-modul-prostata-gleason-grade-group"
+    "value": "11_1_DI_1-modul-prostata-gleason-score-gesamt"
   } ],
   "status": "final",
   "category": [ {
@@ -19,9 +19,14 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1812491000004107",
-      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "372278000",
+      "display": "Gleason score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
     } ]
   },
   "subject": {
@@ -30,6 +35,7 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
+  "effectiveDateTime": "2021-07-08",
   "valueCodeableConcept": {
     "coding": [ {
       "extension": [ {
@@ -37,18 +43,22 @@
         "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1279714001"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "57403001",
+      "display": "Gleason grade score 7 out of 10 (finding)"
     } ],
     "text": "3+4"
   },
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   },
   "derivedFrom": [ {
     "reference": "Observation/eb85d012d7fa736a914df5804a38e9201542b9a8deeb05c2b682ca667925237e"

@@ -16,7 +16,7 @@ public abstract class MapperTest {
 
   /** Scrubs the version suffix (e.g. {@code |2026.0.3}) from canonical profile URLs. */
   protected static final Scrubber PROFILE_VERSION_SCRUBBER =
-      new RegExScrubber("\\|[0-9]+\\.[0-9]+\\.[0-9]+(?=\")", "");
+      new RegExScrubber("\\|[0-9]+\\.[0-9]+\\.[0-9]+-[^\"]+(?=\")", "");
 
   /**
    * Provides the XmlMapper used in production, so tests parse oBDS v3 exactly like the application

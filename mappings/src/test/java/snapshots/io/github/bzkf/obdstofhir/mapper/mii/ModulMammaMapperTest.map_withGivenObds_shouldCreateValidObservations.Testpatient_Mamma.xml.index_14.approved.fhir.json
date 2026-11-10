@@ -17,7 +17,7 @@
       "display": "Size Tumor"
     }, {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
       "code": "371479009",
       "display": "Tumor size, largest dimension (observable entity)"
     } ],

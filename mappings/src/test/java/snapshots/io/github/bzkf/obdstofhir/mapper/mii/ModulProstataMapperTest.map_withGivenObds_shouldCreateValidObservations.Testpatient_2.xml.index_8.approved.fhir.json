@@ -1,27 +1,27 @@
 {
   "resourceType": "Observation",
-  "id": "db0821753450220d34b7e6ffa30ad3aba4bbd0356857d8b265f5a4fc89a5b366",
+  "id": "63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
-    "value": "11_1_OP_1-modul-prostata-gleason-grade-group"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-clavien-dindo-observation-id",
+    "value": "11_1_OP_1-modul-prostata-clavien-dindo"
   } ],
   "status": "final",
   "category": [ {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-      "code": "laboratory",
-      "display": "Laboratory"
+      "code": "survey",
+      "display": "Survey"
     } ]
   } ],
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1812491000004107",
-      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "789279006",
+      "display": "Clavien-Dindo classification grade (observable entity)"
     } ]
   },
   "subject": {
@@ -29,30 +29,14 @@
   },
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
+  }, {
+    "reference": "Procedure/any"
   } ],
   "valueCodeableConcept": {
     "coding": [ {
-      "extension": [ {
-        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 8
-      } ],
-      "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "1279717008"
-    } ],
-    "text": "4+4"
-  },
-  "method": {
-    "coding": [ {
-      "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "65801008",
-      "display": "Excision (procedure)"
+      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
+      "code": "N",
+      "display": "keine oder höchstens Grad II"
     } ]
-  },
-  "derivedFrom": [ {
-    "reference": "Observation/995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98"
-  }, {
-    "reference": "Observation/b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8"
-  } ]
+  }
 }

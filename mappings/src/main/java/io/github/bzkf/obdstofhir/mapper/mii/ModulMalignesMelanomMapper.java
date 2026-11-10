@@ -5,7 +5,6 @@ import de.basisdatensatz.obds.v3.ModulMalignesMelanomTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,8 +104,7 @@ public class ModulMalignesMelanomMapper extends ObdsToFhirMapper {
                         + " specimen of skin (observable entity)")));
 
     if (sicherheitsabstand == -1) {
-      observation.setDataAbsentReason(
-          DataAbsentReason.codeableConcept(Enumerations.DataAbsentReason.UNKNOWN));
+      observation.setDataAbsentReason(dataAbsentReason(Enumerations.DataAbsentReason.UNKNOWN));
       return observation;
     }
 

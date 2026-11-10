@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -38,7 +38,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
     "resource": {
       "resourceType": "Condition",
       "id": "f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -58,6 +58,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1055555999-1"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -94,7 +102,7 @@
       "url": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a"
     }
   }, {
-    "fullUrl": "Procedure/c75ceda1c831de0625a70bfb2712228ee064909a1a8db7e728c0d52ae918d9f4",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/c75ceda1c831de0625a70bfb2712228ee064909a1a8db7e728c0d52ae918d9f4",
     "resource": {
       "resourceType": "Procedure",
       "id": "c75ceda1c831de0625a70bfb2712228ee064909a1a8db7e728c0d52ae918d9f4",
@@ -119,7 +127,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure (procedure)"
         } ]
@@ -162,7 +170,7 @@
       "url": "Procedure/c75ceda1c831de0625a70bfb2712228ee064909a1a8db7e728c0d52ae918d9f4"
     }
   }, {
-    "fullUrl": "Procedure/5903a9cab46da17893aa4ef59ac93f3da5f05d01f1309c959c4a861ce16b7892",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/5903a9cab46da17893aa4ef59ac93f3da5f05d01f1309c959c4a861ce16b7892",
     "resource": {
       "resourceType": "Procedure",
       "id": "5903a9cab46da17893aa4ef59ac93f3da5f05d01f1309c959c4a861ce16b7892",
@@ -190,7 +198,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -240,7 +248,7 @@
       "url": "Procedure/5903a9cab46da17893aa4ef59ac93f3da5f05d01f1309c959c4a861ce16b7892"
     }
   }, {
-    "fullUrl": "Procedure/c62ef3bd011844fd68a4cd11cf146844112d086b7fcdea15e85edecba99d9bfb",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/c62ef3bd011844fd68a4cd11cf146844112d086b7fcdea15e85edecba99d9bfb",
     "resource": {
       "resourceType": "Procedure",
       "id": "c62ef3bd011844fd68a4cd11cf146844112d086b7fcdea15e85edecba99d9bfb",
@@ -268,7 +276,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -318,7 +326,7 @@
       "url": "Procedure/c62ef3bd011844fd68a4cd11cf146844112d086b7fcdea15e85edecba99d9bfb"
     }
   }, {
-    "fullUrl": "Procedure/4a76fc14aef4ea8216dc91460c9ed7dc19b38ead8be8d0da0bc0d2c0ab77d9ea",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/4a76fc14aef4ea8216dc91460c9ed7dc19b38ead8be8d0da0bc0d2c0ab77d9ea",
     "resource": {
       "resourceType": "Procedure",
       "id": "4a76fc14aef4ea8216dc91460c9ed7dc19b38ead8be8d0da0bc0d2c0ab77d9ea",
@@ -346,7 +354,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -396,7 +404,7 @@
       "url": "Procedure/4a76fc14aef4ea8216dc91460c9ed7dc19b38ead8be8d0da0bc0d2c0ab77d9ea"
     }
   }, {
-    "fullUrl": "Procedure/5570c4f2226d0c19cd2b523f00248be2ff94c1d7eed34a205b1493b28b2b4353",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/5570c4f2226d0c19cd2b523f00248be2ff94c1d7eed34a205b1493b28b2b4353",
     "resource": {
       "resourceType": "Procedure",
       "id": "5570c4f2226d0c19cd2b523f00248be2ff94c1d7eed34a205b1493b28b2b4353",
@@ -424,7 +432,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -474,7 +482,7 @@
       "url": "Procedure/5570c4f2226d0c19cd2b523f00248be2ff94c1d7eed34a205b1493b28b2b4353"
     }
   }, {
-    "fullUrl": "Procedure/75c9d9ed3bd7c77edb7eba213b584327ac3da457c17f1237b26e1c96205d20a6",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/75c9d9ed3bd7c77edb7eba213b584327ac3da457c17f1237b26e1c96205d20a6",
     "resource": {
       "resourceType": "Procedure",
       "id": "75c9d9ed3bd7c77edb7eba213b584327ac3da457c17f1237b26e1c96205d20a6",
@@ -502,7 +510,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -552,7 +560,7 @@
       "url": "Procedure/75c9d9ed3bd7c77edb7eba213b584327ac3da457c17f1237b26e1c96205d20a6"
     }
   }, {
-    "fullUrl": "Procedure/8d4d4a1bcc754049e285289753bfe0ea4386d92b731a82afb6d33ebfe1d9b77b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/8d4d4a1bcc754049e285289753bfe0ea4386d92b731a82afb6d33ebfe1d9b77b",
     "resource": {
       "resourceType": "Procedure",
       "id": "8d4d4a1bcc754049e285289753bfe0ea4386d92b731a82afb6d33ebfe1d9b77b",
@@ -580,7 +588,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -630,7 +638,7 @@
       "url": "Procedure/8d4d4a1bcc754049e285289753bfe0ea4386d92b731a82afb6d33ebfe1d9b77b"
     }
   }, {
-    "fullUrl": "Procedure/8ce1b9f2b65bbbaac79ba983deb023fec3f6d99c3ada7b9c9076ba62544726fe",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/8ce1b9f2b65bbbaac79ba983deb023fec3f6d99c3ada7b9c9076ba62544726fe",
     "resource": {
       "resourceType": "Procedure",
       "id": "8ce1b9f2b65bbbaac79ba983deb023fec3f6d99c3ada7b9c9076ba62544726fe",
@@ -658,7 +666,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -708,7 +716,7 @@
       "url": "Procedure/8ce1b9f2b65bbbaac79ba983deb023fec3f6d99c3ada7b9c9076ba62544726fe"
     }
   }, {
-    "fullUrl": "Procedure/9731d6f72c54b61e0167318d4f9f89430d180f2b608a7b22688e742d685b3c3d",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/9731d6f72c54b61e0167318d4f9f89430d180f2b608a7b22688e742d685b3c3d",
     "resource": {
       "resourceType": "Procedure",
       "id": "9731d6f72c54b61e0167318d4f9f89430d180f2b608a7b22688e742d685b3c3d",
@@ -736,7 +744,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "387713003",
           "display": "Surgical procedure"
         } ]
@@ -786,7 +794,7 @@
       "url": "Procedure/9731d6f72c54b61e0167318d4f9f89430d180f2b608a7b22688e742d685b3c3d"
     }
   }, {
-    "fullUrl": "Observation/c0f1f82e705db2489641f6a12e0a67f61da92b8c5c23516d149d285a174bf633",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/c0f1f82e705db2489641f6a12e0a67f61da92b8c5c23516d149d285a174bf633",
     "resource": {
       "resourceType": "Observation",
       "id": "c0f1f82e705db2489641f6a12e0a67f61da92b8c5c23516d149d285a174bf633",
@@ -837,7 +845,7 @@
       "url": "Observation/c0f1f82e705db2489641f6a12e0a67f61da92b8c5c23516d149d285a174bf633"
     }
   }, {
-    "fullUrl": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd",
     "resource": {
       "resourceType": "Specimen",
       "id": "5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd",
@@ -874,7 +882,7 @@
       "url": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd"
     }
   }, {
-    "fullUrl": "Observation/b72e9778a7928dfd72e81be818f0205287a0ad44f520836495918114f2d1602a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/b72e9778a7928dfd72e81be818f0205287a0ad44f520836495918114f2d1602a",
     "resource": {
       "resourceType": "Observation",
       "id": "b72e9778a7928dfd72e81be818f0205287a0ad44f520836495918114f2d1602a",
@@ -934,7 +942,7 @@
       "url": "Observation/b72e9778a7928dfd72e81be818f0205287a0ad44f520836495918114f2d1602a"
     }
   }, {
-    "fullUrl": "Observation/fb401fb5655012eb6390b6289cb62375f78700736b7d287a3256e57781ecc592",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/fb401fb5655012eb6390b6289cb62375f78700736b7d287a3256e57781ecc592",
     "resource": {
       "resourceType": "Observation",
       "id": "fb401fb5655012eb6390b6289cb62375f78700736b7d287a3256e57781ecc592",
@@ -961,7 +969,7 @@
           "display": "Histology grade [Identifier] in Cancer specimen"
         }, {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371469007",
           "display": "Histologic grade of neoplasm (observable entity)"
         } ]
@@ -1000,7 +1008,7 @@
       "url": "Observation/fb401fb5655012eb6390b6289cb62375f78700736b7d287a3256e57781ecc592"
     }
   }, {
-    "fullUrl": "Observation/74b7873c0447105ed041c3df00b4df502da545a1c78c1f8dd2c46a6060fdf7fa",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/74b7873c0447105ed041c3df00b4df502da545a1c78c1f8dd2c46a6060fdf7fa",
     "resource": {
       "resourceType": "Observation",
       "id": "74b7873c0447105ed041c3df00b4df502da545a1c78c1f8dd2c46a6060fdf7fa",
@@ -1025,7 +1033,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "384625004",
           "display": "pT category (observable entity)"
         } ]
@@ -1066,7 +1074,7 @@
       "url": "Observation/74b7873c0447105ed041c3df00b4df502da545a1c78c1f8dd2c46a6060fdf7fa"
     }
   }, {
-    "fullUrl": "Observation/5d767fd242c784050a959631f782c156f155235facee6b4660857fba949cfdf6",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/5d767fd242c784050a959631f782c156f155235facee6b4660857fba949cfdf6",
     "resource": {
       "resourceType": "Observation",
       "id": "5d767fd242c784050a959631f782c156f155235facee6b4660857fba949cfdf6",
@@ -1091,7 +1099,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399534004",
           "display": "cN category (observable entity)"
         } ]
@@ -1132,7 +1140,7 @@
       "url": "Observation/5d767fd242c784050a959631f782c156f155235facee6b4660857fba949cfdf6"
     }
   }, {
-    "fullUrl": "Observation/52c296a67ae5194338b5e8108b8ddd694000078f75f1037e2507fe3636a382c7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/52c296a67ae5194338b5e8108b8ddd694000078f75f1037e2507fe3636a382c7",
     "resource": {
       "resourceType": "Observation",
       "id": "52c296a67ae5194338b5e8108b8ddd694000078f75f1037e2507fe3636a382c7",
@@ -1157,7 +1165,7 @@
         } ],
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399387003",
           "display": "cM category (observable entity)"
         } ]
@@ -1198,7 +1206,7 @@
       "url": "Observation/52c296a67ae5194338b5e8108b8ddd694000078f75f1037e2507fe3636a382c7"
     }
   }, {
-    "fullUrl": "Observation/65e9b36868752f14a384c581481cfe077cc574952dbb17bf3abb710282b2e19b",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/65e9b36868752f14a384c581481cfe077cc574952dbb17bf3abb710282b2e19b",
     "resource": {
       "resourceType": "Observation",
       "id": "65e9b36868752f14a384c581481cfe077cc574952dbb17bf3abb710282b2e19b",
@@ -1213,7 +1221,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "395715009",
           "display": "Status of lymphatic (small vessel) invasion by tumor (observable entity)"
         } ]
@@ -1254,7 +1262,7 @@
       "url": "Observation/65e9b36868752f14a384c581481cfe077cc574952dbb17bf3abb710282b2e19b"
     }
   }, {
-    "fullUrl": "Observation/099d51dc1b48290a4a0fd75a4b77aae8080066fddaacd3388aa72762c9a94ebc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/099d51dc1b48290a4a0fd75a4b77aae8080066fddaacd3388aa72762c9a94ebc",
     "resource": {
       "resourceType": "Observation",
       "id": "099d51dc1b48290a4a0fd75a4b77aae8080066fddaacd3388aa72762c9a94ebc",
@@ -1269,7 +1277,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371513001",
           "display": "Presence of direct invasion by primary malignant neoplasm to nerve (observable entity)"
         } ]
@@ -1310,7 +1318,7 @@
       "url": "Observation/099d51dc1b48290a4a0fd75a4b77aae8080066fddaacd3388aa72762c9a94ebc"
     }
   }, {
-    "fullUrl": "Observation/434c1fdae0e9da9d06060dd4be3d3d256ddf67b243d26e10280471af28c80809",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/434c1fdae0e9da9d06060dd4be3d3d256ddf67b243d26e10280471af28c80809",
     "resource": {
       "resourceType": "Observation",
       "id": "434c1fdae0e9da9d06060dd4be3d3d256ddf67b243d26e10280471af28c80809",
@@ -1325,7 +1333,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "371493002",
           "display": "Status of venous (large vessel) invasion by tumor (observable entity)"
         } ]
@@ -1366,7 +1374,7 @@
       "url": "Observation/434c1fdae0e9da9d06060dd4be3d3d256ddf67b243d26e10280471af28c80809"
     }
   }, {
-    "fullUrl": "Observation/ea949c23595772085d3b821fd6c2a7e4f340ba8d8c74e0d8d8644405d2c593b9",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ea949c23595772085d3b821fd6c2a7e4f340ba8d8c74e0d8d8644405d2c593b9",
     "resource": {
       "resourceType": "Observation",
       "id": "ea949c23595772085d3b821fd6c2a7e4f340ba8d8c74e0d8d8644405d2c593b9",
@@ -1381,7 +1389,7 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "399390009",
           "display": "TNM stage grouping"
         } ]
@@ -1429,7 +1437,7 @@
       "url": "Observation/ea949c23595772085d3b821fd6c2a7e4f340ba8d8c74e0d8d8644405d2c593b9"
     }
   }, {
-    "fullUrl": "Observation/ddacd1e5ec16de68d1a83a19311250e5d7abd14a6a4376eac154ba83f061fa11",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/ddacd1e5ec16de68d1a83a19311250e5d7abd14a6a4376eac154ba83f061fa11",
     "resource": {
       "resourceType": "Observation",
       "id": "ddacd1e5ec16de68d1a83a19311250e5d7abd14a6a4376eac154ba83f061fa11",
@@ -1486,16 +1494,16 @@
       "url": "Observation/ddacd1e5ec16de68d1a83a19311250e5d7abd14a6a4376eac154ba83f061fa11"
     }
   }, {
-    "fullUrl": "Observation/7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/34bda74389891023566a488676ecd585d17d3bcdd8f5aae51123957c9b28e2c9",
     "resource": {
       "resourceType": "Observation",
-      "id": "7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
+      "id": "34bda74389891023566a488676ecd585d17d3bcdd8f5aae51123957c9b28e2c9",
       "meta": {
-        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
       },
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
-        "value": "NC0000061_741-modul-prostata-gleason-grade-group"
+        "value": "NC0000061_741-modul-prostata-gleason-score-gesamt"
       } ],
       "status": "final",
       "category": [ {
@@ -1508,9 +1516,14 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "1812491000004107",
-          "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "372278000",
+          "display": "Gleason score (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "35266-6",
+          "display": "Gleason score in Specimen Qualitative"
         } ]
       },
       "subject": {
@@ -1538,18 +1551,103 @@
             "valueDecimal": 7
           } ],
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-          "code": "1279714001"
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "57403001",
+          "display": "Gleason grade score 7 out of 10 (finding)"
         } ],
         "text": "3+4"
       },
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "65801008",
           "display": "Excision (procedure)"
         } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd"
+      },
+      "derivedFrom": [ {
+        "reference": "Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a"
+      }, {
+        "reference": "Observation/10ffd20c208a4bdd8f1a6ec15ef125cbe21bf7dd71fbe1ecff55ff792de907dc"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Observation/34bda74389891023566a488676ecd585d17d3bcdd8f5aae51123957c9b28e2c9"
+    }
+  }, {
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
+    "resource": {
+      "resourceType": "Observation",
+      "id": "7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+      },
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+        "value": "NC0000061_741-modul-prostata-gleason-grade-group"
+      } ],
+      "status": "final",
+      "category": [ {
+        "coding": [ {
+          "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+          "code": "laboratory",
+          "display": "Laboratory"
+        } ]
+      } ],
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "1812491000004107",
+          "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "94734-1",
+          "display": "Prostate cancer grade group [Score] in Prostate tumor Qualitative"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+        "identifier": {
+          "type": {
+            "coding": [ {
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+              "code": "MR",
+              "display": "Medical record number"
+            } ]
+          },
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "1055555999"
+        }
+      },
+      "focus": [ {
+        "reference": "Condition/f4e7ec6d41a51a183a826bd1c83d3e3a8090b8b676ecb54b143cda83a8fcd18a"
+      } ],
+      "effectiveDateTime": "2021-01-04",
+      "valueCodeableConcept": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "1279714001",
+          "display": "International Society of Urological Pathology grade group 2 (Gleason score 3 + 4 = 7) (qualifier value)"
+        } ],
+        "text": "3+4"
+      },
+      "method": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "65801008",
+          "display": "Excision (procedure)"
+        } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd"
       },
       "derivedFrom": [ {
         "reference": "Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a"
@@ -1562,7 +1660,7 @@
       "url": "Observation/7879680b38259e7f943b22ef08c42e323126f67194db84039b176c07431f88eb"
     }
   }, {
-    "fullUrl": "Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a",
     "resource": {
       "resourceType": "Observation",
       "id": "bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a",
@@ -1584,9 +1682,14 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "384994009",
           "display": "Primary Gleason pattern (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "44641-9",
+          "display": "Gleason pattern.primary in Prostate tumor"
         } ]
       },
       "subject": {
@@ -1614,7 +1717,7 @@
             "valueDecimal": 3
           } ],
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "369772003",
           "display": "Gleason Pattern 3 (finding)"
         } ]
@@ -1622,10 +1725,13 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "65801008",
           "display": "Excision (procedure)"
         } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd"
       }
     },
     "request": {
@@ -1633,7 +1739,7 @@
       "url": "Observation/bde741b818f802141d253258f96e11ab36da23053f654673a1b9fd6cfdd7ab4a"
     }
   }, {
-    "fullUrl": "Observation/10ffd20c208a4bdd8f1a6ec15ef125cbe21bf7dd71fbe1ecff55ff792de907dc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Observation/10ffd20c208a4bdd8f1a6ec15ef125cbe21bf7dd71fbe1ecff55ff792de907dc",
     "resource": {
       "resourceType": "Observation",
       "id": "10ffd20c208a4bdd8f1a6ec15ef125cbe21bf7dd71fbe1ecff55ff792de907dc",
@@ -1655,9 +1761,14 @@
       "code": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "384995005",
           "display": "Secondary Gleason pattern (observable entity)"
+        }, {
+          "system": "http://loinc.org",
+          "version": "2.82",
+          "code": "44642-7",
+          "display": "Gleason pattern.secondary in Prostate tumor"
         } ]
       },
       "subject": {
@@ -1685,7 +1796,7 @@
             "valueDecimal": 4
           } ],
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "369773008",
           "display": "Gleason Pattern 4 (finding)"
         } ]
@@ -1693,10 +1804,13 @@
       "method": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "65801008",
           "display": "Excision (procedure)"
         } ]
+      },
+      "specimen": {
+        "reference": "Specimen/5ccd1ea4a800db83879eb81495c739fdffdfb407d88ae7d3ebaac14f5477e0bd"
       }
     },
     "request": {

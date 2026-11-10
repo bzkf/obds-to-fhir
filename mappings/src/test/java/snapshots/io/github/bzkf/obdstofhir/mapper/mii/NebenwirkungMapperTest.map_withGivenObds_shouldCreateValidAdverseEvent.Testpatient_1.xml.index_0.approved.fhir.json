@@ -4,6 +4,16 @@
   "meta": {
     "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
   },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-nebenwirkung-ctcae-version",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-version",
+        "code": "Sonstige",
+        "display": "Sonstige"
+      } ]
+    }
+  } ],
   "identifier": {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
     "value": "mii-pr-onko-nebenwirkung-SystId_01-0"

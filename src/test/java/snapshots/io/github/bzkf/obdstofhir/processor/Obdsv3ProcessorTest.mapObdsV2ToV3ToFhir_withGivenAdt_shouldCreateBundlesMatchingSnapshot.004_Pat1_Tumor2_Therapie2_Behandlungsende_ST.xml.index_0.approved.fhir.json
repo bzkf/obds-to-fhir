@@ -3,7 +3,7 @@
   "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
     "resource": {
       "resourceType": "Patient",
       "id": "6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc",
@@ -38,7 +38,7 @@
       "url": "Patient/6d5d660ab62ed4f79df30257578c3a98eda74f14c6499270e0d2c3c92a5c2dfc"
     }
   }, {
-    "fullUrl": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
     "resource": {
       "resourceType": "Condition",
       "id": "5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -58,6 +58,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1055555999-2"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -94,7 +102,7 @@
       "url": "Condition/5af9c8adcb9cb0ffb038bf734955022bd8739a86576f13e8d346e574a7b0a91f"
     }
   }, {
-    "fullUrl": "Procedure/360a67e5494e930403c599254c09de20b1c0753def87d7e2280e5d5e70653e59",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/360a67e5494e930403c599254c09de20b1c0753def87d7e2280e5d5e70653e59",
     "resource": {
       "resourceType": "Procedure",
       "id": "360a67e5494e930403c599254c09de20b1c0753def87d7e2280e5d5e70653e59",
@@ -128,7 +136,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -175,7 +183,7 @@
       "url": "Procedure/360a67e5494e930403c599254c09de20b1c0753def87d7e2280e5d5e70653e59"
     }
   }, {
-    "fullUrl": "Procedure/5d5f3e921d8f8e7216b9f118eb71cd281450ac70706ccae93d935a4f0f90d905",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/5d5f3e921d8f8e7216b9f118eb71cd281450ac70706ccae93d935a4f0f90d905",
     "resource": {
       "resourceType": "Procedure",
       "id": "5d5f3e921d8f8e7216b9f118eb71cd281450ac70706ccae93d935a4f0f90d905",
@@ -203,7 +211,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -257,7 +265,7 @@
       "url": "Procedure/5d5f3e921d8f8e7216b9f118eb71cd281450ac70706ccae93d935a4f0f90d905"
     }
   }, {
-    "fullUrl": "Procedure/c1442a14031c55914846686eac522cd40d66c92c035100995a1912e092f5bcd2",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/c1442a14031c55914846686eac522cd40d66c92c035100995a1912e092f5bcd2",
     "resource": {
       "resourceType": "Procedure",
       "id": "c1442a14031c55914846686eac522cd40d66c92c035100995a1912e092f5bcd2",
@@ -285,7 +293,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -339,7 +347,7 @@
       "url": "Procedure/c1442a14031c55914846686eac522cd40d66c92c035100995a1912e092f5bcd2"
     }
   }, {
-    "fullUrl": "AdverseEvent/56d3ef3cb1ce86666dc7fca866187d3e4333ec11c2d87454222620db1a7b9700",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/56d3ef3cb1ce86666dc7fca866187d3e4333ec11c2d87454222620db1a7b9700",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "56d3ef3cb1ce86666dc7fca866187d3e4333ec11c2d87454222620db1a7b9700",

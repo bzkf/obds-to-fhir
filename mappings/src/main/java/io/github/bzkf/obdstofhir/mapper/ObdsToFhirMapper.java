@@ -110,6 +110,27 @@ public abstract class ObdsToFhirMapper {
     return absentDateTime;
   }
 
+  /**
+   * A data-absent-reason concept for elements typed as one, e.g. {@code
+   * Observation.dataAbsentReason}. to-fhir 0.2.23 offers {@code
+   * FhirExtensions.DataAbsentReason.codeableConcept} for this, but the 0.3.0 alphas used for the
+   * 2027 IG don't have it yet.
+   */
+  protected static CodeableConcept dataAbsentReason(Enumerations.DataAbsentReason reason) {
+    return new CodeableConcept(
+        new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
+  }
+
+  /** A SNOMED CT coding in the configured edition and version. */
+  protected Coding snomed(@NonNull String code, @Nullable String display) {
+    return fhirProperties.getCodings().snomed().setCode(code).setDisplay(display);
+  }
+
+  /** A LOINC coding in the configured version. */
+  protected Coding loinc(@NonNull String code, @Nullable String display) {
+    return fhirProperties.getCodings().loinc().setCode(code).setDisplay(display);
+  }
+
   /** A Quantity whose unit is also its UCUM code. */
   protected Quantity ucumQuantity(@NonNull BigDecimal value, @NonNull String unit) {
     return new Quantity()

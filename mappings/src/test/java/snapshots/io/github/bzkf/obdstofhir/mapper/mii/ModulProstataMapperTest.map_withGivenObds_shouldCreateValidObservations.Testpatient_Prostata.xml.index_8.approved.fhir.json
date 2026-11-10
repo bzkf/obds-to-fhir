@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b",
+  "id": "59ba2af5cdd0b43db1d3d8ce44a71813d23d2be74955f493726ecd27ce37da78",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "DIA_80106-modul-prostata-primary-gleason-pattern"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+    "value": "DIA_80106-modul-prostata-gleason-score-gesamt"
   } ],
   "status": "final",
   "category": [ {
@@ -19,9 +19,14 @@
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "372278000",
+      "display": "Gleason score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
     } ]
   },
   "subject": {
@@ -30,24 +35,34 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
+  "effectiveDateTime": "2020-05-10",
   "valueCodeableConcept": {
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 4
+        "valueDecimal": 7
       } ],
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
-    } ]
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "57403001",
+      "display": "Gleason grade score 7 out of 10 (finding)"
+    } ],
+    "text": "4+3"
   },
   "method": {
     "coding": [ {
       "system": "http://snomed.info/sct",
-      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
-  }
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/c065d2b3a0b76206eddf59689891b41235210a81d933ba7a0b293b20351bc57b"
+  }, {
+    "reference": "Observation/ac4080d8d4abf15dbde681c195ea81c6bd556cbea5fe2a5ac1e9bd21c96af9ec"
+  } ]
 }

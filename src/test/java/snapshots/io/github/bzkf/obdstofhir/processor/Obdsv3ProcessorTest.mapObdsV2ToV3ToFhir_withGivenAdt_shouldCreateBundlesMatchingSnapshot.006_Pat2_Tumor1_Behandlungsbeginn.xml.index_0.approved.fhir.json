@@ -3,7 +3,7 @@
   "id": "e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
   "type": "transaction",
   "entry": [ {
-    "fullUrl": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
     "resource": {
       "resourceType": "Patient",
       "id": "e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7",
@@ -38,7 +38,7 @@
       "url": "Patient/e87b61efb85fe213843585a74ea95b8dd6d8a78bf6952a48a310c6aa65a4ada7"
     }
   }, {
-    "fullUrl": "Condition/1af00843aa2cbfc7d263300974d891183812f57d382c6d2bdad4a2f659c35a41",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Condition/1af00843aa2cbfc7d263300974d891183812f57d382c6d2bdad4a2f659c35a41",
     "resource": {
       "resourceType": "Condition",
       "id": "1af00843aa2cbfc7d263300974d891183812f57d382c6d2bdad4a2f659c35a41",
@@ -46,7 +46,7 @@
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-diagnose-primaertumor" ],
         "tag": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "255599008",
           "display": "Incomplete (qualifier value)"
         } ]
@@ -58,6 +58,14 @@
       "identifier": [ {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/primaerdiagnose-condition-id",
         "value": "1055555888-1"
+      } ],
+      "category": [ {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+          "code": "55342001",
+          "display": "Neoplastic disease"
+        } ]
       } ],
       "code": {
         "coding": [ {
@@ -94,7 +102,7 @@
       "url": "Condition/1af00843aa2cbfc7d263300974d891183812f57d382c6d2bdad4a2f659c35a41"
     }
   }, {
-    "fullUrl": "Procedure/c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e",
     "resource": {
       "resourceType": "Procedure",
       "id": "c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e",
@@ -128,7 +136,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -175,7 +183,7 @@
       "url": "Procedure/c43a8d5d96caadade444db72b48a3b8f0a1c5e899b0f4796575017e046e92b4e"
     }
   }, {
-    "fullUrl": "Procedure/0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd",
     "resource": {
       "resourceType": "Procedure",
       "id": "0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd",
@@ -203,7 +211,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -257,7 +265,7 @@
       "url": "Procedure/0d43e9db1a179fa4447e542d1ffc014278671c2629697d8b52a6752599b66cbd"
     }
   }, {
-    "fullUrl": "Procedure/e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/Procedure/e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058",
     "resource": {
       "resourceType": "Procedure",
       "id": "e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058",
@@ -285,7 +293,7 @@
       "category": {
         "coding": [ {
           "system": "http://snomed.info/sct",
-          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "version": "http://snomed.info/sct/900000000000207008/version/20260701",
           "code": "1287742003",
           "display": "Radiotherapy (procedure)"
         } ]
@@ -339,13 +347,23 @@
       "url": "Procedure/e414911ddb8e103c1728ba7651b6374bb04a239ba8d3cc49af1eaaa81898c058"
     }
   }, {
-    "fullUrl": "AdverseEvent/e528506357bb34cee8abf44c115d2a52b8ddc1bf2cba72f8102b4283cffb3fd3",
+    "fullUrl": "https://bzkf.github.io/obds-to-fhir/fhir/AdverseEvent/e528506357bb34cee8abf44c115d2a52b8ddc1bf2cba72f8102b4283cffb3fd3",
     "resource": {
       "resourceType": "AdverseEvent",
       "id": "e528506357bb34cee8abf44c115d2a52b8ddc1bf2cba72f8102b4283cffb3fd3",
       "meta": {
         "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-nebenwirkung-adverse-event" ]
       },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-nebenwirkung-ctcae-version",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-nebenwirkung-ctcae-version",
+            "code": "Sonstige",
+            "display": "Sonstige"
+          } ]
+        }
+      } ],
       "identifier": {
         "system": "https://bzkf.github.io/obds-to-fhir/identifiers/nebenwirkung-adverse-event-id",
         "value": "mii-pr-onko-nebenwirkung-45900-0"
