@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98",
+  "id": "6765b15accd91cb8f2a3986ac7d861b683b5c5a29160c445185793bcbf62f40d",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "11_1_OP_1-modul-prostata-primary-gleason-pattern"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+    "value": "11_1_OP_1-modul-prostata-gleason-score-gesamt"
   } ],
   "status": "final",
   "category": [ {
@@ -20,8 +20,13 @@
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "code": "372278000",
+      "display": "Gleason score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
     } ]
   },
   "subject": {
@@ -34,13 +39,14 @@
     "coding": [ {
       "extension": [ {
         "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 4
+        "valueDecimal": 8
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "369773008",
-      "display": "Gleason Pattern 4 (finding)"
-    } ]
+      "code": "33013007",
+      "display": "Gleason grade score 8 out of 10 (finding)"
+    } ],
+    "text": "4+4"
   },
   "method": {
     "coding": [ {
@@ -49,5 +55,13 @@
       "code": "65801008",
       "display": "Excision (procedure)"
     } ]
-  }
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/995c37036f2fcd1a0069ec072a463067c28c9ba083984d62e2368290de5e7b98"
+  }, {
+    "reference": "Observation/b983a685f38a9d19aecb2013a1b6619d70c353b304df37ddadcc1d30fa793ea8"
+  } ]
 }

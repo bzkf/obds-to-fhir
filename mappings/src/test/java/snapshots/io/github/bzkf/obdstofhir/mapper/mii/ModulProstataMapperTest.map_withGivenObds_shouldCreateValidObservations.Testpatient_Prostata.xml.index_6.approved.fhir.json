@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "00712c24ba9af14eda2149757b13cda0fb7cd8dd4b5d3e26e47150b778bb8e06",
+  "id": "013c118fc9e6439dd67cb60aaae7d5a51312aee429422bb30aab6b510fde47fe",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-ca-befall-stanze" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-anzahl-positive-stanzen" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-ca-befall-stanze-observation-id",
-    "value": "DIA_80106-modul-prostata-ca-befall-stanze"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-anzahl-positive-stanzen-observation-id",
+    "value": "DIA_80106-modul-prostata-anzahl-positive-stanzen"
   } ],
   "status": "final",
   "category": [ {
@@ -20,8 +20,8 @@
     "coding": [ {
       "system": "http://loinc.org",
       "version": "2.82",
-      "code": "44654-2",
-      "display": "Tissue involved by tumor in Prostate tumor"
+      "code": "44651-8",
+      "display": "Tissue cores.positive.carcinoma in Tissue core"
     } ]
   },
   "subject": {
@@ -31,10 +31,5 @@
     "reference": "Condition/Primärdiagnose"
   } ],
   "effectiveDateTime": "2020-05-10",
-  "valueQuantity": {
-    "value": 15,
-    "unit": "%",
-    "system": "http://unitsofmeasure.org",
-    "code": "%"
-  }
+  "valueInteger": 4
 }

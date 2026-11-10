@@ -1,0 +1,50 @@
+{
+  "resourceType": "Observation",
+  "id": "23cef8f357155243642f7d4cf595e2df347e841e7650612f290df39e17f44203",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+    "value": "meldung-1-modul-prostata-gleason-grade-group"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "94734-1",
+      "display": "Prostate cancer grade group [Score] in Prostate tumor Qualitative"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/any"
+  } ],
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "1279714001",
+      "display": "International Society of Urological Pathology grade group 2 (Gleason score 3 + 4 = 7) (qualifier value)"
+    } ],
+    "text": "7a"
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/12c319c03360fffbae3216ded98fcdc1f49ac431c1303d603797674b45ba301f"
+  } ]
+}

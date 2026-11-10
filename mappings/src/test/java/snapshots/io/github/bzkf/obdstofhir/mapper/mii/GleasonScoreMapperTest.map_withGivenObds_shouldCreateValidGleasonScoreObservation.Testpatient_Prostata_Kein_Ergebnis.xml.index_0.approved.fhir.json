@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "9ce4ccffea14a760417f8d25460b2929f97d64b2c8d2c218086cdfa572e3f195",
+  "id": "fa503b2601319258a18e0e5cc322eab1f29a12dba8ae9492bfebadea5fded19a",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-score-gesamt" ]
   },
   "identifier": [ {
     "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
-    "value": "OP_80105-modul-prostata-gleason-grade-group"
+    "value": "OP_80105-modul-prostata-gleason-score-gesamt"
   } ],
   "status": "final",
   "category": [ {
@@ -20,8 +20,13 @@
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "1812491000004107",
-      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+      "code": "372278000",
+      "display": "Gleason score (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "35266-6",
+      "display": "Gleason score in Specimen Qualitative"
     } ]
   },
   "subject": {
@@ -38,7 +43,8 @@
       } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "1279714001"
+      "code": "57403001",
+      "display": "Gleason grade score 7 out of 10 (finding)"
     } ],
     "text": "3+4"
   },
@@ -49,6 +55,9 @@
       "code": "65801008",
       "display": "Excision (procedure)"
     } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   },
   "derivedFrom": [ {
     "reference": "Observation/aec5a3befd14187d50df28c3531d620f87435b4add98923a4850e5d4db4feeb4"

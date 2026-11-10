@@ -30,10 +30,10 @@ import org.springframework.stereotype.Service;
  * Observations reference the same primary Condition and are told apart by their identifier suffix
  * and {@code code.text} instead.
  *
- * <p>Unlike {@link ModulProstataMapper}, the reference date is passed as an already converted
- * {@link DateTimeType}: the Pathologie section only offers {@code Tumor_Histologiedatum}, which may
- * be month- or year-precise, and {@code MII_PR_Onko_Tumorgroesse} requires {@code
- * effectiveDateTime}. Callers convert with {@link #convertObdsDatumToDateTimeType}.
+ * <p>The reference date is passed as an already converted {@link DateTimeType}: the Pathologie
+ * section only offers {@code Tumor_Histologiedatum}, which may be month- or year-precise, and
+ * {@code MII_PR_Onko_Tumorgroesse} requires {@code effectiveDateTime}. Callers convert with {@link
+ * #convertObdsDatumToDateTimeType}.
  */
 @Service
 public class ModulMammaMapper extends ObdsToFhirMapper {

@@ -1,12 +1,12 @@
 {
   "resourceType": "Observation",
-  "id": "1ddbe3952377e4758122b1372e4d503ba356dbd195dae70e6ebed1b9faa85f47",
+  "id": "9a85e7e89f1e45597890537dc052377bdda429e3ba7245cc0d34f2a724d20adf",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-grade-group" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
-    "value": "10_1_DI_1-modul-prostata-primary-gleason-pattern"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-score-observation-id",
+    "value": "10_1_DI_1-modul-prostata-gleason-grade-group"
   } ],
   "status": "final",
   "category": [ {
@@ -20,8 +20,13 @@
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "384994009",
-      "display": "Primary Gleason pattern (observable entity)"
+      "code": "1812491000004107",
+      "display": "Histologic grade of primary malignant neoplasm of prostate by International Society of Urological Pathology technique (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "94734-1",
+      "display": "Prostate cancer grade group [Score] in Prostate tumor Qualitative"
     } ]
   },
   "subject": {
@@ -30,17 +35,15 @@
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
   } ],
+  "effectiveDateTime": "2021-07-08",
   "valueCodeableConcept": {
     "coding": [ {
-      "extension": [ {
-        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
-        "valueDecimal": 3
-      } ],
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "369772003",
-      "display": "Gleason Pattern 3 (finding)"
-    } ]
+      "code": "1279714001",
+      "display": "International Society of Urological Pathology grade group 2 (Gleason score 3 + 4 = 7) (qualifier value)"
+    } ],
+    "text": "3+4"
   },
   "method": {
     "coding": [ {
@@ -49,5 +52,13 @@
       "code": "86273004",
       "display": "Biopsy (procedure)"
     } ]
-  }
+  },
+  "specimen": {
+    "reference": "Specimen/any"
+  },
+  "derivedFrom": [ {
+    "reference": "Observation/1ddbe3952377e4758122b1372e4d503ba356dbd195dae70e6ebed1b9faa85f47"
+  }, {
+    "reference": "Observation/21b063b3550e432ef95d3a36eb842beabbac5e84f4ae8f39c5d1ebd3ddf5fcf5"
+  } ]
 }

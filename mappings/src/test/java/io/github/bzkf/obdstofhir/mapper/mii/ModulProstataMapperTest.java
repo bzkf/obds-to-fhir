@@ -2,6 +2,9 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.basisdatensatz.obds.v3.AnlassGleasonScoreTyp;
+import de.basisdatensatz.obds.v3.GleasonScoreTyp;
+import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import java.io.IOException;
@@ -45,6 +48,7 @@ class ModulProstataMapperTest extends MapperTest {
     var subject = new Reference("Patient/any");
     var diagnose = new Reference("Condition/Primärdiagnose");
     var op = new Reference("Procedure/any");
+    var specimen = new Reference("Specimen/any");
 
     final var list = new ArrayList<Observation>();
     for (var meldung : obdsPatient.getMengeMeldung().getMeldung()) {
@@ -54,7 +58,10 @@ class ModulProstataMapperTest extends MapperTest {
                 meldung.getPathologie().getModulProstata(),
                 meldung.getMeldungID(),
                 subject,
-                diagnose);
+                diagnose,
+                null,
+                null,
+                specimen);
         list.addAll(observation);
       }
       if (meldung.getDiagnose() != null && meldung.getDiagnose().getModulProstata() != null) {
@@ -63,7 +70,10 @@ class ModulProstataMapperTest extends MapperTest {
                 meldung.getDiagnose().getModulProstata(),
                 meldung.getMeldungID(),
                 subject,
-                diagnose);
+                diagnose,
+                null,
+                null,
+                specimen);
         list.addAll(observation);
       }
       if (meldung.getOP() != null && meldung.getOP().getModulProstata() != null) {
@@ -74,11 +84,36 @@ class ModulProstataMapperTest extends MapperTest {
                 subject,
                 diagnose,
                 null,
-                op);
+                op,
+                specimen);
         list.addAll(observation);
       }
     }
 
     verifyAll(list, sourceFile);
+  }
+
+  @ParameterizedTest
+  @CsvSource({"S,false", "O,true"})
+  void map_inOpMeldung_shouldOnlyUseTheResectedSpecimenForScoresNotFromBiopsies(
+      AnlassGleasonScoreTyp anlass, boolean expectSpecimen) {
+    var gleasonScore = new GleasonScoreTyp();
+    gleasonScore.setGradPrimaer("3");
+    gleasonScore.setGradSekundaer("4");
+    var modulProstata = new ModulProstataTyp();
+    modulProstata.setGleasonScore(gleasonScore);
+    modulProstata.setAnlassGleasonScore(anlass);
+
+    var observations =
+        sut.map(
+            modulProstata,
+            "meldung-1",
+            new Reference("Patient/any"),
+            new Reference("Condition/any"),
+            null,
+            new Reference("Procedure/any"),
+            new Reference("Specimen/any"));
+
+    assertThat(observations).hasSize(4).allMatch(o -> o.hasSpecimen() == expectSpecimen);
   }
 }

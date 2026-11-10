@@ -1,13 +1,15 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
+import de.basisdatensatz.obds.v3.AnlassGleasonScoreTyp;
+import de.basisdatensatz.obds.v3.JNU;
 import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
 import org.hl7.fhir.r4.model.codesystems.ObservationCategory;
 import org.jspecify.annotations.NonNull;
@@ -16,6 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+/**
+ * Maps {@code Modul_Prostata}. A Meldung has only one of the sections that may contain it
+ * (Diagnose, Verlauf, OP, Pathologie), so the Meldung_ID plus a fixed suffix identifies each
+ * Observation. The Gleason score is mapped by {@link GleasonScoreMapper}.
+ */
 @Service
 public class ModulProstataMapper extends ObdsToFhirMapper {
   private static final Logger LOG = LoggerFactory.getLogger(ModulProstataMapper.class);
@@ -25,226 +32,160 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
   protected ModulProstataMapper(
       FhirProperties fhirProperties, GleasonScoreMapper gleasonScoreMapper) {
     super(fhirProperties);
-
     this.gleasonScoreMapper = gleasonScoreMapper;
   }
 
-  public List<Observation> map(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition) {
-    return map(modulProstata, meldungId, patient, condition, null, null);
-  }
-
-  public List<Observation> map(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition,
-      @Nullable DateTimeType referenzDatum) {
-    return map(modulProstata, meldungId, patient, condition, referenzDatum, null);
-  }
-
+  /**
+   * @param effective the date of the section {@code Modul_Prostata} is part of, e.g. the OP date
+   * @param op the OP Procedure. Only available in an OP Meldung. Used as the focus of the
+   *     Clavien-Dindo grade.
+   * @param specimen the Specimen of the section's Histologie, if there is one. Used as the specimen
+   *     of the Gleason score.
+   */
   public List<Observation> map(
       @NonNull ModulProstataTyp modulProstata,
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable DateTimeType referenzDatum,
-      @Nullable Reference op) {
+      @Nullable DateTimeType effective,
+      @Nullable Reference op,
+      @Nullable Reference specimen) {
     verifyReference(patient, ResourceType.Patient);
     verifyReference(condition, ResourceType.Condition);
+    if (op != null) {
+      verifyReference(op, ResourceType.Procedure);
+    }
+    if (specimen != null) {
+      verifyReference(specimen, ResourceType.Specimen);
+    }
 
+    var identifiers = fhirProperties.getSystems().getIdentifiers();
+    var datumStanzen = convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null);
     var results = new ArrayList<Observation>();
 
     if (modulProstata.getPSA() != null) {
-      var observation = mapPsa(modulProstata, meldungId, patient, condition);
-      results.add(observation);
+      // the profile fixes the unit to "ng/ml" but the UCUM code to "ng/mL"
+      var psa =
+          new Quantity()
+              .setValue(modulProstata.getPSA())
+              .setUnit("ng/ml")
+              .setSystem(fhirProperties.getSystems().getUcum())
+              .setCode("ng/mL");
+      results.add(
+          withLaboratoryCodeAndValue(
+              createBaseObservation(
+                  Onkologie.Profiles.miiPrOnkoProstatePsa(),
+                  identifiers.getProstataPsaObservationId(),
+                  meldungId + "-modul-prostata-psa",
+                  patient,
+                  condition,
+                  convertObdsDatumToDateTimeType(modulProstata.getDatumPSA()).orElse(null)),
+              loinc("2857-1", "Prostate specific Ag [Mass/volume] in Serum or Plasma"),
+              psa));
     }
 
     if (modulProstata.getAnzahlStanzen() != null) {
-      var observation = mapAnzahlStanzen(modulProstata, meldungId, patient, condition);
-      results.add(observation);
+      results.add(
+          withLaboratoryCodeAndValue(
+              createBaseObservation(
+                  Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen(),
+                  identifiers.getProstataAnzahlStanzenObservationId(),
+                  meldungId + "-modul-prostata-anzahl-stanzen",
+                  patient,
+                  condition,
+                  datumStanzen),
+              loinc("44652-6", "Total number of cores in Tissue core"),
+              new IntegerType(modulProstata.getAnzahlStanzen())));
     }
 
     if (modulProstata.getAnzahlPosStanzen() != null) {
-      var observation = mapAnzahlPositiveStanzen(modulProstata, meldungId, patient, condition);
-      results.add(observation);
+      results.add(
+          withLaboratoryCodeAndValue(
+              createBaseObservation(
+                  Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen(),
+                  identifiers.getProstataAnzahlPositiveStanzenObservationId(),
+                  meldungId + "-modul-prostata-anzahl-positive-stanzen",
+                  patient,
+                  condition,
+                  datumStanzen),
+              loinc("44651-8", "Tissue cores.positive.carcinoma in Tissue core"),
+              new IntegerType(modulProstata.getAnzahlPosStanzen())));
     }
 
     if (modulProstata.getCaBefallStanze() != null) {
-      var observation = mapCaBefallStanzen(modulProstata, meldungId, patient, condition);
-      results.add(observation);
+      results.add(
+          withLaboratoryCodeAndValue(
+              createBaseObservation(
+                  Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze(),
+                  identifiers.getProstataCaBefallStanzeObservationId(),
+                  meldungId + "-modul-prostata-ca-befall-stanze",
+                  patient,
+                  condition,
+                  datumStanzen),
+              loinc("44654-2", "Tissue involved by tumor in Prostate tumor"),
+              percentage(modulProstata.getCaBefallStanze().getProzentzahl())));
     }
 
     if (modulProstata.getKomplPostOPClavienDindo() != null) {
-      var observation =
-          mapClavienDindoScore(modulProstata, meldungId, patient, condition, referenzDatum, op);
-      results.add(observation);
+      results.add(
+          mapClavienDindo(
+              modulProstata.getKomplPostOPClavienDindo(),
+              meldungId,
+              patient,
+              condition,
+              effective,
+              op));
     }
 
     if (modulProstata.getGleasonScore() != null) {
-      var observations =
-          gleasonScoreMapper.map(modulProstata, meldungId, patient, condition, referenzDatum);
-      results.addAll(observations);
+      // in an OP Meldung, the Histologie is the resected tissue, not the biopsies a score with
+      // Anlass S was determined on
+      var isBiopsyScoreInOp =
+          op != null && modulProstata.getAnlassGleasonScore() == AnlassGleasonScoreTyp.S;
+      results.addAll(
+          gleasonScoreMapper.map(
+              modulProstata,
+              meldungId,
+              patient,
+              condition,
+              effective,
+              isBiopsyScoreInOp ? null : specimen));
     }
 
     return results;
   }
 
-  private Observation mapPsa(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition) {
-    Objects.requireNonNull(modulProstata.getPSA());
-    // for creating the identifier, we can use the meldungId plus a fixed suffix
-    // as a single Meldung can only have one of the elements that may contain the
-    // Modul_Prostata_Typ: Pathologie, Diagnose, OP.
-    var observation =
-        createBaseObservation(
-            Onkologie.Profiles.miiPrOnkoProstatePsa(),
-            fhirProperties.getSystems().getIdentifiers().getProstataPsaObservationId(),
-            meldungId + "-modul-prostata-psa",
-            patient,
-            condition,
-            convertObdsDatumToDateTimeType(modulProstata.getDatumPSA()).orElse(null));
+  private Observation withLaboratoryCodeAndValue(Observation observation, Coding code, Type value) {
     observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    observation.setCode(
-        new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .loinc()
-                .setCode("2857-1")
-                .setDisplay("Prostate specific Ag [Mass/volume] in Serum or Plasma")));
-
-    var valueQuantity =
-        new Quantity()
-            .setValue(modulProstata.getPSA())
-            .setUnit("ng/ml")
-            .setSystem(fhirProperties.getSystems().getUcum())
-            .setCode("ng/mL");
-
-    observation.setValue(valueQuantity);
-
-    return observation;
+    observation.setCode(new CodeableConcept(code));
+    return observation.setValue(value);
   }
 
-  private Observation mapAnzahlStanzen(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition) {
-    Objects.requireNonNull(modulProstata.getAnzahlStanzen());
-    var observation =
-        createBaseObservation(
-            Onkologie.Profiles.miiPrOnkoProstateAnzahlStanzen(),
-            fhirProperties.getSystems().getIdentifiers().getProstataAnzahlStanzenObservationId(),
-            meldungId + "-modul-prostata-anzahl-stanzen",
-            patient,
-            condition,
-            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
-    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    observation.setCode(
-        new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .loinc()
-                .setCode("44652-6")
-                .setDisplay("Total number of cores in Tissue core")));
-
-    var value = new IntegerType(modulProstata.getAnzahlStanzen());
-    observation.setValue(value);
-
-    return observation;
-  }
-
-  private Observation mapAnzahlPositiveStanzen(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition) {
-    Objects.requireNonNull(modulProstata.getAnzahlPosStanzen());
-    var observation =
-        createBaseObservation(
-            Onkologie.Profiles.miiPrOnkoProstateAnzahlPositiveStanzen(),
-            fhirProperties
-                .getSystems()
-                .getIdentifiers()
-                .getProstataAnzahlPositiveStanzenObservationId(),
-            meldungId + "-modul-prostata-anzahl-positive-stanzen",
-            patient,
-            condition,
-            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
-    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    observation.setCode(
-        new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .loinc()
-                .setCode("44651-8")
-                .setDisplay("Tissue cores.positive.carcinoma in Tissue core")));
-
-    var value = new IntegerType(modulProstata.getAnzahlPosStanzen());
-    observation.setValue(value);
-
-    return observation;
-  }
-
-  private Observation mapCaBefallStanzen(
-      @NonNull ModulProstataTyp modulProstata,
-      @NonNull String meldungId,
-      @NonNull Reference patient,
-      @NonNull Reference condition) {
-    Objects.requireNonNull(modulProstata.getCaBefallStanze());
-    var observation =
-        createBaseObservation(
-            Onkologie.Profiles.miiPrOnkoProstateCaBefallStanze(),
-            fhirProperties.getSystems().getIdentifiers().getProstataCaBefallStanzeObservationId(),
-            meldungId + "-modul-prostata-ca-befall-stanze",
-            patient,
-            condition,
-            convertObdsDatumToDateTimeType(modulProstata.getDatumStanzen()).orElse(null));
-    observation.addCategory(observationCategory(ObservationCategory.LABORATORY));
-
-    observation.setCode(
-        new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .loinc()
-                .setCode("44654-2")
-                .setDisplay("Tissue involved by tumor in Prostate tumor")));
-
-    var valueQuantity =
-        new Quantity().setUnit("%").setSystem(fhirProperties.getSystems().getUcum()).setCode("%");
-
-    // valueQuantity.value is 1..1 in the mii-pr-onko-prostate-ca-befall-stanze profile, so it
-    // must be set even when the percentage is unknown.
-    if (modulProstata.getCaBefallStanze().getProzentzahl() != null) {
-      valueQuantity.setValue(modulProstata.getCaBefallStanze().getProzentzahl());
-    } else {
-      var absentValue = new DecimalType();
-      absentValue.addExtension(DataAbsentReason.unknown());
-      valueQuantity.setValueElement(absentValue);
+  /**
+   * valueQuantity.value is 1..1 in mii-pr-onko-prostate-ca-befall-stanze, so an unknown percentage
+   * is set as a value with a data-absent-reason.
+   */
+  private Quantity percentage(@Nullable Integer prozentzahl) {
+    if (prozentzahl != null) {
+      return ucumQuantity(BigDecimal.valueOf(prozentzahl), "%");
     }
 
-    observation.setValue(valueQuantity);
-
-    return observation;
+    var unknown = new DecimalType();
+    unknown.addExtension(DataAbsentReason.unknown());
+    return new Quantity()
+        .setValueElement(unknown)
+        .setUnit("%")
+        .setSystem(fhirProperties.getSystems().getUcum())
+        .setCode("%");
   }
 
-  private Observation mapClavienDindoScore(
-      @NonNull ModulProstataTyp modulProstata,
+  private Observation mapClavienDindo(
+      @NonNull JNU komplikation,
       @NonNull String meldungId,
       @NonNull Reference patient,
       @NonNull Reference condition,
-      @Nullable DateTimeType referenceDate,
+      @Nullable DateTimeType effective,
       @Nullable Reference op) {
-    Objects.requireNonNull(modulProstata.getKomplPostOPClavienDindo());
     var observation =
         createBaseObservation(
             Onkologie.Profiles.miiPrOnkoProstateClavienDindo(),
@@ -252,24 +193,16 @@ public class ModulProstataMapper extends ObdsToFhirMapper {
             meldungId + "-modul-prostata-clavien-dindo",
             patient,
             condition,
-            referenceDate);
+            effective);
     observation.addCategory(observationCategory(ObservationCategory.SURVEY));
-
     observation.setCode(
         new CodeableConcept(
-            fhirProperties
-                .getCodings()
-                .snomed()
-                .setCode("789279006")
-                .setDisplay("Clavien-Dindo classification grade (observable entity)")));
-
-    var coding =
-        Onkologie.CodeSystems.MiiCsOnkoProstataPostsurgicalComplications.fromValueOrThrow(
-                modulProstata.getKomplPostOPClavienDindo().toString())
-            .coding();
-
-    var value = new CodeableConcept(coding);
-    observation.setValue(value);
+            snomed("789279006", "Clavien-Dindo classification grade (observable entity)")));
+    observation.setValue(
+        new CodeableConcept(
+            Onkologie.CodeSystems.MiiCsOnkoProstataPostsurgicalComplications.fromValueOrThrow(
+                    komplikation.value())
+                .coding()));
 
     if (op != null) {
       observation.addFocus(op);

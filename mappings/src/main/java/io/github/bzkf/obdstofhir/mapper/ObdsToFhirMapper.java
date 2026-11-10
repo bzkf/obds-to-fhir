@@ -121,6 +121,16 @@ public abstract class ObdsToFhirMapper {
         new Coding(reason.getSystem(), reason.toCode(), reason.getDisplay()));
   }
 
+  /** A SNOMED CT coding in the configured edition and version. */
+  protected Coding snomed(@NonNull String code, @Nullable String display) {
+    return fhirProperties.getCodings().snomed().setCode(code).setDisplay(display);
+  }
+
+  /** A LOINC coding in the configured version. */
+  protected Coding loinc(@NonNull String code, @Nullable String display) {
+    return fhirProperties.getCodings().loinc().setCode(code).setDisplay(display);
+  }
+
   /** A Quantity whose unit is also its UCUM code. */
   protected Quantity ucumQuantity(@NonNull BigDecimal value, @NonNull String unit) {
     return new Quantity()

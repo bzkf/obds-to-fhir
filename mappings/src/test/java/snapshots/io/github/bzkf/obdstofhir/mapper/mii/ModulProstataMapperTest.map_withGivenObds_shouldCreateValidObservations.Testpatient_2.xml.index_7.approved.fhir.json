@@ -1,27 +1,32 @@
 {
   "resourceType": "Observation",
-  "id": "63e8b9c511a43b7ff87a34a3887cc681983b6dea0c74f145a44f896711bc783b",
+  "id": "099af5dfcdbb707d7ca9e34916474d84015f735b29bc3eff49dc1449251b6b9e",
   "meta": {
-    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-clavien-dindo" ]
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-prostate-gleason-patterns" ]
   },
   "identifier": [ {
-    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-clavien-dindo-observation-id",
-    "value": "11_1_OP_1-modul-prostata-clavien-dindo"
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/prostata-gleason-patterns-observation-id",
+    "value": "11_1_DI_1-modul-prostata-secondary-gleason-pattern"
   } ],
   "status": "final",
   "category": [ {
     "coding": [ {
       "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-      "code": "survey",
-      "display": "Survey"
+      "code": "laboratory",
+      "display": "Laboratory"
     } ]
   } ],
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",
       "version": "http://snomed.info/sct/900000000000207008/version/20260701",
-      "code": "789279006",
-      "display": "Clavien-Dindo classification grade (observable entity)"
+      "code": "384995005",
+      "display": "Secondary Gleason pattern (observable entity)"
+    }, {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "44642-7",
+      "display": "Gleason pattern.secondary in Prostate tumor"
     } ]
   },
   "subject": {
@@ -29,14 +34,29 @@
   },
   "focus": [ {
     "reference": "Condition/Primärdiagnose"
-  }, {
-    "reference": "Procedure/any"
   } ],
+  "effectiveDateTime": "2021-07-08",
   "valueCodeableConcept": {
     "coding": [ {
-      "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-prostata-postsurgical-complications",
-      "code": "N",
-      "display": "keine oder höchstens Grad II"
+      "extension": [ {
+        "url": "http://hl7.org/fhir/StructureDefinition/itemWeight",
+        "valueDecimal": 4
+      } ],
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "369773008",
+      "display": "Gleason Pattern 4 (finding)"
     } ]
+  },
+  "method": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20260701",
+      "code": "86273004",
+      "display": "Biopsy (procedure)"
+    } ]
+  },
+  "specimen": {
+    "reference": "Specimen/any"
   }
 }

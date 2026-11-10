@@ -84,6 +84,18 @@ There's also some more details on the setup at <https://github.com/bzkf/onco-ana
 
 See [package.json](package.json) for a list of used packages and their versions.
 
+### Deviations from the implementation guide
+
+The generated resources conform to the profiles, but in some places they are used differently than the implementation
+guide describes:
+
+- **Gleason Score Gesamt:** the IG uses `mii-pr-onko-prostate-gleason-score-gesamt` only for reports that document
+  the total Gleason score without the primary and secondary pattern or an ISUP grade group. This job creates it
+  whenever the total score is known, from `ScoreErgebnis` or as the sum of both patterns, in addition to the
+  `mii-pr-onko-prostate-gleason-grade-group` and `mii-pr-onko-prostate-gleason-patterns` Observations. This way every
+  report has its total score in one place: as the SNOMED code of `valueCodeableConcept` and as a number in the
+  coding's `itemWeight` extension. If `ScoreErgebnis` contradicts the patterns, the total is the sum of the patterns.
+
 ## De-Identification
 
 The generated FHIR resources contain identifying information directly taken from the source oBDS data.

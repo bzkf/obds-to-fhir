@@ -628,7 +628,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
               context.patient(),
               context.condition(),
               effective,
-              op));
+              op,
+              specimen));
     }
 
     if (modules.darm() != null) {
