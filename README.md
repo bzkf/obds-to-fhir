@@ -146,13 +146,12 @@ use the death Observations instead of `Patient.deceased`:
 - `mii-pr-person-vitalstatus` Observations, created from the ONKOSTAR patient data if
   `fhir.mappings.from-onkostar-patient-data.enabled` is set
 
-The reason is that the job creates one Bundle per patient and tumor, and each one contains a Patient resource built
-only from that tumor's `Meldungen`. If a patient has several tumors, these Patient resources can differ, and the
-one written last replaces the others:
+The reason is that the job creates one Bundle per patient and tumor, and each one contains a Patient resource whose
+master data, such as the address, comes from that tumor's latest `Meldung`. If a patient has several tumors, these
+Patient resources can differ, and the one written last replaces the others, even if a `Meldung` of another tumor
+contains more recent data.
 
-- `Patient.deceased` is only set if that tumor has a `Tod` Meldung, so a deceased patient can end up without it.
-- The master data, such as the address, comes from that tumor's latest `Meldung`, so a newer `Meldung` of another tumor
-  can contain more recent data.
+`Patient.deceased` is the same in all of them: it is set from the `Tod` Meldungen of all tumors of the patient.
 
 ### Order of the `Meldungen` of a tumor
 
