@@ -1,0 +1,37 @@
+{
+  "resourceType": "Procedure",
+  "id": "0f2ae5664ea07e9f2ffc12949d90e5d443484c6a3e22aaf2c21f952a4e69a244",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-sozialdienst" ]
+  },
+  "extension": [ {
+    "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+    "valueCodeableConcept": {
+      "coding": [ {
+        "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+        "code": "X",
+        "display": "fehlende Angabe"
+      } ]
+    }
+  } ],
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/sozialdienstkontakt-procedure-id",
+    "value": "VER_60102-modul-allgemein-sozialdienstkontakt"
+  } ],
+  "status": "completed",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "306238000",
+      "display": "Referral to Social Services (procedure)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "performedDateTime": "2021-09-16",
+  "reasonReference": [ {
+    "reference": "Condition/any"
+  } ]
+}

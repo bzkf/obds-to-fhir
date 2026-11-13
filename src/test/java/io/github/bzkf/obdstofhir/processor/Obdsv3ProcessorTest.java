@@ -83,6 +83,7 @@ import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
       SpecimenMapper.class,
       VerlaufshistologieObservationMapper.class,
       StudienteilnahmeObservationMapper.class,
+      SozialdienstkontaktMapper.class,
       VerlaufObservationMapper.class,
       GenetischeVarianteMapper.class,
       TumorkonferenzMapper.class,

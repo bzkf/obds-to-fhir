@@ -2126,6 +2126,53 @@
       "url": "Observation/c32635e895fefe6d5895abd223121c1708122cefab4505fd4c9df5ea9b858f06"
     }
   }, {
+    "fullUrl": "Procedure/cf45a24d5d8f6f00392f9ae9a639b785b364211d22ecc8e1ba24c7eae16b3428",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "cf45a24d5d8f6f00392f9ae9a639b785b364211d22ecc8e1ba24c7eae16b3428",
+      "meta": {
+        "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-sozialdienst" ]
+      },
+      "extension": [ {
+        "url": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-ex-onko-operation-intention",
+        "valueCodeableConcept": {
+          "coding": [ {
+            "system": "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/CodeSystem/mii-cs-onko-intention",
+            "code": "X",
+            "display": "fehlende Angabe"
+          } ]
+        }
+      } ],
+      "identifier": [ {
+        "system": "https://bzkf.github.io/obds-to-fhir/identifiers/sozialdienstkontakt-procedure-id",
+        "value": "DIA_50101-modul-allgemein-sozialdienstkontakt"
+      } ],
+      "status": "completed",
+      "code": {
+        "coding": [ {
+          "system": "http://snomed.info/sct",
+          "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+          "code": "306238000",
+          "display": "Referral to Social Services (procedure)"
+        } ]
+      },
+      "subject": {
+        "reference": "Patient/4a8639bbad9d5774878e0d6a132ece2b65912449072a6888e2028987d5d479c4",
+        "identifier": {
+          "system": "https://bzkf.github.io/obds-to-fhir/identifiers/patient-id",
+          "value": "50"
+        }
+      },
+      "performedDateTime": "2020-08-22",
+      "reasonReference": [ {
+        "reference": "Condition/7747c362c90103cc61ce81482b623db5277551c7d5f08aae581ad0b3c8c6e6d5"
+      } ]
+    },
+    "request": {
+      "method": "PUT",
+      "url": "Procedure/cf45a24d5d8f6f00392f9ae9a639b785b364211d22ecc8e1ba24c7eae16b3428"
+    }
+  }, {
     "fullUrl": "Observation/ec6fe01cbe0705f4f60a4b1158586ae0938000639940a468f46aa0a716062f79",
     "resource": {
       "resourceType": "Observation",

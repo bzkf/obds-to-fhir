@@ -112,6 +112,11 @@
               <UICC_Stadium>IV</UICC_Stadium>
             </TNM>
             <Allgemeiner_Leistungszustand>2</Allgemeiner_Leistungszustand>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <Datum>2021-09-16</Datum>
+              </Sozialdienstkontakt>
+            </Modul_Allgemein>
             <Modul_Mamma>
               <Praetherapeutischer_Menopausenstatus>3</Praetherapeutischer_Menopausenstatus>
               <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
@@ -175,6 +180,11 @@
               <UICC_Stadium>IA</UICC_Stadium>
             </cTNM>
             <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <N>N</N>
+              </Sozialdienstkontakt>
+            </Modul_Allgemein>
             <Modul_Mamma>
               <Praetherapeutischer_Menopausenstatus>1</Praetherapeutischer_Menopausenstatus>
               <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
@@ -426,6 +436,11 @@
                 </Nebenwirkung>
               </Menge_Nebenwirkung>
             </Nebenwirkungen>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <Datum>2020-06-18</Datum>
+              </Sozialdienstkontakt>
+            </Modul_Allgemein>
           </ST>
         </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_60108">
@@ -458,6 +473,11 @@
             <Nebenwirkungen>
               <Grad_maximal2_oder_unbekannt>2</Grad_maximal2_oder_unbekannt>
             </Nebenwirkungen>
+            <Modul_Allgemein>
+              <Sozialdienstkontakt>
+                <Datum>2020-04-07</Datum>
+              </Sozialdienstkontakt>
+            </Modul_Allgemein>
           </SYST>
         </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="SYS_60109">
@@ -485,6 +505,11 @@
             <Nebenwirkungen>
               <Grad_maximal2_oder_unbekannt>U</Grad_maximal2_oder_unbekannt>
             </Nebenwirkungen>
+            <Modul_Allgemein>
+              <Psychoonkologiekontakt>
+                <Datum>2020-08-05</Datum>
+              </Psychoonkologiekontakt>
+            </Modul_Allgemein>
           </SYST>
         </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="KON_60110">

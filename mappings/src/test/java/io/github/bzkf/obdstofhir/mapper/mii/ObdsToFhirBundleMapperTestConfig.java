@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Import;
   SpecimenMapper.class,
   VerlaufshistologieObservationMapper.class,
   StudienteilnahmeObservationMapper.class,
+  SozialdienstkontaktMapper.class,
   VerlaufObservationMapper.class,
   GenetischeVarianteMapper.class,
   TumorkonferenzMapper.class,
