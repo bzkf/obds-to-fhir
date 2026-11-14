@@ -86,6 +86,7 @@ fhir:
       melanom-breslow-tiefe-observation-id: "${fhir.systems.identifiers.base-url}/melanom-breslow-tiefe-observation-id"
       melanom-ldh-observation-id: "${fhir.systems.identifiers.base-url}/melanom-ldh-observation-id"
       melanom-ulzeration-observation-id: "${fhir.systems.identifiers.base-url}/melanom-ulzeration-observation-id"
+      sozialdienstkontakt-procedure-id: "${fhir.systems.identifiers.base-url}/sozialdienstkontakt-procedure-id"
       obds-meldung-id: "${fhir.systems.identifiers.base-url}/obds-meldung-id"
       provenance-id: "${fhir.systems.identifiers.base-url}/provenance-id"
       obds-to-fhir-device-id: "${fhir.systems.identifiers.base-url}/obds-to-fhir-device-id"

@@ -110,6 +110,7 @@ public class FhirProperties {
     private String melanomBreslowTiefeObservationId;
     private String melanomLdhObservationId;
     private String melanomUlzerationObservationId;
+    private String sozialdienstkontaktProcedureId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;

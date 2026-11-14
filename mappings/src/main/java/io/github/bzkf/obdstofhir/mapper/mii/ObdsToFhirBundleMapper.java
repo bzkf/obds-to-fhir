@@ -79,6 +79,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TodMapper todMapper;
   private final VerlaufshistologieObservationMapper verlaufshistologieObservationMapper;
   private final StudienteilnahmeObservationMapper studienteilnahmeObservationMapper;
+  private final SozialdienstkontaktMapper sozialdienstkontaktMapper;
   private final VerlaufObservationMapper verlaufObservationMapper;
   private final GenetischeVarianteMapper genetischeVarianteMapper;
   private final TumorkonferenzMapper tumorkonferenzMapper;
@@ -131,6 +132,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       SpecimenMapper specimenMapper,
       VerlaufshistologieObservationMapper verlaufshistologieObservationMapper,
       StudienteilnahmeObservationMapper studienteilnahmeObservationMapper,
+      SozialdienstkontaktMapper sozialdienstkontaktMapper,
       VerlaufObservationMapper verlaufObservationMapper,
       GenetischeVarianteMapper genetischeVarianteMapper,
       TumorkonferenzMapper tumorkonferenzMapper,
@@ -163,6 +165,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.specimenMapper = specimenMapper;
     this.verlaufshistologieObservationMapper = verlaufshistologieObservationMapper;
     this.studienteilnahmeObservationMapper = studienteilnahmeObservationMapper;
+    this.sozialdienstkontaktMapper = sozialdienstkontaktMapper;
     this.verlaufObservationMapper = verlaufObservationMapper;
     this.genetischeVarianteMapper = genetischeVarianteMapper;
     this.tumorkonferenzMapper = tumorkonferenzMapper;
@@ -502,18 +505,33 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return specimenReference;
   }
 
-  /** Maps the Studienteilnahme observation shared by Diagnose, Verlauf, SYST, ST and OP. */
-  private void mapStudienteilnahme(
+  /**
+   * Maps the Modul_Allgemein shared by Diagnose, Verlauf, SYST, ST and OP. Its
+   * Psychoonkologiekontakt isn't mapped, the IG has no profile for it.
+   */
+  private void mapModulAllgemein(
       @Nullable ModulAllgemeinTyp allgemein,
       MeldungContext context,
       List<Resource> mappedResources) {
-    if (allgemein == null || allgemein.getStudienteilnahme() == null) {
+    if (allgemein == null) {
       return;
     }
 
-    mappedResources.add(
-        studienteilnahmeObservationMapper.map(
-            allgemein, context.patient(), context.condition(), context.meldungId()));
+    if (allgemein.getStudienteilnahme() != null) {
+      mappedResources.add(
+          studienteilnahmeObservationMapper.map(
+              allgemein, context.patient(), context.condition(), context.meldungId()));
+    }
+
+    if (allgemein.getSozialdienstkontakt() != null) {
+      sozialdienstkontaktMapper
+          .map(
+              allgemein.getSozialdienstkontakt(),
+              context.meldungId(),
+              context.patient(),
+              context.condition())
+          .ifPresent(mappedResources::add);
+    }
   }
 
   /** Maps the WeitereKlassifikation resources shared by Diagnose, Verlauf and Pathologie. */
@@ -664,7 +682,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     var specimenReference =
         mapHistologie(diagnose.getHistologie(), false, context, mappedResources);
 
-    mapStudienteilnahme(diagnose.getModulAllgemein(), context, mappedResources);
+    mapModulAllgemein(diagnose.getModulAllgemein(), context, mappedResources);
 
     mapGenetischeVarianten(diagnose.getMengeGenetik(), "Diagnose", context, mappedResources);
 
@@ -762,7 +780,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     var specimenReference = mapHistologie(verlauf.getHistologie(), true, context, mappedResources);
 
-    mapStudienteilnahme(verlauf.getModulAllgemein(), context, mappedResources);
+    mapModulAllgemein(verlauf.getModulAllgemein(), context, mappedResources);
 
     mapGenetischeVarianten(verlauf.getMengeGenetik(), "Verlauf", context, mappedResources);
 
@@ -809,7 +827,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
     }
 
-    mapStudienteilnahme(syst.getModulAllgemein(), context, mappedResources);
+    mapModulAllgemein(syst.getModulAllgemein(), context, mappedResources);
 
     if (syst.getNebenwirkungen() != null) {
       mappedResources.addAll(
@@ -827,7 +845,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         strahlentherapieMapper.map(st, context.patient(), context.condition(), context.meldungId());
     mappedResources.addAll(stProcedures);
 
-    mapStudienteilnahme(st.getModulAllgemein(), context, mappedResources);
+    mapModulAllgemein(st.getModulAllgemein(), context, mappedResources);
 
     if (st.getNebenwirkungen() != null) {
       // in the list of procedures, find the primary/bracket one by cehcking its
@@ -868,7 +886,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
     var specimenReference = mapHistologie(op.getHistologie(), true, context, mappedResources);
 
-    mapStudienteilnahme(op.getModulAllgemein(), context, mappedResources);
+    mapModulAllgemein(op.getModulAllgemein(), context, mappedResources);
 
     mapGenetischeVarianten(op.getMengeGenetik(), "OP", context, mappedResources);
 
