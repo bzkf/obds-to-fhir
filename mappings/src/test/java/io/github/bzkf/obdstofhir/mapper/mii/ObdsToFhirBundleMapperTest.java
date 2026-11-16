@@ -4,12 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.util.BundleUtil;
 import com.github.difflib.text.DiffRowGenerator;
 import com.spun.util.introspection.Caller;
 import de.basisdatensatz.obds.v3.OBDS;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
+import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 import org.approvaltests.Approvals;
 import org.approvaltests.scrubbers.Scrubbers;
@@ -157,6 +160,51 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     }
   }
 
+  /** The given file reduced to the Meldungen of one tumor, like the oBDS the processor builds. */
+  private static OBDS readObdsOfTumor(String sourceFile, String tumorId) throws IOException {
+    final var resource =
+        ObdsToFhirBundleMapperTest.class.getClassLoader().getResource("obds3/" + sourceFile);
+    assertThat(resource).isNotNull();
+
+    final var obds = Obdsv3Deserializer.xmlMapper().readValue(resource.openStream(), OBDS.class);
+    obds.getMengePatient()
+        .getPatient()
+        .getFirst()
+        .getMengeMeldung()
+        .getMeldung()
+        .removeIf(meldung -> !tumorId.equals(meldung.getTumorzuordnung().getTumorID()));
+    return obds;
+  }
+
+  private static void assertThatEveryPatientDiedOn(
+      List<BundleMapperResult> results, String expectedSterbedatum) {
+    assertThat(results)
+        .allSatisfy(
+            result ->
+                assertThat(
+                        BundleUtil.toListOfResourcesOfType(
+                            FhirContext.forR4(), result.bundle(), Patient.class))
+                    .singleElement()
+                    .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
+                    .isEqualTo(expectedSterbedatum));
+  }
+
+  @ParameterizedTest
+  @CsvSource({"101, 102", "102, 101"})
+  void map_withTodMeldungOfAnotherTumor_shouldSetPatientDeceasedInEveryBundle(
+      String firstTumorId, String secondTumorId) throws IOException {
+    // patient 10 has a Tod Meldung for tumor 101, but none for tumor 102
+    final var groupedObds =
+        List.of(
+            readObdsOfTumor("Testpatient_1.xml", firstTumorId),
+            readObdsOfTumor("Testpatient_1.xml", secondTumorId));
+
+    final var results = sut.map(groupedObds);
+
+    assertThat(results).hasSize(2);
+    assertThatEveryPatientDiedOn(results, "2022-08-01");
+  }
+
   @SpringBootTest(
       classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class},
       properties = "fhir.mappings.create-provenance-resources.enabled=true")
@@ -245,6 +293,21 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
       assertThatThrownBy(() -> sut.map(obds))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageNotContaining("not-a-number");
+    }
+
+    @Test
+    void map_withTodMeldungOfAnotherTumorAndPatientIdRegex_shouldSetPatientDeceasedInEveryBundle()
+        throws IOException {
+      // the regex turns the Patient_ID 10 of both oBDS into 1
+      final var groupedObds =
+          List.of(
+              readObdsOfTumor("Testpatient_1.xml", "101"),
+              readObdsOfTumor("Testpatient_1.xml", "102"));
+
+      final var results = sut.map(groupedObds);
+
+      assertThat(results).hasSize(2);
+      assertThatEveryPatientDiedOn(results, "2022-08-01");
     }
 
     @ParameterizedTest

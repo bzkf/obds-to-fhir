@@ -32,7 +32,9 @@ import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
@@ -179,15 +181,34 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.patientReferenceGenerator = patientReferenceGenerator;
   }
 
+  /**
+   * Maps each of the given oBDS to bundles of its own. The Meldungen of a patient are usually split
+   * into one oBDS per tumor, each resulting in a bundle that contains the Patient. To set {@code
+   * Patient.deceased} in all of them, no matter which tumor the Tod Meldung belongs to, it is
+   * derived from the Meldungen the patient has across all given oBDS.
+   */
   public List<BundleMapperResult> map(List<OBDS> groupedObds) {
+    var meldungenByPatientId = new HashMap<String, List<Meldung>>();
+    for (OBDS obds : groupedObds) {
+      for (var obdsPatient : obds.getMengePatient().getPatient()) {
+        meldungenByPatientId
+            .computeIfAbsent(obdsPatient.getPatientID(), patientId -> new ArrayList<>())
+            .addAll(obdsPatient.getMengeMeldung().getMeldung());
+      }
+    }
+
     var results = new ArrayList<BundleMapperResult>();
     for (OBDS obds : groupedObds) {
-      results.addAll(map(obds));
+      results.addAll(map(obds, meldungenByPatientId));
     }
     return results;
   }
 
   public List<BundleMapperResult> map(OBDS obds) {
+    return map(List.of(obds));
+  }
+
+  private List<BundleMapperResult> map(OBDS obds, Map<String, List<Meldung>> meldungenByPatientId) {
 
     var results = new ArrayList<BundleMapperResult>();
 
@@ -195,6 +216,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);
       var bundleProvenances = new ArrayList<Provenance>();
+
+      // looked up here, because the regex below changes the Patient_ID they were collected by
+      var allMeldungenOfPatient = meldungenByPatientId.get(obdsPatient.getPatientID());
 
       if (!patientIdRegex.pattern().isBlank()) {
         var matcher = patientIdRegex.matcher(obdsPatient.getPatientID().trim());
@@ -231,11 +255,11 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
 
       // Patient
-      // XXX: this assumes that the "meldungen" contains every single Meldung for the
+      // XXX: this assumes that the "allMeldungenOfPatient" contains every single Meldung for the
       // patient
       // e.g. in case of Folgepakete, this might not be the case. The main Problem is
       // the Patient.deceased information which is not present in every single Paket.
-      var patient = patientMapper.map(obdsPatient, meldungen);
+      var patient = patientMapper.map(obdsPatient, allMeldungenOfPatient);
 
       var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 

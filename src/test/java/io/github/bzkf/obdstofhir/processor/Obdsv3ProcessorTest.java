@@ -404,6 +404,24 @@ class Obdsv3ProcessorTest extends MapperTest {
   }
 
   @Test
+  void process_withTodMeldungOfAnotherTumor_shouldSetPatientDeceasedInEveryBundle()
+      throws IOException {
+    // both belong to patient 10: Testpatient_1.xml contains the Tod Meldung and is grouped as
+    // tumor 101, Test_ST_1.xml is a Meldung of tumor 1
+    var bundles = processAll("Testpatient_1.xml", "Test_ST_1.xml");
+
+    // one bundle for the first file, then one per tumor for the second file
+    assertThat(bundles)
+        .hasSize(3)
+        .allSatisfy(
+            bundle ->
+                assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class))
+                    .singleElement()
+                    .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
+                    .isEqualTo("2022-08-01"));
+  }
+
+  @Test
   void process_withBeginAndEndOfSameTumorkonferenz_shouldKeepTheEndState() throws IOException {
     // both describe Tumorkonferenz_ID 221: behandlungsbeginn and behandlungsende
     var bundle =
