@@ -1,14 +1,10 @@
 package io.github.bzkf.obdstofhir.mapper.mii;
 
-import de.basisdatensatz.obds.v3.DiagnoseTyp;
-import de.basisdatensatz.obds.v3.MengeFMTyp.Fernmetastase;
-import de.basisdatensatz.obds.v3.PathologieTyp;
-import de.basisdatensatz.obds.v3.VerlaufTyp;
+import de.basisdatensatz.obds.v3.MengeFMTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import org.hl7.fhir.r4.model.*;
@@ -25,44 +21,25 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
     super(fhirProperties);
   }
 
+  /**
+   * @param section the section of the Meldung containing the Fernmetastasen, e.g. {@code Verlauf}.
+   *     It's part of the identifier.
+   */
   public List<Observation> map(
-      VerlaufTyp verlaufTyp, String meldungId, Reference patient, Reference diagnose) {
-    return createObservations(
-        verlaufTyp.getMengeFM().getFernmetastase(), meldungId + "-Verlauf", patient, diagnose);
-  }
-
-  public List<Observation> map(
-      DiagnoseTyp diagnoseTyp, String meldungId, Reference patient, Reference diagnose) {
-    return createObservations(
-        diagnoseTyp.getMengeFM().getFernmetastase(), meldungId + "-Diagnose", patient, diagnose);
-  }
-
-  public List<Observation> map(
-      PathologieTyp pathologieTyp, String meldungId, Reference patient, Reference diagnose) {
-    return createObservations(
-        pathologieTyp.getMengeFM().getFernmetastase(),
-        meldungId + "-Pathologie",
-        patient,
-        diagnose);
-  }
-
-  private List<Observation> createObservations(
-      List<Fernmetastase> fernmetastasen, String source, Reference patient, Reference diagnose) {
+      MengeFMTyp mengeFM, String section, String meldungId, Reference patient, Reference diagnose) {
     verifyReference(patient, ResourceType.Patient);
     verifyReference(diagnose, ResourceType.Condition);
 
+    var fernmetastasen = mengeFM.getFernmetastase();
     var result = new ArrayList<Observation>();
     for (int i = 0; i < fernmetastasen.size(); i++) {
       var fernmetastase = fernmetastasen.get(i);
       var observation = new Observation();
 
-      // Identifier
-      var identifier = new Identifier();
-      identifier
-          .setSystem(fhirProperties.getSystems().getIdentifiers().getFernmetastasenObservationId())
-          .setValue(slugifier.slugify(source + "-" + i));
-      observation.addIdentifier(identifier);
-      observation.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          observation,
+          fhirProperties.getSystems().getIdentifiers().getFernmetastasenObservationId(),
+          meldungId + "-" + section + "-" + i);
 
       // Meta-Daten
       observation.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoFernmetastasen());
@@ -90,9 +67,7 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
               observation::setEffective,
               () -> {
                 LOG.warn("Fernmetastase Diagnosedatum is unset. Setting data absent extension.");
-                var absentDateTime = new DateTimeType();
-                absentDateTime.addExtension(DataAbsentReason.unknown());
-                observation.setEffective(absentDateTime);
+                observation.setEffective(absentDateTime());
               });
 
       // Lokalisation
@@ -102,7 +77,6 @@ public class FernmetastasenMapper extends ObdsToFhirMapper {
             Onkologie.CodeSystems.MiiCsOnkoFernmetastasen.fromValueOrThrow(
                     fernmetastase.getLokalisation())
                 .coding());
-        observation.setValue(lokalisation);
       } else {
         LOG.warn("Fernmetastase Lokalisation is unset. Setting data absent extension.");
         lokalisation.addExtension(DataAbsentReason.unknown());

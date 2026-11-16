@@ -1,0 +1,35 @@
+{
+  "resourceType": "Observation",
+  "id": "55932fe7e85861d798f04130c2407ec412aeb6981b262246d207c961a8d1665b",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-menopause-status" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-menopausenstatus-observation-id",
+    "value": "DIA_60103-modul-mamma-menopausenstatus"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "161712005",
+      "display": "Menopause, function (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-02-16",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "22636003",
+      "display": "Premenopausal state (finding)"
+    } ]
+  }
+}

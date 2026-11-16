@@ -9,6 +9,13 @@
     "value": "ECOG-10_1_DI_1"
   } ],
   "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "survey",
+      "display": "Survey"
+    } ]
+  } ],
   "code": {
     "coding": [ {
       "system": "http://snomed.info/sct",

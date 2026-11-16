@@ -4,7 +4,6 @@ import de.basisdatensatz.obds.v3.TodTyp;
 import de.medizininformatikinitiative.kerndatensatz.base.Base;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
@@ -59,28 +58,23 @@ public class VitalStatusMapper extends ObdsToFhirMapper {
                 .setDisplay("Patient Disposition"));
 
     observation.setCode(code);
-    Identifier identifier = new Identifier();
     // set effectiveDateTime
     // if Todesdatum aus Meldung, dann "T", sonst L
     var valueCodeableConcept = new CodeableConcept();
     if (tod != null) {
-      // Identifier
-      identifier
-          .setSystem(vitalStatusObsIdentifierSytstem)
-          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "T"));
-      observation.addIdentifier(identifier);
-      observation.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          observation,
+          vitalStatusObsIdentifierSytstem,
+          patient.getIdentifier().getValue() + "-vs-" + "T");
       var todesdatum = convertObdsDatumToDateTimeType(tod.getSterbedatum());
       todesdatum.ifPresent(observation::setEffective);
 
       valueCodeableConcept.addCoding(Base.CodeSystems.MiiCsPersonVitalstatus.T.coding());
     } else {
-
-      identifier
-          .setSystem(vitalStatusObsIdentifierSytstem)
-          .setValue(slugifier.slugify(patient.getIdentifier().getValue() + "-vs-" + "L"));
-      observation.addIdentifier(identifier);
-      observation.setId(IdUtils.fromIdentifier(identifier));
+      setIdentifierAndId(
+          observation,
+          vitalStatusObsIdentifierSytstem,
+          patient.getIdentifier().getValue() + "-vs-" + "L");
       var date =
           convertObdsDatumToDateTimeType(
               Objects.requireNonNull(

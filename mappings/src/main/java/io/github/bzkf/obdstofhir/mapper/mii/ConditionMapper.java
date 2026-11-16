@@ -2,17 +2,9 @@ package io.github.bzkf.obdstofhir.mapper.mii;
 
 import de.basisdatensatz.obds.v3.MorphologieICDOTyp;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
-import de.basisdatensatz.obds.v3.SeitenlokalisationTyp;
-import de.basisdatensatz.obds.v3.TumorzuordnungTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.*;
@@ -20,59 +12,15 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class ConditionMapper extends ObdsToFhirMapper {
 
   private static final Logger LOG = LoggerFactory.getLogger(ConditionMapper.class);
-  private final EnumMap<SeitenlokalisationTyp, Coding> seitenlokalisationToSnomedLookup;
 
   public ConditionMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
-
-    seitenlokalisationToSnomedLookup = new EnumMap<>(SeitenlokalisationTyp.class);
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.L,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("7771000")
-            .setDisplay("Left (qualifier value)"));
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.R,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("24028007")
-            .setDisplay("Right (qualifier value)"));
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.B,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("51440002")
-            .setDisplay("Right and left (qualifier value)"));
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.M,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("260528009")
-            .setDisplay("Median (qualifier value)"));
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.T,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("385432009")
-            .setDisplay("Not applicable (qualifier value)"));
-    seitenlokalisationToSnomedLookup.put(
-        SeitenlokalisationTyp.U,
-        fhirProperties
-            .getCodings()
-            .snomed()
-            .setCode("261665006")
-            .setDisplay("Unknown (qualifier value)"));
   }
 
   public Condition map(
@@ -99,43 +47,48 @@ public class ConditionMapper extends ObdsToFhirMapper {
       condition.getMeta().addTag(tag);
     }
 
-    var identifier = buildConditionIdentifier(meldung.getTumorzuordnung(), patientId);
-    condition.addIdentifier(identifier);
-    condition.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        condition,
+        fhirProperties.getSystems().getIdentifiers().getPrimaerdiagnoseConditionId(),
+        patientId + "-" + meldung.getTumorzuordnung().getTumorID());
 
     condition.setSubject(patient);
     condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoDiagnosePrimaertumor());
 
     var tumorzuordnung = meldung.getTumorzuordnung();
 
-    var icd =
-        new Coding()
-            .setSystem(fhirProperties.getSystems().getIcd10gm())
-            .setCode(tumorzuordnung.getPrimaertumorICD().getCode());
+    var primaertumorIcd = tumorzuordnung.getPrimaertumorICD();
+    var code =
+        new CodeableConcept()
+            .setCoding(mapTumorIcdToCodings(primaertumorIcd, "Primaertumor_ICD_Version", LOG));
 
-    var icd10Version = tumorzuordnung.getPrimaertumorICD().getVersion();
-    icd.setVersionElement(extractIcdVersionYear(icd10Version, "Primaertumor_ICD_Version", LOG));
+    if (meldung.getDiagnose() != null
+        && StringUtils.hasText(meldung.getDiagnose().getPrimaertumorDiagnosetext())) {
+      code.setText(meldung.getDiagnose().getPrimaertumorDiagnosetext());
+    } else if (extractIcdCatalog(primaertumorIcd.getVersion()).orElse(Icd10Catalog.GM)
+        == Icd10Catalog.OTHER) {
+      // no system can be asserted for "Sonstige", so keep the code as free text
+      code.setText(primaertumorIcd.getCode());
+    }
 
-    condition.setCode(new CodeableConcept(icd));
+    condition.setCode(code);
 
     if (meldung.getDiagnose() != null && meldung.getDiagnose().getHistologie() != null) {
       var distinctMorphologyCodes =
-          getDistinctMorphologies(meldung.getDiagnose().getHistologie().getMorphologieICDO());
+          meldung.getDiagnose().getHistologie().getMorphologieICDO().stream()
+              .map(MorphologieICDOTyp::getCode)
+              .distinct()
+              .toList();
 
       if (distinctMorphologyCodes.size() > 1) {
         LOG.warn(
             "Diagnonse Histologie element contains more than one distinct ICD-O3 code: {}. "
                 + "Adding multiple extensions.",
-            distinctMorphologyCodes.stream().map(c -> c.getCode()).toList());
+            distinctMorphologyCodes);
       }
 
       for (var morphologieCode : distinctMorphologyCodes) {
-        var morphologie = new CodeableConcept();
-        morphologie
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-            .setCode(morphologieCode.getCode())
-            .setVersion(morphologieCode.getVersion());
+        var morphologie = new CodeableConcept(icdo3Coding(morphologieCode));
 
         morphologie.setText(meldung.getDiagnose().getHistologie().getMorphologieFreitext());
 
@@ -145,12 +98,8 @@ public class ConditionMapper extends ObdsToFhirMapper {
     } else {
       if (tumorzuordnung.getMorphologieICDO() != null
           && tumorzuordnung.getMorphologieICDO().getCode() != null) {
-        var morphologie = new CodeableConcept();
-        morphologie
-            .addCoding()
-            .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-            .setCode(tumorzuordnung.getMorphologieICDO().getCode())
-            .setVersion(tumorzuordnung.getMorphologieICDO().getVersion());
+        var morphologie =
+            new CodeableConcept(icdo3Coding(tumorzuordnung.getMorphologieICDO().getCode()));
 
         condition.addExtension(
             Onkologie.Extensions.miiExOnkoHistologyMorphologyBehaviorIcdo3(morphologie));
@@ -163,14 +112,9 @@ public class ConditionMapper extends ObdsToFhirMapper {
       var diagnoseMeldung = meldung.getDiagnose();
 
       if (diagnoseMeldung.getPrimaertumorTopographieICDO() != null) {
-        CodeableConcept topographie =
+        condition.addBodySite(
             new CodeableConcept(
-                new Coding()
-                    .setSystem(fhirProperties.getSystems().getIcdo3Morphologie())
-                    .setCode(meldung.getDiagnose().getPrimaertumorTopographieICDO().getCode())
-                    .setVersion(
-                        meldung.getDiagnose().getPrimaertumorTopographieICDO().getVersion()));
-        condition.addBodySite(topographie);
+                icdo3Coding(diagnoseMeldung.getPrimaertumorTopographieICDO().getCode())));
       }
 
       if (diagnoseMeldung.getPrimaertumorTopographieFreitext() != null) {
@@ -199,16 +143,6 @@ public class ConditionMapper extends ObdsToFhirMapper {
                       tumorzuordnung.getSeitenlokalisation().value())
                   .coding());
 
-      var snomedBodySite =
-          seitenlokalisationToSnomedLookup.get(tumorzuordnung.getSeitenlokalisation());
-      if (snomedBodySite != null) {
-        seitenlokalisation.addCoding(snomedBodySite);
-      } else {
-        LOG.warn(
-            "Seitenlokalisation {} not found in lookup table. No Snomed code will be added.",
-            tumorzuordnung.getSeitenlokalisation());
-      }
-
       condition.addBodySite(seitenlokalisation);
     }
 
@@ -219,10 +153,8 @@ public class ConditionMapper extends ObdsToFhirMapper {
                     fhirProperties.getExtensions().getConditionAssertedDate(), diagnoseDatum),
             () -> {
               LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
-              var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.addExtension(
-                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
+                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime());
             });
 
     // recordedDate is 1..1, so we need to set it even if the date is absent.
@@ -231,55 +163,15 @@ public class ConditionMapper extends ObdsToFhirMapper {
             condition::setRecordedDateElement,
             () -> {
               LOG.warn("MeldeDatum is unset. Setting data absent extension.");
-              var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(DataAbsentReason.unknown());
-              condition.setRecordedDateElement(absentDateTime);
+              condition.setRecordedDateElement(absentDateTime());
             });
 
     return condition;
   }
 
-  private Identifier buildConditionIdentifier(TumorzuordnungTyp tumorzuordnung, String patientId) {
-    return new Identifier()
-        .setSystem(fhirProperties.getSystems().getIdentifiers().getPrimaerdiagnoseConditionId())
-        .setValue(slugifier.slugify(patientId + "-" + tumorzuordnung.getTumorID()));
-  }
-
-  private Collection<MorphologieICDOTyp> getDistinctMorphologies(
-      List<MorphologieICDOTyp> morphologies) {
-    var distinctCodes = new HashMap<String, MorphologieICDOTyp>();
-    for (var morph : morphologies) {
-      var code = morph.getCode();
-      var version = morph.getVersion();
-      if (!distinctCodes.containsKey(code)) {
-        distinctCodes.put(code, morph);
-      } else {
-        var existing = distinctCodes.get(code);
-        if (version == null) {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found, but new version is unset. "
-                  + "Keeping one with existing version {}.",
-              code,
-              existing.getVersion());
-          continue;
-        }
-
-        if (version.compareTo(existing.getVersion()) > 0) {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found. Updating version {} over version {}.",
-              code,
-              version,
-              existing.getVersion());
-          distinctCodes.put(code, morph);
-        } else {
-          LOG.debug(
-              "Multiple Morphologie ICD-O with code {} found. Keeping largest version {} over version {}.",
-              code,
-              existing.getVersion(),
-              version);
-        }
-      }
-    }
-    return distinctCodes.values();
+  private Coding icdo3Coding(String code) {
+    // no version: the oBDS ICD-O version ("31", "32", "33", "bb") is not a version of the
+    // terminology.hl7.org ICD-O-3 CodeSystem
+    return new Coding().setSystem(fhirProperties.getSystems().getIcdo3Morphologie()).setCode(code);
   }
 }

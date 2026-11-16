@@ -1,0 +1,40 @@
+{
+  "resourceType": "Observation",
+  "id": "1d91ae103d156fd531ebe9a2f9c4f2d6e79c46a454e406e4724708a25abd2547",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-ldh" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-ldh-observation-id",
+    "value": "OP_90102-modul-melanom-ldh"
+  } ],
+  "status": "final",
+  "category": [ {
+    "coding": [ {
+      "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+      "code": "laboratory",
+      "display": "Laboratory"
+    } ]
+  } ],
+  "code": {
+    "coding": [ {
+      "system": "http://loinc.org",
+      "version": "2.82",
+      "code": "2532-0",
+      "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2021-03-24",
+  "valueQuantity": {
+    "value": 420,
+    "unit": "U/L",
+    "system": "http://unitsofmeasure.org",
+    "code": "U/L"
+  }
+}

@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-build.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
     permissions:
       contents: write
       id-token: write
@@ -35,11 +35,10 @@ jobs:
       actions: read
       security-events: write
       attestations: write
+      artifact-metadata: write
     with:
       enable-build-test-layer: true
       enable-upload-test-image: true
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   add-test-coverage:
     name: add test coverage to PR
@@ -354,7 +353,7 @@ jobs:
             kind-cluster-dump.txt
 
   lint:
-    uses: miracum/.github/.github/workflows/standard-lint.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-lint.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
     permissions:
       contents: read
       pull-requests: write
@@ -365,11 +364,9 @@ jobs:
       codeql-languages: '["java"]'
       enable-codeql: true
       java-version: "21"
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    uses: miracum/.github/.github/workflows/standard-release.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-release.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
     needs:
       - lint
       - build

@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    uses: miracum/.github/.github/workflows/standard-build.yaml@6dd82c72c638213b8b8dac2e93fc71e06a7bf349 # v1.22.3
+    uses: miracum/.github/.github/workflows/standard-build.yaml@704047074ac99fc4c0990f8b8377086069323116 # v1.30.0
     permissions:
       contents: write
       id-token: write
@@ -33,13 +33,12 @@ jobs:
       actions: read
       security-events: write
       attestations: write
+      artifact-metadata: write
     with:
       build-context: dq/
       enable-build-test-layer: false
       enable-upload-test-image: false
       image: "ghcr.io/${{ github.repository }}-dq-checks"
-    secrets:
-      github-token: ${{ secrets.GITHUB_TOKEN }}
 
   run-gx-checks:
     name: run dq checks

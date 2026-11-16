@@ -6,17 +6,13 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import org.hl7.fhir.r4.model.*;
 import org.jspecify.annotations.NonNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TumorkonferenzMapper extends ObdsToFhirMapper {
-  private static final Logger LOG = LoggerFactory.getLogger(TumorkonferenzMapper.class);
 
   public TumorkonferenzMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -31,13 +27,10 @@ public class TumorkonferenzMapper extends ObdsToFhirMapper {
     CarePlan carePlan = new CarePlan();
     // Meta
     carePlan.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoTumorkonferenz());
-    // Identifier + Id
-    final Identifier identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getTumorkonferenzCarePlanId())
-            .setValue(slugifier.slugify("Tumorkonferenz-" + tk.getTumorkonferenzID()));
-    carePlan.addIdentifier(identifier);
-    carePlan.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        carePlan,
+        fhirProperties.getSystems().getIdentifiers().getTumorkonferenzCarePlanId(),
+        "Tumorkonferenz-" + tk.getTumorkonferenzID());
     // Status
     if (tk.getMeldeanlass().equals(TumorkonferenzTyp.Meldeanlass.BEHANDLUNGSENDE)) {
       carePlan.setStatus(CarePlan.CarePlanStatus.COMPLETED);

@@ -1,0 +1,33 @@
+{
+  "resourceType": "Observation",
+  "id": "551fb28acefc91afb227d730402902193aee4fafca7b587a5814a39b1a596b4e",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-melanom-breslow-tiefe" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/melanom-breslow-tiefe-observation-id",
+    "value": "PAT_70104-modul-melanom-breslow-tiefe"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "106243009",
+      "display": "Breslow depth staging for melanoma of skin (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-01-01",
+  "valueQuantity": {
+    "value": 1.4,
+    "unit": "mm",
+    "system": "http://unitsofmeasure.org",
+    "code": "mm"
+  }
+}

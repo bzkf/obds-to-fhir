@@ -63,4 +63,27 @@ class PatientMapperTest extends MapperTest {
       ReflectionTestUtils.setField(sut, "useObdsPatientIdAsResourceId", false);
     }
   }
+
+  @Test
+  void map_withPatientIdPrefix_shouldApplyItToIdentifierAndObdsPatientIdBasedResourceId()
+      throws IOException {
+    ReflectionTestUtils.setField(sut, "useObdsPatientIdAsResourceId", true);
+    ReflectionTestUtils.setField(sut, "patientIdPrefix", "prefix-");
+    try {
+      final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
+      assertThat(resource).isNotNull();
+
+      final var obds = xmlMapper().readValue(resource.openStream(), OBDS.class);
+      var obdsPatient = obds.getMengePatient().getPatient().getFirst();
+
+      final var patient = sut.map(obdsPatient, obdsPatient.getMengeMeldung().getMeldung());
+
+      var expectedId = "prefix-" + obdsPatient.getPatientID();
+      assertThat(patient.getIdentifierFirstRep().getValue()).isEqualTo(expectedId);
+      assertThat(patient.getIdElement().getIdPart()).isEqualTo(expectedId);
+    } finally {
+      ReflectionTestUtils.setField(sut, "useObdsPatientIdAsResourceId", false);
+      ReflectionTestUtils.setField(sut, "patientIdPrefix", "");
+    }
+  }
 }

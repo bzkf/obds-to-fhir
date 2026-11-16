@@ -1,0 +1,35 @@
+{
+  "resourceType": "Observation",
+  "id": "50b4e774e8f6f333fe99c36ebbdafa71c3c652699a5ca4ed058de29383bb3f21",
+  "meta": {
+    "profile": [ "https://www.medizininformatik-initiative.de/fhir/ext/modul-onko/StructureDefinition/mii-pr-onko-mamma-menopause-status" ]
+  },
+  "identifier": [ {
+    "system": "https://bzkf.github.io/obds-to-fhir/identifiers/mamma-menopausenstatus-observation-id",
+    "value": "OP_60104-modul-mamma-menopausenstatus"
+  } ],
+  "status": "final",
+  "code": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "161712005",
+      "display": "Menopause, function (observable entity)"
+    } ]
+  },
+  "subject": {
+    "reference": "Patient/any"
+  },
+  "focus": [ {
+    "reference": "Condition/Primärdiagnose"
+  } ],
+  "effectiveDateTime": "2020-03-02",
+  "valueCodeableConcept": {
+    "coding": [ {
+      "system": "http://snomed.info/sct",
+      "version": "http://snomed.info/sct/900000000000207008/version/20250701",
+      "code": "261665006",
+      "display": "Unknown (qualifier value)"
+    } ]
+  }
+}

@@ -5,19 +5,14 @@ import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
 import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.hl7.fhir.r4.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NebenwirkungMapper extends ObdsToFhirMapper {
-
-  private static final Logger LOG = LoggerFactory.getLogger(NebenwirkungMapper.class);
 
   public NebenwirkungMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
@@ -53,15 +48,10 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
     if (nebenwirkung.getMengeNebenwirkung() != null) {
       for (int i = 0; i < nebenwirkung.getMengeNebenwirkung().getNebenwirkung().size(); i++) {
         var adverseEvent = createAdverseEventBase(patient, suspectedEntity);
-        //  Identifier and Id
-        var identifier =
-            new Identifier()
-                .setSystem(
-                    fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId())
-                .setValue(
-                    slugifier.slugify("mii-pr-onko-nebenwirkung-" + sourceElementId + "-" + i));
-        adverseEvent.setIdentifier(identifier);
-        adverseEvent.setId(IdUtils.fromIdentifier(identifier));
+        setIdentifierAndId(
+            adverseEvent,
+            fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId(),
+            "mii-pr-onko-nebenwirkung-" + sourceElementId + "-" + i);
         // event
         var code = new CodeableConcept();
         var nb = nebenwirkung.getMengeNebenwirkung().getNebenwirkung().get(i);
@@ -98,15 +88,10 @@ public class NebenwirkungMapper extends ObdsToFhirMapper {
       Reference suspectedEntity,
       String sourceElementId) {
     var adverseEvent = createAdverseEventBase(patient, suspectedEntity);
-    //  Identifier and Id
-    var identifier =
-        new Identifier()
-            .setSystem(fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId())
-            .setValue(
-                slugifier.slugify(
-                    "mii-pr-onko-nebenwirkung-" + sourceElementId + "-Grad-maximal-2-unbekannt"));
-    adverseEvent.setIdentifier(identifier);
-    adverseEvent.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        adverseEvent,
+        fhirProperties.getSystems().getIdentifiers().getNebenwirkungAdverseEventId(),
+        "mii-pr-onko-nebenwirkung-" + sourceElementId + "-Grad-maximal-2-unbekannt");
     // event
     // If the element used to create the AdverseEvent is of type `Grad_maximal_2_unbekannt`,
     // we can't fill the event code with a MedDRA code or similar.

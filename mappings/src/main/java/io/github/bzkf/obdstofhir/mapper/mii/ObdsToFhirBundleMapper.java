@@ -5,14 +5,21 @@ import com.github.difflib.text.DiffRow.Tag;
 import com.github.difflib.text.DiffRowGenerator;
 import de.basisdatensatz.obds.v3.DiagnoseTyp;
 import de.basisdatensatz.obds.v3.HistologieTyp;
+import de.basisdatensatz.obds.v3.MengeFMTyp;
+import de.basisdatensatz.obds.v3.MengeGenetikTyp;
 import de.basisdatensatz.obds.v3.MengeWeitereKlassifikationTyp;
 import de.basisdatensatz.obds.v3.ModulAllgemeinTyp;
+import de.basisdatensatz.obds.v3.ModulDarmTyp;
+import de.basisdatensatz.obds.v3.ModulMalignesMelanomTyp;
+import de.basisdatensatz.obds.v3.ModulMammaTyp;
+import de.basisdatensatz.obds.v3.ModulProstataTyp;
 import de.basisdatensatz.obds.v3.OBDS;
 import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import de.basisdatensatz.obds.v3.OPTyp;
 import de.basisdatensatz.obds.v3.PathologieTyp;
 import de.basisdatensatz.obds.v3.STTyp;
 import de.basisdatensatz.obds.v3.SYSTTyp;
+import de.basisdatensatz.obds.v3.TNMTyp;
 import de.basisdatensatz.obds.v3.TumorkonferenzTyp;
 import de.basisdatensatz.obds.v3.VerlaufTyp;
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
@@ -25,7 +32,10 @@ import io.github.dizuker.tofhir.ReferenceUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -34,18 +44,20 @@ import org.hl7.fhir.r4.model.Bundle;
 import org.hl7.fhir.r4.model.Bundle.BundleType;
 import org.hl7.fhir.r4.model.Bundle.HTTPVerb;
 import org.hl7.fhir.r4.model.Condition;
+import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.DiagnosticReport;
 import org.hl7.fhir.r4.model.Extension;
 import org.hl7.fhir.r4.model.Observation;
+import org.hl7.fhir.r4.model.Provenance;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.hl7.fhir.r4.model.ResourceType;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
@@ -74,6 +86,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private final TumorkonferenzMapper tumorkonferenzMapper;
   private final TNMMapper tnmMapper;
   private final ModulProstataMapper modulProstataMapper;
+  private final ModulDarmMapper modulDarmMapper;
+  private final ModulMammaMapper modulMammaMapper;
+  private final ModulMalignesMelanomMapper modulMalignesMelanomMapper;
   private final WeitereKlassifikationMapper weitereKlassifikationMapper;
   private final ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper;
   private final NebenwirkungMapper nebenwirkungMapper;
@@ -96,7 +111,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   private String metaSource;
 
   @Value("${fhir.mappings.patient-id-regex}")
-  private String patientIdRegex;
+  private Pattern patientIdRegex;
 
   private final Function<OBDS.MengePatient.Patient, PatientLookupResult> patientReferenceGenerator;
 
@@ -123,6 +138,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       TumorkonferenzMapper tumorkonferenzMapper,
       TNMMapper tnmMapper,
       ModulProstataMapper modulProstataMapper,
+      ModulDarmMapper modulDarmMapper,
+      ModulMammaMapper modulMammaMapper,
+      ModulMalignesMelanomMapper modulMalignesMelanomMapper,
       WeitereKlassifikationMapper weitereKlassifikationMapper,
       ErstdiagnoseEvidenzListMapper erstdiagnoseEvidenzListMapper,
       NebenwirkungMapper nebenwirkungMapper,
@@ -152,6 +170,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     this.tumorkonferenzMapper = tumorkonferenzMapper;
     this.tnmMapper = tnmMapper;
     this.modulProstataMapper = modulProstataMapper;
+    this.modulDarmMapper = modulDarmMapper;
+    this.modulMammaMapper = modulMammaMapper;
+    this.modulMalignesMelanomMapper = modulMalignesMelanomMapper;
     this.weitereKlassifikationMapper = weitereKlassifikationMapper;
     this.erstdiagnoseEvidenzListMapper = erstdiagnoseEvidenzListMapper;
     this.nebenwirkungMapper = nebenwirkungMapper;
@@ -161,40 +182,46 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
   }
 
   /**
-   * Maps a list of OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles.
-   *
-   * @param groupedObds List of OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
+   * Maps each of the given oBDS to bundles of its own. The Meldungen of a patient are usually split
+   * into one oBDS per tumor, each resulting in a bundle that contains the Patient. To set {@code
+   * Patient.deceased} in all of them, no matter which tumor the Tod Meldung belongs to, it is
+   * derived from the Meldungen the patient has across all given oBDS.
    */
-  public List<Bundle> map(List<OBDS> groupedObds) {
-
-    var bundles = new ArrayList<Bundle>();
-
+  public List<BundleMapperResult> map(List<OBDS> groupedObds) {
+    var meldungenByPatientId = new HashMap<String, List<Meldung>>();
     for (OBDS obds : groupedObds) {
-      bundles.addAll(map(obds));
+      for (var obdsPatient : obds.getMengePatient().getPatient()) {
+        meldungenByPatientId
+            .computeIfAbsent(obdsPatient.getPatientID(), patientId -> new ArrayList<>())
+            .addAll(obdsPatient.getMengeMeldung().getMeldung());
+      }
     }
-    return bundles;
+
+    var results = new ArrayList<BundleMapperResult>();
+    for (OBDS obds : groupedObds) {
+      results.addAll(map(obds, meldungenByPatientId));
+    }
+    return results;
   }
 
-  /**
-   * Maps a single OBDS (Onkologischer Basisdatensatz) data to a list of FHIR Bundles. For each
-   * patient in the OBDS data, creates a transaction bundle containing all their associated medical
-   * records.
-   *
-   * @param obds Single OBDS data structure containing patient and medical information
-   * @return List of FHIR Bundles, one for each patient in the input OBDS data
-   */
-  public List<Bundle> map(OBDS obds) {
+  public List<BundleMapperResult> map(OBDS obds) {
+    return map(List.of(obds));
+  }
 
-    var bundles = new ArrayList<Bundle>();
+  private List<BundleMapperResult> map(OBDS obds, Map<String, List<Meldung>> meldungenByPatientId) {
+
+    var results = new ArrayList<BundleMapperResult>();
 
     for (var obdsPatient : obds.getMengePatient().getPatient()) {
       var bundle = new Bundle();
       bundle.setType(BundleType.TRANSACTION);
+      var bundleProvenances = new ArrayList<Provenance>();
 
-      if (StringUtils.hasText(patientIdRegex)) {
-        var patientIdRegexMatcher = Pattern.compile(patientIdRegex);
-        var matcher = patientIdRegexMatcher.matcher(obdsPatient.getPatientID().trim());
+      // looked up here, because the regex below changes the Patient_ID they were collected by
+      var allMeldungenOfPatient = meldungenByPatientId.get(obdsPatient.getPatientID());
+
+      if (!patientIdRegex.pattern().isBlank()) {
+        var matcher = patientIdRegex.matcher(obdsPatient.getPatientID().trim());
         if (matcher.matches()) {
           var patientId = matcher.group(1);
           LOG.debug(
@@ -205,10 +232,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           // mutating the obdsPatient is probably not ideal
           obdsPatient.setPatientID(patientId);
         } else {
+          LOG.debug("Patient_ID {} failed to match {}", obdsPatient.getPatientID(), patientIdRegex);
           throw new IllegalArgumentException(
-              String.format(
-                  "Regex %s failed to match against %s",
-                  patientIdRegex, obdsPatient.getPatientID()));
+              String.format("Regex %s failed to match the Patient_ID", patientIdRegex));
         }
       }
 
@@ -216,12 +242,24 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
       meldungen = sortMeldungen(meldungen);
 
+      // detection only, to find out whether this occurs in practice before mapping
+      // RektumQualitaetTME to the Specimen
+      for (var finding : TmeSpecimenOverwriteDetector.detect(meldungen)) {
+        LOG.warn(
+            "RektumQualitaetTME overwrite risk: the Specimen of Histologie_ID {} is created from"
+                + " multiple Meldungen, but the one processed last ({}) has no TME quality, so a"
+                + " TME quality on the Specimen would be lost. Meldungen in processing order: [{}]",
+            finding.histologieId(),
+            finding.last().meldungId(),
+            finding.describeSections());
+      }
+
       // Patient
-      // XXX: this assumes that the "meldungen" contains every single Meldung for the
+      // XXX: this assumes that the "allMeldungenOfPatient" contains every single Meldung for the
       // patient
       // e.g. in case of Folgepakete, this might not be the case. The main Problem is
       // the Patient.deceased information which is not present in every single Paket.
-      var patient = patientMapper.map(obdsPatient, meldungen);
+      var patient = patientMapper.map(obdsPatient, allMeldungenOfPatient);
 
       var patientLookupResult = patientReferenceGenerator.apply(obdsPatient);
 
@@ -231,11 +269,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
           && !patientLookupResult.existsOnServer()
           && !patientReference.hasReference()) {
         LOG.warn(
-            "Patient {} does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient",
-            obdsPatient.getPatientID());
+            "Patient does not exist on server and skipPatientIfItDoesNotAlreadyExist is true, skipping this patient");
+        LOG.debug("Skipped Patient_ID: {}", obdsPatient.getPatientID());
         continue;
       }
 
+      var patientAddedToBundle = false;
       if (createPatientResources
           && (!patientLookupResult.existsOnServer() || createPatientIfAlreadyExists)) {
         if (patientLookupResult.existsOnServer() && createPatientIfAlreadyExists) {
@@ -259,10 +298,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         }
 
         addToBundle(bundle, patient);
+        patientAddedToBundle = true;
       }
 
       bundle.setId(patient.getId());
 
+      var isFirstMeldung = true;
       for (var meldung : meldungen) {
         MDC.put("meldungId", meldung.getMeldungID());
         MDC.put("tumorId", meldung.getTumorzuordnung().getTumorID());
@@ -278,6 +319,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         resourcesMappedFromMeldung.add(condition);
 
         var primaryConditionReference = ReferenceUtils.createReferenceTo(condition);
+        var context =
+            new MeldungContext(meldung.getMeldungID(), patientReference, primaryConditionReference);
 
         if (meldung.getDiagnose() != null) {
           var resources =
@@ -285,70 +328,25 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
                   meldung.getDiagnose(),
                   meldung,
                   obdsPatient.getPatientID(),
-                  patientReference,
                   condition,
-                  obds.getMeldedatum());
+                  obds.getMeldedatum(),
+                  context);
           resourcesMappedFromMeldung.addAll(resources);
         }
 
         // Verlauf
         if (meldung.getVerlauf() != null) {
-          var resources =
-              mapVerlauf(
-                  meldung.getVerlauf(), meldung, patientReference, primaryConditionReference);
-          resourcesMappedFromMeldung.addAll(resources);
+          resourcesMappedFromMeldung.addAll(mapVerlauf(meldung.getVerlauf(), context));
         }
 
         // Systemtherapie
         if (meldung.getSYST() != null) {
-          var resources =
-              mapSyst(meldung.getSYST(), meldung, patientReference, primaryConditionReference);
-          resourcesMappedFromMeldung.addAll(resources);
+          resourcesMappedFromMeldung.addAll(mapSyst(meldung.getSYST(), context));
         }
 
         // Strahlenterhapie
         if (meldung.getST() != null) {
-          var st = meldung.getST();
-          var stProcedure =
-              strahlentherapieMapper.map(
-                  st, patientReference, primaryConditionReference, meldung.getMeldungID());
-          resourcesMappedFromMeldung.addAll(stProcedure);
-
-          if (st.getModulAllgemein() != null) {
-            var allgemein = st.getModulAllgemein();
-            if (allgemein.getStudienteilnahme() != null) {
-              var studienteilnahmeObservation =
-                  studienteilnahmeObservationMapper.map(
-                      allgemein,
-                      patientReference,
-                      primaryConditionReference,
-                      meldung.getMeldungID());
-              resourcesMappedFromMeldung.add(studienteilnahmeObservation);
-            }
-          }
-
-          if (st.getNebenwirkungen() != null) {
-            // in the list of procedures, find the primary/bracket one by cehcking its
-            // profile. It's the one the AdverseEvent should reference.
-            var stProfile = Onkologie.Profiles.miiPrOnkoStrahlentherapie();
-            var primaryProcedure =
-                stProcedure.stream()
-                    .filter(
-                        p ->
-                            p.getMeta().getProfile().stream()
-                                .anyMatch(c -> stProfile.equals(c.getValue())))
-                    .findFirst();
-
-            if (primaryProcedure.isPresent()) {
-              var stProcedureReference = ReferenceUtils.createReferenceTo(primaryProcedure.get());
-              var nebenwirkungen =
-                  nebenwirkungMapper.map(
-                      st.getNebenwirkungen(), patientReference, stProcedureReference, st.getSTID());
-              resourcesMappedFromMeldung.addAll(nebenwirkungen);
-            } else {
-              LOG.error("Unable to find the primary ST procedure");
-            }
-          }
+          resourcesMappedFromMeldung.addAll(mapSt(meldung.getST(), context));
         }
 
         // Tod
@@ -365,17 +363,12 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
 
         // Operation
         if (meldung.getOP() != null) {
-          var resources =
-              mapOP(meldung.getOP(), meldung, patientReference, primaryConditionReference);
-          resourcesMappedFromMeldung.addAll(resources);
+          resourcesMappedFromMeldung.addAll(mapOP(meldung.getOP(), context));
         }
 
         // Pathologie
         if (meldung.getPathologie() != null) {
-          var resources =
-              mapPathologie(
-                  meldung.getPathologie(), meldung, patientReference, primaryConditionReference);
-          resourcesMappedFromMeldung.addAll(resources);
+          resourcesMappedFromMeldung.addAll(mapPathologie(meldung.getPathologie(), context));
         }
 
         // Tumorkonferenz
@@ -391,17 +384,26 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         if (this.createProvenanceResources) {
           // the items in resourcesMappedFromMeldung are processed in the same order that
           // they were added to the list initially.
-          var targets =
-              resourcesMappedFromMeldung.stream().map(ReferenceUtils::createReferenceTo).toList();
-          var provenance = provenanceMapper.map(targets, meldung.getMeldungID());
-          addToBundle(bundle, provenance);
+          var targets = new ArrayList<>(resourcesMappedFromMeldung);
+          // The Patient sits outside the per-Meldung loop; include it in the first
+          // Meldung's Provenance only to avoid repeating it across all Provenances.
+          if (isFirstMeldung && patientAddedToBundle) {
+            targets.addFirst(patient);
+          }
+          bundleProvenances.add(
+              provenanceMapper.map(
+                  targets.stream().map(ReferenceUtils::createReferenceTo).toList(),
+                  meldung.getMeldungID()));
         }
+        isFirstMeldung = false;
       }
 
-      bundles.add(bundle);
-      MDC.clear();
+      results.add(new BundleMapperResult(bundle, List.copyOf(bundleProvenances)));
+      // only remove our own keys, the caller may have set others, e.g. the file name
+      MDC.remove("meldungId");
+      MDC.remove("tumorId");
     }
-    return bundles;
+    return results;
   }
 
   private static List<Meldung> sortMeldungen(List<Meldung> meldungen) {
@@ -462,201 +464,256 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return prioritiseMeldeanlass(meldeanlass, ende, null);
   }
 
+  /** What every section of a Meldung is mapped with. */
+  private record MeldungContext(String meldungId, Reference patient, Reference condition) {}
+
+  /** The modules a section of a Meldung may contain. */
+  private record Modules(
+      @Nullable ModulProstataTyp prostata,
+      @Nullable ModulDarmTyp darm,
+      @Nullable ModulMammaTyp mamma,
+      @Nullable ModulMalignesMelanomTyp melanom) {}
+
   /**
    * Maps the Histologie/Specimen/Grading/Lymphknotenuntersuchung resources shared by Diagnose,
    * Verlauf, OP and Pathologie. {@code includeVerlaufshistologie} is {@code false} only for
    * Diagnose, which doesn't produce a VerlaufshistologieObservation.
+   *
+   * @return a reference to the created Specimen, or {@code null} if no Histologie is present
    */
-  private HistologieResources mapHistologieSection(
-      HistologieTyp histologie,
-      String meldungId,
-      Reference patientReference,
-      Reference primaryConditionReference,
-      boolean includeVerlaufshistologie) {
-    var resources = new ArrayList<Resource>();
+  private @Nullable Reference mapHistologie(
+      @Nullable HistologieTyp histologie,
+      boolean includeVerlaufshistologie,
+      MeldungContext context,
+      List<Resource> mappedResources) {
+    if (histologie == null) {
+      return null;
+    }
 
-    var specimen = specimenMapper.map(histologie, patientReference, meldungId);
-    resources.add(specimen);
+    var specimen = specimenMapper.map(histologie, context.patient(), context.meldungId());
+    mappedResources.add(specimen);
 
     var specimenReference = ReferenceUtils.createReferenceTo(specimen);
 
     if (includeVerlaufshistologie) {
-      var verlaufsHistologie =
+      mappedResources.addAll(
           verlaufshistologieObservationMapper.map(
               histologie,
-              meldungId,
-              patientReference,
+              context.meldungId(),
+              context.patient(),
               specimenReference,
-              primaryConditionReference);
-      resources.addAll(verlaufsHistologie);
+              context.condition()));
     }
 
     if (histologie.getGrading() != null) {
-      var grading =
+      mappedResources.add(
           gradingObservationMapper.map(
               histologie,
-              meldungId,
-              patientReference,
-              primaryConditionReference,
-              specimenReference);
-      resources.add(grading);
+              context.meldungId(),
+              context.patient(),
+              context.condition(),
+              specimenReference));
     }
 
-    var lymphknotenuntersuchungen =
+    mappedResources.addAll(
         lymphknotenuntersuchungMapper.map(
-            histologie, patientReference, primaryConditionReference, specimenReference, meldungId);
-    resources.addAll(lymphknotenuntersuchungen);
+            histologie,
+            context.patient(),
+            context.condition(),
+            specimenReference,
+            context.meldungId()));
 
-    return new HistologieResources(resources, specimenReference);
+    return specimenReference;
   }
 
-  private record HistologieResources(List<Resource> resources, Reference specimenReference) {}
-
-  /** Maps the Studienteilnahme observation shared by Diagnose, Verlauf, SYST and OP, if present. */
+  /** Maps the Studienteilnahme observation shared by Diagnose, Verlauf, SYST, ST and OP. */
   private void mapStudienteilnahme(
-      ModulAllgemeinTyp allgemein,
-      Reference patientReference,
-      Reference primaryConditionReference,
-      String meldungId,
+      @Nullable ModulAllgemeinTyp allgemein,
+      MeldungContext context,
       List<Resource> mappedResources) {
     if (allgemein == null || allgemein.getStudienteilnahme() == null) {
       return;
     }
 
-    var studienteilnahmeObservation =
+    mappedResources.add(
         studienteilnahmeObservationMapper.map(
-            allgemein, patientReference, primaryConditionReference, meldungId);
-    mappedResources.add(studienteilnahmeObservation);
+            allgemein, context.patient(), context.condition(), context.meldungId()));
   }
 
   /** Maps the WeitereKlassifikation resources shared by Diagnose, Verlauf and Pathologie. */
   private void mapWeitereKlassifikationen(
-      MengeWeitereKlassifikationTyp menge,
-      String meldungId,
-      Reference patientReference,
-      Reference primaryConditionReference,
+      @Nullable MengeWeitereKlassifikationTyp menge,
+      MeldungContext context,
       List<Resource> mappedResources) {
-    if (menge == null || menge.getWeitereKlassifikation() == null) {
+    if (menge == null) {
       return;
     }
 
-    var weitereKlassifikationen =
+    mappedResources.addAll(
         weitereKlassifikationMapper.map(
-            menge, meldungId, patientReference, primaryConditionReference);
-    mappedResources.addAll(weitereKlassifikationen);
+            menge, context.meldungId(), context.patient(), context.condition()));
   }
 
-  /** The Histologie_ID to pass to the TNM mapper, or {@code null} if no Histologie is present. */
-  private static String histologieIdOf(HistologieTyp histologie) {
-    return histologie != null ? histologie.getHistologieID() : null;
+  /** Maps the Fernmetastasen shared by Diagnose, Verlauf and Pathologie. */
+  private void mapFernmetastasen(
+      @Nullable MengeFMTyp mengeFM,
+      String section,
+      MeldungContext context,
+      List<Resource> mappedResources) {
+    if (mengeFM == null) {
+      return;
+    }
+
+    mappedResources.addAll(
+        fernmetastasenMapper.map(
+            mengeFM, section, context.meldungId(), context.patient(), context.condition()));
+  }
+
+  /** Maps the Genetische_Variante elements shared by Diagnose, Verlauf, OP and Pathologie. */
+  private void mapGenetischeVarianten(
+      @Nullable MengeGenetikTyp mengeGenetik,
+      String section,
+      MeldungContext context,
+      List<Resource> mappedResources) {
+    if (mengeGenetik == null) {
+      return;
+    }
+
+    mappedResources.addAll(
+        genetischeVarianteMapper.map(
+            mengeGenetik, section, context.patient(), context.condition(), context.meldungId()));
+  }
+
+  /** Maps a TNM shared by Diagnose, Verlauf, OP and Pathologie, if present. */
+  private void mapTnm(
+      @Nullable TNMTyp tnm,
+      TnmType tnmType,
+      @Nullable HistologieTyp histologie,
+      MeldungContext context,
+      List<Resource> mappedResources) {
+    if (tnm == null) {
+      return;
+    }
+
+    mappedResources.addAll(
+        tnmMapper.map(
+            tnm,
+            tnmType,
+            context.meldungId(),
+            context.patient(),
+            context.condition(),
+            histologie != null ? histologie.getHistologieID() : null));
+  }
+
+  /**
+   * Maps the modules shared by Diagnose, Verlauf, OP and Pathologie.
+   *
+   * @param effective the date of the section containing the modules
+   * @param op the parent OP Procedure, only available for the OP section
+   * @param specimen the Specimen of the section's Histologie, if there is one
+   */
+  private void mapModules(
+      Modules modules,
+      @Nullable DateTimeType effective,
+      @Nullable Reference op,
+      @Nullable Reference specimen,
+      MeldungContext context,
+      List<Resource> mappedResources) {
+    if (modules.prostata() != null) {
+      mappedResources.addAll(
+          modulProstataMapper.map(
+              modules.prostata(),
+              context.meldungId(),
+              context.patient(),
+              context.condition(),
+              effective,
+              op));
+    }
+
+    if (modules.darm() != null) {
+      mappedResources.addAll(
+          modulDarmMapper.map(
+              modules.darm(),
+              context.meldungId(),
+              context.patient(),
+              context.condition(),
+              effective,
+              op,
+              specimen));
+    }
+
+    if (modules.mamma() != null) {
+      mappedResources.addAll(
+          modulMammaMapper.map(
+              modules.mamma(),
+              context.meldungId(),
+              context.patient(),
+              context.condition(),
+              effective));
+    }
+
+    if (modules.melanom() != null) {
+      mappedResources.addAll(
+          modulMalignesMelanomMapper.map(
+              modules.melanom(),
+              context.meldungId(),
+              context.patient(),
+              context.condition(),
+              effective));
+    }
   }
 
   private List<Resource> mapDiagnose(
       DiagnoseTyp diagnose,
       Meldung meldung,
       String patientId,
-      Reference patientReference,
       Condition primaryCondition,
-      XMLGregorianCalendar meldedatum) {
+      XMLGregorianCalendar meldedatum,
+      MeldungContext context) {
 
     var mappedResources = new ArrayList<Resource>();
 
-    var primaryConditionReference = ReferenceUtils.createReferenceTo(primaryCondition);
-
     if (diagnose.getAllgemeinerLeistungszustand() != null) {
-      var leistungszustand =
+      mappedResources.addAll(
           leistungszustandMapper.map(
               diagnose.getAllgemeinerLeistungszustand(),
-              meldung.getMeldungID(),
+              context.meldungId(),
               meldung.getTumorzuordnung().getDiagnosedatum(),
-              patientReference,
-              primaryConditionReference);
-      mappedResources.add(leistungszustand);
+              context.patient(),
+              context.condition()));
     }
 
-    if (diagnose.getMengeFM() != null && diagnose.getMengeFM().getFernmetastase() != null) {
-      var diagnoseFM =
-          fernmetastasenMapper.map(
-              diagnose, meldung.getMeldungID(), patientReference, primaryConditionReference);
-      mappedResources.addAll(diagnoseFM);
-    }
+    mapFernmetastasen(diagnose.getMengeFM(), "Diagnose", context, mappedResources);
 
-    if (diagnose.getHistologie() != null) {
-      var histologieResources =
-          mapHistologieSection(
-              diagnose.getHistologie(),
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              false);
-      mappedResources.addAll(histologieResources.resources());
-    }
+    var specimenReference =
+        mapHistologie(diagnose.getHistologie(), false, context, mappedResources);
 
-    mapStudienteilnahme(
-        diagnose.getModulAllgemein(),
-        patientReference,
-        primaryConditionReference,
-        meldung.getMeldungID(),
+    mapStudienteilnahme(diagnose.getModulAllgemein(), context, mappedResources);
+
+    mapGenetischeVarianten(diagnose.getMengeGenetik(), "Diagnose", context, mappedResources);
+
+    mapTnm(
+        diagnose.getCTNM(), TnmType.CLINICAL, diagnose.getHistologie(), context, mappedResources);
+    mapTnm(
+        diagnose.getPTNM(), TnmType.PATHOLOGIC, diagnose.getHistologie(), context, mappedResources);
+
+    // keeps the Datumsgenauigkeit of the Diagnosedatum (month, year, ...)
+    var effective =
+        convertObdsDatumToDateTimeType(meldung.getTumorzuordnung().getDiagnosedatum()).orElse(null);
+
+    mapModules(
+        new Modules(
+            diagnose.getModulProstata(),
+            diagnose.getModulDarm(),
+            diagnose.getModulMamma(),
+            diagnose.getModulMalignesMelanom()),
+        effective,
+        null,
+        specimenReference,
+        context,
         mappedResources);
 
-    if (diagnose.getMengeGenetik() != null
-        && diagnose.getMengeGenetik().getGenetischeVariante() != null) {
-      var genetischeVarianten =
-          genetischeVarianteMapper.map(
-              diagnose, patientReference, primaryConditionReference, meldung.getMeldungID());
-      mappedResources.addAll(genetischeVarianten);
-    }
-
-    if (diagnose.getCTNM() != null) {
-      var histologieId = histologieIdOf(diagnose.getHistologie());
-
-      var clinicalTNMObservations =
-          tnmMapper.map(
-              diagnose.getCTNM(),
-              TnmType.CLINICAL,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(clinicalTNMObservations);
-    }
-
-    if (diagnose.getPTNM() != null) {
-      var histologieId = histologieIdOf(diagnose.getHistologie());
-
-      var pathologicTNMObservations =
-          tnmMapper.map(
-              diagnose.getPTNM(),
-              TnmType.PATHOLOGIC,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(pathologicTNMObservations);
-    }
-
-    if (diagnose.getModulProstata() != null) {
-      var modulProstata = diagnose.getModulProstata();
-      var diagnosedatum =
-          meldung.getTumorzuordnung().getDiagnosedatum() != null
-              ? meldung.getTumorzuordnung().getDiagnosedatum().getValue()
-              : null;
-      var modulProstataResources =
-          modulProstataMapper.map(
-              modulProstata,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              diagnosedatum);
-      mappedResources.addAll(modulProstataResources);
-    }
-
-    mapWeitereKlassifikationen(
-        diagnose.getMengeWeitereKlassifikation(),
-        meldung.getMeldungID(),
-        patientReference,
-        primaryConditionReference,
-        mappedResources);
+    mapWeitereKlassifikationen(diagnose.getMengeWeitereKlassifikation(), context, mappedResources);
 
     var evidenzReferenceList =
         mappedResources.stream()
@@ -668,7 +725,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
         erstdiagnoseEvidenzListMapper.map(
             patientId,
             meldung.getTumorzuordnung().getTumorID(),
-            patientReference,
+            context.patient(),
             evidenzReferenceList);
 
     // It's not ideal to modify the Condition resource after it's creation in the
@@ -684,7 +741,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var fruehereTumorErkrankungen =
           fruehereTumorErkrankungenMapper.map(
               diagnose.getMengeFruehereTumorerkrankung(),
-              patientReference,
+              context.patient(),
               primaryCondition.getIdentifierFirstRep(),
               meldedatum);
       mappedResources.addAll(fruehereTumorErkrankungen);
@@ -710,105 +767,56 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     return mappedResources;
   }
 
-  private List<Resource> mapVerlauf(
-      VerlaufTyp verlauf,
-      Meldung meldung,
-      Reference patientReference,
-      Reference primaryConditionReference) {
+  private List<Resource> mapVerlauf(VerlaufTyp verlauf, MeldungContext context) {
     var mappedResources = new ArrayList<Resource>();
-    var verlaufsObservation =
-        verlaufObservationMapper.map(verlauf, patientReference, primaryConditionReference);
-    mappedResources.add(verlaufsObservation);
+    mappedResources.add(
+        verlaufObservationMapper.map(verlauf, context.patient(), context.condition()));
 
-    if (verlauf.getMengeFM() != null && verlauf.getMengeFM().getFernmetastase() != null) {
-      var verlaufFM =
-          fernmetastasenMapper.map(
-              verlauf, meldung.getMeldungID(), patientReference, primaryConditionReference);
-      mappedResources.addAll(verlaufFM);
-    }
+    mapFernmetastasen(verlauf.getMengeFM(), "Verlauf", context, mappedResources);
 
     if (verlauf.getAllgemeinerLeistungszustand() != null) {
-      var leistungszustand =
+      mappedResources.addAll(
           leistungszustandMapper.map(
               verlauf.getAllgemeinerLeistungszustand(),
-              meldung.getMeldungID(),
+              context.meldungId(),
               verlauf.getUntersuchungsdatumVerlauf(),
-              patientReference,
-              primaryConditionReference);
-      mappedResources.add(leistungszustand);
+              context.patient(),
+              context.condition()));
     }
 
-    if (verlauf.getHistologie() != null) {
-      var histologieResources =
-          mapHistologieSection(
-              verlauf.getHistologie(),
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              true);
-      mappedResources.addAll(histologieResources.resources());
-    }
+    var specimenReference = mapHistologie(verlauf.getHistologie(), true, context, mappedResources);
 
-    mapStudienteilnahme(
-        verlauf.getModulAllgemein(),
-        patientReference,
-        primaryConditionReference,
-        meldung.getMeldungID(),
+    mapStudienteilnahme(verlauf.getModulAllgemein(), context, mappedResources);
+
+    mapGenetischeVarianten(verlauf.getMengeGenetik(), "Verlauf", context, mappedResources);
+
+    mapTnm(verlauf.getTNM(), TnmType.GENERIC, verlauf.getHistologie(), context, mappedResources);
+
+    var effective =
+        convertObdsDatumToDateTimeType(verlauf.getUntersuchungsdatumVerlauf()).orElse(null);
+
+    mapModules(
+        new Modules(
+            verlauf.getModulProstata(),
+            verlauf.getModulDarm(),
+            verlauf.getModulMamma(),
+            verlauf.getModulMalignesMelanom()),
+        effective,
+        null,
+        specimenReference,
+        context,
         mappedResources);
 
-    if (verlauf.getMengeGenetik() != null
-        && verlauf.getMengeGenetik().getGenetischeVariante() != null) {
-      var genetischeVarianten =
-          genetischeVarianteMapper.map(
-              verlauf, patientReference, primaryConditionReference, meldung.getMeldungID());
-      mappedResources.addAll(genetischeVarianten);
-    }
-
-    if (verlauf.getTNM() != null) {
-      var histologieId = histologieIdOf(verlauf.getHistologie());
-
-      var tnmObservations =
-          tnmMapper.map(
-              verlauf.getTNM(),
-              TnmType.GENERIC,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(tnmObservations);
-    }
-
-    if (verlauf.getModulProstata() != null) {
-      var modulProstata = verlauf.getModulProstata();
-      var modulProstataResources =
-          modulProstataMapper.map(
-              modulProstata,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              verlauf.getUntersuchungsdatumVerlauf());
-      mappedResources.addAll(modulProstataResources);
-    }
-
-    mapWeitereKlassifikationen(
-        verlauf.getMengeWeitereKlassifikation(),
-        meldung.getMeldungID(),
-        patientReference,
-        primaryConditionReference,
-        mappedResources);
+    mapWeitereKlassifikationen(verlauf.getMengeWeitereKlassifikation(), context, mappedResources);
 
     return mappedResources;
   }
 
-  private List<Resource> mapSyst(
-      SYSTTyp syst,
-      Meldung meldung,
-      Reference patientReference,
-      Reference primaryConditionReference) {
+  private List<Resource> mapSyst(SYSTTyp syst, MeldungContext context) {
     var mappedResources = new ArrayList<Resource>();
 
     var systProcedure =
-        systemischeTherapieProcedureMapper.map(syst, patientReference, primaryConditionReference);
+        systemischeTherapieProcedureMapper.map(syst, context.patient(), context.condition());
     mappedResources.add(systProcedure);
 
     var procedureReference = ReferenceUtils.createReferenceTo(systProcedure);
@@ -816,7 +824,7 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
     if (syst.getMengeSubstanz() != null) {
       var results =
           systemischeTherapieMedicationStatementMapper.map(
-              syst, patientReference, procedureReference, primaryConditionReference);
+              syst, context.patient(), procedureReference, context.condition());
       for (var mapResults : results) {
         mappedResources.add(mapResults.medicationStatement());
         if (mapResults.medication().isPresent()) {
@@ -825,194 +833,146 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       }
     }
 
-    mapStudienteilnahme(
-        syst.getModulAllgemein(),
-        patientReference,
-        primaryConditionReference,
-        meldung.getMeldungID(),
-        mappedResources);
+    mapStudienteilnahme(syst.getModulAllgemein(), context, mappedResources);
 
     if (syst.getNebenwirkungen() != null) {
-      var nebenwirkungen =
+      mappedResources.addAll(
           nebenwirkungMapper.map(
-              syst.getNebenwirkungen(), patientReference, procedureReference, syst.getSYSTID());
-      mappedResources.addAll(nebenwirkungen);
+              syst.getNebenwirkungen(), context.patient(), procedureReference, syst.getSYSTID()));
     }
 
     return mappedResources;
   }
 
-  private List<Resource> mapOP(
-      OPTyp op, Meldung meldung, Reference patientReference, Reference primaryConditionReference) {
+  private List<Resource> mapSt(STTyp st, MeldungContext context) {
     var mappedResources = new ArrayList<Resource>();
-    var operations = operationMapper.map(op, patientReference, primaryConditionReference);
+
+    var stProcedures =
+        strahlentherapieMapper.map(st, context.patient(), context.condition(), context.meldungId());
+    mappedResources.addAll(stProcedures);
+
+    mapStudienteilnahme(st.getModulAllgemein(), context, mappedResources);
+
+    if (st.getNebenwirkungen() != null) {
+      // in the list of procedures, find the primary/bracket one by cehcking its
+      // profile. It's the one the AdverseEvent should reference.
+      var stProfile = Onkologie.Profiles.miiPrOnkoStrahlentherapie();
+      var primaryProcedure =
+          stProcedures.stream()
+              .filter(
+                  p ->
+                      p.getMeta().getProfile().stream()
+                          .anyMatch(c -> stProfile.equals(c.getValue())))
+              .findFirst();
+
+      if (primaryProcedure.isPresent()) {
+        mappedResources.addAll(
+            nebenwirkungMapper.map(
+                st.getNebenwirkungen(),
+                context.patient(),
+                ReferenceUtils.createReferenceTo(primaryProcedure.get()),
+                st.getSTID()));
+      } else {
+        LOG.error("Unable to find the primary ST procedure");
+      }
+    }
+
+    return mappedResources;
+  }
+
+  private List<Resource> mapOP(OPTyp op, MeldungContext context) {
+    var mappedResources = new ArrayList<Resource>();
+    var operations = operationMapper.map(op, context.patient(), context.condition());
     mappedResources.addAll(operations);
 
     if (op.getResidualstatus() != null
         && op.getResidualstatus().getGesamtbeurteilungResidualstatus() != null) {
-      var residualstatus =
-          residualstatusMapper.map(op, patientReference, primaryConditionReference);
-      mappedResources.add(residualstatus);
+      mappedResources.add(residualstatusMapper.map(op, context.patient(), context.condition()));
     }
 
-    if (op.getHistologie() != null) {
-      var histologieResources =
-          mapHistologieSection(
-              op.getHistologie(),
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              true);
-      mappedResources.addAll(histologieResources.resources());
-    }
+    var specimenReference = mapHistologie(op.getHistologie(), true, context, mappedResources);
 
-    mapStudienteilnahme(
-        op.getModulAllgemein(),
-        patientReference,
-        primaryConditionReference,
-        meldung.getMeldungID(),
+    mapStudienteilnahme(op.getModulAllgemein(), context, mappedResources);
+
+    mapGenetischeVarianten(op.getMengeGenetik(), "OP", context, mappedResources);
+
+    mapTnm(op.getTNM(), TnmType.GENERIC, op.getHistologie(), context, mappedResources);
+
+    mapModules(
+        new Modules(
+            op.getModulProstata(),
+            op.getModulDarm(),
+            op.getModulMamma(),
+            op.getModulMalignesMelanom()),
+        convertObdsDatumToDateTimeType(op.getDatum()).orElse(null),
+        // the first Procedure is always the parent one
+        ReferenceUtils.createReferenceTo(operations.getFirst()),
+        specimenReference,
+        context,
         mappedResources);
-
-    if (op.getMengeGenetik() != null && op.getMengeGenetik().getGenetischeVariante() != null) {
-      var genetischeVarianten =
-          genetischeVarianteMapper.map(
-              op, patientReference, primaryConditionReference, meldung.getMeldungID());
-      mappedResources.addAll(genetischeVarianten);
-    }
-
-    if (op.getTNM() != null) {
-      var histologieId = histologieIdOf(op.getHistologie());
-
-      var tnmObservations =
-          tnmMapper.map(
-              op.getTNM(),
-              TnmType.GENERIC,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(tnmObservations);
-    }
-
-    if (op.getModulProstata() != null) {
-      var modulProstata = op.getModulProstata();
-      // the procedure that doesn't reference any other procedure is the
-      // primary/parent one
-      var opReferences =
-          operations.stream()
-              .filter(p -> !p.hasPartOf())
-              .map(ReferenceUtils::createReferenceTo)
-              .toList();
-
-      if (opReferences.size() > 1) {
-        LOG.warn(
-            "Multiple OP procedures without partOf found, this shouldn't happen. Defaulting to first.");
-      }
-
-      var modulProstataResources =
-          modulProstataMapper.map(
-              modulProstata,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              op.getDatum(),
-              opReferences.getFirst()); // it should never be empty here.
-      mappedResources.addAll(modulProstataResources);
-    }
 
     return mappedResources;
   }
 
-  private List<Resource> mapPathologie(
-      PathologieTyp pathologie,
-      Meldung meldung,
-      Reference patientReference,
-      Reference primaryConditionReference) {
+  private List<Resource> mapPathologie(PathologieTyp pathologie, MeldungContext context) {
     var mappedResources = new ArrayList<Resource>();
-    var specimenReference = new Reference();
 
-    if (pathologie.getHistologie() != null) {
-      var histologieResources =
-          mapHistologieSection(
-              pathologie.getHistologie(),
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              true);
-      mappedResources.addAll(histologieResources.resources());
-      specimenReference = histologieResources.specimenReference();
-    }
+    var specimenReference =
+        mapHistologie(pathologie.getHistologie(), true, context, mappedResources);
 
-    if (pathologie.getMengeFM() != null && pathologie.getMengeFM().getFernmetastase() != null) {
-      var pathologieFM =
-          fernmetastasenMapper.map(
-              pathologie, meldung.getMeldungID(), patientReference, primaryConditionReference);
-      mappedResources.addAll(pathologieFM);
-    }
+    mapFernmetastasen(pathologie.getMengeFM(), "Pathologie", context, mappedResources);
 
-    if (pathologie.getMengeGenetik() != null
-        && pathologie.getMengeGenetik().getGenetischeVariante() != null) {
-      var genetischeVarianten =
-          genetischeVarianteMapper.map(
-              pathologie, patientReference, primaryConditionReference, meldung.getMeldungID());
-      mappedResources.addAll(genetischeVarianten);
-    }
+    mapGenetischeVarianten(pathologie.getMengeGenetik(), "Pathologie", context, mappedResources);
 
-    if (pathologie.getCTNM() != null) {
-      var histologieId = histologieIdOf(pathologie.getHistologie());
-
-      var clinicalTNMObservations =
-          tnmMapper.map(
-              pathologie.getCTNM(),
-              TnmType.CLINICAL,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(clinicalTNMObservations);
-    }
-
-    if (pathologie.getPTNM() != null) {
-      var histologieId = histologieIdOf(pathologie.getHistologie());
-
-      var pathologicTNMObservations =
-          tnmMapper.map(
-              pathologie.getPTNM(),
-              TnmType.PATHOLOGIC,
-              meldung.getMeldungID(),
-              patientReference,
-              primaryConditionReference,
-              histologieId);
-      mappedResources.addAll(pathologicTNMObservations);
-    }
+    mapTnm(
+        pathologie.getCTNM(),
+        TnmType.CLINICAL,
+        pathologie.getHistologie(),
+        context,
+        mappedResources);
+    mapTnm(
+        pathologie.getPTNM(),
+        TnmType.PATHOLOGIC,
+        pathologie.getHistologie(),
+        context,
+        mappedResources);
 
     if (pathologie.getModulProstata() != null) {
-      var modulProstata = pathologie.getModulProstata();
-      var modulProstataResources =
+      mappedResources.addAll(
           modulProstataMapper.map(
-              modulProstata, meldung.getMeldungID(), patientReference, primaryConditionReference);
-      mappedResources.addAll(modulProstataResources);
+              pathologie.getModulProstata(),
+              context.meldungId(),
+              context.patient(),
+              context.condition()));
     }
 
-    mapWeitereKlassifikationen(
-        pathologie.getMengeWeitereKlassifikation(),
-        meldung.getMeldungID(),
-        patientReference,
-        primaryConditionReference,
+    // the Pathologie section has no date of its own; the histology date is the closest
+    var effective =
+        Optional.ofNullable(pathologie.getHistologie())
+            .flatMap(h -> convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
+            .orElse(null);
+
+    mapModules(
+        new Modules(
+            null,
+            pathologie.getModulDarm(),
+            pathologie.getModulMamma(),
+            pathologie.getModulMalignesMelanom()),
+        effective,
+        null,
+        specimenReference,
+        context,
         mappedResources);
+
+    mapWeitereKlassifikationen(
+        pathologie.getMengeWeitereKlassifikation(), context, mappedResources);
 
     // XXX: it doesn't seem possible to reference the CarePlan/Tumorkonferenz
     // the histologiebefund is based on. Unless every befund is always a
     // result of a conference. So maybe remove the reference entirely.
-    var report =
+    mappedResources.add(
         histologiebefundMapper.map(
-            meldung.getPathologie(),
-            meldung.getMeldungID(),
-            patientReference,
-            null,
-            specimenReference);
-
-    mappedResources.add(report);
+            pathologie, context.meldungId(), context.patient(), null, specimenReference));
 
     return mappedResources;
   }

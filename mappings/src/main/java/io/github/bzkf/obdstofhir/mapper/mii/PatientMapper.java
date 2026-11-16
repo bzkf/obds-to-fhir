@@ -28,6 +28,11 @@ public class PatientMapper extends ObdsToFhirMapper {
   @Value("${fhir.mappings.create-patient-resources.use-obds-patient-id-as-resource-id:false}")
   private boolean useObdsPatientIdAsResourceId;
 
+  // has to match the prefix used by the patient reference generator, otherwise the references in
+  // the bundle don't point to this Patient
+  @Value("${fhir.mappings.patient-reference-generation.patient-id-prefix:}")
+  private String patientIdPrefix = "";
+
   public PatientMapper(FhirProperties fhirProperties) {
     super(fhirProperties);
 
@@ -70,11 +75,11 @@ public class PatientMapper extends ObdsToFhirMapper {
     var identifier =
         new Identifier()
             .setSystem(fhirProperties.getSystems().getIdentifiers().getPatientId())
-            .setValue(obdsPatient.getPatientID())
+            .setValue(patientIdPrefix + obdsPatient.getPatientID())
             .setType(mrTypeConcept);
 
     patient.addIdentifier(identifier);
-    patient.setId(resolvePatientId(obdsPatient, identifier));
+    patient.setId(resolvePatientId(identifier));
 
     patient.setGender(
         genderMap.getOrDefault(obdsPatient.getPatientenStammdaten().getGeschlecht(), null));
@@ -140,9 +145,9 @@ public class PatientMapper extends ObdsToFhirMapper {
     return patient;
   }
 
-  private IIdType resolvePatientId(OBDS.MengePatient.Patient obdsPatient, Identifier identifier) {
+  private IIdType resolvePatientId(Identifier identifier) {
     return useObdsPatientIdAsResourceId
-        ? new IdType(obdsPatient.getPatientID())
+        ? new IdType(identifier.getValue())
         : IdUtils.fromIdentifier(identifier);
   }
 }

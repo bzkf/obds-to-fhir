@@ -113,6 +113,7 @@
             </TNM>
             <Allgemeiner_Leistungszustand>2</Allgemeiner_Leistungszustand>
             <Modul_Mamma>
+              <Praetherapeutischer_Menopausenstatus>3</Praetherapeutischer_Menopausenstatus>
               <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
               <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
               <Her2neuStatus>N</Her2neuStatus>
@@ -175,9 +176,12 @@
             </cTNM>
             <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
             <Modul_Mamma>
+              <Praetherapeutischer_Menopausenstatus>1</Praetherapeutischer_Menopausenstatus>
               <HormonrezeptorStatus_Oestrogen>P</HormonrezeptorStatus_Oestrogen>
               <HormonrezeptorStatus_Progesteron>P</HormonrezeptorStatus_Progesteron>
               <Her2neuStatus>N</Her2neuStatus>
+              <TumorgroesseInvasiv>23</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>U</TumorgroesseDCIS>
             </Modul_Mamma>
           </Diagnose>
         </Meldung>
@@ -250,6 +254,16 @@
                 <Hauptoperateur>J</Hauptoperateur>
               </Operateur>
             </Menge_Operateur>
+            <Modul_Mamma>
+              <Praetherapeutischer_Menopausenstatus>U</Praetherapeutischer_Menopausenstatus>
+              <HormonrezeptorStatus_Oestrogen>N</HormonrezeptorStatus_Oestrogen>
+              <HormonrezeptorStatus_Progesteron>U</HormonrezeptorStatus_Progesteron>
+              <Her2neuStatus>P</Her2neuStatus>
+              <PraeopDrahtmarkierung>S</PraeopDrahtmarkierung>
+              <IntraopPraeparatkontrolle>M</IntraopPraeparatkontrolle>
+              <TumorgroesseInvasiv>U</TumorgroesseInvasiv>
+              <TumorgroesseDCIS>15</TumorgroesseDCIS>
+            </Modul_Mamma>
           </OP>
         </Meldung>
         <Meldung Melder_ID="123456/abcDEF_:#" Meldung_ID="OP_60105">

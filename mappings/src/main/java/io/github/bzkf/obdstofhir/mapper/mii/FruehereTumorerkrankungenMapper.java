@@ -7,8 +7,6 @@ import de.basisdatensatz.obds.v3.DiagnoseTyp.MengeFruehereTumorerkrankung.Fruehe
 import de.medizininformatikinitiative.kerndatensatz.onkologie.Onkologie;
 import io.github.bzkf.obdstofhir.FhirProperties;
 import io.github.bzkf.obdstofhir.mapper.ObdsToFhirMapper;
-import io.github.dizuker.tofhir.FhirExtensions.DataAbsentReason;
-import io.github.dizuker.tofhir.IdUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.hl7.fhir.r4.model.CodeableConcept;
-import org.hl7.fhir.r4.model.Coding;
 import org.hl7.fhir.r4.model.Condition;
-import org.hl7.fhir.r4.model.DateTimeType;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.ResourceType;
@@ -67,9 +63,10 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
       Identifier primaerdiagnoseIdentifier,
       XMLGregorianCalendar meldeDatum) {
     var condition = new Condition();
-    var identifier = buildConditionIdentifier(fruehereTumorerkrankung, primaerdiagnoseIdentifier);
-    condition.addIdentifier(identifier);
-    condition.setId(IdUtils.fromIdentifier(identifier));
+    setIdentifierAndId(
+        condition,
+        fhirProperties.getSystems().getIdentifiers().getFruehereTumorerkrankungConditionId(),
+        buildConditionIdentifierValue(fruehereTumorerkrankung, primaerdiagnoseIdentifier));
 
     condition.setSubject(patient);
     condition.getMeta().addProfile(Onkologie.Profiles.miiPrOnkoFruehereTumorerkrankung());
@@ -82,17 +79,17 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
                 .setCode("394593009")
                 .setDisplay("Medical oncology (qualifier value)")));
 
-    var icd = new Coding().setSystem(fhirProperties.getSystems().getIcd10gm());
-
     if (fruehereTumorerkrankung.getICD() != null
         && StringUtils.hasText(fruehereTumorerkrankung.getICD().getCode())) {
-      icd.setCode(fruehereTumorerkrankung.getICD().getCode());
-      var icd10Version = fruehereTumorerkrankung.getICD().getVersion();
-      icd.setVersionElement(
-          extractIcdVersionYear(icd10Version, "Fruehere_Tumorerkrankung ICD_Version", LOG));
-      // Condition.code.text always has to be set, either to the ICD code or to the free text (see
-      // below)
-      condition.setCode(new CodeableConcept(icd).setText(icd.getCode()));
+      // Condition.code.text retains the ICD code unless free text overrides it below.
+      condition.setCode(
+          new CodeableConcept()
+              .setCoding(
+                  mapTumorIcdToCodings(
+                      fruehereTumorerkrankung.getICD(),
+                      "Fruehere_Tumorerkrankung ICD_Version",
+                      LOG))
+              .setText(fruehereTumorerkrankung.getICD().getCode()));
     }
 
     if (StringUtils.hasText(fruehereTumorerkrankung.getFreitext())) {
@@ -111,10 +108,8 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             },
             () -> {
               LOG.warn("Diagnosedatum is unset. Setting data absent extension.");
-              var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(DataAbsentReason.unknown());
               condition.addExtension(
-                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime);
+                  fhirProperties.getExtensions().getConditionAssertedDate(), absentDateTime());
             });
 
     convertObdsDatumToDateTimeType(meldeDatum)
@@ -122,15 +117,13 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
             condition::setRecordedDateElement,
             () -> {
               LOG.warn("MeldeDatum is unset. Setting data absent extension.");
-              var absentDateTime = new DateTimeType();
-              absentDateTime.addExtension(DataAbsentReason.unknown());
-              condition.setRecordedDateElement(absentDateTime);
+              condition.setRecordedDateElement(absentDateTime());
             });
 
     return condition;
   }
 
-  private Identifier buildConditionIdentifier(
+  private String buildConditionIdentifierValue(
       FruehereTumorerkrankung fruehereTumorerkrankung, Identifier primaerdiagnoseIdentifier) {
 
     // the identifier base is the primary condition identifier value
@@ -161,11 +154,6 @@ public class FruehereTumorerkrankungenMapper extends ObdsToFhirMapper {
               + "this may cause duplicate Conditions to be created.");
     }
 
-    var identifierValue = valueBuilder.toString();
-
-    return new Identifier()
-        .setSystem(
-            fhirProperties.getSystems().getIdentifiers().getFruehereTumorerkrankungConditionId())
-        .setValue(slugifier.slugify(identifierValue));
+    return valueBuilder.toString();
   }
 }

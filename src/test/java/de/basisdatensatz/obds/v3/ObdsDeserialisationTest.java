@@ -2,27 +2,17 @@ package de.basisdatensatz.obds.v3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import org.junit.jupiter.api.Test;
-import tools.jackson.dataformat.xml.XmlMapper;
-import tools.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
 
 class ObdsDeserialisationTest {
 
   @Test
   void testShouldDeserializeObds3() throws IOException {
     final var resource = this.getClass().getClassLoader().getResource("obds3/test1.xml");
-    final var xmlMapper =
-        XmlMapper.builder()
-            .defaultUseWrapper(false)
-            .addModule(new JakartaXmlBindAnnotationModule())
-            .build()
-            .rebuild()
-            .defaultDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
-            .build();
 
-    final var actual = xmlMapper.readValue(resource.openStream(), OBDS.class);
+    final var actual = Obdsv3Deserializer.xmlMapper().readValue(resource.openStream(), OBDS.class);
 
     assertThat(actual).isInstanceOf(OBDS.class);
     assertThat(actual.getMengePatient().getPatient()).hasSize(1);

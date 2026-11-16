@@ -39,7 +39,7 @@ public class FhirProperties {
   @Data
   public static class FhirExtensions {
     private String conditionAssertedDate;
-    private String ordinalValue;
+    private String itemWeight;
     private String conditionOccurredFollowing;
     private String procedureMethod;
   }
@@ -58,6 +58,7 @@ public class FhirProperties {
     private String studienteilnahmeObservationId;
     private String lymphknotenuntersuchungObservationId;
     private String allgemeinerLeistungszustandEcogObservationId;
+    private String allgemeinerLeistungszustandKarnofskyObservationId;
     private String genetischeVarianteObservationId;
     private String tumorkonferenzCarePlanId;
     private String tnmGroupingObservationId;
@@ -93,6 +94,22 @@ public class FhirProperties {
     private String prostataClavienDindoObservationId;
     private String prostataGleasonPatternsObservationId;
     private String prostataGleasonScoreObservationId;
+    private String krkAbstandAnokutanObservationId;
+    private String krkAbstandAboralObservationId;
+    private String krkAbstandCircumferelleResektionsebeneObservationId;
+    private String krkMrtMesorektaleFaszieObservationId;
+    private String krkAnastomoseninsuffizienzObservationId;
+    private String krkStomaMarkierungProcedureId;
+    private String asaKlassifikationObservationId;
+    private String mammaMenopausenstatusObservationId;
+    private String mammaRezeptorstatusEstrogenObservationId;
+    private String mammaRezeptorstatusProgesteronObservationId;
+    private String mammaHer2neuStatusObservationId;
+    private String tumorgroesseObservationId;
+    private String melanomSicherheitsabstandObservationId;
+    private String melanomBreslowTiefeObservationId;
+    private String melanomLdhObservationId;
+    private String melanomUlzerationObservationId;
     private String obdsMeldungId;
     private String provenanceId;
     private String obdsToFhirDeviceId;
@@ -109,35 +126,13 @@ public class FhirProperties {
     private String provenanceParticipantType;
     private String identifierType;
     private String v3ObservationValue;
-    private String loinc;
     private String icdo3Morphologie;
-    private String uicc;
-    private String tnmPraefix;
-    private String tnmTCs;
-    private String tnmNCs;
-    private String tnmMCs;
-    private String tnmYSymbolCs;
-    private String tnmRSymbolCs;
-    private String tnmMSymbolCs;
-    private String fMLokalisationCS;
-    private String jnuCs;
     private String icd10gm;
-    private String adtSeitenlokalisation;
-    private String snomed;
-    private String opIntention;
-    private String systTherapieart;
+    private String icd10who;
     private String ops;
-    private String lokalBeurtResidualCS;
-    private String gesamtBeurtResidualCS;
-    private String systIntention;
-    private String systStellungOP;
-    private String sideEffectTypeOid;
-    private String opComplication;
     private String ucum;
     private String conditionVerStatus;
-    private String icdo3MorphologieOid;
     private String atcBfarm;
-    private String atcWho;
     private String observationCategory;
     private String meddra;
   }
