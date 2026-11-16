@@ -137,6 +137,29 @@ You can also run this in a loop to approve indexed snapshots:
 for i in {1..10}; do APPROVAL_TESTS_USE_REPORTER=AutoApproveReporter ./gradlew test; done
 ```
 
+## Fuzzing
+
+[`ObdsToFhirBundleMapperFuzzTest`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTest.java)
+uses [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) to feed generated oBDS XML into the mapping.
+Inputs that aren't valid against the oBDS XSD are only parsed, not mapped, because the mappers rely on the schema's mandatory elements.
+
+`./gradlew test` replays the inputs in
+[`ObdsToFhirBundleMapperFuzzTestInputs/mapObds`](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/mapObds)
+like a regular unit test. To generate new inputs, run:
+
+```sh
+./gradlew :mappings:fuzz -PfuzzDuration=5m
+```
+
+The fuzzer starts from the oBDS test files and keeps every input that reaches new code in `mappings/.cifuzz-corpus`, which isn't committed.
+While that directory exists, `./gradlew test` replays it as well.
+It stops at the first input that throws, and saves it as `crash-<hash>` in the inputs directory.
+After fixing the bug, give that file a descriptive name and commit it as a regression test.
+
+The [fuzz workflow](.github/workflows/fuzz.yaml) fuzzes for 10 minutes every night and uploads the crashing input when it finds one.
+The `fuzz` task doesn't attach the JaCoCo agent,
+because together with the fuzzer it can crash the JVM on JDK 25 ([jazzer#1035](https://github.com/CodeIntelligenceTesting/jazzer/issues/1035)).
+
 ## Releases
 
 The project aims for frequent releases. We achieve this using semantic-release, where
