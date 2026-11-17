@@ -91,18 +91,17 @@ class ObdsToFhirBundleMapperCreatePatientIfAlreadyExistsTest extends MapperTest 
     bundle.getEntry().stream()
         .map(e -> e.getResource())
         .filter(r -> r.getResourceType() != ResourceType.Patient)
-        .forEach(
-            r -> {
-              var ref = extractPatientReference(r);
-              if (ref != null && ref.hasReference()) {
-                assertThat(ref.getReference())
-                    .as("Patient reference in %s should use existing id", r.getResourceType())
-                    .isEqualTo(expectedPatientRef);
-                // Logical identifier should still be present
-                assertThat(ref.getIdentifier()).isNotNull();
-                assertThat(ref.getIdentifier().getValue()).isEqualTo(SERVER_PATIENT_ID);
-              }
-            });
+        .forEach(r -> {
+          var ref = extractPatientReference(r);
+          if (ref != null && ref.hasReference()) {
+            assertThat(ref.getReference())
+                .as("Patient reference in %s should use existing id", r.getResourceType())
+                .isEqualTo(expectedPatientRef);
+            // Logical identifier should still be present
+            assertThat(ref.getIdentifier()).isNotNull();
+            assertThat(ref.getIdentifier().getValue()).isEqualTo(SERVER_PATIENT_ID);
+          }
+        });
   }
 
   private static Reference extractPatientReference(org.hl7.fhir.r4.model.Resource resource) {

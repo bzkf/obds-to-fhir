@@ -56,10 +56,8 @@ class ModulDarmMapperTest extends MapperTest {
         var pathologie = meldung.getPathologie();
         var effective =
             Optional.ofNullable(pathologie.getHistologie())
-                .flatMap(
-                    h ->
-                        ObdsToFhirMapper.convertObdsDatumToDateTimeType(
-                            h.getTumorHistologiedatum()))
+                .flatMap(h ->
+                    ObdsToFhirMapper.convertObdsDatumToDateTimeType(h.getTumorHistologiedatum()))
                 .orElse(null);
         var resources =
             sut.map(

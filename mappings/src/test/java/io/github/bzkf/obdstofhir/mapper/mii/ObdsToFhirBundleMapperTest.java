@@ -125,17 +125,18 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
     assertThat(sj.toString())
         .hasToString(
             """
-                |original|new|
-                |--------|---|
-                |{|{|
-                |  "resourceType": "Patient",|  "resourceType": "Patient",|
-                |  "id": "1",|  "id": "1",|
-                |  ~"active"~: ~false~|  **"identifier"**: **[ {**|
-                ||**    "system": "example",**|
-                ||**    "value": "123"**|
-                ||**  } ],**|
-                ||**  "active": true**|
-                |}|}|""");
+            |original|new|
+            |--------|---|
+            |{|{|
+            |  "resourceType": "Patient",|  "resourceType": "Patient",|
+            |  "id": "1",|  "id": "1",|
+            |  ~"active"~: ~false~|  **"identifier"**: **[ {**|
+            ||**    "system": "example",**|
+            ||**    "value": "123"**|
+            ||**  } ],**|
+            ||**  "active": true**|
+            |}|}|\
+            """);
   }
 
   private OBDS readObds(String sourceFile) throws IOException {
@@ -179,14 +180,13 @@ class ObdsToFhirBundleMapperTest extends MapperTest {
   private static void assertThatEveryPatientDiedOn(
       List<BundleMapperResult> results, String expectedSterbedatum) {
     assertThat(results)
-        .allSatisfy(
-            result ->
-                assertThat(
-                        BundleUtil.toListOfResourcesOfType(
-                            FhirContext.forR4(), result.bundle(), Patient.class))
-                    .singleElement()
-                    .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
-                    .isEqualTo(expectedSterbedatum));
+        .allSatisfy(result ->
+            assertThat(
+                    BundleUtil.toListOfResourcesOfType(
+                        FhirContext.forR4(), result.bundle(), Patient.class))
+                .singleElement()
+                .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
+                .isEqualTo(expectedSterbedatum));
   }
 
   @ParameterizedTest

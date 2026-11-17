@@ -111,30 +111,29 @@ public class PatientReferenceGenerator {
         .setCode("MR")
         .setDisplay("Medical record number");
 
-    fhirServerConfig.ifPresent(
-        cfg -> {
-          var fhirClient = createFhirClient(cfg);
-          var retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
+    fhirServerConfig.ifPresent(cfg -> {
+      var fhirClient = createFhirClient(cfg);
+      var retryTemplate = createRetryTemplate(fhirClient.getFhirContext());
 
-          IdentifierPseudonymizer pseudonymizer = null;
-          if (isPseudonymizePatientIdEnabled) {
-            if (!StringUtils.hasText(fhirPseudonymizerBaseUrl)) {
-              throw new IllegalArgumentException("Pseudonymizer base url is unset");
-            }
+      IdentifierPseudonymizer pseudonymizer = null;
+      if (isPseudonymizePatientIdEnabled) {
+        if (!StringUtils.hasText(fhirPseudonymizerBaseUrl)) {
+          throw new IllegalArgumentException("Pseudonymizer base url is unset");
+        }
 
-            var pseudonymizerContext = FhirContext.forR4();
-            pseudonymizerContext
-                .getRestfulClientFactory()
-                .setServerValidationMode(ServerValidationModeEnum.NEVER);
-            var fhirPseudonymizerClient =
-                pseudonymizerContext.newRestfulGenericClient(fhirPseudonymizerBaseUrl);
-            pseudonymizer = new IdentifierPseudonymizer(fhirPseudonymizerClient, retryTemplate);
-          }
+        var pseudonymizerContext = FhirContext.forR4();
+        pseudonymizerContext
+            .getRestfulClientFactory()
+            .setServerValidationMode(ServerValidationModeEnum.NEVER);
+        var fhirPseudonymizerClient =
+            pseudonymizerContext.newRestfulGenericClient(fhirPseudonymizerBaseUrl);
+        pseudonymizer = new IdentifierPseudonymizer(fhirPseudonymizerClient, retryTemplate);
+      }
 
-          this.fhirServerLookupStrategy =
-              new FhirServerLookupPatientReferenceStrategy(
-                  fhirClient, retryTemplate, isIdentifierOnlyReferencesAllowed, pseudonymizer);
-        });
+      this.fhirServerLookupStrategy =
+          new FhirServerLookupPatientReferenceStrategy(
+              fhirClient, retryTemplate, isIdentifierOnlyReferencesAllowed, pseudonymizer);
+    });
 
     if (recordIdJdbcTemplate.isPresent() && recordIdDbConfig.isPresent()) {
       this.recordIdDatabaseLookupStrategy =

@@ -61,17 +61,16 @@ public class FhirServerLookupPatientReferenceStrategy implements PatientReferenc
 
   private Optional<IIdType> findPatientIdByIdentifier(Identifier patientIdentifier) {
     var result =
-        retryTemplate.execute(
-            context ->
-                fhirClient
-                    .search()
-                    .forResource(Patient.class)
-                    .where(
-                        Patient.IDENTIFIER
-                            .exactly()
-                            .systemAndIdentifier(
-                                patientIdentifier.getSystem(), patientIdentifier.getValue()))
-                    .execute());
+        retryTemplate.execute(context ->
+            fhirClient
+                .search()
+                .forResource(Patient.class)
+                .where(
+                    Patient.IDENTIFIER
+                        .exactly()
+                        .systemAndIdentifier(
+                            patientIdentifier.getSystem(), patientIdentifier.getValue()))
+                .execute());
 
     var patients =
         BundleUtil.toListOfResourcesOfType(fhirClient.getFhirContext(), result, Patient.class);

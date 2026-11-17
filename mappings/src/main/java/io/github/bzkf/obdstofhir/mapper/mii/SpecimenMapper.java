@@ -50,10 +50,8 @@ public class SpecimenMapper extends ObdsToFhirMapper {
 
     // Specimen.collection.collected[x] = Tumor Histologiedatum
     convertObdsDatumToDateTimeType(histologie.getTumorHistologiedatum())
-        .ifPresent(
-            date ->
-                specimen.setCollection(
-                    new Specimen.SpecimenCollectionComponent().setCollected(date)));
+        .ifPresent(date ->
+            specimen.setCollection(new Specimen.SpecimenCollectionComponent().setCollected(date)));
 
     return specimen;
   }

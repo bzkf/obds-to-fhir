@@ -26,15 +26,14 @@ public class IdentifierPseudonymizer {
     var param = new Parameters();
     param.addParameter().setName("resource").setResource(patient);
     var result =
-        retryTemplate.execute(
-            context ->
-                fhirPseudonymizerClient
-                    .operation()
-                    .onServer()
-                    .named("de-identify")
-                    .withParameters(param)
-                    .returnResourceType(Patient.class)
-                    .execute());
+        retryTemplate.execute(context ->
+            fhirPseudonymizerClient
+                .operation()
+                .onServer()
+                .named("de-identify")
+                .withParameters(param)
+                .returnResourceType(Patient.class)
+                .execute());
     return result.getIdentifierFirstRep();
   }
 }

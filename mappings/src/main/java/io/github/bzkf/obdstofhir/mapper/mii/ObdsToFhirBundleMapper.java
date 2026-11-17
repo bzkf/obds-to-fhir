@@ -749,11 +749,9 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var fruehereTumorerkrankungenExtensions =
           fruehereTumorErkrankungen.stream()
               .map(ReferenceUtils::createReferenceTo)
-              .map(
-                  reference ->
-                      new Extension(
-                          fhirProperties.getExtensions().getConditionOccurredFollowing(),
-                          reference))
+              .map(reference ->
+                  new Extension(
+                      fhirProperties.getExtensions().getConditionOccurredFollowing(), reference))
               .toList();
 
       // again, not great to modify the resource after its creation.
@@ -859,10 +857,8 @@ public class ObdsToFhirBundleMapper extends ObdsToFhirMapper {
       var stProfile = Onkologie.Profiles.miiPrOnkoStrahlentherapie();
       var primaryProcedure =
           stProcedures.stream()
-              .filter(
-                  p ->
-                      p.getMeta().getProfile().stream()
-                          .anyMatch(c -> stProfile.equals(c.getValue())))
+              .filter(p ->
+                  p.getMeta().getProfile().stream().anyMatch(c -> stProfile.equals(c.getValue())))
               .findFirst();
 
       if (primaryProcedure.isPresent()) {

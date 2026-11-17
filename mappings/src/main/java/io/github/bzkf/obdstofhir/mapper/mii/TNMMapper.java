@@ -204,21 +204,20 @@ public class TNMMapper extends ObdsToFhirMapper {
 
     return members.stream()
         .filter(member -> member.source() != null)
-        .map(
-            member -> {
-              var observation =
-                  createTNMBaseResource(
-                      member.profile(),
-                      idBase + member.identifierSuffix(),
-                      member.identifierSystem(),
-                      tnmTyp.getVersion(),
-                      tnmTyp.getDatum(),
-                      patient,
-                      primaryConditionReference);
-              observation.setCode(member.code().get());
-              observation.setValue(member.value().get());
-              return observation;
-            })
+        .map(member -> {
+          var observation =
+              createTNMBaseResource(
+                  member.profile(),
+                  idBase + member.identifierSuffix(),
+                  member.identifierSystem(),
+                  tnmTyp.getVersion(),
+                  tnmTyp.getDatum(),
+                  patient,
+                  primaryConditionReference);
+          observation.setCode(member.code().get());
+          observation.setValue(member.value().get());
+          return observation;
+        })
         .toList();
   }
 
@@ -421,13 +420,12 @@ public class TNMMapper extends ObdsToFhirMapper {
     var coding =
         Onkologie.CodeSystems.MiiCsOnkoTnmUicc.fromValue(uiccStadium)
             .map(value -> value.coding())
-            .orElseGet(
-                () -> {
-                  LOG.warn("Unknown UICC stadium {}, still using code as-is.", uiccStadium);
-                  return new Coding()
-                      .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc())
-                      .setCode(uiccStadium);
-                });
+            .orElseGet(() -> {
+              LOG.warn("Unknown UICC stadium {}, still using code as-is.", uiccStadium);
+              return new Coding()
+                  .setSystem(Onkologie.CodeSystems.miiCsOnkoTnmUicc())
+                  .setCode(uiccStadium);
+            });
 
     return new CodeableConcept(coding);
   }

@@ -46,10 +46,9 @@ class TumorIcdMappingTest extends MapperTest {
     var patient = obds.getMengePatient().getPatient().getFirst();
     var meldung =
         patient.getMengeMeldung().getMeldung().stream()
-            .filter(
-                m ->
-                    m.getDiagnose() != null
-                        && m.getDiagnose().getMengeFruehereTumorerkrankung() != null)
+            .filter(m ->
+                m.getDiagnose() != null
+                    && m.getDiagnose().getMengeFruehereTumorerkrankung() != null)
             .findFirst()
             .orElseThrow();
     var previous = meldung.getDiagnose().getMengeFruehereTumorerkrankung();
