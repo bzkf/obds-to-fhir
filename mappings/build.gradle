@@ -98,6 +98,9 @@ tasks.register('fuzz', Test) {
         includeTestsMatching "${fuzzTestClass}.${fuzzTestMethod}"
     }
     environment 'JAZZER_FUZZ', '1'
+    // otherwise the JIT replaces frequently thrown NPEs with ones without message and stack trace,
+    // which the fuzz test then can't recognize as known issues
+    jvmArgs '-XX:-OmitStackTraceInFastThrow'
     // the mappers log a resource diff for every duplicate, which floods the output and slows
     // down fuzzing
     systemProperty 'logging.level.io.github.bzkf', 'ERROR'

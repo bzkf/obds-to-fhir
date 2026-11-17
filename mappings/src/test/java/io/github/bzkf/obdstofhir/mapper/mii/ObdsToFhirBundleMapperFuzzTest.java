@@ -107,14 +107,17 @@ class ObdsToFhirBundleMapperFuzzTest {
    * Bugs the fuzzer found that aren't fixed yet. Without this, it would stop at one of them within
    * seconds instead of looking for others. Remove an entry once its bug is fixed.
    *
-   * <p>All of them are elements the XSD makes optional, but the mappers require. Each has an
-   * example in {@code ObdsToFhirBundleMapperFuzzTestInputs/mapObds/known-issue-*.xml}, which fails
-   * as soon as its entry is removed.
+   * <p>All of them are values the XSD makes optional or allows to be blank, but the mappers
+   * require. Each has an example in {@code
+   * ObdsToFhirBundleMapperFuzzTestInputs/mapObds/known-issue-*.xml}, which fails as soon as its
+   * entry is removed.
    */
   private static final List<KnownIssue> KNOWN_ISSUES =
       List.of(
           new KnownIssue("OP without OP_ID", "Required OP_ID is unset"),
+          new KnownIssue("OP with a blank OP_ID", "identifiers/operation-procedure-id"),
           new KnownIssue("ST without ST_ID", "Required ST_ID is unset"),
+          new KnownIssue("ST with a blank ST_ID", "identifiers/strahlentherapie-procedure-id"),
           new KnownIssue("SYST without SYST_ID", "Required SYST_ID is unset"),
           new KnownIssue("Verlauf without Verlauf_ID", "identifiers/verlauf-observation-id"),
           new KnownIssue("TNM without ID", "identifiers/tnm-grouping-observation-id"),
