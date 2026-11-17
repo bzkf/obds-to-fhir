@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.cfg.CoercionAction;
+import tools.jackson.databind.cfg.CoercionInputShape;
+import tools.jackson.databind.type.LogicalType;
 import tools.jackson.dataformat.xml.XmlMapper;
 import tools.jackson.dataformat.xml.XmlReadFeature;
 import tools.jackson.module.jakarta.xmlbind.JakartaXmlBindAnnotationModule;
@@ -25,6 +28,16 @@ public class Obdsv3Deserializer extends ValueDeserializer<ObdsOrAdt>
           .addHandler(new SchemaLocationPropertyHandler())
           .addMixIn(FruehereTumorerkrankung.class, FruehereTumorerkrankungMixIn.class)
           .enable(XmlReadFeature.EMPTY_ELEMENT_AS_NULL)
+          // EMPTY_ELEMENT_AS_NULL only covers <Adresse/>, while <Adresse> </Adresse> would become
+          // an
+          // empty object. That one is written back as <Adresse/>, so it would turn into null after
+          // a round trip through the Kafka state store and map differently.
+          .withCoercionConfig(
+              LogicalType.POJO,
+              config ->
+                  config
+                      .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull)
+                      .setAcceptBlankAsEmpty(true))
           .changeDefaultPropertyInclusion(
               incl -> incl.withValueInclusion(JsonInclude.Include.NON_EMPTY))
           .build();

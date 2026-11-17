@@ -142,6 +142,12 @@ for i in {1..10}; do APPROVAL_TESTS_USE_REPORTER=AutoApproveReporter ./gradlew t
 [`ObdsToFhirBundleMapperFuzzTest`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTest.java)
 uses [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) to feed generated oBDS XML into the mapping.
 Inputs that aren't valid against the oBDS XSD are only parsed, not mapped, because the mappers rely on the schema's mandatory elements.
+For valid ones, the test also checks that the mapping is deterministic, that it doesn't change after a round trip through the Kafka state store's serializer,
+that the serialized oBDS is valid, and that the bundles have unique entries and references that resolve within them.
+
+To produce valid XML more often, the fuzzer uses a [dictionary](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/obds.dict)
+of the XSD's element names, attributes and enumeration values.
+When the oBDS version changes, regenerate it with [`generate_fuzz_dictionary.py`](mappings/scripts/generate_fuzz_dictionary.py).
 
 `./gradlew test` replays the inputs in
 [`ObdsToFhirBundleMapperFuzzTestInputs/mapObds`](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/mapObds)
@@ -153,7 +159,7 @@ like a regular unit test. To generate new inputs, run:
 
 The fuzzer starts from the oBDS test files and keeps every input that reaches new code in `mappings/.cifuzz-corpus`, which isn't committed.
 While that directory exists, `./gradlew test` replays it as well.
-It stops at the first input that throws, and saves it as `crash-<hash>` in the inputs directory.
+It stops at the first input that throws or breaks one of the checks, and saves it as `crash-<hash>` in the inputs directory.
 After fixing the bug, give that file a descriptive name and commit it as a regression test.
 
 The [fuzz workflow](.github/workflows/fuzz.yaml) fuzzes for 10 minutes every night and uploads the crashing input when it finds one.

@@ -5,6 +5,7 @@ on:
     inputs:
       duration:
         description: "How long to fuzz, e.g. 30s, 10m, 1h"
+        type: string
         required: false
         default: "10m"
   schedule:
