@@ -250,3 +250,6 @@ pyrightconfig.json
 dq/dq/check_dq.py
 
 dq/**/checkpoints/
+
+### Jazzer ###
+.cifuzz-corpus/

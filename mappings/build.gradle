@@ -56,6 +56,7 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.27.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.approvaltests:approvaltests:31.0.0'
+    testImplementation 'com.code-intelligence:jazzer-junit:0.30.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     testFixturesImplementation 'org.assertj:assertj-core:3.27.7'
@@ -66,6 +67,60 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+// Fuzzing, see DEVELOPMENT.md. `test` only replays the inputs in the fuzz tests' *Inputs
+// directories (Jazzer's regression mode); this task generates new ones.
+def fuzzTestClass = 'io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapperFuzzTest'
+// mapObds or mapMutatedObds
+def fuzzTestMethod = project.findProperty('fuzzTarget') ?: 'mapObds'
+def fuzzCorpusDir = layout.projectDirectory.dir(".cifuzz-corpus/${fuzzTestClass}/${fuzzTestMethod}")
+
+tasks.register('seedFuzzCorpus', Copy) {
+    description = 'Copies the oBDS test files into the corpus of mapObds as starting points.'
+    // the inputs of mapMutatedObds are the mutator's decisions, not XML
+    onlyIf { fuzzTestMethod == 'mapObds' }
+    from 'src/test/resources/obds3'
+    include '*.xml'
+    into fuzzCorpusDir
+}
+
+tasks.register('fuzz', Test) {
+    description = 'Fuzzes the oBDS to FHIR mapping. -PfuzzTarget=mapMutatedObds selects the other ' +
+        'fuzz test, -PfuzzDuration=30s overrides the 10m default.'
+    group = 'verification'
+    dependsOn 'seedFuzzCorpus'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform()
+    // Jazzer fuzzes only one fuzz test per JVM
+    filter {
+        includeTestsMatching "${fuzzTestClass}.${fuzzTestMethod}"
+    }
+    environment 'JAZZER_FUZZ', '1'
+    // otherwise the JIT replaces frequently thrown NPEs with ones without message and stack trace,
+    // which the fuzz test then can't recognize as known issues
+    jvmArgs '-XX:-OmitStackTraceInFastThrow'
+    // the mappers log a resource diff for every duplicate, which floods the output and slows
+    // down fuzzing
+    systemProperty 'logging.level.io.github.bzkf', 'ERROR'
+    systemProperty 'jazzer.instrument', 'io.github.bzkf.**,de.basisdatensatz.**,tools.jackson.dataformat.xml.**'
+    if (project.hasProperty('fuzzDuration')) {
+        systemProperty 'jazzer.max_duration', project.property('fuzzDuration')
+    }
+    // collect up to this many distinct findings instead of stopping at the first one
+    if (project.hasProperty('fuzzKeepGoing')) {
+        systemProperty 'jazzer.keep_going', project.property('fuzzKeepGoing')
+    }
+    // with the JaCoCo agent, the fuzzer can crash the JVM on JDK 25,
+    // see https://github.com/CodeIntelligenceTesting/jazzer/issues/1035
+    jacoco {
+        enabled = false
+    }
+    outputs.upToDateWhen { false }
+    testLogging {
+        showStandardStreams = true
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {

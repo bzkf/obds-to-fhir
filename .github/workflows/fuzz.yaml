@@ -1,0 +1,77 @@
+name: fuzz
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: "How long to fuzz, e.g. 30s, 10m, 1h"
+        type: string
+        required: false
+        default: "10m"
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  cancel-in-progress: false
+  group: ${{ github.workflow }}
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-24.04
+    name: Fuzz the oBDS to FHIR mapping (${{ matrix.target }})
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        # mapObds fuzzes the XML, mapMutatedObds the content of valid oBDS
+        target: [mapObds, mapMutatedObds]
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287 # v5.3.0
+        with:
+          java-version: "25"
+          distribution: "temurin"
+
+      - uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+
+      - name: Setup Gradle
+        # zizmor: ignore[cache-poisoning] cache writes are already read-only outside the default branch (gradle/actions default behavior)
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+
+      # keep the inputs that gained coverage, so each run continues where the last one stopped
+      - name: Cache fuzz corpus
+        # zizmor: ignore[cache-poisoning] no release artifacts are built here, and caches written by a manual run on another branch are scoped to that branch
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: mappings/.cifuzz-corpus/io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapperFuzzTest/${{ matrix.target }}
+          key: fuzz-corpus-${{ matrix.target }}-${{ github.run_id }}
+          restore-keys: |
+            fuzz-corpus-${{ matrix.target }}-
+
+      - name: Fuzz
+        env:
+          FUZZ_DURATION: ${{ inputs.duration || '10m' }}
+          FUZZ_TARGET: ${{ matrix.target }}
+        run: |
+          ./gradlew :mappings:fuzz -PfuzzTarget="${FUZZ_TARGET}" -PfuzzDuration="${FUZZ_DURATION}"
+
+      - name: Upload crashing inputs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: fuzz-findings-${{ matrix.target }}
+          path: |
+            mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/${{ matrix.target }}/
+            mappings/build/reports/tests/fuzz/

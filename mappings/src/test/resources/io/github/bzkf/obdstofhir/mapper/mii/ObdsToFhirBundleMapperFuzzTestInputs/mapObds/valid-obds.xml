@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<oBDS xmlns="http://www.basisdatensatz.de/oBDS/XML" Schema_Version="3.0.2">
+    <Absender Absender_ID="TEST" Software_ID="ONKOSTAR" Software_Version="2.13.1">
+        <Bezeichnung>TEST</Bezeichnung>
+        <Anschrift>Musterstraße 1, 012345 Musterhausen</Anschrift>
+    </Absender>
+    <Meldedatum>2024-06-11</Meldedatum>
+    <Menge_Patient>
+        <Patient Patient_ID="00001234">
+            <Patienten_Stammdaten>
+                <Versichertendaten_GKV>
+                    <IKNR>103456789</IKNR>
+                    <GKV_Versichertennummer>E123456789</GKV_Versichertennummer>
+                </Versichertendaten_GKV>
+                <Nachname>Tester</Nachname>
+                <Vornamen>Patrick</Vornamen>
+                <Geschlecht>M</Geschlecht>
+                <Geburtsdatum Datumsgenauigkeit="T">1980-01-01</Geburtsdatum>
+                <Adresse>
+                    <Strasse>Testweg</Strasse>
+                    <Hausnummer>1</Hausnummer>
+                    <Land>DE</Land>
+                    <PLZ>01234</PLZ>
+                    <Ort>Musterhausen</Ort>
+                </Adresse>
+            </Patienten_Stammdaten>
+            <Menge_Meldung>
+                <Meldung Meldung_ID="TEST1727528" Melder_ID="TEST">
+                    <Meldebegruendung>I</Meldebegruendung>
+                    <Eigene_Leistung>J</Eigene_Leistung>
+                    <Tumorzuordnung Tumor_ID="1">
+                        <Primaertumor_ICD>
+                            <Code>C17.1</Code>
+                            <Version>10 2015 GM</Version>
+                        </Primaertumor_ICD>
+                        <Diagnosedatum Datumsgenauigkeit="T">2024-06-10</Diagnosedatum>
+                    </Tumorzuordnung>
+                    <Diagnose>
+                        <Diagnosesicherung>1</Diagnosesicherung>
+                        <Allgemeiner_Leistungszustand>0</Allgemeiner_Leistungszustand>
+                    </Diagnose>
+                </Meldung>
+            </Menge_Meldung>
+        </Patient>
+    </Menge_Patient>
+    <Menge_Melder>
+        <Melder ID="TEST">
+            <Ident_Nummern>
+                <IKNR>103456789</IKNR>
+            </Ident_Nummern>
+        </Melder>
+    </Menge_Melder>
+</oBDS>
