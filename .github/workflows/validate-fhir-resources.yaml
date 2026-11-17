@@ -41,12 +41,12 @@ jobs:
   extract-mapper-names:
     name: extract mapper names
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     outputs:
       mapper-names: ${{ steps.extract.outputs.mapper-names }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -62,7 +62,7 @@ jobs:
       # jobs running in parallel each restoring at the same time
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: |
             /github/home/.fhir/packages
@@ -81,7 +81,7 @@ jobs:
   validate-fhir-resource:
     name: validate fhir resources
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     strategy:
@@ -93,12 +93,12 @@ jobs:
         mapper: ${{ fromJson(needs.extract-mapper-names.outputs.mapper-names) }}
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
       - name: Checkout code
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -109,7 +109,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: |
             /github/home/.fhir/packages
@@ -133,17 +133,17 @@ jobs:
   validate-bundles:
     name: validate bundles
     runs-on: ubuntu-24.04
-    container: ghcr.io/miracum/ig-build-tools:v2.3.0@sha256:c849d2e22b6088ef191202763170553de88cafd4907a6f9d0e11e5b0ff7e83ef
+    container: ghcr.io/miracum/ig-build-tools:v2.6.1@sha256:77825ffad88656e5c07df8e6b62866f0473cacfed61a25f953d431c5ec47de72
     needs:
       - extract-mapper-names
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
         with:
           egress-policy: audit # change to 'egress-policy: block' after couple of runs
 
       - name: Checkout code
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
 
@@ -154,7 +154,7 @@ jobs:
 
       - name: Cache FHIR packages
         id: fhir-package-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
         with:
           path: |
             /github/home/.fhir/packages
@@ -184,7 +184,7 @@ jobs:
             $VALIDATOR_ARGS -html-output=java-validator-bundles-report.html
 
       - name: Upload Java validator bundle report
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: java-validator-bundles-report
           path: java-validator-bundles-report.html
