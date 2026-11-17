@@ -83,15 +83,14 @@ public class Obdsv3Processor {
 
     return stringOnkoMeldungExpTable -> {
       var mapped =
-          stringOnkoMeldungExpTable.mapValues(
-              meldung -> {
-                var obdsOrAdt = meldung.getObdsOrAdt();
-                if (obdsOrAdt.hasADT() && !obdsOrAdt.hasOBDS()) {
-                  var obds = obdsMapper.map(obdsOrAdt.getAdt());
-                  meldung.setObdsOrAdt(ObdsOrAdt.from(obds));
-                }
-                return meldung;
-              });
+          stringOnkoMeldungExpTable.mapValues(meldung -> {
+            var obdsOrAdt = meldung.getObdsOrAdt();
+            if (obdsOrAdt.hasADT() && !obdsOrAdt.hasOBDS()) {
+              var obds = obdsMapper.map(obdsOrAdt.getAdt());
+              meldung.setObdsOrAdt(ObdsOrAdt.from(obds));
+            }
+            return meldung;
+          });
 
       var stream =
           mapped
@@ -116,19 +115,18 @@ public class Obdsv3Processor {
       if (writeGroupedObdsToKafkaConfig.enabled()) {
         stream
             .flatMapValues(this.getMeldungExportListToObdsListMapper())
-            .selectKey(
-                (key, obds) ->
-                    String.format(
-                        "%s-%s",
-                        obds.getMengePatient().getPatient().getFirst().getPatientID(),
-                        obds.getMengePatient()
-                            .getPatient()
-                            .getFirst()
-                            .getMengeMeldung()
-                            .getMeldung()
-                            .getFirst()
-                            .getTumorzuordnung()
-                            .getTumorID()))
+            .selectKey((key, obds) ->
+                String.format(
+                    "%s-%s",
+                    obds.getMengePatient().getPatient().getFirst().getPatientID(),
+                    obds.getMengePatient()
+                        .getPatient()
+                        .getFirst()
+                        .getMengeMeldung()
+                        .getMeldung()
+                        .getFirst()
+                        .getTumorzuordnung()
+                        .getTumorID()))
             .to(
                 writeGroupedObdsToKafkaConfig.topic(),
                 Produced.with(
@@ -161,17 +159,16 @@ public class Obdsv3Processor {
   private MeldungExportListV3 retainLatestVersionOnly(MeldungExportListV3 meldungExportList) {
     return meldungExportList.stream()
         // generally only for debugging, can be removed later
-        .map(
-            meldung -> {
-              if (meldung.getObds().getMengePatient().getPatient().size() > 1) {
-                throw new IllegalStateException(
-                    String.format(
-                        "Meldung %s contains more than one patient, actually %d",
-                        getReportingIdFromObds(meldung),
-                        meldung.getObds().getMengePatient().getPatient().size()));
-              }
-              return meldung;
-            })
+        .map(meldung -> {
+          if (meldung.getObds().getMengePatient().getPatient().size() > 1) {
+            throw new IllegalStateException(
+                String.format(
+                    "Meldung %s contains more than one patient, actually %d",
+                    getReportingIdFromObds(meldung),
+                    meldung.getObds().getMengePatient().getPatient().size()));
+          }
+          return meldung;
+        })
         .collect(
             Collectors.groupingBy(
                 Obdsv3Processor::getReportingIdFromObds,

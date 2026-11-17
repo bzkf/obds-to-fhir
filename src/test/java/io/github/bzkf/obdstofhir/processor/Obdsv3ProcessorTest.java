@@ -242,14 +242,13 @@ class Obdsv3ProcessorTest extends MapperTest {
 
       var conditions =
           outputRecords.stream()
-              .map(
-                  r ->
-                      BundleUtil.toListOfResourcesOfType(ctx, (Bundle) r.value, Condition.class)
-                          .getFirst()
-                          .getCode()
-                          .getCoding()
-                          .getFirst()
-                          .getCode())
+              .map(r ->
+                  BundleUtil.toListOfResourcesOfType(ctx, (Bundle) r.value, Condition.class)
+                      .getFirst()
+                      .getCode()
+                      .getCoding()
+                      .getFirst()
+                      .getCode())
               .toList();
 
       // validate prioritization
@@ -336,12 +335,11 @@ class Obdsv3ProcessorTest extends MapperTest {
 
       var kafkaMessageKeys = new HashSet<>();
       AtomicInteger dulpicateKeyCount = new AtomicInteger();
-      keys.forEach(
-          keyInTopic -> {
-            if (kafkaMessageKeys.add(keyInTopic)) {
-              dulpicateKeyCount.getAndIncrement();
-            }
-          });
+      keys.forEach(keyInTopic -> {
+        if (kafkaMessageKeys.add(keyInTopic)) {
+          dulpicateKeyCount.getAndIncrement();
+        }
+      });
       assertThat(dulpicateKeyCount.get()).isLessThan(2);
     }
   }
@@ -393,14 +391,13 @@ class Obdsv3ProcessorTest extends MapperTest {
 
     assertThat(fruehereTumorerkrankungen)
         .isNotEmpty()
-        .allSatisfy(
-            condition -> {
-              var assertedDate =
-                  condition.getExtensionByUrl(
-                      "http://hl7.org/fhir/StructureDefinition/condition-assertedDate");
-              assertThat(assertedDate.getValue().primitiveValue()).matches("20\\d{2}");
-              assertThat(condition.getIdentifierFirstRep().getValue()).matches(".*-20\\d{2}");
-            });
+        .allSatisfy(condition -> {
+          var assertedDate =
+              condition.getExtensionByUrl(
+                  "http://hl7.org/fhir/StructureDefinition/condition-assertedDate");
+          assertThat(assertedDate.getValue().primitiveValue()).matches("20\\d{2}");
+          assertThat(condition.getIdentifierFirstRep().getValue()).matches(".*-20\\d{2}");
+        });
   }
 
   @Test
@@ -413,12 +410,11 @@ class Obdsv3ProcessorTest extends MapperTest {
     // one bundle for the first file, then one per tumor for the second file
     assertThat(bundles)
         .hasSize(3)
-        .allSatisfy(
-            bundle ->
-                assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class))
-                    .singleElement()
-                    .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
-                    .isEqualTo("2022-08-01"));
+        .allSatisfy(bundle ->
+            assertThat(BundleUtil.toListOfResourcesOfType(ctx, bundle, Patient.class))
+                .singleElement()
+                .extracting(patient -> patient.getDeceasedDateTimeType().getValueAsString())
+                .isEqualTo("2022-08-01"));
   }
 
   @Test

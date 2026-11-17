@@ -81,10 +81,9 @@ class FruehereTumorerkrankungenMapperTest extends MapperTest {
     var obdsPatient = obds.getMengePatient().getPatient().getFirst();
     var meldung =
         obdsPatient.getMengeMeldung().getMeldung().stream()
-            .filter(
-                m ->
-                    m.getDiagnose() != null
-                        && m.getDiagnose().getMengeFruehereTumorerkrankung() != null)
+            .filter(m ->
+                m.getDiagnose() != null
+                    && m.getDiagnose().getMengeFruehereTumorerkrankung() != null)
             .findFirst()
             .get();
 

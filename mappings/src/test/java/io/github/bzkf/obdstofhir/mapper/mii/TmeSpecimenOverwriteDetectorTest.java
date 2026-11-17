@@ -56,13 +56,11 @@ class TmeSpecimenOverwriteDetectorTest {
 
     assertThat(findings)
         .singleElement()
-        .satisfies(
-            finding -> {
-              assertThat(finding.histologieId()).isEqualTo("H1");
-              assertThat(finding.last().meldungId()).isEqualTo("diagnose-1");
-              assertThat(finding.describeSections())
-                  .isEqualTo("op-1:OP=2, diagnose-1:Diagnose=<none>");
-            });
+        .satisfies(finding -> {
+          assertThat(finding.histologieId()).isEqualTo("H1");
+          assertThat(finding.last().meldungId()).isEqualTo("diagnose-1");
+          assertThat(finding.describeSections()).isEqualTo("op-1:OP=2, diagnose-1:Diagnose=<none>");
+        });
   }
 
   @Test

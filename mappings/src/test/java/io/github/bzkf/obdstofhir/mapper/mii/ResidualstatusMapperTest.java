@@ -40,11 +40,10 @@ class ResidualstatusMapperTest extends MapperTest {
         .filter(m -> m.getOP() != null && m.getOP().getResidualstatus() != null)
         .map(Meldung::getOP)
         .findFirst()
-        .ifPresent(
-            op -> {
-              var procedure = sut.map(op, subject, focus);
+        .ifPresent(op -> {
+          var procedure = sut.map(op, subject, focus);
 
-              verify(procedure, sourceFile);
-            });
+          verify(procedure, sourceFile);
+        });
   }
 }
