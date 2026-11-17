@@ -72,18 +72,22 @@ test {
 // Fuzzing, see DEVELOPMENT.md. `test` only replays the inputs in the fuzz tests' *Inputs
 // directories (Jazzer's regression mode); this task generates new ones.
 def fuzzTestClass = 'io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapperFuzzTest'
-def fuzzTestMethod = 'mapObds'
+// mapObds or mapMutatedObds
+def fuzzTestMethod = project.findProperty('fuzzTarget') ?: 'mapObds'
 def fuzzCorpusDir = layout.projectDirectory.dir(".cifuzz-corpus/${fuzzTestClass}/${fuzzTestMethod}")
 
 tasks.register('seedFuzzCorpus', Copy) {
-    description = 'Copies the oBDS test files into the fuzz corpus as starting points.'
+    description = 'Copies the oBDS test files into the corpus of mapObds as starting points.'
+    // the inputs of mapMutatedObds are the mutator's decisions, not XML
+    onlyIf { fuzzTestMethod == 'mapObds' }
     from 'src/test/resources/obds3'
     include '*.xml'
     into fuzzCorpusDir
 }
 
 tasks.register('fuzz', Test) {
-    description = 'Fuzzes the oBDS to FHIR mapping. -PfuzzDuration=30s overrides the 10m default.'
+    description = 'Fuzzes the oBDS to FHIR mapping. -PfuzzTarget=mapMutatedObds selects the other ' +
+        'fuzz test, -PfuzzDuration=30s overrides the 10m default.'
     group = 'verification'
     dependsOn 'seedFuzzCorpus'
     testClassesDirs = sourceSets.test.output.classesDirs
@@ -100,6 +104,10 @@ tasks.register('fuzz', Test) {
     systemProperty 'jazzer.instrument', 'io.github.bzkf.**,de.basisdatensatz.**,tools.jackson.dataformat.xml.**'
     if (project.hasProperty('fuzzDuration')) {
         systemProperty 'jazzer.max_duration', project.property('fuzzDuration')
+    }
+    // collect up to this many distinct findings instead of stopping at the first one
+    if (project.hasProperty('fuzzKeepGoing')) {
+        systemProperty 'jazzer.keep_going', project.property('fuzzKeepGoing')
     }
     // with the JaCoCo agent, the fuzzer can crash the JVM on JDK 25,
     // see https://github.com/CodeIntelligenceTesting/jazzer/issues/1035

@@ -7,19 +7,27 @@ import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 import com.code_intelligence.jazzer.junit.DictionaryFile;
 import com.code_intelligence.jazzer.junit.FuzzTest;
 import de.basisdatensatz.obds.v3.OBDS;
+import de.basisdatensatz.obds.v3.OBDS.MengePatient.Patient.MengeMeldung.Meldung;
 import io.github.bzkf.obdstofhir.ProfileTestConfig;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Deserializer;
 import io.github.bzkf.obdstofhir.serde.Obdsv3Serializer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.hl7.fhir.r4.model.Bundle;
+import org.hl7.fhir.r4.model.Patient;
 import org.hl7.fhir.r4.model.Reference;
 import org.hl7.fhir.r4.model.Resource;
 import org.jspecify.annotations.Nullable;
@@ -32,7 +40,13 @@ import org.xml.sax.SAXException;
 import tools.jackson.core.JacksonException;
 
 /**
- * Fuzzes the path from raw oBDS XML to FHIR bundles.
+ * Fuzzes the path from oBDS XML to FHIR bundles with two targets:
+ *
+ * <ul>
+ *   <li>{@link #mapObds} feeds the fuzzer's bytes in as XML, which also tests the parser
+ *   <li>{@link #mapMutatedObds} changes the oBDS test files with {@link ObdsMutator}, which reaches
+ *       much more of the mapping, as nearly all byte-level mutations make the XML invalid
+ * </ul>
  *
  * <p>Every input is parsed with the production XML mapper, so malformed XML only has to be rejected
  * with a {@link JacksonException}. Only inputs that are valid against the oBDS XSD are then mapped,
@@ -44,12 +58,14 @@ import tools.jackson.core.JacksonException;
  *   <li>give the same result after a round trip through {@link Obdsv3Serializer}, which the Kafka
  *       state store does with every oBDS before it is mapped
  *   <li>create bundles with unique entries and references that resolve within the bundle
+ *   <li>create the same Patient in the bundle of every tumor, when the Meldungen are split into one
+ *       oBDS per tumor like the Kafka route does
  * </ul>
  *
  * <p>The serialized oBDS also has to be valid against the XSD, as it is written to Kafka when
  * {@code write-grouped-obds-to-kafka} is enabled.
  *
- * <p>{@code ./gradlew test} runs this in regression mode against the inputs in {@code
+ * <p>{@code ./gradlew test} runs both in regression mode against the inputs in {@code
  * src/test/resources/.../ObdsToFhirBundleMapperFuzzTestInputs}. To fuzz, run {@code ./gradlew
  * :mappings:fuzz}, see DEVELOPMENT.md.
  */
@@ -62,6 +78,7 @@ class ObdsToFhirBundleMapperFuzzTest {
   private static final FhirTerser FHIR_TERSER = FHIR_CONTEXT.newTerser();
   private static final Schema OBDS_SCHEMA = loadObdsSchema();
   private static final Obdsv3Serializer SERIALIZER = new Obdsv3Serializer();
+  private static final ObdsMutator MUTATOR = new ObdsMutator(loadValidTestFiles());
 
   private static ObdsToFhirBundleMapper sut;
 
@@ -73,8 +90,66 @@ class ObdsToFhirBundleMapperFuzzTest {
   @FuzzTest(maxDuration = "10m")
   @DictionaryFile(resourcePath = "obds.dict")
   void mapObds(FuzzedDataProvider data) {
-    var xml = data.consumeRemainingAsBytes();
+    checkMappingUnlessKnownIssue(data.consumeRemainingAsBytes());
+  }
 
+  @FuzzTest(maxDuration = "10m")
+  void mapMutatedObds(FuzzedDataProvider data) {
+    var obds = MUTATOR.mutate(data);
+    // the Kafka route maps the Meldungen of each patient on their own
+    if (obds.getMengePatient() == null || obds.getMengePatient().getPatient().size() != 1) {
+      return;
+    }
+    checkMappingUnlessKnownIssue(SERIALIZER.serialize("fuzz", obds));
+  }
+
+  /**
+   * Bugs the fuzzer found that aren't fixed yet. Without this, it would stop at one of them within
+   * seconds instead of looking for others. Remove an entry once its bug is fixed.
+   *
+   * <p>All of them are elements the XSD makes optional, but the mappers require. Each has an
+   * example in {@code ObdsToFhirBundleMapperFuzzTestInputs/mapObds/known-issue-*.xml}, which fails
+   * as soon as its entry is removed.
+   */
+  private static final List<KnownIssue> KNOWN_ISSUES =
+      List.of(
+          new KnownIssue("OP without OP_ID", "Required OP_ID is unset"),
+          new KnownIssue("ST without ST_ID", "Required ST_ID is unset"),
+          new KnownIssue("SYST without SYST_ID", "Required SYST_ID is unset"),
+          new KnownIssue("Verlauf without Verlauf_ID", "identifiers/verlauf-observation-id"),
+          new KnownIssue("TNM without ID", "identifiers/tnm-grouping-observation-id"),
+          new KnownIssue("ST without Menge_Bestrahlung", "STTyp.getMengeBestrahlung()\" is null"),
+          new KnownIssue(
+              "Gleason_Score without Score_Ergebnis and patterns",
+              "The validated character sequence is blank",
+              GleasonScoreMapper.class));
+
+  private record KnownIssue(
+      String description, String messagePart, @Nullable Class<?> throwingClass) {
+    KnownIssue(String description, String messagePart) {
+      this(description, messagePart, null);
+    }
+
+    boolean matches(Throwable exception) {
+      return exception.getMessage() != null
+          && exception.getMessage().contains(messagePart)
+          && (throwingClass == null
+              || Arrays.stream(exception.getStackTrace())
+                  .anyMatch(frame -> frame.getClassName().equals(throwingClass.getName())));
+    }
+  }
+
+  private static void checkMappingUnlessKnownIssue(byte[] xml) {
+    try {
+      checkMapping(xml);
+    } catch (RuntimeException e) {
+      if (KNOWN_ISSUES.stream().noneMatch(issue -> issue.matches(e))) {
+        throw e;
+      }
+    }
+  }
+
+  private static void checkMapping(byte[] xml) {
     var obds = parse(xml);
     if (obds == null || findSchemaViolation(xml) != null) {
       return;
@@ -98,9 +173,51 @@ class ObdsToFhirBundleMapperFuzzTest {
     assertSameMapping(
         "mapping after a round trip through the serializer", expected, map(roundTripped));
 
-    // the Kafka route maps all oBDS of a patient at once, which takes a different code path
-    for (var result : sut.map(List.of(obds))) {
+    assertSamePatientWhenSplitByTumor(obds);
+  }
+
+  /**
+   * The Kafka route maps the Meldungen of each tumor as an oBDS of its own, all oBDS of a patient
+   * at once. As they share the patient's data, every bundle has to contain the same Patient.
+   */
+  private static void assertSamePatientWhenSplitByTumor(OBDS obds) {
+    if (obds.getMengePatient().getPatient().size() != 1) {
+      return;
+    }
+    var meldungenByTumor = new LinkedHashMap<String, List<Meldung>>();
+    for (var meldung :
+        obds.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung()) {
+      var tumorzuordnung = meldung.getTumorzuordnung();
+      meldungenByTumor
+          .computeIfAbsent(
+              tumorzuordnung == null ? "" : tumorzuordnung.getTumorID(), id -> new ArrayList<>())
+          .add(meldung);
+    }
+    if (meldungenByTumor.size() < 2) {
+      return;
+    }
+
+    var obdsPerTumor = new ArrayList<OBDS>();
+    for (var meldungen : meldungenByTumor.values()) {
+      var copy = ObdsMutator.deepCopy(obds);
+      var copiedMeldungen =
+          copy.getMengePatient().getPatient().getFirst().getMengeMeldung().getMeldung();
+      copiedMeldungen.clear();
+      copiedMeldungen.addAll(ObdsMutator.deepCopy(meldungen));
+      obdsPerTumor.add(copy);
+    }
+
+    var patients = new ArrayList<String>();
+    for (var result : sut.map(obdsPerTumor)) {
       assertValidBundle(result.bundle());
+      for (var entry : result.bundle().getEntry()) {
+        if (entry.getResource() instanceof Patient patient) {
+          patients.add(FHIR_PARSER.encodeResourceToString(patient));
+        }
+      }
+    }
+    for (var patient : patients) {
+      assertSameMapping("splitting the Meldungen by tumor", patients.getFirst(), patient);
     }
   }
 
@@ -182,6 +299,24 @@ class ObdsToFhirBundleMapperFuzzTest {
       // the input is in memory, so an IOException means it can't be decoded, e.g. because it
       // declares an unknown encoding that Jackson ignores
       return e.getMessage();
+    }
+  }
+
+  /** The oBDS test files that are valid against the XSD, as starting points for the mutations. */
+  private static List<OBDS> loadValidTestFiles() {
+    try (var files =
+        Files.list(Path.of(ObdsToFhirBundleMapperFuzzTest.class.getResource("/obds3").toURI()))) {
+      var valid = new ArrayList<OBDS>();
+      for (var file : files.filter(f -> f.toString().endsWith(".xml")).sorted().toList()) {
+        var xml = Files.readAllBytes(file);
+        var obds = parse(xml);
+        if (obds != null && findSchemaViolation(xml) == null) {
+          valid.add(obds);
+        }
+      }
+      return valid;
+    } catch (IOException | URISyntaxException e) {
+      throw new IllegalStateException("Failed to load the oBDS test files", e);
     }
   }
 
