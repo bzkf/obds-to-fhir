@@ -24,7 +24,7 @@ services:
         required: false
 
   kafka:
-    image: docker.io/apache/kafka:4.3.0@sha256:0be4c9eb3565733612d2836d65636fd611a219ebcf5b4162e5ac259ea0ecb907
+    image: docker.io/apache/kafka:4.4.0@sha256:833b867a9585a141da455dc2b57431c65cbccb27f11c91f694444cca9f777e0f
     restart: unless-stopped
     cap_drop:
       - ALL
