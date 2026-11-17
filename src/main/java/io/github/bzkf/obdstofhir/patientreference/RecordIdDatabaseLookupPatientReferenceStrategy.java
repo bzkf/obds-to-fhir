@@ -81,7 +81,7 @@ public class RecordIdDatabaseLookupPatientReferenceStrategy implements PatientRe
     try {
       var id = jdbcTemplate.queryForObject(dbConfig.query(), String.class, patientId);
       return StringUtils.hasText(id) ? Optional.of(id) : Optional.empty();
-    } catch (EmptyResultDataAccessException _) {
+    } catch (EmptyResultDataAccessException ignored) {
       return Optional.empty();
     }
   }
