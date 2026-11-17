@@ -140,29 +140,41 @@ for i in {1..10}; do APPROVAL_TESTS_USE_REPORTER=AutoApproveReporter ./gradlew t
 ## Fuzzing
 
 [`ObdsToFhirBundleMapperFuzzTest`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTest.java)
-uses [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) to feed generated oBDS XML into the mapping.
-Inputs that aren't valid against the oBDS XSD are only parsed, not mapped, because the mappers rely on the schema's mandatory elements.
-For valid ones, the test also checks that the mapping is deterministic, that it doesn't change after a round trip through the Kafka state store's serializer,
-that the serialized oBDS is valid, and that the bundles have unique entries and references that resolve within them.
+uses [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) to look for oBDS that break the mapping. It has two fuzz tests:
 
-To produce valid XML more often, the fuzzer uses a [dictionary](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/obds.dict)
-of the XSD's element names, attributes and enumeration values.
-When the oBDS version changes, regenerate it with [`generate_fuzz_dictionary.py`](mappings/scripts/generate_fuzz_dictionary.py).
+- `mapObds` feeds the fuzzer's bytes in as XML. Starting from the oBDS test files, it also tests the parser,
+  using a [dictionary](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/obds.dict) of the XSD's element names, attributes and enumeration values.
+  When the oBDS version changes, regenerate it with [`generate_fuzz_dictionary.py`](mappings/scripts/generate_fuzz_dictionary.py).
+- `mapMutatedObds` changes the parsed oBDS test files with [`ObdsMutator`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsMutator.java),
+  e.g. by removing values, exchanging elements with those of other test files or shifting dates.
+  Its changes mostly keep the oBDS valid, so it reaches much more of the mapping than byte-level mutations of XML.
+
+Inputs that aren't valid against the oBDS XSD are only parsed, not mapped, because the mappers rely on the schema's mandatory elements.
+For valid ones, the test checks that the mapping doesn't throw, is deterministic, doesn't change after a round trip through the Kafka state store's serializer,
+creates bundles with unique entries and references that resolve within them, and creates the same Patient in every tumor's bundle.
+It also checks that the serialized oBDS is valid.
 
 `./gradlew test` replays the inputs in
-[`ObdsToFhirBundleMapperFuzzTestInputs/mapObds`](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/mapObds)
-like a regular unit test. To generate new inputs, run:
+[`ObdsToFhirBundleMapperFuzzTestInputs`](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs)
+like a regular unit test. To generate new inputs, run either of:
 
 ```sh
 ./gradlew :mappings:fuzz -PfuzzDuration=5m
+./gradlew :mappings:fuzz -PfuzzTarget=mapMutatedObds -PfuzzDuration=5m
 ```
 
-The fuzzer starts from the oBDS test files and keeps every input that reaches new code in `mappings/.cifuzz-corpus`, which isn't committed.
+The fuzzer keeps every input that reaches new code in `mappings/.cifuzz-corpus`, which isn't committed.
 While that directory exists, `./gradlew test` replays it as well.
-It stops at the first input that throws or breaks one of the checks, and saves it as `crash-<hash>` in the inputs directory.
-After fixing the bug, give that file a descriptive name and commit it as a regression test.
+It stops at the first input that breaks one of the checks, and saves it as `crash-<hash>` in the inputs directory.
+To collect several findings in one run, add `-PfuzzKeepGoing=20`. The task then succeeds even if it finds something, so check the inputs directory.
 
-The [fuzz workflow](.github/workflows/fuzz.yaml) fuzzes for 10 minutes every night and uploads the crashing input when it finds one.
+The inputs of `mapMutatedObds` are the mutator's decisions, which mean something else as soon as the test files or the mutator change.
+So save a finding as XML in the inputs of `mapObds`, with a descriptive name, and commit that as the regression test.
+
+Bugs that are found but not fixed yet are listed in the test's `KNOWN_ISSUES`, so the fuzzer can look past them.
+Each has an example in `ObdsToFhirBundleMapperFuzzTestInputs/mapObds/known-issue-*.xml`. After fixing one, remove its entry.
+
+The [fuzz workflow](.github/workflows/fuzz.yaml) runs both fuzz tests for 10 minutes every night and uploads the crashing input when it finds one.
 The `fuzz` task doesn't attach the JaCoCo agent,
 because together with the fuzzer it can crash the JVM on JDK 25 ([jazzer#1035](https://github.com/CodeIntelligenceTesting/jazzer/issues/1035)).
 

@@ -21,8 +21,13 @@ concurrency:
 jobs:
   fuzz:
     runs-on: ubuntu-24.04
-    name: Fuzz the oBDS to FHIR mapping
+    name: Fuzz the oBDS to FHIR mapping (${{ matrix.target }})
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        # mapObds fuzzes the XML, mapMutatedObds the content of valid oBDS
+        target: [mapObds, mapMutatedObds]
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
@@ -50,22 +55,23 @@ jobs:
         # zizmor: ignore[cache-poisoning] no release artifacts are built here, and caches written by a manual run on another branch are scoped to that branch
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
         with:
-          path: mappings/.cifuzz-corpus
-          key: fuzz-corpus-${{ github.run_id }}
+          path: mappings/.cifuzz-corpus/io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapperFuzzTest/${{ matrix.target }}
+          key: fuzz-corpus-${{ matrix.target }}-${{ github.run_id }}
           restore-keys: |
-            fuzz-corpus-
+            fuzz-corpus-${{ matrix.target }}-
 
       - name: Fuzz
         env:
           FUZZ_DURATION: ${{ inputs.duration || '10m' }}
+          FUZZ_TARGET: ${{ matrix.target }}
         run: |
-          ./gradlew :mappings:fuzz -PfuzzDuration="${FUZZ_DURATION}"
+          ./gradlew :mappings:fuzz -PfuzzTarget="${FUZZ_TARGET}" -PfuzzDuration="${FUZZ_DURATION}"
 
       - name: Upload crashing inputs
         if: ${{ failure() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: fuzz-findings
+          name: fuzz-findings-${{ matrix.target }}
           path: |
-            mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/
+            mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs/${{ matrix.target }}/
             mappings/build/reports/tests/fuzz/

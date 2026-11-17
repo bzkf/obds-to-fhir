@@ -120,6 +120,12 @@ class ObdsToFhirBundleMapperFuzzTest {
           new KnownIssue("ST with a blank ST_ID", "identifiers/strahlentherapie-procedure-id"),
           new KnownIssue("SYST without SYST_ID", "Required SYST_ID is unset"),
           new KnownIssue("Verlauf without Verlauf_ID", "identifiers/verlauf-observation-id"),
+          new KnownIssue(
+              "Histologie without Histologie_ID for the Specimen",
+              "identifiers/histologie-specimen-id"),
+          new KnownIssue(
+              "Histologie without Histologie_ID for the DiagnosticReport",
+              "identifiers/histologiebefund-diagnostic-report-id"),
           new KnownIssue("TNM without ID", "identifiers/tnm-grouping-observation-id"),
           new KnownIssue("ST without Menge_Bestrahlung", "STTyp.getMengeBestrahlung()\" is null"),
           new KnownIssue(
