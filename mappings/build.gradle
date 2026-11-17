@@ -35,6 +35,21 @@ repositories {
     mavenCentral()
 }
 
+// The fuzz tests have a source set of their own, as OpenSSF Scorecard ignores everything under
+// src/test/ when it looks for fuzzing. Their inputs stay in src/test/resources, where Jazzer
+// saves new findings, so test's output is on their classpath.
+sourceSets {
+    fuzzTest {
+        compileClasspath += sourceSets.main.output + sourceSets.test.output
+        runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+    }
+}
+
+configurations {
+    fuzzTestImplementation.extendsFrom testImplementation
+    fuzzTestRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
@@ -56,8 +71,9 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.27.7'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.approvaltests:approvaltests:31.0.0'
-    testImplementation 'com.code-intelligence:jazzer-junit:0.30.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    fuzzTestImplementation 'com.code-intelligence:jazzer-junit:0.30.0'
 
     testFixturesImplementation 'org.assertj:assertj-core:3.27.7'
     testFixturesImplementation 'com.approvaltests:approvaltests:31.0.0'
@@ -69,8 +85,21 @@ test {
     useJUnitPlatform()
 }
 
-// Fuzzing, see DEVELOPMENT.md. `test` only replays the inputs in the fuzz tests' *Inputs
-// directories (Jazzer's regression mode); this task generates new ones.
+// Fuzzing, see DEVELOPMENT.md. `fuzzTest` replays the inputs in the fuzz tests' *Inputs
+// directories like unit tests (Jazzer's regression mode), `fuzz` generates new ones.
+def fuzzTest = tasks.register('fuzzTest', Test) {
+    description = 'Replays the inputs of the fuzz tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.fuzzTest.output.classesDirs
+    classpath = sourceSets.fuzzTest.runtimeClasspath
+    useJUnitPlatform()
+    shouldRunAfter tasks.named('test')
+}
+
+tasks.named('check') {
+    dependsOn fuzzTest
+}
+
 def fuzzTestClass = 'io.github.bzkf.obdstofhir.mapper.mii.ObdsToFhirBundleMapperFuzzTest'
 // mapObds or mapMutatedObds
 def fuzzTestMethod = project.findProperty('fuzzTarget') ?: 'mapObds'
@@ -90,8 +119,8 @@ tasks.register('fuzz', Test) {
         'fuzz test, -PfuzzDuration=30s overrides the 10m default.'
     group = 'verification'
     dependsOn 'seedFuzzCorpus'
-    testClassesDirs = sourceSets.test.output.classesDirs
-    classpath = sourceSets.test.runtimeClasspath
+    testClassesDirs = sourceSets.fuzzTest.output.classesDirs
+    classpath = sourceSets.fuzzTest.runtimeClasspath
     useJUnitPlatform()
     // Jazzer fuzzes only one fuzz test per JVM
     filter {
