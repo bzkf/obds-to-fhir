@@ -253,3 +253,5 @@ dq/**/checkpoints/
 
 ### Jazzer ###
 .cifuzz-corpus/
+# inputs libFuzzer found slow, not findings
+slow-unit-*

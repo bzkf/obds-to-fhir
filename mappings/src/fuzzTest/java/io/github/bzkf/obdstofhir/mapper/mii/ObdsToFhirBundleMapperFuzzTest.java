@@ -65,9 +65,12 @@ import tools.jackson.core.JacksonException;
  * <p>The serialized oBDS also has to be valid against the XSD, as it is written to Kafka when
  * {@code write-grouped-obds-to-kafka} is enabled.
  *
- * <p>{@code ./gradlew test} runs both in regression mode against the inputs in {@code
- * src/test/resources/.../ObdsToFhirBundleMapperFuzzTestInputs}. To fuzz, run {@code ./gradlew
- * :mappings:fuzz}, see DEVELOPMENT.md.
+ * <p>{@code ./gradlew :mappings:fuzzTest}, part of {@code check}, runs both in regression mode
+ * against the inputs in {@code src/test/resources/.../ObdsToFhirBundleMapperFuzzTestInputs}. To
+ * fuzz, run {@code ./gradlew :mappings:fuzz}, see DEVELOPMENT.md.
+ *
+ * <p>This is in a source set of its own instead of src/test, as OpenSSF Scorecard ignores files
+ * there when it looks for fuzz tests.
  */
 @SpringBootTest(classes = {ObdsToFhirBundleMapperTestConfig.class, ProfileTestConfig.class})
 @EnableConfigurationProperties

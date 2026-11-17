@@ -139,13 +139,13 @@ for i in {1..10}; do APPROVAL_TESTS_USE_REPORTER=AutoApproveReporter ./gradlew t
 
 ## Fuzzing
 
-[`ObdsToFhirBundleMapperFuzzTest`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTest.java)
+[`ObdsToFhirBundleMapperFuzzTest`](mappings/src/fuzzTest/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTest.java)
 uses [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) to look for oBDS that break the mapping. It has two fuzz tests:
 
 - `mapObds` feeds the fuzzer's bytes in as XML. Starting from the oBDS test files, it also tests the parser,
   using a [dictionary](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/obds.dict) of the XSD's element names, attributes and enumeration values.
   When the oBDS version changes, regenerate it with [`generate_fuzz_dictionary.py`](mappings/scripts/generate_fuzz_dictionary.py).
-- `mapMutatedObds` changes the parsed oBDS test files with [`ObdsMutator`](mappings/src/test/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsMutator.java),
+- `mapMutatedObds` changes the parsed oBDS test files with [`ObdsMutator`](mappings/src/fuzzTest/java/io/github/bzkf/obdstofhir/mapper/mii/ObdsMutator.java),
   e.g. by removing values, exchanging elements with those of other test files or shifting dates.
   Its changes mostly keep the oBDS valid, so it reaches much more of the mapping than byte-level mutations of XML.
 
@@ -154,9 +154,12 @@ For valid ones, the test checks that the mapping doesn't throw, is deterministic
 creates bundles with unique entries and references that resolve within them, and creates the same Patient in every tumor's bundle.
 It also checks that the serialized oBDS is valid.
 
-`./gradlew test` replays the inputs in
+The fuzz tests are in the `fuzzTest` source set rather than `src/test`, because OpenSSF Scorecard ignores everything under `src/test/` when it looks for fuzzing.
+Their inputs stay in `src/test/resources`, where Jazzer saves its findings.
+
+`./gradlew :mappings:fuzzTest`, which is part of `./gradlew check` and `build`, replays the inputs in
 [`ObdsToFhirBundleMapperFuzzTestInputs`](mappings/src/test/resources/io/github/bzkf/obdstofhir/mapper/mii/ObdsToFhirBundleMapperFuzzTestInputs)
-like a regular unit test. To generate new inputs, run either of:
+like regular unit tests. To generate new inputs, run either of:
 
 ```sh
 ./gradlew :mappings:fuzz -PfuzzDuration=5m
@@ -164,7 +167,7 @@ like a regular unit test. To generate new inputs, run either of:
 ```
 
 The fuzzer keeps every input that reaches new code in `mappings/.cifuzz-corpus`, which isn't committed.
-While that directory exists, `./gradlew test` replays it as well.
+While that directory exists, `fuzzTest` replays it as well.
 It stops at the first input that breaks one of the checks, and saves it as `crash-<hash>` in the inputs directory.
 To collect several findings in one run, add `-PfuzzKeepGoing=20`. The task then succeeds even if it finds something, so check the inputs directory.
 
