@@ -31,7 +31,7 @@ repositories {
 }
 
 ext {
-    set('springCloudVersion', '2025.1.4')
+    set('springCloudVersion', '2026.0.0')
     set('hapiVersion', '8.12.1')
 }
 
